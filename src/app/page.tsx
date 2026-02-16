@@ -1,10 +1,10 @@
 import { Metadata } from "next";
 import Hero from "../components/Hero";
-import PlatformEcosystem from "../components/PlatformEcosystem";
 import TrustBar from "../components/TrustBar";
 import AsianBornGlobal from "../components/AsianBornGlobal";
 import Services from "../components/Services";
 import Clients from "../components/Clients";
+import PlatformEcosystem from "../components/PlatformEcosystem";
 import Products from "../components/Products";
 import CustomerLogos from "../components/CustomerLogos";
 import TestimonialSection from "../components/TestimonialSection";
@@ -32,10 +32,10 @@ export default function Home() {
     <>
       <Hero />
       <TrustBar />
-      <PlatformEcosystem />
       <AsianBornGlobal />
       <Services />
       <Clients />
+      <PlatformEcosystem />
       <Products />
       <CustomerLogos />
       <TestimonialSection />
