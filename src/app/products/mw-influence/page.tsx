@@ -316,7 +316,6 @@ export default function MWInfluencePage() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] opacity-10" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Column */}
@@ -926,8 +925,7 @@ export default function MWInfluencePage() {
 
       {/* Final CTA Section */}
       <section className="relative py-24 bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 overflow-hidden">
-        <div className="absolute inset-0 bg-[url('/assets/images/city-pattern.svg')] opacity-10" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
