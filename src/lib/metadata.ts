@@ -89,8 +89,8 @@ export const productMetadata = {
     canonical: "https://www.movingwalls.com/products/mw-measure",
   },
   influence: {
-    title: "MW Influence - Audience Targeting for OOH",
-    description: "Target the right audience with MW Influence. Location-based targeting, behavioral insights, and cross-device attribution for OOH campaigns.",
+    title: "DOOH Ad Server | Maximize Revenue with MW Influence",
+    description: "Future-proof your network with MW Influence, the composable DOOH ad server that unifies direct and programmatic demand for maximum yield. Enterprise-grade, API-first architecture.",
     canonical: "https://www.movingwalls.com/products/mw-influence",
   },
   science: {
