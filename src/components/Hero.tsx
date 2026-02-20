@@ -140,28 +140,6 @@ export default function Hero() {
             {t('hero.cta.primary')}
           </a>
         </motion.div>
-
-        {/* Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-          className="mt-20 grid grid-cols-1 md:grid-cols-3 gap-8 text-center max-w-4xl mx-auto"
-        >
-          {[
-            { value: 40, suffix: "+", label: "Markets Covered", duration: 1.5 },
-            { value: 1500, suffix: "+", label: "Media Owners", duration: 2 },
-            { value: 1000000, suffix: "+", label: "OOH Sites", duration: 2.5 },
-          ].map((stat, index) => (
-            <AnimatedCounter 
-              key={index} 
-              value={stat.value} 
-              suffix={stat.suffix} 
-              label={stat.label}
-              duration={stat.duration} 
-            />
-          ))}
-        </motion.div>
       </div>
 
       {/* Scroll indicator */}

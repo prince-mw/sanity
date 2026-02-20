@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "Análises avançadas e rastreamento de desempenho"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "Segmentação de audiência multicanal"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "Plataforma de gestão de conteúdo criativo"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "Inventário premium e ecossistema de parceiros"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "Análises avançadas e rastreamento de desempenho"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "Segmentação de público multicanal"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "Plataforma de gestão de conteúdo criativo"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "Inventário premium e ecossistema de parceiros"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "Learn more"
         },
-        "marketplace": {
+        "market": {
           "title": "Access Premium Inventory Worldwide",
           "description": "Browse and book from 250,000+ billboard locations across 180+ countries with transparent pricing and instant booking.",
           "features": [
@@ -562,7 +562,7 @@
           },
           {
             "title": "Book Inventory",
-            "description": "Browse MW Marketplace to find and instantly book premium billboard locations worldwide"
+            "description": "Browse MW Market to find and instantly book premium billboard locations worldwide"
           },
           {
             "title": "Create & Optimize",
@@ -602,12 +602,12 @@
         "description": "Escale a produção criativa com gestão inteligente de ativos, conformidade de marca e otimização multi-formato.",
         "outcome": "5x Entrega Mais Rápida"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "Compra de Mídia",
         "description": "Acesse inventário premium e parcerias verificadas com publishers em todos os canais com preços transparentes.",
         "outcome": "$2.8B+ Inventário"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "Segmentação de Audiência",
         "description": "Execute segmentação de precisão em mais de 3.5B usuários com segmentação avançada de audiência e vinculação entre dispositivos.",
         "outcome": "94.7% Taxa de Correspondência"

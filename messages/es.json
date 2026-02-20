@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "Análisis avanzado y seguimiento de rendimiento"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "Segmentación de audiencias multicanal"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "Plataforma de gestión de contenido creativo"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "Inventario premium y ecosistema de socios"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "Análisis avanzado y seguimiento de rendimiento"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "Segmentación de audiencias multicanal"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "Plataforma de gestión de contenido creativo"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "Inventario premium y ecosistema de socios"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "Más información"
         },
-        "marketplace": {
+        "market": {
           "title": "Accede a Inventario Premium en Todo el Mundo",
           "description": "Navega y reserva desde más de 250,000 ubicaciones de vallas publicitarias en más de 180 países con precios transparentes y reserva instantánea.",
           "features": [
@@ -537,7 +537,7 @@
           },
           {
             "title": "Reserva Inventario",
-            "description": "Navega MW Marketplace para encontrar y reservar instantáneamente ubicaciones premium de vallas publicitarias en todo el mundo"
+            "description": "Navega MW Market para encontrar y reservar instantáneamente ubicaciones premium de vallas publicitarias en todo el mundo"
           },
           {
             "title": "Crea y Optimiza",
@@ -577,12 +577,12 @@
         "description": "Escala la producción creativa con gestión inteligente de activos, cumplimiento de marca y optimización multi-formato.",
         "outcome": "5x Entrega Más Rápida"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "Compra de Medios",
         "description": "Accede a inventario premium y asociaciones verificadas de publishers en todos los canales con precios transparentes.",
         "outcome": "$2.8B+ Inventario"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "Segmentación de Audiencia",
         "description": "Ejecuta segmentación de precisión en más de 3.5B usuarios con segmentación avanzada y vinculación entre dispositivos.",
         "outcome": "94.7% Tasa de Coincidencia"

@@ -33,7 +33,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
         items: [
           { name: t('megaMenu.products.planner.name'), description: t('megaMenu.products.planner.description'), href: "/products/mw-planner" },
           { name: t('megaMenu.products.measure.name'), description: t('megaMenu.products.measure.description'), href: "/products/mw-measure" },
-          { name: t('megaMenu.products.reach.name'), description: t('megaMenu.products.reach.description'), href: "/products/mw-reach" },
+          { name: t('megaMenu.products.influence.name'), description: t('megaMenu.products.influence.description'), href: "/products/mw-influence" },
           { name: t('megaMenu.products.activate.name'), description: t('megaMenu.products.activate.description'), href: "/products/mw-activate" },
         ],
       },
@@ -42,7 +42,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
         items: [
           { name: t('megaMenu.products.science.name'), description: t('megaMenu.products.science.description'), href: "/products/mw-science" },
           { name: t('megaMenu.products.studio.name'), description: t('megaMenu.products.studio.description'), href: "/products/mw-studio" },
-          { name: t('megaMenu.products.marketplace.name'), description: t('megaMenu.products.marketplace.description'), href: "/products/mw-marketplace" },
+          { name: t('megaMenu.products.market.name'), description: t('megaMenu.products.market.description'), href: "/products/mw-market" },
         ],
       },
     ],

@@ -14,7 +14,7 @@ export default function Services() {
       descriptionKey: "landingPage.solutions.brand.description",
       bgColor: "bg-transparent",
       href: "/solutions/brands",
-      image: "/assets/images/brands/Brand.png",
+      image: "/assets/images/Brand.png",
       featureKeys: [
         "landingPage.solutions.brand.features.0",
         "landingPage.solutions.brand.features.1",
@@ -28,7 +28,7 @@ export default function Services() {
       descriptionKey: "landingPage.solutions.mediaOwners.description",
       bgColor: "bg-transparent",
       href: "/solutions/media-owners",
-      image: "/assets/images/brands/Media-Owners.png",
+      image: "/assets/images/MediaOwners.png",
       featureKeys: [
         "landingPage.solutions.mediaOwners.features.0",
         "landingPage.solutions.mediaOwners.features.1",
@@ -42,7 +42,7 @@ export default function Services() {
       descriptionKey: "landingPage.solutions.agencies.description",
       bgColor: "bg-transparent",
       href: "/solutions/agencies",
-      image: "/assets/images/brands/Agencies.png",
+      image: "/assets/images/Agencies.png",
       featureKeys: [
         "landingPage.solutions.agencies.features.0",
         "landingPage.solutions.agencies.features.1",

@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "Analitik lanjutan & pelacakan performa"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "Penargetan audiens multi-channel"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "Platform manajemen konten kreatif"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "Inventori premium & ekosistem mitra"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "Analitik lanjutan dan pelacakan kinerja"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "Penargetan audiens multi-saluran"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "Platform manajemen konten kreatif"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "Inventaris premium dan ekosistem kemitraan"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "Learn more"
         },
-        "marketplace": {
+        "market": {
           "title": "Access Premium Inventory Worldwide",
           "description": "Browse and book from 250,000+ billboard locations across 180+ countries with transparent pricing and instant booking.",
           "features": [
@@ -562,7 +562,7 @@
           },
           {
             "title": "Book Inventory",
-            "description": "Browse MW Marketplace to find and instantly book premium billboard locations worldwide"
+            "description": "Browse MW Market to find and instantly book premium billboard locations worldwide"
           },
           {
             "title": "Create & Optimize",
@@ -602,12 +602,12 @@
         "description": "Skalakan produksi kreatif dengan manajemen aset cerdas, kepatuhan brand, dan optimalisasi multi-format.",
         "outcome": "Pengiriman 5x Lebih Cepat"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "Pembelian Media",
         "description": "Akses inventaris premium dan kemitraan publisher terverifikasi di semua saluran dengan harga transparan.",
         "outcome": "Inventaris $2,8M+"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "Penargetan Audiens",
         "description": "Eksekusi penargetan presisi di 3,5M+ pengguna melalui segmentasi audiens lanjutan dan linking lintas perangkat.",
         "outcome": "Tingkat Kecocokan 94,7%"

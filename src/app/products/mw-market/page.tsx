@@ -162,7 +162,7 @@ const integrations = [
   },
 ]
 
-export default function MWMarketplacePage() {
+export default function MWMarketPage() {
   const [selectedContinent, setSelectedContinent] = useState<string | null>(null)
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null)
   const [currency, setCurrency] = useState('USD')
@@ -355,7 +355,7 @@ export default function MWMarketplacePage() {
               transition={{ duration: 0.8 }}
               className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
             >
-              MW Marketplace
+              MW Market
             </motion.h1>
             
             <motion.h2
@@ -364,7 +364,7 @@ export default function MWMarketplacePage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-2xl md:text-3xl lg:text-4xl font-light mb-4 text-gray-100"
             >
-              Global OOH Billboard Marketplace
+              Global OOH Billboard Market
             </motion.h2>
 
             <motion.p
@@ -776,7 +776,7 @@ export default function MWMarketplacePage() {
             className="text-center mb-20"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Why Choose MW Marketplace?
+              Why Choose MW Market?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               The numbers speak for themselves
@@ -898,7 +898,7 @@ export default function MWMarketplacePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Two-Sided Marketplace Benefits
+              Two-Sided Market Benefits
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Value for advertisers and billboard owners alike
@@ -1009,7 +1009,7 @@ export default function MWMarketplacePage() {
               Performance That Speaks For Itself
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Real numbers from real campaigns on MW Marketplace
+              Real numbers from real campaigns on MW Market
             </p>
           </motion.div>
 
@@ -1087,7 +1087,7 @@ export default function MWMarketplacePage() {
                 Book Your Free Demo
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                See how MW Marketplace can transform your OOH advertising strategy in just 15 minutes
+                See how MW Market can transform your OOH advertising strategy in just 15 minutes
               </p>
               
               <div className="space-y-4">
@@ -1219,7 +1219,7 @@ export default function MWMarketplacePage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Why MW Marketplace?
+              Why MW Market?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               The world&apos;s most trusted platform for OOH billboard advertising
@@ -1268,7 +1268,7 @@ export default function MWMarketplacePage() {
                 <span className="block text-blue-600">Integrate.</span>
               </h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                MW Marketplace connects seamlessly with your existing buying platforms. No rip-and-replace—just instant global inventory access from day one.
+                MW Market connects seamlessly with your existing buying platforms. No rip-and-replace—just instant global inventory access from day one.
               </p>
 
               <div className="grid grid-cols-2 gap-4">
@@ -1338,7 +1338,7 @@ export default function MWMarketplacePage() {
               Ready to Go Global?
             </h2>
             <p className="text-xl md:text-2xl mb-8 text-gray-200">
-              Join thousands of advertisers reaching audiences worldwide with MW Marketplace
+              Join thousands of advertisers reaching audiences worldwide with MW Market
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button

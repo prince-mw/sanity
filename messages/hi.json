@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "एडवांस्ड एनालिटिक्स और परफॉर्मेंस ट्रैकिंग"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "मल्टी-चैनल ऑडियंस टार्गेटिंग"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "क्रिएटिव कंटेंट मैनेजमेंट प्लेटफ़ॉर्म"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "प्रीमियम इन्वेंटरी और पार्टनर इकोसिस्टम"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "उन्नत एनालिटिक्स और प्रदर्शन ट्रैकिंग"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "मल्टी-चैनल ऑडियंस टार्गेटिंग"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "क्रिएटिव कंटेंट मैनेजमेंट प्लेटफ़ॉर्म"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "प्रीमियम इन्वेंट्री और पार्टनरशिप इकोसिस्टम"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "Learn more"
         },
-        "marketplace": {
+        "market": {
           "title": "Access Premium Inventory Worldwide",
           "description": "Browse and book from 250,000+ billboard locations across 180+ countries with transparent pricing and instant booking.",
           "features": [
@@ -562,7 +562,7 @@
           },
           {
             "title": "Book Inventory",
-            "description": "Browse MW Marketplace to find and instantly book premium billboard locations worldwide"
+            "description": "Browse MW Market to find and instantly book premium billboard locations worldwide"
           },
           {
             "title": "Create & Optimize",
@@ -602,12 +602,12 @@
         "description": "इंटेलिजेंट एसेट मैनेजमेंट, ब्रांड कंप्लायंस और मल्टी-फॉर्मेट ऑप्टिमाइजेशन के साथ क्रिएटिव प्रोडक्शन स्केल करें।",
         "outcome": "5x फास्टर डिलीवरी"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "मीडिया बाइंग",
         "description": "ट्रांसपेरेंट प्राइसिंग के साथ सभी चैनलों पर प्रीमियम इन्वेंट्री और वेरिफाइड पब्लिशर पार्टनरशिप एक्सेस करें।",
         "outcome": "$2.8B+ इन्वेंट्री"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "ऑडियंस टारगेटिंग",
         "description": "एडवांस्ड ऑडियंस सेगमेंटेशन और क्रॉस-डिवाइस लिंकिंग के माध्यम से 3.5B+ यूजर्स पर प्रिसीजन टारगेटिंग एक्जीक्यूट करें।",
         "outcome": "94.7% मैच रेट"

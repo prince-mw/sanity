@@ -21,11 +21,11 @@ const footerLinks = {
   products: [
     { name: "MW Planner", href: "/products/mw-planner" },
     { name: "MW Measure", href: "/products/mw-measure" },
-    { name: "MW Reach", href: "/products/mw-reach" },
+    { name: "MW Influence", href: "/products/mw-influence" },
     { name: "MW Activate", href: "/products/mw-activate" },
     { name: "MW Science", href: "/products/mw-science" },
     { name: "MW Studio", href: "/products/mw-studio" },
-    { name: "MW Marketplace", href: "/products/mw-marketplace" },
+    { name: "MW Market", href: "/products/mw-market" },
   ],
   support: [
     { name: "Help Center", href: "https://help.movingwalls.com/" },

@@ -61,8 +61,8 @@ export default function SitemapPage() {
         { name: "MW Planner", href: "/products/mw-planner" },
         { name: "MW Activate", href: "/products/mw-activate" },
         { name: "MW Measure", href: "/products/mw-measure" },
-        { name: "MW Reach", href: "/products/mw-reach" },
-        { name: "MW Marketplace", href: "/products/mw-marketplace" },
+        { name: "MW Influence", href: "/products/mw-influence" },
+        { name: "MW Market", href: "/products/mw-market" },
         { name: "MW Studio", href: "/products/mw-studio" },
         { name: "MW Science", href: "/products/mw-science" },
       ]

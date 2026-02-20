@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "고급 분석 및 성과 추적"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "멀티채널 오디언스 타겟팅"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "크리에이티브 콘텐츠 관리 플랫폼"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "프리미엄 인벤토리 및 파트너 생태계"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "고급 분석 및 성과 추적"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "멀티채널 오디언스 타겟팅"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "크리에이티브 콘텐츠 관리 플랫폼"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "프리미엄 인벤토리 및 파트너십 생태계"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "Learn more"
         },
-        "marketplace": {
+        "market": {
           "title": "Access Premium Inventory Worldwide",
           "description": "Browse and book from 250,000+ billboard locations across 180+ countries with transparent pricing and instant booking.",
           "features": [
@@ -562,7 +562,7 @@
           },
           {
             "title": "Book Inventory",
-            "description": "Browse MW Marketplace to find and instantly book premium billboard locations worldwide"
+            "description": "Browse MW Market to find and instantly book premium billboard locations worldwide"
           },
           {
             "title": "Create & Optimize",
@@ -602,12 +602,12 @@
         "description": "지능형 에셋 관리, 브랜드 준수 및 멀티포맷 최적화로 크리에이티브 제작을 확장하세요.",
         "outcome": "5배 빠른 배송"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "미디어 구매",
         "description": "투명한 가격으로 모든 채널에서 프리미엄 인벤토리와 검증된 퍼블리셔 파트너십에 접근하세요.",
         "outcome": "$28억+ 인벤토리"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "오디언스 타겟팅",
         "description": "고급 오디언스 세분화 및 크로스 디바이스 연결로 35억 이상의 사용자에게 정밀 타겟팅을 실행하세요.",
         "outcome": "94.7% 매치율"

@@ -30,10 +30,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Products pages
   const productPages = [
     '/products/mw-planner',
-    '/products/mw-marketplace',
+    '/products/mw-market',
     '/products/mw-activate',
     '/products/mw-measure',
-    '/products/mw-reach',
+    '/products/mw-influence',
     '/products/mw-science',
     '/products/mw-studio',
   ]

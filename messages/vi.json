@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "Phân tích nâng cao & theo dõi hiệu suất"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "Nhắm mục tiêu đối tượng đa kênh"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "Nền tảng quản lý nội dung sáng tạo"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "Kho hàng cao cấp & hệ sinh thái đối tác"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "Phân tích nâng cao và theo dõi hiệu suất"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "Nhắm mục tiêu đối tượng đa kênh"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "Nền tảng quản lý nội dung sáng tạo"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "Kho hàng cao cấp và hệ sinh thái đối tác"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "Learn more"
         },
-        "marketplace": {
+        "market": {
           "title": "Access Premium Inventory Worldwide",
           "description": "Browse and book from 250,000+ billboard locations across 180+ countries with transparent pricing and instant booking.",
           "features": [
@@ -562,7 +562,7 @@
           },
           {
             "title": "Book Inventory",
-            "description": "Browse MW Marketplace to find and instantly book premium billboard locations worldwide"
+            "description": "Browse MW Market to find and instantly book premium billboard locations worldwide"
           },
           {
             "title": "Create & Optimize",
@@ -602,12 +602,12 @@
         "description": "Mở rộng sản xuất sáng tạo với quản lý tài sản thông minh, tuân thủ thương hiệu và tối ưu hóa đa định dạng.",
         "outcome": "Giao hàng Nhanh hơn 5 lần"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "Mua Media",
         "description": "Truy cập khoảng không quảng cáo cao cấp và quan hệ đối tác publisher đã xác minh trên tất cả các kênh với giá minh bạch.",
         "outcome": "Khoảng không $2.8T+"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "Nhắm mục tiêu Đối tượng",
         "description": "Thực hiện nhắm mục tiêu chính xác trên 3.5T+ người dùng thông qua phân khúc đối tượng nâng cao và liên kết đa thiết bị.",
         "outcome": "Tỷ lệ khớp 94.7%"

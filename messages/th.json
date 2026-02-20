@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "การวิเคราะห์ขั้นสูงและติดตามประสิทธิภาพ"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "การกำหนดเป้าหมายผู้ชมหลายช่องทาง"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "แพลตฟอร์มจัดการเนื้อหาสร้างสรรค์"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "สินค้าคงคลังพรีเมียมและระบบนิเวศพันธมิตร"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "การวิเคราะห์ขั้นสูงและการติดตามประสิทธิภาพ"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "การกำหนดเป้าหมายผู้ชมหลายช่องทาง"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "แพลตฟอร์มจัดการเนื้อหาสร้างสรรค์"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "คลังสินค้าพรีเมียมและระบบนิเวศพันธมิตร"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "Learn more"
         },
-        "marketplace": {
+        "market": {
           "title": "Access Premium Inventory Worldwide",
           "description": "Browse and book from 250,000+ billboard locations across 180+ countries with transparent pricing and instant booking.",
           "features": [
@@ -562,7 +562,7 @@
           },
           {
             "title": "Book Inventory",
-            "description": "Browse MW Marketplace to find and instantly book premium billboard locations worldwide"
+            "description": "Browse MW Market to find and instantly book premium billboard locations worldwide"
           },
           {
             "title": "Create & Optimize",
@@ -602,12 +602,12 @@
         "description": "ขยายการผลิตครีเอทีฟด้วยการจัดการสินทรัพย์อัจฉริยะ การปฏิบัติตามแบรนด์ และการเพิ่มประสิทธิภาพหลายรูปแบบ",
         "outcome": "ส่งมอบเร็วขึ้น 5 เท่า"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "การซื้อสื่อ",
         "description": "เข้าถึงสินค้าคงคลังพรีเมียมและพันธมิตรผู้เผยแพร่ที่ตรวจสอบแล้วในทุกช่องทางด้วยราคาที่โปร่งใส",
         "outcome": "สินค้าคงคลัง $2.8B+"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "การกำหนดเป้าหมายผู้ชม",
         "description": "ดำเนินการกำหนดเป้าหมายที่แม่นยำกับผู้ใช้ 3.5B+ คนผ่านการแบ่งกลุ่มผู้ชมขั้นสูงและการเชื่อมต่อข้ามอุปกรณ์",
         "outcome": "อัตราการจับคู่ 94.7%"

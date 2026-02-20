@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "高级分析与绩效跟踪"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "多渠道受众定位"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "创意内容管理平台"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "优质库存与合作伙伴生态系统"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "高级分析与性能跟踪"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "多渠道受众定向"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "创意内容管理平台"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "优质库存与合作生态系统"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "了解更多"
         },
-        "marketplace": {
+        "market": {
           "title": "访问全球优质库存",
           "description": "在180多个国家浏览和预订250,000多个广告牌位置，价格透明，即时预订。",
           "features": [
@@ -537,7 +537,7 @@
           },
           {
             "title": "预订库存",
-            "description": "浏览MW Marketplace查找并即时预订全球优质广告牌位置"
+            "description": "浏览MW Market查找并即时预订全球优质广告牌位置"
           },
           {
             "title": "创建和优化",
@@ -577,12 +577,12 @@
         "description": "通过智能资产管理、品牌合规性和多格式优化扩展创意生产。",
         "outcome": "交付速度提升5倍"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "媒体采购",
         "description": "通过透明定价获取优质库存和经过验证的发布商合作伙伴关系。",
         "outcome": "28亿美元以上库存"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "受众定向",
         "description": "通过高级受众细分和跨设备链接，对35亿以上用户执行精准定向。",
         "outcome": "94.7%匹配率"

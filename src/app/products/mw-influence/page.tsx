@@ -127,7 +127,7 @@ const integrations = [
   },
 ]
 
-export default function MWReach() {
+export default function MWInfluence() {
   const features = [
     {
       icon: RocketLaunchIcon,
@@ -225,7 +225,7 @@ export default function MWReach() {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                MW Reach
+                MW Influence
                 <span className="block text-3xl md:text-4xl font-light mt-3 text-cyan-200">
                   Global Audience at Scale
                 </span>

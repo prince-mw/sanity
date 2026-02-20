@@ -169,6 +169,22 @@ export default function OOH101Page() {
               Learn the basics of outdoor advertising and become an expert. Unlock the fundamentals 
               of OOH with our comprehensive guide to formats, strategies, and best practices.
             </p>
+
+            {/* Stats Section */}
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16 mt-12">
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-mw-blue-600">40+</div>
+                <div className="text-sm text-mw-gray-600 mt-1">Markets Covered</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-mw-blue-600">1,500+</div>
+                <div className="text-sm text-mw-gray-600 mt-1">Media Owners</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-mw-blue-600">1,000,000+</div>
+                <div className="text-sm text-mw-gray-600 mt-1">OOH Sites</div>
+              </div>
+            </div>
           </motion.div>
         </div>
       </section>

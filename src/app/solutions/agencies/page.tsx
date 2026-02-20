@@ -603,7 +603,7 @@ export default function AgenciesPage() {
                         </li>
                       ))}
                     </ul>
-                    <Link href="/products/mw-marketplace" className="inline-flex items-center gap-2 text-green-600 font-semibold hover:gap-3 transition-all text-sm">
+                    <Link href="/products/mw-market" className="inline-flex items-center gap-2 text-green-600 font-semibold hover:gap-3 transition-all text-sm">
                       Learn more
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

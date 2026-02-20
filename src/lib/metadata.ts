@@ -73,10 +73,10 @@ export const productMetadata = {
     description: "Plan smarter OOH campaigns with MW Planner. AI recommendations, audience insights, budget optimization, and access to 2.8B+ screens across 30+ countries.",
     canonical: "https://www.movingwalls.com/products/mw-planner",
   },
-  marketplace: {
-    title: "MW Marketplace - Global OOH Inventory Marketplace",
-    description: "Access 2.8B+ premium OOH screens worldwide through MW Marketplace. Programmatic buying, real-time availability, and transparent pricing.",
-    canonical: "https://www.movingwalls.com/products/mw-marketplace",
+  market: {
+    title: "MW Market - Global OOH Inventory Market",
+    description: "Access 2.8B+ premium OOH screens worldwide through MW Market. Programmatic buying, real-time availability, and transparent pricing.",
+    canonical: "https://www.movingwalls.com/products/mw-market",
   },
   activate: {
     title: "MW Activate - Programmatic OOH Campaign Execution",
@@ -88,10 +88,10 @@ export const productMetadata = {
     description: "Measure OOH campaign performance with MW Measure. Real-time analytics, footfall attribution, brand lift studies, and comprehensive ROI tracking.",
     canonical: "https://www.movingwalls.com/products/mw-measure",
   },
-  reach: {
-    title: "MW Reach - Audience Targeting for OOH",
-    description: "Target the right audience with MW Reach. Location-based targeting, behavioral insights, and cross-device attribution for OOH campaigns.",
-    canonical: "https://www.movingwalls.com/products/mw-reach",
+  influence: {
+    title: "MW Influence - Audience Targeting for OOH",
+    description: "Target the right audience with MW Influence. Location-based targeting, behavioral insights, and cross-device attribution for OOH campaigns.",
+    canonical: "https://www.movingwalls.com/products/mw-influence",
   },
   science: {
     title: "MW Science - Data Intelligence for OOH",

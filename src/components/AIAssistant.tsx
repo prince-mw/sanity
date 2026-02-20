@@ -79,7 +79,7 @@ export default function AIAssistant() {
     }
     
     if (lowerMessage.includes('product') || lowerMessage.includes('mw-') || lowerMessage.includes('platform')) {
-      return "MW offers 7 integrated products: MW Planner (strategic planning), MW Studio (creative management), MW Marketplace (premium inventory), MW Reach (audience targeting), MW Activate (campaign automation), MW Measure (analytics), and MW Science (AI insights). Which product interests you most?";
+      return "MW offers 7 integrated products: MW Planner (strategic planning), MW Studio (creative management), MW Market (premium inventory), MW Influence (audience targeting), MW Activate (campaign automation), MW Measure (analytics), and MW Science (AI insights). Which product interests you most?";
     }
     
     if (lowerMessage.includes('contact') || lowerMessage.includes('sales') || lowerMessage.includes('talk')) {

@@ -94,11 +94,11 @@ export default function Products() {
     },
     {
       id: 3,
-      name: "MW Marketplace",
+      name: "MW Market",
       stage: "buy",
-      stageLabel: t('landingPage.products.mwMarketplace.stageLabel'),
-      description: t('landingPage.products.mwMarketplace.description'),
-      outcome: t('landingPage.products.mwMarketplace.outcome'),
+      stageLabel: t('landingPage.products.mwMarket.stageLabel'),
+      description: t('landingPage.products.mwMarket.description'),
+      outcome: t('landingPage.products.mwMarket.outcome'),
       bgColor: "from-slate-500 to-slate-700",
       borderColor: "border-slate-500",
       icon: (
@@ -106,15 +106,15 @@ export default function Products() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
         </svg>
       ),
-      href: "/products/mw-marketplace"
+      href: "/products/mw-market"
     },
     {
       id: 4,
-      name: "MW Reach",
+      name: "MW Influence",
       stage: "buy",
-      stageLabel: t('landingPage.products.mwReach.stageLabel'),
-      description: t('landingPage.products.mwReach.description'),
-      outcome: t('landingPage.products.mwReach.outcome'),
+      stageLabel: t('landingPage.products.mwInfluence.stageLabel'),
+      description: t('landingPage.products.mwInfluence.description'),
+      outcome: t('landingPage.products.mwInfluence.outcome'),
       bgColor: "from-indigo-500 to-indigo-700",
       borderColor: "border-indigo-500",
       icon: (
@@ -123,7 +123,7 @@ export default function Products() {
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z" />
         </svg>
       ),
-      href: "/products/mw-reach",
+      href: "/products/mw-influence",
       popular: true
     },
     {

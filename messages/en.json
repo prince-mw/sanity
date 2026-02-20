@@ -46,8 +46,8 @@
       "title": "MW Measure",
       "description": "Advanced analytics & performance tracking"
     },
-    "reach": {
-      "title": "MW Reach",
+    "influence": {
+      "title": "MW Influence",
       "description": "Multi-channel audience targeting"
     },
     "activate": {
@@ -62,8 +62,8 @@
       "title": "MW Studio",
       "description": "Creative content management platform"
     },
-    "marketplace": {
-      "title": "MW Marketplace",
+    "market": {
+      "title": "MW Market",
       "description": "Premium inventory & partnership ecosystem"
     }
   },
@@ -205,8 +205,8 @@
         "name": "MW Measure",
         "description": "Advanced analytics & performance tracking"
       },
-      "reach": {
-        "name": "MW Reach",
+      "influence": {
+        "name": "MW Influence",
         "description": "Multi-channel audience targeting"
       },
       "activate": {
@@ -221,8 +221,8 @@
         "name": "MW Studio",
         "description": "Creative content management platform"
       },
-      "marketplace": {
-        "name": "MW Marketplace",
+      "market": {
+        "name": "MW Market",
         "description": "Premium inventory & partnership ecosystem"
       },
       "featured": {
@@ -411,7 +411,7 @@
           ],
           "learnMore": "Learn more"
         },
-        "marketplace": {
+        "market": {
           "title": "Access Premium Inventory Worldwide",
           "description": "Browse and book from 250,000+ billboard locations across 180+ countries with transparent pricing and instant booking.",
           "features": [
@@ -537,7 +537,7 @@
           },
           {
             "title": "Book Inventory",
-            "description": "Browse MW Marketplace to find and instantly book premium billboard locations worldwide"
+            "description": "Browse MW Market to find and instantly book premium billboard locations worldwide"
           },
           {
             "title": "Create & Optimize",
@@ -577,12 +577,12 @@
         "description": "Scale creative production with intelligent asset management, brand compliance, and cross-format optimization.",
         "outcome": "5x Faster Delivery"
       },
-      "mwMarketplace": {
+      "mwMarket": {
         "stageLabel": "Media Buying",
         "description": "Access premium inventory and verified publisher partnerships across all channels with transparent pricing.",
         "outcome": "$2.8B+ Inventory"
       },
-      "mwReach": {
+      "mwInfluence": {
         "stageLabel": "Audience Targeting",
         "description": "Execute precision targeting across 3.5B+ users with advanced audience segmentation and cross-device linking.",
         "outcome": "94.7% Match Rate"
