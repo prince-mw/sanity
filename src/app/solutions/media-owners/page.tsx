@@ -63,11 +63,11 @@ export default function MediaOwnersPage() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                 Monetize Your OOH Inventory{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
-                  Smarter
+                  With Smart SSP Technology
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed">
-                Connect to premium demand sources, optimize yield with AI, and automate your entire OOH sales operation.
+                Connect your inventory to premium demand sources and automate your OOH sales operations.
               </p>
               
               {/* Stats Row */}
