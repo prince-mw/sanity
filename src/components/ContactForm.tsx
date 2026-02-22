@@ -110,7 +110,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-mw-gray-900 mb-1">Priority Email</h4>
-                      <p className="text-mw-gray-600 font-medium">connect@movingwalls.com</p>
+                      <a href="mailto:info@movingwalls.com" className="text-mw-gray-600 font-medium hover:text-mw-blue-600 transition-colors">info@movingwalls.com</a>
                     </div>
                   </div>
                 </div>

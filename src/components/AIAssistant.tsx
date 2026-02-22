@@ -83,7 +83,7 @@ export default function AIAssistant() {
     }
     
     if (lowerMessage.includes('contact') || lowerMessage.includes('sales') || lowerMessage.includes('talk')) {
-      return "Absolutely! You can reach our team multiple ways: Call +1 (844) MW-WORLD, email connect@movingwalls.com, or visit our contact page. Our sales team typically responds within 2 hours. Would you prefer I schedule a call for you?";
+      return "Absolutely! You can reach our team multiple ways: Call +65 6714 6699, email info@movingwalls.com, or visit our contact page. Our sales team typically responds within 2 hours. Would you prefer I schedule a call for you?";
     }
     
     if (lowerMessage.includes('help') || lowerMessage.includes('support')) {

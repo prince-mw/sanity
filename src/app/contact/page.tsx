@@ -12,8 +12,8 @@ export default function ContactPage() {
         </svg>
       ),
       title: "Phone",
-      details: "+1 (844) MW-WORLD",
-      description: "Available Mon-Fri, 9AM-6PM PST"
+      details: "+65 6714 6699",
+      description: "Available Mon-Fri, 9AM-6PM SGT"
     },
     {
       icon: (
@@ -22,7 +22,7 @@ export default function ContactPage() {
         </svg>
       ),
       title: "Email",
-      details: "connect@movingwalls.com",
+      details: "info@movingwalls.com",
       description: "We'll respond within 2 hours"
     },
     {
@@ -55,6 +55,7 @@ export default function ContactPage() {
       type: 'Global Headquarters',
       address: 'Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545',
       phone: '+65 8755 6364',
+      email: 'info@movingwalls.com',
       isHeadquarters: true,
     },
     {
@@ -63,6 +64,7 @@ export default function ContactPage() {
       type: 'Regional Office',
       address: 'Level 8 (Zone B), Wisma Standard Chartered, No. 2, Jalan Teknologi Taman Teknologi Malaysia, 57000 Bukit Jalil',
       phone: '+60 3 7610 2044',
+      email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
     {
@@ -71,6 +73,7 @@ export default function ContactPage() {
       type: 'Regional Office',
       address: 'Unit 1207, Capital House, 9th Avenue, cor Lane S, Taguig',
       phone: '+63 7527 5672',
+      email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
     {
@@ -79,6 +82,7 @@ export default function ContactPage() {
       type: 'Registered Office',
       address: 'Tower 45th floor, Jalan Prof Dr Satrio, Kav. 18 Jakarta 12940',
       phone: '+62 21 3005 3540',
+      email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
     {
@@ -87,6 +91,7 @@ export default function ContactPage() {
       type: 'Operational Office',
       address: 'Nobel House, 29th Floor, Jl. Dr. Ide Anak Agung Gede Agung Kav. E 4.2 No. 2, Mega Kuningan, Jakarta Selatan 12950',
       phone: '+62 21 3005 3540',
+      email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
     {
@@ -95,6 +100,7 @@ export default function ContactPage() {
       type: 'Regional Office',
       address: '07 Turnour Rd, Colombo 8',
       phone: '',
+      email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
     {
@@ -103,6 +109,7 @@ export default function ContactPage() {
       type: 'Regional Office',
       address: 'BHIVE Workspace, 3rd Floor, No.467/468, Shri Krishna Temple Rd, Stage 1 Indiranagar, Bengaluru, Karnataka 560038',
       phone: '',
+      email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
     {
@@ -111,6 +118,7 @@ export default function ContactPage() {
       type: 'Regional Office',
       address: 'Dynasty Business Park, A wing 7th Floor, Near Metro Station, Andheri - Kurla Rd, Vijay Nagar Colony, Chakala, Andheri East, Mumbai, Maharashtra 400065',
       phone: '',
+      email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
     {
@@ -119,6 +127,7 @@ export default function ContactPage() {
       type: 'Regional Office',
       address: '2nd & 3rd Floor, Block C, Adwave Towers, South Boag Road, Parthasarathi Puram, T. Nagar, Chennai 600017',
       phone: '',
+      email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
   ];
@@ -275,40 +284,29 @@ export default function ContactPage() {
                 className="bg-white rounded-xl p-6 border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-lg transition-all group"
               >
                 <div className="flex items-start justify-between mb-3">
-                  <div className="w-10 h-10 bg-mw-blue-100 rounded-lg flex items-center justify-center group-hover:bg-mw-blue-200 transition-colors">
-                    <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                  </div>
+                  <h3 className="text-lg font-bold text-mw-gray-900 group-hover:text-mw-blue-600 transition-colors">
+                    {office.city}
+                  </h3>
                   {office.isHeadquarters && (
                     <span className="bg-mw-blue-600 text-white text-xs px-2 py-1 rounded-full font-medium">
                       HQ
                     </span>
                   )}
                 </div>
-                <h3 className="text-lg font-bold text-mw-gray-900 mb-1 group-hover:text-mw-blue-600 transition-colors">
-                  {office.city}
-                </h3>
-                <p className="text-mw-gray-600 text-sm mb-3">{office.country}</p>
-                <p className="text-mw-gray-500 text-xs mb-3">{office.type}</p>
-                <div className="space-y-2 text-sm">
-                  <div className="flex items-start gap-2">
-                    <svg className="w-4 h-4 text-mw-gray-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <span className="text-mw-gray-600">{office.address}</span>
-                  </div>
-                  {office.phone && (
-                    <div className="flex items-center gap-2">
-                      <svg className="w-4 h-4 text-mw-gray-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                      </svg>
-                      <a href={`tel:${office.phone}`} className="text-mw-blue-600 hover:text-mw-blue-700 transition-colors">
-                        {office.phone}
-                      </a>
-                    </div>
-                  )}
+                <p className="text-mw-gray-600 text-sm mb-1">{office.country}</p>
+                <p className="text-mw-gray-500 text-xs mb-4">{office.type}</p>
+                <div className="space-y-2 text-sm text-left">
+                  <p className="text-mw-gray-600">{office.address}</p>
+                  <p className="text-mw-gray-600">
+                    <a href="tel:+6567146699" className="text-mw-blue-600 hover:text-mw-blue-700 transition-colors">
+                      +65 6714 6699
+                    </a>
+                  </p>
+                  <p className="text-mw-gray-600">
+                    <a href="mailto:info@movingwalls.com" className="text-mw-blue-600 hover:text-mw-blue-700 transition-colors">
+                      info@movingwalls.com
+                    </a>
+                  </p>
                 </div>
               </motion.div>
             ))}
