@@ -39,11 +39,8 @@ const footerLinks = {
     { name: "Blog", href: "/resources/blog" },
     { name: "Case Studies", href: "/resources/case-studies" },
     { name: "Press & News", href: "/about/press-news" },
-    { name: "Webinars", href: "/resources/webinars" },
     { name: "Help Center", href: "/resources/help-center" },
     { name: "Documentation", href: "/resources/documentation" },
-    { name: "API Reference", href: "/resources/api-reference" },
-    { name: "Community", href: "/resources/community" },
   ],
   billboardLocations: [
     { name: "Malaysia", href: "/locations/malaysia" },

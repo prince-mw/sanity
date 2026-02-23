@@ -91,7 +91,7 @@ const locations = [
     href: "/locations/sri-lanka",
     description: "Emerging South Asian market",
     billboards: "10,000+",
-    image: "https://images.unsplash.com/photo-1588598198321-4c4b1c1c4c1c?w=800&q=80"
+    image: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=800&q=80"
   },
   {
     country: "Thailand",

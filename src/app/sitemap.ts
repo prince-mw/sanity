@@ -54,11 +54,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/resources/blog',
     '/resources/case-studies',
     '/resources/whitepapers',
-    '/resources/webinars',
     '/resources/documentation',
-    '/resources/api-reference',
     '/resources/help-center',
-    '/resources/community',
   ]
 
   // Press pages

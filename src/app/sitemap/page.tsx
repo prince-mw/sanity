@@ -86,11 +86,8 @@ export default function SitemapPage() {
         { name: "Blog", href: "/resources/blog" },
         { name: "Case Studies", href: "/resources/case-studies" },
         { name: "Whitepapers", href: "/resources/whitepapers" },
-        { name: "Webinars", href: "/resources/webinars" },
         { name: "Documentation", href: "/resources/documentation" },
-        { name: "API Reference", href: "/resources/api-reference" },
         { name: "Help Center", href: "/resources/help-center" },
-        { name: "Community", href: "/resources/community" },
       ]
     },
     {

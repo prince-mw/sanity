@@ -86,7 +86,6 @@ const createMegaMenuData = (t: (key: string) => string) => ({
         title: t('megaMenu.resources.learn'),
         items: [
           { name: t('megaMenu.resources.blog.name'), description: t('megaMenu.resources.blog.description'), href: "/resources/blog" },
-          { name: t('megaMenu.resources.webinars.name'), description: t('megaMenu.resources.webinars.description'), href: "/resources/webinars" },
           { name: t('megaMenu.resources.caseStudies.name'), description: t('megaMenu.resources.caseStudies.description'), href: "/resources/case-studies" },
           { name: t('megaMenu.resources.ebooks.name'), description: t('megaMenu.resources.ebooks.description'), href: "/resources/ebooks" },
           { name: t('megaMenu.resources.ooh101.name'), description: t('megaMenu.resources.ooh101.description'), href: "/resources/ooh-101" },
@@ -98,8 +97,6 @@ const createMegaMenuData = (t: (key: string) => string) => ({
         items: [
           { name: t('megaMenu.resources.helpCenter.name'), description: t('megaMenu.resources.helpCenter.description'), href: "/resources/help-center" },
           { name: t('megaMenu.resources.documentation.name'), description: t('megaMenu.resources.documentation.description'), href: "/resources/documentation" },
-          { name: t('megaMenu.resources.apiReference.name'), description: t('megaMenu.resources.apiReference.description'), href: "/resources/api-reference" },
-          { name: t('megaMenu.resources.community.name'), description: t('megaMenu.resources.community.description'), href: "/resources/community" },
           { name: t('megaMenu.resources.integrations.name'), description: t('megaMenu.resources.integrations.description'), href: "/integrations" },
         ],
       },

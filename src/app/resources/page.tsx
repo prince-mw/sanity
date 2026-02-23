@@ -11,7 +11,6 @@ export default function ResourcesPage() {
       icon: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>,
       resources: [
         { name: "Blog", href: "/resources/blog", description: "Industry insights and tips", count: "150+ Articles" },
-        { name: "Webinars", href: "/resources/webinars", description: "On-demand learning", count: "50+ Sessions" },
         { name: "Case Studies", href: "/resources/case-studies", description: "Success stories", count: "75+ Stories" },
         { name: "Whitepapers", href: "/resources/whitepapers", description: "In-depth research", count: "30+ Papers" }
       ]
@@ -22,9 +21,7 @@ export default function ResourcesPage() {
       icon: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" /></svg>,
       resources: [
         { name: "Help Center", href: "/resources/help-center", description: "Get answers fast", count: "500+ FAQs" },
-        { name: "Documentation", href: "/resources/documentation", description: "Technical guides", count: "Complete Docs" },
-        { name: "API Reference", href: "/resources/api-reference", description: "Developer resources", count: "Full API" },
-        { name: "Community", href: "/resources/community", description: "Connect with peers", count: "5K+ Members" }
+        { name: "Documentation", href: "/resources/documentation", description: "Technical guides", count: "Complete Docs" }
       ]
     }
   ];
@@ -38,14 +35,7 @@ export default function ResourcesPage() {
       downloadCount: "2.5K+",
       href: "/resources/whitepapers"
     },
-    {
-      type: "Webinar",
-      title: "AI-Powered Campaign Optimization Masterclass",
-      description: "Learn how to leverage AI and machine learning for better campaign performance",
-      image: "https://images.unsplash.com/photo-1591115765373-5207764f72e7?w=600&h=400&fit=crop",
-      duration: "45 min",
-      href: "/resources/webinars"
-    },
+
     {
       type: "Case Study",
       title: "How Brand X Achieved 300% ROI in 90 Days",
