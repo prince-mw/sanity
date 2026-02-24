@@ -209,10 +209,12 @@ export default function CaseStudiesPage() {
                         <div className="text-xl font-bold mb-1">{featuredCase.industry}</div>
                         <div className="text-sm text-blue-100">Industry</div>
                       </div>
-                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                        <div className="text-xl font-bold mb-1">{featuredCase.brand}</div>
-                        <div className="text-sm text-blue-100">Brand</div>
-                      </div>
+                      {featuredCase.brand && featuredCase.brand !== 'How' && (
+                        <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                          <div className="text-xl font-bold mb-1">{featuredCase.brand}</div>
+                          <div className="text-sm text-blue-100">Brand</div>
+                        </div>
+                      )}
                       <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
                         <div className="text-xl font-bold mb-1">{formatDate(featuredCase.date)}</div>
                         <div className="text-sm text-blue-100">Published</div>
@@ -334,7 +336,7 @@ export default function CaseStudiesPage() {
                       <h3 className="text-lg font-bold text-mw-gray-900 mb-2 line-clamp-2 group-hover:text-mw-blue-600 transition-colors duration-300">
                         {caseStudy.title}
                       </h3>
-                      {caseStudy.brand && caseStudy.brand !== 'How' && (
+                      {caseStudy.brand && caseStudy.brand !== 'How' && caseStudy.brand.length > 2 && (
                         <p className="text-sm text-mw-blue-600 font-medium mb-2">{caseStudy.brand}</p>
                       )}
                       <p className="text-mw-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">

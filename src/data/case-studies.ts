@@ -1,5 +1,5 @@
 // Case Studies data - Auto-generated from WordPress export
-// Generated on: 2026-02-24T07:59:58.087Z
+// Generated on: 2026-02-24T08:59:07.277Z
 // Total case studies: 48
 
 export interface CaseStudy {
@@ -47,7 +47,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "fc-media-ooh-campaign-measurement-morocco",
     "title": "How FC Media Proved OOH Campaign Performance in Morocco Using Audience Measurement",
-    "brand": "How",
+    "brand": "",
     "country": "Global",
     "industry": "Retail",
     "partner": "",
@@ -64,7 +64,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "fintech-dooh-high-intent-attention",
     "title": "How a Fintech Won High-Intent Attention in Just 54 Days with Moving Walls",
-    "brand": "How",
+    "brand": "",
     "country": "Philippines",
     "industry": "FMCG",
     "partner": "",
@@ -81,7 +81,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "luxury-hotel-programmatic-dooh-campaign",
     "title": "How a Global Luxury Hotel Used Programmatic DOOH to Reach High-Intent Travelers",
-    "brand": "How",
+    "brand": "",
     "country": "Malaysia",
     "industry": "Technology",
     "partner": "",
@@ -98,7 +98,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "how-jp-morgan-lifted-etf-awareness-with-pdooh",
     "title": "How JP Morgan Lifted ETF Awareness with pDOOH",
-    "brand": "How",
+    "brand": "",
     "country": "Malaysia",
     "industry": "Technology",
     "partner": "",
@@ -114,7 +114,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "store-level-data-boosts-dooh-efficiency-2",
     "title": "How Store-level Transaction Data Increased Campaign Efficiency for a Retail Media Network in Store and Vicinity",
-    "brand": "How",
+    "brand": "",
     "country": "Global",
     "industry": "FMCG",
     "partner": "",
@@ -130,7 +130,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "store-level-data-boosts-dooh-efficiency",
     "title": "How Store-level Transaction Data Increased  Campaign Efficiency for a Retail Media Network in Store and Vicinity",
-    "brand": "How",
+    "brand": "",
     "country": "Global",
     "industry": "FMCG",
     "partner": "",
@@ -146,7 +146,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "calvin-klein-dooh-campaign-vietnam",
     "title": "A Luxury Brand Campaign in Motion: Calvin Klein Takes Over the City with DOOH",
-    "brand": "A Luxury Brand Campaign in Motion",
+    "brand": "",
     "country": "Malaysia",
     "industry": "FMCG",
     "partner": "",
@@ -194,7 +194,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "ooh-traxx-building-advertiser-trust-in-kenya",
     "title": "How OOH Traxx Got on the Fast Track to Sales and AdOps Automation",
-    "brand": "How",
+    "brand": "",
     "country": "USA",
     "industry": "Retail",
     "partner": "OOH Traxx",
@@ -226,7 +226,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "leading-pharma-brand-programmatic-dooh-philippines",
     "title": "How a Leading Pharmaceutical Brand Engaged Health-Conscious Audiences Through Programmatic DOOH in the Philippines",
-    "brand": "How",
+    "brand": "",
     "country": "Philippines",
     "industry": "Technology",
     "partner": "",
@@ -258,7 +258,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "how-transit-media-in-japan-cut-manual-work-scaled-dooh",
     "title": "How Japan’s largest transit media owner centralised operations and reduced manual work by 85%",
-    "brand": "How",
+    "brand": "",
     "country": "Malaysia",
     "industry": "Technology",
     "partner": "",
@@ -338,7 +338,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "how-fairprice-leveraged-high-traffic-ooh-for-brand-visibility-in-singapore",
     "title": "How FairPrice Leveraged High-Traffic OOH for Brand Visibility in Singapore",
-    "brand": "How",
+    "brand": "",
     "country": "Singapore",
     "industry": "Retail",
     "partner": "",
@@ -370,7 +370,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "a-top-mobile-phone-brands-latest-smartphone-series-shines-bright-in-the-philippines",
     "title": "A Top Mobile Phone Brand's Latest Smartphone Series Shines Bright in the Philippines",
-    "brand": "A Top Mobile Phone Brand's Latest Smartphone Series Shines Bright in the Philippines",
+    "brand": "",
     "country": "Philippines",
     "industry": "Technology",
     "partner": "",
@@ -466,7 +466,7 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "where-theres-a-holiday-and-laughter-theres-a-bag-of-potato-chips",
     "title": "Where there's a Holiday and Laughter, there's a Bag of Potato Chips",
-    "brand": "Where",
+    "brand": "",
     "country": "Philippines",
     "industry": "Tourism",
     "partner": "",

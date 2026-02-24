@@ -191,6 +191,13 @@ function extractCaseStudyData(content) {
 }
 
 function extractBrandFromTitle(title) {
+  // Skip titles that start with common non-brand words
+  const skipWords = ['how', 'why', 'what', 'when', 'where', 'the', 'a', 'an', 'this', 'case', 'study'];
+  const firstWord = title.split(/\s+/)[0].toLowerCase();
+  if (skipWords.includes(firstWord)) {
+    return '';
+  }
+  
   // Common patterns in titles
   const patterns = [
     /^([A-Z][a-zA-Z0-9]+)/,  // First word capitalized
@@ -199,10 +206,12 @@ function extractBrandFromTitle(title) {
   
   for (const pattern of patterns) {
     const match = title.match(pattern);
-    if (match) return match[1].trim();
+    if (match && !skipWords.includes(match[1].toLowerCase())) {
+      return match[1].trim();
+    }
   }
   
-  return title.split(/[:\-–]/)[0].trim();
+  return '';
 }
 
 function determineIndustry(brand, content, title) {
