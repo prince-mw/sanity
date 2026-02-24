@@ -3,162 +3,84 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useMemo } from "react";
+import { caseStudies, caseStudyCountries, caseStudyIndustries, type CaseStudy } from "@/data/case-studies";
+
+type SortOption = "newest" | "oldest" | "title-asc" | "title-desc";
+
+const ITEMS_PER_PAGE = 12;
 
 export default function CaseStudiesPage() {
+  const [selectedCountry, setSelectedCountry] = useState("All");
   const [selectedIndustry, setSelectedIndustry] = useState("All");
+  const [sortBy, setSortBy] = useState<SortOption>("newest");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const industries = ["All", "Automotive", "Retail", "Healthcare", "Finance", "Technology", "FMCG"];
+  // Filter and sort case studies
+  const filteredAndSortedCaseStudies = useMemo(() => {
+    let filtered = caseStudies.filter(cs => {
+      const matchesCountry = selectedCountry === "All" || cs.country === selectedCountry;
+      const matchesIndustry = selectedIndustry === "All" || cs.industry === selectedIndustry;
+      return matchesCountry && matchesIndustry;
+    });
 
-  const caseStudies = [
-    {
-      title: "Premium Automotive Brand Achieves 300% ROI in Q4",
-      slug: "automotive-dealership-traffic",
-      industry: "Automotive",
-      client: "Luxury Auto Group",
-      challenge: "Increase dealership visits and test drive bookings during competitive holiday season",
-      solution: "Multi-channel DOOH campaign with geo-targeting around dealerships and high-traffic areas",
-      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop",
-      results: [
-        { metric: "ROI Increase", value: "+300%" },
-        { metric: "Dealership Visits", value: "+187%" },
-        { metric: "Test Drives", value: "+245%" },
-        { metric: "Campaign Reach", value: "5.2M" }
-      ],
-      testimonial: "Moving Walls helped us completely transform our Q4 performance. The results exceeded all expectations.",
-      author: "James Patterson",
-      role: "Marketing Director",
-      duration: "90 days",
-      budget: "$250K",
-      featured: true
-    },
-    {
-      title: "National Retail Chain Drives 45% Foot Traffic Increase",
-      slug: "global-retail-brand-340-roi",
-      industry: "Retail",
-      client: "FashionForward Stores",
-      challenge: "Combat declining in-store visits amid shift to online shopping",
-      solution: "Location-based targeting with dynamic creative showcasing real-time promotions",
-      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
-      results: [
-        { metric: "Foot Traffic", value: "+45%" },
-        { metric: "In-Store Sales", value: "+62%" },
-        { metric: "Brand Awareness", value: "+38%" },
-        { metric: "Mobile Engagement", value: "+156%" }
-      ],
-      testimonial: "The geo-targeting capabilities brought customers back to our physical stores in record numbers.",
-      author: "Maria Gonzalez",
-      role: "VP of Marketing",
-      duration: "120 days",
-      budget: "$180K"
-    },
-    {
-      title: "Healthcare Provider Reaches 2M Patients with Compliance",
-      slug: "healthcare-patient-reach",
-      industry: "Healthcare",
-      client: "MedCare Network",
-      challenge: "Increase awareness of preventive care services while maintaining HIPAA compliance",
-      solution: "Privacy-first targeting campaign focused on wellness messaging and appointment bookings",
-      image: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop",
-      results: [
-        { metric: "Impressions", value: "2.1M" },
-        { metric: "Appointments", value: "+78%" },
-        { metric: "Website Traffic", value: "+124%" },
-        { metric: "Cost Per Lead", value: "-42%" }
-      ],
-      testimonial: "Moving Walls understood our compliance needs while delivering exceptional results.",
-      author: "Dr. Robert Chen",
-      role: "Chief Marketing Officer",
-      duration: "60 days",
-      budget: "$95K"
-    },
-    {
-      title: "Fintech Startup Generates 5,000+ Quality Leads",
-      slug: "fintech-app-acquisition",
-      industry: "Finance",
-      client: "NextGen Financial",
-      challenge: "Build brand awareness and generate qualified leads in competitive market",
-      solution: "Strategic DOOH placement in financial districts with QR code integration",
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
-      results: [
-        { metric: "Qualified Leads", value: "5,234" },
-        { metric: "Brand Lift", value: "+89%" },
-        { metric: "App Downloads", value: "+312%" },
-        { metric: "Customer Acquisition", value: "+145%" }
-      ],
-      testimonial: "Outstanding performance. The quality of leads was exceptional and conversion rates surpassed benchmarks.",
-      author: "Sarah Williams",
-      role: "Head of Growth",
-      duration: "45 days",
-      budget: "$125K"
-    },
-    {
-      title: "Tech Company Launches Product with 10M Impressions",
-      slug: "tech-product-launch",
-      industry: "Technology",
-      client: "InnovateTech Corp",
-      challenge: "Create buzz for new product launch in saturated market",
-      solution: "Integrated campaign across major tech hubs with interactive digital displays",
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop",
-      results: [
-        { metric: "Impressions", value: "10.2M" },
-        { metric: "Website Visits", value: "+425%" },
-        { metric: "Pre-orders", value: "12.5K" },
-        { metric: "Social Engagement", value: "+278%" }
-      ],
-      testimonial: "The campaign exceeded our wildest expectations. Product launch was our most successful ever.",
-      author: "Alex Kumar",
-      role: "Product Marketing Lead",
-      duration: "30 days",
-      budget: "$200K"
-    },
-    {
-      title: "Regional Bank Increases Branch Visits by 67%",
-      slug: "bank-branch-visits",
-      industry: "Finance",
-      client: "Community Trust Bank",
-      challenge: "Drive awareness of new branch locations and digital banking services",
-      solution: "Hyperlocal targeting around new branches with financial education messaging",
-      image: "https://images.unsplash.com/photo-1501167786227-4cba60f6d58f?w=800&h=600&fit=crop",
-      results: [
-        { metric: "Branch Visits", value: "+67%" },
-        { metric: "New Accounts", value: "+142%" },
-        { metric: "Digital Adoption", value: "+89%" },
-        { metric: "Brand Recall", value: "+73%" }
-      ],
-      testimonial: "Moving Walls helped us successfully launch 5 new branches with measurable results.",
-      author: "Thomas Anderson",
-      role: "Regional Marketing Director",
-      duration: "90 days",
-      budget: "$145K"
-    },
-    {
-      title: "FMCG Giant's Multi-Market Launch Success",
-      slug: "fmcg-multi-market-launch",
-      industry: "FMCG",
-      client: "Global Consumer Brands",
-      challenge: "Orchestrate a synchronized product launch across 8 Asian markets",
-      solution: "Real-time programmatic DOOH and audience targeting across multiple regions",
-      image: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=600&fit=crop",
-      results: [
-        { metric: "Markets", value: "8" },
-        { metric: "Brand Awareness", value: "+156%" },
-        { metric: "Sales Lift", value: "+89%" },
-        { metric: "Impressions", value: "45M" }
-      ],
-      testimonial: "The synchronized launch across all markets was flawlessly executed.",
-      author: "Jennifer Lee",
-      role: "Regional Marketing Head",
-      duration: "60 days",
-      budget: "$350K"
+    // Sort
+    switch (sortBy) {
+      case "newest":
+        filtered.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        break;
+      case "oldest":
+        filtered.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        break;
+      case "title-asc":
+        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "title-desc":
+        filtered.sort((a, b) => b.title.localeCompare(a.title));
+        break;
     }
-  ];
 
-  const filteredCaseStudies = selectedIndustry === "All"
-    ? caseStudies
-    : caseStudies.filter(cs => cs.industry === selectedIndustry);
+    return filtered;
+  }, [selectedCountry, selectedIndustry, sortBy]);
 
+  // Pagination
+  const totalPages = Math.ceil(filteredAndSortedCaseStudies.length / ITEMS_PER_PAGE);
+  const paginatedCaseStudies = filteredAndSortedCaseStudies.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
+  // Reset to page 1 when filters change
+  const handleCountryChange = (country: string) => {
+    setSelectedCountry(country);
+    setCurrentPage(1);
+  };
+
+  const handleIndustryChange = (industry: string) => {
+    setSelectedIndustry(industry);
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (sort: SortOption) => {
+    setSortBy(sort);
+    setCurrentPage(1);
+  };
+
+  // Get featured case study (most recent featured one)
   const featuredCase = caseStudies.find(cs => cs.featured);
+
+  // Helper to extract a short description from content
+  const getExcerpt = (content: string, maxLength: number = 150) => {
+    const text = content.replace(/<[^>]+>/g, '').trim();
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength).trim() + '...';
+  };
+
+  // Format date
+  const formatDate = (dateStr: string) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -212,26 +134,55 @@ export default function CaseStudiesPage() {
       {/* Industry Filter */}
       <section className="py-8 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 overflow-x-auto pb-2">
-            {industries.map((industry) => (
-              <button
-                key={industry}
-                onClick={() => setSelectedIndustry(industry)}
-                className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
-                  selectedIndustry === industry
-                    ? "bg-mw-blue-600 text-white shadow-mw-sm"
-                    : "bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200"
-                }`}
+          <div className="flex flex-wrap items-center gap-4">
+            {/* Country Filter */}
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-mw-gray-700">Country:</label>
+              <select
+                value={selectedCountry}
+                onChange={(e) => handleCountryChange(e.target.value)}
+                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
               >
-                {industry}
-              </button>
-            ))}
+                {caseStudyCountries.map((country) => (
+                  <option key={country} value={country}>{country}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Industry Filter */}
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-mw-gray-700">Industry:</label>
+              <select
+                value={selectedIndustry}
+                onChange={(e) => handleIndustryChange(e.target.value)}
+                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
+              >
+                {caseStudyIndustries.map((industry) => (
+                  <option key={industry} value={industry}>{industry}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-2 ml-auto">
+              <label className="text-sm font-medium text-mw-gray-700">Sort:</label>
+              <select
+                value={sortBy}
+                onChange={(e) => handleSortChange(e.target.value as SortOption)}
+                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="title-asc">Title A-Z</option>
+                <option value="title-desc">Title Z-A</option>
+              </select>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Featured Case Study */}
-      {selectedIndustry === "All" && featuredCase && (
+      {selectedCountry === "All" && selectedIndustry === "All" && featuredCase && (
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -247,15 +198,25 @@ export default function CaseStudiesPage() {
                 <div className="grid lg:grid-cols-2 gap-12">
                   <div className="text-white">
                     <h2 className="text-3xl lg:text-4xl font-bold mb-4">{featuredCase.title}</h2>
-                    <p className="text-blue-100 text-lg mb-6">{featuredCase.challenge}</p>
+                    <p className="text-blue-100 text-lg mb-6">{getExcerpt(featuredCase.content, 200)}</p>
                     
                     <div className="grid grid-cols-2 gap-6 mb-8">
-                      {featuredCase.results.map((result, index) => (
-                        <div key={index} className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
-                          <div className="text-3xl font-bold mb-1">{result.value}</div>
-                          <div className="text-sm text-blue-100">{result.metric}</div>
-                        </div>
-                      ))}
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div className="text-xl font-bold mb-1">{featuredCase.country}</div>
+                        <div className="text-sm text-blue-100">Country</div>
+                      </div>
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div className="text-xl font-bold mb-1">{featuredCase.industry}</div>
+                        <div className="text-sm text-blue-100">Industry</div>
+                      </div>
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div className="text-xl font-bold mb-1">{featuredCase.brand}</div>
+                        <div className="text-sm text-blue-100">Brand</div>
+                      </div>
+                      <div className="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div className="text-xl font-bold mb-1">{formatDate(featuredCase.date)}</div>
+                        <div className="text-sm text-blue-100">Published</div>
+                      </div>
                     </div>
 
                     <Link
@@ -269,18 +230,15 @@ export default function CaseStudiesPage() {
                     </Link>
                   </div>
 
-                  <div className="bg-white/10 backdrop-blur-sm rounded-xl p-6">
-                    <h3 className="text-white font-bold mb-4">Client Testimonial</h3>
-                    <blockquote className="text-blue-100 text-lg mb-4">"{featuredCase.testimonial}"</blockquote>
-                    <div className="flex items-center gap-3">
-                      <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
-                        <span className="text-white font-medium">{featuredCase.author[0]}</span>
-                      </div>
-                      <div>
-                        <p className="text-white font-medium">{featuredCase.author}</p>
-                        <p className="text-sm text-blue-100">{featuredCase.role}, {featuredCase.client}</p>
-                      </div>
-                    </div>
+                  <div className="relative h-64 lg:h-auto rounded-xl overflow-hidden">
+                    {featuredCase.featuredImage && (
+                      <Image
+                        src={featuredCase.featuredImage}
+                        alt={featuredCase.title}
+                        fill
+                        className="object-cover"
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -294,73 +252,167 @@ export default function CaseStudiesPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-8">
             <h2 className="text-2xl font-bold text-mw-gray-900">
-              {selectedIndustry === "All" ? "All Case Studies" : `${selectedIndustry} Case Studies`}
+              {selectedCountry === "All" && selectedIndustry === "All" 
+                ? "All Case Studies" 
+                : `${selectedCountry !== "All" ? selectedCountry : ""} ${selectedIndustry !== "All" ? selectedIndustry : ""} Case Studies`.trim()}
             </h2>
-            <span className="text-sm text-mw-gray-600">{filteredCaseStudies.length} stories</span>
+            <span className="text-sm text-mw-gray-600">
+              {filteredAndSortedCaseStudies.length} {filteredAndSortedCaseStudies.length === 1 ? 'story' : 'stories'}
+              {totalPages > 1 && ` • Page ${currentPage} of ${totalPages}`}
+            </span>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {filteredCaseStudies.map((caseStudy, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-mw-gray-100"
+          {paginatedCaseStudies.length === 0 ? (
+            <div className="text-center py-16">
+              <div className="text-mw-gray-400 mb-4">
+                <svg className="w-16 h-16 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <p className="text-mw-gray-600 text-lg">No case studies found matching your filters.</p>
+              <button
+                onClick={() => { setSelectedCountry("All"); setSelectedIndustry("All"); }}
+                className="mt-4 px-4 py-2 text-mw-blue-600 font-medium hover:underline"
               >
-                {/* Image Thumbnail */}
-                <div className="relative h-52 overflow-hidden">
-                  <Image
-                    src={caseStudy.image}
-                    alt={caseStudy.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  {/* Overlay gradient */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                  
-                  {/* Category & Key Metric overlay */}
-                  <div className="absolute inset-0 p-5 flex flex-col justify-between">
-                    <div className="flex justify-between items-start">
-                      <span className="px-3 py-1 bg-white/90 backdrop-blur-sm text-mw-gray-800 text-xs font-semibold rounded-full">
-                        {caseStudy.industry}
-                      </span>
-                      <span className="px-3 py-1 bg-mw-blue-600 text-white text-xs font-bold rounded-full">
-                        {caseStudy.results[0].value}
-                      </span>
-                    </div>
-                    <div className="flex justify-between items-end">
-                      <span className="text-white/80 text-sm">{caseStudy.duration}</span>
-                      <span className="text-white/80 text-sm">{caseStudy.budget}</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-mw-gray-900 mb-2 group-hover:text-mw-blue-600 transition-colors duration-300">
-                    {caseStudy.title}
-                  </h3>
-                  <p className="text-sm text-mw-blue-600 font-medium mb-3">{caseStudy.client}</p>
-                  <p className="text-mw-gray-600 text-sm leading-relaxed mb-5">
-                    {caseStudy.challenge}
-                  </p>
-                  
-                  {/* CTA */}
-                  <Link 
-                    href={`/resources/case-studies/${caseStudy.slug}`}
-                    className="inline-flex items-center gap-2 text-mw-blue-600 font-semibold text-sm group-hover:gap-3 transition-all duration-300"
+                Clear all filters
+              </button>
+            </div>
+          ) : (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {paginatedCaseStudies.map((caseStudy, index) => (
+                  <motion.div
+                    key={caseStudy.slug}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-mw-gray-100"
                   >
-                    View Case Study
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </Link>
+                    {/* Image Thumbnail */}
+                    <div className="relative h-48 overflow-hidden bg-mw-gray-100">
+                      {caseStudy.featuredImage ? (
+                        <Image
+                          src={caseStudy.featuredImage}
+                          alt={caseStudy.title}
+                          fill
+                          className="object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-mw-blue-100 to-mw-blue-200">
+                          <svg className="w-12 h-12 text-mw-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                          </svg>
+                        </div>
+                      )}
+                      {/* Overlay gradient */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                      
+                      {/* Category & Country overlay */}
+                      <div className="absolute inset-0 p-4 flex flex-col justify-between">
+                        <div className="flex justify-between items-start gap-2">
+                          <span className="px-2 py-1 bg-white/90 backdrop-blur-sm text-mw-gray-800 text-xs font-semibold rounded-full">
+                            {caseStudy.industry}
+                          </span>
+                          <span className="px-2 py-1 bg-mw-blue-600 text-white text-xs font-bold rounded-full">
+                            {caseStudy.country}
+                          </span>
+                        </div>
+                        <div className="flex justify-between items-end">
+                          <span className="text-white/80 text-xs">{formatDate(caseStudy.date)}</span>
+                          {caseStudy.pdfLink && (
+                            <span className="px-2 py-1 bg-green-500 text-white text-xs font-medium rounded-full">
+                              PDF
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="p-5">
+                      <h3 className="text-lg font-bold text-mw-gray-900 mb-2 line-clamp-2 group-hover:text-mw-blue-600 transition-colors duration-300">
+                        {caseStudy.title}
+                      </h3>
+                      {caseStudy.brand && caseStudy.brand !== 'How' && (
+                        <p className="text-sm text-mw-blue-600 font-medium mb-2">{caseStudy.brand}</p>
+                      )}
+                      <p className="text-mw-gray-600 text-sm leading-relaxed mb-4 line-clamp-3">
+                        {getExcerpt(caseStudy.content)}
+                      </p>
+                      
+                      {/* CTA */}
+                      <Link 
+                        href={`/resources/case-studies/${caseStudy.slug}`}
+                        className="inline-flex items-center gap-2 text-mw-blue-600 font-semibold text-sm group-hover:gap-3 transition-all duration-300"
+                      >
+                        View Case Study
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </Link>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-12 flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                    disabled={currentPage === 1}
+                    className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-mw-gray-100 transition-colors"
+                  >
+                    Previous
+                  </button>
+                  
+                  <div className="flex items-center gap-1">
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => {
+                      // Show first, last, current, and adjacent pages
+                      if (
+                        page === 1 ||
+                        page === totalPages ||
+                        (page >= currentPage - 1 && page <= currentPage + 1)
+                      ) {
+                        return (
+                          <button
+                            key={page}
+                            onClick={() => setCurrentPage(page)}
+                            className={`w-10 h-10 rounded-lg font-medium transition-colors ${
+                              currentPage === page
+                                ? "bg-mw-blue-600 text-white"
+                                : "text-mw-gray-700 hover:bg-mw-gray-100"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        );
+                      } else if (
+                        page === currentPage - 2 ||
+                        page === currentPage + 2
+                      ) {
+                        return (
+                          <span key={page} className="px-2 text-mw-gray-400">
+                            ...
+                          </span>
+                        );
+                      }
+                      return null;
+                    })}
+                  </div>
+
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                    disabled={currentPage === totalPages}
+                    className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 font-medium disabled:opacity-50 disabled:cursor-not-allowed hover:bg-mw-gray-100 transition-colors"
+                  >
+                    Next
+                  </button>
                 </div>
-              </motion.div>
-            ))}
-          </div>
+              )}
+            </>
+          )}
         </div>
       </section>
 

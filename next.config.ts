@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         hostname: 'images.unsplash.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'stg.movingwalls.com',
+        pathname: '/**',
+      },
     ],
     // Image optimization settings
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
