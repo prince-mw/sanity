@@ -7,39 +7,39 @@ import Link from "next/link";
 const caseStudies = [
   {
     id: 1,
-    title: "Global Retail Brand Achieves 340% ROI",
-    description: "How a leading retail chain transformed their OOH strategy across 15 markets, achieving unprecedented brand awareness and foot traffic increases.",
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
+    title: "FC Media Proves OOH Campaign Performance in Morocco",
+    description: "How FC Media used audience measurement to bring transparency and accountability to OOH campaign delivery and post-campaign evaluation.",
+    image: "https://stg.movingwalls.com/wp-content/uploads/2026/02/fc-media-advertising-dooh-screens.webp",
     category: "Retail",
-    metrics: "340% ROI",
-    href: "/resources/case-studies/global-retail-brand-340-roi"
+    metrics: "25% Brand Lift",
+    href: "/resources/case-studies/fc-media-ooh-campaign-measurement-morocco"
   },
   {
     id: 2,
-    title: "FMCG Giant's Multi-Market Launch Success",
-    description: "Orchestrating a synchronized product launch across 8 Asian markets using real-time programmatic DOOH and audience targeting.",
-    image: "https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=600&fit=crop",
+    title: "Fintech Wins High-Intent Attention in 54 Days",
+    description: "How a leading payment app reached 239,650 unique people across 8 high-traffic urban locations in the Philippines.",
+    image: "https://stg.movingwalls.com/wp-content/uploads/2026/01/real-world-audience-intelligence.webp",
     category: "FMCG",
-    metrics: "8 Markets",
-    href: "/resources/case-studies/fmcg-multi-market-launch"
+    metrics: "3M+ Views",
+    href: "/resources/case-studies/fintech-dooh-high-intent-attention"
   },
   {
     id: 3,
-    title: "Automotive Brand Drives Dealership Traffic",
-    description: "Dynamic creative optimization and location-based targeting helped a premium auto brand increase showroom visits by 156%.",
-    image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop",
-    category: "Automotive",
-    metrics: "156% Increase",
-    href: "/resources/case-studies/automotive-dealership-traffic"
+    title: "Luxury Hotel Reaches High-Intent Travelers",
+    description: "A global luxury hotel used programmatic DOOH to reach travelers and commuters across Sydney with 2.5M+ impressions.",
+    image: "https://stg.movingwalls.com/wp-content/uploads/2025/12/australian-ooh-revenue-results.webp",
+    category: "Tourism",
+    metrics: "284K Reached",
+    href: "/resources/case-studies/luxury-hotel-programmatic-dooh-campaign"
   },
   {
     id: 4,
-    title: "Fintech App Acquisition at Scale",
-    description: "Leveraging transit advertising and mobile retargeting to drive 2M+ app downloads across Southeast Asia in 90 days.",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
-    category: "Finance",
-    metrics: "2M+ Downloads",
-    href: "/resources/case-studies/fintech-app-acquisition"
+    title: "Calvin Klein Takes Over Vietnam with DOOH",
+    description: "Calvin Klein's 27-day dynamic campaign across 230 screens delivered over 1.56 million impressions.",
+    image: "https://stg.movingwalls.com/wp-content/uploads/2025/10/calvin-klein-dooh-campaign-vietnam.webp",
+    category: "Retail",
+    metrics: "1.56M Impressions",
+    href: "/resources/case-studies/calvin-klein-dooh-campaign-vietnam"
   }
 ];
 
