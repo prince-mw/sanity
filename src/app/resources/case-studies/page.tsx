@@ -131,56 +131,6 @@ export default function CaseStudiesPage() {
         </div>
       </section>
 
-      {/* Industry Filter */}
-      <section className="py-8 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center gap-4">
-            {/* Country Filter */}
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-mw-gray-700">Country:</label>
-              <select
-                value={selectedCountry}
-                onChange={(e) => handleCountryChange(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
-              >
-                {caseStudyCountries.map((country) => (
-                  <option key={country} value={country}>{country}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Industry Filter */}
-            <div className="flex items-center gap-2">
-              <label className="text-sm font-medium text-mw-gray-700">Industry:</label>
-              <select
-                value={selectedIndustry}
-                onChange={(e) => handleIndustryChange(e.target.value)}
-                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
-              >
-                {caseStudyIndustries.map((industry) => (
-                  <option key={industry} value={industry}>{industry}</option>
-                ))}
-              </select>
-            </div>
-
-            {/* Sort Dropdown */}
-            <div className="flex items-center gap-2 ml-auto">
-              <label className="text-sm font-medium text-mw-gray-700">Sort:</label>
-              <select
-                value={sortBy}
-                onChange={(e) => handleSortChange(e.target.value as SortOption)}
-                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
-              >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="title-asc">Title A-Z</option>
-                <option value="title-desc">Title Z-A</option>
-              </select>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Featured Case Study */}
       {selectedCountry === "All" && selectedIndustry === "All" && featuredCase && (
         <section className="py-16 bg-white">
@@ -252,17 +202,63 @@ export default function CaseStudiesPage() {
       {/* Case Studies Grid */}
       <section className="py-16 bg-mw-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-mw-gray-900">
-              {selectedCountry === "All" && selectedIndustry === "All" 
-                ? "All Case Studies" 
-                : `${selectedCountry !== "All" ? selectedCountry : ""} ${selectedIndustry !== "All" ? selectedIndustry : ""} Case Studies`.trim()}
-            </h2>
-            <span className="text-sm text-mw-gray-600">
-              {filteredAndSortedCaseStudies.length} {filteredAndSortedCaseStudies.length === 1 ? 'story' : 'stories'}
-              {totalPages > 1 && ` • Page ${currentPage} of ${totalPages}`}
-            </span>
+          {/* Header with Filters */}
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-8">
+            <div className="flex items-center gap-4">
+              <h2 className="text-2xl font-bold text-mw-gray-900">
+                {selectedCountry === "All" && selectedIndustry === "All" 
+                  ? "All Case Studies" 
+                  : `${selectedCountry !== "All" ? selectedCountry : ""} ${selectedIndustry !== "All" ? selectedIndustry : ""} Case Studies`.trim()}
+              </h2>
+              <span className="text-sm text-mw-gray-500 bg-mw-gray-200 px-3 py-1 rounded-full">
+                {filteredAndSortedCaseStudies.length} {filteredAndSortedCaseStudies.length === 1 ? 'story' : 'stories'}
+              </span>
+            </div>
+            
+            {/* Filters Row */}
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Country Filter */}
+              <select
+                value={selectedCountry}
+                onChange={(e) => handleCountryChange(e.target.value)}
+                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
+              >
+                {caseStudyCountries.map((country) => (
+                  <option key={country} value={country}>{country === "All" ? "All Countries" : country}</option>
+                ))}
+              </select>
+
+              {/* Industry Filter */}
+              <select
+                value={selectedIndustry}
+                onChange={(e) => handleIndustryChange(e.target.value)}
+                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
+              >
+                {caseStudyIndustries.map((industry) => (
+                  <option key={industry} value={industry}>{industry === "All" ? "All Industries" : industry}</option>
+                ))}
+              </select>
+
+              {/* Sort Dropdown */}
+              <select
+                value={sortBy}
+                onChange={(e) => handleSortChange(e.target.value as SortOption)}
+                className="px-3 py-2 rounded-lg border border-mw-gray-300 bg-white text-mw-gray-700 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="title-asc">Title A-Z</option>
+                <option value="title-desc">Title Z-A</option>
+              </select>
+            </div>
           </div>
+          
+          {/* Pagination Info */}
+          {totalPages > 1 && (
+            <div className="text-sm text-mw-gray-600 mb-6">
+              Page {currentPage} of {totalPages}
+            </div>
+          )}
 
           {paginatedCaseStudies.length === 0 ? (
             <div className="text-center py-16">
