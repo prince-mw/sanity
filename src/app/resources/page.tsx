@@ -124,7 +124,7 @@ export default function ResourcesPage() {
                     <p className="text-mw-gray-600 mb-4 line-clamp-2">{resource.description}</p>
                     <div className="flex items-center justify-between">
                       <span className="text-sm text-mw-gray-500">
-                        {resource.downloadCount || resource.duration || resource.readTime}
+                        {resource.downloadCount || resource.readTime}
                       </span>
                       <span className="text-mw-blue-600 text-sm font-medium group-hover:translate-x-1 transition-transform">
                         Learn More →

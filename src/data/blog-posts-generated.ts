@@ -3012,8 +3012,11 @@ export const searchPosts = (query: string) => {
   );
 };
 
-export const getRelatedPosts = (slug: string, category?: string, limit = 3) => {
+export const getRelatedPosts = (slug: string, limit = 3) => {
+  const currentPost = getPostBySlug(slug);
+  if (!currentPost) return [];
+  
   return blogPosts
-    .filter(post => post.slug !== slug && (category ? post.category === category : true))
+    .filter(post => post.slug !== slug && post.category === currentPost.category)
     .slice(0, limit);
 };

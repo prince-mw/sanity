@@ -2,22 +2,96 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { blogPosts, blogCategories, getFeaturedPost, searchPosts } from "@/data/blog-posts";
+
+const POSTS_PER_PAGE = 12;
+
+type SortOption = "newest" | "oldest" | "title-asc" | "title-desc";
 
 export default function BlogPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortBy, setSortBy] = useState<SortOption>("newest");
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const filteredArticles = selectedCategory === "All" 
-    ? blogPosts 
-    : blogPosts.filter(article => article.category === selectedCategory);
+  // Filter and sort articles
+  const processedArticles = useMemo(() => {
+    // First filter by category
+    let articles = selectedCategory === "All" 
+      ? [...blogPosts] 
+      : blogPosts.filter(article => article.category === selectedCategory);
 
-  const displayedArticles = searchQuery 
-    ? searchPosts(searchQuery) 
-    : filteredArticles;
+    // Then filter by search
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      articles = articles.filter(article => 
+        article.title.toLowerCase().includes(q) ||
+        article.excerpt.toLowerCase().includes(q) ||
+        article.tags.some(tag => tag.toLowerCase().includes(q))
+      );
+    }
+
+    // Sort articles
+    switch (sortBy) {
+      case "newest":
+        articles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        break;
+      case "oldest":
+        articles.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        break;
+      case "title-asc":
+        articles.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "title-desc":
+        articles.sort((a, b) => b.title.localeCompare(a.title));
+        break;
+    }
+
+    return articles;
+  }, [selectedCategory, searchQuery, sortBy]);
+
+  // Pagination
+  const totalPages = Math.ceil(processedArticles.length / POSTS_PER_PAGE);
+  const paginatedArticles = processedArticles.slice(
+    (currentPage - 1) * POSTS_PER_PAGE,
+    currentPage * POSTS_PER_PAGE
+  );
+
+  // Reset to page 1 when filters change
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    setCurrentPage(1);
+  };
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setCurrentPage(1);
+  };
+
+  const handleSortChange = (sort: SortOption) => {
+    setSortBy(sort);
+    setCurrentPage(1);
+  };
 
   const featuredArticle = getFeaturedPost();
+
+  // Generate page numbers to show
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      if (currentPage <= 3) {
+        pages.push(1, 2, 3, 4, "...", totalPages);
+      } else if (currentPage >= totalPages - 2) {
+        pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages);
+      } else {
+        pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages);
+      }
+    }
+    return pages;
+  };
 
   return (
     <div className="min-h-screen bg-white">
@@ -51,41 +125,73 @@ export default function BlogPage() {
                   type="text"
                   placeholder="Search articles..."
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => handleSearchChange(e.target.value)}
                   className="w-full px-6 py-4 pl-14 border border-mw-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent shadow-mw-sm"
                 />
                 <svg className="absolute left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-mw-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
+                {searchQuery && (
+                  <button
+                    onClick={() => handleSearchChange("")}
+                    className="absolute right-5 top-1/2 transform -translate-y-1/2 text-mw-gray-400 hover:text-mw-gray-600"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="py-8 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
+      {/* Filter & Sort Bar */}
+      <section className="py-6 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-3 overflow-x-auto pb-2">
-            {blogCategories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap transition-all ${
-                  selectedCategory === category
-                    ? "bg-mw-blue-600 text-white shadow-mw-sm"
-                    : "bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200"
-                }`}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            {/* Category Filter Dropdown */}
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-mw-gray-600 whitespace-nowrap">Category:</span>
+              <select
+                value={selectedCategory}
+                onChange={(e) => handleCategoryChange(e.target.value)}
+                className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer min-w-[180px]"
               >
-                {category}
-              </button>
-            ))}
+                {blogCategories.map((category) => {
+                  const count = category === "All" 
+                    ? blogPosts.length 
+                    : blogPosts.filter(p => p.category === category).length;
+                  return (
+                    <option key={category} value={category}>
+                      {category} ({count})
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-3">
+              <span className="text-sm text-mw-gray-600 whitespace-nowrap">Sort by:</span>
+              <select
+                value={sortBy}
+                onChange={(e) => handleSortChange(e.target.value as SortOption)}
+                className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer"
+              >
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="title-asc">Title (A-Z)</option>
+                <option value="title-desc">Title (Z-A)</option>
+              </select>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Featured Article */}
-      {selectedCategory === "All" && !searchQuery && featuredArticle && (
+      {selectedCategory === "All" && !searchQuery && currentPage === 1 && featuredArticle && (
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
@@ -100,7 +206,7 @@ export default function BlogPage() {
                     Featured Article
                   </span>
                   <h2 className="text-3xl lg:text-4xl font-bold mb-4">{featuredArticle.title}</h2>
-                  <p className="text-blue-100 text-lg mb-6">{featuredArticle.excerpt}</p>
+                  <p className="text-blue-100 text-lg mb-6 line-clamp-3">{featuredArticle.excerpt}</p>
                   <div className="flex items-center gap-6 mb-6">
                     <div className="flex items-center gap-2">
                       <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -149,88 +255,185 @@ export default function BlogPage() {
       {/* Articles Grid */}
       <section className="py-16 bg-mw-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
-            <h2 className="text-2xl font-bold text-mw-gray-900">
-              {searchQuery 
-                ? `Search Results for "${searchQuery}"` 
-                : selectedCategory === "All" 
-                  ? "Latest Articles" 
-                  : `${selectedCategory} Articles`}
-            </h2>
-            <span className="text-sm text-mw-gray-600">{displayedArticles.length} articles</span>
+          {/* Results Header */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div>
+              <h2 className="text-2xl font-bold text-mw-gray-900">
+                {searchQuery 
+                  ? `Search Results for "${searchQuery}"` 
+                  : selectedCategory === "All" 
+                    ? "All Articles" 
+                    : `${selectedCategory} Articles`}
+              </h2>
+              <p className="text-sm text-mw-gray-600 mt-1">
+                Showing {((currentPage - 1) * POSTS_PER_PAGE) + 1}-{Math.min(currentPage * POSTS_PER_PAGE, processedArticles.length)} of {processedArticles.length} articles
+              </p>
+            </div>
+            {(searchQuery || selectedCategory !== "All") && (
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("All");
+                  setCurrentPage(1);
+                }}
+                className="text-sm text-mw-blue-600 hover:text-mw-blue-700 font-medium flex items-center gap-1"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Clear filters
+              </button>
+            )}
           </div>
 
-          {displayedArticles.length === 0 ? (
-            <div className="text-center py-16">
+          {paginatedArticles.length === 0 ? (
+            <div className="text-center py-16 bg-white rounded-xl">
               <svg className="w-16 h-16 mx-auto text-mw-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
               <h3 className="text-lg font-medium text-mw-gray-900 mb-2">No articles found</h3>
-              <p className="text-mw-gray-600">Try adjusting your search or filter criteria</p>
-            </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {displayedArticles.map((article, index) => (
-                <motion.div
-                  key={article.slug}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                >
-                  <Link 
-                    href={`/resources/blog/${article.slug}`} 
-                    className="group block bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
-                  >
-                    <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative overflow-hidden">
-                      {article.featuredImage && (
-                        <img
-                          src={article.featuredImage}
-                          alt={article.title}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            const target = e.target as HTMLImageElement;
-                            target.style.display = 'none';
-                          }}
-                        />
-                      )}
-                      <div className="absolute top-4 left-4">
-                        <span className="px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
-                          {article.category}
-                        </span>
-                      </div>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-mw-gray-900 mb-3 group-hover:text-mw-blue-600 transition-colors line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <p className="text-mw-gray-600 mb-4 line-clamp-2">{article.excerpt}</p>
-                      <div className="flex items-center justify-between pt-4 border-t border-mw-gray-200">
-                        <div className="flex items-center gap-2">
-                          <div className="w-8 h-8 bg-mw-gray-200 rounded-full flex items-center justify-center">
-                            <span className="text-xs font-medium text-mw-gray-600">{article.author[0]}</span>
-                          </div>
-                          <div>
-                            <p className="text-sm font-medium text-mw-gray-900">{article.author}</p>
-                            <p className="text-xs text-mw-gray-500">{article.date}</p>
-                          </div>
-                        </div>
-                        <span className="text-sm text-mw-gray-500">{article.readTime}</span>
-                      </div>
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          )}
-
-          {/* Load More */}
-          {displayedArticles.length > 0 && (
-            <div className="text-center mt-12">
-              <button className="px-8 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md">
-                Load More Articles
+              <p className="text-mw-gray-600 mb-4">Try adjusting your search or filter criteria</p>
+              <button
+                onClick={() => {
+                  setSearchQuery("");
+                  setSelectedCategory("All");
+                  setCurrentPage(1);
+                }}
+                className="px-4 py-2 bg-mw-blue-600 text-white rounded-lg hover:bg-mw-blue-700 transition-colors"
+              >
+                View All Articles
               </button>
             </div>
+          ) : (
+            <>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {paginatedArticles.map((article, index) => (
+                  <motion.div
+                    key={article.slug}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: index * 0.05 }}
+                  >
+                    <Link 
+                      href={`/resources/blog/${article.slug}`} 
+                      className="group block bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 h-full"
+                    >
+                      <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative overflow-hidden">
+                        {article.featuredImage && (
+                          <img
+                            src={article.featuredImage}
+                            alt={article.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                            onError={(e) => {
+                              const target = e.target as HTMLImageElement;
+                              target.style.display = 'none';
+                            }}
+                          />
+                        )}
+                        <div className="absolute top-4 left-4">
+                          <span className="px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
+                            {article.category}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="p-6 flex flex-col flex-grow">
+                        <h3 className="text-xl font-bold text-mw-gray-900 mb-3 group-hover:text-mw-blue-600 transition-colors line-clamp-2">
+                          {article.title}
+                        </h3>
+                        <p className="text-mw-gray-600 mb-4 line-clamp-2 flex-grow">{article.excerpt}</p>
+                        <div className="flex items-center justify-between pt-4 border-t border-mw-gray-200">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-mw-blue-100 rounded-full flex items-center justify-center">
+                              <span className="text-xs font-medium text-mw-blue-600">{article.author[0]}</span>
+                            </div>
+                            <div>
+                              <p className="text-sm font-medium text-mw-gray-900 truncate max-w-[100px]">{article.author}</p>
+                              <p className="text-xs text-mw-gray-500">{article.date}</p>
+                            </div>
+                          </div>
+                          <span className="text-sm text-mw-gray-500">{article.readTime}</span>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <nav className="mt-12 flex items-center justify-center">
+                  <div className="flex items-center gap-2">
+                    {/* Previous Button */}
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                      disabled={currentPage === 1}
+                      className={`p-2 rounded-lg border transition-colors ${
+                        currentPage === 1
+                          ? "border-mw-gray-200 text-mw-gray-300 cursor-not-allowed"
+                          : "border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-100"
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+
+                    {/* Page Numbers */}
+                    <div className="flex items-center gap-1">
+                      {getPageNumbers().map((page, index) => (
+                        typeof page === "number" ? (
+                          <button
+                            key={index}
+                            onClick={() => setCurrentPage(page)}
+                            className={`w-10 h-10 rounded-lg font-medium text-sm transition-colors ${
+                              currentPage === page
+                                ? "bg-mw-blue-600 text-white"
+                                : "text-mw-gray-700 hover:bg-mw-gray-100"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ) : (
+                          <span key={index} className="px-2 text-mw-gray-400">...</span>
+                        )
+                      ))}
+                    </div>
+
+                    {/* Next Button */}
+                    <button
+                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                      disabled={currentPage === totalPages}
+                      className={`p-2 rounded-lg border transition-colors ${
+                        currentPage === totalPages
+                          ? "border-mw-gray-200 text-mw-gray-300 cursor-not-allowed"
+                          : "border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-100"
+                      }`}
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
+                  </div>
+                </nav>
+              )}
+
+              {/* Quick Jump */}
+              {totalPages > 7 && (
+                <div className="mt-4 text-center">
+                  <span className="text-sm text-mw-gray-500">Go to page: </span>
+                  <select
+                    value={currentPage}
+                    onChange={(e) => setCurrentPage(Number(e.target.value))}
+                    className="ml-2 px-3 py-1 border border-mw-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-mw-blue-500"
+                  >
+                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
+                      <option key={page} value={page}>Page {page}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
