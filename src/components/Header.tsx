@@ -23,7 +23,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
       title: t('megaMenu.solutions.featured.title'),
       description: t('megaMenu.solutions.featured.description'),
       image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop",
-      href: "/resources/case-studies/calvin-klein-dooh-campaign-vietnam",
+      href: "/resources/case-studies",
     },
   },
   Products: {
@@ -50,7 +50,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
       title: t('megaMenu.products.featured.title'),
       description: t('megaMenu.products.featured.description'),
       image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
-      href: "/resources/case-studies/fc-media-ooh-campaign-measurement-morocco",
+      href: "/resources/case-studies",
     },
   },
   About: {
@@ -77,7 +77,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
       title: t('megaMenu.about.featured.title'),
       description: t('megaMenu.about.featured.description'),
       image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
-      href: "/resources/case-studies/fintech-dooh-high-intent-attention",
+      href: "/resources/case-studies",
     },
   },
   Resources: {
@@ -105,7 +105,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
       title: t('megaMenu.resources.featured.title'),
       description: t('megaMenu.resources.featured.description'),
       image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop",
-      href: "/resources/case-studies/luxury-hotel-programmatic-dooh-campaign",
+      href: "/resources/case-studies",
     },
   },
 });

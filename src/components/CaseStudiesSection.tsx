@@ -108,12 +108,12 @@ export default function CaseStudiesSection() {
                   {study.description}
                 </p>
                 
-                {/* CTA */}
+                {/* CTA - Links to main case studies page */}
                 <Link 
-                  href={study.href}
+                  href="/resources/case-studies"
                   className="inline-flex items-center gap-2 text-mw-blue-600 font-semibold text-sm group-hover:gap-3 transition-all duration-300"
                 >
-                  View Case Study
+                  Read More
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
