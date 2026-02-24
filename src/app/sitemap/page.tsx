@@ -109,7 +109,6 @@ export default function SitemapPage() {
         { name: "Events", href: "/events" },
         { name: "Partners", href: "/partners" },
         { name: "Locations", href: "/locations" },
-        { name: "Offices", href: "/offices" },
         { name: "Contact", href: "/contact" },
         { name: "Integrations", href: "/integrations" },
       ]
