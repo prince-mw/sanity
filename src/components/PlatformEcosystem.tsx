@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
 
 // Data Source Card Component
 const DataSourceCard = ({ icon, label, index }: { icon: React.ReactNode; label: string; index: number }) => (
@@ -96,6 +97,7 @@ const ProductCard = ({ icon, label, href, index }: { icon: React.ReactNode; labe
 
 export default function PlatformEcosystem() {
   const [isClient, setIsClient] = useState(false);
+  const { t } = useLocale();
 
   useEffect(() => {
     setIsClient(true);
@@ -146,21 +148,110 @@ export default function PlatformEcosystem() {
   return (
     <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-blue-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
-        >
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            End-to-End Advertising Solutions
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            A unified platform connecting data sources to actionable advertising intelligence
-          </p>
-        </motion.div>
+        {/* Header — Editorial Style */}
+        <div className="text-center mb-16">
+          {/* Badge & Title */}
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <span className="inline-block text-mw-blue-600 text-sm font-medium uppercase tracking-wider mb-4">
+              {t('landingPage.platformEcosystem.badge')}
+            </span>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+              {t('landingPage.platformEcosystem.title')}
+            </h2>
+          </motion.div>
+
+          {/* Intro */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed mb-10"
+          >
+            {t('landingPage.platformEcosystem.intro')}
+          </motion.p>
+
+          {/* Decorative Divider */}
+          <motion.div
+            initial={{ scaleX: 0 }}
+            whileInView={{ scaleX: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.25 }}
+            className="flex items-center justify-center gap-4 mb-10"
+          >
+            <div className="h-px w-24 bg-gradient-to-r from-transparent to-gray-300" />
+            <div className="w-2 h-2 rounded-full bg-mw-blue-400" />
+            <div className="h-px w-24 bg-gradient-to-l from-transparent to-gray-300" />
+          </motion.div>
+
+          {/* Two Column Text */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="grid md:grid-cols-2 gap-10 max-w-4xl mx-auto mb-12 text-left"
+          >
+            <p className="text-base text-gray-600 leading-relaxed">
+              {t('landingPage.platformEcosystem.cards.data.description')}
+            </p>
+            <p className="text-base text-gray-600 leading-relaxed">
+              {t('landingPage.platformEcosystem.cards.execute.description')}
+            </p>
+          </motion.div>
+
+          {/* Scenario — Subtle Accent */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="max-w-4xl mx-auto mb-12 bg-gray-50 border-l-4 border-mw-blue-500 rounded-r-xl px-8 py-6 text-left"
+          >
+            <p className="text-base text-gray-700 leading-relaxed">
+              {t('landingPage.platformEcosystem.scenario.description')}
+            </p>
+          </motion.div>
+
+          {/* Quote */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="text-2xl md:text-3xl font-bold text-gray-900 max-w-3xl mx-auto leading-snug mb-10"
+          >
+            &ldquo;{t('landingPage.platformEcosystem.quote')}&rdquo;
+          </motion.p>
+
+          {/* Products — Dot Separated */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="max-w-3xl mx-auto mb-2"
+          >
+            <p className="text-base text-gray-500 leading-relaxed">
+              {products.map((product, i) => (
+                <span key={product.label}>
+                  <a href={product.href} className="hover:text-mw-blue-600 transition-colors">
+                    {product.label}
+                  </a>
+                  {i < products.length - 1 && <span className="mx-2 text-gray-300">&middot;</span>}
+                </span>
+              ))}
+            </p>
+            <p className="text-sm text-gray-400 mt-3 italic">
+              {t('landingPage.platformEcosystem.productsLine')}
+            </p>
+          </motion.div>
+        </div>
 
         {/* Main Architecture Diagram */}
         <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-gray-200 shadow-xl p-8 overflow-hidden">

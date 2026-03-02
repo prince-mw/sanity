@@ -207,7 +207,7 @@ export default function RootLayout({
           <main>
             {children}
           </main>
-          <GlobalCTA />
+          {/* <GlobalCTA /> */}
           <Footer />
           <AIAssistant />
           <CookieConsent />

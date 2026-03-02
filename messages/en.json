@@ -15,7 +15,7 @@
     "badge": "AI-Powered OOH Advertising",
     "title": "The World's Leading",
     "titleHighlight": "Connected Media Platform",
-    "description": "Transform your advertising with data-driven DOOH solutions trusted by 500+ brands. Plan smarter, buy better, measure everything.",
+    "description": "Outdoor media was built for visibility. We built it for connection. Moving Walls transforms physical spaces into measurable advertising environments across cities, borders, and cultures. We bring together screens, billboards, mobility data, audience insights, and programmatic buying into one connected ecosystem so brands can move with confidence wherever their audiences go. Trusted by over 500 global brands navigating more than 40 markets.",
     "cta": {
       "primary": "Start Free Campaign Analysis",
       "secondary": "Watch Demo"
@@ -69,11 +69,11 @@
   },
   "clients": {
     "title": "Integrated With Leading Platforms",
-    "description": "Seamlessly connect with the tools you already use"
+    "description": "Modern marketing is borderless. Your media should be too."
   },
   "trustedBy": {
     "title": "Trusted by Global Brands",
-    "description": "Join thousands of companies achieving better results"
+    "description": "From regional challengers to multinational leaders, brands rely on Moving Walls to navigate the evolving world of outdoor media."
   },
   "testimonials": {
     "badge": "Testimonials",
@@ -89,7 +89,7 @@
   "newsletter": {
     "title": "Get Industry Insights",
     "titleHighlight": "Delivered Weekly",
-    "description": "Stay ahead of the curve with our curated newsletter featuring the latest trends, strategies, and success stories in advertising.",
+    "description": "Stay ahead of how cities evolve, how audiences move, and how connected media reshapes advertising across regions.",
     "subscribeNow": "Subscribe Now",
     "noSpam": "No spam, unsubscribe anytime",
     "namePlaceholder": "Your name",
@@ -324,12 +324,15 @@
     },
     "asianBornGlobal": {
       "badge": "Asian-Born, Global Vision",
-      "title": "Asian Born,",
-      "titleHighlight": "Global Footprint",
-      "description": "From our roots in Southeast Asia, we've grown to power advertising campaigns across 30+ countries, serving over 10,000 clients globally.",
-      "paragraph1": "Out of Home is no longer static media. It is {{highlight}}'The World's Leading Connected Media Platform'{{/highlight}} powering real world influence. From Times Square to Orchard Road, every screen, sign, and space becomes a measurable touchpoint that brands can activate with digital precision.",
-      "paragraph2": "Born in Asia and built for the world, our technology unifies fragmented outdoor inventory into a single ecosystem where advertisers can {{highlight}}plan, buy, measure, reach, and influence{{/highlight}} campaigns in real time.",
-      "paragraph3": "We do not just place advertisements outside, we transform cities into intelligent media networks that deliver {{highlight}}attention, relevance, and impact{{/highlight}} everywhere audiences move.",
+      "title": "Asian Born.",
+      "titleHighlight": "Built for the World.",
+      "description": "Great journeys begin in complex places.",
+      "paragraph1": "We were born in Asia, one of the most dynamic and densely connected regions in the world. {{highlight}}High mobility, diverse cultures, layered cities.{{/highlight}} It forced us to think beyond static media from day one.",
+      "paragraph2": "Out of home has always captured attention. But attention without connection limits potential. For years, OOH remained powerful yet fragmented. {{highlight}}Visible, yet difficult to measure across markets.{{/highlight}}",
+      "paragraph3": "We built a platform designed to navigate that complexity.",
+      "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
+      "paragraph5": "Every screen becomes part of a wider journey.\nEvery city becomes a connected media landscape.\nEvery campaign becomes measurable across borders.",
+      "paragraph6": "We do not just operate globally. We understand how cities move, how people travel, and how brands must adapt in every market. {{highlight}}That is the explorer spirit behind our technology.{{/highlight}}",
       "stats": {
         "countries": "30+",
         "countriesLabel": "Countries",
@@ -341,40 +344,43 @@
     },
     "solutions": {
       "badge": "Our Solutions",
-      "title": "Tailored Solutions for Every Stakeholder",
-      "description": "Whether you're a brand, media owner, or agency, we provide the tools and technology you need to succeed in the DOOH ecosystem.",
+      "title": "One Platform, Three Stakeholders, Shared Momentum",
+      "description": "Our platform is the foundation. Our solutions are shaped around the people who use it. Our products are the tools that help them move faster and further.",
       "brand": {
-        "title": "Brands",
-        "description": "Amplify your brand message across premium out-of-home inventory. Reach your target audience at scale with data-driven campaigns that drive awareness and engagement.",
+        "title": "For Brands",
+        "subtitle": "Turn Attention Into Real World Growth",
+        "description": "Brands expanding across markets face a common challenge. Consistency in strategy, clarity in measurement, and adaptability to local nuance.\n\nWe connect exposure to real world outcomes such as store visits, engagement, and performance signals across multiple cities and countries. Outdoor becomes more than awareness. It becomes a growth channel that travels with you.\n\nWhy it matters. You gain the confidence to scale campaigns across regions without losing control or visibility.",
         "features": {
-          "0": "Multi-channel campaign management",
+          "0": "Multi market campaign management",
           "1": "Advanced audience targeting",
-          "2": "Real-time performance analytics",
-          "3": "Creative optimization tools"
+          "2": "Real world attribution and lift measurement",
+          "3": "Creative optimisation tools"
         },
-        "cta": "Explore Brand Solutions"
+        "cta": "Explore Brands"
       },
       "mediaOwners": {
-        "title": "Media Owners",
-        "description": "Maximize your inventory value with our advanced programmatic platform. Connect with premium advertisers and optimize yield across all your digital and traditional OOH assets.",
+        "title": "For Media Owners",
+        "subtitle": "Unlock the Global Value of Your Inventory",
+        "description": "Media owners sit at the heart of their cities. Yet much of that value remains isolated within local markets.\n\nWe connect your inventory to regional and global demand, helping you optimise yield while maintaining local relevance.\n\nWhy it matters. Your screens are no longer limited by geography. They become part of a global marketplace.",
         "features": {
           "0": "Programmatic marketplace access",
           "1": "Inventory management system",
-          "2": "Dynamic pricing optimization",
+          "2": "Dynamic pricing optimisation",
           "3": "Publisher analytics dashboard"
         },
-        "cta": "Explore Media Owner Solutions"
+        "cta": "Explore Media Owners"
       },
       "agencies": {
-        "title": "Agencies",
-        "description": "Streamline your DOOH operations with enterprise-grade tools. Manage multiple client campaigns, access premium inventory, and deliver exceptional results with our agency platform.",
+        "title": "For Agencies",
+        "subtitle": "Navigate Complexity With Clarity",
+        "description": "Agencies manage campaigns across time zones, currencies, formats, and reporting structures. Growth often creates operational friction.\n\nWe unify planning, buying, and reporting in one connected environment so agencies can scale internationally without multiplying complexity.\n\nWhy it matters. Fewer silos. Greater control. Stronger results for clients anywhere in the world.",
         "features": {
-          "0": "Multi-client campaign management",
-          "1": "White-label reporting",
-          "2": "Consolidated billing & invoicing",
+          "0": "Multi client campaign management",
+          "1": "White label reporting",
+          "2": "Consolidated billing and invoicing",
           "3": "Dedicated account support"
         },
-        "cta": "Explore Agency Solutions"
+        "cta": "Explore Agencies"
       }
     },
     "brandsPage": {
@@ -550,9 +556,34 @@
         ]
       }
     },
+    "platformEcosystem": {
+      "badge": "MW Platform Ecosystem",
+      "title": "Where Movement Meets Media",
+      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "cards": {
+        "data": {
+          "label": "Data Inputs",
+          "description": "Audience signals, location and mobility patterns, traffic flows, weather triggers, demographics, points of interest, event calendars, and first party and third party data."
+        },
+        "execute": {
+          "label": "Execute Locally",
+          "description": "Campaigns are planned centrally and executed locally, measured consistently across regions, and refined continuously."
+        },
+        "measure": {
+          "label": "Measure & Refine",
+          "description": "Track performance across markets with unified analytics, optimise in real time, and build learnings into every future campaign."
+        }
+      },
+      "scenario": {
+        "label": "Imagine This",
+        "description": "A retail brand expanding into a new city. Screens activate within defined trade areas when footfall rises and contextual conditions align with demand. Creative adapts to local moments while maintaining global brand consistency. Spend follows opportunity in real time."
+      },
+      "quote": "This is how outdoor evolves from static space into a responsive global network.",
+      "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
+    },
     "clients": {
       "title": "Integrated With Leading Platforms",
-      "description": "Seamlessly integrate with your existing marketing stack"
+      "description": "Modern marketing is borderless. Your media should be too."
     },
     "products": {
       "badge": "Complete MW Ecosystem",
@@ -611,7 +642,7 @@
     },
     "customerLogos": {
       "title": "Trusted by Leading Brands",
-      "description": "Join thousands of companies achieving better results"
+      "description": "From regional challengers to multinational leaders, brands rely on Moving Walls to navigate the evolving world of outdoor media."
     },
     "testimonials": {
       "badge": "Client Success",

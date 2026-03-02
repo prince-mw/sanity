@@ -11,6 +11,7 @@ export default function Services() {
   const solutions = [
     {
       titleKey: "landingPage.solutions.brand.title",
+      subtitleKey: "landingPage.solutions.brand.subtitle",
       descriptionKey: "landingPage.solutions.brand.description",
       bgColor: "bg-transparent",
       href: "/solutions/brands",
@@ -25,6 +26,7 @@ export default function Services() {
     },
     {
       titleKey: "landingPage.solutions.mediaOwners.title",
+      subtitleKey: "landingPage.solutions.mediaOwners.subtitle",
       descriptionKey: "landingPage.solutions.mediaOwners.description",
       bgColor: "bg-transparent",
       href: "/solutions/media-owners",
@@ -39,6 +41,7 @@ export default function Services() {
     },
     {
       titleKey: "landingPage.solutions.agencies.title",
+      subtitleKey: "landingPage.solutions.agencies.subtitle",
       descriptionKey: "landingPage.solutions.agencies.description",
       bgColor: "bg-transparent",
       href: "/solutions/agencies",
@@ -66,7 +69,7 @@ export default function Services() {
           <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
             {t('landingPage.solutions.badge')}
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-mw-gray-900 mt-4 mb-6">
             {t('landingPage.solutions.title')}
           </h2>
           <p className="text-mw-gray-600 max-w-2xl mx-auto text-lg">
@@ -98,12 +101,19 @@ export default function Services() {
 
               {/* Content */}
               <div className={`${index % 2 === 1 ? 'lg:col-start-1 lg:row-start-1' : ''}`}>
-                <h3 className="text-3xl font-bold text-mw-gray-900 mb-4">
+                <h3 className="text-3xl font-bold text-mw-gray-900 mb-2">
                   {t(solution.titleKey)}
                 </h3>
-                <p className="text-lg text-mw-gray-600 mb-6 leading-relaxed">
-                  {t(solution.descriptionKey)}
-                </p>
+                {solution.subtitleKey && (
+                  <p className="text-xl font-semibold text-mw-blue-600 mb-4">
+                    {t(solution.subtitleKey)}
+                  </p>
+                )}
+                <div className="text-lg text-mw-gray-600 mb-6 leading-relaxed space-y-3">
+                  {t(solution.descriptionKey).split('\n\n').map((para: string, i: number) => (
+                    <p key={i}>{para}</p>
+                  ))}
+                </div>
 
                 {/* Features List */}
                 <ul className="space-y-3 mb-8">

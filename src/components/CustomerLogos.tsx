@@ -45,9 +45,11 @@ export default function CustomerLogos() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
             {t('landingPage.customerLogos.title')}
           </h2>
-          <p className="text-mw-gray-600 max-w-2xl mx-auto text-lg">
-            {t('landingPage.customerLogos.description')}
-          </p>
+          <div className="text-mw-gray-600 max-w-3xl mx-auto text-lg space-y-3">
+            {t('landingPage.customerLogos.description').split('\n\n').map((para: string, i: number) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
         </motion.div>
 
         <div className="relative overflow-hidden">

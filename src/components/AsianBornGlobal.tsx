@@ -79,7 +79,7 @@ export default function AsianBornGlobal() {
   ];
 
   return (
-    <section className="relative py-20 lg:py-28 bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 overflow-hidden">
+    <section className="relative py-12 lg:py-16 bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 overflow-hidden">
       {/* Animated World Map Background */}
       <div className="absolute inset-0 opacity-80">
         <svg
@@ -255,51 +255,91 @@ export default function AsianBornGlobal() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          className="text-center mb-8"
         >
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
             {t('landingPage.asianBornGlobal.title')} <span className="text-mw-blue-400">{t('landingPage.asianBornGlobal.titleHighlight')}</span>
           </h2>
+          <p className="text-xl text-mw-blue-200 italic">{t('landingPage.asianBornGlobal.description')}</p>
         </motion.div>
 
         {/* Centered Content */}
-        <div className="space-y-8">
+        <div className="space-y-5">
           {/* First Paragraph */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
             className="text-center"
           >
-            <p className="text-lg lg:text-xl text-white leading-relaxed">
+            <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
               {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph1'))}
             </p>
           </motion.div>
 
           {/* Second Paragraph */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
             className="text-center"
           >
-            <p className="text-lg lg:text-xl text-white leading-relaxed">
+            <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
               {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph2'))}
             </p>
           </motion.div>
 
-          {/* Third Paragraph */}
+          {/* Bridge Statement */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 15 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.6 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
             className="text-center"
           >
-            <p className="text-lg lg:text-xl text-white leading-relaxed">
+            <p className="text-lg lg:text-xl font-semibold text-mw-blue-300">
               {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph3'))}
+            </p>
+          </motion.div>
+
+          {/* Fourth Paragraph */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="text-center"
+          >
+            <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
+              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph4'))}
+            </p>
+          </motion.div>
+
+          {/* Every Screen / City / Campaign */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.5 }}
+            className="text-center"
+          >
+            <p className="text-base lg:text-lg text-white leading-loose whitespace-pre-line">
+              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph5'))}
+            </p>
+          </motion.div>
+
+          {/* Closing Statement */}
+          <motion.div
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="text-center"
+          >
+            <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
+              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph6'))}
             </p>
           </motion.div>
         </div>

@@ -5,7 +5,6 @@ import AsianBornGlobal from "../components/AsianBornGlobal";
 import Services from "../components/Services";
 import Clients from "../components/Clients";
 import PlatformEcosystem from "../components/PlatformEcosystem";
-import Products from "../components/Products";
 import CustomerLogos from "../components/CustomerLogos";
 import TestimonialSection from "../components/TestimonialSection";
 import About from "../components/About";
@@ -36,7 +35,6 @@ export default function Home() {
       <Services />
       <Clients />
       <PlatformEcosystem />
-      <Products />
       <CustomerLogos />
       <TestimonialSection />
       {/* <About /> */}

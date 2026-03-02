@@ -165,7 +165,7 @@ export default function Sustainability() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="text-xl sm:text-2xl text-mw-blue-100 mb-12"
           >
-            Towards Sustainable OOH Media
+            Towards More Responsible OOH Media Worldwide
           </motion.p>
 
           {/* Three Cards Row */}
@@ -200,7 +200,7 @@ export default function Sustainability() {
               </motion.div>
               <h3 className="text-xl font-bold text-white mb-3">Carbon Neutral by Default</h3>
               <p className="text-mw-blue-100/80 text-sm leading-relaxed">
-                We offset all campaign emissions across all bookings — neutrality is automatically applied.
+                Campaign emissions are calculated and offset across bookings.
               </p>
             </motion.div>
 
@@ -227,9 +227,9 @@ export default function Sustainability() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                 </svg>
               </motion.div>
-              <h3 className="text-xl font-bold text-white mb-3">Industry-leading Standard</h3>
+              <h3 className="text-xl font-bold text-white mb-3">Industry Standard Adoption</h3>
               <p className="text-mw-blue-100/80 text-sm leading-relaxed">
-                Moving Walls is the first OOH platform to adopt GMSF v1.2 as the measurement standard globally.
+                Moving Walls is the first OOH platform to adopt the Global Media Sustainability Framework version 1.2 as a global standard.
               </p>
             </motion.div>
 
@@ -260,7 +260,7 @@ export default function Sustainability() {
               </motion.div>
               <h3 className="text-xl font-bold text-white mb-3">Sustainable Commitment</h3>
               <p className="text-mw-blue-100/80 text-sm leading-relaxed">
-                We partner with certified carbon offset providers to create a community ensuring credible and measurable impact.
+                We work with certified carbon offset partners to ensure credible and measurable impact across markets.
               </p>
             </motion.div>
           </div>

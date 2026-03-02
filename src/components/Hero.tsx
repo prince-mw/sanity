@@ -124,7 +124,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg sm:text-xl text-gray-100 mb-10 max-w-3xl mx-auto"
+          className="text-base sm:text-lg text-gray-100 mb-10 max-w-6xl mx-auto leading-relaxed"
           style={{ textShadow: '0 1px 5px rgba(0,0,0,0.3)' }}
         >
           {t('hero.description')}
