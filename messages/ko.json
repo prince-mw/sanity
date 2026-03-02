@@ -281,8 +281,8 @@
         "name": "E-북",
         "description": "심층 가이드 및 보고서"
       },
-      "ooh101": {
-        "name": "OOH 101",
+      "oohFormats": {
+        "name": "OOH Formats",
         "description": "옥외 광고 기초"
       },
       "pressNews": {

@@ -2,8 +2,14 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function GlobalCTA() {
+  const pathname = usePathname();
+
+  // Hide on the main landing page
+  if (pathname === '/') return null;
+
   return (
     <section className="py-16 bg-gradient-to-br from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 relative overflow-hidden">
       {/* Background Pattern */}
@@ -31,11 +37,10 @@ export default function GlobalCTA() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Transform Your Advertising?
+              Ready to Expand Your Reach
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-              Connect with our experts to discover how Moving Walls can help you reach your audience 
-              with precision and measurable impact.
+              Whether you are entering a new city or scaling across continents, we help you activate outdoor media with clarity and measurable impact.
             </p>
           </motion.div>
 

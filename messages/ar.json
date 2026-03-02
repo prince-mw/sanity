@@ -281,8 +281,8 @@
         "name": "الكتب الإلكترونية",
         "description": "أدلة وتقارير معمقة"
       },
-      "ooh101": {
-        "name": "OOH 101",
+      "oohFormats": {
+        "name": "OOH Formats",
         "description": "أساسيات الإعلان الخارجي"
       },
       "pressNews": {

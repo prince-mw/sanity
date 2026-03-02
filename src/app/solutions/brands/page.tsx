@@ -3,13 +3,21 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import TestimonialSection from '@/components/TestimonialSection'
 
 export default function BrandsPage() {
   const [activeTab, setActiveTab] = useState('retail')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [activePlatform, setActivePlatform] = useState('campaigns')
+  const [activeStep, setActiveStep] = useState(0)
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % 4)
+    }, 1500)
+    return () => clearInterval(interval)
+  }, [])
 
   return (
     <div className="min-h-screen bg-white">
@@ -67,8 +75,7 @@ export default function BrandsPage() {
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed">
-                We help brands launch result-driven OOH campaigns using automation technology. 
-                Our platform streamlines campaign creation, providing optimized proposals in minutes.
+                Launch measurable outdoor campaigns across cities and continents from one connected platform. From brief to live in minutes. From impression to impact with clarity.
               </p>
               
               {/* Stats Row */}
@@ -279,11 +286,12 @@ export default function BrandsPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-bold text-mw-gray-900 mb-6">
-              Leverage Advanced<br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">OOH Media Automation Technology</span>
+              Plan. Activate. Measure.<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">All in One Place.</span>
             </h2>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
-              From planning to measurement, manage your entire OOH workflow in one unified platform
+              The outdoors has always delivered attention. What it lacked was speed and accountability.
+              Moving Walls connects planning, booking, activation, and attribution into one streamlined workflow. No manual coordination. No disconnected systems. No blind spending.
             </p>
           </motion.div>
 
@@ -291,17 +299,17 @@ export default function BrandsPage() {
           <div className="flex justify-center mb-16">
             <div className="inline-flex border border-mw-gray-200 p-1.5 rounded-xl gap-1">
               {[
-                { id: 'campaigns', name: 'Campaigns', icon: (
+                { id: 'campaigns', name: 'Campaign Creation', icon: (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 )},
-                { id: 'realtime', name: 'Real Time', icon: (
+                { id: 'realtime', name: 'Real Time Activation', icon: (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 )},
-                { id: 'measurement', name: 'Measurement', icon: (
+                { id: 'measurement', name: 'Full Funnel Measurement', icon: (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
@@ -340,10 +348,87 @@ export default function BrandsPage() {
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
-                    Create and Execute Campaigns
+                    Create and Launch in Minutes
                   </h3>
-                  <p className="text-lg text-mw-gray-600 leading-relaxed">
-                    Our platform enables you to transform your briefs into optimised proposals within minutes, empowering you to deliver real-time top-quality campaigns. With this unique feature, you can seamlessly create and run OOH campaigns that are customised to your brand's specific needs and goals, all with the click of a button.
+                  <p className="text-lg text-mw-gray-600 leading-relaxed mb-8">
+                    Turn your brief into an optimised OOH proposal instantly.
+                  </p>
+                  
+                  {/* Horizontal Pipeline Steps */}
+                  <div className="flex items-center justify-between mb-8">
+                    {[
+                      { label: 'Define your audience', icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                      )},
+                      { label: 'Set campaign objectives', icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                        </svg>
+                      )},
+                      { label: 'Select markets', icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                      )},
+                      { label: 'Activate with one click', icon: (
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                      )},
+                    ].map((step, i) => (
+                      <div key={i} className="flex items-center flex-1">
+                        <div className="flex flex-col items-center text-center">
+                          <div className="relative">
+                            {/* Ripple ring when active */}
+                            {activeStep === i && (
+                              <motion.div
+                                className="absolute inset-0 rounded-full border-2 border-mw-blue-400"
+                                initial={{ scale: 1, opacity: 0.8 }}
+                                animate={{ scale: 1.8, opacity: 0 }}
+                                transition={{ duration: 1, repeat: Infinity, ease: 'easeOut' }}
+                              />
+                            )}
+                            <motion.div
+                              className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-colors duration-300 ${
+                                activeStep === i
+                                  ? 'bg-mw-blue-600 text-white shadow-lg shadow-blue-300'
+                                  : 'bg-mw-blue-50 text-mw-blue-600 border-2 border-mw-blue-200'
+                              }`}
+                              animate={activeStep === i ? { scale: [1, 1.15, 1] } : { scale: 1 }}
+                              transition={{ duration: 0.6, ease: 'easeInOut' }}
+                            >
+                              {step.icon}
+                            </motion.div>
+                          </div>
+                          <span className={`text-xs font-semibold max-w-[100px] leading-tight transition-colors duration-300 ${
+                            activeStep === i ? 'text-mw-blue-700' : 'text-mw-gray-700'
+                          }`}>{step.label}</span>
+                        </div>
+                        {i < 3 && (
+                          <div className="flex-1 mx-2 mt-[-20px]">
+                            <div className="h-0.5 bg-gradient-to-r from-mw-blue-200 to-mw-blue-300 relative overflow-hidden">
+                              {/* Animated fill when transitioning from this step */}
+                              {activeStep > i && (
+                                <motion.div
+                                  className="absolute inset-0 bg-gradient-to-r from-mw-blue-500 to-mw-blue-600"
+                                  initial={{ scaleX: 0 }}
+                                  animate={{ scaleX: 1 }}
+                                  transition={{ duration: 0.4 }}
+                                  style={{ transformOrigin: 'left' }}
+                                />
+                              )}
+                              <div className="absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[4px] border-t-transparent border-b-[4px] border-b-transparent border-l-[6px] border-l-mw-blue-400" />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <p className="text-base text-mw-gray-500 leading-relaxed border-l-4 border-mw-blue-400 pl-4">
+                    Our platform evaluates movement patterns, historical performance, and contextual signals to recommend high-impact inventory aligned to your goals.
                   </p>
                 </motion.div>
               )}
@@ -357,7 +442,7 @@ export default function BrandsPage() {
                     Execute Campaigns in Real-Time
                   </h3>
                   <p className="text-lg text-mw-gray-600 leading-relaxed">
-                    Moving Walls takes OOH campaign management to the next level with our purpose-built DSP (Demand-Side Platform). Our intuitive platform empowers advertisers to effortlessly create and execute campaigns, all while harnessing the power of real-time data for optimization and maximum brand impact.
+                    Manage and activate OOH campaigns through a purpose-built Demand-Side Platform, designed for real-time execution and optimization. Use live data signals, such as audience movement, location context, and performance metrics, to refine delivery, adjust targeting, and optimize creative while campaigns are live.
                   </p>
                 </motion.div>
               )}
@@ -371,7 +456,7 @@ export default function BrandsPage() {
                     Measurement & Analytics
                   </h3>
                   <p className="text-lg text-mw-gray-600 leading-relaxed">
-                    Moving Walls takes OOH campaign management to the next level with our purpose-built DSP (Demand-Side Platform). Our intuitive platform empowers advertisers to effortlessly create and execute campaigns, all while harnessing the power of real-time data for optimization and maximum brand impact.
+                    Measure and validate campaign performance with transparent, real-time analytics and attribution. Monitor impressions, assess real-world impact, and track outcomes using standardized measurement and verification tools that support confident, data-driven optimization.
                   </p>
                 </motion.div>
               )}
@@ -514,10 +599,10 @@ export default function BrandsPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Your Customer Journey with Moving Walls
+              Your Journey with Moving Walls
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From campaign creation to measurement — experience the complete OOH transformation
+              Create. Execute. Measure. A seamless journey from brief to results.
             </p>
           </motion.div>
 
@@ -633,14 +718,14 @@ export default function BrandsPage() {
                     </motion.div>
                     <div>
                       <span className="text-xs font-bold text-mw-blue-600 uppercase tracking-wider">Step 1</span>
-                      <h3 className="text-xl font-bold text-gray-800">Create Campaigns</h3>
+                      <h3 className="text-xl font-bold text-gray-800">Create</h3>
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6">
-                    Transform your briefs into optimised OOH proposals within minutes using our AI-powered platform.
+                    Go from concept to live without operational drag.
                   </p>
                   <div className="space-y-3">
-                    {['Define target audience', 'Set campaign objectives', 'AI-optimized proposals', 'One-click activation'].map((item, index) => (
+                    {['Define your audience', 'Set objectives', 'Receive optimised inventory recommendations', 'Launch instantly'].map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -10 }}
@@ -705,14 +790,14 @@ export default function BrandsPage() {
                     </motion.div>
                     <div>
                       <span className="text-xs font-bold text-purple-200 uppercase tracking-wider">Step 2</span>
-                      <h3 className="text-xl font-bold text-white">Execute Real-Time</h3>
+                      <h3 className="text-xl font-bold text-white">Execute</h3>
                     </div>
                   </div>
                   <p className="text-purple-100 mb-6">
-                    Monitor and optimize your campaigns in real-time with our purpose-built DSP for maximum impact.
+                    Outdoor becomes responsive, not static.
                   </p>
                   <div className="space-y-3">
-                    {['Live campaign monitoring', 'Real-time optimization', 'Dynamic adjustments', 'Instant performance data'].map((item, index) => (
+                    {['Monitor campaigns in real time', 'Adjust placements dynamically', 'Optimise creative and locations', 'Track performance live'].map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -766,36 +851,28 @@ export default function BrandsPage() {
                     </motion.div>
                     <div>
                       <span className="text-xs font-bold text-green-600 uppercase tracking-wider">Step 3</span>
-                      <h3 className="text-xl font-bold text-gray-800">Measure Results</h3>
+                      <h3 className="text-xl font-bold text-gray-800">Measure</h3>
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6">
-                    Get comprehensive analytics with attribution, footfall tracking, and full ROI visibility.
+                    Full transparency from impression to outcome.
                   </p>
                   <div className="space-y-3">
-                    {[
-                      { text: 'Impression tracking', metric: 'Real-time' },
-                      { text: 'Footfall attribution', metric: '+385% ROI' },
-                      { text: 'Brand lift studies', metric: 'Full funnel' },
-                      { text: 'ROI reporting', metric: 'Automated' }
-                    ].map((item, index) => (
+                    {['Transparent impression tracking', 'Footfall uplift measurement', 'Attribution insights', 'Clear ROI reporting'].map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.5 + index * 0.1 }}
-                        className="flex items-center justify-between gap-3 bg-white/80 rounded-lg p-3"
+                        className="flex items-center gap-3 bg-white/80 rounded-lg p-3"
                       >
-                        <div className="flex items-center gap-3">
-                          <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
-                            <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                          </div>
-                          <span className="text-gray-700 text-sm">{item.text}</span>
+                        <div className="w-5 h-5 rounded-full bg-green-500 flex items-center justify-center flex-shrink-0">
+                          <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
                         </div>
-                        <span className="text-green-600 text-xs font-bold">{item.metric}</span>
+                        <span className="text-gray-700 text-sm">{item}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -1153,269 +1230,6 @@ export default function BrandsPage() {
         </div>
       </section>
 
-      {/* How It Works Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              How It Works
-            </h2>
-            <p className="text-xl text-mw-gray-600">
-              Get started with Moving Walls in four simple steps
-            </p>
-          </motion.div>
-          
-          <div className="relative">
-            {/* Connection Line */}
-            <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-mw-blue-200 via-purple-200 to-mw-blue-200 transform -translate-y-1/2"></div>
-            
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-              {[
-                { title: 'Define Your Goals', description: 'Tell us your campaign objectives, target audience, and budget.' },
-                { title: 'Discover Inventory', description: 'Browse our marketplace of 500K+ verified screens globally.' },
-                { title: 'Launch Campaign', description: 'Activate your campaign with one-click deployment.' },
-                { title: 'Measure Results', description: 'Track performance with real-time analytics and attribution.' }
-              ].map((item: { title: string; description: string }, index: number) => {
-                const icons = [
-                  <svg key="step-0" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" /></svg>,
-                  <svg key="step-1" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-                  <svg key="step-2" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>,
-                  <svg key="step-3" className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                ];
-                return (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.2 }}
-                  whileHover={{ y: -10 }}
-                  className="relative h-full"
-                >
-                  <div className="bg-white rounded-2xl p-8 shadow-mw-lg hover:shadow-mw-xl border border-mw-blue-100 transition-all duration-300 h-full flex flex-col">
-                    <div className="w-16 h-16 mb-4 text-mw-blue-600">{icons[index]}</div>
-                    <h3 className="text-2xl font-bold text-mw-gray-900 mb-3">{item.title}</h3>
-                    <p className="text-mw-gray-600 flex-1">{item.description}</p>
-                  </div>
-                </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Use Cases Section */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Built for Every Brand Vertical
-            </h2>
-            <p className="text-xl text-mw-gray-600">
-              Tailored solutions for your industry
-            </p>
-          </motion.div>
-
-          {/* Tabs */}
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {['retail', 'automotive', 'cpg', 'entertainment', 'tech', 'finance'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                  activeTab === tab
-                    ? 'bg-mw-blue-600 text-white shadow-mw-lg scale-105'
-                    : 'bg-white text-mw-gray-600 hover:bg-mw-gray-100 border border-mw-blue-100'
-                }`}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            ))}
-          </div>
-
-          {/* Tab Content */}
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="bg-white rounded-2xl p-8 shadow-mw-lg border border-mw-blue-100"
-          >
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h3 className="text-3xl font-bold text-mw-gray-900 mb-6">
-                  {activeTab === 'retail' && 'Retail Brands'}
-                  {activeTab === 'automotive' && 'Automotive Brands'}
-                  {activeTab === 'cpg' && 'CPG Brands'}
-                  {activeTab === 'entertainment' && 'Entertainment Brands'}
-                  {activeTab === 'tech' && 'Tech Brands'}
-                  {activeTab === 'finance' && 'Financial Services'}
-                </h3>
-                <div className="space-y-4 mb-6">
-                  {activeTab === 'retail' && (
-                    <>
-                      <p className="text-mw-gray-600">Drive foot traffic to stores with location-based campaigns</p>
-                      <p className="text-mw-gray-600">Promote seasonal sales and new product launches</p>
-                      <p className="text-mw-gray-600">Target shoppers in high-traffic retail areas</p>
-                    </>
-                  )}
-                  {activeTab === 'automotive' && (
-                    <>
-                      <p className="text-mw-gray-600">Launch new vehicle models with highway billboards</p>
-                      <p className="text-mw-gray-600">Drive dealership visits with proximity targeting</p>
-                      <p className="text-mw-gray-600">Build brand awareness during launch events</p>
-                    </>
-                  )}
-                  {activeTab === 'cpg' && (
-                    <>
-                      <p className="text-mw-gray-600">Increase brand awareness at mass scale</p>
-                      <p className="text-mw-gray-600">Promote new product lines in retail corridors</p>
-                      <p className="text-mw-gray-600">Target specific demographics by location</p>
-                    </>
-                  )}
-                  {activeTab === 'entertainment' && (
-                    <>
-                      <p className="text-mw-gray-600">Promote movie releases and streaming content</p>
-                      <p className="text-mw-gray-600">Target entertainment districts and venues</p>
-                      <p className="text-mw-gray-600">Create buzz around premieres and events</p>
-                    </>
-                  )}
-                  {activeTab === 'tech' && (
-                    <>
-                      <p className="text-mw-gray-600">Launch new products in tech hubs</p>
-                      <p className="text-mw-gray-600">Build brand awareness in business districts</p>
-                      <p className="text-mw-gray-600">Target early adopters and professionals</p>
-                    </>
-                  )}
-                  {activeTab === 'finance' && (
-                    <>
-                      <p className="text-mw-gray-600">Build trust with strategic billboard placements</p>
-                      <p className="text-mw-gray-600">Promote new services in financial districts</p>
-                      <p className="text-mw-gray-600">Target high-net-worth demographics</p>
-                    </>
-                  )}
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-3 bg-mw-gray-50 rounded-xl">
-                    <div className="text-2xl font-bold text-mw-blue-600">+142%</div>
-                    <div className="text-sm text-mw-gray-600">Avg ROI</div>
-                  </div>
-                  <div className="text-center p-3 bg-mw-gray-50 rounded-xl">
-                    <div className="text-2xl font-bold text-mw-blue-600">3.2M</div>
-                    <div className="text-sm text-mw-gray-600">Impressions</div>
-                  </div>
-                  <div className="text-center p-3 bg-mw-gray-50 rounded-xl">
-                    <div className="text-2xl font-bold text-mw-blue-600">89%</div>
-                    <div className="text-sm text-mw-gray-600">Brand Recall</div>
-                  </div>
-                </div>
-              </div>
-              <div className="relative h-80 bg-gradient-to-br from-mw-blue-100 to-purple-100 rounded-xl flex items-center justify-center">
-                <div className="w-32 h-32 text-mw-blue-600">
-                  {activeTab === 'retail' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>}
-                  {activeTab === 'automotive' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>}
-                  {activeTab === 'cpg' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" /></svg>}
-                  {activeTab === 'entertainment' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" /></svg>}
-                  {activeTab === 'tech' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>}
-                  {activeTab === 'finance' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Case Study Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-br from-mw-gray-50 to-mw-blue-50 rounded-3xl p-12 shadow-mw-xl border border-mw-blue-100"
-          >
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="inline-block px-4 py-2 bg-mw-blue-100 text-mw-blue-600 rounded-full text-sm font-semibold mb-6">
-                  FEATURED CASE STUDY
-                </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-6">
-                  How RetailMax Increased Store Visits by 240%
-                </h3>
-                <p className="text-lg text-mw-gray-700 mb-6">
-                  RetailMax, a leading fashion retailer, used Moving Walls to launch a multi-city campaign targeting shoppers within 5 miles of their stores. Using MW Planner for audience insights and MW Activate for dynamic creative optimization, they achieved remarkable results.
-                </p>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-mw-blue-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-mw-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-mw-gray-900">240% increase in store visits</div>
-                      <div className="text-sm text-mw-gray-600">Within 30 days of campaign launch</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-mw-gray-900">420% ROI achieved</div>
-                      <div className="text-sm text-mw-gray-600">Well above industry average</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-mw-gray-900">18 cities activated in 3 days</div>
-                      <div className="text-sm text-mw-gray-600">Rapid multi-market execution</div>
-                    </div>
-                  </div>
-                </div>
-                <Link
-                  href="/resources/case-studies"
-                  className="inline-flex items-center gap-2 text-mw-blue-600 font-semibold hover:gap-3 transition-all group"
-                >
-                  Read Full Case Study
-                  <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-              </div>
-              <div className="relative">
-                <div className="rounded-2xl overflow-hidden shadow-mw-xl">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=450&fit=crop"
-                    alt="RetailMax OOH Campaign - Digital Billboard in Shopping District"
-                    className="w-full h-[400px] object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Platform Integration Section */}
       <section className="py-20 bg-mw-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1433,37 +1247,56 @@ export default function BrandsPage() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
             {[
               {
                 name: 'MW Planner',
                 description: 'AI-powered campaign planning and audience insights',
                 features: ['Audience Analysis', 'Location Planning', 'ROI Forecasting'],
+                icon: 'M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25',
+                href: '/products/mw-planner',
               },
               {
                 name: 'MW Marketplace',
                 description: 'Access 250,000+ premium billboard locations',
                 features: ['Instant Booking', 'Real-time Availability', 'Transparent Pricing'],
+                icon: 'M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.349m-18 0a2.999 2.999 0 01.79-1.89l1.72-1.72A.75.75 0 016.04 5.5h11.92a.75.75 0 01.53.22l1.72 1.72a3 3 0 01.79 1.89',
+                href: '/products/mw-market',
               },
               {
                 name: 'MW Studio',
                 description: 'Creative design and optimization tools',
                 features: ['Template Library', 'Auto-resize', 'A/B Testing'],
+                icon: 'M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42',
+                href: '/products/mw-studio',
               },
               {
                 name: 'MW Activate',
                 description: 'Campaign activation and automation',
                 features: ['One-click Launch', 'Automated Rules', 'Dynamic Optimization'],
+                icon: 'M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z',
+                href: '/products/mw-activate',
               },
               {
                 name: 'MW Measure',
                 description: 'Real-time analytics and attribution',
                 features: ['Live Dashboards', 'Attribution Tracking', 'Custom Reports'],
+                icon: 'M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z',
+                href: '/products/mw-measure',
               },
               {
                 name: 'MW Science',
                 description: 'Data science and predictive analytics',
                 features: ['Predictive Models', 'Audience Insights', 'Market Intelligence'],
+                icon: 'M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5',
+                href: '/products/mw-science',
+              },
+              {
+                name: 'MW Influence',
+                description: 'Intelligent DOOH ad serving and yield optimization',
+                features: ['Unified Ad Serving', 'Yield Optimization', 'Spot-level Automation'],
+                icon: 'M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z',
+                href: '/products/mw-influence',
               }
             ].map((product, index) => (
               <motion.div
@@ -1476,22 +1309,28 @@ export default function BrandsPage() {
                 className="bg-white rounded-2xl p-8 shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 border border-mw-blue-100 group"
               >
                 <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-mw-blue-600 via-mw-blue-500 to-purple-600 mb-6 flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d={product.icon} />
                   </svg>
                 </div>
                 <h3 className="text-2xl font-bold text-mw-gray-900 mb-3">{product.name}</h3>
                 <p className="text-mw-gray-600 mb-6">{product.description}</p>
-                <ul className="space-y-2">
+                <ul className="space-y-2 mb-6">
                   {product.features.map((feature, i) => (
                     <li key={i} className="flex items-center gap-2 text-sm text-mw-gray-700">
-                      <svg className="w-5 h-5 text-mw-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       {feature}
                     </li>
                   ))}
                 </ul>
+                <Link href={product.href} className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
+                  Learn More
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </Link>
               </motion.div>
             ))}
           </div>

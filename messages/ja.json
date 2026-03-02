@@ -281,8 +281,8 @@
         "name": "Eブック",
         "description": "詳細なガイドとレポート"
       },
-      "ooh101": {
-        "name": "OOH 101",
+      "oohFormats": {
+        "name": "OOH Formats",
         "description": "屋外広告の基礎"
       },
       "pressNews": {

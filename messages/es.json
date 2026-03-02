@@ -281,8 +281,8 @@
         "name": "E-Books",
         "description": "Guías e informes detallados"
       },
-      "ooh101": {
-        "name": "OOH 101",
+      "oohFormats": {
+        "name": "OOH Formats",
         "description": "Fundamentos de publicidad exterior"
       },
       "pressNews": {

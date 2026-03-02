@@ -102,7 +102,7 @@
     "termsOfService": "Terms of Service"
   },
   "footer": {
-    "description": "Moving Walls unifies the entire Out-of-Home ecosystem through a single, intelligent cloud platform. From audience discovery to booking, activation, measurement, and optimisation, we streamline every step with data-driven precision.",
+    "description": "Moving Walls connects the global Out of Home ecosystem into one unified cloud platform. From audience discovery to booking, activation, measurement, and optimisation, we simplify complexity so brands can grow confidently across markets.",
     "followUs": "Follow Us",
     "company": "Company",
     "solutions": "Solutions",
@@ -281,9 +281,9 @@
         "name": "E-Books",
         "description": "In-depth guides & reports"
       },
-      "ooh101": {
-        "name": "OOH 101",
-        "description": "Out-of-home advertising basics"
+      "oohFormats": {
+        "name": "OOH Formats",
+        "description": "Explore billboard & digital formats"
       },
       "pressNews": {
         "name": "Press & News",

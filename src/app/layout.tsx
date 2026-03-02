@@ -106,9 +106,11 @@ const organizationJsonLd = {
   description: "Moving Walls delivers innovative out-of-home advertising solutions with AI-powered media planning, programmatic buying, and real-time measurement.",
   foundingDate: "2014",
   sameAs: [
-    "https://www.linkedin.com/company/movingwalls",
-    "https://twitter.com/movingwalls",
-    "https://www.facebook.com/movingwalls"
+    "https://www.linkedin.com/company/moving-walls/",
+    "https://x.com/movingwalls",
+    "https://www.facebook.com/movingwalls/",
+    "https://www.youtube.com/@MovingWallsMy",
+    "https://www.instagram.com/mymovingwalls/"
   ],
   contactPoint: [
     {
@@ -207,7 +209,7 @@ export default function RootLayout({
           <main>
             {children}
           </main>
-          {/* <GlobalCTA /> */}
+          <GlobalCTA />
           <Footer />
           <AIAssistant />
           <CookieConsent />

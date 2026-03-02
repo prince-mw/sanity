@@ -281,8 +281,8 @@
         "name": "ई-बुक्स",
         "description": "गहन गाइड और रिपोर्ट"
       },
-      "ooh101": {
-        "name": "OOH 101",
+      "oohFormats": {
+        "name": "OOH Formats",
         "description": "आउटडोर विज्ञापन की मूल बातें"
       },
       "pressNews": {
