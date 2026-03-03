@@ -104,7 +104,7 @@ export default function BrandsPage() {
               transition={{ duration: 1, delay: 0.2 }}
               className="relative flex items-center justify-center"
             >
-              <div className="relative w-[350px] h-[350px] md:w-[450px] md:h-[450px]">
+              <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px]">
                 {/* Outer Glow Ring */}
                 <motion.div
                   className="absolute inset-0 rounded-full border-2 border-cyan-400/30"
@@ -954,7 +954,7 @@ export default function BrandsPage() {
                 ].map((study, index) => (
                   <motion.div
                     key={index}
-                    className="flex-shrink-0 w-[380px]"
+                    className="flex-shrink-0 w-[85vw] sm:w-[380px]"
                     whileHover={{ y: -10 }}
                     transition={{ duration: 0.3 }}
                   >
@@ -1089,7 +1089,7 @@ export default function BrandsPage() {
                 ].map((study, index) => (
                   <motion.div
                     key={`dup-${index}`}
-                    className="flex-shrink-0 w-[380px]"
+                    className="flex-shrink-0 w-[85vw] sm:w-[380px]"
                     whileHover={{ y: -10 }}
                     transition={{ duration: 0.3 }}
                   >

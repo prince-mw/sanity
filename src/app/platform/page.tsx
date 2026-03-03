@@ -517,7 +517,7 @@ export default function PlatformPage() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 1.2 }}
-                className="flex justify-center gap-3"
+                className="flex flex-wrap justify-center gap-3"
               >
                 <div className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-sm">
                   <span className="text-xs font-medium text-gray-700">Audience Graphs</span>
@@ -563,7 +563,7 @@ export default function PlatformPage() {
             transition={{ delay: 1.3 }}
             className="mt-8 border border-dashed border-gray-300 rounded-md p-6 bg-gray-50"
           >
-            <div className="grid grid-cols-7 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
               {products.map((product, index) => (
                 <ProductCard key={product.label} {...product} index={index} />
               ))}

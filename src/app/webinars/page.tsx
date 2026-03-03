@@ -136,7 +136,7 @@ export default function WebinarsPage() {
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto">
               {[
                 { number: "50+", label: "Webinars" },
                 { number: "10K+", label: "Attendees" },

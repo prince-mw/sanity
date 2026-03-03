@@ -667,7 +667,7 @@ export default function MWActivate() {
                 </div>
                 
                 {/* Node Grid */}
-                <div className="grid grid-cols-6 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
                   {[
                     { id: 'N01', status: 'healthy', load: 78 },
                     { id: 'N02', status: 'healthy', load: 65 },
@@ -730,7 +730,7 @@ export default function MWActivate() {
               </div>
 
               {/* Quick Stats Row */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -920,7 +920,7 @@ export default function MWActivate() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {integrations.map((integration, index) => (
                   <motion.div
                     key={integration.name}

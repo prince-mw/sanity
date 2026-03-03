@@ -357,7 +357,7 @@ export default function JapanPage() {
               className="relative flex items-center justify-center"
               style={{ perspective: '1000px' }}
             >
-              <div className="relative w-[350px] h-[400px] md:w-[400px] md:h-[450px]">
+              <div className="relative w-[280px] h-[320px] sm:w-[350px] sm:h-[400px] md:w-[400px] md:h-[450px]">
                 {/* Crossing Ground Pattern */}
                 <div className="absolute bottom-8 left-1/2 -translate-x-1/2 w-[300px] h-[100px]" style={{ transform: 'rotateX(60deg) translateX(-50%)' }}>
                   {/* Zebra Crossings */}
@@ -541,7 +541,7 @@ export default function JapanPage() {
             </div>
 
             {/* Location Tabs */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-2 grid grid-cols-4 gap-2 w-full">
+            <div className="bg-white border border-gray-200 rounded-2xl p-2 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full">
               {keyMarkets.map((market, index) => (
                 <button
                   key={market.city}

@@ -41,7 +41,10 @@ export default function SitemapPage() {
     {
       name: "Home",
       href: "/",
-      pages: []
+      pages: [
+        { name: "About", href: "/about" },
+        { name: "Platform", href: "/platform" },
+      ]
     },
     {
       name: "About",
@@ -83,11 +86,14 @@ export default function SitemapPage() {
       name: "Resources",
       href: "/resources",
       pages: [
+        { name: "API Reference", href: "/api-reference" },
         { name: "Blog", href: "/blog" },
         { name: "Case Studies", href: "/case-studies" },
-        { name: "Whitepapers", href: "/whitepapers" },
+        { name: "Community", href: "/community" },
         { name: "Documentation", href: "/documentation" },
         { name: "Help Center", href: "/help-center" },
+        { name: "Webinars", href: "/webinars" },
+        { name: "Whitepapers", href: "/whitepapers" },
       ]
     },
     {
@@ -110,6 +116,8 @@ export default function SitemapPage() {
         { name: "Locations", href: "/locations" },
         { name: "Contact", href: "/contact" },
         { name: "Integrations", href: "/integrations" },
+        { name: "Ebooks", href: "/ebooks" },
+        { name: "OOH Formats", href: "/ooh-formats" },
       ]
     },
     {
@@ -205,7 +213,7 @@ export default function SitemapPage() {
           <div className="mt-12 pt-8 border-t border-gray-200">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
               <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <div className="text-3xl font-bold text-mw-blue-600 mb-2">9</div>
+                <div className="text-3xl font-bold text-mw-blue-600 mb-2">10</div>
                 <div className="text-sm text-gray-600">Main Sections</div>
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-6">
@@ -213,11 +221,11 @@ export default function SitemapPage() {
                 <div className="text-sm text-gray-600">Products</div>
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <div className="text-3xl font-bold text-mw-blue-600 mb-2">6</div>
-                <div className="text-sm text-gray-600">Solutions</div>
+                <div className="text-3xl font-bold text-mw-blue-600 mb-2">8</div>
+                <div className="text-sm text-gray-600">Resources</div>
               </div>
               <div className="bg-white rounded-xl border border-gray-200 p-6">
-                <div className="text-3xl font-bold text-mw-blue-600 mb-2">45+</div>
+                <div className="text-3xl font-bold text-mw-blue-600 mb-2">50+</div>
                 <div className="text-sm text-gray-600">Total Pages</div>
               </div>
             </div>

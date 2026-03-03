@@ -330,6 +330,9 @@
       "paragraph1": "户外广告不再是静态媒体。它是{{highlight}}'世界领先的互联媒体平台'{{/highlight}}，推动现实世界的影响力。从时代广场到乌节路，每个屏幕、标牌和空间都成为品牌可以通过数字精度激活的可衡量接触点。",
       "paragraph2": "诞生于亚洲并为世界而建，我们的技术将碎片化的户外广告库存统一到一个生态系统中，广告商可以{{highlight}}实时规划、购买、测量、触达和影响{{/highlight}}活动。",
       "paragraph3": "我们不仅仅是在户外投放广告，我们将城市转变为智能媒体网络，在受众移动的任何地方提供{{highlight}}注意力、相关性和影响力{{/highlight}}。",
+      "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
+      "paragraph5": "Every screen becomes part of a wider journey.\nEvery city becomes a connected media landscape.\nEvery campaign becomes measurable across borders.",
+      "paragraph6": "We do not just operate globally. We understand how cities move, how people travel, and how brands must adapt in every market. {{highlight}}That is the explorer spirit behind our technology.{{/highlight}}",
       "stats": {
         "countries": "30+",
         "countriesLabel": "国家",
@@ -345,6 +348,7 @@
       "description": "无论您是品牌、媒体所有者还是代理商，我们都提供您在DOOH生态系统中取得成功所需的工具和技术。",
       "brand": {
         "title": "品牌",
+        "subtitle": "Turn Attention Into Real World Growth",
         "description": "在优质户外广告库存中放大您的品牌信息。通过数据驱动的活动大规模触达目标受众，提升品牌知名度和参与度。",
         "features": {
           "0": "多渠道活动管理",
@@ -356,6 +360,7 @@
       },
       "mediaOwners": {
         "title": "媒体所有者",
+        "subtitle": "Unlock the Global Value of Your Inventory",
         "description": "通过我们先进的程序化平台最大化您的库存价值。与优质广告商建立联系，优化所有数字和传统OOH资产的收益。",
         "features": {
           "0": "程序化市场准入",
@@ -367,6 +372,7 @@
       },
       "agencies": {
         "title": "代理商",
+        "subtitle": "Navigate Complexity With Clarity",
         "description": "使用企业级工具简化您的DOOH运营。管理多个客户活动，访问优质库存，并通过我们的代理商平台交付出色结果。",
         "features": {
           "0": "多客户活动管理",
@@ -458,11 +464,21 @@
           "badge": "旧方式",
           "title": "挑战",
           "items": [
-            { "text": "跨供应商的分散购买" },
-            { "text": "没有实时性能数据" },
-            { "text": "困难的受众定位" },
-            { "text": "启动活动需要数周" },
-            { "text": "有限的创意灵活性" }
+            {
+              "text": "跨供应商的分散购买"
+            },
+            {
+              "text": "没有实时性能数据"
+            },
+            {
+              "text": "困难的受众定位"
+            },
+            {
+              "text": "启动活动需要数周"
+            },
+            {
+              "text": "有限的创意灵活性"
+            }
           ]
         },
         "transformation": {
@@ -481,11 +497,26 @@
           "badge": "新方式",
           "title": "结果",
           "items": [
-            { "text": "统一平台，所有库存", "metric": "250K+ 屏幕" },
-            { "text": "实时性能跟踪", "metric": "实时数据" },
-            { "text": "AI驱动的受众定位", "metric": "99% 准确性" },
-            { "text": "几分钟内启动，而不是几周", "metric": "< 5 分钟" },
-            { "text": "动态创意优化", "metric": "+40% 参与度" }
+            {
+              "text": "统一平台，所有库存",
+              "metric": "250K+ 屏幕"
+            },
+            {
+              "text": "实时性能跟踪",
+              "metric": "实时数据"
+            },
+            {
+              "text": "AI驱动的受众定位",
+              "metric": "99% 准确性"
+            },
+            {
+              "text": "几分钟内启动，而不是几周",
+              "metric": "< 5 分钟"
+            },
+            {
+              "text": "动态创意优化",
+              "metric": "+40% 参与度"
+            }
           ]
         }
       },
@@ -781,6 +812,31 @@
         "email": "hello@movingwalls.com",
         "phone": "+1 (888) MW-WALLS"
       }
+    },
+    "platformEcosystem": {
+      "badge": "MW Platform Ecosystem",
+      "title": "Where Movement Meets Media",
+      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "cards": {
+        "data": {
+          "label": "Data Inputs",
+          "description": "Audience signals, location and mobility patterns, traffic flows, weather triggers, demographics, points of interest, event calendars, and first party and third party data."
+        },
+        "execute": {
+          "label": "Execute Locally",
+          "description": "Campaigns are planned centrally and executed locally, measured consistently across regions, and refined continuously."
+        },
+        "measure": {
+          "label": "Measure & Refine",
+          "description": "Track performance across markets with unified analytics, optimise in real time, and build learnings into every future campaign."
+        }
+      },
+      "scenario": {
+        "label": "Imagine This",
+        "description": "A retail brand expanding into a new city. Screens activate within defined trade areas when footfall rises and contextual conditions align with demand. Creative adapts to local moments while maintaining global brand consistency. Spend follows opportunity in real time."
+      },
+      "quote": "This is how outdoor evolves from static space into a responsive global network.",
+      "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
     }
   }
 }

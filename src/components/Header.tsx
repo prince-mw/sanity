@@ -52,12 +52,6 @@ const createMegaMenuData = (t: (key: string) => string) => ({
           { name: t('megaMenu.about.careers.name'), description: t('megaMenu.about.careers.description'), href: "/careers" },
         ],
       },
-      {
-        title: t('megaMenu.about.connect'),
-        items: [
-          { name: t('megaMenu.about.contact.name'), description: t('megaMenu.about.contact.description'), href: "/contact" },
-        ],
-      },
     ],
   },
   Resources: {

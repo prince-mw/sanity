@@ -330,6 +330,9 @@
       "paragraph1": "Quảng cáo ngoài trời không còn là phương tiện tĩnh nữa. Đó là {{highlight}}'Nền tảng Truyền thông Kết nối Hàng đầu Thế giới'{{/highlight}} thúc đẩy ảnh hưởng trong thế giới thực. Từ Quảng trường Thời đại đến Đường Orchard, mọi màn hình, biển báo và không gian đều trở thành điểm tiếp xúc có thể đo lường mà các thương hiệu có thể kích hoạt với độ chính xác kỹ thuật số.",
       "paragraph2": "Sinh ra tại Châu Á và được xây dựng cho thế giới, công nghệ của chúng tôi hợp nhất hàng tồn kho ngoài trời phân mảnh thành một hệ sinh thái duy nhất nơi các nhà quảng cáo có thể {{highlight}}lên kế hoạch, mua, đo lường, tiếp cận và tác động{{/highlight}} các chiến dịch theo thời gian thực.",
       "paragraph3": "Chúng tôi không chỉ đặt quảng cáo bên ngoài, chúng tôi biến đổi các thành phố thành mạng lưới truyền thông thông minh mang lại {{highlight}}sự chú ý, liên quan và tác động{{/highlight}} ở mọi nơi khán giả di chuyển.",
+      "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
+      "paragraph5": "Every screen becomes part of a wider journey.\nEvery city becomes a connected media landscape.\nEvery campaign becomes measurable across borders.",
+      "paragraph6": "We do not just operate globally. We understand how cities move, how people travel, and how brands must adapt in every market. {{highlight}}That is the explorer spirit behind our technology.{{/highlight}}",
       "stats": {
         "countries": "30+",
         "countriesLabel": "Quốc gia",
@@ -345,6 +348,7 @@
       "description": "Dù bạn là thương hiệu, chủ sở hữu phương tiện truyền thông hay agency, chúng tôi cung cấp công cụ và công nghệ bạn cần để thành công trong hệ sinh thái DOOH.",
       "brand": {
         "title": "Thương hiệu",
+        "subtitle": "Turn Attention Into Real World Growth",
         "description": "Khuếch đại thông điệp thương hiệu của bạn trên khoảng không quảng cáo ngoài trời cao cấp. Tiếp cận đối tượng mục tiêu của bạn ở quy mô lớn thông qua các chiến dịch dựa trên dữ liệu thúc đẩy nhận thức và tương tác.",
         "features": {
           "0": "Quản lý Chiến dịch Đa kênh",
@@ -356,6 +360,7 @@
       },
       "mediaOwners": {
         "title": "Chủ sở hữu Media",
+        "subtitle": "Unlock the Global Value of Your Inventory",
         "description": "Tối đa hóa giá trị khoảng không quảng cáo của bạn thông qua nền tảng programmatic tiên tiến của chúng tôi. Kết nối với nhà quảng cáo cao cấp và tối ưu hóa doanh thu trên toàn bộ tài sản OOH kỹ thuật số và truyền thống.",
         "features": {
           "0": "Truy cập Thị trường Programmatic",
@@ -367,6 +372,7 @@
       },
       "agencies": {
         "title": "Agency",
+        "subtitle": "Navigate Complexity With Clarity",
         "description": "Hợp lý hóa hoạt động DOOH với các công cụ cấp doanh nghiệp. Quản lý chiến dịch đa khách hàng, truy cập khoảng không quảng cáo cao cấp và mang lại kết quả xuất sắc thông qua nền tảng agency của chúng tôi.",
         "features": {
           "0": "Quản lý Chiến dịch Đa Khách hàng",
@@ -806,6 +812,31 @@
         "email": "hello@movingwalls.com",
         "phone": "+1 (888) MW-WALLS"
       }
+    },
+    "platformEcosystem": {
+      "badge": "MW Platform Ecosystem",
+      "title": "Where Movement Meets Media",
+      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "cards": {
+        "data": {
+          "label": "Data Inputs",
+          "description": "Audience signals, location and mobility patterns, traffic flows, weather triggers, demographics, points of interest, event calendars, and first party and third party data."
+        },
+        "execute": {
+          "label": "Execute Locally",
+          "description": "Campaigns are planned centrally and executed locally, measured consistently across regions, and refined continuously."
+        },
+        "measure": {
+          "label": "Measure & Refine",
+          "description": "Track performance across markets with unified analytics, optimise in real time, and build learnings into every future campaign."
+        }
+      },
+      "scenario": {
+        "label": "Imagine This",
+        "description": "A retail brand expanding into a new city. Screens activate within defined trade areas when footfall rises and contextual conditions align with demand. Creative adapts to local moments while maintaining global brand consistency. Spend follows opportunity in real time."
+      },
+      "quote": "This is how outdoor evolves from static space into a responsive global network.",
+      "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
     }
   }
 }

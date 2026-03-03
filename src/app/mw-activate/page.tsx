@@ -121,13 +121,6 @@ export default function MWActivate() {
     }
   ]
 
-  const liveDataStream = [
-    { type: 'booking', location: 'Times Square Digital', status: 'confirmed', value: '$12.5K', time: '2s ago' },
-    { type: 'optimization', location: 'Downtown Network', status: 'adjusted', value: '+18% yield', time: '5s ago' },
-    { type: 'campaign', location: 'Transit Hub #47', status: 'launched', value: '2.4M reach', time: '8s ago' },
-    { type: 'revenue', location: 'Shopping District', status: 'updated', value: '+$8.2K', time: '12s ago' }
-  ]
-
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -424,134 +417,6 @@ export default function MWActivate() {
         </div>
       </section>
 
-      {/* Live Data Stream Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Real-Time System Activity
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Monitor live transactions, optimizations, and performance updates 
-              across the entire OOH network in real-time.
-            </p>
-          </motion.div>
-
-          {/* Timeline Activity Stream */}
-          <div className="relative">
-            {/* Central Timeline Line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 top-0 bottom-0 w-0.5 bg-gradient-to-b from-mw-blue-600 via-mw-blue-400 to-mw-blue-600 hidden md:block" />
-            
-            <div className="space-y-8 md:space-y-12">
-              {liveDataStream.map((item, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.15 }}
-                  viewport={{ once: true }}
-                  className={`relative flex items-center ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                >
-                  {/* Card */}
-                  <div className={`w-full md:w-[calc(50%-2rem)] ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'}`}>
-                    <motion.div
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
-                    >
-                      <div className="flex items-start justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          {/* Type Icon */}
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                            item.type === 'booking' ? 'bg-blue-100 text-blue-600' :
-                            item.type === 'optimization' ? 'bg-purple-100 text-purple-600' :
-                            item.type === 'campaign' ? 'bg-green-100 text-green-600' :
-                            'bg-amber-100 text-amber-600'
-                          }`}>
-                            {item.type === 'booking' && (
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                              </svg>
-                            )}
-                            {item.type === 'optimization' && (
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                              </svg>
-                            )}
-                            {item.type === 'campaign' && (
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
-                              </svg>
-                            )}
-                            {item.type === 'revenue' && (
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                              </svg>
-                            )}
-                          </div>
-                          <div>
-                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-500">{item.type}</span>
-                            <h4 className="font-semibold text-gray-900">{item.location}</h4>
-                          </div>
-                        </div>
-                        <span className="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-xs font-semibold">
-                          {item.status}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between pt-3 border-t border-gray-100">
-                        <span className="text-2xl font-bold text-mw-blue-600">{item.value}</span>
-                        <span className="text-sm text-gray-400 flex items-center gap-1">
-                          <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                          {item.time}
-                        </span>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Timeline Node */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 hidden md:flex items-center justify-center">
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      whileInView={{ scale: 1 }}
-                      transition={{ duration: 0.3, delay: index * 0.15 + 0.2 }}
-                      viewport={{ once: true }}
-                      className="w-4 h-4 bg-mw-blue-600 rounded-full ring-4 ring-mw-blue-100"
-                    />
-                  </div>
-
-                  {/* Empty space for alternating layout */}
-                  <div className="hidden md:block w-[calc(50%-2rem)]" />
-                </motion.div>
-              ))}
-            </div>
-
-            {/* Bottom pulse indicator */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-              viewport={{ once: true }}
-              className="hidden md:flex justify-center mt-8"
-            >
-              <div className="flex items-center gap-2 text-sm text-gray-500">
-                <span className="flex h-3 w-3">
-                  <span className="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-mw-blue-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-mw-blue-500"></span>
-                </span>
-                Live updates streaming
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
       {/* System Status Dashboard - Split Panel with Circular Gauges */}
       <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -599,7 +464,7 @@ export default function MWActivate() {
                 </div>
                 
                 {/* Node Grid */}
-                <div className="grid grid-cols-6 gap-2">
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
                   {[
                     { id: 'N01', status: 'healthy', load: 78 },
                     { id: 'N02', status: 'healthy', load: 65 },
@@ -662,7 +527,7 @@ export default function MWActivate() {
               </div>
 
               {/* Quick Stats Row */}
-              <div className="grid grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   whileInView={{ opacity: 1, y: 0 }}

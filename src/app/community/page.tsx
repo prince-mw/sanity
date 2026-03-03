@@ -35,7 +35,7 @@ export default function CommunityPage() {
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-8">
               Connect with advertising professionals, share insights, and learn from industry experts.
             </p>
-            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto mb-8">
               {communityStats.map((stat, index) => (
                 <div key={index} className="text-center">
                   <div className="text-3xl font-bold text-mw-blue-600">{stat.number}</div>

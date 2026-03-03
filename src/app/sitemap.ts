@@ -10,9 +10,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Main pages
   const mainPages = [
     '',
+    '/about',
     '/contact',
     '/events',
+    '/integrations',
     '/locations',
+    '/platform',
     '/privacy',
     '/cookies',
     '/ebooks',
@@ -23,7 +26,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // About pages
   const aboutPages = [
     '/our-story',
-    // '/our-journey',
+    '/our-journey',
     '/leadership',
     '/careers',
     '/press-news',
@@ -52,11 +55,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   // Resources pages
   const resourcePages = [
+    '/api-reference',
     '/blog',
     '/case-studies',
-    '/whitepapers',
+    '/community',
     '/documentation',
     '/help-center',
+    '/webinars',
+    '/whitepapers',
   ]
 
   // Press pages
@@ -69,6 +75,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/adtech-company-of-year',
   ]
 
+  // Location pages
+  const locationPages = [
+    '/locations/australia',
+    '/locations/india',
+    '/locations/indonesia',
+    '/locations/japan',
+    '/locations/malaysia',
+    '/locations/philippines',
+    '/locations/singapore',
+    '/locations/sri-lanka',
+    '/locations/thailand',
+  ]
+
   // Combine all pages
   const allPages = [
     ...mainPages,
@@ -77,6 +96,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...solutionPages,
     ...resourcePages,
     ...pressPages,
+    ...locationPages,
   ]
 
   return allPages.map((route) => ({

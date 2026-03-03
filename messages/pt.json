@@ -330,6 +330,9 @@
       "paragraph1": "Out of Home não é mais mídia estática. É {{highlight}}'A Principal Plataforma de Mídia Conectada do Mundo'{{/highlight}} que alimenta influência no mundo real. De Times Square a Orchard Road, cada tela, placa e espaço se torna um ponto de contato mensurável que as marcas podem ativar com precisão digital.",
       "paragraph2": "Nascida na Ásia e construída para o mundo, nossa tecnologia unifica inventário externo fragmentado em um único ecossistema onde anunciantes podem {{highlight}}planejar, comprar, medir, alcançar e influenciar{{/highlight}} campanhas em tempo real.",
       "paragraph3": "Não apenas colocamos anúncios do lado de fora, transformamos cidades em redes de mídia inteligentes que entregam {{highlight}}atenção, relevância e impacto{{/highlight}} onde quer que as audiências se movam.",
+      "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
+      "paragraph5": "Every screen becomes part of a wider journey.\nEvery city becomes a connected media landscape.\nEvery campaign becomes measurable across borders.",
+      "paragraph6": "We do not just operate globally. We understand how cities move, how people travel, and how brands must adapt in every market. {{highlight}}That is the explorer spirit behind our technology.{{/highlight}}",
       "stats": {
         "countries": "30+",
         "countriesLabel": "Países",
@@ -345,6 +348,7 @@
       "description": "Se você é uma marca, proprietário de mídia ou agência, fornecemos as ferramentas e tecnologia que você precisa para ter sucesso no ecossistema DOOH.",
       "brand": {
         "title": "Marca",
+        "subtitle": "Turn Attention Into Real World Growth",
         "description": "Amplifique a mensagem da sua marca em inventário premium de mídia exterior. Alcance seu público-alvo em escala com campanhas baseadas em dados que impulsionam reconhecimento e engajamento.",
         "features": {
           "0": "Gestão de campanhas multicanal",
@@ -356,6 +360,7 @@
       },
       "mediaOwners": {
         "title": "Proprietários de Mídia",
+        "subtitle": "Unlock the Global Value of Your Inventory",
         "description": "Maximize o valor do seu inventário com nossa plataforma programática avançada. Conecte-se com anunciantes premium e otimize o rendimento em todos os seus ativos OOH digitais e tradicionais.",
         "features": {
           "0": "Acesso ao marketplace programático",
@@ -367,6 +372,7 @@
       },
       "agencies": {
         "title": "Agências",
+        "subtitle": "Navigate Complexity With Clarity",
         "description": "Otimize suas operações DOOH com ferramentas de nível empresarial. Gerencie múltiplas campanhas de clientes, acesse inventário premium e entregue resultados excepcionais com nossa plataforma para agências.",
         "features": {
           "0": "Gestão de campanhas multi-cliente",
@@ -806,6 +812,31 @@
         "email": "hello@movingwalls.com",
         "phone": "+1 (888) MW-WALLS"
       }
+    },
+    "platformEcosystem": {
+      "badge": "MW Platform Ecosystem",
+      "title": "Where Movement Meets Media",
+      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "cards": {
+        "data": {
+          "label": "Data Inputs",
+          "description": "Audience signals, location and mobility patterns, traffic flows, weather triggers, demographics, points of interest, event calendars, and first party and third party data."
+        },
+        "execute": {
+          "label": "Execute Locally",
+          "description": "Campaigns are planned centrally and executed locally, measured consistently across regions, and refined continuously."
+        },
+        "measure": {
+          "label": "Measure & Refine",
+          "description": "Track performance across markets with unified analytics, optimise in real time, and build learnings into every future campaign."
+        }
+      },
+      "scenario": {
+        "label": "Imagine This",
+        "description": "A retail brand expanding into a new city. Screens activate within defined trade areas when footfall rises and contextual conditions align with demand. Creative adapts to local moments while maintaining global brand consistency. Spend follows opportunity in real time."
+      },
+      "quote": "This is how outdoor evolves from static space into a responsive global network.",
+      "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
     }
   }
 }

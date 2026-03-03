@@ -358,7 +358,7 @@ export default function AustraliaPage() {
               className="relative flex items-center justify-center"
               style={{ perspective: '1000px' }}
             >
-              <div className="relative w-[350px] h-[400px] md:w-[400px] md:h-[450px]">
+              <div className="relative w-[280px] h-[320px] sm:w-[350px] sm:h-[400px] md:w-[400px] md:h-[450px]">
                 {/* Harbour Water */}
                 <motion.div 
                   className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-blue-600/40 via-blue-400/30 to-transparent rounded-b-3xl"
@@ -546,7 +546,7 @@ export default function AustraliaPage() {
             </div>
 
             {/* Location Tabs */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-2 grid grid-cols-4 gap-2 w-full">
+            <div className="bg-white border border-gray-200 rounded-2xl p-2 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full">
               {keyMarkets.map((market, index) => (
                 <button
                   key={market.city}

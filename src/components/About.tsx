@@ -39,7 +39,7 @@ export default function About() {
               {/* Center content */}
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center p-8 bg-white rounded-2xl shadow-mw-lg border border-mw-gray-200">
-                  <div className="text-5xl font-bold text-mw-blue-600 mb-2">15+</div>
+                  <div className="text-3xl md:text-5xl font-bold text-mw-blue-600 mb-2">15+</div>
                   <div className="text-mw-gray-500 text-sm">{t('landingPage.about.features.yearsOfExcellence')}</div>
                 </div>
               </div>
@@ -82,7 +82,7 @@ export default function About() {
               {t('landingPage.about.description2')}
             </p>
 
-            <div className="grid grid-cols-2 gap-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
               {[
                 { label: t('landingPage.about.features.dataDriven.label'), desc: t('landingPage.about.features.dataDriven.desc') },
                 { label: t('landingPage.about.features.fullService.label'), desc: t('landingPage.about.features.fullService.desc') },

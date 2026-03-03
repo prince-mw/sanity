@@ -398,7 +398,7 @@ export default function MWInfluencePage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
                     </svg>
                   </div>
-                  <div className="grid grid-cols-4 gap-2">
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                     <div className="px-2 py-1 bg-white/10 rounded text-white/70 text-xs text-center">Inventory</div>
                     <div className="px-2 py-1 bg-white/10 rounded text-white/70 text-xs text-center">Booking</div>
                     <div className="px-2 py-1 bg-white/10 rounded text-white/70 text-xs text-center">Creative</div>
@@ -659,7 +659,7 @@ export default function MWInfluencePage() {
               <div className="space-y-4">
                 <div className="text-center text-xs text-gray-500 mb-2">API Gateway</div>
                 <div className="h-1 bg-blue-200 rounded" />
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <div className="bg-blue-100 rounded-lg p-4 text-center">
                     <div className="text-blue-700 font-semibold text-sm">Planner</div>
                   </div>
@@ -675,7 +675,7 @@ export default function MWInfluencePage() {
                 </div>
                 <div className="h-1 bg-gray-200 rounded" />
                 <div className="text-center text-xs text-gray-500 mb-2">Core Services</div>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                   <div className="bg-gray-100 rounded-lg p-3 text-center">
                     <div className="text-gray-600 text-xs">User Mgmt</div>
                   </div>

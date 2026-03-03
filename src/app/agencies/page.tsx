@@ -93,7 +93,7 @@ Offer your clients a complete out of home solution under your own brand. Moving 
               className="relative flex items-center justify-center"
               style={{ perspective: '1000px' }}
             >
-              <div className="relative w-[350px] h-[350px] md:w-[450px] md:h-[450px]">
+              <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px]">
                 {/* Isometric City Container */}
                 <motion.div
                   className="absolute inset-0"

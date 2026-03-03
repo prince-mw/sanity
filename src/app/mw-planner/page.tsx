@@ -91,100 +91,6 @@ const PresentationChartIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-// Trust bar client logos with real SVG logos
-const clientLogos = [
-  { 
-    name: 'Samsung',
-    logo: (
-      <svg viewBox="0 0 100 16" className="h-5 w-auto">
-        <path fill="#1428A0" d="M0 8c0-4.4 3.6-8 8-8h84c4.4 0 8 3.6 8 8s-3.6 8-8 8H8c-4.4 0-8-3.6-8-8z"/>
-        <text x="50" y="12" fill="#fff" fontSize="10" fontWeight="bold" textAnchor="middle" fontFamily="Arial">SAMSUNG</text>
-      </svg>
-    )
-  },
-  { 
-    name: 'HSBC',
-    logo: (
-      <svg viewBox="0 0 100 32" className="h-6 w-auto">
-        <polygon fill="#DB0011" points="0,0 25,16 0,32"/>
-        <polygon fill="#DB0011" points="25,0 50,16 25,32"/>
-        <polygon fill="#DB0011" points="50,0 75,16 50,32"/>
-        <polygon fill="#DB0011" points="75,0 100,16 75,32"/>
-      </svg>
-    )
-  },
-  { 
-    name: 'Unilever',
-    logo: (
-      <svg viewBox="0 0 100 40" className="h-8 w-auto">
-        <path fill="#1F36C7" d="M50 5C25.1 5 5 15.1 5 27.5c0 2.7 1 5.4 2.8 7.8l8.5-2.5c-.9-1.6-1.3-3.4-1.3-5.3 0-9.6 15.7-17.5 35-17.5s35 7.9 35 17.5c0 1.9-.5 3.7-1.3 5.3l8.5 2.5C94 30.4 95 27.7 95 25 95 15.1 74.9 5 50 5z"/>
-        <text x="50" y="32" fill="#1F36C7" fontSize="16" fontWeight="bold" textAnchor="middle" fontFamily="Arial">U</text>
-      </svg>
-    )
-  },
-  { 
-    name: "McDonald's",
-    logo: (
-      <svg viewBox="0 0 88 72" className="h-8 w-auto">
-        <path fill="#FFC72C" d="M0 50L14 0h12L12 50c-2 7-6 12.5-12 16v-7.5c3-2 5-5 6-8.5zM62 0h12l14 50c1.2 4 3.3 6.8 6 8.5V66c-6-3.5-10-9-12-16L62 0z"/>
-      </svg>
-    )
-  },
-  { 
-    name: 'Toyota',
-    logo: (
-      <svg viewBox="0 0 100 65" className="h-7 w-auto">
-        <ellipse cx="50" cy="32" rx="48" ry="30" fill="none" stroke="#CC0000" strokeWidth="3"/>
-        <ellipse cx="50" cy="32" rx="20" ry="12" fill="none" stroke="#CC0000" strokeWidth="2"/>
-        <path fill="none" stroke="#CC0000" strokeWidth="2" d="M30 32c0-16 8.9-29 20-29M50 3c11.1 0 20 13 20 29M70 32c0 16-8.9 29-20 29"/>
-      </svg>
-    )
-  },
-  { 
-    name: 'Nike',
-    logo: (
-      <svg viewBox="0 0 100 35" className="h-6 w-auto">
-        <path fill="#111" d="M21 0c-1.3 4.5-2.9 9-4.8 13.5C10.9 25.5 3.8 32.1 0 35c6.2-1.1 13.9-5.3 20.3-12.5 4.9-5.5 8.8-11.8 11.7-18.5H21z"/>
-        <path fill="#111" d="M100 0H21c2.9 6.7 6.8 13 11.7 18.5C39 25.7 46.7 29.9 52.9 31c-3.8-2.9-10.9-9.5-16.2-21.5C34.9 5 33.3.5 32 0H100z"/>
-      </svg>
-    )
-  },
-  { 
-    name: "L'Oréal",
-    logo: (
-      <svg viewBox="0 0 100 30" className="h-5 w-auto">
-        <text x="50" y="24" fill="#000" fontSize="24" fontWeight="bold" textAnchor="middle" fontFamily="serif" letterSpacing="-1">L&apos;ORÉAL</text>
-      </svg>
-    )
-  },
-  { 
-    name: 'Coca-Cola',
-    logo: (
-      <svg viewBox="0 0 100 32" className="h-6 w-auto">
-        <path fill="#E61A22" d="M17.7 2.7c-1.1 0-2.1.3-3.1 1-1.5 1-2.3 2.5-2.3 4.4 0 2 .8 3.5 2.3 4.5 1 .7 2 1 3.1 1 1.1 0 2.1-.3 3.1-1 1.5-1 2.3-2.5 2.3-4.5 0-2-.8-3.4-2.3-4.4-1-.7-2-1-3.1-1zm0 8.3c-.9 0-1.7-.3-2.3-1-.6-.6-.9-1.4-.9-2.4 0-1 .3-1.8.9-2.4.6-.6 1.4-1 2.3-1 .9 0 1.7.3 2.3 1 .6.6.9 1.4.9 2.4 0 1-.3 1.8-.9 2.4-.6.7-1.4 1-2.3 1z"/>
-      </svg>
-    )
-  },
-  { 
-    name: 'P&G',
-    logo: (
-      <svg viewBox="0 0 80 40" className="h-8 w-auto">
-        <circle cx="40" cy="20" r="18" fill="#003DA5"/>
-        <text x="40" y="27" fill="#fff" fontSize="16" fontWeight="bold" textAnchor="middle" fontFamily="serif">P&amp;G</text>
-      </svg>
-    )
-  },
-  { 
-    name: 'Nestlé',
-    logo: (
-      <svg viewBox="0 0 100 40" className="h-7 w-auto">
-        <text x="50" y="28" fill="#000" fontSize="20" fontWeight="bold" textAnchor="middle" fontFamily="serif">Nestlé</text>
-        <path d="M30 35c5-2 10-3 20-3s15 1 20 3" stroke="#666" strokeWidth="1" fill="none"/>
-      </svg>
-    )
-  },
-]
-
 // Integration partners for Don't Replace. Integrate. section
 const integrations = [
   { name: 'VIOOH', category: 'SSP', logo: '/assets/images/integrations/viooh.svg' },
@@ -361,23 +267,7 @@ export default function MWPlanner() {
                 </button>
               </div>
 
-              {/* Trust Stats */}
-              <div className="flex items-center gap-8">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">500+</div>
-                  <div className="text-blue-200/70 text-sm">Enterprise Teams</div>
-                </div>
-                <div className="w-px h-12 bg-white/20"></div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">$2.4B+</div>
-                  <div className="text-blue-200/70 text-sm">Ad Spend Optimized</div>
-                </div>
-                <div className="w-px h-12 bg-white/20"></div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-white">156%</div>
-                  <div className="text-blue-200/70 text-sm">Avg. ROAS Lift</div>
-                </div>
-              </div>
+
             </motion.div>
 
             {/* Right Content - Dashboard Preview */}
@@ -420,7 +310,7 @@ export default function MWPlanner() {
                   </div>
 
                   {/* Stats Row */}
-                  <div className="grid grid-cols-3 gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                     {[
                       { label: 'ROAS', value: '4.2x', change: '+18%' },
                       { label: 'CPA', value: '$12.40', change: '-24%' },
@@ -447,37 +337,6 @@ export default function MWPlanner() {
                 </div>
               </div>
             </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* Trust Bar - Logo Marquee */}
-      <section className="py-12 bg-gray-50 border-y border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="text-center mb-8"
-          >
-            <p className="text-gray-500 text-sm font-medium uppercase tracking-wider">
-              Trusted by 500+ leading brands and agencies worldwide
-            </p>
-          </motion.div>
-
-          {/* Logo Marquee */}
-          <div className="relative overflow-hidden">
-            <div className="flex animate-marquee gap-12 items-center">
-              {[...clientLogos, ...clientLogos].map((client, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 h-12 w-32 bg-white rounded-lg shadow-sm flex items-center justify-center hover:shadow-md transition-shadow px-4"
-                >
-                  {client.logo}
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -848,7 +707,7 @@ export default function MWPlanner() {
                   <div className="flex flex-col md:flex-row items-center gap-8">
                     {/* Metric */}
                     <div className="text-center md:text-left">
-                      <div className="text-6xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
+                      <div className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
                         {testimonial.metric}
                       </div>
                       <div className="text-blue-200/70">Improvement</div>

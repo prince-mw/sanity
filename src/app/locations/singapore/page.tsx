@@ -386,7 +386,7 @@ export default function SingaporePage() {
               className="relative flex items-center justify-center"
               style={{ perspective: '1000px' }}
             >
-              <div className="relative w-[350px] h-[380px] md:w-[420px] md:h-[420px]">
+              <div className="relative w-[280px] h-[300px] sm:w-[350px] sm:h-[380px] md:w-[420px] md:h-[420px]">
                 {/* Water Reflection */}
                 <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-blue-500/30 to-transparent blur-sm" />
                 <motion.div
@@ -600,7 +600,7 @@ export default function SingaporePage() {
             </div>
 
             {/* Location Tabs */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-2 grid grid-cols-4 gap-2 w-full">
+            <div className="bg-white border border-gray-200 rounded-2xl p-2 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full">
               {keyMarkets.map((market, index) => (
                 <button
                   key={market.city}

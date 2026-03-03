@@ -357,7 +357,7 @@ export default function IndonesiaPage() {
               className="relative flex items-center justify-center"
               style={{ perspective: '1000px' }}
             >
-              <div className="relative w-[350px] h-[400px] md:w-[400px] md:h-[450px]">
+              <div className="relative w-[280px] h-[320px] sm:w-[350px] sm:h-[400px] md:w-[400px] md:h-[450px]">
                 {/* Base Glow */}
                 <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-60 h-20 bg-gradient-to-t from-yellow-500/20 to-transparent blur-2xl" />
                 
@@ -534,7 +534,7 @@ export default function IndonesiaPage() {
             </div>
 
             {/* Location Tabs */}
-            <div className="bg-white border border-gray-200 rounded-2xl p-2 grid grid-cols-4 gap-2 w-full">
+            <div className="bg-white border border-gray-200 rounded-2xl p-2 grid grid-cols-2 sm:grid-cols-4 gap-2 w-full">
               {keyMarkets.map((market, index) => (
                 <button
                   key={market.city}

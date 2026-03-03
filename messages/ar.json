@@ -330,6 +330,9 @@
       "paragraph1": "الإعلانات الخارجية لم تعد وسائط ثابتة. إنها {{highlight}}'منصة الوسائط المتصلة الرائدة في العالم'{{/highlight}} التي تقود التأثير في العالم الحقيقي. من تايمز سكوير إلى أورشارد رود، كل شاشة ولافتة ومساحة تصبح نقطة اتصال قابلة للقياس يمكن للعلامات التجارية تفعيلها بدقة رقمية.",
       "paragraph2": "ولدت في آسيا وبنيت للعالم، تقنيتنا توحد المخزون الخارجي المجزأ في نظام بيئي واحد حيث يمكن للمعلنين {{highlight}}التخطيط والشراء والقياس والوصول والتأثير{{/highlight}} على الحملات في الوقت الفعلي.",
       "paragraph3": "نحن لا نضع الإعلانات في الخارج فحسب، بل نحول المدن إلى شبكات وسائط ذكية توفر {{highlight}}الاهتمام والصلة والتأثير{{/highlight}} في كل مكان تتحرك فيه الجماهير.",
+      "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
+      "paragraph5": "Every screen becomes part of a wider journey.\nEvery city becomes a connected media landscape.\nEvery campaign becomes measurable across borders.",
+      "paragraph6": "We do not just operate globally. We understand how cities move, how people travel, and how brands must adapt in every market. {{highlight}}That is the explorer spirit behind our technology.{{/highlight}}",
       "stats": {
         "countries": "+30",
         "countriesLabel": "دولة",
@@ -345,6 +348,7 @@
       "description": "سواء كنت علامة تجارية أو مالك وسائط أو وكالة، نقدم الأدوات والتقنية التي تحتاجها للنجاح في منظومة DOOH.",
       "brand": {
         "title": "العلامة التجارية",
+        "subtitle": "Turn Attention Into Real World Growth",
         "description": "عزز رسالة علامتك التجارية عبر مخزون الإعلانات الخارجية المميزة. اصل إلى جمهورك المستهدف على نطاق واسع من خلال حملات مدفوعة بالبيانات تزيد الوعي والتفاعل.",
         "features": {
           "0": "إدارة حملات متعددة القنوات",
@@ -356,6 +360,7 @@
       },
       "mediaOwners": {
         "title": "مالكو الوسائط",
+        "subtitle": "Unlock the Global Value of Your Inventory",
         "description": "حقق أقصى قيمة لمخزونك من خلال منصتنا البرمجية المتقدمة. تواصل مع معلنين مميزين وحسّن العائد عبر جميع أصول OOH الرقمية والتقليدية.",
         "features": {
           "0": "وصول للسوق البرمجي",
@@ -367,6 +372,7 @@
       },
       "agencies": {
         "title": "الوكالات",
+        "subtitle": "Navigate Complexity With Clarity",
         "description": "بسّط عملياتك في DOOH بأدوات مؤسسية. أدر حملات عملاء متعددين، واحصل على مخزون مميز، وقدم نتائج استثنائية من خلال منصتنا للوكالات.",
         "features": {
           "0": "إدارة حملات متعددة العملاء",
@@ -806,6 +812,31 @@
         "email": "hello@movingwalls.com",
         "phone": "+1 (888) MW-WALLS"
       }
+    },
+    "platformEcosystem": {
+      "badge": "MW Platform Ecosystem",
+      "title": "Where Movement Meets Media",
+      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "cards": {
+        "data": {
+          "label": "Data Inputs",
+          "description": "Audience signals, location and mobility patterns, traffic flows, weather triggers, demographics, points of interest, event calendars, and first party and third party data."
+        },
+        "execute": {
+          "label": "Execute Locally",
+          "description": "Campaigns are planned centrally and executed locally, measured consistently across regions, and refined continuously."
+        },
+        "measure": {
+          "label": "Measure & Refine",
+          "description": "Track performance across markets with unified analytics, optimise in real time, and build learnings into every future campaign."
+        }
+      },
+      "scenario": {
+        "label": "Imagine This",
+        "description": "A retail brand expanding into a new city. Screens activate within defined trade areas when footfall rises and contextual conditions align with demand. Creative adapts to local moments while maintaining global brand consistency. Spend follows opportunity in real time."
+      },
+      "quote": "This is how outdoor evolves from static space into a responsive global network.",
+      "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
     }
   }
 }
