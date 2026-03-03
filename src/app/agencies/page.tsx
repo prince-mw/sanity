@@ -66,37 +66,6 @@ export default function AgenciesPage() {
               <p className="text-lg md:text-xl text-blue-100 max-w-xl mb-8 leading-relaxed">
                 Offer clients a complete OOH solution under your brand. Access global inventory, AI planning, and real-time analytics.
               </p>
-              
-              {/* Stats Row */}
-              <div className="flex flex-wrap gap-6 mb-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-blue-300">150+</div>
-                  <div className="text-sm text-blue-200">Agency Partners</div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-blue-300">68%</div>
-                  <div className="text-sm text-blue-200">Time Saved</div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-blue-300">$500M+</div>
-                  <div className="text-sm text-blue-200">Media Managed</div>
-                </motion.div>
-              </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link
@@ -1432,86 +1401,6 @@ export default function AgenciesPage() {
                   {activeTab === 'digital' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>}
                   {activeTab === 'fullservice' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>}
                   {activeTab === 'boutique' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Case Study Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-3xl p-12 shadow-2xl border border-gray-200"
-          >
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold mb-6">
-                  FEATURED CASE STUDY
-                </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  How MediaMax Agency Tripled OOH Revenue
-                </h3>
-                <p className="text-lg text-gray-700 mb-6">
-                  MediaMax Agency partnered with Moving Walls to transform their OOH capabilities. Using our white-label platform, they scaled from 5 to 50+ active OOH clients within 12 months.
-                </p>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">3x revenue growth in 12 months</div>
-                      <div className="text-sm text-gray-600">OOH became their fastest-growing service</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">50+ active OOH clients</div>
-                      <div className="text-sm text-gray-600">Scaled from just 5 clients initially</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">70% time saved on operations</div>
-                      <div className="text-sm text-gray-600">Automated workflows and reporting</div>
-                    </div>
-                  </div>
-                </div>
-                <Link
-                  href="/case-studies"
-                  className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all"
-                >
-                  Read Full Case Study
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-              </div>
-              <div className="relative">
-                <div className="rounded-2xl overflow-hidden shadow-2xl">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&h=450&fit=crop"
-                    alt="MediaMax Agency Success Story"
-                    className="w-full h-[400px] object-cover"
-                  />
                 </div>
               </div>
             </div>

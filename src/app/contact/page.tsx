@@ -231,26 +231,6 @@ export default function ContactPage() {
                 Watch Platform Demo
               </button>
             </div>
-            
-            {/* Trust Indicators */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-mw-blue-600 mb-1">500+</div>
-                <div className="text-sm text-mw-gray-600">Global Clients</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-mw-blue-600 mb-1">$2.8B+</div>
-                <div className="text-sm text-mw-gray-600">Ad Spend Managed</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-mw-blue-600 mb-1">94.7%</div>
-                <div className="text-sm text-mw-gray-600">Client Satisfaction</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-mw-blue-600 mb-1">9</div>
-                <div className="text-sm text-mw-gray-600">Global Offices</div>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>

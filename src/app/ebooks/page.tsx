@@ -498,20 +498,6 @@ export default function EbooksPage() {
             <p className="text-xl text-mw-blue-100 mb-8">
               Download our exclusive e-books and become an expert in Out-of-Home advertising. Learn from industry leaders with comprehensive guides, whitepapers, and playbooks.
             </p>
-            <div className="flex flex-wrap gap-8 justify-center">
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white">{ebooks.length}</div>
-                <div className="text-mw-blue-200 text-sm">E-Books</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white">50K+</div>
-                <div className="text-mw-blue-200 text-sm">Downloads</div>
-              </div>
-              <div className="text-center">
-                <div className="text-4xl font-bold text-white">{categories.length - 1}</div>
-                <div className="text-mw-blue-200 text-sm">Categories</div>
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>

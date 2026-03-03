@@ -114,26 +114,6 @@ export default function WhitepapersPage() {
               In-depth research, industry insights, and comprehensive guides to help you stay ahead 
               in the evolving advertising landscape.
             </p>
-
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-8 max-w-2xl mx-auto">
-              {[
-                { number: "30+", label: "Whitepapers" },
-                { number: "50K+", label: "Downloads" },
-                { number: "100%", label: "Free Access" }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl font-bold text-mw-blue-600 mb-1">{stat.number}</div>
-                  <div className="text-sm text-mw-gray-600">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
         </div>
       </section>

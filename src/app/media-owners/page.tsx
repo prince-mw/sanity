@@ -69,37 +69,6 @@ export default function MediaOwnersPage() {
               <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed">
                 Connect your inventory to premium demand sources and automate your OOH sales operations.
               </p>
-              
-              {/* Stats Row */}
-              <div className="flex flex-wrap gap-6 mb-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-cyan-300">500K+</div>
-                  <div className="text-sm text-mw-blue-200">Screens Connected</div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-cyan-300">95%</div>
-                  <div className="text-sm text-mw-blue-200">Fill Rate</div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl md:text-4xl font-bold text-cyan-300">180+</div>
-                  <div className="text-sm text-mw-blue-200">Countries</div>
-                </motion.div>
-              </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link

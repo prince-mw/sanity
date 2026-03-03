@@ -267,30 +267,6 @@ export default function OOHFormatsPage() {
         </div>
       </section>
 
-      {/* Quick Stats */}
-      <motion.section initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer} className="py-12 bg-gray-50 border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <motion.div variants={staggerItem} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">20+</div>
-              <div className="text-gray-600">Format Types</div>
-            </motion.div>
-            <motion.div variants={staggerItem} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">6</div>
-              <div className="text-gray-600">Categories</div>
-            </motion.div>
-            <motion.div variants={staggerItem} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">500K+</div>
-              <div className="text-gray-600">Global Screens</div>
-            </motion.div>
-            <motion.div variants={staggerItem} className="text-center">
-              <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">50+</div>
-              <div className="text-gray-600">Countries</div>
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
 
 
       {/* Format Sections - Alternating Layout */}

@@ -106,27 +106,6 @@ export default function CaseStudiesPage() {
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
               Discover how leading brands achieve exceptional results with Moving Walls's advertising solutions.
             </p>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
-              {[
-                { number: "500+", label: "Success Stories" },
-                { number: "275%", label: "Avg ROI" },
-                { number: "98%", label: "Client Retention" },
-                { number: "$2B+", label: "Ad Spend Managed" }
-              ].map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                  className="text-center"
-                >
-                  <div className="text-3xl font-bold text-mw-blue-600 mb-1">{stat.number}</div>
-                  <div className="text-sm text-mw-gray-600">{stat.label}</div>
-                </motion.div>
-              ))}
-            </div>
           </motion.div>
         </div>
       </section>
