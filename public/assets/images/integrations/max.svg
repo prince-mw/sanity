@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <defs>
+    <linearGradient id="maxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF4D4D"/>
+      <stop offset="100%" style="stop-color:#FF8C00"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="80" fill="white" rx="8"/>
+  <!-- Geometric M icon -->
+  <polygon points="20,56 32,24 44,44 56,24 68,56" fill="none" stroke="url(#maxGrad)" stroke-width="3.5" stroke-linejoin="round"/>
+  <text x="78" y="52" font-family="'Segoe UI', Arial, sans-serif" font-size="38" font-weight="900" letter-spacing="4" fill="#FF4D4D">AX</text>
+  <text x="78" y="28" font-family="'Segoe UI', Arial, sans-serif" font-size="8" font-weight="500" letter-spacing="2" fill="#888">MOVING WALLS</text>
+</svg>

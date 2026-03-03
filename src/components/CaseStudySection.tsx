@@ -33,7 +33,7 @@ export default function CaseStudySection() {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto"
         >
-          <Link href="/resources/case-studies" className="group block">
+          <Link href="/case-studies" className="group block">
             <div className="bg-white rounded-2xl shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 overflow-hidden">
               {/* Featured Image / Gradient Header */}
               <div className="h-64 bg-gradient-to-br from-mw-blue-600 via-mw-blue-500 to-purple-600 relative overflow-hidden">

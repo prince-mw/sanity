@@ -189,7 +189,7 @@ export default function TestimonialSection() {
           className="text-center mt-12"
         >
           <a 
-            href="/resources/case-studies"
+            href="/case-studies"
             className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white font-semibold rounded-lg hover:bg-mw-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
           >
             View All Success Stories

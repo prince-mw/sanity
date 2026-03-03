@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 80">
+  <defs>
+    <linearGradient id="mediamathGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#0075C9"/>
+      <stop offset="100%" style="stop-color:#00A3E0"/>
+    </linearGradient>
+  </defs>
+  <rect width="220" height="80" fill="white" rx="8"/>
+  <!-- Abstract M with math angle -->
+  <path d="M14 54 L22 26 L30 42 L38 26 L46 54" fill="none" stroke="url(#mediamathGrad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M42 26 L52 40 L42 54" fill="none" stroke="#0075C9" stroke-width="2" stroke-linecap="round" opacity="0.4"/>
+  <text x="60" y="38" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="400" letter-spacing="1" fill="#0075C9">MEDIA</text>
+  <text x="60" y="55" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="2" fill="#0075C9">MATH</text>
+</svg>

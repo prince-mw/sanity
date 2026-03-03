@@ -61,7 +61,7 @@ export default function GlobalCTA() {
               Get in Touch
             </Link>
             <Link
-              href="/resources/case-studies"
+              href="/case-studies"
               className="inline-flex items-center gap-2 px-8 py-4 bg-transparent text-white font-semibold rounded-lg border-2 border-white/30 hover:bg-white/10 hover:border-white/50 transition-all duration-300"
             >
               View Success Stories

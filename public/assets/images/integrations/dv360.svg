@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <rect width="200" height="80" fill="white" rx="8"/>
+  <!-- Google-style multicolor icon -->
+  <circle cx="30" cy="40" r="14" fill="none" stroke="#4285F4" stroke-width="4" stroke-dasharray="22 66"/>
+  <circle cx="30" cy="40" r="14" fill="none" stroke="#EA4335" stroke-width="4" stroke-dasharray="22 66" stroke-dashoffset="-22"/>
+  <circle cx="30" cy="40" r="14" fill="none" stroke="#FBBC05" stroke-width="4" stroke-dasharray="22 66" stroke-dashoffset="-44"/>
+  <circle cx="30" cy="40" r="14" fill="none" stroke="#34A853" stroke-width="4" stroke-dasharray="22 66" stroke-dashoffset="-66"/>
+  <text x="52" y="36" font-family="'Google Sans', 'Product Sans', Arial, sans-serif" font-size="13" font-weight="500" fill="#5F6368">Display &amp;</text>
+  <text x="52" y="52" font-family="'Google Sans', 'Product Sans', Arial, sans-serif" font-size="13" font-weight="500" fill="#5F6368">Video </text>
+  <text x="99" y="52" font-family="'Google Sans', 'Product Sans', Arial, sans-serif" font-size="13" font-weight="700" fill="#4285F4">360</text>
+</svg>

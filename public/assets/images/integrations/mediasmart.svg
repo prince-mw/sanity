@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 80">
+  <defs>
+    <linearGradient id="mediasmartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00C389"/>
+      <stop offset="100%" style="stop-color:#00E5A0"/>
+    </linearGradient>
+  </defs>
+  <rect width="220" height="80" fill="white" rx="8"/>
+  <!-- Signal/mobile icon -->
+  <rect x="18" y="44" width="5" height="12" rx="2" fill="#00C389" opacity="0.4"/>
+  <rect x="26" y="38" width="5" height="18" rx="2" fill="#00C389" opacity="0.6"/>
+  <rect x="34" y="32" width="5" height="24" rx="2" fill="#00C389" opacity="0.8"/>
+  <rect x="42" y="26" width="5" height="30" rx="2" fill="url(#mediasmartGrad)"/>
+  <text x="56" y="38" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="400" letter-spacing="0.5" fill="#888">media</text>
+  <text x="56" y="54" font-family="'Segoe UI', Arial, sans-serif" font-size="20" font-weight="800" letter-spacing="1" fill="#00C389">smart</text>
+</svg>

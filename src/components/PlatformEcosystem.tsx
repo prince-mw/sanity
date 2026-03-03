@@ -136,13 +136,13 @@ export default function PlatformEcosystem() {
   ];
 
   const products = [
-    { icon: <PlannerIcon />, label: "MW Planner", href: "/products/mw-planner" },
-    { icon: <MeasureProductIcon />, label: "MW Measure", href: "/products/mw-measure" },
-    { icon: <ReachIcon />, label: "MW Influence", href: "/products/mw-influence" },
-    { icon: <ActivateIcon />, label: "MW Activate", href: "/products/mw-activate" },
-    { icon: <ScienceIcon />, label: "MW Science", href: "/products/mw-science" },
-    { icon: <StudioIcon />, label: "MW Studio", href: "/products/mw-studio" },
-    { icon: <MarketplaceIcon />, label: "MW Market", href: "/products/mw-market" },
+    { icon: <PlannerIcon />, label: "MW Planner", href: "/mw-planner" },
+    { icon: <MeasureProductIcon />, label: "MW Measure", href: "/mw-measure" },
+    { icon: <ReachIcon />, label: "MW Influence", href: "/mw-influence" },
+    { icon: <ActivateIcon />, label: "MW Activate", href: "/mw-activate" },
+    { icon: <ScienceIcon />, label: "MW Science", href: "/mw-science" },
+    { icon: <StudioIcon />, label: "MW Studio", href: "/mw-studio" },
+    { icon: <MarketplaceIcon />, label: "MW Market", href: "/mw-market" },
   ];
 
   return (

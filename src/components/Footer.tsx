@@ -7,39 +7,33 @@ import { useLocale } from "@/i18n/LocaleContext";
 
 const footerLinks = {
   company: [
-    { name: "Our Story", href: "/about/our-story" },
-    { name: "Leadership", href: "/about/leadership" },
+    { name: "Our Story", href: "/our-story" },
+    { name: "Leadership", href: "/leadership" },
     { name: "Office Locations", href: "/locations" },
-    { name: "Careers", href: "/about/careers" },
+    { name: "Careers", href: "/careers" },
     { name: "Contact Us", href: "/contact" },
   ],
   solutions: [
-    { name: "Brands", href: "/solutions/brands" },
-    { name: "Media Owners", href: "/solutions/media-owners" },
-    { name: "Agencies", href: "/solutions/agencies" },
+    { name: "Brands", href: "/brands" },
+    { name: "Media Owners", href: "/media-owners" },
+    { name: "Agencies", href: "/agencies" },
   ],
   products: [
-    { name: "MW Planner", href: "/products/mw-planner" },
-    { name: "MW Measure", href: "/products/mw-measure" },
-    { name: "MW Influence", href: "/products/mw-influence" },
-    { name: "MW Activate", href: "/products/mw-activate" },
-    { name: "MW Science", href: "/products/mw-science" },
-    { name: "MW Studio", href: "/products/mw-studio" },
-    { name: "MW Market", href: "/products/mw-market" },
-  ],
-  support: [
-    { name: "Help Center", href: "https://help.movingwalls.com/" },
-    { name: "Documentation", href: "https://help.movingwalls.com/" },
-    { name: "API Reference", href: "#" },
+    { name: "MW Planner", href: "/mw-planner" },
+    { name: "MW Measure", href: "/mw-measure" },
+    { name: "MW Influence", href: "/mw-influence" },
+    { name: "MW Activate", href: "/mw-activate" },
+    { name: "MW Science", href: "/mw-science" },
+    { name: "MW Studio", href: "/mw-studio" },
+    { name: "MW Market", href: "/mw-market" },
   ],
   resources: [
     { name: "OOH Formats", href: "/ooh-formats" },
     { name: "E-Books", href: "/ebooks" },
-    { name: "Blog", href: "/resources/blog" },
-    { name: "Case Studies", href: "/resources/case-studies" },
-    { name: "Press & News", href: "/about/press-news" },
-    { name: "Help Center", href: "/resources/help-center" },
-    { name: "Documentation", href: "/resources/documentation" },
+    { name: "Blog", href: "/blog" },
+    { name: "Case Studies", href: "/case-studies" },
+    { name: "Press & News", href: "/press-news" },
+    { name: "Events", href: "/events" },
   ],
   billboardLocations: [
     { name: "Malaysia", href: "/locations/malaysia" },
@@ -199,7 +193,7 @@ export default function Footer() {
           </div>
 
           {/* Links Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
             {/* Company */}
             <div>
               <h4 className="text-white font-bold mb-6 text-lg">Company</h4>
@@ -239,23 +233,6 @@ export default function Footer() {
               <h4 className="text-white font-bold mb-6 text-lg">Products</h4>
               <ul className="space-y-3">
                 {footerLinks.products.map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="text-mw-gray-300 hover:text-white transition-colors flex items-center group"
-                    >
-                      <span className="group-hover:translate-x-1 transition-transform">{link.name}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            {/* Support */}
-            <div>
-              <h4 className="text-white font-bold mb-6 text-lg">Support</h4>
-              <ul className="space-y-3">
-                {footerLinks.support.map((link) => (
                   <li key={link.name}>
                     <Link
                       href={link.href}

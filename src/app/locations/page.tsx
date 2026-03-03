@@ -263,7 +263,7 @@ export default function LocationsPage() {
                 </svg>
               </Link>
               <Link
-                href="/products/mw-planner"
+                href="/mw-planner"
                 className="inline-flex items-center justify-center px-8 py-3 border-2 border-mw-blue-600 text-mw-blue-600 font-semibold rounded-lg hover:bg-mw-blue-50 transition-colors"
               >
                 Explore MW Planner

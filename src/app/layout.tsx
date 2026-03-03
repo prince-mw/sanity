@@ -4,7 +4,6 @@ import Script from "next/script";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GlobalCTA from "@/components/GlobalCTA";
-import AIAssistant from "@/components/AIAssistant";
 import CookieConsent from "@/components/CookieConsent";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import "./globals.css";
@@ -211,7 +210,6 @@ export default function RootLayout({
           </main>
           <GlobalCTA />
           <Footer />
-          <AIAssistant />
           <CookieConsent />
         </LocaleProvider>
       </body>

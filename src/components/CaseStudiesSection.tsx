@@ -12,7 +12,7 @@ const caseStudies = [
     image: "https://stg.movingwalls.com/wp-content/uploads/2026/02/fc-media-advertising-dooh-screens.webp",
     category: "Retail",
     metrics: "25% Brand Lift",
-    href: "/resources/case-studies/fc-media-ooh-campaign-measurement-morocco"
+    href: "/case-studies/fc-media-ooh-campaign-measurement-morocco"
   },
   {
     id: 2,
@@ -21,7 +21,7 @@ const caseStudies = [
     image: "https://stg.movingwalls.com/wp-content/uploads/2026/01/real-world-audience-intelligence.webp",
     category: "FMCG",
     metrics: "3M+ Views",
-    href: "/resources/case-studies/fintech-dooh-high-intent-attention"
+    href: "/case-studies/fintech-dooh-high-intent-attention"
   },
   {
     id: 3,
@@ -30,7 +30,7 @@ const caseStudies = [
     image: "https://stg.movingwalls.com/wp-content/uploads/2025/12/australian-ooh-revenue-results.webp",
     category: "Tourism",
     metrics: "284K Reached",
-    href: "/resources/case-studies/luxury-hotel-programmatic-dooh-campaign"
+    href: "/case-studies/luxury-hotel-programmatic-dooh-campaign"
   },
   {
     id: 4,
@@ -39,7 +39,7 @@ const caseStudies = [
     image: "https://stg.movingwalls.com/wp-content/uploads/2025/10/calvin-klein-dooh-campaign-vietnam.webp",
     category: "Retail",
     metrics: "1.56M Impressions",
-    href: "/resources/case-studies/calvin-klein-dooh-campaign-vietnam"
+    href: "/case-studies/calvin-klein-dooh-campaign-vietnam"
   }
 ];
 
@@ -110,7 +110,7 @@ export default function CaseStudiesSection() {
                 
                 {/* CTA - Links to main case studies page */}
                 <Link 
-                  href="/resources/case-studies"
+                  href="/case-studies"
                   className="inline-flex items-center gap-2 text-mw-blue-600 font-semibold text-sm group-hover:gap-3 transition-all duration-300"
                 >
                   Read More
@@ -132,7 +132,7 @@ export default function CaseStudiesSection() {
           className="text-center mt-12"
         >
           <Link
-            href="/resources/case-studies"
+            href="/case-studies"
             className="inline-flex items-center gap-2 px-8 py-4 bg-mw-gray-900 text-white font-semibold rounded-full hover:bg-mw-gray-800 transition-colors duration-300"
           >
             View All Case Studies

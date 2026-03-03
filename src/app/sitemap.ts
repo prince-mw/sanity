@@ -13,59 +13,60 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/contact',
     '/events',
     '/locations',
-    '/partners',
     '/privacy',
     '/cookies',
+    '/ebooks',
+    '/ooh-formats',
+    '/terms',
   ]
 
   // About pages
   const aboutPages = [
-    '/about/our-story',
-    // '/about/our-journey',
-    '/about/leadership',
-    '/about/careers',
-    '/about/press-news',
+    '/our-story',
+    // '/our-journey',
+    '/leadership',
+    '/careers',
+    '/press-news',
   ]
 
   // Products pages
   const productPages = [
-    '/products/mw-planner',
-    '/products/mw-market',
-    '/products/mw-activate',
-    '/products/mw-measure',
-    '/products/mw-influence',
-    '/products/mw-science',
-    '/products/mw-studio',
+    '/mw-planner',
+    '/mw-market',
+    '/mw-activate',
+    '/mw-measure',
+    '/mw-influence',
+    '/mw-science',
+    '/mw-studio',
   ]
 
   // Solutions pages
   const solutionPages = [
-    '/solutions/brands',
-    '/solutions/agencies',
-    '/solutions/media-owners',
-    '/solutions/retail',
-    '/solutions/healthcare',
-    '/solutions/finance',
+    '/brands',
+    '/agencies',
+    '/media-owners',
+    '/retail',
+    '/healthcare',
+    '/finance',
   ]
 
   // Resources pages
   const resourcePages = [
-    '/resources',
-    '/resources/blog',
-    '/resources/case-studies',
-    '/resources/whitepapers',
-    '/resources/documentation',
-    '/resources/help-center',
+    '/blog',
+    '/case-studies',
+    '/whitepapers',
+    '/documentation',
+    '/help-center',
   ]
 
   // Press pages
   const pressPages = [
-    '/press/series-c-funding',
-    '/press/london-headquarters',
-    '/press/ai-powered-audience-targeting',
-    '/press/privacy-first-measurement',
-    '/press/transit-partnership',
-    '/press/adtech-company-of-year',
+    '/series-c-funding',
+    '/london-headquarters',
+    '/ai-powered-audience-targeting',
+    '/privacy-first-measurement',
+    '/transit-partnership',
+    '/adtech-company-of-year',
   ]
 
   // Combine all pages
@@ -82,6 +83,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     url: `${baseUrl}${route}`,
     lastModified: currentDate,
     changeFrequency: route === '' ? 'daily' : 'weekly',
-    priority: route === '' ? 1 : route.includes('/products/') ? 0.9 : 0.8,
+    priority: route === '' ? 1 : route.includes('mw-') ? 0.9 : 0.8,
   }))
 }

@@ -404,7 +404,7 @@ export default function AboutUsPage() {
                 </svg>
               </Link>
               <Link
-                href="/about/our-story"
+                href="/our-story"
                 className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"
               >
                 Read Our Story

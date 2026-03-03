@@ -1132,7 +1132,7 @@ export default function MalaysiaPage() {
                   Moving Walls is a global leader in AdTech and MediaTech, providing enterprise software solutions for Out-of-Home advertising.
                 </p>
                 <Link
-                  href="/resources/case-studies"
+                  href="/case-studies"
                   className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-colors"
                 >
                   View Case Study

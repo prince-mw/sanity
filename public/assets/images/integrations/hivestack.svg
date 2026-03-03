@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80">
+  <defs>
+    <linearGradient id="hiveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF8C00"/>
+      <stop offset="100%" style="stop-color:#FFB800"/>
+    </linearGradient>
+  </defs>
+  <rect width="200" height="80" fill="white" rx="8"/>
+  <!-- Hexagon/hive icon -->
+  <polygon points="30,24 42,18 54,24 54,36 42,42 30,36" fill="url(#hiveGrad)" opacity="0.2"/>
+  <polygon points="30,24 42,18 54,24 54,36 42,42 30,36" fill="none" stroke="url(#hiveGrad)" stroke-width="2.5"/>
+  <polygon points="36,38 44,34 52,38 52,46 44,50 36,46" fill="url(#hiveGrad)" opacity="0.5"/>
+  <text x="62" y="38" font-family="'Segoe UI', Arial, sans-serif" font-size="10" font-weight="600" letter-spacing="1" fill="#FF8C00">HIVE</text>
+  <text x="62" y="54" font-family="'Segoe UI', Arial, sans-serif" font-size="18" font-weight="800" letter-spacing="1" fill="#1A1A2E">STACK</text>
+</svg>

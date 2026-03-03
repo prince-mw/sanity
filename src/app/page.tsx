@@ -33,7 +33,7 @@ export default function Home() {
       <TrustBar />
       <AsianBornGlobal />
       <Services />
-      <Clients />
+      {/* <Clients /> */}
       <PlatformEcosystem />
       <CustomerLogos />
       <TestimonialSection />

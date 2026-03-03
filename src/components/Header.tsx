@@ -13,45 +13,33 @@ const createMegaMenuData = (t: (key: string) => string) => ({
       {
         title: t('megaMenu.solutions.byIndustry'),
         items: [
-          { name: t('megaMenu.solutions.brand.name'), description: t('megaMenu.solutions.brand.description'), href: "/solutions/brands" },
-          { name: t('megaMenu.solutions.mediaOwners.name'), description: t('megaMenu.solutions.mediaOwners.description'), href: "/solutions/media-owners" },
-          { name: t('megaMenu.solutions.agencies.name'), description: t('megaMenu.solutions.agencies.description'), href: "/solutions/agencies" },
+          { name: t('megaMenu.solutions.brand.name'), description: t('megaMenu.solutions.brand.description'), href: "/brands" },
+          { name: t('megaMenu.solutions.mediaOwners.name'), description: t('megaMenu.solutions.mediaOwners.description'), href: "/media-owners" },
+          { name: t('megaMenu.solutions.agencies.name'), description: t('megaMenu.solutions.agencies.description'), href: "/agencies" },
         ],
       },
     ],
-    featured: {
-      title: t('megaMenu.solutions.featured.title'),
-      description: t('megaMenu.solutions.featured.description'),
-      image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop",
-      href: "/resources/case-studies",
-    },
   },
   Products: {
     sections: [
       {
         title: t('megaMenu.products.platformSuite'),
         items: [
-          { name: t('megaMenu.products.planner.name'), description: t('megaMenu.products.planner.description'), href: "/products/mw-planner" },
-          { name: t('megaMenu.products.measure.name'), description: t('megaMenu.products.measure.description'), href: "/products/mw-measure" },
-          { name: t('megaMenu.products.influence.name'), description: t('megaMenu.products.influence.description'), href: "/products/mw-influence" },
-          { name: t('megaMenu.products.activate.name'), description: t('megaMenu.products.activate.description'), href: "/products/mw-activate" },
+          { name: t('megaMenu.products.planner.name'), description: t('megaMenu.products.planner.description'), href: "/mw-planner" },
+          { name: t('megaMenu.products.measure.name'), description: t('megaMenu.products.measure.description'), href: "/mw-measure" },
+          { name: t('megaMenu.products.influence.name'), description: t('megaMenu.products.influence.description'), href: "/mw-influence" },
+          { name: t('megaMenu.products.activate.name'), description: t('megaMenu.products.activate.description'), href: "/mw-activate" },
         ],
       },
       {
         title: t('megaMenu.products.intelligenceSuite'),
         items: [
-          { name: t('megaMenu.products.science.name'), description: t('megaMenu.products.science.description'), href: "/products/mw-science" },
-          { name: t('megaMenu.products.studio.name'), description: t('megaMenu.products.studio.description'), href: "/products/mw-studio" },
-          { name: t('megaMenu.products.market.name'), description: t('megaMenu.products.market.description'), href: "/products/mw-market" },
+          { name: t('megaMenu.products.science.name'), description: t('megaMenu.products.science.description'), href: "/mw-science" },
+          { name: t('megaMenu.products.studio.name'), description: t('megaMenu.products.studio.description'), href: "/mw-studio" },
+          { name: t('megaMenu.products.market.name'), description: t('megaMenu.products.market.description'), href: "/mw-market" },
         ],
       },
     ],
-    featured: {
-      title: t('megaMenu.products.featured.title'),
-      description: t('megaMenu.products.featured.description'),
-      image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop",
-      href: "/resources/case-studies",
-    },
   },
   About: {
     sections: [
@@ -59,54 +47,39 @@ const createMegaMenuData = (t: (key: string) => string) => ({
         title: t('megaMenu.about.company'),
         items: [
           { name: "About Us", description: "Learn about Moving Walls", href: "/about" },
-          { name: t('megaMenu.about.ourStory.name'), description: t('megaMenu.about.ourStory.description'), href: "/about/our-story" },
-          { name: t('megaMenu.about.leadership.name'), description: t('megaMenu.about.leadership.description'), href: "/about/leadership" },
-          { name: t('megaMenu.about.careers.name'), description: t('megaMenu.about.careers.description'), href: "/about/careers" },
+          { name: t('megaMenu.about.ourStory.name'), description: t('megaMenu.about.ourStory.description'), href: "/our-story" },
+          { name: t('megaMenu.about.leadership.name'), description: t('megaMenu.about.leadership.description'), href: "/leadership" },
+          { name: t('megaMenu.about.careers.name'), description: t('megaMenu.about.careers.description'), href: "/careers" },
         ],
       },
       {
         title: t('megaMenu.about.connect'),
         items: [
           { name: t('megaMenu.about.contact.name'), description: t('megaMenu.about.contact.description'), href: "/contact" },
-          { name: t('megaMenu.about.partners.name'), description: t('megaMenu.about.partners.description'), href: "/partners" },
-          { name: t('megaMenu.about.events.name'), description: t('megaMenu.about.events.description'), href: "/events" },
         ],
       },
     ],
-    featured: {
-      title: t('megaMenu.about.featured.title'),
-      description: t('megaMenu.about.featured.description'),
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop",
-      href: "/resources/case-studies",
-    },
   },
   Resources: {
     sections: [
       {
         title: t('megaMenu.resources.learn'),
         items: [
-          { name: t('megaMenu.resources.blog.name'), description: t('megaMenu.resources.blog.description'), href: "/resources/blog" },
-          { name: t('megaMenu.resources.caseStudies.name'), description: t('megaMenu.resources.caseStudies.description'), href: "/resources/case-studies" },
-          { name: t('megaMenu.resources.ebooks.name'), description: t('megaMenu.resources.ebooks.description'), href: "/resources/ebooks" },
+          { name: t('megaMenu.resources.blog.name'), description: t('megaMenu.resources.blog.description'), href: "/blog" },
+          { name: t('megaMenu.resources.caseStudies.name'), description: t('megaMenu.resources.caseStudies.description'), href: "/case-studies" },
+          { name: t('megaMenu.resources.ebooks.name'), description: t('megaMenu.resources.ebooks.description'), href: "/ebooks" },
           { name: t('megaMenu.resources.oohFormats.name'), description: t('megaMenu.resources.oohFormats.description'), href: "/ooh-formats" },
-          { name: t('megaMenu.resources.pressNews.name'), description: t('megaMenu.resources.pressNews.description'), href: "/about/press-news" },
+          { name: t('megaMenu.resources.pressNews.name'), description: t('megaMenu.resources.pressNews.description'), href: "/press-news" },
+          { name: t('megaMenu.about.events.name'), description: t('megaMenu.about.events.description'), href: "/events" },
         ],
       },
       {
         title: t('megaMenu.resources.support'),
         items: [
-          { name: t('megaMenu.resources.helpCenter.name'), description: t('megaMenu.resources.helpCenter.description'), href: "/resources/help-center" },
-          { name: t('megaMenu.resources.documentation.name'), description: t('megaMenu.resources.documentation.description'), href: "/resources/documentation" },
-          { name: t('megaMenu.resources.integrations.name'), description: t('megaMenu.resources.integrations.description'), href: "/integrations" },
+          { name: t('megaMenu.resources.helpCenter.name'), description: t('megaMenu.resources.helpCenter.description'), href: "/help-center" },
         ],
       },
     ],
-    featured: {
-      title: t('megaMenu.resources.featured.title'),
-      description: t('megaMenu.resources.featured.description'),
-      image: "https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop",
-      href: "/resources/case-studies",
-    },
   },
 });
 
@@ -323,7 +296,7 @@ export default function Header() {
               onMouseLeave={handleMouseLeave}
             >
               <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="grid grid-cols-4 gap-8">
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
                   {/* Menu Sections */}
                   {megaMenuData[activeMegaMenu as keyof typeof megaMenuData].sections.map(
                     (section, sectionIndex) => (
@@ -352,33 +325,6 @@ export default function Header() {
                       </div>
                     )
                   )}
-
-                  {/* Featured Section */}
-                  <div className="bg-mw-gray-50 rounded-xl p-6 border border-mw-gray-200">
-                    <div className="h-32 bg-mw-blue-100 rounded-lg mb-4 overflow-hidden relative">
-                      <img
-                        src={megaMenuData[activeMegaMenu as keyof typeof megaMenuData].featured.image}
-                        alt={megaMenuData[activeMegaMenu as keyof typeof megaMenuData].featured.title}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                    <h4 className="font-semibold text-mw-gray-900 mb-1">
-                      {megaMenuData[activeMegaMenu as keyof typeof megaMenuData].featured.title}
-                    </h4>
-                    <p className="text-sm text-mw-gray-500 mb-4">
-                      {megaMenuData[activeMegaMenu as keyof typeof megaMenuData].featured.description}
-                    </p>
-                    <Link
-                      href={megaMenuData[activeMegaMenu as keyof typeof megaMenuData].featured.href}
-                      className="text-sm font-medium text-mw-blue-600 hover:text-mw-blue-700 inline-flex items-center gap-1"
-                      onClick={() => setActiveMegaMenu(null)}
-                    >
-                      Learn more
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                      </svg>
-                    </Link>
-                  </div>
                 </div>
               </div>
             </motion.div>
