@@ -130,6 +130,15 @@ export default function ContactPage() {
       email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
+    {
+      city: 'Johannesburg',
+      country: 'South Africa',
+      type: 'Regional Office',
+      address: '2nd Floor, Cedar Square Shopping Centre, Cnr Willow Ave, Cedar Rd, Fourways, Johannesburg, 2055',
+      phone: '',
+      email: 'info@movingwalls.com',
+      isHeadquarters: false,
+    },
   ];
 
   const departments = [
@@ -277,11 +286,6 @@ export default function ContactPage() {
                 <p className="text-mw-gray-500 text-xs mb-4">{office.type}</p>
                 <div className="space-y-2 text-sm text-left">
                   <p className="text-mw-gray-600">{office.address}</p>
-                  <p className="text-mw-gray-600">
-                    <a href="tel:+6567146699" className="text-mw-blue-600 hover:text-mw-blue-700 transition-colors">
-                      +65 6714 6699
-                    </a>
-                  </p>
                   <p className="text-mw-gray-600">
                     <a href="mailto:info@movingwalls.com" className="text-mw-blue-600 hover:text-mw-blue-700 transition-colors">
                       info@movingwalls.com

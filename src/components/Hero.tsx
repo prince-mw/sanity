@@ -112,8 +112,8 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
-          style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)' }}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6"
+          style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)', lineHeight: '1.45' }}
         >
           {t('hero.title')}
           <br />

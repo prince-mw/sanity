@@ -200,45 +200,7 @@ export default function BrandsPage() {
                   ))}
                 </motion.div>
 
-                {/* Floating Info Cards */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1 }}
-                  className="absolute -right-4 top-1/4 bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs font-medium">Live Campaign</span>
-                  </div>
-                  <div className="text-lg font-bold text-cyan-300">Tokyo</div>
-                </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.3 }}
-                  className="absolute -left-4 bottom-1/3 bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs font-medium">Active Screens</span>
-                  </div>
-                  <div className="text-lg font-bold text-cyan-300">125K+</div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.6 }}
-                  className="absolute left-1/4 -bottom-2 bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                    <span className="text-xs font-medium">Impressions Today</span>
-                  </div>
-                  <div className="text-lg font-bold text-cyan-300">48.2M</div>
-                </motion.div>
               </div>
             </motion.div>
           </div>

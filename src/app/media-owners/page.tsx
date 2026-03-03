@@ -7,7 +7,6 @@ import { useState } from 'react'
 import TestimonialSection from '@/components/TestimonialSection'
 
 export default function MediaOwnersPage() {
-  const [activeTab, setActiveTab] = useState('traditional')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [activePlatform, setActivePlatform] = useState('marketplace')
 
@@ -63,11 +62,11 @@ export default function MediaOwnersPage() {
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
                 Monetize Your OOH Inventory{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
-                  With Smart SSP Technology
+                  Smarter
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed">
-                Connect your inventory to premium demand sources and automate your OOH sales operations.
+                Turn your screens into a high-performing revenue engine. Connect to premium advertisers, optimize pricing dynamically, and automate your entire OOH sales operation so your team can focus on growth instead of repetitive tasks.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -261,45 +260,7 @@ export default function MediaOwnersPage() {
                   ))}
                 </motion.div>
 
-                {/* Floating Info Cards */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1 }}
-                  className="absolute -right-4 top-1/4 bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 z-10"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs font-medium">Live Screens</span>
-                  </div>
-                  <div className="text-lg font-bold text-cyan-300">500K+</div>
-                </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.3 }}
-                  className="absolute -left-4 bottom-1/3 bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 z-10"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs font-medium">Network Health</span>
-                  </div>
-                  <div className="text-lg font-bold text-cyan-300">99.9%</div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1.6 }}
-                  className="absolute left-1/4 -bottom-2 bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 z-10"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" />
-                    <span className="text-xs font-medium">Daily Revenue</span>
-                  </div>
-                  <div className="text-lg font-bold text-cyan-300">$2.4M</div>
-                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -316,11 +277,11 @@ export default function MediaOwnersPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-bold text-mw-gray-900 mb-6">
-              Leverage Advanced<br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">SSP Technology</span>
+              Advanced SSP Technology<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">for Media Owners</span>
             </h2>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
-              A complete suite of tools to manage, sell, and optimize your OOH inventory
+              A complete suite of tools to manage, sell, and optimize your OOH inventory with speed, precision, and intelligence.
             </p>
           </motion.div>
 
@@ -366,9 +327,29 @@ export default function MediaOwnersPage() {
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
                     Connect to Premium Demand
                   </h3>
-                  <p className="text-lg text-mw-gray-600 leading-relaxed">
-                    Access thousands of advertisers and agencies through our integrated demand marketplace. Maximize fill rates with programmatic and direct sales channels.
+                  <p className="text-lg text-mw-gray-600 leading-relaxed mb-6">
+                    Connect your OOH inventory to an integrated demand marketplace designed for media owners. Enable access to programmatic and direct demand sources, improve fill rates, and monetize inventory more efficiently across digital and static screens.
                   </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-center gap-3 text-mw-gray-700">
+                      <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Access demand from advertisers and agencies
+                    </li>
+                    <li className="flex items-center gap-3 text-mw-gray-700">
+                      <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Support for programmatic and direct sales channels
+                    </li>
+                    <li className="flex items-center gap-3 text-mw-gray-700">
+                      <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Real-time bidding integration
+                    </li>
+                  </ul>
                 </motion.div>
               )}
               {activePlatform === 'inventory' && (
@@ -394,9 +375,29 @@ export default function MediaOwnersPage() {
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
                     Yield Optimization
                   </h3>
-                  <p className="text-lg text-mw-gray-600 leading-relaxed">
-                    Maximize revenue with AI-powered yield optimization. Dynamic pricing, demand forecasting, and automated deal prioritization ensure you get the best value for your inventory.
+                  <p className="text-lg text-mw-gray-600 leading-relaxed mb-6">
+                    Maximize revenue per screen through flexible pricing controls and demand-based adjustments. Set dynamic floor prices, manage rate rules, and respond to changing demand to improve yield across your OOH inventory.
                   </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-center gap-3 text-mw-gray-700">
+                      <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Dynamic pricing controls
+                    </li>
+                    <li className="flex items-center gap-3 text-mw-gray-700">
+                      <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Demand-based rate adjustments
+                    </li>
+                    <li className="flex items-center gap-3 text-mw-gray-700">
+                      <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Yield performance visibility
+                    </li>
+                  </ul>
                 </motion.div>
               )}
             </div>
@@ -464,22 +465,24 @@ export default function MediaOwnersPage() {
               }}
             >
               {[
-                { name: 'Google', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
-                { name: 'Microsoft', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg' },
-                { name: 'Amazon', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
-                { name: 'Meta', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg' },
-                { name: 'Apple', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
-                { name: 'Netflix', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg' },
-                { name: 'Spotify', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
-                { name: 'Airbnb', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg' },
-                { name: 'Uber', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/58/Uber_logo_2018.svg' },
-                { name: 'Slack', logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg' },
-                { name: 'Shopify', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg' },
-                { name: 'Adobe', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Adobe_Corporate_Logo.svg' },
-                { name: 'Salesforce', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg' },
-                { name: 'IBM', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg' },
-                { name: 'Oracle', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg' },
-                { name: 'SAP', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg' },
+                { name: '3thirds Inc', logo: '/assets/images/media-owners/3thirds-inc.png' },
+                { name: 'Act Media', logo: '/assets/images/media-owners/act-media.png' },
+                { name: 'Aqua Corporation', logo: '/assets/images/media-owners/aqua-corporation.png' },
+                { name: 'Brands on Road', logo: '/assets/images/media-owners/brands-on-road.png' },
+                { name: 'Bright Sky', logo: '/assets/images/media-owners/bright-sky.png' },
+                { name: 'Eye', logo: '/assets/images/media-owners/eye.png' },
+                { name: 'FC Media', logo: '/assets/images/media-owners/fc-media.png' },
+                { name: 'Focus Media Network', logo: '/assets/images/media-owners/focus-media-network.png' },
+                { name: 'Lantern Media', logo: '/assets/images/media-owners/lantern-media.png' },
+                { name: 'Medik TV', logo: '/assets/images/media-owners/medik-tv.png' },
+                { name: 'Ming Media Promotion', logo: '/assets/images/media-owners/ming-media-promotion.png' },
+                { name: 'Moove Media', logo: '/assets/images/media-owners/moove-media.png' },
+                { name: 'Phar', logo: '/assets/images/media-owners/phar.png' },
+                { name: 'Primedia Outdoor', logo: '/assets/images/media-owners/primedia-outdoor.png' },
+                { name: 'Spectrum Outdoor', logo: '/assets/images/media-owners/spectrum-outdoor.png' },
+                { name: 'Times OOH', logo: '/assets/images/media-owners/times-ooh.png' },
+                { name: 'Vlink Interactive', logo: '/assets/images/media-owners/vlink-interactive.png' },
+                { name: 'Warna Warni', logo: '/assets/images/media-owners/warna-warni.png' },
               ].map((brand, i) => (
                 <div key={i} className="flex-shrink-0 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -492,22 +495,24 @@ export default function MediaOwnersPage() {
                 </div>
               ))}
               {[
-                { name: 'Google', logo: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg' },
-                { name: 'Microsoft', logo: 'https://upload.wikimedia.org/wikipedia/commons/9/96/Microsoft_logo_%282012%29.svg' },
-                { name: 'Amazon', logo: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg' },
-                { name: 'Meta', logo: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg' },
-                { name: 'Apple', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg' },
-                { name: 'Netflix', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/08/Netflix_2015_logo.svg' },
-                { name: 'Spotify', logo: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Spotify_logo_without_text.svg' },
-                { name: 'Airbnb', logo: 'https://upload.wikimedia.org/wikipedia/commons/6/69/Airbnb_Logo_B%C3%A9lo.svg' },
-                { name: 'Uber', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/58/Uber_logo_2018.svg' },
-                { name: 'Slack', logo: 'https://upload.wikimedia.org/wikipedia/commons/d/d5/Slack_icon_2019.svg' },
-                { name: 'Shopify', logo: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Shopify_logo_2018.svg' },
-                { name: 'Adobe', logo: 'https://upload.wikimedia.org/wikipedia/commons/8/8d/Adobe_Corporate_Logo.svg' },
-                { name: 'Salesforce', logo: 'https://upload.wikimedia.org/wikipedia/commons/f/f9/Salesforce.com_logo.svg' },
-                { name: 'IBM', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/51/IBM_logo.svg' },
-                { name: 'Oracle', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg' },
-                { name: 'SAP', logo: 'https://upload.wikimedia.org/wikipedia/commons/5/59/SAP_2011_logo.svg' },
+                { name: '3thirds Inc', logo: '/assets/images/media-owners/3thirds-inc.png' },
+                { name: 'Act Media', logo: '/assets/images/media-owners/act-media.png' },
+                { name: 'Aqua Corporation', logo: '/assets/images/media-owners/aqua-corporation.png' },
+                { name: 'Brands on Road', logo: '/assets/images/media-owners/brands-on-road.png' },
+                { name: 'Bright Sky', logo: '/assets/images/media-owners/bright-sky.png' },
+                { name: 'Eye', logo: '/assets/images/media-owners/eye.png' },
+                { name: 'FC Media', logo: '/assets/images/media-owners/fc-media.png' },
+                { name: 'Focus Media Network', logo: '/assets/images/media-owners/focus-media-network.png' },
+                { name: 'Lantern Media', logo: '/assets/images/media-owners/lantern-media.png' },
+                { name: 'Medik TV', logo: '/assets/images/media-owners/medik-tv.png' },
+                { name: 'Ming Media Promotion', logo: '/assets/images/media-owners/ming-media-promotion.png' },
+                { name: 'Moove Media', logo: '/assets/images/media-owners/moove-media.png' },
+                { name: 'Phar', logo: '/assets/images/media-owners/phar.png' },
+                { name: 'Primedia Outdoor', logo: '/assets/images/media-owners/primedia-outdoor.png' },
+                { name: 'Spectrum Outdoor', logo: '/assets/images/media-owners/spectrum-outdoor.png' },
+                { name: 'Times OOH', logo: '/assets/images/media-owners/times-ooh.png' },
+                { name: 'Vlink Interactive', logo: '/assets/images/media-owners/vlink-interactive.png' },
+                { name: 'Warna Warni', logo: '/assets/images/media-owners/warna-warni.png' },
               ].map((brand, i) => (
                 <div key={`dup-${i}`} className="flex-shrink-0 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -534,7 +539,7 @@ export default function MediaOwnersPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Your Journey to Maximum Yield
+              From Inefficiency to Maximum Yield
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               See how Moving Walls transforms your inventory monetization
@@ -715,11 +720,11 @@ export default function MediaOwnersPage() {
                   </div>
                   <div className="space-y-4">
                     {[
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'Low fill rates & unsold inventory' },
+                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'Low fill rates' },
                       { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>, text: 'Limited demand access' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>, text: 'Manual booking processes' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'No real-time performance data' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>, text: 'Complex pricing management' },
+                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>, text: 'Manual booking' },
+                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'No real-time insights' },
+                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>, text: 'Complicated pricing slowed growth' },
                     ].map((item, index) => (
                       <motion.div
                         key={index}
@@ -769,10 +774,10 @@ export default function MediaOwnersPage() {
                   </div>
                   <div className="space-y-3">
                     {[
-                      'Premium Demand Access',
-                      'AI Yield Optimization',
-                      'Real-Time Analytics',
-                      'Automated Operations',
+                      'Premium demand access',
+                      'Automated yield optimization',
+                      'Real-time analytics',
+                      'Fully streamlined workflows',
                     ].map((feature, index) => (
                       <motion.div
                         key={index}
@@ -825,17 +830,17 @@ export default function MediaOwnersPage() {
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">The New Way</span>
+                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">Results for Media Owners</span>
                       <h3 className="text-xl font-bold text-gray-800">Results</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
                     {[
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>, text: '95% average fill rate', metric: '95% fill' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: '1000+ advertiser connections', metric: 'Global reach' },
+                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>, text: 'Average 95% fill rate', metric: '95% fill' },
+                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>, text: '+35% eCPM', metric: '+35% eCPM' },
+                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'Global reach', metric: 'Global reach' },
                       { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>, text: 'Real-time performance insights', metric: 'Live data' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>, text: 'AI-optimized pricing', metric: '+35% eCPM' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>, text: 'Fully automated workflows', metric: '80% time saved' },
+                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>, text: '80% time saved in operations', metric: '80% time saved' },
                     ].map((item, index) => (
                       <motion.div
                         key={index}
@@ -879,14 +884,13 @@ export default function MediaOwnersPage() {
               Everything Media Owners Need to Succeed
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Powerful tools designed specifically for media owners to maximize revenue and operational efficiency
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
                 title: 'SSP Technology',
-                description: 'Connect to premium programmatic demand with our advanced supply-side platform',
+                description: 'Connect to programmatic demand and premium advertisers globally while keeping full control over pricing and availability',
                 icon: (
                   <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -896,7 +900,7 @@ export default function MediaOwnersPage() {
               },
               {
                 title: 'Inventory Management',
-                description: 'Centralized dashboard to manage all your screens, availability, and pricing rules',
+                description: 'Centralized dashboard to oversee all screens, campaigns, and pricing rules at a glance',
                 icon: (
                   <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
@@ -906,7 +910,7 @@ export default function MediaOwnersPage() {
               },
               {
                 title: 'Yield Optimization',
-                description: 'AI-powered pricing algorithms that maximize revenue across your network',
+                description: 'Continuous optimization to ensure every impression is sold at maximum value',
                 icon: (
                   <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
@@ -916,7 +920,7 @@ export default function MediaOwnersPage() {
               },
               {
                 title: 'Proof of Play',
-                description: 'Automated verification and reporting for all campaign deliveries',
+                description: 'Automated verification and reporting for every campaign',
                 icon: (
                   <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
@@ -926,7 +930,7 @@ export default function MediaOwnersPage() {
               },
               {
                 title: 'Demand Connections',
-                description: 'Direct integrations with agencies, DSPs, and brand advertisers globally',
+                description: 'Direct integrations with agencies, DSPs, and brand advertisers around the world',
                 icon: (
                   <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -936,7 +940,7 @@ export default function MediaOwnersPage() {
               },
               {
                 title: 'Revenue Analytics',
-                description: 'Comprehensive dashboards tracking fill rates, eCPM, and revenue trends',
+                description: 'Real-time dashboards to monitor fill rates, revenue trends, and eCPM growth',
                 icon: (
                   <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -946,7 +950,7 @@ export default function MediaOwnersPage() {
               },
               {
                 title: 'Creative Trafficking',
-                description: 'Automated creative approval, scheduling, and delivery to all screens',
+                description: 'Automatic scheduling and delivery of creative content to screens',
                 icon: (
                   <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -956,7 +960,7 @@ export default function MediaOwnersPage() {
               },
               {
                 title: 'Billing & Invoicing',
-                description: 'Automated billing, reconciliation, and financial reporting',
+                description: 'Automated reconciliation and financial reporting',
                 icon: (
                   <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
@@ -994,7 +998,7 @@ export default function MediaOwnersPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Get Started in 4 Simple Steps
+              Get Started in Four Steps
             </h2>
             <p className="text-xl text-gray-600">
               From integration to revenue in weeks, not months
@@ -1008,22 +1012,22 @@ export default function MediaOwnersPage() {
               {[
                 {
                   title: 'Connect Inventory',
-                  description: 'Integrate your screens via API or bulk upload with our simple onboarding process',
+                  description: 'Integrate your screens with a simple onboarding process via API or bulk upload',
                   icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
                 },
                 {
                   title: 'Set Your Terms',
-                  description: 'Configure pricing rules, floor prices, and availability for each screen or venue',
+                  description: 'Define pricing rules, floor rates, and availability for each screen or venue',
                   icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
                 },
                 {
                   title: 'Go Live',
-                  description: 'Activate demand connections and start receiving campaign requests automatically',
+                  description: 'Activate your demand connections and start receiving campaign requests automatically',
                   icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 },
                 {
                   title: 'Grow Revenue',
-                  description: 'Watch your fill rates and eCPM increase with AI-powered optimization',
+                  description: 'Watch fill rates and revenue increase as automation optimizes every impression',
                   icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                 }
               ].map((item, index) => (
@@ -1044,204 +1048,6 @@ export default function MediaOwnersPage() {
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* Use Cases Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Solutions for Every Media Type
-            </h2>
-            <p className="text-xl text-gray-600">
-              Tailored solutions for your inventory type
-            </p>
-          </motion.div>
-
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {['traditional', 'digital', 'transit', 'retail', 'placebased'].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`px-6 py-3 rounded-lg font-semibold transition-all ${
-                  activeTab === tab
-                    ? 'bg-blue-600 text-white shadow-lg scale-105'
-                    : 'bg-white text-gray-600 hover:bg-gray-100'
-                }`}
-              >
-                {tab === 'traditional' ? 'Traditional OOH' : 
-                 tab === 'digital' ? 'Digital OOH' : 
-                 tab === 'transit' ? 'Transit' : 
-                 tab === 'retail' ? 'Retail Media' : 'Place-Based'}
-              </button>
-            ))}
-          </div>
-
-          <motion.div
-            key={activeTab}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3 }}
-            className="bg-white rounded-2xl p-8 shadow-xl"
-          >
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <h3 className="text-3xl font-bold text-gray-900 mb-6">
-                  {activeTab === 'traditional' && 'Traditional OOH'}
-                  {activeTab === 'digital' && 'Digital OOH'}
-                  {activeTab === 'transit' && 'Transit Media'}
-                  {activeTab === 'retail' && 'Retail Media Networks'}
-                  {activeTab === 'placebased' && 'Place-Based Media'}
-                </h3>
-                <div className="space-y-4 mb-6">
-                  {activeTab === 'traditional' && (
-                    <>
-                      <p className="text-gray-600">Connect static billboards to digital buying</p>
-                      <p className="text-gray-600">Automated proof of posting</p>
-                      <p className="text-gray-600">Unified availability management</p>
-                    </>
-                  )}
-                  {activeTab === 'digital' && (
-                    <>
-                      <p className="text-gray-600">Real-time programmatic capabilities</p>
-                      <p className="text-gray-600">Dynamic creative optimization</p>
-                      <p className="text-gray-600">Impression-level reporting</p>
-                    </>
-                  )}
-                  {activeTab === 'transit' && (
-                    <>
-                      <p className="text-gray-600">Route and schedule optimization</p>
-                      <p className="text-gray-600">Mobile audience measurement</p>
-                      <p className="text-gray-600">Multi-format support</p>
-                    </>
-                  )}
-                  {activeTab === 'retail' && (
-                    <>
-                      <p className="text-gray-600">Shopper audience targeting</p>
-                      <p className="text-gray-600">Purchase attribution</p>
-                      <p className="text-gray-600">Brand advertiser connections</p>
-                    </>
-                  )}
-                  {activeTab === 'placebased' && (
-                    <>
-                      <p className="text-gray-600">Venue-specific audience data</p>
-                      <p className="text-gray-600">Contextual targeting options</p>
-                      <p className="text-gray-600">Dwell time analytics</p>
-                    </>
-                  )}
-                </div>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">95%</div>
-                    <div className="text-sm text-gray-600">Fill Rate</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">+35%</div>
-                    <div className="text-sm text-gray-600">eCPM Lift</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-600">500K+</div>
-                    <div className="text-sm text-gray-600">Screens</div>
-                  </div>
-                </div>
-              </div>
-              <div className="relative h-80 bg-gradient-to-br from-blue-100 to-indigo-100 rounded-xl flex items-center justify-center">
-                <div className="w-32 h-32 text-blue-600">
-                  {activeTab === 'traditional' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>}
-                  {activeTab === 'digital' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>}
-                  {activeTab === 'transit' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>}
-                  {activeTab === 'retail' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>}
-                  {activeTab === 'placebased' && <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>}
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Case Study Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-3xl p-12 shadow-2xl border border-gray-200"
-          >
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div>
-                <div className="inline-block px-4 py-2 bg-blue-100 text-blue-600 rounded-full text-sm font-semibold mb-6">
-                  FEATURED CASE STUDY
-                </div>
-                <h3 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
-                  How UrbanMedia Increased Revenue by 47%
-                </h3>
-                <p className="text-lg text-gray-700 mb-6">
-                  UrbanMedia, a leading DOOH operator with 5,000+ screens, partnered with Moving Walls to transform their monetization strategy. Within 6 months, they achieved record revenue growth.
-                </p>
-                <div className="space-y-4 mb-8">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">47% revenue increase in 6 months</div>
-                      <div className="text-sm text-gray-600">Highest growth in company history</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">95% average fill rate achieved</div>
-                      <div className="text-sm text-gray-600">Up from 67% before Moving Walls</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center">
-                      <svg className="w-6 h-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                    </div>
-                    <div>
-                      <div className="font-bold text-gray-900">200+ new advertiser relationships</div>
-                      <div className="text-sm text-gray-600">Through programmatic demand access</div>
-                    </div>
-                  </div>
-                </div>
-                <Link
-                  href="/case-studies"
-                  className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all"
-                >
-                  Read Full Case Study
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-              </div>
-              <div className="relative">
-                <div className="rounded-2xl overflow-hidden shadow-2xl">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src="https://images.unsplash.com/photo-1569428034239-f9565e32e224?w=600&h=450&fit=crop"
-                    alt="UrbanMedia Success Story"
-                    className="w-full h-[400px] object-cover"
-                  />
-                </div>
-              </div>
-            </div>
-          </motion.div>
         </div>
       </section>
 
