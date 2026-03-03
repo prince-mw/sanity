@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
-import Image from "next/image"
 
 // Custom SVG icons with sci-fi styling
 const TerminalIcon = ({ className }: { className?: string }) => (
@@ -43,19 +42,88 @@ const BoltIcon = ({ className }: { className?: string }) => (
 
 // Integration logos for Don't Replace. Integrate. section
 const integrations = [
-  { name: 'VIOOH', category: 'SSP', logo: '/assets/images/integrations/viooh.svg' },
-  { name: 'DV360', category: 'SSP', logo: '/assets/images/integrations/dv360.svg' },
-  { name: 'Magnite', category: 'SSP', logo: '/assets/images/integrations/magnite.svg' },
-  { name: 'Google Ad Manager 360', category: 'SSP', logo: '/assets/images/integrations/google-ad-manager-360.svg' },
-  { name: 'The Trade Desk', category: 'DSP', logo: '/assets/images/integrations/the-trade-desk.svg' },
-  { name: 'Cassie', category: 'DSP', logo: '/assets/images/integrations/cassie.svg' },
-  { name: 'MAX', category: 'DSP', logo: '/assets/images/integrations/max.svg' },
-  { name: 'StackAdapt', category: 'DSP', logo: '/assets/images/integrations/stackadapt.svg' },
-  { name: 'Amobee', category: 'DSP', logo: '/assets/images/integrations/amobee.svg' },
-  { name: 'AppNexus', category: 'DSP', logo: '/assets/images/integrations/appnexus.svg' },
-  { name: 'MediaMath', category: 'DSP', logo: '/assets/images/integrations/mediamath.svg' },
-  { name: 'Verizon Media', category: 'DSP', logo: '/assets/images/integrations/verizon.svg' },
-  { name: 'Mediasmart', category: 'DSP', logo: '/assets/images/integrations/mediasmart.svg' },
+  { 
+    name: 'Google CM360', 
+    category: 'Ad Server',
+    logo: (
+      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+        <path d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z" fill="#4285F4"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'DV360', 
+    category: 'DSP',
+    logo: (
+      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'Trade Desk', 
+    category: 'DSP',
+    logo: (
+      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#0CA678"/>
+        <path d="M6 8h12v2H6V8zm0 3h12v2H6v-2zm0 3h8v2H6v-2z" fill="white"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'Xandr', 
+    category: 'SSP',
+    logo: (
+      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#FF6B35"/>
+        <path d="M7 7l5 5-5 5M12 7l5 5-5 5" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'Broadsign', 
+    category: 'DOOH',
+    logo: (
+      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#00BCD4"/>
+        <rect x="6" y="6" width="12" height="12" rx="2" fill="white"/>
+        <rect x="9" y="9" width="6" height="6" fill="#00BCD4"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'Vistar', 
+    category: 'Programmatic',
+    logo: (
+      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#6366F1"/>
+        <path d="M12 6l6 12H6l6-12z" fill="white"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'Place Exchange', 
+    category: 'SSP',
+    logo: (
+      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+        <rect width="24" height="24" rx="4" fill="#1E88E5"/>
+        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="white"/>
+      </svg>
+    )
+  },
+  { 
+    name: 'Analytics', 
+    category: 'Measurement',
+    logo: (
+      <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+        <path d="M22.84 2.998v17.004c0 1.1-.9 2-2 2H4.16c-1.1 0-2-.9-2-2V3.998c0-1.1.9-2 2-2h16.68c1.1 0 2 .9 2 2z" fill="#F9AB00"/>
+        <path d="M20.16 14.498v4.504c0 .55-.45 1-1 1h-4.504c-.55 0-1-.45-1-1v-4.504c0-.55.45-1 1-1h4.504c.55 0 1 .45 1 1z" fill="#E37400"/>
+      </svg>
+    )
+  },
 ]
 
 export default function MWActivate() {
@@ -812,7 +880,7 @@ export default function MWActivate() {
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">50+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.
@@ -852,7 +920,7 @@ export default function MWActivate() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+              <div className="grid grid-cols-3 gap-4">
                 {integrations.map((integration, index) => (
                   <motion.div
                     key={integration.name}
@@ -860,11 +928,13 @@ export default function MWActivate() {
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
                     viewport={{ once: true }}
-                    className="flex items-center justify-center group cursor-pointer"
+                    className="bg-gray-50 rounded-xl p-4 hover:bg-blue-50 hover:shadow-md transition-all text-center group cursor-pointer"
                   >
-                    <div className="w-36 h-28 flex items-center justify-center grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
-                      <Image src={integration.logo} alt={integration.name} width={180} height={72} className="object-contain w-full h-full" />
+                    <div className="w-14 h-14 mx-auto mb-3 bg-white rounded-xl shadow-sm flex items-center justify-center group-hover:shadow-md transition-shadow">
+                      {integration.logo}
                     </div>
+                    <div className="text-sm font-medium text-gray-700">{integration.name}</div>
+                    <div className="text-xs text-gray-400 mt-1">{integration.category}</div>
                   </motion.div>
                 ))}
               </div>

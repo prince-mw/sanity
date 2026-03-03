@@ -42,9 +42,9 @@ const CodeIcon = ({ className }: { className?: string }) => (
 
 // Categories
 const categories = [
-  { id: 'all', name: 'All Integrations', count: 14 },
+  { id: 'all', name: 'All Integrations', count: 13 },
   { id: 'ssp', name: 'SSP Partners', count: 4 },
-  { id: 'dsp', name: 'DSP Partners', count: 10 },
+  { id: 'dsp', name: 'DSP Partners', count: 9 },
 ]
 
 // All integrations data — actual MW / LMX / MAX partner logos
@@ -136,17 +136,6 @@ const integrations = [
     apiDocs: '/api-reference',
     status: 'live',
     logo: '/assets/images/integrations/stackadapt.svg',
-  },
-  {
-    id: 'hivestack',
-    name: 'Hivestack',
-    category: 'dsp',
-    description: 'Full-stack programmatic digital out-of-home advertising technology company with global reach.',
-    products: ['MW Activate', 'MW Marketplace'],
-    features: ['pDOOH', 'Audience measurement', 'Attribution', 'Global scale'],
-    apiDocs: '/api-reference',
-    status: 'live',
-    logo: '/assets/images/integrations/hivestack.svg',
   },
   {
     id: 'amobee',

@@ -168,7 +168,6 @@ const integrations = [
   { name: 'Cassie', category: 'DSP', logo: '/assets/images/integrations/cassie.svg' },
   { name: 'MAX', category: 'DSP', logo: '/assets/images/integrations/max.svg' },
   { name: 'StackAdapt', category: 'DSP', logo: '/assets/images/integrations/stackadapt.svg' },
-  { name: 'Hivestack', category: 'DSP', logo: '/assets/images/integrations/hivestack.svg' },
   { name: 'Amobee', category: 'DSP', logo: '/assets/images/integrations/amobee.svg' },
   { name: 'AppNexus', category: 'DSP', logo: '/assets/images/integrations/appnexus.svg' },
   { name: 'MediaMath', category: 'DSP', logo: '/assets/images/integrations/mediamath.svg' },
@@ -494,7 +493,7 @@ export default function MWInfluencePage() {
               },
               {
                 title: "Enterprise Platform",
-                competitor: "Hivestack is a programmatic layer—just one feature in your stack.",
+                competitor: "Programmatic layers offer just one feature in your stack.",
                 mwInfluence: "Complete operating system for DOOH inventory management, campaign execution, and yield optimization.",
                 differentiator: "Manage digital, static, and transit networks from one unified control plane."
               }
@@ -756,7 +755,7 @@ export default function MWInfluencePage() {
               </div>
               <ul className="space-y-4">
                 {[
-                  { name: "SSPs/DSPs", desc: "Vistar, Place Exchange, Hivestack, Magnite, VIOOH via RTB protocols" },
+                  { name: "SSPs/DSPs", desc: "Vistar, Place Exchange, Magnite, VIOOH via RTB protocols" },
                   { name: "CMS Players", desc: "Broadsign, third-party content management systems" },
                   { name: "Data Providers", desc: "Audience data (Quadrant), traffic data (Google Maps)" },
                   { name: "ERP/Billing", desc: "Financial system integrations for invoicing and reconciliation" }
@@ -952,7 +951,7 @@ export default function MWInfluencePage() {
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">14+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.

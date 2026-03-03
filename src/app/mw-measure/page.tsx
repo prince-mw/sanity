@@ -77,7 +77,6 @@ const integrations = [
   { name: 'Cassie', category: 'DSP', logo: '/assets/images/integrations/cassie.svg' },
   { name: 'MAX', category: 'DSP', logo: '/assets/images/integrations/max.svg' },
   { name: 'StackAdapt', category: 'DSP', logo: '/assets/images/integrations/stackadapt.svg' },
-  { name: 'Hivestack', category: 'DSP', logo: '/assets/images/integrations/hivestack.svg' },
   { name: 'Amobee', category: 'DSP', logo: '/assets/images/integrations/amobee.svg' },
   { name: 'AppNexus', category: 'DSP', logo: '/assets/images/integrations/appnexus.svg' },
   { name: 'MediaMath', category: 'DSP', logo: '/assets/images/integrations/mediamath.svg' },
@@ -1011,7 +1010,7 @@ export default function MWMeasure() {
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">14+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.

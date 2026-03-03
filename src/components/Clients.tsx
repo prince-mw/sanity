@@ -15,17 +15,6 @@ const clients = [
     )
   },
   { 
-    name: "Hivestack", 
-    category: "DOOH Exchange",
-    logo: (
-      <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none">
-        <rect width="24" height="24" rx="4" fill="#FF6B00"/>
-        <path d="M12 4L4 8v8l8 4 8-4V8l-8-4z" stroke="white" strokeWidth="1.5" fill="none"/>
-        <path d="M12 12l8-4M12 12v8M12 12L4 8" stroke="white" strokeWidth="1.5"/>
-      </svg>
-    )
-  },
-  { 
     name: "Place Exchange", 
     category: "OOH Marketplace",
     logo: (
