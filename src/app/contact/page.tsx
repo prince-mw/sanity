@@ -139,6 +139,15 @@ export default function ContactPage() {
       email: 'info@movingwalls.com',
       isHeadquarters: false,
     },
+    {
+      city: 'San Francisco',
+      country: 'United States',
+      type: 'Regional Office',
+      address: '447 Sutter St, San Francisco, CA 94108',
+      phone: '',
+      email: 'info@movingwalls.com',
+      isHeadquarters: false,
+    },
   ];
 
   const departments = [
@@ -282,9 +291,8 @@ export default function ContactPage() {
                     </span>
                   )}
                 </div>
-                <p className="text-mw-gray-600 text-sm mb-1">{office.country}</p>
-                <p className="text-mw-gray-500 text-xs mb-4">{office.type}</p>
-                <div className="space-y-2 text-sm text-left">
+                <p className="text-mw-gray-600 text-sm mb-2">{office.country}</p>
+                <div className="space-y-1 text-sm text-left">
                   <p className="text-mw-gray-600">{office.address}</p>
                   <p className="text-mw-gray-600">
                     <a href="mailto:info@movingwalls.com" className="text-mw-blue-600 hover:text-mw-blue-700 transition-colors">
