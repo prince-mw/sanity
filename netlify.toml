@@ -8,3 +8,5 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+These are harmless and don't affect your website.
+

@@ -22,6 +22,15 @@ const staggerItem = {
 // Location data
 const locations = [
   {
+    country: "United States",
+    city: "New York",
+    flag: "🇺🇸",
+    href: "/locations/usa",
+    description: "World's largest OOH market",
+    billboards: "350,000+",
+    image: "https://images.unsplash.com/photo-1534430480872-3498386e7856?w=800&q=80"
+  },
+  {
     country: "Malaysia",
     city: "Kuala Lumpur",
     flag: "🇲🇾",
@@ -105,10 +114,10 @@ const locations = [
 ]
 
 const stats = [
-  { label: "Countries", value: "9+" },
-  { label: "Billboard Inventory", value: "500K+" },
-  { label: "Daily Impressions", value: "1B+" },
-  { label: "Partner Networks", value: "200+" },
+  { label: "Countries", value: "10+" },
+  { label: "Billboard Inventory", value: "850K+" },
+  { label: "Daily Impressions", value: "1.5B+" },
+  { label: "Partner Networks", value: "250+" },
 ]
 
 export default function LocationsPage() {

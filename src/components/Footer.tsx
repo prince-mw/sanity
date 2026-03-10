@@ -36,6 +36,7 @@ const footerLinks = {
     { name: "Events", href: "/events" },
   ],
   billboardLocations: [
+    { name: "USA", href: "/locations/usa" },
     { name: "Malaysia", href: "/locations/malaysia" },
     { name: "Singapore", href: "/locations/singapore" },
     { name: "Indonesia", href: "/locations/indonesia" },

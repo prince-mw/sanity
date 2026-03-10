@@ -243,7 +243,7 @@ export default function ContactPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
               <button className="px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg shadow-mw-md hover:shadow-mw-lg transform hover:-translate-y-0.5 transition-all duration-200">
-                Schedule Free Consultation
+                Book a Free Demo
               </button>
               <button className="px-8 py-4 bg-white border-2 border-mw-blue-300 hover:border-mw-blue-600 text-mw-blue-600 hover:text-mw-blue-700 font-semibold rounded-lg transition-all duration-200">
                 Watch Platform Demo

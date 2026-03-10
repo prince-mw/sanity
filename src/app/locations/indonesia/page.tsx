@@ -323,22 +323,6 @@ export default function IndonesiaPage() {
                 {countryData.description}
               </p>
               
-              {/* Stats Row */}
-              <div className="flex flex-wrap gap-6 mb-8">
-                {countryData.stats.slice(0, 3).map((stat, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 + i * 0.1 }}
-                    className="text-center"
-                  >
-                    <div className="text-3xl md:text-4xl font-bold text-yellow-300">{stat.value}</div>
-                    <div className="text-sm text-mw-blue-200">{stat.label}</div>
-                  </motion.div>
-                ))}
-              </div>
-
               <div className="flex flex-wrap gap-4">
                 <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105">
                   Contact Sales
@@ -472,32 +456,7 @@ export default function IndonesiaPage() {
                   </motion.div>
                 ))}
 
-                {/* Floating Info Cards */}
-                <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.5 }}
-                  className="absolute -right-4 top-1/4 bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-xs font-medium text-white">Archipelago</span>
-                  </div>
-                  <div className="text-lg font-bold text-yellow-300">17K+ Islands</div>
-                </motion.div>
 
-                <motion.div
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 1.8 }}
-                  className="absolute -left-4 top-1/2 bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20"
-                >
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-red-400 rounded-full animate-pulse" />
-                    <span className="text-xs font-medium text-white">Population</span>
-                  </div>
-                  <div className="text-lg font-bold text-yellow-300">270M+</div>
-                </motion.div>
               </div>
             </motion.div>
           </div>
@@ -992,17 +951,17 @@ export default function IndonesiaPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp} className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Explore Other Markets</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Discover OOH advertising opportunities across Asia Pacific</p>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Discover OOH advertising opportunities across global markets</p>
           </motion.div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer} className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
+              { name: "United States", flag: "🇺🇸", href: "/locations/usa" },
               { name: "Malaysia", flag: "🇲🇾", href: "/locations/malaysia" },
               { name: "Singapore", flag: "🇸🇬", href: "/locations/singapore" },
               { name: "India", flag: "🇮🇳", href: "/locations/india" },
               { name: "Philippines", flag: "🇵🇭", href: "/locations/philippines" },
               { name: "Japan", flag: "🇯🇵", href: "/locations/japan" },
               { name: "Australia", flag: "🇦🇺", href: "/locations/australia" },
-              { name: "Sri Lanka", flag: "🇱🇰", href: "/locations/sri-lanka" },
               { name: "Thailand", flag: "🇹🇭", href: "/locations/thailand" },
             ].map((country) => (
               <motion.div key={country.name} variants={staggerItem}>

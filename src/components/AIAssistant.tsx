@@ -71,7 +71,7 @@ export default function AIAssistant() {
     const lowerMessage = userMessage.toLowerCase();
 
     if (lowerMessage.includes('pricing') || lowerMessage.includes('cost') || lowerMessage.includes('price')) {
-      return "Our pricing is customized based on your specific needs and campaign scale. We offer flexible packages starting from $10K/month for SMBs to enterprise solutions for large corporations. Would you like to schedule a consultation to discuss pricing for your requirements?";
+      return "Our pricing is customized based on your specific needs and campaign scale. We offer flexible packages starting from $10K/month for SMBs to enterprise solutions for large corporations. Would you like to book a free demo to discuss pricing for your requirements?";
     }
     
     if (lowerMessage.includes('demo') || lowerMessage.includes('see platform')) {

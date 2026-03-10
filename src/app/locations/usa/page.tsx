@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import React from 'react'
 import { motion } from 'framer-motion'
 
 // Animation variants
@@ -13,7 +12,7 @@ const fadeUp = {
 
 const fadeIn = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.6, ease: 'easeOut' } }
+  visible: { opacity: 1, transition: { duration: 0.8 } }
 }
 
 const staggerContainer = {
@@ -26,214 +25,224 @@ const staggerItem = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
 }
 
-// Icons for FAQ
-const Icons = {
-  plus: <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>,
-  minus: <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" /></svg>,
+// FAQ Component
+function FAQItem({ question, answer, isOpen, onClick }: { question: string; answer: string; isOpen: boolean; onClick: () => void }) {
+  return (
+    <motion.div variants={staggerItem} className="border border-gray-200 rounded-xl overflow-hidden">
+      <button onClick={onClick} className="w-full flex items-center justify-between p-5 text-left bg-white hover:bg-gray-50 transition-colors">
+        <span className="font-semibold text-gray-900">{question}</span>
+        <svg className={`w-5 h-5 text-gray-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      {isOpen && (
+        <div className="p-5 pt-0 bg-white">
+          <p className="text-gray-600">{answer}</p>
+        </div>
+      )}
+    </motion.div>
+  )
 }
 
-// FAQ Accordion Component
-const FAQItem = ({ question, answer, isOpen, onClick }: { question: string; answer: string; isOpen: boolean; onClick: () => void }) => (
-  <motion.div variants={staggerItem} className="border border-gray-200 rounded-lg overflow-hidden">
-    <button onClick={onClick} className="w-full px-6 py-4 text-left flex items-center justify-between bg-white hover:bg-gray-50 transition-colors">
-      <span className="font-semibold text-gray-900">{question}</span>
-      {isOpen ? Icons.minus : Icons.plus}
-    </button>
-    {isOpen && (
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-        <p className="text-gray-600">{answer}</p>
-      </div>
-    )}
-  </motion.div>
-)
-
-// SVG Icons for media types
-const MediaIcons: Record<string, React.ReactElement> = {
+// Media Type Icons
+const MediaIcons: Record<string, React.ReactNode> = {
   digital: (
-    <svg className="w-8 h-8 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-12 h-12 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
     </svg>
   ),
   transit: (
-    <svg className="w-8 h-8 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h8m-8 4h8m-4 4v3m-4 0h8a1 1 0 001-1V6a1 1 0 00-1-1H7a1 1 0 00-1 1v11a1 1 0 001 1zm-3 0a2 2 0 100-4 2 2 0 000 4zm14 0a2 2 0 100-4 2 2 0 000 4z" />
+    <svg className="w-12 h-12 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h8m-8 4h8m-6 4h4m-2-12a9 9 0 110 18 9 9 0 010-18z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 3v18M3 12h18" />
     </svg>
   ),
   bus: (
-    <svg className="w-8 h-8 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7h8M8 11h8m-8 4h2m4 0h2M6 19a2 2 0 01-2-2V7a4 4 0 014-4h8a4 4 0 014 4v10a2 2 0 01-2 2m-12 0h12m-12 0a2 2 0 01-2-2m14 2a2 2 0 002-2m-14 4h2m8 0h2" />
+    <svg className="w-12 h-12 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 17h.01M16 17h.01M9 11h6M4 11V7a4 4 0 014-4h8a4 4 0 014 4v4M4 11v6a1 1 0 001 1h1m14-7v6a1 1 0 01-1 1h-1m-13 0a2 2 0 104 0m10 0a2 2 0 104 0" />
     </svg>
   ),
   mall: (
-    <svg className="w-8 h-8 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg className="w-12 h-12 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
     </svg>
   ),
   highway: (
-    <svg className="w-8 h-8 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+    <svg className="w-12 h-12 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l5.447 2.724A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
     </svg>
   ),
   airport: (
-    <svg className="w-8 h-8 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+    <svg className="w-12 h-12 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+  ),
+  sports: (
+    <svg className="w-12 h-12 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
     </svg>
   ),
 }
 
-export default function SingaporePage() {
-  const [openFAQ, setOpenFAQ] = React.useState<number | null>(0)
+export default function USAPage() {
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null)
   const [selectedMarket, setSelectedMarket] = useState(0)
-  const [currentTime, setCurrentTime] = useState(new Date())
+  const [currentHour, setCurrentHour] = useState(new Date().getHours())
+  const [currentTimeLabel, setCurrentTimeLabel] = useState('')
+  const [currentTimePosition, setCurrentTimePosition] = useState(0)
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 60000)
-    return () => clearInterval(timer)
+    const updateTime = () => {
+      // Use EST timezone for US display
+      const now = new Date()
+      const estTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }))
+      const hour = estTime.getHours()
+      setCurrentHour(hour)
+      const label = hour === 0 ? '12AM' : hour < 12 ? `${hour}AM` : hour === 12 ? '12PM' : `${hour - 12}PM`
+      setCurrentTimeLabel(`${label} EST`)
+      setCurrentTimePosition((hour / 24) * 100)
+    }
+    updateTime()
+    const interval = setInterval(updateTime, 60000)
+    return () => clearInterval(interval)
   }, [])
-
-  const currentTimePosition = ((currentTime.getHours() * 60 + currentTime.getMinutes()) / 1440) * 100
-  const currentHour = currentTime.getHours()
-  const currentTimeLabel = currentHour === 0 ? '12:00 AM' : currentHour < 12 ? `${currentHour}:${currentTime.getMinutes().toString().padStart(2, '0')} AM` : currentHour === 12 ? `12:${currentTime.getMinutes().toString().padStart(2, '0')} PM` : `${currentHour - 12}:${currentTime.getMinutes().toString().padStart(2, '0')} PM`
 
   const keyMarkets = [
     {
-      city: "Singapore CBD",
-      code: "SGP",
-      population: "1.2M",
-      screens: 1856,
+      city: "New York City",
+      code: "NYC",
+      population: "8.3M",
+      screens: 4250,
       screensGrowth: 15,
-      dailyReach: "2.8M",
-      dailyReachGrowth: 10.2,
-      monthlyImpressions: "84M",
-      monthlyImpressionsGrowth: 18.5,
-      yoyGrowth: 22.4,
+      dailyReach: "12.5M",
+      dailyReachGrowth: 12.5,
+      monthlyImpressions: "375M",
+      monthlyImpressionsGrowth: 18.2,
+      yoyGrowth: 22.5,
       avgDwell: "2.8 min",
-      peakHours: "8-10 AM, 5-8 PM",
-      topCategory: "Finance & Tech",
-      viewability: 96.8,
-      hourlyData: [12, 28, 75, 95, 78, 52, 45, 58, 72, 88, 82, 65, 48, 55, 68, 85, 98, 92, 68, 42, 28, 18, 12, 10],
-      description: "The central business district and financial heart of Singapore with premium office towers.",
+      peakHours: "7-10 AM, 4-8 PM",
+      topCategory: "Finance & Luxury",
+      viewability: 96.2,
+      hourlyData: [12, 15, 22, 45, 68, 82, 92, 95, 88, 82, 78, 75, 72, 70, 78, 85, 92, 95, 88, 72, 55, 38, 22, 15],
+      description: "The world's advertising capital with iconic Times Square billboards and subway networks.",
       locations: [
-        { name: "Raffles Place", desc: "Financial Hub", traffic: 920000, screens: 425, score: 99 },
-        { name: "Marina Bay", desc: "Waterfront Precinct", traffic: 850000, screens: 380, score: 98 },
-        { name: "Shenton Way", desc: "Corporate District", traffic: 680000, screens: 245, score: 96 },
-        { name: "Tanjong Pagar", desc: "Mixed Development", traffic: 520000, screens: 186, score: 94 },
+        { name: "Times Square", desc: "Iconic Landmark", traffic: 380000, screens: 582, score: 99 },
+        { name: "Grand Central", desc: "Transit Hub", traffic: 750000, screens: 425, score: 97 },
       ],
       audience: [
-        { name: "Professionals", percentage: 42, color: "bg-blue-500" },
-        { name: "Tourists", percentage: 25, color: "bg-amber-500" },
-        { name: "Business Travelers", percentage: 20, color: "bg-purple-500" },
-        { name: "Residents", percentage: 13, color: "bg-emerald-500" },
+        { name: "Commuters", percentage: 38, color: "bg-blue-500" },
+        { name: "Tourists", percentage: 28, color: "bg-amber-500" },
+        { name: "Professionals", percentage: 22, color: "bg-emerald-500" },
+        { name: "Students", percentage: 12, color: "bg-purple-500" },
       ],
       mediaFormats: [
-        { name: "Digital Billboards", percentage: 48 },
-        { name: "MRT Screens", percentage: 28 },
-        { name: "Mall Networks", percentage: 16 },
-        { name: "Street Furniture", percentage: 8 },
+        { name: "Spectacular LED", percentage: 35 },
+        { name: "Subway Displays", percentage: 32 },
+        { name: "Street Furniture", percentage: 20 },
+        { name: "Bus Shelters", percentage: 13 },
       ],
     },
     {
-      city: "Orchard Road",
-      code: "ORC",
-      population: "850K",
-      screens: 1245,
+      city: "Los Angeles",
+      code: "LAX",
+      population: "3.9M",
+      screens: 3580,
       screensGrowth: 18,
-      dailyReach: "1.9M",
-      dailyReachGrowth: 14.5,
-      monthlyImpressions: "57M",
-      monthlyImpressionsGrowth: 21.2,
+      dailyReach: "10.2M",
+      dailyReachGrowth: 15.8,
+      monthlyImpressions: "306M",
+      monthlyImpressionsGrowth: 22.5,
       yoyGrowth: 25.8,
       avgDwell: "3.5 min",
-      peakHours: "11 AM-2 PM, 6-9 PM",
-      topCategory: "Retail & Fashion",
-      viewability: 94.5,
-      hourlyData: [8, 18, 42, 58, 72, 82, 88, 92, 95, 98, 96, 92, 88, 85, 90, 95, 98, 95, 85, 65, 45, 28, 15, 10],
-      description: "Singapore's premier shopping belt with luxury malls and flagship stores.",
+      peakHours: "7-10 AM, 3-7 PM",
+      topCategory: "Entertainment & Tech",
+      viewability: 94.8,
+      hourlyData: [10, 12, 18, 35, 58, 75, 88, 92, 85, 78, 72, 68, 65, 62, 68, 78, 88, 92, 85, 68, 48, 32, 18, 12],
+      description: "Entertainment capital with the iconic Sunset Boulevard and LA Live spectacular displays.",
       locations: [
-        { name: "ION Orchard", desc: "Luxury Mall", traffic: 580000, screens: 245, score: 97 },
-        { name: "Ngee Ann City", desc: "Shopping Complex", traffic: 520000, screens: 198, score: 95 },
+        { name: "Sunset Boulevard", desc: "Entertainment District", traffic: 520000, screens: 385, score: 98 },
+        { name: "LAX Airport", desc: "Major Hub", traffic: 280000, screens: 295, score: 95 },
       ],
       audience: [
-        { name: "Shoppers", percentage: 45, color: "bg-emerald-500" },
-        { name: "Tourists", percentage: 32, color: "bg-amber-500" },
-        { name: "Professionals", percentage: 15, color: "bg-blue-500" },
-        { name: "Students", percentage: 8, color: "bg-purple-500" },
+        { name: "Drivers", percentage: 42, color: "bg-blue-500" },
+        { name: "Entertainment", percentage: 25, color: "bg-amber-500" },
+        { name: "Tech Workers", percentage: 20, color: "bg-emerald-500" },
+        { name: "Tourists", percentage: 13, color: "bg-purple-500" },
       ],
       mediaFormats: [
-        { name: "Mall Networks", percentage: 42 },
-        { name: "Digital Billboards", percentage: 35 },
-        { name: "Street Furniture", percentage: 15 },
-        { name: "Transit Screens", percentage: 8 },
+        { name: "Highway Billboards", percentage: 42 },
+        { name: "Digital Spectaculars", percentage: 28 },
+        { name: "Airport Media", percentage: 18 },
+        { name: "Transit Wraps", percentage: 12 },
       ],
     },
     {
-      city: "Changi",
-      code: "CHG",
-      population: "420K",
-      screens: 892,
+      city: "Chicago",
+      code: "CHI",
+      population: "2.7M",
+      screens: 2180,
+      screensGrowth: 14,
+      dailyReach: "6.8M",
+      dailyReachGrowth: 10.5,
+      monthlyImpressions: "204M",
+      monthlyImpressionsGrowth: 16.8,
+      yoyGrowth: 18.2,
+      avgDwell: "2.5 min",
+      peakHours: "6-9 AM, 4-7 PM",
+      topCategory: "Finance & CPG",
+      viewability: 93.5,
+      hourlyData: [8, 12, 22, 48, 72, 85, 92, 88, 82, 75, 70, 68, 65, 68, 75, 85, 92, 88, 75, 58, 42, 28, 15, 10],
+      description: "The Midwest advertising hub with Michigan Avenue and CTA transit network coverage.",
+      locations: [
+        { name: "Magnificent Mile", desc: "Shopping District", traffic: 280000, screens: 345, score: 96 },
+        { name: "O'Hare Airport", desc: "World's Busiest", traffic: 210000, screens: 268, score: 94 },
+      ],
+      audience: [
+        { name: "Commuters", percentage: 40, color: "bg-blue-500" },
+        { name: "Shoppers", percentage: 28, color: "bg-amber-500" },
+        { name: "Professionals", percentage: 22, color: "bg-emerald-500" },
+        { name: "Tourists", percentage: 10, color: "bg-purple-500" },
+      ],
+      mediaFormats: [
+        { name: "CTA Transit", percentage: 38 },
+        { name: "Urban Billboards", percentage: 32 },
+        { name: "Airport Displays", percentage: 18 },
+        { name: "Street Furniture", percentage: 12 },
+      ],
+    },
+    {
+      city: "Miami",
+      code: "MIA",
+      population: "450K",
+      screens: 1650,
       screensGrowth: 22,
-      dailyReach: "1.2M",
-      dailyReachGrowth: 18.8,
-      monthlyImpressions: "36M",
-      monthlyImpressionsGrowth: 24.5,
-      yoyGrowth: 28.2,
-      avgDwell: "4.2 min",
-      peakHours: "6-10 AM, 4-10 PM",
-      topCategory: "Travel & Luxury",
+      dailyReach: "5.2M",
+      dailyReachGrowth: 18.5,
+      monthlyImpressions: "156M",
+      monthlyImpressionsGrowth: 28.5,
+      yoyGrowth: 32.5,
+      avgDwell: "3.8 min",
+      peakHours: "9 AM-8 PM",
+      topCategory: "Tourism & Real Estate",
       viewability: 92.8,
-      hourlyData: [45, 55, 72, 85, 92, 88, 78, 72, 68, 65, 62, 58, 55, 58, 65, 78, 88, 95, 92, 85, 72, 58, 48, 42],
-      description: "Home to Changi Airport and Jewel, a major travel and entertainment hub.",
+      hourlyData: [15, 18, 22, 32, 48, 62, 75, 82, 88, 92, 94, 95, 94, 92, 88, 85, 82, 78, 72, 62, 48, 35, 25, 18],
+      description: "Gateway to Latin America with vibrant South Beach and Brickell financial district coverage.",
       locations: [
-        { name: "Changi Airport T3", desc: "International Terminal", traffic: 450000, screens: 286, score: 96 },
-        { name: "Jewel Changi", desc: "Lifestyle Destination", traffic: 380000, screens: 195, score: 94 },
+        { name: "South Beach", desc: "Tourism Hub", traffic: 420000, screens: 285, score: 95 },
+        { name: "Brickell", desc: "Financial District", traffic: 180000, screens: 225, score: 93 },
       ],
       audience: [
-        { name: "Travelers", percentage: 55, color: "bg-amber-500" },
-        { name: "Business Travelers", percentage: 25, color: "bg-blue-500" },
-        { name: "Families", percentage: 12, color: "bg-emerald-500" },
-        { name: "Residents", percentage: 8, color: "bg-purple-500" },
+        { name: "Tourists", percentage: 45, color: "bg-amber-500" },
+        { name: "Latin Visitors", percentage: 25, color: "bg-emerald-500" },
+        { name: "Professionals", percentage: 18, color: "bg-blue-500" },
+        { name: "Residents", percentage: 12, color: "bg-purple-500" },
       ],
       mediaFormats: [
-        { name: "Airport Displays", percentage: 52 },
-        { name: "Digital Billboards", percentage: 28 },
-        { name: "Mall Networks", percentage: 15 },
-        { name: "Transit Screens", percentage: 5 },
-      ],
-    },
-    {
-      city: "Sentosa",
-      code: "SEN",
-      population: "180K",
-      screens: 456,
-      screensGrowth: 28,
-      dailyReach: "680K",
-      dailyReachGrowth: 22.5,
-      monthlyImpressions: "20.4M",
-      monthlyImpressionsGrowth: 32.8,
-      yoyGrowth: 35.5,
-      avgDwell: "5.8 min",
-      peakHours: "10 AM-6 PM",
-      topCategory: "Entertainment & Tourism",
-      viewability: 90.2,
-      hourlyData: [15, 18, 25, 35, 52, 72, 88, 95, 98, 96, 94, 92, 90, 88, 85, 82, 78, 72, 58, 42, 28, 20, 15, 12],
-      description: "Singapore's resort island with world-class attractions and entertainment.",
-      locations: [
-        { name: "Resorts World", desc: "Integrated Resort", traffic: 285000, screens: 186, score: 92 },
-        { name: "Siloso Beach", desc: "Beach Precinct", traffic: 145000, screens: 85, score: 88 },
-      ],
-      audience: [
-        { name: "Tourists", percentage: 58, color: "bg-amber-500" },
-        { name: "Families", percentage: 28, color: "bg-emerald-500" },
-        { name: "Young Adults", percentage: 10, color: "bg-purple-500" },
-        { name: "Professionals", percentage: 4, color: "bg-blue-500" },
-      ],
-      mediaFormats: [
-        { name: "Resort Displays", percentage: 45 },
-        { name: "Digital Billboards", percentage: 32 },
-        { name: "Attraction Screens", percentage: 18 },
-        { name: "Beach Panels", percentage: 5 },
+        { name: "Beach Displays", percentage: 35 },
+        { name: "Highway Billboards", percentage: 28 },
+        { name: "Airport Media", percentage: 22 },
+        { name: "Urban Screens", percentage: 15 },
       ],
     },
   ]
@@ -242,84 +251,89 @@ export default function SingaporePage() {
 
   const faqs = [
     {
-      question: "What is DOOH advertising in Singapore?",
-      answer: "DOOH (Digital Out-of-Home) advertising in Singapore uses digital screens in public spaces like MRT stations, bus shelters, malls, and CBD areas to deliver dynamic, engaging ads that can be updated in real time.",
+      question: "What is DOOH advertising in the USA?",
+      answer: "DOOH (Digital Out-of-Home) advertising in the USA uses digital screens in public spaces like highways, transit systems, airports, malls, and iconic locations like Times Square to deliver dynamic, targeted ads that can be updated in real time.",
     },
     {
-      question: "Why invest in OOH advertising in Singapore?",
-      answer: "Singapore's high urban density, world-class infrastructure, and affluent consumer base make it ideal for impactful OOH campaigns. The city-state offers excellent reach among commuters, shoppers, and business travelers.",
+      question: "Why invest in OOH advertising in the United States?",
+      answer: "The USA has the world's largest OOH advertising market with diverse consumer demographics, high car ownership, and iconic advertising locations. It offers unmatched reach across urban, suburban, and rural audiences.",
     },
     {
-      question: "What types of OOH advertising are available in Singapore?",
-      answer: "Digital billboards, MRT station ads, bus shelter displays, taxi top screens, mall digital networks, Changi Airport advertising, and programmatic DOOH across the island.",
+      question: "What types of OOH advertising are available in the USA?",
+      answer: "Digital billboards, highway spectaculars, transit advertising (subway, bus, rail), airport media, place-based networks, sports venue displays, and programmatic DOOH across all major markets.",
     },
     {
-      question: "How can I measure OOH campaign effectiveness in Singapore?",
-      answer: "Track impressions using LTA footfall data, engagement rates, mobile attribution, and real-time analytics via programmatic DOOH platforms like Moving Audiences.",
+      question: "How can I measure OOH campaign effectiveness in the USA?",
+      answer: "Track impressions using Geopath data (formerly TAB), mobile location data, brand lift studies, and real-time analytics via programmatic DOOH platforms like Moving Audiences.",
     },
     {
-      question: "What are the regulations for OOH advertising in Singapore?",
-      answer: "OOH advertising in Singapore is regulated by the Building and Construction Authority (BCA) and Urban Redevelopment Authority (URA). All outdoor ads require permits and must comply with content guidelines.",
+      question: "What are the regulations for OOH advertising in the USA?",
+      answer: "OOH advertising in the USA is regulated at federal, state, and local levels. The Highway Beautification Act governs roadside advertising, while local zoning laws control urban displays. Content must comply with FCC and FTC guidelines.",
     },
     {
-      question: "How does Moving Walls help advertisers in Singapore?",
-      answer: "Moving Walls provides access to premium OOH inventory across Singapore, with precise audience targeting, real-time campaign analytics, and seamless programmatic buying through our Moving Audiences platform.",
+      question: "How does Moving Walls help advertisers in the USA?",
+      answer: "Moving Walls provides access to premium OOH inventory across all major US markets, with precise audience targeting based on demographic and behavioral data, real-time campaign analytics, and seamless programmatic buying.",
     },
   ]
 
   const countryData = {
-    name: "Singapore",
-    description: "Singapore's world-class infrastructure and high urban density make it a premium destination for impactful OOH advertising campaigns.",
+    name: "United States",
+    description: "The world's largest and most sophisticated OOH advertising market, featuring iconic locations, advanced programmatic capabilities, and unmatched consumer reach.",
     stats: [
-      { label: "Billboard Sites", value: "1,200+" },
-      { label: "Digital Screens", value: "500+" },
-      { label: "Monthly Reach", value: "5.5M+" },
-      { label: "MRT Stations", value: "140+" },
+      { label: "Billboard Sites", value: "350,000+" },
+      { label: "Digital Screens", value: "12,000+" },
+      { label: "Monthly Reach", value: "280M+" },
+      { label: "DMA Markets", value: "210" },
     ],
     majorCities: [
-      "Orchard Road",
-      "Marina Bay",
-      "Central Business District",
-      "Changi",
-      "Jurong",
-      "Sentosa",
+      "New York",
+      "Los Angeles",
+      "Chicago",
+      "Miami",
+      "San Francisco",
+      "Las Vegas",
+      "Dallas",
+      "Atlanta",
+      "Boston",
+      "Seattle",
     ],
     mediaTypes: [
-      { name: "Digital Billboards", icon: "digital", description: "Premium LED screens in high-traffic areas" },
-      { name: "MRT Advertising", icon: "transit", description: "Platform screens and train wraps" },
-      { name: "Bus Advertising", icon: "bus", description: "Full bus wraps and shelter displays" },
-      { name: "Mall Media", icon: "mall", description: "Digital networks in premium malls" },
-      { name: "Roadside Displays", icon: "highway", description: "Expressway and arterial road panels" },
-      { name: "Airport Media", icon: "airport", description: "Changi Airport advertising network" },
+      { name: "Digital Billboards", icon: "digital", description: "Premium LED displays on highways and urban centers" },
+      { name: "Transit Advertising", icon: "transit", description: "Subway, rail, and bus system coverage" },
+      { name: "Bus Media", icon: "bus", description: "Full bus wraps and shelter displays" },
+      { name: "Place-Based Networks", icon: "mall", description: "Retail, office, and lifestyle venues" },
+      { name: "Highway Spectaculars", icon: "highway", description: "High-impact roadside billboards" },
+      { name: "Airport Media", icon: "airport", description: "Major hub advertising networks" },
     ],
     caseStudies: [
       {
-        title: "Luxury Brand Campaign",
-        client: "International Fashion House",
-        results: "52% increase in store visits",
+        title: "Tech Product Launch",
+        client: "Fortune 500 Tech Company",
+        results: "68% increase in brand awareness",
       },
       {
-        title: "Fintech App Launch",
-        client: "Digital Banking Startup",
-        results: "180K app downloads in 4 weeks",
+        title: "Entertainment Premiere",
+        client: "Major Film Studio",
+        results: "Record 42M opening weekend",
       },
       {
-        title: "Tourism Board Campaign",
-        client: "Regional Tourism Authority",
-        results: "38% lift in destination interest",
+        title: "Retail Brand Campaign",
+        client: "National Retail Chain",
+        results: "32% lift in foot traffic",
       },
     ],
     partners: [
-      "JCDecaux Singapore",
-      "Clear Channel",
-      "Moove Media",
-      "Focus Media",
+      "Clear Channel Outdoor",
+      "Lamar Advertising",
+      "OUTFRONT Media",
+      "JCDecaux North America",
+      "Intersection",
     ],
   }
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Hero Section with 3D Marina Bay Sands */}
+      {/* Hero Section with NYC Skyline */}
       <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 py-20 md:py-28 overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         
@@ -345,8 +359,8 @@ export default function SingaporePage() {
             {/* Left Content */}
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-                OOH Advertising in{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 to-cyan-200">{countryData.name}</span>
+                OOH Advertising in the{' '}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-white to-blue-400">{countryData.name}</span>
               </h1>
               <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed">
                 {countryData.description}
@@ -362,7 +376,7 @@ export default function SingaporePage() {
               </div>
             </motion.div>
 
-            {/* Right Side - 3D Marina Bay Sands */}
+            {/* Right Side - NYC Skyline Visualization */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -371,105 +385,161 @@ export default function SingaporePage() {
               style={{ perspective: '1000px' }}
             >
               <div className="relative w-[280px] h-[300px] sm:w-[350px] sm:h-[380px] md:w-[420px] md:h-[420px]">
-                {/* Water Reflection */}
-                <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-blue-500/30 to-transparent blur-sm" />
-                <motion.div
-                  className="absolute bottom-2 left-8 right-8 h-16 bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent"
-                  animate={{ opacity: [0.3, 0.6, 0.3] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                />
-
-                {/* Marina Bay Sands Structure */}
-                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-2">
-                  {/* Three Towers */}
-                  {[0, 1, 2].map((tower) => (
-                    <motion.div
-                      key={tower}
-                      className="relative"
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.3 + tower * 0.2 }}
+                {/* NYC Skyline Buildings */}
+                <div className="absolute bottom-20 left-1/2 -translate-x-1/2 flex gap-1 items-end">
+                  {/* Empire State Building */}
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <div 
+                      className="w-8 md:w-10 h-56 md:h-64 bg-gradient-to-t from-gray-700 via-gray-500 to-gray-400 rounded-t"
+                      style={{ boxShadow: 'inset -3px 0 10px rgba(0,0,0,0.3)' }}
                     >
-                      <div 
-                        className="w-12 md:w-14 h-48 md:h-56 bg-gradient-to-t from-gray-700 via-gray-500 to-gray-400 rounded-t-lg"
-                        style={{
-                          transform: tower === 1 ? 'none' : `skewY(${tower === 0 ? 3 : -3}deg)`,
-                          boxShadow: 'inset -5px 0 15px rgba(0,0,0,0.3)'
-                        }}
-                      >
-                        {/* Windows */}
-                        <div className="absolute inset-2 grid grid-cols-2 gap-0.5">
-                          {[...Array(24)].map((_, i) => (
-                            <motion.div
-                              key={i}
-                              className="bg-yellow-200/40 rounded-sm"
-                              animate={{ opacity: [0.2, 0.7, 0.2] }}
-                              transition={{ duration: 2, repeat: Infinity, delay: (i + tower) * 0.1 }}
-                            />
-                          ))}
-                        </div>
+                      {/* Antenna */}
+                      <div className="absolute -top-8 left-1/2 -translate-x-1/2 w-1 h-8 bg-gray-400" />
+                      <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-3 h-3 bg-red-500 rounded-full animate-pulse" />
+                      {/* Windows */}
+                      <div className="absolute inset-2 grid grid-cols-2 gap-0.5">
+                        {[...Array(28)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="bg-yellow-200/40 rounded-sm"
+                            animate={{ opacity: [0.2, 0.7, 0.2] }}
+                            transition={{ duration: 2, repeat: Infinity, delay: i * 0.1 }}
+                          />
+                        ))}
                       </div>
-                    </motion.div>
-                  ))}
+                    </div>
+                  </motion.div>
+
+                  {/* Chrysler Building style */}
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <div 
+                      className="w-6 md:w-8 h-44 md:h-52 bg-gradient-to-t from-gray-600 via-gray-400 to-gray-300 rounded-t"
+                      style={{ boxShadow: 'inset -3px 0 10px rgba(0,0,0,0.3)' }}
+                    >
+                      {/* Art Deco Top */}
+                      <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-4 h-4 bg-gray-400" style={{ clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)' }} />
+                      <div className="absolute inset-1 grid grid-cols-2 gap-0.5">
+                        {[...Array(22)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="bg-yellow-200/40 rounded-sm"
+                            animate={{ opacity: [0.2, 0.7, 0.2] }}
+                            transition={{ duration: 2, repeat: Infinity, delay: (i + 5) * 0.1 }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* One World Trade Center */}
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.5 }}
+                  >
+                    <div 
+                      className="w-10 md:w-12 h-60 md:h-72 bg-gradient-to-t from-blue-900 via-blue-700 to-blue-500"
+                      style={{ 
+                        clipPath: 'polygon(15% 100%, 0% 0%, 100% 0%, 85% 100%)',
+                        boxShadow: 'inset -5px 0 15px rgba(0,0,0,0.3)'
+                      }}
+                    >
+                      {/* Antenna */}
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-0.5 h-6 bg-gray-400" />
+                      <div className="absolute inset-x-3 inset-y-2 grid grid-cols-1 gap-1">
+                        {[...Array(18)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="bg-cyan-300/30 rounded-sm"
+                            animate={{ opacity: [0.3, 0.8, 0.3] }}
+                            transition={{ duration: 2.5, repeat: Infinity, delay: i * 0.15 }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  {/* Shorter buildings */}
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.6 }}
+                  >
+                    <div className="w-6 md:w-8 h-36 md:h-44 bg-gradient-to-t from-gray-700 via-gray-500 to-gray-400 rounded-t">
+                      <div className="absolute inset-1 grid grid-cols-2 gap-0.5">
+                        {[...Array(16)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="bg-yellow-200/40 rounded-sm"
+                            animate={{ opacity: [0.2, 0.7, 0.2] }}
+                            transition={{ duration: 2, repeat: Infinity, delay: (i + 10) * 0.1 }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    className="relative"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7 }}
+                  >
+                    <div className="w-5 md:w-6 h-28 md:h-36 bg-gradient-to-t from-gray-600 via-gray-400 to-gray-300 rounded-t">
+                      <div className="absolute inset-1 grid grid-cols-2 gap-0.5">
+                        {[...Array(14)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            className="bg-yellow-200/40 rounded-sm"
+                            animate={{ opacity: [0.2, 0.7, 0.2] }}
+                            transition={{ duration: 2, repeat: Infinity, delay: (i + 15) * 0.1 }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                  </motion.div>
                 </div>
 
-                {/* SkyPark (Top Platform) */}
+                {/* Times Square Billboard Effect */}
                 <motion.div
-                  className="absolute bottom-[260px] md:bottom-[300px] left-1/2 -translate-x-1/2"
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 1 }}
-                >
-                  <div 
-                    className="w-52 md:w-64 h-6 bg-gradient-to-r from-gray-600 via-gray-400 to-gray-600 rounded-full"
-                    style={{ 
-                      boxShadow: '0 5px 30px rgba(6, 182, 212, 0.4)',
-                      transform: 'perspective(500px) rotateX(20deg)'
-                    }}
-                  >
-                    {/* Infinity Pool Glow */}
-                    <motion.div
-                      className="absolute -top-1 left-1/2 -translate-x-1/2 w-32 h-2 bg-gradient-to-r from-transparent via-cyan-400 to-transparent rounded-full"
-                      animate={{ opacity: [0.5, 1, 0.5] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  </div>
-                  {/* Trees on top */}
-                  <div className="absolute -top-2 left-8 flex gap-3">
-                    {[...Array(4)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="w-2 h-3 bg-emerald-500 rounded-full"
-                        animate={{ scale: [1, 1.1, 1] }}
-                        transition={{ duration: 2, repeat: Infinity, delay: i * 0.3 }}
-                      />
-                    ))}
-                  </div>
-                </motion.div>
-
-                {/* Merlion */}
-                <motion.div
-                  className="absolute bottom-16 left-8"
+                  className="absolute bottom-32 left-4"
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1.5 }}
+                  transition={{ delay: 1 }}
                 >
-                  <div className="w-6 h-10 bg-gradient-to-t from-gray-400 to-white rounded-t-full" />
-                  {/* Water Spray */}
                   <motion.div
-                    className="absolute -top-2 left-6 w-1 h-8 bg-gradient-to-t from-cyan-400 to-transparent origin-bottom"
-                    style={{ transform: 'rotate(-30deg)' }}
-                    animate={{ scaleY: [0.8, 1, 0.8], opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 1.5, repeat: Infinity }}
+                    className="w-14 h-10 rounded bg-gradient-to-br from-red-500 via-pink-500 to-yellow-500"
+                    animate={{ 
+                      background: [
+                        'linear-gradient(to bottom right, #ef4444, #ec4899, #eab308)',
+                        'linear-gradient(to bottom right, #3b82f6, #8b5cf6, #ec4899)',
+                        'linear-gradient(to bottom right, #10b981, #06b6d4, #3b82f6)',
+                        'linear-gradient(to bottom right, #ef4444, #ec4899, #eab308)'
+                      ]
+                    }}
+                    transition={{ duration: 4, repeat: Infinity }}
+                    style={{ boxShadow: '0 0 20px rgba(239, 68, 68, 0.5)' }}
                   />
                 </motion.div>
 
                 {/* Floating Digital Screens */}
                 {[
-                  { x: -90, y: 100, delay: 0.5, color: 'emerald' },
-                  { x: 100, y: 120, delay: 0.8, color: 'cyan' },
-                  { x: -70, y: 200, delay: 1.1, color: 'blue' },
-                  { x: 90, y: 220, delay: 1.4, color: 'emerald' },
+                  { x: -80, y: 120, delay: 0.8, color: 'red' },
+                  { x: 90, y: 140, delay: 1.1, color: 'blue' },
+                  { x: -60, y: 220, delay: 1.4, color: 'emerald' },
+                  { x: 100, y: 200, delay: 1.7, color: 'amber' },
                 ].map((screen, i) => (
                   <motion.div
                     key={i}
@@ -480,13 +550,23 @@ export default function SingaporePage() {
                     transition={{ delay: screen.delay }}
                   >
                     <motion.div
-                      className={`w-10 h-7 rounded bg-gradient-to-br ${screen.color === 'emerald' ? 'from-emerald-400 to-cyan-500' : screen.color === 'cyan' ? 'from-cyan-400 to-blue-500' : 'from-blue-400 to-indigo-500'}`}
+                      className={`w-10 h-7 rounded bg-gradient-to-br ${screen.color === 'red' ? 'from-red-400 to-orange-500' : screen.color === 'blue' ? 'from-blue-400 to-indigo-500' : screen.color === 'emerald' ? 'from-emerald-400 to-cyan-500' : 'from-amber-400 to-orange-500'}`}
                       animate={{ opacity: [0.7, 1, 0.7] }}
                       transition={{ duration: 2, repeat: Infinity, delay: screen.delay }}
-                      style={{ boxShadow: `0 0 15px ${screen.color === 'emerald' ? 'rgba(16, 185, 129, 0.5)' : screen.color === 'cyan' ? 'rgba(6, 182, 212, 0.5)' : 'rgba(59, 130, 246, 0.5)'}` }}
+                      style={{ boxShadow: `0 0 15px ${screen.color === 'red' ? 'rgba(239, 68, 68, 0.5)' : screen.color === 'blue' ? 'rgba(59, 130, 246, 0.5)' : screen.color === 'emerald' ? 'rgba(16, 185, 129, 0.5)' : 'rgba(245, 158, 11, 0.5)'}` }}
                     />
                   </motion.div>
                 ))}
+
+                {/* Statue of Liberty silhouette */}
+                <motion.div
+                  className="absolute bottom-16 right-8"
+                  initial={{ opacity: 0, scale: 0 }}
+                  animate={{ opacity: 0.3, scale: 1 }}
+                  transition={{ delay: 1.5 }}
+                >
+                  <div className="w-8 h-16 bg-gradient-to-t from-emerald-700 to-emerald-500 rounded-t-full opacity-50" />
+                </motion.div>
 
 
               </div>
@@ -526,7 +606,7 @@ export default function SingaporePage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Available Media Types</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Comprehensive OOH advertising solutions across {countryData.name}</p>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Comprehensive OOH advertising solutions across the {countryData.name}</p>
           </motion.div>
           <motion.div
             initial="hidden"
@@ -555,7 +635,7 @@ export default function SingaporePage() {
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
                 Key Markets Dashboard
               </h2>
-              <p className="text-gray-600">Real-time outdoor advertising metrics across Singapore</p>
+              <p className="text-gray-600">Real-time outdoor advertising metrics across the United States</p>
             </div>
 
             {/* Location Tabs */}
@@ -751,7 +831,7 @@ export default function SingaporePage() {
 
                     {/* Bars */}
                     <div className="flex items-end justify-between h-40 gap-0.5 relative">
-                      {/* Current Time Indicator - Small Dot with Tooltip */}
+                      {/* Current Time Indicator */}
                       <motion.div
                         className="absolute z-20 group cursor-pointer"
                         style={{ left: `${currentTimePosition}%`, bottom: '0' }}
@@ -1031,7 +1111,7 @@ export default function SingaporePage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Success Stories</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">See how brands have achieved results with OOH in {countryData.name}</p>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">See how brands have achieved results with OOH in the {countryData.name}</p>
           </motion.div>
           <motion.div
             initial="hidden"
@@ -1074,7 +1154,7 @@ export default function SingaporePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div variants={fadeUp} className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our Media Partners</h2>
-            <p className="text-lg text-gray-600">Working with leading media owners in {countryData.name}</p>
+            <p className="text-lg text-gray-600">Working with leading media owners in the {countryData.name}</p>
           </motion.div>
           <motion.div variants={staggerContainer} className="flex flex-wrap justify-center gap-6">
             {countryData.partners.map((partner) => (
@@ -1107,8 +1187,8 @@ export default function SingaporePage() {
             className="grid grid-cols-2 md:grid-cols-4 gap-4"
           >
             {[
-              { name: "United States", flag: "🇺🇸", href: "/locations/usa" },
               { name: "Malaysia", flag: "🇲🇾", href: "/locations/malaysia" },
+              { name: "Singapore", flag: "🇸🇬", href: "/locations/singapore" },
               { name: "Indonesia", flag: "🇮🇩", href: "/locations/indonesia" },
               { name: "India", flag: "🇮🇳", href: "/locations/india" },
               { name: "Philippines", flag: "🇵🇭", href: "/locations/philippines" },
@@ -1136,7 +1216,7 @@ export default function SingaporePage() {
       <section className="py-16 md:py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={fadeUp} className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">FAQs – OOH Advertising in Singapore</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">FAQs – OOH Advertising in the USA</h2>
           </motion.div>
           <motion.div initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }} variants={staggerContainer} className="space-y-4">
             {faqs.map((faq, index) => (
