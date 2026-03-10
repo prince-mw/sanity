@@ -46,7 +46,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
       {
         title: t('megaMenu.about.company'),
         items: [
-          { name: "About Us", description: "Learn about Moving Walls", href: "/about" },
+          { name: "About Us", description: "Learn about MovingWalls", href: "/about" },
           { name: t('megaMenu.about.ourStory.name'), description: t('megaMenu.about.ourStory.description'), href: "/our-story" },
           { name: t('megaMenu.about.leadership.name'), description: t('megaMenu.about.leadership.description'), href: "/leadership" },
           { name: t('megaMenu.about.careers.name'), description: t('megaMenu.about.careers.description'), href: "/careers" },
@@ -65,12 +65,6 @@ const createMegaMenuData = (t: (key: string) => string) => ({
           { name: t('megaMenu.resources.oohFormats.name'), description: t('megaMenu.resources.oohFormats.description'), href: "/ooh-formats" },
           { name: t('megaMenu.resources.pressNews.name'), description: t('megaMenu.resources.pressNews.description'), href: "/press-news" },
           { name: t('megaMenu.about.events.name'), description: t('megaMenu.about.events.description'), href: "/events" },
-        ],
-      },
-      {
-        title: t('megaMenu.resources.support'),
-        items: [
-          { name: t('megaMenu.resources.helpCenter.name'), description: t('megaMenu.resources.helpCenter.description'), href: "/help-center" },
         ],
       },
     ],
@@ -134,7 +128,7 @@ export default function Header() {
             >
               <Image
                 src="/assets/logo/MW-logo-web.svg"
-                alt="Moving Walls Logo"
+                alt="MovingWalls Logo"
                 width={180}
                 height={40}
                 priority

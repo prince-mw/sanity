@@ -257,8 +257,8 @@ export default function PhilippinesPage() {
       answer: "Major markets include Metro Manila (especially EDSA corridor), Cebu, Davao, Clark, and emerging regional hubs. The SM and Ayala mall networks offer premium indoor advertising.",
     },
     {
-      question: "How does Moving Walls help advertisers in the Philippines?",
-      answer: "Moving Walls provides access to 3,500+ billboard sites across the Philippines, with precise audience targeting, real-time analytics, and programmatic buying through our Moving Audiences platform.",
+      question: "How does MovingWalls help advertisers in the Philippines?",
+      answer: "MovingWalls provides access to 3,500+ billboard sites across the Philippines, with precise audience targeting, real-time analytics, and programmatic buying through our Moving Audiences platform.",
     },
   ]
 

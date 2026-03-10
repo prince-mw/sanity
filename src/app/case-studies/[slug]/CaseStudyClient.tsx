@@ -35,7 +35,7 @@ const caseStudiesData: Record<string, {
       { metric: "Brand Awareness", value: "+89%" },
       { metric: "Markets Covered", value: "15" }
     ],
-    testimonial: "Moving Walls transformed how we approach out-of-home advertising. The results exceeded all expectations and have fundamentally changed our marketing strategy.",
+    testimonial: "MovingWalls transformed how we approach out-of-home advertising. The results exceeded all expectations and have fundamentally changed our marketing strategy.",
     author: "Sarah Chen",
     role: "VP of Marketing",
     duration: "90 days",
@@ -73,7 +73,7 @@ const caseStudiesData: Record<string, {
       { metric: "Brand Lift", value: "+156%" },
       { metric: "Sales Increase", value: "+89%" }
     ],
-    testimonial: "The synchronized launch across all markets was flawlessly executed. Moving Walls gave us the control and visibility we needed for such a complex campaign.",
+    testimonial: "The synchronized launch across all markets was flawlessly executed. MovingWalls gave us the control and visibility we needed for such a complex campaign.",
     author: "Jennifer Lee",
     role: "Regional Marketing Head",
     duration: "60 days",
@@ -111,7 +111,7 @@ const caseStudiesData: Record<string, {
       { metric: "ROI", value: "300%" },
       { metric: "Cost Per Visit", value: "-42%" }
     ],
-    testimonial: "Moving Walls helped us completely transform our Q4 performance. The ability to target commuters and conquest competitor locations was game-changing.",
+    testimonial: "MovingWalls helped us completely transform our Q4 performance. The ability to target commuters and conquest competitor locations was game-changing.",
     author: "James Patterson",
     role: "Marketing Director",
     duration: "90 days",
@@ -187,7 +187,7 @@ const caseStudiesData: Record<string, {
       { metric: "Cost Per Lead", value: "-42%" },
       { metric: "Website Traffic", value: "+124%" }
     ],
-    testimonial: "Moving Walls understood our compliance requirements while delivering exceptional results. They made healthcare advertising simple and effective.",
+    testimonial: "MovingWalls understood our compliance requirements while delivering exceptional results. They made healthcare advertising simple and effective.",
     author: "Dr. Robert Chen",
     role: "Chief Marketing Officer",
     duration: "60 days",
@@ -263,7 +263,7 @@ const caseStudiesData: Record<string, {
       { metric: "Digital Adoption", value: "+89%" },
       { metric: "Brand Recall", value: "+73%" }
     ],
-    testimonial: "Moving Walls helped us successfully compete against much larger banks. The hyperlocal approach was perfect for our community-focused strategy.",
+    testimonial: "MovingWalls helped us successfully compete against much larger banks. The hyperlocal approach was perfect for our community-focused strategy.",
     author: "Thomas Anderson",
     role: "Regional Marketing Director",
     duration: "90 days",

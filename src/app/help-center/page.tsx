@@ -18,7 +18,7 @@ export default function HelpCenterPage() {
     {
       category: "Getting Started",
       question: "What are the system requirements?",
-      answer: "Moving Walls platform works on all modern browsers (Chrome, Firefox, Safari, Edge). We recommend using the latest browser version for optimal performance."
+      answer: "MovingWalls platform works on all modern browsers (Chrome, Firefox, Safari, Edge). We recommend using the latest browser version for optimal performance."
     },
     {
       category: "Account & Billing",

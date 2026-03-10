@@ -104,7 +104,7 @@ export default function CaseStudiesPage() {
               <span className="text-mw-blue-600 block">Client Success</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Discover how leading brands achieve exceptional results with Moving Walls's advertising solutions.
+              Discover how leading brands achieve exceptional results with MovingWalls's advertising solutions.
             </p>
           </motion.div>
         </div>

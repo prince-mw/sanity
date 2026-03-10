@@ -119,7 +119,7 @@ const integrations = [
     id: 'max',
     name: 'MAX',
     category: 'dsp',
-    description: 'Moving Walls\' programmatic OOH buying platform for automated, data-driven outdoor advertising campaigns.',
+    description: 'MovingWalls\' programmatic OOH buying platform for automated, data-driven outdoor advertising campaigns.',
     products: ['MW Planner', 'MW Activate', 'MW Measure'],
     features: ['Automated buying', 'Audience data', 'Campaign optimization', 'Real-time reporting'],
     apiDocs: '/api-reference',

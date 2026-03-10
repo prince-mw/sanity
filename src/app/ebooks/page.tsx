@@ -35,7 +35,7 @@ const ebooks = [
   },
   {
     id: 2,
-    title: "Solutions by Moving Walls: Unlocking the Power of Last Mile Advertising",
+    title: "Solutions by MovingWalls: Unlocking the Power of Last Mile Advertising",
     description: "Discover how data-driven retail media and last-mile advertising can boost engagement and sales at the point of purchase.",
     category: "Playbook",
     image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&q=80",

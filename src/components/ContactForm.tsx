@@ -85,7 +85,7 @@ export default function ContactForm() {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-mw-gray-900 mb-1">Moving Walls Pte Ltd</h4>
+                      <h4 className="font-semibold text-mw-gray-900 mb-1">MovingWalls Pte Ltd</h4>
                       <p className="text-mw-gray-600">14, Robinson Road #8-02<br />Far East Financial Building<br />Singapore 048545</p>
                     </div>
                   </div>

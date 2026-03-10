@@ -90,7 +90,7 @@ export default function LeadershipPage() {
             transition={{ duration: 0.6, delay: 0.45 }}
             className="text-lg sm:text-xl text-mw-blue-200/80 mb-12 max-w-2xl mx-auto leading-relaxed"
           >
-            We are preparing something special. Meet the visionaries behind Moving Walls — 
+            We are preparing something special. Meet the visionaries behind MovingWalls — 
             the team driving innovation in outdoor advertising technology across the globe.
           </motion.p>
 

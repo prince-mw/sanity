@@ -60,7 +60,7 @@ export default function CaseStudiesSection() {
           </h2>
           <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
             Discover how leading brands across industries have achieved remarkable results 
-            with Moving Walls' connected media platform.
+            with MovingWalls' connected media platform.
           </p>
         </motion.div>
 

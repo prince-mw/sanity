@@ -91,14 +91,14 @@ export default function AboutUsPage() {
               <svg className="w-4 h-4 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
-              <span className="text-mw-blue-600 text-sm font-medium">About Moving Walls</span>
+              <span className="text-mw-blue-600 text-sm font-medium">About MovingWalls</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
               Transforming How Brands
               <span className="text-mw-blue-600 block">Reach Real People</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
-              Moving Walls is a global connected media and programmatic out of home company powered by US patented measurement technology. We help brands reach real people in real places with precision, accountability, and confidence.
+              MovingWalls is a global connected media and programmatic out of home company powered by US patented measurement technology. We help brands reach real people in real places with precision, accountability, and confidence.
             </p>
             <p className="text-xl text-mw-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
               Across four continents and seven markets, we process more than 10 billion data points and measure over 100,000 OOH and retail media locations. Our scale is global. Our intelligence is local. Our focus is simple. Make outdoor media measurable, transparent, and performance driven.
@@ -153,7 +153,7 @@ export default function AboutUsPage() {
             className="max-w-3xl mx-auto text-center mb-14"
           >
             <p className="text-lg text-mw-gray-600 mb-5 leading-relaxed">
-              We built Moving Walls to change that.
+              We built MovingWalls to change that.
             </p>
             <p className="text-lg text-mw-gray-600 mb-5 leading-relaxed">
               At the heart of our platform is <strong className="text-mw-blue-600">Moving Audiences®</strong>, our US patented multi-sensor measurement technology. By tracking real-world movement and behavioural signals, we transform physical locations into intelligent, measurable media assets.

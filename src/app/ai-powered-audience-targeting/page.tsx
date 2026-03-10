@@ -32,7 +32,7 @@ export default function AIPoweredAudienceTargetingPage() {
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold text-mw-gray-900 mb-6 leading-tight">
-              Moving Walls Launches AI-Powered Audience Targeting Platform
+              MovingWalls Launches AI-Powered Audience Targeting Platform
             </h1>
             
             <p className="text-xl text-mw-gray-600 leading-relaxed mb-8">
@@ -65,7 +65,7 @@ export default function AIPoweredAudienceTargetingPage() {
 
             <div className="text-mw-gray-700 space-y-6">
               <p className="text-lg font-medium text-mw-gray-900">
-                NEW YORK, NY - November 15, 2024 - Moving Walls, the leading advertising technology platform, today announced the launch of its revolutionary AI-powered audience targeting platform, marking a significant milestone in programmatic advertising innovation.
+                NEW YORK, NY - November 15, 2024 - MovingWalls, the leading advertising technology platform, today announced the launch of its revolutionary AI-powered audience targeting platform, marking a significant milestone in programmatic advertising innovation.
               </p>
 
               <p>
@@ -75,7 +75,7 @@ export default function AIPoweredAudienceTargetingPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Revolutionary Technology</h2>
               
               <p>
-                "This launch represents years of research and development in artificial intelligence and machine learning," said Sarah Chen, Chief Technology Officer at Moving Walls. "Our AI platform doesn't just analyze demographics—it understands behavioral patterns, contextual signals, and real-time intent to deliver the right message to the right person at precisely the right moment."
+                "This launch represents years of research and development in artificial intelligence and machine learning," said Sarah Chen, Chief Technology Officer at MovingWalls. "Our AI platform doesn't just analyze demographics—it understands behavioral patterns, contextual signals, and real-time intent to deliver the right message to the right person at precisely the right moment."
               </p>
 
               <p>
@@ -99,23 +99,23 @@ export default function AIPoweredAudienceTargetingPage() {
               </p>
 
               <p>
-                "The results speak for themselves," said Michael Rodriguez, VP of Marketing at TechnoMart. "Moving Walls's AI platform didn't just improve our advertising performance—it transformed how we think about customer engagement. We're reaching customers we never knew existed with messages that truly resonate."
+                "The results speak for themselves," said Michael Rodriguez, VP of Marketing at TechnoMart. "MovingWalls's AI platform didn't just improve our advertising performance—it transformed how we think about customer engagement. We're reaching customers we never knew existed with messages that truly resonate."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Looking Forward</h2>
               
               <p>
-                The AI-powered audience targeting platform is now available to all Moving Walls clients, with enterprise features rolling out over the next quarter. The company plans to expand the platform's capabilities to include voice and video content optimization, as well as augmented reality advertising experiences.
+                The AI-powered audience targeting platform is now available to all MovingWalls clients, with enterprise features rolling out over the next quarter. The company plans to expand the platform's capabilities to include voice and video content optimization, as well as augmented reality advertising experiences.
               </p>
 
               <p>
                 "This is just the beginning," added Chen. "We're already working on the next generation of AI features that will make advertising even more relevant, effective, and respectful of consumer privacy. The future of advertising is intelligent, and it starts today."
               </p>
 
-              <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">About Moving Walls</h2>
+              <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">About MovingWalls</h2>
               
               <p>
-                Founded in 2015, Moving Walls is a leading advertising technology company that specializes in programmatic advertising, audience targeting, and campaign optimization. With offices in New York, San Francisco, London, and Singapore, Moving Walls serves over 500 brands worldwide and processes billions of advertising transactions daily. For more information, visit www.movingwalls.com.
+                Founded in 2015, MovingWalls is a leading advertising technology company that specializes in programmatic advertising, audience targeting, and campaign optimization. With offices in New York, San Francisco, London, and Singapore, MovingWalls serves over 500 brands worldwide and processes billions of advertising transactions daily. For more information, visit www.movingwalls.com.
               </p>
 
               <div className="bg-mw-gray-50 rounded-lg p-6 mt-8">
@@ -123,7 +123,7 @@ export default function AIPoweredAudienceTargetingPage() {
                 <p className="text-mw-gray-700">
                   Jennifer Walsh<br/>
                   Director of Communications<br/>
-                  Moving Walls<br/>
+                  MovingWalls<br/>
                   Phone: (555) 123-4567<br/>
                   Email: media@movingwalls.com
                 </p>

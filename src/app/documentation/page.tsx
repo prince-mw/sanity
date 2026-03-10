@@ -32,7 +32,7 @@ export default function DocumentationPage() {
               <span className="text-mw-blue-600 block">Technical Guides</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Comprehensive guides and technical documentation for the Moving Walls platform.
+              Comprehensive guides and technical documentation for the MovingWalls platform.
             </p>
           </motion.div>
         </div>
@@ -68,15 +68,15 @@ export default function DocumentationPage() {
                 <h2 className="text-3xl font-bold text-mw-gray-900 mb-6">Quick Start Guide</h2>
                 
                 <div className="prose max-w-none">
-                  <h3 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Getting Started with Moving Walls</h3>
+                  <h3 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Getting Started with MovingWalls</h3>
                   <p className="text-mw-gray-600 mb-6">
-                    Welcome to Moving Walls! This guide will help you get up and running with our advertising platform in minutes.
+                    Welcome to MovingWalls! This guide will help you get up and running with our advertising platform in minutes.
                   </p>
 
                   <h4 className="text-xl font-bold text-mw-gray-900 mt-6 mb-3">Step 1: Account Setup</h4>
                   <div className="bg-mw-gray-50 rounded-lg p-6 mb-6">
                     <ol className="list-decimal list-inside space-y-2 text-mw-gray-700">
-                      <li>Log in to your Moving Walls account</li>
+                      <li>Log in to your MovingWalls account</li>
                       <li>Complete your company profile</li>
                       <li>Add payment methods</li>
                       <li>Set up team members and permissions</li>
@@ -114,14 +114,7 @@ export default function DocumentationPage() {
                   </div>
 
                   <h3 className="text-2xl font-bold text-mw-gray-900 mt-12 mb-4">Need More Help?</h3>
-                  <div className="grid md:grid-cols-2 gap-4 mt-6">
-                    <Link href="/help-center" className="flex items-center gap-3 p-4 bg-mw-gray-50 rounded-lg hover:bg-mw-blue-50 transition-colors">
-                      <svg className="w-8 h-8 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                      <div>
-                        <p className="font-semibold text-mw-gray-900">Help Center</p>
-                        <p className="text-sm text-mw-gray-600">Browse FAQs</p>
-                      </div>
-                    </Link>
+                  <div className="grid md:grid-cols-1 gap-4 mt-6">
                     <Link href="/contact" className="flex items-center gap-3 p-4 bg-mw-gray-50 rounded-lg hover:bg-mw-blue-50 transition-colors">
                       <svg className="w-8 h-8 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" /></svg>
                       <div>

@@ -257,8 +257,8 @@ export default function IndonesiaPage() {
       answer: "Major markets include Jakarta (Greater Jakarta area), Surabaya, Bandung, Medan, Semarang, and Makassar. The Jabodetabek region offers the highest concentration of premium inventory.",
     },
     {
-      question: "How does Moving Walls help advertisers in Indonesia?",
-      answer: "Moving Walls provides access to 8,000+ billboard sites across Indonesia, with precise audience targeting, real-time analytics, and programmatic buying through our Moving Audiences platform.",
+      question: "How does MovingWalls help advertisers in Indonesia?",
+      answer: "MovingWalls provides access to 8,000+ billboard sites across Indonesia, with precise audience targeting, real-time analytics, and programmatic buying through our Moving Audiences platform.",
     },
   ]
 

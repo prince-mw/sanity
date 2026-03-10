@@ -292,7 +292,7 @@ export default function MalaysiaPage() {
       answer: "High visibility, dynamic content, precise audience targeting, and actionable performance data.",
     },
     {
-      question: "How does Moving Walls help advertisers in Malaysia?",
+      question: "How does MovingWalls help advertisers in Malaysia?",
       answer: "Our Moving Audiences platform enables precise targeting, real-time analytics, and seamless campaign execution across DOOH networks.",
     },
   ]
@@ -1084,7 +1084,7 @@ export default function MalaysiaPage() {
                   Our DOOH Success Stories in Malaysia
                 </h2>
                 <p className="text-mw-blue-100 mb-6">
-                  Moving Walls is a global leader in AdTech and MediaTech, providing enterprise software solutions for Out-of-Home advertising.
+                  MovingWalls is a global leader in AdTech and MediaTech, providing enterprise software solutions for Out-of-Home advertising.
                 </p>
                 <Link
                   href="/case-studies"

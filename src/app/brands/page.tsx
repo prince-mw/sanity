@@ -222,7 +222,7 @@ export default function BrandsPage() {
             </h2>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
               The outdoors has always delivered attention. What it lacked was speed and accountability.
-              Moving Walls connects planning, booking, activation, and attribution into one streamlined workflow. No manual coordination. No disconnected systems. No blind spending.
+              MovingWalls connects planning, booking, activation, and attribution into one streamlined workflow. No manual coordination. No disconnected systems. No blind spending.
             </p>
           </motion.div>
 
@@ -534,7 +534,7 @@ export default function BrandsPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Your Journey with Moving Walls
+              Your Journey with MovingWalls
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Create. Execute. Measure. A seamless journey from brief to results.
@@ -845,7 +845,7 @@ export default function BrandsPage() {
               Our Case Studies
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover how leading brands achieved remarkable results with Moving Walls
+              Discover how leading brands achieved remarkable results with MovingWalls
             </p>
           </motion.div>
 
@@ -1371,7 +1371,7 @@ export default function BrandsPage() {
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-mw-gray-600">
-              Everything you need to know about Moving Walls for brands
+              Everything you need to know about MovingWalls for brands
             </p>
           </motion.div>
 
@@ -1394,7 +1394,7 @@ export default function BrandsPage() {
                 answer: "We provide real-time analytics including impressions, reach, frequency, attribution tracking, and foot traffic lift. Our MW Measure platform integrates with your existing analytics tools for comprehensive reporting."
               },
               {
-                question: "Can I integrate Moving Walls with my existing marketing stack?",
+                question: "Can I integrate MovingWalls with my existing marketing stack?",
                 answer: "Absolutely. We offer integrations with major CRM, DSP, analytics, and creative platforms. Our API also allows for custom integrations with your proprietary systems."
               }
             ].map((faq, index) => (

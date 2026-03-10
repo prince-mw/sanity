@@ -91,7 +91,6 @@ export default function SitemapPage() {
         { name: "Case Studies", href: "/case-studies" },
         { name: "Community", href: "/community" },
         { name: "Documentation", href: "/documentation" },
-        { name: "Help Center", href: "/help-center" },
         { name: "Webinars", href: "/webinars" },
         { name: "Whitepapers", href: "/whitepapers" },
       ]
@@ -147,7 +146,7 @@ export default function SitemapPage() {
               Sitemap
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-              Explore all pages and sections of the Moving Walls website
+              Explore all pages and sections of the MovingWalls website
             </p>
             
             {/* Download Button */}

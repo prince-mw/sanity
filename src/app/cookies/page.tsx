@@ -56,7 +56,7 @@ export default function CookiePolicyPage() {
             <div className="mb-12">
               <h2 className="text-2xl font-bold text-gray-900 mb-4">2. How We Use Cookies</h2>
               <p className="text-gray-600 leading-relaxed mb-4">
-                Moving Walls uses cookies and similar technologies for several purposes:
+                MovingWalls uses cookies and similar technologies for several purposes:
               </p>
               <ul className="list-disc pl-6 text-gray-600 space-y-2">
                 <li>To ensure our website functions properly</li>
@@ -292,7 +292,7 @@ export default function CookiePolicyPage() {
                 If you have any questions about our use of cookies or this Cookie Policy, please contact us:
               </p>
               <div className="bg-gray-50 rounded-xl p-6">
-                <p className="text-gray-700 mb-2"><strong>Moving Walls Pte. Ltd.</strong></p>
+                <p className="text-gray-700 mb-2"><strong>MovingWalls Pte. Ltd.</strong></p>
                 <p className="text-gray-600 mb-2">Email: privacy@movingwalls.com</p>
                 <p className="text-gray-600 mb-2">Address: Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545</p>
               </div>

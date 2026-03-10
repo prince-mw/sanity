@@ -5,19 +5,10 @@ import { locales, defaultLocale, localeNames, localeCodes, Locale } from './conf
 
 // Statically import all translations to ensure they're bundled
 import enMessages from '../../messages/en.json';
-import esMessages from '../../messages/es.json';
-import frMessages from '../../messages/fr.json';
-import deMessages from '../../messages/de.json';
-import ptMessages from '../../messages/pt.json';
-import zhMessages from '../../messages/zh.json';
 import jaMessages from '../../messages/ja.json';
 import koMessages from '../../messages/ko.json';
-import arMessages from '../../messages/ar.json';
-import hiMessages from '../../messages/hi.json';
-import msMessages from '../../messages/ms.json';
 import idMessages from '../../messages/id.json';
-import thMessages from '../../messages/th.json';
-import viMessages from '../../messages/vi.json';
+import zhMessages from '../../messages/zh.json';
 
 // Type for messages
 type Messages = typeof enMessages;
@@ -25,19 +16,10 @@ type Messages = typeof enMessages;
 // Messages map
 const messagesMap: Record<Locale, Messages> = {
   en: enMessages,
-  es: esMessages,
-  fr: frMessages,
-  de: deMessages,
-  pt: ptMessages,
-  zh: zhMessages,
   ja: jaMessages,
   ko: koMessages,
-  ar: arMessages,
-  hi: hiMessages,
-  ms: msMessages,
   id: idMessages,
-  th: thMessages,
-  vi: viMessages,
+  zh: zhMessages,
 };
 
 interface LocaleContextType {
@@ -79,14 +61,14 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     if (savedLocale && locales.includes(savedLocale)) {
       setLocaleState(savedLocale);
       document.documentElement.lang = savedLocale;
-      document.documentElement.dir = savedLocale === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.dir = 'ltr';
     } else {
       // Try to detect from browser
       const browserLocale = navigator.language.split('-')[0] as Locale;
       if (locales.includes(browserLocale)) {
         setLocaleState(browserLocale);
         document.documentElement.lang = browserLocale;
-        document.documentElement.dir = browserLocale === 'ar' ? 'rtl' : 'ltr';
+        document.documentElement.dir = 'ltr';
       }
     }
     setMounted(true);
@@ -97,7 +79,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     if (typeof window !== 'undefined') {
       localStorage.setItem('locale', newLocale);
       document.documentElement.lang = newLocale;
-      document.documentElement.dir = newLocale === 'ar' ? 'rtl' : 'ltr';
+      document.documentElement.dir = 'ltr';
     }
   }, []);
 

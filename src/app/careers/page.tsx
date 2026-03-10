@@ -130,7 +130,7 @@ export default function CareersPage() {
               <span className="text-mw-blue-600 block">Shape the Future</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Join Moving Walls and help revolutionize the advertising industry. We're looking for 
+              Join MovingWalls and help revolutionize the advertising industry. We're looking for 
               passionate innovators who want to make a real impact while growing their careers 
               in a dynamic, supportive environment.
             </p>
@@ -164,7 +164,7 @@ export default function CareersPage() {
         </div>
       </section>
 
-      {/* Why Moving Walls Section */}
+      {/* Why MovingWalls Section */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -175,7 +175,7 @@ export default function CareersPage() {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Why Choose Moving Walls?
+              Why Choose MovingWalls?
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               We believe in empowering our people to do their best work while building the future of advertising technology.

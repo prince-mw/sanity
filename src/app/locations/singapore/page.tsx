@@ -262,8 +262,8 @@ export default function SingaporePage() {
       answer: "OOH advertising in Singapore is regulated by the Building and Construction Authority (BCA) and Urban Redevelopment Authority (URA). All outdoor ads require permits and must comply with content guidelines.",
     },
     {
-      question: "How does Moving Walls help advertisers in Singapore?",
-      answer: "Moving Walls provides access to premium OOH inventory across Singapore, with precise audience targeting, real-time campaign analytics, and seamless programmatic buying through our Moving Audiences platform.",
+      question: "How does MovingWalls help advertisers in Singapore?",
+      answer: "MovingWalls provides access to premium OOH inventory across Singapore, with precise audience targeting, real-time campaign analytics, and seamless programmatic buying through our Moving Audiences platform.",
     },
   ]
 

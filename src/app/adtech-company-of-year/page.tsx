@@ -31,7 +31,7 @@ export default function AdTechCompanyOfYearPage() {
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold text-mw-gray-900 mb-6 leading-tight">
-              Moving Walls Named 'AdTech Company of the Year' by Industry Awards
+              MovingWalls Named 'AdTech Company of the Year' by Industry Awards
             </h1>
             
             <p className="text-xl text-mw-gray-600 leading-relaxed mb-8">
@@ -64,7 +64,7 @@ export default function AdTechCompanyOfYearPage() {
 
             <div className="text-mw-gray-700 space-y-6">
               <p className="text-lg font-medium text-mw-gray-900">
-                NEW YORK, NY - August 5, 2024 - Moving Walls has been named 'AdTech Company of the Year' at the prestigious Digital Marketing Excellence Awards, recognizing the company's outstanding innovation in programmatic advertising and measurement solutions.
+                NEW YORK, NY - August 5, 2024 - MovingWalls has been named 'AdTech Company of the Year' at the prestigious Digital Marketing Excellence Awards, recognizing the company's outstanding innovation in programmatic advertising and measurement solutions.
               </p>
 
               <p>
@@ -74,17 +74,17 @@ export default function AdTechCompanyOfYearPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Award Recognition</h2>
               
               <p>
-                The judges praised Moving Walls's comprehensive approach to solving complex advertising challenges through innovative technology and data-driven insights. The company was specifically recognized for its AI-powered audience targeting platform, privacy-first measurement tools, and exceptional client results.
+                The judges praised MovingWalls's comprehensive approach to solving complex advertising challenges through innovative technology and data-driven insights. The company was specifically recognized for its AI-powered audience targeting platform, privacy-first measurement tools, and exceptional client results.
               </p>
 
               <p>
-                "Moving Walls has consistently demonstrated leadership in advancing advertising technology while maintaining the highest standards of privacy and transparency," said Dr. Elizabeth Harper, Chair of the Awards Committee. "Their innovative solutions have set new industry benchmarks for effectiveness and accountability."
+                "MovingWalls has consistently demonstrated leadership in advancing advertising technology while maintaining the highest standards of privacy and transparency," said Dr. Elizabeth Harper, Chair of the Awards Committee. "Their innovative solutions have set new industry benchmarks for effectiveness and accountability."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Innovation Highlights</h2>
               
               <p>
-                The award recognizes several key innovations that Moving Walls introduced over the past year:
+                The award recognizes several key innovations that MovingWalls introduced over the past year:
               </p>
 
               <ul className="space-y-3">
@@ -97,7 +97,7 @@ export default function AdTechCompanyOfYearPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Client Impact</h2>
               
               <p>
-                The recognition comes as Moving Walls continues to deliver exceptional results for its global client base. Over the past year, the platform has:
+                The recognition comes as MovingWalls continues to deliver exceptional results for its global client base. Over the past year, the platform has:
               </p>
 
               <ul className="space-y-2 ml-6">
@@ -109,23 +109,23 @@ export default function AdTechCompanyOfYearPage() {
               </ul>
 
               <p>
-                "This award is a testament to our team's dedication to innovation and our clients' success," said David Kim, CEO of Moving Walls. "We're honored to be recognized by our peers and remain committed to pushing the boundaries of what's possible in advertising technology."
+                "This award is a testament to our team's dedication to innovation and our clients' success," said David Kim, CEO of MovingWalls. "We're honored to be recognized by our peers and remain committed to pushing the boundaries of what's possible in advertising technology."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Industry Leadership</h2>
               
               <p>
-                The award adds to Moving Walls's growing list of industry accolades, including recognition from AdExchanger, Digiday, and the Interactive Advertising Bureau. The company has been consistently ranked among the top advertising technology platforms by leading industry publications.
+                The award adds to MovingWalls's growing list of industry accolades, including recognition from AdExchanger, Digiday, and the Interactive Advertising Bureau. The company has been consistently ranked among the top advertising technology platforms by leading industry publications.
               </p>
 
               <p>
-                Sarah Chen, Chief Technology Officer, accepted the award on behalf of the company, highlighting the collaborative effort across all teams. "This recognition belongs to every member of the Moving Walls family who works tirelessly to deliver exceptional results for our clients," Chen said during her acceptance speech.
+                Sarah Chen, Chief Technology Officer, accepted the award on behalf of the company, highlighting the collaborative effort across all teams. "This recognition belongs to every member of the MovingWalls family who works tirelessly to deliver exceptional results for our clients," Chen said during her acceptance speech.
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Future Innovation</h2>
               
               <p>
-                Looking ahead, Moving Walls plans to continue its innovation trajectory with upcoming launches in voice advertising, connected TV optimization, and augmented reality ad experiences. The company is also expanding its machine learning capabilities to provide even more sophisticated targeting and measurement solutions.
+                Looking ahead, MovingWalls plans to continue its innovation trajectory with upcoming launches in voice advertising, connected TV optimization, and augmented reality ad experiences. The company is also expanding its machine learning capabilities to provide even more sophisticated targeting and measurement solutions.
               </p>
 
               <div className="bg-mw-gray-50 rounded-lg p-6 mt-8">
@@ -140,7 +140,7 @@ export default function AdTechCompanyOfYearPage() {
                 <p className="text-mw-gray-700">
                   Jennifer Walsh<br/>
                   Director of Communications<br/>
-                  Moving Walls<br/>
+                  MovingWalls<br/>
                   Phone: (555) 123-4567<br/>
                   Email: media@movingwalls.com
                 </p>

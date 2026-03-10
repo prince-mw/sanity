@@ -31,7 +31,7 @@ export default function SeriesCFundingPage() {
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold text-mw-gray-900 mb-6 leading-tight">
-              Moving Walls Closes $50M Series C Funding Round
+              MovingWalls Closes $50M Series C Funding Round
             </h1>
             
             <p className="text-xl text-mw-gray-600 leading-relaxed mb-8">
@@ -64,31 +64,31 @@ export default function SeriesCFundingPage() {
 
             <div className="text-mw-gray-700 space-y-6">
               <p className="text-lg font-medium text-mw-gray-900">
-                NEW YORK, NY - October 28, 2024 - Moving Walls, the rapidly growing advertising technology platform, today announced the successful completion of its $50 million Series C funding round, led by Sequoia Capital with participation from existing investors Andreessen Horowitz, GV (Google Ventures), and new investor Accel Partners.
+                NEW YORK, NY - October 28, 2024 - MovingWalls, the rapidly growing advertising technology platform, today announced the successful completion of its $50 million Series C funding round, led by Sequoia Capital with participation from existing investors Andreessen Horowitz, GV (Google Ventures), and new investor Accel Partners.
               </p>
 
               <p>
-                This latest funding round brings Moving Walls's total capital raised to $120 million and values the company at $800 million, representing a significant milestone in the company's journey to transform the advertising technology landscape.
+                This latest funding round brings MovingWalls's total capital raised to $120 million and values the company at $800 million, representing a significant milestone in the company's journey to transform the advertising technology landscape.
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Fueling Global Expansion</h2>
               
               <p>
-                The Series C funding will primarily support Moving Walls's aggressive international expansion plans, with immediate focus on establishing stronger presence in European and Asian markets. The company plans to open new offices in Berlin, Tokyo, and Sydney by Q2 2025, while significantly expanding its existing London and Singapore operations.
+                The Series C funding will primarily support MovingWalls's aggressive international expansion plans, with immediate focus on establishing stronger presence in European and Asian markets. The company plans to open new offices in Berlin, Tokyo, and Sydney by Q2 2025, while significantly expanding its existing London and Singapore operations.
               </p>
 
               <p>
-                "This investment validates our vision of creating the most intelligent and effective advertising platform in the world," said David Kim, CEO and Co-founder of Moving Walls. "The funding will accelerate our global expansion and allow us to bring our innovative solutions to advertisers and publishers worldwide."
+                "This investment validates our vision of creating the most intelligent and effective advertising platform in the world," said David Kim, CEO and Co-founder of MovingWalls. "The funding will accelerate our global expansion and allow us to bring our innovative solutions to advertisers and publishers worldwide."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Strategic Investment Leadership</h2>
               
               <p>
-                Sequoia Capital's decision to lead the round reflects confidence in Moving Walls's market position and growth trajectory. Partner Amanda Chen from Sequoia Capital will join Moving Walls's board of directors, bringing extensive experience in scaling technology companies globally.
+                Sequoia Capital's decision to lead the round reflects confidence in MovingWalls's market position and growth trajectory. Partner Amanda Chen from Sequoia Capital will join MovingWalls's board of directors, bringing extensive experience in scaling technology companies globally.
               </p>
 
               <p>
-                "Moving Walls has demonstrated exceptional growth and innovation in the advertising technology space," said Amanda Chen. "Their AI-driven approach to audience targeting and campaign optimization is exactly what the market needs, and we're excited to support their next phase of growth."
+                "MovingWalls has demonstrated exceptional growth and innovation in the advertising technology space," said Amanda Chen. "Their AI-driven approach to audience targeting and campaign optimization is exactly what the market needs, and we're excited to support their next phase of growth."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Investment Allocation</h2>
@@ -103,7 +103,7 @@ export default function SeriesCFundingPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Market Performance</h2>
               
               <p>
-                Moving Walls has experienced remarkable growth over the past year, with revenue increasing 300% year-over-year and client base expanding to over 500 brands globally. The platform now processes over $2 billion in advertising spend annually, making it one of the fastest-growing adtech platforms in the market.
+                MovingWalls has experienced remarkable growth over the past year, with revenue increasing 300% year-over-year and client base expanding to over 500 brands globally. The platform now processes over $2 billion in advertising spend annually, making it one of the fastest-growing adtech platforms in the market.
               </p>
 
               <p>
@@ -121,13 +121,13 @@ export default function SeriesCFundingPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Industry Recognition</h2>
               
               <p>
-                The funding announcement comes on the heels of significant industry recognition for Moving Walls, including being named "AdTech Company of the Year" and ranking #12 on the Fast Company Most Innovative Companies list. The company's AI-powered platform has been praised for its ability to deliver superior results while maintaining strict privacy compliance.
+                The funding announcement comes on the heels of significant industry recognition for MovingWalls, including being named "AdTech Company of the Year" and ranking #12 on the Fast Company Most Innovative Companies list. The company's AI-powered platform has been praised for its ability to deliver superior results while maintaining strict privacy compliance.
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Future Outlook</h2>
               
               <p>
-                With this new funding, Moving Walls is positioned to accelerate its mission of making advertising more intelligent, effective, and respectful of consumer privacy. The company plans to double its workforce over the next 18 months and launch several new product innovations.
+                With this new funding, MovingWalls is positioned to accelerate its mission of making advertising more intelligent, effective, and respectful of consumer privacy. The company plans to double its workforce over the next 18 months and launch several new product innovations.
               </p>
 
               <p>
@@ -139,7 +139,7 @@ export default function SeriesCFundingPage() {
                 <p className="text-mw-gray-700">
                   Jennifer Walsh<br/>
                   Director of Communications<br/>
-                  Moving Walls<br/>
+                  MovingWalls<br/>
                   Phone: (555) 123-4567<br/>
                   Email: media@movingwalls.com
                 </p>

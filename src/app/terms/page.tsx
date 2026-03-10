@@ -44,7 +44,7 @@ export default function TermsAndConditionsPage() {
                 Last updated: {lastUpdated}
               </span>
               <span className="text-gray-300">|</span>
-              <span>Moving Walls Pte. Ltd.</span>
+              <span>MovingWalls Pte. Ltd.</span>
             </div>
           </div>
         </div>
@@ -108,17 +108,17 @@ export default function TermsAndConditionsPage() {
                   <section id="introduction" className="mb-12 scroll-mt-24">
                     <div className="space-y-4">
                       <p className="text-gray-600 leading-relaxed">
-                        The following terms and conditions (the &quot;Master Terms and Conditions&quot;) shall govern the use of Moving Walls Pte Ltd (&quot;Moving Walls&quot;) products and services (the &quot;Services&quot;) described in any Moving Audiences Media Booking Agreement, the Moving Audiences Order Form, or Moving Audiences Statement of Work, as the case may be, (collectively referred to herein as the &quot;Agreement&quot;) entered into between You (the &quot;Company&quot;) and Moving Walls.
+                        The following terms and conditions (the &quot;Master Terms and Conditions&quot;) shall govern the use of MovingWalls Pte Ltd (&quot;MovingWalls&quot;) products and services (the &quot;Services&quot;) described in any Moving Audiences Media Booking Agreement, the Moving Audiences Order Form, or Moving Audiences Statement of Work, as the case may be, (collectively referred to herein as the &quot;Agreement&quot;) entered into between You (the &quot;Company&quot;) and MovingWalls.
                       </p>
                       <p className="text-gray-600 leading-relaxed">
-                        If You are entering into these Master Terms and Conditions on behalf of a company or other legal entity, You represent that You have the legal authority to bind the legal entity to these Standard Terms, in which case &quot;You&quot; or &quot;Your&quot; shall mean such entity. If You do not have such authority or if You disagree with any of the terms in these Standard Terms, Moving Walls does not grant You a license to use the Services.
+                        If You are entering into these Master Terms and Conditions on behalf of a company or other legal entity, You represent that You have the legal authority to bind the legal entity to these Standard Terms, in which case &quot;You&quot; or &quot;Your&quot; shall mean such entity. If You do not have such authority or if You disagree with any of the terms in these Standard Terms, MovingWalls does not grant You a license to use the Services.
                       </p>
                       <p className="text-gray-600 leading-relaxed">
                         In the event of any inconsistency between these Standard Terms and the applicable Agreement, the applicable Agreement shall govern and control.
                       </p>
                       <div className="bg-mw-blue-50 rounded-xl p-5 border border-mw-blue-100">
                         <p className="text-gray-700 leading-relaxed">
-                          You can always find the most recent version of these Master Terms and Conditions at <Link href="/terms" className="text-mw-blue-600 hover:underline font-medium">movingwalls.com/terms</Link>. Moving Walls may change these Master Terms and Conditions by posting a new version without notice to You. Use of the Services after such change constitutes acceptance of such changes.
+                          You can always find the most recent version of these Master Terms and Conditions at <Link href="/terms" className="text-mw-blue-600 hover:underline font-medium">movingwalls.com/terms</Link>. MovingWalls may change these Master Terms and Conditions by posting a new version without notice to You. Use of the Services after such change constitutes acceptance of such changes.
                         </p>
                       </div>
                     </div>
@@ -132,10 +132,10 @@ export default function TermsAndConditionsPage() {
                     </div>
                     <div className="pl-11 space-y-4">
                       <p className="text-gray-600 leading-relaxed">
-                        These Master Terms and Conditions, together with the Moving Audiences Platform &quot;Order Form&quot; (collectively, the &quot;Agreement&quot;) govern the relationship between Company – and any advertisers or agencies that have authorized Company to act on their behalf – and Moving Walls (each a &quot;Party&quot; and together, the &quot;Parties&quot;).
+                        These Master Terms and Conditions, together with the Moving Audiences Platform &quot;Order Form&quot; (collectively, the &quot;Agreement&quot;) govern the relationship between Company – and any advertisers or agencies that have authorized Company to act on their behalf – and MovingWalls (each a &quot;Party&quot; and together, the &quot;Parties&quot;).
                       </p>
                       <p className="text-gray-600 leading-relaxed">
-                        Moving Walls reserves the right to modify these Standard Terms and Conditions with effect for the future at any time. In this case, Moving Walls will notify the Company of these changes. The changes shall be deemed to be accepted if the Company does not object in written form within three weeks of receipt of the amendment notification. Moving Walls will inform the Company in its amendment notification about the Company&apos;s right to object and the effects of a lack of objection. If the Company rejects the changes, Moving Walls has the right to terminate the Agreement.
+                        MovingWalls reserves the right to modify these Standard Terms and Conditions with effect for the future at any time. In this case, MovingWalls will notify the Company of these changes. The changes shall be deemed to be accepted if the Company does not object in written form within three weeks of receipt of the amendment notification. MovingWalls will inform the Company in its amendment notification about the Company&apos;s right to object and the effects of a lack of objection. If the Company rejects the changes, MovingWalls has the right to terminate the Agreement.
                       </p>
                     </div>
                   </section>
@@ -156,19 +156,19 @@ export default function TermsAndConditionsPage() {
                         <div className="bg-gray-50 rounded-xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Inventory&quot;</h3>
                           <p className="text-gray-600 leading-relaxed mb-4">
-                            Means digital out-of-home advertising or mobile advertising inventory, which may be displayed and sold through Moving Walls&apos; Moving Audiences Platform service. The inventory may be one of the following:
+                            Means digital out-of-home advertising or mobile advertising inventory, which may be displayed and sold through MovingWalls&apos; Moving Audiences Platform service. The inventory may be one of the following:
                           </p>
                           <div className="space-y-3 ml-4">
                             <div className="bg-white rounded-lg p-4 border border-gray-200">
                               <h4 className="font-semibold text-gray-800 mb-2">&quot;Partner Inventory&quot;</h4>
                               <p className="text-gray-600 text-sm">
-                                Refers to inventory procured from Supply Side Platforms that Moving Walls has a direct relationship with. The pricing of such inventory will be determined by Moving Walls and its Publishers.
+                                Refers to inventory procured from Supply Side Platforms that MovingWalls has a direct relationship with. The pricing of such inventory will be determined by MovingWalls and its Publishers.
                               </p>
                             </div>
                             <div className="bg-white rounded-lg p-4 border border-gray-200">
                               <h4 className="font-semibold text-gray-800 mb-2">&quot;Company Inventory&quot;</h4>
                               <p className="text-gray-600 text-sm">
-                                Refers to inventory procured from Publishers that the Company has a direct relationship with. The pricing of such inventory will be determined by the Company and its Publishers. The inventory is made available to Moving Walls&apos; Moving Audiences Platform Service via any of its Partner Supply-Side Platforms. It is the responsibility of the Company to make sure the Company Inventory is plugged into Moving Walls&apos; Partner Supply-Side Platform and that the Publishers use the platform to maintain inventory, accept bookings, approve creatives, and update play logs.
+                                Refers to inventory procured from Publishers that the Company has a direct relationship with. The pricing of such inventory will be determined by the Company and its Publishers. The inventory is made available to MovingWalls&apos; Moving Audiences Platform Service via any of its Partner Supply-Side Platforms. It is the responsibility of the Company to make sure the Company Inventory is plugged into MovingWalls&apos; Partner Supply-Side Platform and that the Publishers use the platform to maintain inventory, accept bookings, approve creatives, and update play logs.
                               </p>
                             </div>
                           </div>
@@ -185,7 +185,7 @@ export default function TermsAndConditionsPage() {
                         <div className="bg-gray-50 rounded-xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Delivery Reports&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
-                            Refers to the record of ad plays or slots played on DOOH inventory or impressions delivered on mobile advertising. This information is passed automatically to Moving Walls&apos; Moving Audiences Platform Service by Moving Walls&apos; supply side platform partners.
+                            Refers to the record of ad plays or slots played on DOOH inventory or impressions delivered on mobile advertising. This information is passed automatically to MovingWalls&apos; Moving Audiences Platform Service by MovingWalls&apos; supply side platform partners.
                           </p>
                         </div>
 
@@ -220,7 +220,7 @@ export default function TermsAndConditionsPage() {
                         <div className="bg-gray-50 rounded-xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Platform Fee&quot;</h3>
                           <p className="text-gray-600 leading-relaxed mb-4">
-                            Is the fee payable by Company for Moving Walls&apos; Moving Audiences Platform Service. The Platform Fee will be calculated as a certain percentage of the Media Spendings of the Company as set forth in the Moving Walls Order Form based on the services accessed. The &quot;Platform Fee&quot; costs cover the following services:
+                            Is the fee payable by Company for MovingWalls&apos; Moving Audiences Platform Service. The Platform Fee will be calculated as a certain percentage of the Media Spendings of the Company as set forth in the MovingWalls Order Form based on the services accessed. The &quot;Platform Fee&quot; costs cover the following services:
                           </p>
                           <div className="space-y-2">
                             {[
@@ -251,7 +251,7 @@ export default function TermsAndConditionsPage() {
                         <div className="bg-gray-50 rounded-xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Media Spendings&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
-                            Means the selling prices for out-of-home advertising inventory booked and delivered by Company via Moving Walls&apos; proprietary platform. The exact amount of the Media Spendings depends on the amount of inventory bought by Company. This includes both Platform Inventory and Company Inventory.
+                            Means the selling prices for out-of-home advertising inventory booked and delivered by Company via MovingWalls&apos; proprietary platform. The exact amount of the Media Spendings depends on the amount of inventory bought by Company. This includes both Platform Inventory and Company Inventory.
                           </p>
                         </div>
 
@@ -265,21 +265,21 @@ export default function TermsAndConditionsPage() {
                         <div className="bg-gray-50 rounded-xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Service&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
-                            Means each Moving Walls product, platform, or service provided or made accessible to Customer in accordance with an Order Form.
+                            Means each MovingWalls product, platform, or service provided or made accessible to Customer in accordance with an Order Form.
                           </p>
                         </div>
 
                         <div className="bg-gray-50 rounded-xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Service Policies&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
-                            Means, collectively, all applicable rules, terms, conditions, requirements, technical standards and policies of Moving Walls that are set forth in the Moving Walls&apos; Moving Audiences Platform Service user interface and/or provided by Moving Walls to the Company from time to time.
+                            Means, collectively, all applicable rules, terms, conditions, requirements, technical standards and policies of MovingWalls that are set forth in the MovingWalls&apos; Moving Audiences Platform Service user interface and/or provided by MovingWalls to the Company from time to time.
                           </p>
                         </div>
 
                         <div className="bg-gray-50 rounded-xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Order Form&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
-                            Means an order form, schedule, or other document entered into or accepted by Customer that incorporates these Master Terms and Conditions and that sets forth one or more Service(s) being provided by Moving Walls to Customer and specific terms applicable to each such Service.
+                            Means an order form, schedule, or other document entered into or accepted by Customer that incorporates these Master Terms and Conditions and that sets forth one or more Service(s) being provided by MovingWalls to Customer and specific terms applicable to each such Service.
                           </p>
                         </div>
                       </div>
@@ -297,13 +297,13 @@ export default function TermsAndConditionsPage() {
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">3.1 Grant of License</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
-                            Subject to Company&apos;s payment of the Platform Fee when due and compliance with the Service Policies and with the Agreement, Moving Walls grants to Company – and Company accepts – the non-exclusive, non-transferable, non-sublicensable right and license to access and use the Moving Walls Service during the term of this Agreement.
+                            Subject to Company&apos;s payment of the Platform Fee when due and compliance with the Service Policies and with the Agreement, MovingWalls grants to Company – and Company accepts – the non-exclusive, non-transferable, non-sublicensable right and license to access and use the MovingWalls Service during the term of this Agreement.
                           </p>
                           <p>
-                            The Moving Walls Service is provided by Moving Walls over the Internet, and the foregoing does not grant any right to Company to receive or use copies of any Moving Walls software code other than through the web interfaces provided by Moving Walls.
+                            The MovingWalls Service is provided by MovingWalls over the Internet, and the foregoing does not grant any right to Company to receive or use copies of any MovingWalls software code other than through the web interfaces provided by MovingWalls.
                           </p>
                           <p>
-                            Company hereby expressly grants to Moving Walls – and Moving Walls accepts – all rights necessary to enable Moving Walls to store, audit, optimize, deliver and serve Creatives on the purchased Inventory and otherwise provide the Moving Walls Service to Company.
+                            Company hereby expressly grants to MovingWalls – and MovingWalls accepts – all rights necessary to enable MovingWalls to store, audit, optimize, deliver and serve Creatives on the purchased Inventory and otherwise provide the MovingWalls Service to Company.
                           </p>
                         </div>
                       </div>
@@ -316,10 +316,10 @@ export default function TermsAndConditionsPage() {
                           </p>
                           <ul className="space-y-2 ml-4">
                             {[
-                              'Reproduce or distribute or make available the Moving Walls Service or any portion thereof to any third party',
-                              'Use or authorize use of the Moving Walls Service for any purpose not specified in this Agreement',
-                              'Copy, transfer, sell, lease, syndicate, sub-syndicate, lend, or use for co-branding, timesharing or any other unauthorized purposes the Moving Walls Service or access thereto',
-                              'Modify, translate, reverse engineer, reverse compile, disassemble the Moving Walls Service or any portion thereof, or attempt to do any of the foregoing'
+                              'Reproduce or distribute or make available the MovingWalls Service or any portion thereof to any third party',
+                              'Use or authorize use of the MovingWalls Service for any purpose not specified in this Agreement',
+                              'Copy, transfer, sell, lease, syndicate, sub-syndicate, lend, or use for co-branding, timesharing or any other unauthorized purposes the MovingWalls Service or access thereto',
+                              'Modify, translate, reverse engineer, reverse compile, disassemble the MovingWalls Service or any portion thereof, or attempt to do any of the foregoing'
                             ].map((item, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm">
                                 <span className="flex-shrink-0 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-xs font-bold">{String.fromCharCode(97 + i)}</span>
@@ -328,7 +328,7 @@ export default function TermsAndConditionsPage() {
                             ))}
                           </ul>
                           <p>
-                            For the avoidance of doubt, Moving Walls expressly reserves all Intellectual Property Rights not expressly granted under this Agreement. Except as explicitly set forth herein, Moving Walls does not grant any other license (express or implied) to Moving Walls&apos;s Intellectual Property Rights. The Parties acknowledge and agree that nothing in this Agreement or the performance hereof will operate to or shall be construed to grant either Party any right, title or interest, implied or otherwise, in or to the Intellectual Property Rights of the other Party.
+                            For the avoidance of doubt, MovingWalls expressly reserves all Intellectual Property Rights not expressly granted under this Agreement. Except as explicitly set forth herein, MovingWalls does not grant any other license (express or implied) to MovingWalls&apos;s Intellectual Property Rights. The Parties acknowledge and agree that nothing in this Agreement or the performance hereof will operate to or shall be construed to grant either Party any right, title or interest, implied or otherwise, in or to the Intellectual Property Rights of the other Party.
                           </p>
                         </div>
                       </div>
@@ -343,7 +343,7 @@ export default function TermsAndConditionsPage() {
                     </div>
                     <div className="pl-11">
                       <p className="text-gray-600 leading-relaxed">
-                        Moving Walls has agreements in place to access Inventory from various Supply Side Platforms. It will then sell it to Company in its own name and on its own account at a price that takes into account the Media Spendings entered by the Company on Moving Walls&apos;s proprietary platform. The prices for the Media Spendings will be indicated to the Company on Moving Walls&apos;s proprietary platform.
+                        MovingWalls has agreements in place to access Inventory from various Supply Side Platforms. It will then sell it to Company in its own name and on its own account at a price that takes into account the Media Spendings entered by the Company on MovingWalls&apos;s proprietary platform. The prices for the Media Spendings will be indicated to the Company on MovingWalls&apos;s proprietary platform.
                       </p>
                     </div>
                   </section>
@@ -359,10 +359,10 @@ export default function TermsAndConditionsPage() {
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">5.1 Client Licence Fee, Platform Fee and Media Spendings Payment, Auction Supply</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
-                            Moving Walls will Invoice Company for Annual Client License Fees, where applicable, due whenever a client license is activated. Moving Walls will also invoice Company during the first week of each month for the Media Spendings and Platform Fees due to Moving Walls for the previous month pursuant to this Agreement and the Moving Walls Order Form in connection with inventory booked via the Moving Walls Service.
+                            MovingWalls will Invoice Company for Annual Client License Fees, where applicable, due whenever a client license is activated. MovingWalls will also invoice Company during the first week of each month for the Media Spendings and Platform Fees due to MovingWalls for the previous month pursuant to this Agreement and the MovingWalls Order Form in connection with inventory booked via the MovingWalls Service.
                           </p>
                           <p>
-                            Moving Walls&apos;s inventory count and Moving Walls&apos;s record of the price per inventory will be controlling and final. Any complaints relating to an invoice must be submitted to Moving Walls in writing or by email to <span className="text-mw-blue-600 font-medium">finance@movingwalls.com</span> within two weeks upon receipt of the invoice. If no such complaint has been made within two weeks upon receipt of invoice, the invoice is deemed to be accepted.
+                            MovingWalls&apos;s inventory count and MovingWalls&apos;s record of the price per inventory will be controlling and final. Any complaints relating to an invoice must be submitted to MovingWalls in writing or by email to <span className="text-mw-blue-600 font-medium">finance@movingwalls.com</span> within two weeks upon receipt of the invoice. If no such complaint has been made within two weeks upon receipt of invoice, the invoice is deemed to be accepted.
                           </p>
                           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                             <p className="text-amber-800 font-medium">
@@ -370,7 +370,7 @@ export default function TermsAndConditionsPage() {
                             </p>
                           </div>
                           <p>
-                            The company acknowledges and agrees that the use of the Moving Walls Service may be subject to credit limits, as determined by Moving Walls in its sole discretion from time to time. The company will promptly provide Moving Walls with information Moving Walls reasonably requires to complete its payment review process. Moving Walls&apos;s invoices shall be due regardless of whether the Company has collected payments from its clients.
+                            The company acknowledges and agrees that the use of the MovingWalls Service may be subject to credit limits, as determined by MovingWalls in its sole discretion from time to time. The company will promptly provide MovingWalls with information MovingWalls reasonably requires to complete its payment review process. MovingWalls&apos;s invoices shall be due regardless of whether the Company has collected payments from its clients.
                           </p>
                         </div>
                       </div>
@@ -379,11 +379,11 @@ export default function TermsAndConditionsPage() {
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">5.2 Late Payments</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
-                            Late payments will be subject to the interest rate of <strong>1.5% per month</strong>. If Company fails to make any payment due and payable, Company shall pay all late payment expenses and damages (including attorney&apos;s fees) incurred by Moving Walls in collecting such payments.
+                            Late payments will be subject to the interest rate of <strong>1.5% per month</strong>. If Company fails to make any payment due and payable, Company shall pay all late payment expenses and damages (including attorney&apos;s fees) incurred by MovingWalls in collecting such payments.
                           </p>
                           <div className="bg-red-50 border border-red-200 rounded-lg p-4">
                             <p className="text-red-800">
-                              In addition, Moving Walls shall be entitled to suspend Company&apos;s access to and use of the Moving Walls Service upon giving the Company <strong>48-hours prior notice</strong> via email.
+                              In addition, MovingWalls shall be entitled to suspend Company&apos;s access to and use of the MovingWalls Service upon giving the Company <strong>48-hours prior notice</strong> via email.
                             </p>
                           </div>
                         </div>
@@ -392,14 +392,14 @@ export default function TermsAndConditionsPage() {
                       <div className="bg-gray-50 rounded-xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">5.3 Taxation</h3>
                         <p className="text-gray-600 leading-relaxed">
-                          Except for taxes on Moving Walls&apos;s income, Company shall also be responsible for and shall pay any and all applicable taxes or duties, tariffs or the like applicable to the provision or use of the Moving Walls Service.
+                          Except for taxes on MovingWalls&apos;s income, Company shall also be responsible for and shall pay any and all applicable taxes or duties, tariffs or the like applicable to the provision or use of the MovingWalls Service.
                         </p>
                       </div>
 
                       <div className="bg-gray-50 rounded-xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">5.4 Inventory Expenses</h3>
                         <p className="text-gray-600 leading-relaxed">
-                          It is Moving Walls&apos;s sole responsibility to arrange for and settle payment obligations with any Third Party Platform inventory suppliers. It is the Company&apos;s sole responsibility to arrange for and settle payment obligations with any Third Party Company Inventory Suppliers.
+                          It is MovingWalls&apos;s sole responsibility to arrange for and settle payment obligations with any Third Party Platform inventory suppliers. It is the Company&apos;s sole responsibility to arrange for and settle payment obligations with any Third Party Company Inventory Suppliers.
                         </p>
                       </div>
                     </div>
@@ -413,7 +413,7 @@ export default function TermsAndConditionsPage() {
                     </div>
                     <div className="pl-11">
                       <p className="text-gray-600 leading-relaxed">
-                        The company will use the Moving Walls Service under this Agreement in compliance with all applicable privacy laws, rules and regulations. For more information, please see our <Link href="/privacy" className="text-mw-blue-600 hover:underline font-medium">Privacy Policy</Link>.
+                        The company will use the MovingWalls Service under this Agreement in compliance with all applicable privacy laws, rules and regulations. For more information, please see our <Link href="/privacy" className="text-mw-blue-600 hover:underline font-medium">Privacy Policy</Link>.
                       </p>
                     </div>
                   </section>
@@ -426,7 +426,7 @@ export default function TermsAndConditionsPage() {
                     </div>
                     <div className="pl-11 space-y-4">
                       <p className="text-gray-600 leading-relaxed">
-                        Confidential Information means any non-public information relating to the Moving Walls Service or disclosed to Company by Moving Walls in the course of this Agreement. Company shall use reasonable care to protect Confidential Information of Moving Walls, and shall use Confidential Information only for the purposes of using the Moving Walls Service as permitted by this Agreement.
+                        Confidential Information means any non-public information relating to the MovingWalls Service or disclosed to Company by MovingWalls in the course of this Agreement. Company shall use reasonable care to protect Confidential Information of MovingWalls, and shall use Confidential Information only for the purposes of using the MovingWalls Service as permitted by this Agreement.
                       </p>
                       <div className="bg-gray-50 rounded-xl p-6">
                         <h4 className="font-semibold text-gray-800 mb-3">Confidential Information does not include any information that:</h4>
@@ -445,7 +445,7 @@ export default function TermsAndConditionsPage() {
                         </ul>
                       </div>
                       <p className="text-gray-600 leading-relaxed">
-                        If Company must disclose Confidential Information in response to the judicial or governmental order, Company will promptly notify Moving Walls and provide reasonable assistance to seek confidential treatment. The company will not disclose or provide any confidential information of Company or any third party to Moving Walls.
+                        If Company must disclose Confidential Information in response to the judicial or governmental order, Company will promptly notify MovingWalls and provide reasonable assistance to seek confidential treatment. The company will not disclose or provide any confidential information of Company or any third party to MovingWalls.
                       </p>
                     </div>
                   </section>
@@ -469,18 +469,18 @@ export default function TermsAndConditionsPage() {
                           </li>
                           <li className="flex items-start gap-2 text-sm text-gray-600">
                             <span className="flex-shrink-0 w-5 h-5 rounded-full bg-mw-blue-100 flex items-center justify-center text-mw-blue-700 text-xs font-bold">ii</span>
-                            <span>It is and will be authorized to act on behalf of each of its advertisers and agencies in order to deliver advertising campaigns via the Moving Walls Service, its performance under this contract will not breach any Agreement or other obligation that it has with or to any such advertisers and agencies</span>
+                            <span>It is and will be authorized to act on behalf of each of its advertisers and agencies in order to deliver advertising campaigns via the MovingWalls Service, its performance under this contract will not breach any Agreement or other obligation that it has with or to any such advertisers and agencies</span>
                           </li>
                         </ul>
                         <p className="text-gray-600 leading-relaxed mt-4">
-                          The company will be responsible for its advertisers&apos; and agency&apos;s acts and omissions in connection with the Moving Walls Services provided under this Agreement.
+                          The company will be responsible for its advertisers&apos; and agency&apos;s acts and omissions in connection with the MovingWalls Services provided under this Agreement.
                         </p>
                       </div>
 
                       <div className="bg-gray-50 rounded-xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">8.2 Compliance</h3>
                         <p className="text-gray-600 leading-relaxed">
-                          The company will comply with any terms and conditions of this Agreement and additional restrictions and/or specifications that may be provided from time to time. The company represents and warrants that its use of the Moving Walls Service will not violate or cause Company to breach any other agreements it may have with third parties. Company shall be solely responsible for its use of the Moving Walls Service hereunder.
+                          The company will comply with any terms and conditions of this Agreement and additional restrictions and/or specifications that may be provided from time to time. The company represents and warrants that its use of the MovingWalls Service will not violate or cause Company to breach any other agreements it may have with third parties. Company shall be solely responsible for its use of the MovingWalls Service hereunder.
                         </p>
                       </div>
 
@@ -492,11 +492,11 @@ export default function TermsAndConditionsPage() {
                           </p>
                           <ul className="space-y-2 ml-4">
                             {[
-                              'Deliver any malware, spyware, viruses, worms or other harmful or malicious code into the Moving Walls Service and/or onto any creative made available through the Moving Walls Service',
-                              'Breach, disable, tamper with, or develop or use (or attempt) any workaround for, or otherwise damage any Moving Walls Service or any security measure thereof',
-                              'Interfere or attempt to interfere (whether through a device, software, mechanism, routine or otherwise) with the proper working of any Moving Walls Service or any activity conducted on any Moving Walls server',
-                              'Alter or tamper with any information or materials on or associated with any Moving Walls Service',
-                              'Disclose Inventory availability, volume, or pricing data obtained through the Moving Walls Service'
+                              'Deliver any malware, spyware, viruses, worms or other harmful or malicious code into the MovingWalls Service and/or onto any creative made available through the MovingWalls Service',
+                              'Breach, disable, tamper with, or develop or use (or attempt) any workaround for, or otherwise damage any MovingWalls Service or any security measure thereof',
+                              'Interfere or attempt to interfere (whether through a device, software, mechanism, routine or otherwise) with the proper working of any MovingWalls Service or any activity conducted on any MovingWalls server',
+                              'Alter or tamper with any information or materials on or associated with any MovingWalls Service',
+                              'Disclose Inventory availability, volume, or pricing data obtained through the MovingWalls Service'
                             ].map((item, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm">
                                 <svg className="w-4 h-4 text-red-500 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
@@ -519,26 +519,26 @@ export default function TermsAndConditionsPage() {
                     </div>
                     <div className="pl-11 space-y-4">
                       <p className="text-gray-600 leading-relaxed">
-                        Moving Walls will provide the following technical support to Company in connection with its use of the Moving Walls Service:
+                        MovingWalls will provide the following technical support to Company in connection with its use of the MovingWalls Service:
                       </p>
                       <div className="bg-gray-50 rounded-xl p-6">
                         <ul className="space-y-3">
                           <li className="flex items-start gap-3 text-gray-600">
                             <span className="flex-shrink-0 w-6 h-6 rounded-full bg-mw-blue-100 flex items-center justify-center text-mw-blue-700 text-xs font-bold">a</span>
-                            <span>Moving Walls will provide technical support to Company at no additional charge to resolve technical issues with the Moving Walls Service, provided that Company designates no more than <strong>2 employees</strong> to submit such support issues</span>
+                            <span>MovingWalls will provide technical support to Company at no additional charge to resolve technical issues with the MovingWalls Service, provided that Company designates no more than <strong>2 employees</strong> to submit such support issues</span>
                           </li>
                           <li className="flex items-start gap-3 text-gray-600">
                             <span className="flex-shrink-0 w-6 h-6 rounded-full bg-mw-blue-100 flex items-center justify-center text-mw-blue-700 text-xs font-bold">b</span>
-                            <span>Moving Walls will use commercially reasonable efforts to ensure that the Moving Walls Service is available at least <strong>99%</strong> of the time calculated on a monthly basis (&quot;Uptime&quot;)</span>
+                            <span>MovingWalls will use commercially reasonable efforts to ensure that the MovingWalls Service is available at least <strong>99%</strong> of the time calculated on a monthly basis (&quot;Uptime&quot;)</span>
                           </li>
                         </ul>
                       </div>
                       <p className="text-gray-600 leading-relaxed">
-                        This calculation excludes downtime required for routine maintenance, as notified at least two business days in advance and downtime resulting from technical malfunctions in the systems of Company or any other circumstances beyond Moving Walls&apos;s reasonable control (including, without limitation, Internet delays, network congestion and ISP malfunctions). For clarity, Uptime calculation is separate from and does not include the delivery or non-delivery of campaigns.
+                        This calculation excludes downtime required for routine maintenance, as notified at least two business days in advance and downtime resulting from technical malfunctions in the systems of Company or any other circumstances beyond MovingWalls&apos;s reasonable control (including, without limitation, Internet delays, network congestion and ISP malfunctions). For clarity, Uptime calculation is separate from and does not include the delivery or non-delivery of campaigns.
                       </p>
                       <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                         <p className="text-green-800 text-sm">
-                          <strong>Termination Right:</strong> In the event that Uptime is lower than 99% in any three consecutive months or in any four months in any 12-month consecutive period, Company will have a one-time right to terminate the agreement upon 30 days prior written notice to Moving Walls, subject to such notice being received by Moving Walls within 30 days of the downtime period.
+                          <strong>Termination Right:</strong> In the event that Uptime is lower than 99% in any three consecutive months or in any four months in any 12-month consecutive period, Company will have a one-time right to terminate the agreement upon 30 days prior written notice to MovingWalls, subject to such notice being received by MovingWalls within 30 days of the downtime period.
                         </p>
                       </div>
                     </div>
@@ -552,7 +552,7 @@ export default function TermsAndConditionsPage() {
                     </div>
                     <div className="pl-11">
                       <p className="text-gray-600 leading-relaxed">
-                        Company agrees to grant to Moving Walls the limited right to use Company&apos;s name and logo on customer lists and informational materials. Except as set forth above, neither Party will issue any publicity or general marketing communications concerning this relationship without the prior written consent of the other Party, which will not be unreasonably withheld or delayed.
+                        Company agrees to grant to MovingWalls the limited right to use Company&apos;s name and logo on customer lists and informational materials. Except as set forth above, neither Party will issue any publicity or general marketing communications concerning this relationship without the prior written consent of the other Party, which will not be unreasonably withheld or delayed.
                       </p>
                     </div>
                   </section>
@@ -586,13 +586,13 @@ export default function TermsAndConditionsPage() {
                       </div>
 
                       <div className="bg-gray-50 rounded-xl p-6">
-                        <h3 className="text-lg font-semibold text-gray-900 mb-3">11.4 Moving Walls Termination</h3>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3">11.4 MovingWalls Termination</h3>
                         <p className="text-gray-600 leading-relaxed mb-4">
-                          In addition, Moving Walls may terminate this Agreement, at any time, in the event that:
+                          In addition, MovingWalls may terminate this Agreement, at any time, in the event that:
                         </p>
                         <ul className="space-y-2">
                           {[
-                            'Company breaches any payment-related provision and fails to cure such breach within (10) days following notice thereof from Moving Walls',
+                            'Company breaches any payment-related provision and fails to cure such breach within (10) days following notice thereof from MovingWalls',
                             'Company becomes the subject of a voluntary or involuntary petition in bankruptcy or proceeding relating to insolvency, receivership, liquidation, or composition for the benefit of creditors',
                             'The company merges with or is acquired by another company, sells all or substantially all of its assets or stock or business to which this Agreement relates, or is subject to any substantial change in ownership, management or control'
                           ].map((item, i) => (
@@ -611,9 +611,9 @@ export default function TermsAndConditionsPage() {
                         </p>
                         <ul className="space-y-2">
                           {[
-                            'All licenses granted by Moving Walls hereunder will automatically cease',
+                            'All licenses granted by MovingWalls hereunder will automatically cease',
                             'Each party will promptly return to the other all of the other Party\'s Confidential Information within its possession or control',
-                            'The payment dates of all amounts due Moving Walls will automatically be accelerated so that they will become due and payable on the effective date of termination, even if longer terms had been provided previously'
+                            'The payment dates of all amounts due MovingWalls will automatically be accelerated so that they will become due and payable on the effective date of termination, even if longer terms had been provided previously'
                           ].map((item, i) => (
                             <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
                               <span className="flex-shrink-0 w-5 h-5 rounded-full bg-mw-blue-100 flex items-center justify-center text-mw-blue-700 text-xs font-bold">{String.fromCharCode(97 + i)}</span>
@@ -634,17 +634,17 @@ export default function TermsAndConditionsPage() {
                     <div className="pl-11 space-y-4">
                       <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
                         <p className="text-amber-800 font-semibold text-lg mb-2">
-                          The Moving Walls Service is provided &quot;AS IS&quot; and &quot;AS AVAILABLE&quot;.
+                          The MovingWalls Service is provided &quot;AS IS&quot; and &quot;AS AVAILABLE&quot;.
                         </p>
                         <p className="text-gray-700">
-                          The Company accepts that Moving Walls does not give any representations and warranties, express, statutory or implied, including any implied warranties for fitness for a particular purpose, title, merchantability, non-infringement, and course of dealings or performance.
+                          The Company accepts that MovingWalls does not give any representations and warranties, express, statutory or implied, including any implied warranties for fitness for a particular purpose, title, merchantability, non-infringement, and course of dealings or performance.
                         </p>
                       </div>
                       <p className="text-gray-600 leading-relaxed">
-                        Any defaults in the delivery of advertising materials by Moving Walls have to be reported immediately after inspection, but no later than <strong>three (3) working days</strong> after completion of the order, otherwise Company&apos;s warranty claims shall be excluded.
+                        Any defaults in the delivery of advertising materials by MovingWalls have to be reported immediately after inspection, but no later than <strong>three (3) working days</strong> after completion of the order, otherwise Company&apos;s warranty claims shall be excluded.
                       </p>
                       <p className="text-gray-600 leading-relaxed">
-                        In case Moving Walls cannot provide the Moving Walls Service due to force majeure or any other event outside Moving Walls&apos;s control, this has no effect on the contractual conformity of the services provided by Moving Walls. Company&apos;s obligation to pay Moving Walls&apos;s fees shall, therefore, remain unaffected, however, the Term for the Moving Walls Services to be rendered shall be rescheduled if possible.
+                        In case MovingWalls cannot provide the MovingWalls Service due to force majeure or any other event outside MovingWalls&apos;s control, this has no effect on the contractual conformity of the services provided by MovingWalls. Company&apos;s obligation to pay MovingWalls&apos;s fees shall, therefore, remain unaffected, however, the Term for the MovingWalls Services to be rendered shall be rescheduled if possible.
                       </p>
                     </div>
                   </section>
@@ -657,7 +657,7 @@ export default function TermsAndConditionsPage() {
                     </div>
                     <div className="pl-11">
                       <p className="text-gray-600 leading-relaxed mb-4">
-                        Company will defend, indemnify and hold harmless Moving Walls and its officers, directors, employees and agents from liabilities (including without limitation reimbursement for reasonable outside attorneys&apos; fees and disbursements) arising out of all third-party claims relating to:
+                        Company will defend, indemnify and hold harmless MovingWalls and its officers, directors, employees and agents from liabilities (including without limitation reimbursement for reasonable outside attorneys&apos; fees and disbursements) arising out of all third-party claims relating to:
                       </p>
                       <ul className="space-y-2">
                         <li className="flex items-start gap-2 text-gray-600">
@@ -666,7 +666,7 @@ export default function TermsAndConditionsPage() {
                         </li>
                         <li className="flex items-start gap-2 text-gray-600">
                           <span className="flex-shrink-0 w-5 h-5 rounded-full bg-mw-blue-100 flex items-center justify-center text-mw-blue-700 text-xs font-bold">ii</span>
-                          <span>Infringement or misappropriation of a third party&apos;s Intellectual Property Rights in connection with the creative, technology, data or other materials provided by Company to Moving Walls in connection with the Moving Walls Service hereunder</span>
+                          <span>Infringement or misappropriation of a third party&apos;s Intellectual Property Rights in connection with the creative, technology, data or other materials provided by Company to MovingWalls in connection with the MovingWalls Service hereunder</span>
                         </li>
                       </ul>
                     </div>
@@ -705,7 +705,7 @@ export default function TermsAndConditionsPage() {
                       <div className="bg-gray-50 rounded-xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.4 Assignment</h3>
                         <p className="text-gray-600 leading-relaxed">
-                          The company may not assign or transfer any part of this Agreement without the written consent of Moving Walls.
+                          The company may not assign or transfer any part of this Agreement without the written consent of MovingWalls.
                         </p>
                       </div>
 
@@ -719,14 +719,14 @@ export default function TermsAndConditionsPage() {
                       <div className="bg-gray-50 rounded-xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.6 Force Majeure</h3>
                         <p className="text-gray-600 leading-relaxed">
-                          Neither Party will be liable for any acts or omissions resulting from circumstances or causes beyond its reasonable control. Without limiting the generality of the foregoing, and notwithstanding anything to the contrary in this Agreement, Moving Walls does not guarantee any Moving Walls Service will be operable at all times or during any down time caused by outages to any public Internet backbones, networks or servers, any failures of equipment, systems or local access services, or for previously scheduled maintenance.
+                          Neither Party will be liable for any acts or omissions resulting from circumstances or causes beyond its reasonable control. Without limiting the generality of the foregoing, and notwithstanding anything to the contrary in this Agreement, MovingWalls does not guarantee any MovingWalls Service will be operable at all times or during any down time caused by outages to any public Internet backbones, networks or servers, any failures of equipment, systems or local access services, or for previously scheduled maintenance.
                         </p>
                       </div>
 
                       <div className="bg-gray-50 rounded-xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.7 Restriction on Resale</h3>
                         <p className="text-gray-600 leading-relaxed">
-                          The company may not resell any Moving Walls Service, it being understood and agreed that Company&apos;s use of the Moving Walls Service hereunder on behalf of advertisers and agencies that Company is authorized to act on behalf of in order to deliver advertising campaigns via the Moving Walls Service will not be deemed a breach of this Section.
+                          The company may not resell any MovingWalls Service, it being understood and agreed that Company&apos;s use of the MovingWalls Service hereunder on behalf of advertisers and agencies that Company is authorized to act on behalf of in order to deliver advertising campaigns via the MovingWalls Service will not be deemed a breach of this Section.
                         </p>
                       </div>
 
@@ -759,7 +759,7 @@ export default function TermsAndConditionsPage() {
                           </svg>
                         </div>
                         <div>
-                          <h4 className="font-bold text-gray-900 text-lg mb-2">Moving Walls Pte. Ltd.</h4>
+                          <h4 className="font-bold text-gray-900 text-lg mb-2">MovingWalls Pte. Ltd.</h4>
                           <div className="space-y-2 text-gray-700">
                             <p className="flex items-center gap-2">
                               <svg className="w-4 h-4 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

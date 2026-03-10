@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { openCookieSettings } from "./CookieConsent";
 import { useLocale } from "@/i18n/LocaleContext";
 
@@ -36,7 +37,6 @@ const footerLinks = {
     { name: "Events", href: "/events" },
   ],
   billboardLocations: [
-    { name: "USA", href: "/locations/usa" },
     { name: "Malaysia", href: "/locations/malaysia" },
     { name: "Singapore", href: "/locations/singapore" },
     { name: "Indonesia", href: "/locations/indonesia" },
@@ -123,74 +123,23 @@ export default function Footer() {
 
       <div className="relative">
         {/* Main Footer Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          {/* Top Section - Brand & Office Address */}
-          <div className="mb-16">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-              {/* Brand Section */}
-              <div className="max-w-xl">
-                <Link href="/" className="inline-block mb-6">
-                  <Image
-                    src="/assets/logo/MW-logo-web.svg"
-                    alt="Moving Walls Logo"
-                    width={180}
-                    height={40}
-                    className="h-10 w-auto brightness-0 invert"
-                  />
-                </Link>
-                <p className="text-mw-gray-300 text-lg mb-6 leading-relaxed">
-                  {t('footer.description')}
-                </p>
-                <div className="mb-8">
-                  <h4 className="text-white font-semibold mb-4">{t('footer.followUs')}</h4>
-                  <div className="flex space-x-4">
-                    {socialLinks.map((social) => (
-                      <a
-                        key={social.name}
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="w-10 h-10 bg-mw-gray-800 hover:bg-mw-blue-600 rounded-lg flex items-center justify-center text-mw-gray-400 hover:text-white transition-all duration-200"
-                        aria-label={social.name}
-                      >
-                        {social.icon}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Office Address Section */}
-              <div className="lg:pl-8">
-                <h5 className="text-white font-semibold text-lg mb-4">Moving Walls Pte Ltd</h5>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3">
-                    <svg className="w-5 h-5 text-mw-blue-400 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    <p className="text-mw-gray-300">
-                      14, Robinson Road #8-02<br />
-                      Far East Financial Building<br />
-                      Singapore 048545
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-mw-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                    </svg>
-                    <p className="text-mw-gray-300">+65 6714 6699</p>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <svg className="w-5 h-5 text-mw-blue-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                    </svg>
-                    <a href="mailto:info@movingwalls.com" className="text-mw-gray-300 hover:text-white transition-colors">info@movingwalls.com</a>
-                  </div>
-
-                </div>
-              </div>
-            </div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Logo & Description - Stacked */}
+          <div className="mb-10">
+            {/* Logo */}
+            <Link href="/" className="inline-block mb-4">
+              <Image
+                src="/assets/logo/MW-logo-web.svg"
+                alt="MovingWalls Logo"
+                width={180}
+                height={40}
+                className="h-10 w-auto brightness-0 invert"
+              />
+            </Link>
+            {/* Description */}
+            <p className="text-mw-gray-300 text-base leading-relaxed max-w-4xl">
+              MovingWalls connects the global Out of Home ecosystem into one unified cloud platform. From audience discovery to booking, activation, measurement, and optimisation, we simplify complexity so brands can grow confidently across markets.
+            </p>
           </div>
 
           {/* Links Grid */}
@@ -287,13 +236,220 @@ export default function Footer() {
 
         </div>
 
+        {/* Moving Hearts Section */}
+        <div className="relative overflow-hidden">
+          {/* Wavy Top Border */}
+          <svg className="absolute top-0 left-0 w-full h-6" viewBox="0 0 1440 24" preserveAspectRatio="none">
+            <motion.path
+              d="M0,12 C240,24 480,0 720,12 C960,24 1200,0 1440,12 L1440,0 L0,0 Z"
+              fill="#1f2937"
+              animate={{
+                d: [
+                  "M0,12 C240,24 480,0 720,12 C960,24 1200,0 1440,12 L1440,0 L0,0 Z",
+                  "M0,12 C240,0 480,24 720,12 C960,0 1200,24 1440,12 L1440,0 L0,0 Z",
+                  "M0,12 C240,24 480,0 720,12 C960,24 1200,0 1440,12 L1440,0 L0,0 Z",
+                ]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
+
+          {/* Aurora gradient background */}
+          <div className="relative pt-8 pb-6 overflow-hidden">
+            {/* Animated aurora gradient layers */}
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-r from-emerald-600 via-teal-500 to-green-600"
+              animate={{
+                background: [
+                  "linear-gradient(90deg, #059669 0%, #14b8a6 50%, #16a34a 100%)",
+                  "linear-gradient(90deg, #14b8a6 0%, #16a34a 50%, #059669 100%)",
+                  "linear-gradient(90deg, #16a34a 0%, #059669 50%, #14b8a6 100%)",
+                  "linear-gradient(90deg, #059669 0%, #14b8a6 50%, #16a34a 100%)",
+                ]
+              }}
+              transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            />
+            
+            {/* Shimmer overlay */}
+            <motion.div 
+              className="absolute inset-0 opacity-30"
+              style={{
+                background: "linear-gradient(110deg, transparent 25%, rgba(255,255,255,0.3) 50%, transparent 75%)",
+                backgroundSize: "200% 100%",
+              }}
+              animate={{
+                backgroundPosition: ["200% 0%", "-200% 0%"],
+              }}
+              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
+            />
+
+            {/* Floating leaves and eco particles */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              {/* Floating leaves */}
+              {[...Array(6)].map((_, i) => {
+                const leftPosition = (i / 6) * 100;
+                const size = 0.5 + (i % 3) * 0.2;
+                return (
+                  <motion.div
+                    key={`leaf-${i}`}
+                    className="absolute text-white/20"
+                    style={{ left: `${leftPosition}%` }}
+                    initial={{ y: "110%", scale: size, rotate: 0, opacity: 0 }}
+                    animate={{ 
+                      y: ["-10%", "110%"],
+                      rotate: [0, 360],
+                      opacity: [0, 0.4, 0.4, 0]
+                    }}
+                    transition={{
+                      duration: 14 + (i % 4) * 3,
+                      repeat: Infinity,
+                      delay: (i / 6) * 5,
+                      ease: "linear",
+                      opacity: { times: [0, 0.1, 0.9, 1] }
+                    }}
+                  >
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
+                    </svg>
+                  </motion.div>
+                );
+              })}
+              
+              {/* Glowing particles (firefly effect) */}
+              {[
+                { left: 8, top: 20 },
+                { left: 22, top: 65 },
+                { left: 35, top: 40 },
+                { left: 48, top: 80 },
+                { left: 62, top: 25 },
+                { left: 75, top: 55 },
+                { left: 88, top: 35 },
+                { left: 15, top: 75 },
+                { left: 42, top: 15 },
+                { left: 58, top: 90 },
+                { left: 82, top: 70 },
+                { left: 95, top: 45 },
+              ].map((pos, i) => (
+                <motion.div
+                  key={`particle-${i}`}
+                  className="absolute w-1.5 h-1.5 rounded-full bg-lime-300"
+                  style={{ 
+                    left: `${pos.left}%`,
+                    top: `${pos.top}%`,
+                    boxShadow: "0 0 8px 2px rgba(163, 230, 53, 0.6)",
+                  }}
+                  animate={{ 
+                    opacity: [0, 1, 0],
+                    scale: [0.5, 1.2, 0.5],
+                  }}
+                  transition={{
+                    duration: 2 + (i % 3),
+                    repeat: Infinity,
+                    delay: i * 0.3,
+                    ease: "easeInOut",
+                  }}
+                />
+              ))}
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6 }}
+                className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 md:gap-8 text-center sm:text-left"
+              >
+                {/* Heart-Leaf Icon */}
+                <motion.div
+                  animate={{ scale: [1, 1.15, 1] }}
+                  transition={{ duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
+                  className="flex-shrink-0 relative"
+                >
+                  {/* Glow effect behind icon */}
+                  <div className="absolute inset-0 blur-lg bg-lime-400/40 rounded-full scale-150" />
+                  <svg className="relative w-10 h-10 sm:w-12 sm:h-12 text-white drop-shadow-[0_0_10px_rgba(163,230,53,0.5)]" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                  </svg>
+                  {/* Small leaf accent */}
+                  <motion.svg 
+                    className="absolute -top-1 -right-1 w-4 h-4 text-lime-300"
+                    fill="currentColor" 
+                    viewBox="0 0 24 24"
+                    animate={{ rotate: [0, 10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z" />
+                  </motion.svg>
+                </motion.div>
+
+                {/* Title */}
+                <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
+                  Moving Hearts
+                </h2>
+
+                {/* Divider */}
+                <span className="hidden sm:block w-px h-8 bg-white/30" />
+
+                {/* Stats */}
+                <div className="flex items-center gap-2 text-white/90">
+                  <span className="text-xl sm:text-2xl font-semibold">3M+</span>
+                  <span className="text-sm sm:text-base">Hearts Touched</span>
+                </div>
+
+                {/* Divider */}
+                <span className="hidden md:block w-px h-8 bg-white/30" />
+
+                {/* Tagline */}
+                <p className="hidden md:block text-white/80 text-sm max-w-xs">
+                  Responsible OOH Media Worldwide
+                </p>
+
+                {/* CTA Button */}
+                <a
+                  href="https://movinghearts.media/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-0 sm:ml-4 px-6 py-2.5 bg-white text-emerald-600 font-semibold rounded-[6px] hover:bg-lime-50 transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(163,230,53,0.4)] flex items-center gap-2 group"
+                >
+                  Learn More
+                  <svg 
+                    className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </motion.div>
+            </div>
+          </div>
+
+          {/* Wavy Bottom Border */}
+          <svg className="absolute bottom-0 left-0 w-full h-6" viewBox="0 0 1440 24" preserveAspectRatio="none">
+            <motion.path
+              d="M0,12 C240,0 480,24 720,12 C960,0 1200,24 1440,12 L1440,24 L0,24 Z"
+              fill="#111827"
+              animate={{
+                d: [
+                  "M0,12 C240,0 480,24 720,12 C960,0 1200,24 1440,12 L1440,24 L0,24 Z",
+                  "M0,12 C240,24 480,0 720,12 C960,24 1200,0 1440,12 L1440,24 L0,24 Z",
+                  "M0,12 C240,0 480,24 720,12 C960,0 1200,24 1440,12 L1440,24 L0,24 Z",
+                ]
+              }}
+              transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </svg>
+        </div>
+
         {/* Bottom Bar */}
         <div className="border-t border-mw-gray-800 bg-mw-gray-900/80 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
                 <p className="text-mw-gray-400 text-sm text-center md:text-left">
-                  © {new Date().getFullYear()} Moving Walls. All rights reserved.
+                  © {new Date().getFullYear()} MovingWalls. All rights reserved.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 text-sm">
                   <Link href="/privacy" className="text-mw-gray-400 hover:text-white transition-colors">
@@ -311,6 +467,24 @@ export default function Footer() {
                   >
                     Cookie Settings
                   </button>
+                </div>
+              </div>
+              {/* Follow Us & Social Links */}
+              <div className="flex items-center gap-3">
+                <span className="text-mw-gray-400 text-sm hidden md:block">{t('footer.followUs')}</span>
+                <div className="flex space-x-2">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.name}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-8 h-8 bg-mw-gray-800 hover:bg-mw-blue-600 rounded-lg flex items-center justify-center text-mw-gray-400 hover:text-white transition-all duration-200"
+                      aria-label={social.name}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
                 </div>
               </div>
             </div>

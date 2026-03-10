@@ -19,328 +19,375 @@ function parseHighlightedText(text: string): React.ReactNode[] {
   });
 }
 
-export default function AsianBornGlobal() {
-  const { t } = useLocale();
-  // Dots along continent borders
-  const continentDots = [
-    // North America border dots
-    { cx: 150, cy: 140 }, { cx: 170, cy: 120 }, { cx: 200, cy: 105 }, { cx: 230, cy: 100 }, 
-    { cx: 260, cy: 110 }, { cx: 280, cy: 120 }, { cx: 300, cy: 140 }, { cx: 310, cy: 160 },
-    { cx: 305, cy: 185 }, { cx: 295, cy: 210 }, { cx: 280, cy: 235 }, { cx: 260, cy: 255 },
-    { cx: 235, cy: 270 }, { cx: 210, cy: 280 }, { cx: 185, cy: 275 }, { cx: 160, cy: 260 },
-    { cx: 145, cy: 235 }, { cx: 135, cy: 210 }, { cx: 130, cy: 185 }, { cx: 135, cy: 160 },
-    
-    // South America border dots
-    { cx: 250, cy: 320 }, { cx: 270, cy: 305 }, { cx: 290, cy: 300 }, { cx: 305, cy: 315 },
-    { cx: 315, cy: 340 }, { cx: 320, cy: 365 }, { cx: 315, cy: 390 }, { cx: 305, cy: 415 },
-    { cx: 290, cy: 440 }, { cx: 270, cy: 460 }, { cx: 250, cy: 470 }, { cx: 235, cy: 455 },
-    { cx: 225, cy: 430 }, { cx: 220, cy: 400 }, { cx: 225, cy: 370 }, { cx: 235, cy: 345 },
-    
-    // Europe border dots
-    { cx: 480, cy: 120 }, { cx: 500, cy: 105 }, { cx: 525, cy: 100 }, { cx: 550, cy: 105 },
-    { cx: 570, cy: 120 }, { cx: 585, cy: 140 }, { cx: 590, cy: 160 }, { cx: 580, cy: 180 },
-    { cx: 560, cy: 195 }, { cx: 535, cy: 200 }, { cx: 510, cy: 195 }, { cx: 490, cy: 180 },
-    { cx: 470, cy: 160 }, { cx: 465, cy: 140 },
-    
-    // Africa border dots
-    { cx: 500, cy: 220 }, { cx: 525, cy: 205 }, { cx: 555, cy: 200 }, { cx: 580, cy: 215 },
-    { cx: 600, cy: 240 }, { cx: 615, cy: 270 }, { cx: 620, cy: 305 }, { cx: 615, cy: 340 },
-    { cx: 600, cy: 370 }, { cx: 580, cy: 395 }, { cx: 555, cy: 415 }, { cx: 525, cy: 420 },
-    { cx: 500, cy: 405 }, { cx: 480, cy: 380 }, { cx: 465, cy: 350 }, { cx: 460, cy: 315 },
-    { cx: 465, cy: 280 }, { cx: 480, cy: 250 },
-    
-    // Asia border dots (more dots for larger continent)
-    { cx: 650, cy: 100 }, { cx: 680, cy: 85 }, { cx: 720, cy: 75 }, { cx: 760, cy: 80 },
-    { cx: 800, cy: 90 }, { cx: 840, cy: 100 }, { cx: 875, cy: 115 }, { cx: 905, cy: 135 },
-    { cx: 930, cy: 160 }, { cx: 950, cy: 190 }, { cx: 955, cy: 220 }, { cx: 945, cy: 250 },
-    { cx: 920, cy: 275 }, { cx: 885, cy: 295 }, { cx: 845, cy: 305 }, { cx: 800, cy: 300 },
-    { cx: 760, cy: 290 }, { cx: 720, cy: 280 }, { cx: 680, cy: 265 }, { cx: 650, cy: 245 },
-    { cx: 630, cy: 220 }, { cx: 620, cy: 190 }, { cx: 620, cy: 160 }, { cx: 630, cy: 130 },
-    
-    // Australia border dots
-    { cx: 880, cy: 360 }, { cx: 905, cy: 345 }, { cx: 935, cy: 340 }, { cx: 960, cy: 355 },
-    { cx: 980, cy: 380 }, { cx: 990, cy: 410 }, { cx: 985, cy: 440 }, { cx: 965, cy: 465 },
-    { cx: 935, cy: 480 }, { cx: 900, cy: 480 }, { cx: 870, cy: 465 }, { cx: 850, cy: 440 },
-    { cx: 845, cy: 410 }, { cx: 855, cy: 380 },
+// 3D Globe component with rotating wireframe and city pins
+function Globe3D() {
+  // City locations on the globe (angle in degrees from center, distance from center)
+  const cities = [
+    { name: "Singapore", angle: 105, distance: 0.15, lat: 1.3, isOrigin: true },
+    { name: "Malaysia", angle: 95, distance: 0.22, lat: 4.2, isOrigin: true },
+    { name: "Tokyo", angle: 60, distance: 0.55, lat: 35.7 },
+    { name: "Sydney", angle: 140, distance: 0.65, lat: -33.9 },
+    { name: "Dubai", angle: 250, distance: 0.35, lat: 25.2 },
+    { name: "London", angle: 280, distance: 0.72, lat: 51.5 },
+    { name: "New York", angle: 330, distance: 0.85, lat: 40.7 },
+    { name: "Mumbai", angle: 230, distance: 0.25, lat: 19.1 },
+    { name: "Shanghai", angle: 80, distance: 0.45, lat: 31.2 },
+    { name: "Los Angeles", angle: 350, distance: 0.75, lat: 34.1 },
+    { name: "Paris", angle: 275, distance: 0.68, lat: 48.9 },
   ];
 
-  // Major city dots (larger, more prominent)
-  const cityDots = [
-    { cx: 200, cy: 180, label: "New York" },
-    { cx: 550, cy: 150, label: "London" },
-    { cx: 820, cy: 280, label: "Singapore" },
-    { cx: 950, cy: 400, label: "Sydney" },
-    { cx: 560, cy: 300, label: "Dubai" },
-    { cx: 870, cy: 180, label: "Tokyo" },
-    { cx: 760, cy: 240, label: "Mumbai" },
-    { cx: 830, cy: 200, label: "Shanghai" },
-    { cx: 500, cy: 160, label: "Paris" },
-    { cx: 270, cy: 200, label: "Los Angeles" },
-  ];
+  // Convert polar to cartesian for pin positions on the globe face
+  const getPosition = (angle: number, distance: number) => {
+    const rad = (angle * Math.PI) / 180;
+    const radius = 140; // Globe radius
+    const x = 200 + Math.cos(rad) * radius * distance;
+    const y = 200 + Math.sin(rad) * radius * distance * 0.4; // Flatten for 3D effect
+    return { x, y };
+  };
 
   return (
-    <section className="relative py-12 lg:py-16 bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 overflow-hidden">
-      {/* Animated World Map Background */}
-      <div className="absolute inset-0 opacity-80">
-        <svg
-          viewBox="0 0 1200 600"
-          className="w-full h-full"
-          preserveAspectRatio="xMidYMid slice"
-        >
-          <defs>
-            <filter id="glow">
-              <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
-              <feMerge>
-                <feMergeNode in="coloredBlur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
+    <svg viewBox="0 0 400 400" className="w-full h-auto">
+      <defs>
+        {/* Gradient for globe */}
+        <radialGradient id="globeGradient" cx="35%" cy="35%" r="60%">
+          <stop offset="0%" stopColor="#1e3a5f" />
+          <stop offset="50%" stopColor="#0f172a" />
+          <stop offset="100%" stopColor="#020617" />
+        </radialGradient>
+        
+        {/* Glow filter */}
+        <filter id="globeGlow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+        
+        {/* Outer glow for globe */}
+        <filter id="outerGlow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="8" result="blur"/>
+          <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+        </filter>
+      </defs>
 
-          {/* Blinking Border Dots for Continents */}
-          {continentDots.map((dot, index) => (
+      {/* Outer glow ring */}
+      <motion.circle
+        cx="200"
+        cy="200"
+        r="155"
+        fill="none"
+        stroke="#3B82F6"
+        strokeWidth="1"
+        opacity="0.3"
+        animate={{
+          scale: [1, 1.05, 1],
+          opacity: [0.2, 0.4, 0.2],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Globe sphere */}
+      <circle
+        cx="200"
+        cy="200"
+        r="140"
+        fill="url(#globeGradient)"
+        stroke="#3B82F6"
+        strokeWidth="1.5"
+        opacity="0.9"
+      />
+
+      {/* Rotating latitude lines */}
+      {[0.2, 0.4, 0.6, 0.8].map((scale, i) => (
+        <motion.ellipse
+          key={`lat-${i}`}
+          cx="200"
+          cy="200"
+          rx={140 * scale}
+          ry={140 * scale * 0.3}
+          fill="none"
+          stroke="#60A5FA"
+          strokeWidth="0.5"
+          opacity="0.4"
+          animate={{
+            ry: [140 * scale * 0.3, 140 * scale * 0.35, 140 * scale * 0.3],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            delay: i * 0.2,
+            ease: "easeInOut",
+          }}
+        />
+      ))}
+
+      {/* Rotating longitude lines */}
+      {[0, 30, 60, 90, 120, 150].map((rotation, i) => (
+        <motion.ellipse
+          key={`long-${i}`}
+          cx="200"
+          cy="200"
+          rx="140"
+          ry="50"
+          fill="none"
+          stroke="#60A5FA"
+          strokeWidth="0.5"
+          opacity="0.3"
+          style={{
+            transformOrigin: "200px 200px",
+          }}
+          animate={{
+            rotate: [rotation, rotation + 360],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        />
+      ))}
+
+      {/* Equator line */}
+      <motion.ellipse
+        cx="200"
+        cy="200"
+        rx="140"
+        ry="15"
+        fill="none"
+        stroke="#60A5FA"
+        strokeWidth="1"
+        opacity="0.5"
+        animate={{
+          ry: [15, 20, 15],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Prime meridian */}
+      <motion.ellipse
+        cx="200"
+        cy="200"
+        rx="20"
+        ry="140"
+        fill="none"
+        stroke="#60A5FA"
+        strokeWidth="1"
+        opacity="0.5"
+        animate={{
+          rx: [20, 25, 20],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      />
+
+      {/* Floating particles around globe */}
+      {Array.from({ length: 20 }).map((_, i) => {
+        const angle = (i / 20) * 360;
+        const radius = 160 + Math.random() * 30;
+        return (
+          <motion.circle
+            key={`particle-${i}`}
+            r="1.5"
+            fill="#60A5FA"
+            opacity="0.6"
+            animate={{
+              cx: [
+                200 + Math.cos((angle * Math.PI) / 180) * radius,
+                200 + Math.cos(((angle + 180) * Math.PI) / 180) * radius,
+              ],
+              cy: [
+                200 + Math.sin((angle * Math.PI) / 180) * radius * 0.4,
+                200 + Math.sin(((angle + 180) * Math.PI) / 180) * radius * 0.4,
+              ],
+              opacity: [0.6, 0.2, 0.6],
+            }}
+            transition={{
+              duration: 15 + Math.random() * 10,
+              repeat: Infinity,
+              ease: "linear",
+              delay: i * 0.5,
+            }}
+          />
+        );
+      })}
+
+      {/* City Pins */}
+      {cities.map((city, index) => {
+        const pos = getPosition(city.angle, city.distance);
+        const isOrigin = city.isOrigin;
+        
+        return (
+          <motion.g key={city.name}>
+            {/* Pin base pulse */}
             <motion.circle
-              key={`border-${index}`}
-              cx={dot.cx}
-              cy={dot.cy}
-              r="3"
-              fill="#60A5FA"
-              initial={{ opacity: 0.3 }}
+              cx={pos.x}
+              cy={pos.y}
+              r={isOrigin ? 12 : 8}
+              fill="none"
+              stroke={isOrigin ? "#F59E0B" : "#3B82F6"}
+              strokeWidth="1.5"
+              initial={{ scale: 0, opacity: 0 }}
               animate={{
-                opacity: [0.3, 1, 0.3],
-                scale: [1, 1.2, 1],
+                scale: [0.8, 1.5, 0.8],
+                opacity: [0.8, 0, 0.8],
               }}
               transition={{
                 duration: 2,
                 repeat: Infinity,
-                delay: (index % 20) * 0.1,
-                ease: "easeInOut",
+                delay: index * 0.15,
               }}
-              filter="url(#glow)"
             />
-          ))}
+            
+            {/* Pin inner glow */}
+            <motion.circle
+              cx={pos.x}
+              cy={pos.y}
+              r={isOrigin ? 8 : 5}
+              fill={isOrigin ? "#F59E0B" : "#3B82F6"}
+              opacity="0.3"
+              initial={{ scale: 0 }}
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.1, 0.3],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: index * 0.15,
+              }}
+            />
+            
+            {/* Pin center dot */}
+            <motion.circle
+              cx={pos.x}
+              cy={pos.y}
+              r={isOrigin ? 5 : 3}
+              fill={isOrigin ? "#FBBF24" : "#60A5FA"}
+              filter="url(#globeGlow)"
+              initial={{ scale: 0 }}
+              whileInView={{ scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
+            />
 
-          {/* Animated Connection Lines */}
-          <motion.g>
-            {/* Singapore to various cities */}
-            <motion.line
-              x1="820" y1="280" x2="200" y2="180"
-              stroke="#60A5FA"
-              strokeWidth="1.5"
-              strokeDasharray="5,5"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 2, delay: 1 }}
-              opacity="0.6"
-            />
-            <motion.line
-              x1="820" y1="280" x2="550" y2="150"
-              stroke="#60A5FA"
-              strokeWidth="1.5"
-              strokeDasharray="5,5"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 2, delay: 1.2 }}
-              opacity="0.6"
-            />
-            <motion.line
-              x1="820" y1="280" x2="950" y2="400"
-              stroke="#60A5FA"
-              strokeWidth="1.5"
-              strokeDasharray="5,5"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 2, delay: 1.4 }}
-              opacity="0.6"
-            />
-            <motion.line
-              x1="820" y1="280" x2="560" y2="300"
-              stroke="#60A5FA"
-              strokeWidth="1.5"
-              strokeDasharray="5,5"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 2, delay: 1.6 }}
-              opacity="0.6"
-            />
-            <motion.line
-              x1="820" y1="280" x2="870" y2="180"
-              stroke="#60A5FA"
-              strokeWidth="1.5"
-              strokeDasharray="5,5"
-              initial={{ pathLength: 0 }}
-              whileInView={{ pathLength: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 2, delay: 1.8 }}
-              opacity="0.6"
-            />
-          </motion.g>
-
-          {/* Major City Points with Pulse */}
-          {cityDots.map((city, index) => (
-            <motion.g key={city.label}>
-              {/* Outer pulse ring */}
-              <motion.circle
-                cx={city.cx}
-                cy={city.cy}
-                r="8"
-                fill="none"
-                stroke="#3B82F6"
-                strokeWidth="2"
-                initial={{ opacity: 0, scale: 0.5 }}
-                animate={{
-                  opacity: [0.8, 0, 0.8],
-                  scale: [0.5, 1.5, 0.5],
-                }}
-                transition={{
-                  duration: 2.5,
-                  repeat: Infinity,
-                  delay: index * 0.25,
-                }}
-              />
-              {/* Inner glow */}
-              <motion.circle
-                cx={city.cx}
-                cy={city.cy}
-                r="6"
-                fill="#3B82F6"
-                opacity="0.4"
-                animate={{
-                  r: [6, 10, 6],
-                  opacity: [0.4, 0.15, 0.4],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: index * 0.25,
-                }}
-              />
-              {/* Center dot */}
-              <motion.circle
-                cx={city.cx}
-                cy={city.cy}
-                r="4"
-                fill="#60A5FA"
-                initial={{ scale: 0 }}
-                whileInView={{ scale: 1 }}
+            {/* City label for origin - position labels to avoid overlap */}
+            {isOrigin && (
+              <motion.g
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
-                filter="url(#glow)"
-              />
-            </motion.g>
-          ))}
-        </svg>
-      </div>
+                transition={{ duration: 0.5, delay: 1 }}
+              >
+                <text
+                  x={city.name === "Malaysia" ? pos.x - 50 : pos.x + 15}
+                  y={city.name === "Malaysia" ? pos.y - 8 : pos.y + 4}
+                  fill="#FBBF24"
+                  fontSize="10"
+                  fontWeight="bold"
+                >
+                  {city.name}
+                </text>
+              </motion.g>
+            )}
+          </motion.g>
+        );
+      })}
 
-      {/* Grid Pattern Overlay */}
-      <div className="absolute inset-0 opacity-5">
-        <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-          <defs>
-            <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-              <path d="M 10 0 L 0 0 0 10" fill="none" stroke="white" strokeWidth="0.5"/>
-            </pattern>
-          </defs>
-          <rect width="100" height="100" fill="url(#grid)" />
-        </svg>
-      </div>
-
-      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-8"
-        >
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-3">
-            {t('landingPage.asianBornGlobal.title')} <span className="text-mw-blue-400">{t('landingPage.asianBornGlobal.titleHighlight')}</span>
-          </h2>
-          <p className="text-xl text-mw-blue-200 italic">{t('landingPage.asianBornGlobal.description')}</p>
-        </motion.div>
-
-        {/* Centered Content */}
-        <div className="space-y-5">
-          {/* First Paragraph */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+      {/* Connection arcs from Singapore & Malaysia to other cities */}
+      {cities.filter(c => !c.isOrigin).map((city, index) => {
+        const singaporePos = getPosition(105, 0.15); // Singapore position
+        const malaysiaPos = getPosition(95, 0.22); // Malaysia position
+        const dest = getPosition(city.angle, city.distance);
+        
+        // Alternate arcs between Singapore and Malaysia
+        const origin = index % 2 === 0 ? singaporePos : malaysiaPos;
+        
+        // Create curved path
+        const midX = (origin.x + dest.x) / 2;
+        const midY = Math.min(origin.y, dest.y) - 30 - index * 5;
+        
+        return (
+          <motion.path
+            key={`arc-${city.name}`}
+            d={`M ${origin.x} ${origin.y} Q ${midX} ${midY} ${dest.x} ${dest.y}`}
+            fill="none"
+            stroke="#F59E0B"
+            strokeWidth="1"
+            strokeDasharray="4,4"
+            opacity="0.4"
+            initial={{ pathLength: 0 }}
+            whileInView={{ pathLength: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="text-center"
-          >
-            <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
-              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph1'))}
-            </p>
-          </motion.div>
+            transition={{ duration: 1.5, delay: 0.5 + index * 0.2 }}
+          />
+        );
+      })}
+    </svg>
+  );
+}
 
-          {/* Second Paragraph */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-center"
-          >
-            <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
-              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph2'))}
-            </p>
-          </motion.div>
+export default function AsianBornGlobal() {
+  const { t } = useLocale();
 
-          {/* Bridge Statement */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="text-center"
-          >
-            <p className="text-lg lg:text-xl font-semibold text-mw-blue-300">
-              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph3'))}
-            </p>
-          </motion.div>
+  return (
+    <section className="relative py-12 lg:py-20 bg-mw-gray-900 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
+          {/* Left Side - Content */}
+          <div className="order-2 lg:order-1">
+            {/* Section Header */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="mb-6"
+            >
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+                {t('landingPage.asianBornGlobal.title')} <span className="text-mw-blue-400">{t('landingPage.asianBornGlobal.titleHighlight')}</span>
+              </h2>
+              <p className="text-lg lg:text-xl text-gray-200 leading-relaxed">{t('landingPage.asianBornGlobal.description')}</p>
+            </motion.div>
 
-          {/* Fourth Paragraph */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className="text-center"
-          >
-            <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
-              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph4'))}
-            </p>
-          </motion.div>
+            {/* Content */}
+            <div className="space-y-4">
+              {/* Main Paragraph */}
+              <motion.div
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.1 }}
+              >
+                <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
+                  {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph1'))}
+                </p>
+              </motion.div>
+            </div>
+          </div>
 
-          {/* Every Screen / City / Campaign */}
+          {/* Right Side - 3D Globe */}
           <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, x: 30 }}
+            whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-center"
+            transition={{ duration: 0.8 }}
+            className="order-1 lg:order-2"
           >
-            <p className="text-base lg:text-lg text-white leading-loose whitespace-pre-line">
-              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph5'))}
-            </p>
-          </motion.div>
-
-          {/* Closing Statement */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-            className="text-center"
-          >
-            <p className="text-base lg:text-lg text-gray-200 leading-relaxed">
-              {parseHighlightedText(t('landingPage.asianBornGlobal.paragraph6'))}
-            </p>
+            <div className="relative">
+              <Globe3D />
+            </div>
           </motion.div>
         </div>
       </div>

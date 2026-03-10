@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Moving Walls - OOH Advertising Platform",
-    "description": "Moving Walls unifies the entire Out-of-Home ecosystem through a single, intelligent cloud platform."
+    "title": "MovingWalls - OOH Advertising Platform",
+    "description": "MovingWalls unifies the entire Out-of-Home ecosystem through a single, intelligent cloud platform."
   },
   "nav": {
     "solutions": "Solutions",
@@ -15,7 +15,7 @@
     "badge": "AI-Powered OOH Advertising",
     "title": "The World's Leading",
     "titleHighlight": "Connected Media Platform",
-    "description": "Outdoor media was built for visibility. We built it for connection. Moving Walls transforms physical spaces into measurable advertising environments across cities, borders, and cultures. We bring together screens, billboards, mobility data, audience insights, and programmatic buying into one connected ecosystem so brands can move with confidence wherever their audiences go. Trusted by over 500 global brands navigating more than 40 markets.",
+    "description": "Outdoor media was built for visibility. We built it for connection. MovingWalls transforms physical spaces into measurable advertising environments across cities, borders, and cultures. We bring together screens, billboards, mobility data, audience insights, and programmatic buying into one connected ecosystem so brands can move with confidence wherever their audiences go. Trusted by over 500 global brands navigating more than 40 markets.",
     "cta": {
       "primary": "Let's Connect",
       "secondary": "Watch Demo"
@@ -73,7 +73,7 @@
   },
   "trustedBy": {
     "title": "Trusted by Global Brands",
-    "description": "From regional challengers to multinational leaders, brands rely on Moving Walls to navigate the evolving world of outdoor media."
+    "description": "From regional challengers to multinational leaders, brands rely on MovingWalls to navigate the evolving world of outdoor media."
   },
   "testimonials": {
     "badge": "Testimonials",
@@ -84,7 +84,7 @@
     "badge": "Case Studies",
     "title": "Success Stories",
     "titleHighlight": "That Inspire",
-    "description": "See how leading brands achieved extraordinary results with Moving Walls."
+    "description": "See how leading brands achieved extraordinary results with MovingWalls."
   },
   "newsletter": {
     "title": "Get Industry Insights",
@@ -102,7 +102,7 @@
     "termsOfService": "Terms of Service"
   },
   "footer": {
-    "description": "Moving Walls connects the global Out of Home ecosystem into one unified cloud platform. From audience discovery to booking, activation, measurement, and optimisation, we simplify complexity so brands can grow confidently across markets.",
+    "description": "MovingWalls connects the global Out of Home ecosystem into one unified cloud platform. From audience discovery to booking, activation, measurement, and optimisation, we simplify complexity so brands can grow confidently across markets.",
     "followUs": "Follow Us",
     "company": "Company",
     "solutions": "Solutions",
@@ -110,7 +110,7 @@
     "resources": "Resources",
     "support": "Support",
     "billboardLocations": "Billboard Locations",
-    "copyright": "© 2024 Moving Walls. All rights reserved.",
+    "copyright": "© 2024 MovingWalls. All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
     "cookies": "Cookie Settings"
@@ -146,7 +146,7 @@
       "badge": "Our Story",
       "title": "Transforming OOH",
       "titleHighlight": "Advertising Globally",
-      "description": "Since 2015, Moving Walls has been at the forefront of revolutionizing the out-of-home advertising industry."
+      "description": "Since 2015, MovingWalls has been at the forefront of revolutionizing the out-of-home advertising industry."
     },
     "leadership": {
       "badge": "Leadership",
@@ -326,13 +326,8 @@
       "badge": "Asian-Born, Global Vision",
       "title": "Asian Born.",
       "titleHighlight": "Built for the World.",
-      "description": "Great journeys begin in complex places.",
-      "paragraph1": "We were born in Asia, one of the most dynamic and densely connected regions in the world. {{highlight}}High mobility, diverse cultures, layered cities.{{/highlight}} It forced us to think beyond static media from day one.",
-      "paragraph2": "Out of home has always captured attention. But attention without connection limits potential. For years, OOH remained powerful yet fragmented. {{highlight}}Visible, yet difficult to measure across markets.{{/highlight}}",
-      "paragraph3": "We built a platform designed to navigate that complexity.",
-      "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
-      "paragraph5": "Every screen becomes part of a wider journey.\nEvery city becomes a connected media landscape.\nEvery campaign becomes measurable across borders.",
-      "paragraph6": "We do not just operate globally. We understand how cities move, how people travel, and how brands must adapt in every market. {{highlight}}That is the explorer spirit behind our technology.{{/highlight}}",
+      "description": "Mastering the complexity of the world's most dynamic regions forced us to think beyond static media. Today, we bridge the gap between attention and connection.",
+      "paragraph1": "From {{highlight}}Times Square to Orchard Road{{/highlight}}, we transform fragmented OOH into a unified, measurable, and global media landscape. We don't just operate globally—we understand how cities move.",
       "stats": {
         "countries": "30+",
         "countriesLabel": "Countries",
@@ -473,7 +468,7 @@
         },
         "transformation": {
           "badge": "Transformation",
-          "title": "Moving Walls Platform",
+          "title": "MovingWalls Platform",
           "subtitle": "Your complete OOH solution",
           "features": [
             "AI-Powered Planning",
@@ -559,7 +554,7 @@
     "platformEcosystem": {
       "badge": "MW Platform Ecosystem",
       "title": "Where Movement Meets Media",
-      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "intro": "At the heart of MovingWalls is a connected system that brings together data, planning, activation, and measurement across markets.",
       "cards": {
         "data": {
           "label": "Data Inputs",
@@ -642,16 +637,16 @@
     },
     "customerLogos": {
       "title": "Trusted by Leading Brands",
-      "description": "From regional challengers to multinational leaders, brands rely on Moving Walls to navigate the evolving world of outdoor media."
+      "description": "From regional challengers to multinational leaders, brands rely on MovingWalls to navigate the evolving world of outdoor media."
     },
     "testimonials": {
       "badge": "Client Success",
       "title": "What Our Clients",
       "titleHighlight": "Say About Us",
-      "description": "Hear from the brands and agencies transforming their advertising with Moving Walls.",
+      "description": "Hear from the brands and agencies transforming their advertising with MovingWalls.",
       "reviews": [
         {
-          "quote": "Moving Walls transformed our DOOH strategy. We saw a 156% increase in ROI within the first quarter. Their platform is incredibly intuitive and the support team is world-class.",
+          "quote": "MovingWalls transformed our DOOH strategy. We saw a 156% increase in ROI within the first quarter. Their platform is incredibly intuitive and the support team is world-class.",
           "author": "Sarah Johnson",
           "role": "CMO",
           "company": "TechVision Inc.",
@@ -667,7 +662,7 @@
           "industry": "Retail"
         },
         {
-          "quote": "Moving to Moving Walls was the best decision we made this year. Their marketplace gave us access to premium inventory we couldn't get elsewhere, and the results speak for themselves.",
+          "quote": "Moving to MovingWalls was the best decision we made this year. Their marketplace gave us access to premium inventory we couldn't get elsewhere, and the results speak for themselves.",
           "author": "Emily Rodriguez",
           "role": "Head of Media",
           "company": "FinanceFirst",
@@ -683,7 +678,7 @@
           "industry": "Automotive"
         },
         {
-          "quote": "As a media owner, partnering with Moving Walls increased our fill rates dramatically. The programmatic capabilities brought in advertisers we never had access to before.",
+          "quote": "As a media owner, partnering with MovingWalls increased our fill rates dramatically. The programmatic capabilities brought in advertisers we never had access to before.",
           "author": "Amanda Foster",
           "role": "Chief Revenue Officer",
           "company": "CityScreen Media",
@@ -699,7 +694,7 @@
           "industry": "FMCG"
         },
         {
-          "quote": "Healthcare advertising requires precision and compliance. Moving Walls delivered both while helping us reach 2 million patients with our wellness campaigns.",
+          "quote": "Healthcare advertising requires precision and compliance. MovingWalls delivered both while helping us reach 2 million patients with our wellness campaigns.",
           "author": "Dr. Lisa Wang",
           "role": "Marketing Director",
           "company": "HealthFirst Network",
@@ -715,7 +710,7 @@
           "industry": "Travel"
         },
         {
-          "quote": "Moving Walls helped us prove the ROI of OOH for the first time. The attribution data convinced our CFO to triple our outdoor advertising budget.",
+          "quote": "MovingWalls helped us prove the ROI of OOH for the first time. The attribution data convinced our CFO to triple our outdoor advertising budget.",
           "author": "Patricia Lee",
           "role": "Head of Performance Marketing",
           "company": "TechStartup Asia",
@@ -726,7 +721,7 @@
     },
     "about": {
       "title": "Redefining Out-of-Home Advertising",
-      "description1": "Moving Walls is the leading technology-driven out-of-home advertising company, combining innovative platforms with deep industry expertise to deliver exceptional results for brands worldwide.",
+      "description1": "MovingWalls is the leading technology-driven out-of-home advertising company, combining innovative platforms with deep industry expertise to deliver exceptional results for brands worldwide.",
       "description2": "Our mission is to make out-of-home advertising as targetable, measurable, and effective as digital advertising—bringing the best of both worlds to help brands connect with audiences in meaningful ways.",
       "features": {
         "yearsOfExcellence": "Years of Excellence",

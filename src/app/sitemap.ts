@@ -60,7 +60,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     '/case-studies',
     '/community',
     '/documentation',
-    '/help-center',
     '/webinars',
     '/whitepapers',
   ]

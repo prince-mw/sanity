@@ -64,11 +64,11 @@ export default function PrivacyFirstMeasurementPage() {
 
             <div className="text-mw-gray-700 space-y-6">
               <p className="text-lg font-medium text-mw-gray-900">
-                NEW YORK, NY - July 22, 2024 - Moving Walls today unveiled its comprehensive Privacy-First Measurement Suite, designed to help brands maintain accurate attribution and measurement capabilities while ensuring full compliance with global privacy regulations including GDPR, CCPA, and emerging data protection laws.
+                NEW YORK, NY - July 22, 2024 - MovingWalls today unveiled its comprehensive Privacy-First Measurement Suite, designed to help brands maintain accurate attribution and measurement capabilities while ensuring full compliance with global privacy regulations including GDPR, CCPA, and emerging data protection laws.
               </p>
 
               <p>
-                The new suite addresses the growing challenge brands face in measuring advertising effectiveness as third-party cookies phase out and privacy regulations become more stringent. Moving Walls's solution provides accurate measurement without compromising user privacy or regulatory compliance.
+                The new suite addresses the growing challenge brands face in measuring advertising effectiveness as third-party cookies phase out and privacy regulations become more stringent. MovingWalls's solution provides accurate measurement without compromising user privacy or regulatory compliance.
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Privacy by Design</h2>
@@ -78,7 +78,7 @@ export default function PrivacyFirstMeasurementPage() {
               </p>
 
               <p>
-                "Privacy isn't an afterthought in our measurement approach—it's the foundation," said Dr. Lisa Rodriguez, Chief Privacy Officer at Moving Walls. "We've engineered solutions that give advertisers the insights they need while respecting user privacy and meeting the highest compliance standards."
+                "Privacy isn't an afterthought in our measurement approach—it's the foundation," said Dr. Lisa Rodriguez, Chief Privacy Officer at MovingWalls. "We've engineered solutions that give advertisers the insights they need while respecting user privacy and meeting the highest compliance standards."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Key Features</h2>
@@ -130,7 +130,7 @@ export default function PrivacyFirstMeasurementPage() {
               </p>
 
               <p>
-                "The transition to privacy-first measurement seemed daunting, but Moving Walls made it seamless," said Michelle Thompson, VP of Digital Marketing at GlobalBrand Corp. "We're actually getting better insights than before because the data is cleaner and more actionable."
+                "The transition to privacy-first measurement seemed daunting, but MovingWalls made it seamless," said Michelle Thompson, VP of Digital Marketing at GlobalBrand Corp. "We're actually getting better insights than before because the data is cleaner and more actionable."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Technical Innovation</h2>
@@ -150,7 +150,7 @@ export default function PrivacyFirstMeasurementPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Future-Proof Solution</h2>
               
               <p>
-                As privacy regulations continue to evolve globally, Moving Walls's Privacy-First Measurement Suite is designed to adapt automatically to new requirements. The platform includes built-in flexibility to accommodate future regulatory changes without requiring significant technical modifications.
+                As privacy regulations continue to evolve globally, MovingWalls's Privacy-First Measurement Suite is designed to adapt automatically to new requirements. The platform includes built-in flexibility to accommodate future regulatory changes without requiring significant technical modifications.
               </p>
 
               <p>
@@ -160,7 +160,7 @@ export default function PrivacyFirstMeasurementPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Availability</h2>
               
               <p>
-                The Privacy-First Measurement Suite is now available to all Moving Walls clients, with enterprise features rolling out in phases through Q4 2024. The company is also offering comprehensive training programs and dedicated privacy consultation services to ensure successful implementation.
+                The Privacy-First Measurement Suite is now available to all MovingWalls clients, with enterprise features rolling out in phases through Q4 2024. The company is also offering comprehensive training programs and dedicated privacy consultation services to ensure successful implementation.
               </p>
 
               <div className="bg-mw-gray-50 rounded-lg p-6 mt-8">
@@ -168,7 +168,7 @@ export default function PrivacyFirstMeasurementPage() {
                 <p className="text-mw-gray-700">
                   Jennifer Walsh<br/>
                   Director of Communications<br/>
-                  Moving Walls<br/>
+                  MovingWalls<br/>
                   Phone: (555) 123-4567<br/>
                   Email: media@movingwalls.com
                 </p>

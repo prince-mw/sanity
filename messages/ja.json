@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Moving Walls - 屋外広告プラットフォーム",
-    "description": "Moving Wallsは、単一のインテリジェントなクラウドプラットフォームを通じて、OOHエコシステム全体を統合します。"
+    "title": "MovingWalls - 屋外広告プラットフォーム",
+    "description": "MovingWallsは、単一のインテリジェントなクラウドプラットフォームを通じて、OOHエコシステム全体を統合します。"
   },
   "nav": {
     "solutions": "ソリューション",
@@ -84,7 +84,7 @@
     "badge": "事例紹介",
     "title": "インスピレーションを与える",
     "titleHighlight": "成功事例",
-    "description": "Moving Wallsで卓越した成果を達成した主要ブランドの事例をご覧ください。"
+    "description": "MovingWallsで卓越した成果を達成した主要ブランドの事例をご覧ください。"
   },
   "newsletter": {
     "title": "業界インサイトを",
@@ -102,7 +102,7 @@
     "termsOfService": "利用規約"
   },
   "footer": {
-    "description": "Moving Wallsは、単一のインテリジェントなクラウドプラットフォームを通じて、OOHエコシステム全体を統合します。オーディエンスの発見から予約、アクティベーション、測定、最適化まで、データ駆動の精度ですべてのステップを合理化します。",
+    "description": "MovingWallsは、単一のインテリジェントなクラウドプラットフォームを通じて、OOHエコシステム全体を統合します。オーディエンスの発見から予約、アクティベーション、測定、最適化まで、データ駆動の精度ですべてのステップを合理化します。",
     "followUs": "フォローする",
     "company": "会社情報",
     "solutions": "ソリューション",
@@ -110,7 +110,7 @@
     "resources": "リソース",
     "support": "サポート",
     "billboardLocations": "看板設置場所",
-    "copyright": "© 2024 Moving Walls. All rights reserved.",
+    "copyright": "© 2024 MovingWalls. All rights reserved.",
     "privacy": "プライバシーポリシー",
     "terms": "利用規約",
     "cookies": "Cookie設定"
@@ -146,7 +146,7 @@
       "badge": "私たちの物語",
       "title": "OOH広告を",
       "titleHighlight": "グローバルに変革",
-      "description": "2015年以来、Moving Wallsは屋外広告業界の革命の最前線に立っています。"
+      "description": "2015年以来、MovingWallsは屋外広告業界の革命の最前線に立っています。"
     },
     "leadership": {
       "badge": "リーダーシップ",
@@ -324,15 +324,10 @@
     },
     "asianBornGlobal": {
       "badge": "アジア生まれ、グローバルビジョン",
-      "title": "アジア生まれ、",
-      "titleHighlight": "グローバルなフットプリント",
-      "description": "東南アジアにルーツを持ち、30か国以上で広告キャンペーンを展開し、世界中で10,000以上のクライアントにサービスを提供しています。",
-      "paragraph1": "屋外広告はもはや静的なメディアではありません。それは現実世界の影響力を推進する{{highlight}}'世界をリードするコネクテッドメディアプラットフォーム'{{/highlight}}です。タイムズスクエアからオーチャードロードまで、すべての画面、看板、スペースが、ブランドがデジタル精度で活性化できる測定可能なタッチポイントになります。",
-      "paragraph2": "アジアで生まれ、世界のために構築された当社のテクノロジーは、断片化された屋外広告インベントリを単一のエコシステムに統合し、広告主が{{highlight}}リアルタイムでキャンペーンを計画、購入、測定、リーチ、影響{{/highlight}}できるようにします。",
-      "paragraph3": "私たちは単に屋外に広告を掲載するだけでなく、都市をインテリジェントなメディアネットワークに変革し、オーディエンスが移動するすべての場所で{{highlight}}注目、関連性、影響力{{/highlight}}を提供します。",
-      "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
-      "paragraph5": "Every screen becomes part of a wider journey.\nEvery city becomes a connected media landscape.\nEvery campaign becomes measurable across borders.",
-      "paragraph6": "We do not just operate globally. We understand how cities move, how people travel, and how brands must adapt in every market. {{highlight}}That is the explorer spirit behind our technology.{{/highlight}}",
+      "title": "アジア生まれ。",
+      "titleHighlight": "世界のために構築。",
+      "description": "世界で最もダイナミックな地域の複雑さをすることで、私たちは静的なメディアを超えて考えることを余儀なくされました。今日、私たちは注目とつながりのギャップを埋めています。",
+      "paragraph1": "{{highlight}}タイムズスクエアからオーチャードロード{{/highlight}}まで、私たちは断片化されたOOHを統一された、測定可能な、グローバルなメディアランドスケープに変えます。私たちはグローバルに運営するだけでなく、都市がどのように動くかを理解しています。",
       "stats": {
         "countries": "30+",
         "countriesLabel": "カ国",
@@ -483,7 +478,7 @@
         },
         "transformation": {
           "badge": "Transformation",
-          "title": "Moving Walls Platform",
+          "title": "MovingWalls Platform",
           "subtitle": "Your complete OOH solution",
           "features": [
             "AI-Powered Planning",
@@ -648,10 +643,10 @@
       "badge": "クライアントの成功",
       "title": "お客様の",
       "titleHighlight": "声",
-      "description": "Moving Wallsで広告を変革しているブランドや代理店の声をお聞きください。",
+      "description": "MovingWallsで広告を変革しているブランドや代理店の声をお聞きください。",
       "reviews": [
         {
-          "quote": "Moving WallsはDOOH戦略を変革しました。第1四半期でROIが156%増加しました。プラットフォームは非常に直感的で、サポートチームは世界クラスです。",
+          "quote": "MovingWallsはDOOH戦略を変革しました。第1四半期でROIが156%増加しました。プラットフォームは非常に直感的で、サポートチームは世界クラスです。",
           "author": "Sarah Johnson",
           "role": "CMO",
           "company": "TechVision Inc.",
@@ -667,7 +662,7 @@
           "industry": "小売"
         },
         {
-          "quote": "Moving Wallsへの移行は今年の最良の決断でした。マーケットプレイスにより、他では得られなかったプレミアムインベントリにアクセスでき、結果が物語っています。",
+          "quote": "MovingWallsへの移行は今年の最良の決断でした。マーケットプレイスにより、他では得られなかったプレミアムインベントリにアクセスでき、結果が物語っています。",
           "author": "Emily Rodriguez",
           "role": "メディア責任者",
           "company": "FinanceFirst",
@@ -683,7 +678,7 @@
           "industry": "自動車"
         },
         {
-          "quote": "メディアオーナーとして、Moving Wallsとのパートナーシップにより、充填率が劇的に向上しました。プログラマティック機能により、以前はアクセスできなかった広告主を獲得しました。",
+          "quote": "メディアオーナーとして、MovingWallsとのパートナーシップにより、充填率が劇的に向上しました。プログラマティック機能により、以前はアクセスできなかった広告主を獲得しました。",
           "author": "Amanda Foster",
           "role": "最高収益責任者",
           "company": "CityScreen Media",
@@ -699,7 +694,7 @@
           "industry": "FMCG"
         },
         {
-          "quote": "ヘルスケア広告には精度とコンプライアンスが必要です。Moving Wallsは両方を提供し、ウェルネスキャンペーンで200万人の患者にリーチするのを支援しました。",
+          "quote": "ヘルスケア広告には精度とコンプライアンスが必要です。MovingWallsは両方を提供し、ウェルネスキャンペーンで200万人の患者にリーチするのを支援しました。",
           "author": "Dr. Lisa Wang",
           "role": "マーケティングディレクター",
           "company": "HealthFirst Network",
@@ -715,7 +710,7 @@
           "industry": "旅行"
         },
         {
-          "quote": "Moving WallsはOOHのROIを初めて証明するのを助けてくれました。アトリビューションデータがCFOを説得し、屋外広告予算を3倍にしました。",
+          "quote": "MovingWallsはOOHのROIを初めて証明するのを助けてくれました。アトリビューションデータがCFOを説得し、屋外広告予算を3倍にしました。",
           "author": "Patricia Lee",
           "role": "パフォーマンスマーケティング責任者",
           "company": "TechStartup Asia",
@@ -726,7 +721,7 @@
     },
     "about": {
       "title": "屋外広告を再定義",
-      "description1": "Moving Wallsは、革新的なプラットフォームと深い業界専門知識を組み合わせ、世界中のブランドに卓越した結果を提供する、テクノロジー主導の屋外広告の主要企業です。",
+      "description1": "MovingWallsは、革新的なプラットフォームと深い業界専門知識を組み合わせ、世界中のブランドに卓越した結果を提供する、テクノロジー主導の屋外広告の主要企業です。",
       "description2": "私たちの使命は、屋外広告をデジタル広告と同様にターゲット可能、測定可能、効果的にすることです—両方の世界の長所を取り入れ、ブランドが有意義な方法でオーディエンスとつながることを支援します。",
       "features": {
         "yearsOfExcellence": "卓越の年数",
@@ -816,7 +811,7 @@
     "platformEcosystem": {
       "badge": "MW Platform Ecosystem",
       "title": "Where Movement Meets Media",
-      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "intro": "At the heart of MovingWalls is a connected system that brings together data, planning, activation, and measurement across markets.",
       "cards": {
         "data": {
           "label": "Data Inputs",

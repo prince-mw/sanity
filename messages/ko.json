@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "Moving Walls - 옥외 광고 플랫폼",
-    "description": "Moving Walls는 단일 지능형 클라우드 플랫폼을 통해 전체 OOH 생태계를 통합합니다."
+    "title": "MovingWalls - 옥외 광고 플랫폼",
+    "description": "MovingWalls는 단일 지능형 클라우드 플랫폼을 통해 전체 OOH 생태계를 통합합니다."
   },
   "nav": {
     "solutions": "솔루션",
@@ -15,7 +15,7 @@
     "badge": "AI 기반 OOH 광고",
     "title": "광고 전략을",
     "titleHighlight": "혁신하세요",
-    "description": "Moving Walls는 단일 지능형 클라우드 플랫폼을 통해 전체 OOH 생태계를 통합합니다. 오디언스 발견부터 예약, 활성화, 측정 및 최적화까지.",
+    "description": "MovingWalls는 단일 지능형 클라우드 플랫폼을 통해 전체 OOH 생태계를 통합합니다. 오디언스 발견부터 예약, 활성화, 측정 및 최적화까지.",
     "cta": {
       "primary": "무료 체험 시작",
       "secondary": "데모 보기"
@@ -84,7 +84,7 @@
     "badge": "사례 연구",
     "title": "영감을 주는",
     "titleHighlight": "성공 사례",
-    "description": "Moving Walls로 탁월한 성과를 달성한 주요 브랜드 사례를 확인하세요."
+    "description": "MovingWalls로 탁월한 성과를 달성한 주요 브랜드 사례를 확인하세요."
   },
   "newsletter": {
     "title": "업계 인사이트를",
@@ -102,7 +102,7 @@
     "termsOfService": "서비스 약관"
   },
   "footer": {
-    "description": "Moving Walls는 단일 지능형 클라우드 플랫폼을 통해 전체 OOH 생태계를 통합합니다.",
+    "description": "MovingWalls는 단일 지능형 클라우드 플랫폼을 통해 전체 OOH 생태계를 통합합니다.",
     "followUs": "팔로우",
     "company": "회사",
     "solutions": "솔루션",
@@ -110,7 +110,7 @@
     "resources": "리소스",
     "support": "지원",
     "billboardLocations": "빌보드 위치",
-    "copyright": "© 2024 Moving Walls. All rights reserved.",
+    "copyright": "© 2024 MovingWalls. All rights reserved.",
     "privacy": "개인정보처리방침",
     "terms": "이용약관",
     "cookies": "쿠키 설정"
@@ -146,7 +146,7 @@
       "badge": "우리의 이야기",
       "title": "OOH 광고를",
       "titleHighlight": "글로벌하게 혁신",
-      "description": "2015년부터 Moving Walls는 옥외 광고 산업 혁신의 선두에 서 있습니다."
+      "description": "2015년부터 MovingWalls는 옥외 광고 산업 혁신의 선두에 서 있습니다."
     },
     "leadership": {
       "badge": "리더십",
@@ -324,15 +324,10 @@
     },
     "asianBornGlobal": {
       "badge": "아시아에서 태어나 글로벌 비전으로",
-      "title": "아시아 출신,",
-      "titleHighlight": "글로벌 발자국",
-      "description": "동남아시아에서 시작하여 30개 이상의 국가에서 광고 캠페인을 운영하고 전 세계적으로 10,000명 이상의 고객에게 서비스를 제공하고 있습니다.",
-      "paragraph1": "옥외 광고는 더 이상 정적 미디어가 아닙니다. 그것은 현실 세계의 영향력을 촉진하는 {{highlight}}'세계 최고의 커넥티드 미디어 플랫폼'{{/highlight}}입니다. 타임스퀘어에서 오차드 로드까지 모든 화면, 표지판, 공간은 브랜드가 디지털 정밀도로 활성화할 수 있는 측정 가능한 접점이 됩니다.",
-      "paragraph2": "아시아에서 탄생하여 전 세계를 위해 구축된 당사의 기술은 단편화된 옥외 인벤토리를 단일 생태계로 통합하여 광고주가 {{highlight}}실시간으로 캠페인을 계획, 구매, 측정, 도달 및 영향{{/highlight}}을 미칠 수 있도록 합니다.",
-      "paragraph3": "우리는 단순히 외부에 광고를 게재하는 것이 아니라 도시를 지능형 미디어 네트워크로 변환하여 청중이 이동하는 모든 곳에서 {{highlight}}주목, 관련성 및 영향력{{/highlight}}을 제공합니다.",
-      "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
-      "paragraph5": "Every screen becomes part of a wider journey.\nEvery city becomes a connected media landscape.\nEvery campaign becomes measurable across borders.",
-      "paragraph6": "We do not just operate globally. We understand how cities move, how people travel, and how brands must adapt in every market. {{highlight}}That is the explorer spirit behind our technology.{{/highlight}}",
+      "title": "아시아 출신.",
+      "titleHighlight": "세계를 위해 구축.",
+      "description": "세계에서 가장 역동적인 지역의 복잡성을 마스터하면서 정적 미디어를 넘어 생각하게 되었습니다. 오늘날, 우리는 주목과 연결 사이의 간극을 메웁니다.",
+      "paragraph1": "{{highlight}}타임스 스퀘어에서 오차드 로드{{/highlight}}까지, 우리는 파편화된 OOH를 통합된, 측정 가능한, 글로벌 미디어 환경으로 변환합니다. 우리는 단순히 글로벌하게 운영하는 것이 아니라 도시가 어떻게 움직이는지 이해합니다.",
       "stats": {
         "countries": "30+",
         "countriesLabel": "국가",
@@ -483,7 +478,7 @@
         },
         "transformation": {
           "badge": "Transformation",
-          "title": "Moving Walls Platform",
+          "title": "MovingWalls Platform",
           "subtitle": "Your complete OOH solution",
           "features": [
             "AI-Powered Planning",
@@ -648,10 +643,10 @@
       "badge": "고객 성공",
       "title": "고객들이",
       "titleHighlight": "말하는 것",
-      "description": "Moving Walls로 광고를 혁신하고 있는 브랜드와 에이전시의 이야기를 들어보세요.",
+      "description": "MovingWalls로 광고를 혁신하고 있는 브랜드와 에이전시의 이야기를 들어보세요.",
       "reviews": [
         {
-          "quote": "Moving Walls는 우리의 DOOH 전략을 변화시켰습니다. 첫 분기에 ROI가 156% 증가했습니다. 플랫폼은 매우 직관적이고 지원팀은 세계 최고 수준입니다.",
+          "quote": "MovingWalls는 우리의 DOOH 전략을 변화시켰습니다. 첫 분기에 ROI가 156% 증가했습니다. 플랫폼은 매우 직관적이고 지원팀은 세계 최고 수준입니다.",
           "author": "Sarah Johnson",
           "role": "CMO",
           "company": "TechVision Inc.",
@@ -667,7 +662,7 @@
           "industry": "소매"
         },
         {
-          "quote": "Moving Walls로의 전환은 올해 내린 최고의 결정이었습니다. 그들의 마켓플레이스는 다른 곳에서는 얻을 수 없는 프리미엄 인벤토리에 대한 액세스를 제공했으며 결과가 모든 것을 말해줍니다.",
+          "quote": "MovingWalls로의 전환은 올해 내린 최고의 결정이었습니다. 그들의 마켓플레이스는 다른 곳에서는 얻을 수 없는 프리미엄 인벤토리에 대한 액세스를 제공했으며 결과가 모든 것을 말해줍니다.",
           "author": "Emily Rodriguez",
           "role": "미디어 책임자",
           "company": "FinanceFirst",
@@ -683,7 +678,7 @@
           "industry": "자동차"
         },
         {
-          "quote": "미디어 소유자로서 Moving Walls와의 파트너십은 충전율을 극적으로 증가시켰습니다. 프로그래매틱 기능은 이전에는 접근할 수 없었던 광고주를 유치했습니다.",
+          "quote": "미디어 소유자로서 MovingWalls와의 파트너십은 충전율을 극적으로 증가시켰습니다. 프로그래매틱 기능은 이전에는 접근할 수 없었던 광고주를 유치했습니다.",
           "author": "Amanda Foster",
           "role": "최고 수익 책임자",
           "company": "CityScreen Media",
@@ -699,7 +694,7 @@
           "industry": "FMCG"
         },
         {
-          "quote": "의료 광고는 정밀성과 규정 준수가 필요합니다. Moving Walls는 두 가지를 모두 제공하면서 웰니스 캠페인으로 200만 명의 환자에게 도달하도록 도왔습니다.",
+          "quote": "의료 광고는 정밀성과 규정 준수가 필요합니다. MovingWalls는 두 가지를 모두 제공하면서 웰니스 캠페인으로 200만 명의 환자에게 도달하도록 도왔습니다.",
           "author": "Dr. Lisa Wang",
           "role": "마케팅 디렉터",
           "company": "HealthFirst Network",
@@ -715,7 +710,7 @@
           "industry": "여행"
         },
         {
-          "quote": "Moving Walls는 처음으로 OOH의 ROI를 입증하는 데 도움을 주었습니다. 어트리뷰션 데이터는 CFO를 설득하여 옥외 광고 예산을 3배로 늘렸습니다.",
+          "quote": "MovingWalls는 처음으로 OOH의 ROI를 입증하는 데 도움을 주었습니다. 어트리뷰션 데이터는 CFO를 설득하여 옥외 광고 예산을 3배로 늘렸습니다.",
           "author": "Patricia Lee",
           "role": "퍼포먼스 마케팅 책임자",
           "company": "TechStartup Asia",
@@ -726,7 +721,7 @@
     },
     "about": {
       "title": "옥외 광고 재정의",
-      "description1": "Moving Walls는 혁신적인 플랫폼과 깊은 업계 전문 지식을 결합하여 전 세계 브랜드에 뛰어난 결과를 제공하는 선도적인 기술 기반 옥외 광고 기업입니다.",
+      "description1": "MovingWalls는 혁신적인 플랫폼과 깊은 업계 전문 지식을 결합하여 전 세계 브랜드에 뛰어난 결과를 제공하는 선도적인 기술 기반 옥외 광고 기업입니다.",
       "description2": "우리의 미션은 옥외 광고를 디지털 광고만큼 타겟팅 가능하고, 측정 가능하며, 효과적으로 만드는 것입니다—두 세계의 장점을 결합하여 브랜드가 의미 있는 방식으로 오디언스와 연결되도록 돕습니다.",
       "features": {
         "yearsOfExcellence": "우수한 역사",
@@ -816,7 +811,7 @@
     "platformEcosystem": {
       "badge": "MW Platform Ecosystem",
       "title": "Where Movement Meets Media",
-      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "intro": "At the heart of MovingWalls is a connected system that brings together data, planning, activation, and measurement across markets.",
       "cards": {
         "data": {
           "label": "Data Inputs",

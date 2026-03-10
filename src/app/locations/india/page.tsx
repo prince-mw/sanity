@@ -258,8 +258,8 @@ export default function IndiaPage() {
       answer: "Major markets include Mumbai, Delhi NCR, Bangalore, Chennai, Hyderabad, Kolkata, Pune, and Ahmedabad. Tier-2 cities like Jaipur, Lucknow, and Kochi are also growing rapidly.",
     },
     {
-      question: "How does Moving Walls help advertisers in India?",
-      answer: "Moving Walls provides access to 50,000+ billboard sites across India, with precise audience targeting, real-time analytics, and programmatic buying capabilities through our Moving Audiences platform.",
+      question: "How does MovingWalls help advertisers in India?",
+      answer: "MovingWalls provides access to 50,000+ billboard sites across India, with precise audience targeting, real-time analytics, and programmatic buying capabilities through our Moving Audiences platform.",
     },
   ]
 

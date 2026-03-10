@@ -163,7 +163,7 @@ export default function RetailPage() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-mw-gray-900 mb-4">
-              Why Retailers Choose Moving Walls
+              Why Retailers Choose MovingWalls
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Our retail-focused advertising solutions help you connect with shoppers at every stage of their journey.

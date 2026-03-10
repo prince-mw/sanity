@@ -271,8 +271,8 @@ export default function USAPage() {
       answer: "OOH advertising in the USA is regulated at federal, state, and local levels. The Highway Beautification Act governs roadside advertising, while local zoning laws control urban displays. Content must comply with FCC and FTC guidelines.",
     },
     {
-      question: "How does Moving Walls help advertisers in the USA?",
-      answer: "Moving Walls provides access to premium OOH inventory across all major US markets, with precise audience targeting based on demographic and behavioral data, real-time campaign analytics, and seamless programmatic buying.",
+      question: "How does MovingWalls help advertisers in the USA?",
+      answer: "MovingWalls provides access to premium OOH inventory across all major US markets, with precise audience targeting based on demographic and behavioral data, real-time campaign analytics, and seamless programmatic buying.",
     },
   ]
 

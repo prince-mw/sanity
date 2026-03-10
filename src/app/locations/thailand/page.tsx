@@ -260,8 +260,8 @@ export default function ThailandPage() {
       answer: "Major markets include Bangkok (Siam, Sukhumvit, Silom), Phuket, Chiang Mai, Pattaya, and Hat Yai. Bangkok's transit network reaches millions of commuters daily.",
     },
     {
-      question: "How does Moving Walls help advertisers in Thailand?",
-      answer: "Moving Walls provides access to 4,200+ billboard sites across Thailand, with precise audience targeting, real-time analytics, and programmatic buying through our Moving Audiences platform.",
+      question: "How does MovingWalls help advertisers in Thailand?",
+      answer: "MovingWalls provides access to 4,200+ billboard sites across Thailand, with precise audience targeting, real-time analytics, and programmatic buying through our Moving Audiences platform.",
     },
   ]
 

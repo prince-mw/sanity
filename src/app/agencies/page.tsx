@@ -63,7 +63,7 @@ export default function AgenciesPage() {
                 </span>
               </h1>
               <p className="text-lg md:text-xl text-blue-100 max-w-xl mb-8 leading-relaxed">
-Offer your clients a complete out of home solution under your own brand. Moving Walls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.
+Offer your clients a complete out of home solution under your own brand. MovingWalls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
@@ -561,7 +561,7 @@ Your Complete OOH Platform
               From Complexity to Clarity
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See how Moving Walls transforms your agency&apos;s OOH capabilities
+              See how MovingWalls transforms your agency&apos;s OOH capabilities
             </p>
           </motion.div>
 
@@ -788,7 +788,7 @@ Your Complete OOH Platform
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">The Moving Walls Transformation</h3>
+                    <h3 className="text-2xl font-bold text-white mb-2">The MovingWalls Transformation</h3>
                     <p className="text-blue-200 text-sm">Your complete agency solution</p>
                   </div>
                   <div className="space-y-3">
@@ -1215,7 +1215,7 @@ Your Complete OOH Platform
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-gray-600">
-              Everything you need to know about partnering with Moving Walls
+              Everything you need to know about partnering with MovingWalls
             </p>
           </motion.div>
 

@@ -47,7 +47,7 @@ export default function APIReferencePage() {
               <span className="text-mw-blue-600 block">Developer Resources</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
-              Build powerful integrations with the Moving Walls API. Full REST API documentation and SDKs.
+              Build powerful integrations with the MovingWalls API. Full REST API documentation and SDKs.
             </p>
             <div className="flex gap-4 justify-center">
               <a href="#" className="px-6 py-3 bg-mw-blue-600 text-white font-medium rounded-lg hover:bg-mw-blue-700 transition-colors">

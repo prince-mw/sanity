@@ -35,7 +35,7 @@ export default function TransitPartnershipPage() {
             </h1>
             
             <p className="text-xl text-mw-gray-600 leading-relaxed mb-8">
-              Major partnership expands Moving Walls's out-of-home advertising network to 25 new metropolitan areas, reaching over 100 million daily commuters worldwide.
+              Major partnership expands MovingWalls's out-of-home advertising network to 25 new metropolitan areas, reaching over 100 million daily commuters worldwide.
             </p>
           </motion.div>
         </div>
@@ -64,11 +64,11 @@ export default function TransitPartnershipPage() {
 
             <div className="text-mw-gray-700 space-y-6">
               <p className="text-lg font-medium text-mw-gray-900">
-                NEW YORK, NY - September 12, 2024 - Moving Walls today announced a landmark partnership with the Global Transit Authority Network (GTAN), significantly expanding its out-of-home advertising capabilities across 25 major metropolitan areas worldwide.
+                NEW YORK, NY - September 12, 2024 - MovingWalls today announced a landmark partnership with the Global Transit Authority Network (GTAN), significantly expanding its out-of-home advertising capabilities across 25 major metropolitan areas worldwide.
               </p>
 
               <p>
-                This strategic alliance will provide Moving Walls with exclusive advertising access to premium transit locations including subway systems, bus networks, and transit hubs in cities across North America, Europe, and Asia, reaching an estimated 100 million daily commuters.
+                This strategic alliance will provide MovingWalls with exclusive advertising access to premium transit locations including subway systems, bus networks, and transit hubs in cities across North America, Europe, and Asia, reaching an estimated 100 million daily commuters.
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Partnership Scope</h2>
@@ -113,17 +113,17 @@ export default function TransitPartnershipPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Digital Innovation in Transit</h2>
               
               <p>
-                As part of this partnership, Moving Walls will deploy state-of-the-art digital displays throughout the transit network, featuring dynamic content capabilities and real-time optimization based on passenger flow, weather conditions, and local events.
+                As part of this partnership, MovingWalls will deploy state-of-the-art digital displays throughout the transit network, featuring dynamic content capabilities and real-time optimization based on passenger flow, weather conditions, and local events.
               </p>
 
               <p>
-                "This partnership represents a significant evolution in out-of-home advertising," said Maria Santos, VP of Strategic Partnerships at Moving Walls. "We're not just placing static ads in transit locations—we're creating dynamic, contextually relevant experiences that provide value to both advertisers and commuters."
+                "This partnership represents a significant evolution in out-of-home advertising," said Maria Santos, VP of Strategic Partnerships at MovingWalls. "We're not just placing static ads in transit locations—we're creating dynamic, contextually relevant experiences that provide value to both advertisers and commuters."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Technology Integration</h2>
               
               <p>
-                Moving Walls will integrate its proprietary AI-powered targeting technology with transit data to deliver highly relevant advertising content. The system will analyze factors including:
+                MovingWalls will integrate its proprietary AI-powered targeting technology with transit data to deliver highly relevant advertising content. The system will analyze factors including:
               </p>
 
               <ul className="space-y-2 ml-6">
@@ -141,13 +141,13 @@ export default function TransitPartnershipPage() {
               </p>
 
               <p>
-                "Transit advertising has always been about reaching people during their daily routines," said Dr. James Wright, GTAN Executive Director. "Our partnership with Moving Walls brings this medium into the digital age, creating opportunities for more relevant, engaging, and effective advertising experiences."
+                "Transit advertising has always been about reaching people during their daily routines," said Dr. James Wright, GTAN Executive Director. "Our partnership with MovingWalls brings this medium into the digital age, creating opportunities for more relevant, engaging, and effective advertising experiences."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Rollout Timeline</h2>
               
               <p>
-                The partnership will be implemented in phases, beginning with tier-one markets in Q1 2025. Moving Walls expects the full network to be operational by Q3 2025, with advanced features including mobile integration and augmented reality capabilities launching in select markets by year-end.
+                The partnership will be implemented in phases, beginning with tier-one markets in Q1 2025. MovingWalls expects the full network to be operational by Q3 2025, with advanced features including mobile integration and augmented reality capabilities launching in select markets by year-end.
               </p>
 
               <p>
@@ -166,7 +166,7 @@ export default function TransitPartnershipPage() {
                 <p className="text-mw-gray-700">
                   Jennifer Walsh<br/>
                   Director of Communications<br/>
-                  Moving Walls<br/>
+                  MovingWalls<br/>
                   Phone: (555) 123-4567<br/>
                   Email: media@movingwalls.com
                 </p>

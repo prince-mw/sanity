@@ -257,8 +257,8 @@ export default function SriLankaPage() {
       answer: "Major markets include Colombo (including CBD and suburbs), Kandy, Galle, Negombo, and growing urban centers. Colombo Fort and Galle Road offer premium billboard locations.",
     },
     {
-      question: "How does Moving Walls help advertisers in Sri Lanka?",
-      answer: "Moving Walls provides access to 1,800+ billboard sites across Sri Lanka, with audience targeting, analytics, and programmatic capabilities through our Moving Audiences platform.",
+      question: "How does MovingWalls help advertisers in Sri Lanka?",
+      answer: "MovingWalls provides access to 1,800+ billboard sites across Sri Lanka, with audience targeting, analytics, and programmatic capabilities through our Moving Audiences platform.",
     },
   ]
 

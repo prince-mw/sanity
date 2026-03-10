@@ -42,14 +42,14 @@ export default function OurStoryPage() {
             className="text-center"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-mw-blue-100 rounded-full mb-8">
-              <span className="text-mw-blue-600 text-sm font-medium">About Moving Walls</span>
+              <span className="text-mw-blue-600 text-sm font-medium">About MovingWalls</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
               Our Story
               <span className="text-mw-blue-600 block">Innovation & Growth</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              From a bold vision to market leadership, discover how Moving Walls transformed 
+              From a bold vision to market leadership, discover how MovingWalls transformed 
               the advertising landscape through innovative technology and unwavering 
               commitment to client success.
             </p>
@@ -71,7 +71,7 @@ export default function OurStoryPage() {
                 Our Mission
               </h2>
               <p className="text-lg text-mw-gray-600 mb-6 leading-relaxed">
-                At Moving Walls, we believe advertising should be more than just reaching audiences—it should 
+                At MovingWalls, we believe advertising should be more than just reaching audiences—it should 
                 create meaningful connections. Our mission is to empower brands with intelligent, 
                 data-driven advertising solutions that deliver measurable results and drive real business growth.
               </p>
@@ -94,7 +94,7 @@ export default function OurStoryPage() {
                   "We're building the future of advertising—one where technology meets creativity, 
                   data drives decisions, and every campaign creates lasting impact."
                 </blockquote>
-                <cite className="text-mw-blue-600 font-semibold">— Moving Walls Leadership Team</cite>
+                <cite className="text-mw-blue-600 font-semibold">— MovingWalls Leadership Team</cite>
               </div>
             </motion.div>
           </div>

@@ -258,8 +258,8 @@ export default function AustraliaPage() {
       answer: "Major markets include Sydney (CBD, Airport), Melbourne (CBD, MCG), Brisbane, Perth, Adelaide, and Gold Coast. Over 85% of Australians live in urban areas.",
     },
     {
-      question: "How does Moving Walls help advertisers in Australia?",
-      answer: "Moving Walls provides access to premium OOH inventory across Australia, with precise audience targeting, real-time analytics, and programmatic buying through our Moving Audiences platform.",
+      question: "How does MovingWalls help advertisers in Australia?",
+      answer: "MovingWalls provides access to premium OOH inventory across Australia, with precise audience targeting, real-time analytics, and programmatic buying through our Moving Audiences platform.",
     },
   ]
 

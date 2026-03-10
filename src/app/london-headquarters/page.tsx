@@ -31,7 +31,7 @@ export default function LondonHeadquartersPage() {
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold text-mw-gray-900 mb-6 leading-tight">
-              Moving Walls Opens European Headquarters in London
+              MovingWalls Opens European Headquarters in London
             </h1>
             
             <p className="text-xl text-mw-gray-600 leading-relaxed mb-8">
@@ -64,21 +64,21 @@ export default function LondonHeadquartersPage() {
 
             <div className="text-mw-gray-700 space-y-6">
               <p className="text-lg font-medium text-mw-gray-900">
-                LONDON, UK - June 18, 2024 - Moving Walls today announced the opening of its European headquarters in London's prestigious Canary Wharf district, marking a significant milestone in the company's international expansion strategy.
+                LONDON, UK - June 18, 2024 - MovingWalls today announced the opening of its European headquarters in London's prestigious Canary Wharf district, marking a significant milestone in the company's international expansion strategy.
               </p>
 
               <p>
-                The new 25,000 square foot office will serve as the regional hub for Moving Walls's European operations, housing teams focused on sales, client services, product development, and regulatory compliance across the European market.
+                The new 25,000 square foot office will serve as the regional hub for MovingWalls's European operations, housing teams focused on sales, client services, product development, and regulatory compliance across the European market.
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Strategic Location</h2>
               
               <p>
-                Located at 40 Bank Street in Canary Wharf, the new headquarters positions Moving Walls at the heart of London's financial and technology district. The location provides easy access to major European markets and places the company alongside other leading global technology firms.
+                Located at 40 Bank Street in Canary Wharf, the new headquarters positions MovingWalls at the heart of London's financial and technology district. The location provides easy access to major European markets and places the company alongside other leading global technology firms.
               </p>
 
               <p>
-                "London is the perfect base for our European expansion," said David Kim, CEO of Moving Walls. "The city's position as a global financial center, combined with its thriving tech ecosystem and access to top talent, makes it an ideal location for our regional headquarters."
+                "London is the perfect base for our European expansion," said David Kim, CEO of MovingWalls. "The city's position as a global financial center, combined with its thriving tech ecosystem and access to top talent, makes it an ideal location for our regional headquarters."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Team Expansion</h2>
@@ -97,23 +97,23 @@ export default function LondonHeadquartersPage() {
               </ul>
 
               <p>
-                Leading the European operations is Emma Richardson, who joins Moving Walls as VP of European Operations. Richardson brings over 15 years of experience in advertising technology and previously held senior positions at major adtech companies across Europe.
+                Leading the European operations is Emma Richardson, who joins MovingWalls as VP of European Operations. Richardson brings over 15 years of experience in advertising technology and previously held senior positions at major adtech companies across Europe.
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Market Opportunity</h2>
               
               <p>
-                The European digital advertising market represents significant growth opportunity for Moving Walls, with programmatic advertising spend expected to reach €45 billion by 2025. The company's privacy-first approach and GDPR-compliant solutions position it well to serve European brands and agencies.
+                The European digital advertising market represents significant growth opportunity for MovingWalls, with programmatic advertising spend expected to reach €45 billion by 2025. The company's privacy-first approach and GDPR-compliant solutions position it well to serve European brands and agencies.
               </p>
 
               <p>
-                "European advertisers are increasingly demanding sophisticated, privacy-compliant solutions that deliver real results," said Emma Richardson. "Moving Walls's technology platform and commitment to transparency make us uniquely positioned to serve this market."
+                "European advertisers are increasingly demanding sophisticated, privacy-compliant solutions that deliver real results," said Emma Richardson. "MovingWalls's technology platform and commitment to transparency make us uniquely positioned to serve this market."
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Local Partnerships</h2>
               
               <p>
-                As part of the European launch, Moving Walls has established partnerships with leading local agencies and technology providers, including:
+                As part of the European launch, MovingWalls has established partnerships with leading local agencies and technology providers, including:
               </p>
 
               <ul className="space-y-2 ml-6">
@@ -136,23 +136,23 @@ export default function LondonHeadquartersPage() {
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Community Commitment</h2>
               
               <p>
-                Moving Walls is committed to being an active member of the London tech community. The company plans to host regular industry events, participate in local tech meetups, and support advertising technology education initiatives at London universities.
+                MovingWalls is committed to being an active member of the London tech community. The company plans to host regular industry events, participate in local tech meetups, and support advertising technology education initiatives at London universities.
               </p>
 
               <p>
-                The office features modern collaborative spaces, state-of-the-art technology infrastructure, and sustainable design elements that reflect Moving Walls's commitment to environmental responsibility.
+                The office features modern collaborative spaces, state-of-the-art technology infrastructure, and sustainable design elements that reflect MovingWalls's commitment to environmental responsibility.
               </p>
 
               <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Future Expansion</h2>
               
               <p>
-                The London headquarters represents the first phase of Moving Walls's European expansion. The company plans to establish additional offices in key European markets over the next 18 months, with Berlin and Amsterdam identified as priority locations.
+                The London headquarters represents the first phase of MovingWalls's European expansion. The company plans to establish additional offices in key European markets over the next 18 months, with Berlin and Amsterdam identified as priority locations.
               </p>
 
               <div className="bg-mw-gray-50 rounded-lg p-6 mt-8">
-                <h3 className="text-lg font-bold text-mw-gray-900 mb-4">About Moving Walls European Operations</h3>
+                <h3 className="text-lg font-bold text-mw-gray-900 mb-4">About MovingWalls European Operations</h3>
                 <p className="text-mw-gray-700">
-                  Moving Walls's European operations are headquartered in London and serve clients across the UK, Ireland, and continental Europe. The team focuses on delivering privacy-compliant, data-driven advertising solutions that help brands achieve their marketing objectives in the European market.
+                  MovingWalls's European operations are headquartered in London and serve clients across the UK, Ireland, and continental Europe. The team focuses on delivering privacy-compliant, data-driven advertising solutions that help brands achieve their marketing objectives in the European market.
                 </p>
               </div>
 
@@ -161,13 +161,13 @@ export default function LondonHeadquartersPage() {
                 <p className="text-mw-gray-700">
                   Jennifer Walsh<br/>
                   Director of Communications<br/>
-                  Moving Walls<br/>
+                  MovingWalls<br/>
                   Phone: (555) 123-4567<br/>
                   Email: media@movingwalls.com<br/><br/>
                   
                   Emma Richardson<br/>
                   VP of European Operations<br/>
-                  Moving Walls Europe<br/>
+                  MovingWalls Europe<br/>
                   Phone: +44 20 7946 0958<br/>
                   Email: emma.richardson@movingwalls.com
                 </p>

@@ -13,7 +13,7 @@ export default function OurJourneyPage() {
       year: "2015",
       quarter: "Q1",
       title: "Company Founded",
-      description: "Moving Walls was born from a vision to revolutionize advertising through data-driven insights and innovative technology platforms.",
+      description: "MovingWalls was born from a vision to revolutionize advertising through data-driven insights and innovative technology platforms.",
       achievement: "Secured initial funding of $2M",
       icon: "🚀",
       color: "from-blue-500 to-blue-600"
@@ -58,7 +58,7 @@ export default function OurJourneyPage() {
       year: "2020",
       quarter: "Q3",
       title: "Global Expansion",
-      description: "Opened international offices in London, Toronto, and Sydney, establishing Moving Walls as a global advertising technology leader.",
+      description: "Opened international offices in London, Toronto, and Sydney, establishing MovingWalls as a global advertising technology leader.",
       achievement: "Expanded to 3 continents",
       icon: "🌍",
       color: "from-indigo-500 to-indigo-600"
@@ -94,7 +94,7 @@ export default function OurJourneyPage() {
       year: "2024",
       quarter: "Q3",
       title: "Next Generation Platform",
-      description: "Launched Moving Walls 3.0 with advanced analytics, cross-platform integration, and enhanced automation capabilities.",
+      description: "Launched MovingWalls 3.0 with advanced analytics, cross-platform integration, and enhanced automation capabilities.",
       achievement: "Platform 3.0 live globally",
       icon: "⚡",
       color: "from-cyan-500 to-cyan-600"
@@ -217,7 +217,7 @@ export default function OurJourneyPage() {
             </div>
 
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-mw-blue-100 rounded-full mb-8">
-              <span className="text-mw-blue-600 text-sm font-medium">The Moving Walls Story</span>
+              <span className="text-mw-blue-600 text-sm font-medium">The MovingWalls Story</span>
             </div>
             
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
@@ -226,7 +226,7 @@ export default function OurJourneyPage() {
             </h1>
             
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Discover the remarkable story of how Moving Walls transformed from a bold startup vision 
+              Discover the remarkable story of how MovingWalls transformed from a bold startup vision 
               into a global leader in advertising technology, driven by innovation, determination, 
               and an unwavering commitment to client success.
             </p>
