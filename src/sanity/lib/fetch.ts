@@ -211,7 +211,7 @@ export function transformBlogPost(post: SanityBlogPost) {
     authorRole: post.author?.role,
     date: post.publishedAt ? formatDate(post.publishedAt) : '',
     readTime: post.readTime || '5 min read',
-    featuredImage: getSanityImageUrl(post.featuredImage, { width: 1200 }) || '/assets/images/blog-placeholder.jpg',
+    featuredImage: getSanityImageUrl(post.featuredImage, { width: 1200 }) || '/assets/images/blog-placeholder.svg',
     tags: post.categories?.map(c => c.title) || [],
     featured: false,
   }
@@ -230,7 +230,7 @@ export function transformCaseStudy(study: SanityCaseStudy) {
     challenge: portableTextToHtml(study.challenge) || '',
     solution: portableTextToHtml(study.solution) || '',
     results: portableTextToHtml(study.results) || '',
-    featuredImage: getSanityImageUrl(study.featuredImage, { width: 1200 }) || '/assets/images/case-study-placeholder.jpg',
+    featuredImage: getSanityImageUrl(study.featuredImage, { width: 1200 }) || '/assets/images/case-study-placeholder.svg',
     date: study.publishedAt ? formatDate(study.publishedAt) : '',
   }
 }
@@ -635,7 +635,7 @@ export function transformPressRelease(pr: SanityPressRelease) {
     readTime: pr.readTime || '3 min read',
     slug: pr.slug?.current || '',
     externalLink: pr.externalLink,
-    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 800 }) || '/assets/images/press-placeholder.jpg',
+    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 800 }) || '/assets/images/press-placeholder.svg',
   }
 }
 
@@ -647,7 +647,7 @@ export function transformMediaFeature(pr: SanityPressRelease) {
     type: formatPressCategory(pr.category),
     slug: pr.slug?.current || '',
     externalLink: pr.externalLink,
-    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 800 }) || '/assets/images/press-placeholder.jpg',
+    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 800 }) || '/assets/images/press-placeholder.svg',
   }
 }
 
@@ -750,7 +750,7 @@ export function transformTeamMember(member: SanityTeamMember) {
     slug: member.slug?.current || '',
     role: member.role || '',
     department: member.department || '',
-    image: getSanityImageUrl(member.image, { width: 400 }) || '/assets/images/team-placeholder.jpg',
+    image: getSanityImageUrl(member.image, { width: 400 }) || '/assets/images/team-placeholder.svg',
     bio: member.bio || '',
     linkedin: member.linkedin,
     twitter: member.twitter,
@@ -1074,7 +1074,7 @@ export function transformEbook(ebook: SanityEbook) {
     slug: ebook.slug?.current || '',
     description: ebook.description || '',
     category: formatEbookCategory(ebook.category),
-    image: getSanityImageUrl(ebook.image, { width: 600 }) || '/assets/images/ebook-placeholder.jpg',
+    image: getSanityImageUrl(ebook.image, { width: 600 }) || '/assets/images/ebook-placeholder.svg',
     year: ebook.year || '',
     featured: ebook.featured || false,
     isNew: ebook.isNew || false,

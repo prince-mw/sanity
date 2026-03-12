@@ -27,7 +27,7 @@ const staticLeadership: TeamMember[] = [
     department: "executive",
     bio: "Srikanth is the visionary founder of Moving Walls with over 20 years of experience in advertising technology. He has been instrumental in transforming out-of-home advertising through data-driven solutions.",
     linkedin: "https://www.linkedin.com/in/srikanthramachandran/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Natasha Rawlings",
@@ -36,7 +36,7 @@ const staticLeadership: TeamMember[] = [
     department: "executive",
     bio: "Natasha leads global revenue strategy with deep expertise in digital advertising and enterprise sales. She has driven significant growth across APAC and European markets.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Gautam Bhirani",
@@ -45,7 +45,7 @@ const staticLeadership: TeamMember[] = [
     department: "executive",
     bio: "Gautam co-founded Moving Walls and leads Indian operations. His expertise in media planning and technology has been pivotal in building the company's presence in one of the world's fastest-growing markets.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Dr. Ahmad Nazri",
@@ -54,7 +54,7 @@ const staticLeadership: TeamMember[] = [
     department: "technology",
     bio: "Dr. Ahmad oversees all technology initiatives and R&D. He brings a wealth of experience in AI/ML, ad-tech platforms, and scalable cloud architectures.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
 ];
 
@@ -192,7 +192,7 @@ export default function LeadershipDetailClient() {
               className="relative"
             >
               <div className="aspect-square max-w-md mx-auto bg-gradient-to-br from-mw-blue-500 to-mw-blue-600 rounded-2xl overflow-hidden shadow-2xl">
-                {member.image && member.image !== '/assets/images/team-placeholder.jpg' ? (
+                {member.image && member.image !== '/assets/images/team-placeholder.svg' ? (
                   <img 
                     src={member.image} 
                     alt={member.name}
@@ -310,7 +310,7 @@ export default function LeadershipDetailClient() {
                     {/* Photo */}
                     <div className="relative h-48 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 overflow-hidden">
                       <div className="absolute inset-0 flex items-center justify-center">
-                        {otherMember.image && otherMember.image !== '/assets/images/team-placeholder.jpg' ? (
+                        {otherMember.image && otherMember.image !== '/assets/images/team-placeholder.svg' ? (
                           <img 
                             src={otherMember.image} 
                             alt={otherMember.name}

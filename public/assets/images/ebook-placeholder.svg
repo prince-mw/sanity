@@ -1,0 +1,15 @@
+<svg width="600" height="800" viewBox="0 0 600 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="800" fill="#F9FAFB"/>
+  <rect x="150" y="150" width="300" height="400" rx="8" fill="#E5E7EB"/>
+  <rect x="160" y="160" width="280" height="380" rx="4" fill="#F3F4F6"/>
+  <rect x="180" y="200" width="180" height="24" rx="4" fill="#D1D5DB"/>
+  <rect x="180" y="240" width="220" height="16" rx="3" fill="#E5E7EB"/>
+  <rect x="180" y="270" width="200" height="16" rx="3" fill="#E5E7EB"/>
+  <rect x="180" y="320" width="240" height="120" rx="6" fill="#DBEAFE"/>
+  <path d="M280 380L300 360L320 380L340 340L380 400H220L280 380Z" fill="#93C5FD"/>
+  <circle cx="260" cy="360" r="15" fill="#BFDBFE"/>
+  <rect x="180" y="460" width="160" height="12" rx="3" fill="#E5E7EB"/>
+  <rect x="180" y="480" width="180" height="12" rx="3" fill="#E5E7EB"/>
+  <rect x="180" y="500" width="140" height="12" rx="3" fill="#E5E7EB"/>
+  <text x="300" y="700" text-anchor="middle" fill="#9CA3AF" font-family="system-ui, sans-serif" font-size="24" font-weight="500">eBook</text>
+</svg>

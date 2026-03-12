@@ -22,7 +22,7 @@ const fallbackLeadership: LeadershipMember[] = [
     department: "executive",
     bio: "Srikanth is the visionary founder of Moving Walls with over 20 years of experience in advertising technology. He has been instrumental in transforming out-of-home advertising through data-driven solutions.",
     linkedin: "https://www.linkedin.com/in/srikanthramachandran/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Natasha Rawlings",
@@ -31,7 +31,7 @@ const fallbackLeadership: LeadershipMember[] = [
     department: "executive",
     bio: "Natasha leads global revenue strategy with deep expertise in digital advertising and enterprise sales. She has driven significant growth across APAC and European markets.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Gautam Bhirani",
@@ -40,7 +40,7 @@ const fallbackLeadership: LeadershipMember[] = [
     department: "executive",
     bio: "Gautam co-founded Moving Walls and leads Indian operations. His expertise in media planning and technology has been pivotal in building the company's presence in one of the world's fastest-growing markets.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Dr. Ahmad Nazri",
@@ -49,7 +49,7 @@ const fallbackLeadership: LeadershipMember[] = [
     department: "technology",
     bio: "Dr. Ahmad oversees all technology initiatives and R&D. He brings a wealth of experience in AI/ML, ad-tech platforms, and scalable cloud architectures.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Michelle Tan",
@@ -58,7 +58,7 @@ const fallbackLeadership: LeadershipMember[] = [
     department: "marketing",
     bio: "Michelle leads global marketing strategy and brand development. She has extensive experience in building tech brands and driving demand generation at scale.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "James Wilson",
@@ -67,7 +67,7 @@ const fallbackLeadership: LeadershipMember[] = [
     department: "finance",
     bio: "James oversees financial strategy, operations, and investor relations. He brings expertise from leading roles at major technology companies.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Priya Sharma",
@@ -76,7 +76,7 @@ const fallbackLeadership: LeadershipMember[] = [
     department: "product",
     bio: "Priya leads product strategy and roadmap development. She has a track record of building award-winning ad-tech products that solve real advertiser challenges.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
   {
     name: "Daniel Lee",
@@ -85,7 +85,7 @@ const fallbackLeadership: LeadershipMember[] = [
     department: "technology",
     bio: "Daniel leads engineering teams across multiple offices. He specializes in building high-performance, scalable systems for programmatic advertising.",
     linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.jpg",
+    image: "/assets/images/team-placeholder.svg",
   },
 ]
 
@@ -106,7 +106,7 @@ export default async function LeadershipPage() {
           bio: transformed.bio,
           linkedin: transformed.linkedin,
           twitter: transformed.twitter,
-          image: transformed.image || '/assets/images/team-placeholder.jpg'
+          image: transformed.image || '/assets/images/team-placeholder.svg'
         }
       })
     }

@@ -1,0 +1,10 @@
+<svg width="1200" height="675" viewBox="0 0 1200 675" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="675" fill="#F3F4F6"/>
+  <rect x="450" y="237" width="300" height="200" rx="12" fill="#E5E7EB"/>
+  <path d="M500 337H700" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M520 367H680" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M540 397H660" stroke="#9CA3AF" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="600" cy="297" r="30" fill="#D1D5DB"/>
+  <path d="M585 297L595 307L620 282" stroke="#9CA3AF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="600" y="540" text-anchor="middle" fill="#9CA3AF" font-family="system-ui, sans-serif" font-size="24" font-weight="500">Blog Article</text>
+</svg>

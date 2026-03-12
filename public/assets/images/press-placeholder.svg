@@ -1,0 +1,10 @@
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="450" fill="#F9FAFB"/>
+  <rect x="275" y="125" width="250" height="200" rx="12" fill="#E5E7EB"/>
+  <rect x="300" y="155" width="200" height="20" rx="4" fill="#D1D5DB"/>
+  <rect x="300" y="185" width="160" height="12" rx="3" fill="#D1D5DB"/>
+  <rect x="300" y="207" width="180" height="12" rx="3" fill="#D1D5DB"/>
+  <rect x="300" y="229" width="140" height="12" rx="3" fill="#D1D5DB"/>
+  <rect x="300" y="265" width="80" height="30" rx="6" fill="#3B82F6"/>
+  <text x="400" y="390" text-anchor="middle" fill="#9CA3AF" font-family="system-ui, sans-serif" font-size="20" font-weight="500">Press Release</text>
+</svg>
