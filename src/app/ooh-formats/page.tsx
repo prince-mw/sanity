@@ -1,5 +1,18 @@
+import { Metadata } from 'next'
 import { getAllOohFormats, transformOohFormat } from '@/sanity/lib/fetch'
 import OOHFormatsPageClient, { OOHFormat } from '@/components/OOHFormatsPageClient'
+
+export const metadata: Metadata = {
+  title: 'OOH Formats | Moving Walls',
+  description: 'Explore all out-of-home advertising formats - from digital billboards and transit ads to airport displays and LED trucks.',
+  openGraph: {
+    title: 'OOH Advertising Formats | Moving Walls',
+    description: 'Complete guide to out-of-home advertising formats and their benefits.',
+    type: 'website',
+  },
+}
+
+export const revalidate = 300
 
 // Static fallback data for when Sanity is unavailable
 const fallbackOohFormats: OOHFormat[] = [
@@ -94,13 +107,6 @@ const fallbackOohFormats: OOHFormat[] = [
     image: "https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=800&q=80",
   },
 ]
-
-export const metadata = {
-  title: 'OOH Formats | Out-of-Home Advertising Guide | MovingWalls',
-  description: 'Unlock the basics of outdoor advertising with our comprehensive guide. Discover the most effective OOH formats to reach your target audience.',
-}
-
-export const revalidate = 3600 // Revalidate every hour
 
 async function getOohFormats(): Promise<OOHFormat[]> {
   try {

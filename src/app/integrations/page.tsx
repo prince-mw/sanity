@@ -1,5 +1,18 @@
+import { Metadata } from 'next'
 import { getAllIntegrations, transformIntegration } from '@/sanity/lib/fetch'
 import IntegrationsPageClient, { Integration } from '@/components/IntegrationsPageClient'
+
+export const metadata: Metadata = {
+  title: 'Integrations | Moving Walls',
+  description: 'Connect Moving Walls with your existing marketing stack. Explore integrations with DSPs, SSPs, data providers, and analytics platforms.',
+  openGraph: {
+    title: 'Integrations | Moving Walls',
+    description: 'Seamless integrations with leading advertising technology platforms.',
+    type: 'website',
+  },
+}
+
+export const revalidate = 300
 
 // Static fallback data for when Sanity is unavailable
 const fallbackIntegrations: Integration[] = [
@@ -147,13 +160,6 @@ const fallbackIntegrations: Integration[] = [
     logo: '/assets/images/integrations/mediasmart.svg',
   },
 ]
-
-export const metadata = {
-  title: 'Integration Marketplace | MovingWalls',
-  description: 'Seamlessly connect with leading SSPs and DSPs. Our pre-built integrations power programmatic OOH advertising at scale.',
-}
-
-export const revalidate = 3600 // Revalidate every hour
 
 async function getIntegrations(): Promise<Integration[]> {
   try {

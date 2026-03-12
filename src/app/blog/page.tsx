@@ -1,6 +1,17 @@
+import { Metadata } from "next";
 import { getAllBlogPosts, getBlogCategories, transformBlogPost } from "@/sanity/lib/fetch";
 import { blogPosts as staticBlogPosts, blogCategories as staticCategories } from "@/data/blog-posts";
 import BlogListClient from "@/components/BlogListClient";
+
+export const metadata: Metadata = {
+  title: "Blog | Moving Walls",
+  description: "Insights, trends, and expert perspectives on out-of-home advertising, programmatic DOOH, audience measurement, and marketing technology.",
+  openGraph: {
+    title: "Blog | Moving Walls",
+    description: "Latest insights and trends in out-of-home advertising technology.",
+    type: "website",
+  },
+};
 
 export const revalidate = 60; // Revalidate every 60 seconds
 

@@ -414,6 +414,8 @@ export interface SanityPressRelease {
   category?: string
   readTime?: string
   isMediaFeature?: boolean
+  hasFullArticle?: boolean
+  articleSlug?: { current: string }
 }
 
 export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
@@ -471,10 +473,55 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
       content,
       category,
       readTime,
-      isMediaFeature
+      isMediaFeature,
+      hasFullArticle,
+      articleSlug
     }
   `
   return client.fetch(query, { slug })
+}
+
+// Fetch full article press release by articleSlug (for dedicated article pages like /series-c-funding)
+export async function getPressArticleBySlug(articleSlug: string): Promise<SanityPressRelease | null> {
+  const query = `
+    *[_type == "pressRelease" && articleSlug.current == $articleSlug && hasFullArticle == true][0] {
+      _id,
+      title,
+      slug,
+      featuredImage,
+      publishedAt,
+      source,
+      externalLink,
+      excerpt,
+      content,
+      category,
+      readTime,
+      isMediaFeature,
+      hasFullArticle,
+      articleSlug
+    }
+  `
+  return client.fetch(query, { articleSlug })
+}
+
+// Get all press articles that have full article pages
+export async function getAllPressArticles(): Promise<SanityPressRelease[]> {
+  const query = `
+    *[_type == "pressRelease" && hasFullArticle == true] | order(publishedAt desc) {
+      _id,
+      title,
+      slug,
+      featuredImage,
+      publishedAt,
+      source,
+      externalLink,
+      excerpt,
+      category,
+      readTime,
+      articleSlug
+    }
+  `
+  return client.fetch(query)
 }
 
 export function transformPressRelease(pr: SanityPressRelease) {
@@ -1078,6 +1125,14 @@ export interface SanityLocation {
   description?: string
   fullDescription?: string
   billboards?: string
+  highVisibilityBillboards?: Array<{
+    name: string
+    location: string
+    reach: string
+    impressions: string
+    description: string
+    image?: any
+  }>
   stats?: Array<{ label: string; value: string }>
   majorCities?: string[]
   mediaTypes?: Array<{
@@ -1129,6 +1184,14 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
       description,
       fullDescription,
       billboards,
+      highVisibilityBillboards[] {
+        name,
+        location,
+        reach,
+        impressions,
+        description,
+        "image": image.asset->url
+      },
       stats,
       majorCities,
       mediaTypes,
@@ -1163,6 +1226,7 @@ export function transformLocationFull(location: SanityLocation) {
     flag: location.flag || '',
     description: location.fullDescription || location.description || '',
     heroImage: location.heroImage?.asset?.url || '',
+    highVisibilityBillboards: location.highVisibilityBillboards || [],
     stats: location.stats || [],
     majorCities: location.majorCities || [],
     mediaTypes: location.mediaTypes || [],

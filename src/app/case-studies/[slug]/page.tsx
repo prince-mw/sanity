@@ -1,9 +1,37 @@
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getCaseStudyBySlug, getAllCaseStudies, transformCaseStudy } from "@/sanity/lib/fetch";
 import { caseStudies as staticCaseStudies } from "@/data/case-studies";
 import CaseStudyDetailClient from "./CaseStudyDetailClient";
 
 export const revalidate = 60;
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  
+  try {
+    const caseStudy = await getCaseStudyBySlug(slug);
+    if (caseStudy) {
+      const transformed = transformCaseStudy(caseStudy);
+      return {
+        title: `${transformed.title} | Case Study | Moving Walls`,
+        description: transformed.excerpt || `Discover how ${transformed.brand} achieved success with Moving Walls OOH advertising platform.`,
+        openGraph: {
+          title: `${transformed.title} | Case Study`,
+          description: transformed.excerpt || `See how Moving Walls helped ${transformed.brand} transform their advertising.`,
+          type: "article",
+        },
+      };
+    }
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+  }
+  
+  return {
+    title: "Case Study | Moving Walls",
+    description: "Discover how brands achieve success with Moving Walls OOH advertising platform.",
+  };
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;

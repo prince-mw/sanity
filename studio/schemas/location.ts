@@ -60,6 +60,25 @@ export default defineType({
       description: 'e.g., "50,000+"',
     }),
     defineField({
+      name: 'highVisibilityBillboards',
+      title: 'High Visibility Billboards',
+      type: 'array',
+      description: 'Featured billboards with high visibility',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'name', title: 'Name', type: 'string' },
+            { name: 'location', title: 'Location', type: 'string' },
+            { name: 'reach', title: 'Reach', type: 'string', description: 'e.g., "132,145"' },
+            { name: 'impressions', title: 'Impressions', type: 'string', description: 'e.g., "1,075,680"' },
+            { name: 'description', title: 'Description', type: 'text' },
+            { name: 'image', title: 'Image', type: 'image', options: { hotspot: true } },
+          ],
+        },
+      ],
+    }),
+    defineField({
       name: 'stats',
       title: 'Statistics',
       type: 'array',

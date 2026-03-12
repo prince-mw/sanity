@@ -80,6 +80,23 @@ export default defineType({
       initialValue: false,
     }),
     defineField({
+      name: 'hasFullArticle',
+      title: 'Has Full Article',
+      type: 'boolean',
+      description: 'If true, this press item has a dedicated full article page. If false, it links externally.',
+      initialValue: false,
+    }),
+    defineField({
+      name: 'articleSlug',
+      title: 'Article Slug',
+      type: 'slug',
+      description: 'Custom slug for the full article page (e.g., "series-c-funding")',
+      options: {
+        source: 'title',
+        maxLength: 96,
+      },
+    }),
+    defineField({
       name: 'content',
       title: 'Content',
       type: 'blockContent',
