@@ -11,7 +11,7 @@ export interface Event {
   location: string
   description: string
   speakers: string[]
-  speakersList?: { name: string; image?: string }[]
+  speakersList?: { name: string; role?: string; company?: string; image?: string }[]
   price: string
   capacity: string
   category: string
