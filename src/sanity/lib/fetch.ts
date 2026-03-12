@@ -1,4 +1,33 @@
-import { client } from './client'
+import { client, urlFor } from './client'
+
+// Helper function to get Sanity image URL with optional transformations
+export function getSanityImageUrl(
+  image: any,
+  options?: { width?: number; height?: number; quality?: number }
+): string {
+  if (!image || !image.asset) return ''
+  
+  try {
+    let builder = urlFor(image)
+    
+    if (options?.width) {
+      builder = builder.width(options.width)
+    }
+    if (options?.height) {
+      builder = builder.height(options.height)
+    }
+    if (options?.quality) {
+      builder = builder.quality(options.quality)
+    } else {
+      builder = builder.quality(85) // Default quality
+    }
+    
+    return builder.auto('format').url()
+  } catch (error) {
+    console.error('Error generating Sanity image URL:', error)
+    return ''
+  }
+}
 
 // Types
 export interface SanityBlogPost {
@@ -182,7 +211,7 @@ export function transformBlogPost(post: SanityBlogPost) {
     authorRole: post.author?.role,
     date: post.publishedAt ? formatDate(post.publishedAt) : '',
     readTime: post.readTime || '5 min read',
-    featuredImage: post.featuredImage?.asset?.url || '/assets/images/blog-placeholder.jpg',
+    featuredImage: getSanityImageUrl(post.featuredImage, { width: 1200 }) || '/assets/images/blog-placeholder.jpg',
     tags: post.categories?.map(c => c.title) || [],
     featured: false,
   }
@@ -201,7 +230,7 @@ export function transformCaseStudy(study: SanityCaseStudy) {
     challenge: portableTextToHtml(study.challenge) || '',
     solution: portableTextToHtml(study.solution) || '',
     results: portableTextToHtml(study.results) || '',
-    featuredImage: study.featuredImage?.asset?.url || '/assets/images/case-study-placeholder.jpg',
+    featuredImage: getSanityImageUrl(study.featuredImage, { width: 1200 }) || '/assets/images/case-study-placeholder.jpg',
     date: study.publishedAt ? formatDate(study.publishedAt) : '',
   }
 }
@@ -295,7 +324,7 @@ function portableTextToHtml(blocks: any[] | undefined): string {
     
     // Handle images
     if (block._type === 'image' && block.asset) {
-      const imageUrl = block.asset?.url || ''
+      const imageUrl = getSanityImageUrl(block, { width: 1200 })
       const alt = block.alt || 'Content image'
       const caption = block.caption || ''
       
@@ -606,7 +635,7 @@ export function transformPressRelease(pr: SanityPressRelease) {
     readTime: pr.readTime || '3 min read',
     slug: pr.slug?.current || '',
     externalLink: pr.externalLink,
-    thumbnail: pr.featuredImage?.asset?.url || '/assets/images/press-placeholder.jpg',
+    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 800 }) || '/assets/images/press-placeholder.jpg',
   }
 }
 
@@ -618,7 +647,7 @@ export function transformMediaFeature(pr: SanityPressRelease) {
     type: formatPressCategory(pr.category),
     slug: pr.slug?.current || '',
     externalLink: pr.externalLink,
-    thumbnail: pr.featuredImage?.asset?.url || '/assets/images/press-placeholder.jpg',
+    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 800 }) || '/assets/images/press-placeholder.jpg',
   }
 }
 
@@ -721,7 +750,7 @@ export function transformTeamMember(member: SanityTeamMember) {
     slug: member.slug?.current || '',
     role: member.role || '',
     department: member.department || '',
-    image: member.image?.asset?.url || '/assets/images/team-placeholder.jpg',
+    image: getSanityImageUrl(member.image, { width: 400 }) || '/assets/images/team-placeholder.jpg',
     bio: member.bio || '',
     linkedin: member.linkedin,
     twitter: member.twitter,
@@ -1045,7 +1074,7 @@ export function transformEbook(ebook: SanityEbook) {
     slug: ebook.slug?.current || '',
     description: ebook.description || '',
     category: formatEbookCategory(ebook.category),
-    image: ebook.image?.asset?.url || '/assets/images/ebook-placeholder.jpg',
+    image: getSanityImageUrl(ebook.image, { width: 600 }) || '/assets/images/ebook-placeholder.jpg',
     year: ebook.year || '',
     featured: ebook.featured || false,
     isNew: ebook.isNew || false,
@@ -1287,7 +1316,7 @@ export function transformLocationForList(location: SanityLocation) {
     href: `/locations/${location.slug?.current || ''}`,
     description: location.description || '',
     billboards: location.billboards || '0',
-    image: location.heroImage?.asset?.url || '',
+    image: getSanityImageUrl(location.heroImage, { width: 800 }) || '',
   }
 }
 
@@ -1298,7 +1327,7 @@ export function transformLocationFull(location: SanityLocation) {
     city: location.city || '',
     flag: location.flag || '',
     description: location.fullDescription || location.description || '',
-    heroImage: location.heroImage?.asset?.url || '',
+    heroImage: getSanityImageUrl(location.heroImage, { width: 1200 }) || '',
     highVisibilityBillboards: location.highVisibilityBillboards || [],
     stats: location.stats || [],
     majorCities: location.majorCities || [],
@@ -1411,14 +1440,14 @@ export function transformProduct(product: SanityProduct) {
     tagline: product.tagline || '',
     description: product.description || '',
     icon: product.icon || '',
-    heroImage: product.heroImage?.asset?.url || '',
+    heroImage: getSanityImageUrl(product.heroImage, { width: 1200 }) || '',
     category: product.category || '',
     features: product.features || [],
     benefits: product.benefits || [],
     stats: product.stats || [],
     integrations: (product.integrations || []).map((i) => ({
       name: i.name,
-      logo: i.logo?.asset?.url || '',
+      logo: getSanityImageUrl(i.logo, { width: 200 }) || '',
       category: i.category || '',
     })),
     testimonials: product.testimonials || [],
@@ -1498,7 +1527,7 @@ export function transformCompanyPage(page: SanityCompanyPage) {
     title: page.title || '',
     subtitle: page.subtitle || '',
     heroDescription: page.heroDescription || '',
-    heroImage: page.heroImage?.asset?.url || '',
+    heroImage: getSanityImageUrl(page.heroImage, { width: 1200 }) || '',
     mission: page.mission || '',
     vision: page.vision || '',
     values: page.values || [],
@@ -1506,14 +1535,14 @@ export function transformCompanyPage(page: SanityCompanyPage) {
     stats: page.stats || [],
     associations: (page.associations || []).map((a) => ({
       name: a.name,
-      logo: a.logo?.asset?.url || '',
+      logo: getSanityImageUrl(a.logo, { width: 200 }) || '',
       url: a.url || '',
     })),
     awards: (page.awards || []).map((a) => ({
       name: a.name,
       year: a.year || '',
       description: a.description || '',
-      logo: a.logo?.asset?.url || '',
+      logo: getSanityImageUrl(a.logo, { width: 200 }) || '',
     })),
   }
 }
@@ -1661,7 +1690,7 @@ export function transformOffice(office: SanityOffice) {
     email: office.email || '',
     flag: office.flag || '',
     coordinates: office.coordinates || null,
-    image: office.image?.asset?.url || '',
+    image: getSanityImageUrl(office.image, { width: 600 }) || '',
     timezone: office.timezone || '',
     workingHours: office.workingHours || '',
     isHeadquarters: office.isHeadquarters || false,
@@ -1746,7 +1775,7 @@ export function transformAudiencePage(page: SanityAudiencePage) {
     subtitle: page.subtitle || '',
     primaryCTA: page.primaryCTA || { text: 'Contact Us', href: '/contact' },
     secondaryCTA: page.secondaryCTA || { text: 'Learn More', href: '#' },
-    heroImage: page.heroImage?.asset?.url || '',
+    heroImage: getSanityImageUrl(page.heroImage, { width: 1200 }) || '',
     platformFeatures: page.platformFeatures || [],
     benefits: page.benefits || [],
     stats: page.stats || [],
@@ -1857,7 +1886,7 @@ export function transformIndustryPage(page: SanityIndustryPage) {
     title: page.title || '',
     titleHighlight: page.titleHighlight || '',
     subtitle: page.subtitle || '',
-    heroImage: page.heroImage?.asset?.url || '',
+    heroImage: getSanityImageUrl(page.heroImage, { width: 1200 }) || '',
     heroStats: page.heroStats || [],
     benefits: page.benefits || [],
     benefitsSectionTitle: page.benefitsSectionTitle || '',
@@ -1962,7 +1991,7 @@ export function transformIntegration(integration: SanityIntegration) {
     name: integration.name,
     category: integration.category,
     description: integration.description || '',
-    logo: integration.logo?.asset?.url || integration.logoUrl || '',
+    logo: getSanityImageUrl(integration.logo, { width: 200 }) || integration.logoUrl || '',
     products: integration.products || [],
     features: integration.features || [],
     apiDocs: integration.apiDocs || integration.apiDocsUrl || '/api-reference',
@@ -2073,7 +2102,7 @@ export function transformOohFormat(format: SanityOohFormat) {
     longDescription: format.longDescription || '',
     specs: format.specs || [],
     benefits: format.benefits || [],
-    image: format.image?.asset?.url || format.imageUrl || '',
+    image: getSanityImageUrl(format.image, { width: 800 }) || format.imageUrl || '',
     video: format.videoUrl || '',
     averageCpm: format.averageCpm || '',
     typicalReach: format.typicalReach || '',
