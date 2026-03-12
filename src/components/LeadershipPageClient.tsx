@@ -9,8 +9,10 @@ export interface LeadershipMember {
   role: string
   department: string
   bio: string
+  fullBio?: string
   linkedin?: string
   twitter?: string
+  email?: string
   image: string
   slug: string
 }
@@ -104,13 +106,21 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
                   className="block bg-white rounded-xl shadow-mw-lg border border-mw-gray-100 overflow-hidden group hover:shadow-mw-xl transition-all"
                 >
                   <div className="relative h-64 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-32 h-32 bg-gradient-to-br from-mw-blue-500 to-mw-blue-600 rounded-full flex items-center justify-center">
-                        <span className="text-4xl font-bold text-white">
-                          {member.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
-                        </span>
+                    {member.image && member.image !== '/assets/images/team-placeholder.svg' ? (
+                      <img 
+                        src={member.image} 
+                        alt={member.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <div className="w-32 h-32 bg-gradient-to-br from-mw-blue-500 to-mw-blue-600 rounded-full flex items-center justify-center">
+                          <span className="text-4xl font-bold text-white">
+                            {member.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
+                          </span>
+                        </div>
                       </div>
-                    </div>
+                    )}
                     <div className="absolute inset-0 bg-mw-blue-900/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                       <span className="px-4 py-2 bg-white text-mw-blue-600 text-sm font-medium rounded-full">
                         View Profile

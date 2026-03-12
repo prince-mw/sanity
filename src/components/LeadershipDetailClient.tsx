@@ -14,8 +14,10 @@ interface TeamMember {
   department: string;
   image: string;
   bio: string;
+  fullBio?: string;
   linkedin?: string;
   twitter?: string;
+  email?: string;
 }
 
 // Static fallback data
@@ -254,6 +256,17 @@ export default function LeadershipDetailClient() {
                     </svg>
                   </a>
                 )}
+                {member.email && (
+                  <a
+                    href={`mailto:${member.email}`}
+                    className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                    aria-label="Email"
+                  >
+                    <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  </a>
+                )}
               </div>
             </motion.div>
           </div>
@@ -270,11 +283,18 @@ export default function LeadershipDetailClient() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">About {member.name.split(' ')[0]}</h2>
-            <div className="prose prose-lg max-w-none">
-              <p className="text-mw-gray-600 text-lg leading-relaxed">
-                {member.bio}
-              </p>
-            </div>
+            {member.fullBio ? (
+              <div 
+                className="prose prose-lg max-w-none text-mw-gray-600"
+                dangerouslySetInnerHTML={{ __html: member.fullBio }}
+              />
+            ) : (
+              <div className="prose prose-lg max-w-none">
+                <p className="text-mw-gray-600 text-lg leading-relaxed">
+                  {member.bio}
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>

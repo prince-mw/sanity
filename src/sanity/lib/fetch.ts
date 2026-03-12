@@ -695,8 +695,10 @@ export async function getAllTeamMembers(): Promise<SanityTeamMember[]> {
       department,
       image,
       bio,
+      fullBio,
       linkedin,
       twitter,
+      email,
       isLeadership,
       order
     }
@@ -714,8 +716,10 @@ export async function getLeadershipTeam(): Promise<SanityTeamMember[]> {
       department,
       image,
       bio,
+      fullBio,
       linkedin,
       twitter,
+      email,
       isLeadership,
       order
     }
@@ -752,8 +756,10 @@ export function transformTeamMember(member: SanityTeamMember) {
     department: member.department || '',
     image: getSanityImageUrl(member.image, { width: 400 }) || '/assets/images/team-placeholder.svg',
     bio: member.bio || '',
+    fullBio: member.fullBio ? portableTextToHtml(member.fullBio) : '',
     linkedin: member.linkedin,
     twitter: member.twitter,
+    email: member.email,
   }
 }
 

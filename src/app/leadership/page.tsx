@@ -104,8 +104,10 @@ export default async function LeadershipPage() {
           role: transformed.role,
           department: transformed.department || 'executive',
           bio: transformed.bio,
+          fullBio: transformed.fullBio,
           linkedin: transformed.linkedin,
           twitter: transformed.twitter,
+          email: transformed.email,
           image: transformed.image || '/assets/images/team-placeholder.svg'
         }
       })
