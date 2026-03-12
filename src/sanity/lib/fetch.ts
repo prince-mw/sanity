@@ -63,6 +63,7 @@ export interface SanityCaseStudy {
   industry: string
   location: string
   excerpt: string
+  content?: any[]
   challenge?: any[]
   solution?: any[]
   results?: any[]
@@ -187,6 +188,7 @@ export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy 
       industry,
       location,
       excerpt,
+      content,
       challenge,
       solution,
       results,
@@ -230,7 +232,7 @@ export function transformCaseStudy(study: SanityCaseStudy) {
     country: study.location || '',
     industry: study.industry || 'Other',
     excerpt: study.excerpt || '',
-    content: portableTextToHtml(study.challenge) || '',
+    content: portableTextToHtml(study.content) || '',
     challenge: portableTextToHtml(study.challenge) || '',
     solution: portableTextToHtml(study.solution) || '',
     results: portableTextToHtml(study.results) || '',
