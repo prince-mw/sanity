@@ -248,8 +248,8 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
             </motion.div>
           )}
 
-          {/* Main Content (if no structured sections) */}
-          {!caseStudy.challenge && !caseStudy.solution && !caseStudy.results && caseStudy.content && (
+          {/* Main Content - Always show if content exists */}
+          {caseStudy.content && (
             <motion.article
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -258,10 +258,15 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                 prose-headings:text-mw-gray-900 prose-headings:font-bold
                 prose-h2:text-3xl prose-h2:mt-12 prose-h2:mb-6
                 prose-h3:text-2xl prose-h3:mt-8 prose-h3:mb-4
+                prose-h4:text-xl prose-h4:mt-6 prose-h4:mb-3
                 prose-p:text-mw-gray-700 prose-p:leading-relaxed prose-p:mb-6
                 prose-a:text-mw-blue-600 prose-a:no-underline hover:prose-a:underline
                 prose-strong:text-mw-gray-900
-                prose-ul:my-6 prose-li:text-mw-gray-700 prose-li:mb-2"
+                prose-ul:my-6 prose-ul:list-disc prose-ul:pl-6
+                prose-ol:my-6 prose-ol:list-decimal prose-ol:pl-6
+                prose-li:text-mw-gray-700 prose-li:mb-2
+                prose-blockquote:border-l-4 prose-blockquote:border-mw-blue-500 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-mw-gray-600
+                prose-img:rounded-xl prose-img:shadow-lg prose-img:my-8"
               dangerouslySetInnerHTML={{ __html: caseStudy.content }}
             />
           )}

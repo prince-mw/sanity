@@ -224,6 +224,18 @@ export function transformBlogPost(post: SanityBlogPost) {
 
 // Helper to convert Sanity case study to format compatible with existing UI
 export function transformCaseStudy(study: SanityCaseStudy) {
+  // Helper to check if HTML has actual formatting (not just stripped text)
+  const hasFormattedContent = (html: string) => {
+    if (!html) return false;
+    // Check if content has actual HTML tags beyond just text
+    return /<(h[1-6]|ul|ol|li|strong|em|a|blockquote|figure|img)[^>]*>/i.test(html);
+  };
+  
+  const content = portableTextToHtml(study.content) || '';
+  const challenge = portableTextToHtml(study.challenge) || '';
+  const solution = portableTextToHtml(study.solution) || '';
+  const results = portableTextToHtml(study.results) || '';
+  
   return {
     slug: study.slug?.current || '',
     title: study.title || '',
@@ -232,10 +244,11 @@ export function transformCaseStudy(study: SanityCaseStudy) {
     country: study.location || '',
     industry: study.industry || 'Other',
     excerpt: study.excerpt || '',
-    content: portableTextToHtml(study.content) || '',
-    challenge: portableTextToHtml(study.challenge) || '',
-    solution: portableTextToHtml(study.solution) || '',
-    results: portableTextToHtml(study.results) || '',
+    content: content,
+    // Only include challenge/solution/results if they have real formatted content
+    challenge: hasFormattedContent(challenge) ? challenge : '',
+    solution: hasFormattedContent(solution) ? solution : '',
+    results: hasFormattedContent(results) ? results : '',
     metrics: study.metrics || [],
     testimonial: study.testimonial || null,
     gallery: (study.gallery || []).map((img: any) => getSanityImageUrl(img, { width: 800 })).filter(Boolean),
