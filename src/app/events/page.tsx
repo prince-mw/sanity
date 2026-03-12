@@ -112,10 +112,13 @@ export default async function EventsPage() {
           location: transformed.location || 'Virtual Event',
           description: transformed.description,
           speakers: transformed.speakers || [],
+          speakersList: transformed.speakersList || [],
           price: transformed.price || 'Free',
           capacity: transformed.capacity || 'Unlimited',
           category: transformed.category || 'General',
-          featured: transformed.featured || false
+          featured: transformed.featured || false,
+          featuredImage: transformed.featuredImage,
+          content: transformed.content
         }
       })
     }

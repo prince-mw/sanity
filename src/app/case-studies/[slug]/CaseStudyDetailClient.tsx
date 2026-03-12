@@ -8,12 +8,16 @@ interface CaseStudy {
   slug: string;
   title: string;
   brand: string;
+  clientLogo?: string;
   country: string;
   industry: string;
   content: string;
   challenge?: string;
   solution?: string;
   results?: string;
+  metrics?: Array<{ label: string; value: string }>;
+  testimonial?: { quote: string; name: string; role: string } | null;
+  gallery?: string[];
   featuredImage: string;
   date: string;
 }
@@ -68,7 +72,16 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
 
             {/* Meta */}
             <div className="flex flex-wrap items-center gap-6 pb-8 border-b border-mw-gray-200">
-              {caseStudy.brand && (
+              {caseStudy.clientLogo && (
+                <div className="flex items-center gap-3">
+                  <img 
+                    src={caseStudy.clientLogo} 
+                    alt={caseStudy.brand}
+                    className="h-10 object-contain"
+                  />
+                </div>
+              )}
+              {caseStudy.brand && !caseStudy.clientLogo && (
                 <div className="flex items-center gap-2">
                   <svg className="w-5 h-5 text-mw-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
@@ -177,6 +190,61 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                 className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: caseStudy.results }}
               />
+            </motion.div>
+          )}
+
+          {/* Key Metrics */}
+          {caseStudy.metrics && caseStudy.metrics.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="mb-12 grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
+              {caseStudy.metrics.map((metric, idx) => (
+                <div key={idx} className="bg-mw-blue-50 rounded-xl p-6 text-center">
+                  <div className="text-3xl font-bold text-mw-blue-600 mb-2">{metric.value}</div>
+                  <div className="text-sm text-mw-gray-600">{metric.label}</div>
+                </div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* Testimonial */}
+          {caseStudy.testimonial && caseStudy.testimonial.quote && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.7 }}
+              className="mb-12 bg-mw-gray-50 rounded-2xl p-8"
+            >
+              <svg className="w-10 h-10 text-mw-blue-300 mb-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+              </svg>
+              <p className="text-xl text-mw-gray-700 italic mb-6">&ldquo;{caseStudy.testimonial.quote}&rdquo;</p>
+              <div>
+                <p className="font-semibold text-mw-gray-900">{caseStudy.testimonial.name}</p>
+                <p className="text-sm text-mw-gray-500">{caseStudy.testimonial.role}</p>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Gallery */}
+          {caseStudy.gallery && caseStudy.gallery.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.8 }}
+              className="mb-12"
+            >
+              <h2 className="text-2xl font-bold text-mw-gray-900 mb-6">Gallery</h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                {caseStudy.gallery.map((img, idx) => (
+                  <div key={idx} className="aspect-video rounded-lg overflow-hidden bg-mw-gray-100">
+                    <Image src={img} alt={`Gallery image ${idx + 1}`} width={400} height={225} className="w-full h-full object-cover" />
+                  </div>
+                ))}
+              </div>
             </motion.div>
           )}
 

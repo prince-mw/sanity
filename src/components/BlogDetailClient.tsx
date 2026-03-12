@@ -12,6 +12,7 @@ interface BlogPost {
   category: string;
   author: string;
   authorRole?: string;
+  authorImage?: string;
   date: string;
   readTime: string;
   featuredImage: string;
@@ -73,11 +74,19 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
             {/* Author & Meta */}
             <div className="flex flex-wrap items-center gap-6 pb-8 border-b border-mw-gray-200">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 bg-mw-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-mw-blue-600 font-semibold text-lg">
-                    {post.author.split(' ').map(n => n[0]).join('')}
-                  </span>
-                </div>
+                {post.authorImage ? (
+                  <img 
+                    src={post.authorImage} 
+                    alt={post.author}
+                    className="w-12 h-12 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-12 h-12 bg-mw-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-mw-blue-600 font-semibold text-lg">
+                      {post.author.split(' ').map(n => n[0]).join('')}
+                    </span>
+                  </div>
+                )}
                 <div>
                   <p className="font-medium text-mw-gray-900">{post.author}</p>
                   {post.authorRole && (

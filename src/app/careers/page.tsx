@@ -87,7 +87,11 @@ export default async function CareersPage() {
           type: transformed.type || 'Full-time',
           description: transformed.description,
           requirements: transformed.requirements || [],
-          level: transformed.level || 'Mid-Level'
+          level: transformed.level || 'Mid-Level',
+          responsibilities: transformed.responsibilities || [],
+          benefits: transformed.benefits || [],
+          salaryRange: transformed.salaryRange,
+          applyLink: transformed.applyLink
         }
       })
     }

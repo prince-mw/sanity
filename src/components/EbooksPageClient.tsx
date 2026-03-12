@@ -32,6 +32,9 @@ export interface Ebook {
   new?: boolean
   year: string
   viewUrl?: string
+  pages?: number
+  downloads?: string
+  topics?: string[]
 }
 
 // Categories for filtering

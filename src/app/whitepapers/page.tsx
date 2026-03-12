@@ -91,7 +91,8 @@ export default async function WhitepapersPage() {
           publishDate: transformed.publishDate || 'Recent',
           topics: transformed.topics || [],
           featured: transformed.featured,
-          downloadUrl: transformed.downloadUrl
+          downloadUrl: transformed.downloadUrl,
+          image: transformed.image
         }
       })
     }

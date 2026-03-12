@@ -15,6 +15,7 @@ export interface Whitepaper {
   topics: string[]
   featured?: boolean
   downloadUrl?: string
+  image?: string
 }
 
 interface WhitepapersPageClientProps {

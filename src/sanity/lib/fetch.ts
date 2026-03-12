@@ -209,6 +209,9 @@ export function transformBlogPost(post: SanityBlogPost) {
     category: post.categories?.[0]?.title || 'General',
     author: post.author?.name || 'MovingWalls Team',
     authorRole: post.author?.role,
+    authorImage: getSanityImageUrl(post.author?.image, { width: 100 }) || '',
+    authorBio: post.author?.bio ? portableTextToHtml(post.author.bio) : '',
+    authorLinkedin: post.author?.linkedin || '',
     date: post.publishedAt ? formatDate(post.publishedAt) : '',
     readTime: post.readTime || '5 min read',
     featuredImage: getSanityImageUrl(post.featuredImage, { width: 1200 }) || '/assets/images/blog-placeholder.svg',
@@ -223,6 +226,7 @@ export function transformCaseStudy(study: SanityCaseStudy) {
     slug: study.slug?.current || '',
     title: study.title || '',
     brand: study.client || '',
+    clientLogo: getSanityImageUrl(study.clientLogo, { width: 200 }) || '',
     country: study.location || '',
     industry: study.industry || 'Other',
     excerpt: study.excerpt || '',
@@ -230,6 +234,9 @@ export function transformCaseStudy(study: SanityCaseStudy) {
     challenge: portableTextToHtml(study.challenge) || '',
     solution: portableTextToHtml(study.solution) || '',
     results: portableTextToHtml(study.results) || '',
+    metrics: study.metrics || [],
+    testimonial: study.testimonial || null,
+    gallery: (study.gallery || []).map((img: any) => getSanityImageUrl(img, { width: 800 })).filter(Boolean),
     featuredImage: getSanityImageUrl(study.featuredImage, { width: 1200 }) || '/assets/images/case-study-placeholder.svg',
     date: study.publishedAt ? formatDate(study.publishedAt) : '',
   }
@@ -478,7 +485,15 @@ export function transformEvent(event: SanityEvent) {
     time: timeStr,
     location: locationStr || 'TBA',
     description: event.excerpt || '',
-    speakers: event.speakers?.map(s => `${s.name}${s.role ? ', ' + s.role : ''}`) || [],
+    content: portableTextToHtml(event.content) || '',
+    featuredImage: getSanityImageUrl(event.featuredImage, { width: 1200 }) || '',
+    speakers: event.speakers?.map(s => ({
+      name: s.name,
+      role: s.role || '',
+      company: s.company || '',
+      image: getSanityImageUrl(s.image, { width: 200 }) || '',
+    })) || [],
+    speakersList: event.speakers?.map(s => `${s.name}${s.role ? ', ' + s.role : ''}`) || [],
     price: event.price || 'Free',
     capacity: event.capacity || '',
     category: event.category || '',
@@ -770,6 +785,7 @@ export interface SanityWebinar {
   slug: { current: string }
   description?: string
   featuredImage?: any
+  speakerImage?: any
   webinarType: 'upcoming' | 'on-demand'
   date?: string
   time?: string
@@ -792,6 +808,7 @@ export async function getAllWebinars(): Promise<SanityWebinar[]> {
       slug,
       description,
       featuredImage,
+      speakerImage,
       webinarType,
       date,
       time,
@@ -817,6 +834,7 @@ export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
       slug,
       description,
       featuredImage,
+      speakerImage,
       webinarType,
       date,
       time,
@@ -839,6 +857,7 @@ export async function getOnDemandWebinars(): Promise<SanityWebinar[]> {
       slug,
       description,
       featuredImage,
+      speakerImage,
       webinarType,
       duration,
       speaker,
@@ -855,6 +874,7 @@ export async function getOnDemandWebinars(): Promise<SanityWebinar[]> {
 export function transformWebinar(webinar: SanityWebinar) {
   return {
     id: webinar._id,
+    slug: webinar.slug?.current || '',
     title: webinar.title || '',
     description: webinar.description || '',
     date: webinar.date || '',
@@ -862,6 +882,8 @@ export function transformWebinar(webinar: SanityWebinar) {
     duration: webinar.duration || '',
     speaker: webinar.speaker || '',
     speakerRole: webinar.speakerRole || '',
+    speakerImage: getSanityImageUrl(webinar.speakerImage, { width: 200 }) || '',
+    featuredImage: getSanityImageUrl(webinar.featuredImage, { width: 800 }) || '',
     attendees: webinar.attendees || 0,
     views: webinar.views || 0,
     rating: webinar.rating || 0,
@@ -902,7 +924,11 @@ export async function getActiveJobPositions(): Promise<SanityJobPosition[]> {
       type,
       level,
       description,
-      requirements
+      requirements,
+      responsibilities,
+      benefits,
+      salaryRange,
+      applyLink
     }
   `
   return client.fetch(query)
@@ -960,6 +986,11 @@ export function transformJobPosition(job: SanityJobPosition) {
     level: job.level || '',
     description: job.description || '',
     requirements: job.requirements || [],
+    responsibilities: job.responsibilities || [],
+    benefits: job.benefits || [],
+    salaryRange: job.salaryRange || '',
+    applyLink: job.applyLink || '',
+    isActive: job.isActive ?? true,
   }
 }
 
@@ -1085,6 +1116,9 @@ export function transformEbook(ebook: SanityEbook) {
     featured: ebook.featured || false,
     isNew: ebook.isNew || false,
     viewUrl: ebook.viewUrl,
+    pages: ebook.pages || 0,
+    downloads: ebook.downloads || '0',
+    topics: ebook.topics || [],
   }
 }
 
@@ -1166,6 +1200,7 @@ export function transformWhitepaper(paper: SanityWhitepaper) {
     slug: paper.slug?.current || '',
     description: paper.description || '',
     category: formatWhitepaperCategory(paper.category),
+    image: getSanityImageUrl(paper.image, { width: 600 }) || '/assets/images/ebook-placeholder.svg',
     pages: paper.pages || 0,
     downloads: paper.downloads || '0',
     publishDate: paper.publishDate || '',
@@ -1298,7 +1333,7 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
         reach,
         impressions,
         description,
-        "image": image.asset->url
+        image
       },
       stats,
       majorCities,
@@ -1334,7 +1369,14 @@ export function transformLocationFull(location: SanityLocation) {
     flag: location.flag || '',
     description: location.fullDescription || location.description || '',
     heroImage: getSanityImageUrl(location.heroImage, { width: 1200 }) || '',
-    highVisibilityBillboards: location.highVisibilityBillboards || [],
+    highVisibilityBillboards: (location.highVisibilityBillboards || []).map(billboard => ({
+      name: billboard.name || '',
+      location: billboard.location || '',
+      reach: billboard.reach || '',
+      impressions: billboard.impressions || '',
+      description: billboard.description || '',
+      image: getSanityImageUrl(billboard.image, { width: 800 }) || '',
+    })),
     stats: location.stats || [],
     majorCities: location.majorCities || [],
     mediaTypes: location.mediaTypes || [],

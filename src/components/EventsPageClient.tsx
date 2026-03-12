@@ -11,10 +11,13 @@ export interface Event {
   location: string
   description: string
   speakers: string[]
+  speakersList?: { name: string; image?: string }[]
   price: string
   capacity: string
   category: string
   featured: boolean
+  featuredImage?: string
+  content?: string
 }
 
 interface EventsPageClientProps {
@@ -182,6 +185,27 @@ export default function EventsPageClient({ events }: EventsPageClientProps) {
                            event.price === 'Invitation Only' ? 'Request Invite' : 'Register Now'}
                         </button>
                       </div>
+
+                      {/* Speakers with images */}
+                      {event.speakersList && event.speakersList.length > 0 && (
+                        <div className={`mt-4 pt-4 border-t border-mw-gray-100 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
+                          <p className="text-xs text-mw-gray-500 mb-2">Speakers</p>
+                          <div className={`flex items-center gap-2 flex-wrap ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
+                            {event.speakersList.slice(0, 4).map((speaker, spkIdx) => (
+                              <div key={spkIdx} className="flex items-center gap-2">
+                                {speaker.image ? (
+                                  <img src={speaker.image} alt={speaker.name} className="w-8 h-8 rounded-full object-cover" />
+                                ) : (
+                                  <div className="w-8 h-8 bg-mw-gray-200 rounded-full flex items-center justify-center">
+                                    <span className="text-xs font-medium text-mw-gray-600">{speaker.name[0]}</span>
+                                  </div>
+                                )}
+                                <span className="text-sm text-mw-gray-700">{speaker.name}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 

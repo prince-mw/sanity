@@ -99,7 +99,10 @@ export default async function EbooksPage() {
           featured: transformed.featured,
           isNew: transformed.isNew,
           year: transformed.year || '2025',
-          viewUrl: transformed.viewUrl || '#'
+          viewUrl: transformed.viewUrl || '#',
+          pages: transformed.pages,
+          downloads: transformed.downloads,
+          topics: transformed.topics
         }
       })
     }

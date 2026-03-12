@@ -12,6 +12,8 @@ export interface UpcomingWebinar {
   duration: string
   speaker: string
   speakerRole: string
+  speakerImage?: string
+  featuredImage?: string
   attendees: number
   level: string
 }
@@ -22,6 +24,8 @@ export interface OnDemandWebinar {
   duration: string
   speaker: string
   speakerRole: string
+  speakerImage?: string
+  featuredImage?: string
   views: number
   rating: number
   level: string
@@ -134,9 +138,13 @@ export default function WebinarsPageClient({ upcomingWebinars, onDemandWebinars 
                     {/* Webinar Image/Preview */}
                     <div className="lg:col-span-1">
                       <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 rounded-lg flex items-center justify-center relative overflow-hidden">
-                        <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                        </svg>
+                        {webinar.featuredImage ? (
+                          <img src={webinar.featuredImage} alt={webinar.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                          </svg>
+                        )}
                         <span className="absolute top-3 left-3 px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
                           {webinar.level}
                         </span>
@@ -166,9 +174,13 @@ export default function WebinarsPageClient({ upcomingWebinars, onDemandWebinars 
                           <span>{webinar.time} ({webinar.duration})</span>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-mw-gray-600">
-                          <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                          </svg>
+                          {webinar.speakerImage ? (
+                            <img src={webinar.speakerImage} alt={webinar.speaker} className="w-10 h-10 rounded-full object-cover" />
+                          ) : (
+                            <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          )}
                           <div>
                             <p className="font-medium text-mw-gray-900">{webinar.speaker}</p>
                             <p className="text-xs text-mw-gray-500">{webinar.speakerRole}</p>
@@ -213,6 +225,9 @@ export default function WebinarsPageClient({ upcomingWebinars, onDemandWebinars 
                   className="bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 group"
                 >
                   <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative overflow-hidden">
+                    {webinar.featuredImage && (
+                      <img src={webinar.featuredImage} alt={webinar.title} className="absolute inset-0 w-full h-full object-cover" />
+                    )}
                     <div className="absolute inset-0 flex items-center justify-center">
                       <button className="w-16 h-16 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-mw-lg">
                         <svg className="w-8 h-8 text-mw-blue-600 ml-1" fill="currentColor" viewBox="0 0 20 20">
@@ -239,9 +254,13 @@ export default function WebinarsPageClient({ upcomingWebinars, onDemandWebinars 
                     <p className="text-sm text-mw-gray-600 mb-4 line-clamp-2">{webinar.description}</p>
 
                     <div className="flex items-center gap-2 mb-4 pb-4 border-b border-mw-gray-200">
-                      <div className="w-10 h-10 bg-mw-gray-200 rounded-full flex items-center justify-center">
-                        <span className="text-sm font-medium text-mw-gray-600">{webinar.speaker[0]}</span>
-                      </div>
+                      {webinar.speakerImage ? (
+                        <img src={webinar.speakerImage} alt={webinar.speaker} className="w-10 h-10 rounded-full object-cover" />
+                      ) : (
+                        <div className="w-10 h-10 bg-mw-gray-200 rounded-full flex items-center justify-center">
+                          <span className="text-sm font-medium text-mw-gray-600">{webinar.speaker[0]}</span>
+                        </div>
+                      )}
                       <div>
                         <p className="text-sm font-medium text-mw-gray-900">{webinar.speaker}</p>
                         <p className="text-xs text-mw-gray-500">{webinar.speakerRole}</p>
