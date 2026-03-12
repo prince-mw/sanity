@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { getProductBySlug, transformProduct } from '@/sanity/lib/fetch'
 
 // Icon Components
 const CheckCircleIcon = ({ className }: { className?: string }) => (
@@ -195,16 +196,46 @@ const resources = [
   },
 ]
 
+interface ProductData {
+  name: string
+  tagline: string
+  description: string
+  features: Array<{ icon?: string; title: string; description: string; metric?: string }>
+  testimonials: Array<{ quote: string; author: string; role: string; company: string; metric?: string }>
+  stats: Array<{ value: string; label: string }>
+}
+
 export default function MWPlanner() {
   const [activeTestimonial, setActiveTestimonial] = useState(0)
+  const [productData, setProductData] = useState<ProductData | null>(null)
+
+  // Fetch product data from Sanity
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        const data = await getProductBySlug('mw-planner')
+        if (data) {
+          setProductData(transformProduct(data))
+        }
+      } catch (error) {
+        console.error('Error fetching product data:', error)
+      }
+    }
+    fetchProduct()
+  }, [])
+
+  // Get display data with Sanity override
+  const displayTestimonials = productData?.testimonials && productData.testimonials.length > 0 
+    ? productData.testimonials.map((t, i) => ({ ...t, image: testimonials[i]?.image || '' }))
+    : testimonials
 
   // Auto-rotate testimonials
   useEffect(() => {
     const timer = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % testimonials.length)
+      setActiveTestimonial((prev) => (prev + 1) % displayTestimonials.length)
     }, 5000)
     return () => clearInterval(timer)
-  }, [])
+  }, [displayTestimonials.length])
 
   return (
     <div className="min-h-screen bg-white">

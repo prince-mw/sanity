@@ -1,11 +1,13 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "../../components/ContactForm";
+import { getCompanyPage, transformCompanyPage } from "@/sanity/lib/fetch";
 
-const associations = [
+const staticAssociations = [
   { name: "World Out of Home Organisation", logo: "/assets/images/proudly-associated-logos/world-out-of-home-organisation-member-2024.png" },
   { name: "IAB SEA+India", logo: "/assets/images/proudly-associated-logos/iab-sea-india.png" },
   { name: "Digital Signage Federation", logo: "/assets/images/proudly-associated-logos/digital-signage-federation.png" },
@@ -17,7 +19,40 @@ const associations = [
   { name: "Outdoor Advertising Association of Nigeria", logo: "/assets/images/proudly-associated-logos/outdoor-advertising-association-of-nigeria.png" },
 ];
 
+interface CompanyPageData {
+  title: string
+  subtitle: string
+  heroDescription: string
+  mission: string
+  vision: string
+  values: Array<{ icon?: string; title: string; description: string }>
+  capabilities: Array<{ icon?: string; title: string; description: string }>
+  associations: Array<{ name: string; logo: string; url: string }>
+  awards: Array<{ name: string; year: string; description: string }>
+}
+
 export default function AboutUsPage() {
+  const [pageData, setPageData] = useState<CompanyPageData | null>(null)
+  const [associations, setAssociations] = useState(staticAssociations)
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getCompanyPage('about')
+        if (data) {
+          const transformed = transformCompanyPage(data)
+          setPageData(transformed)
+          if (transformed.associations && transformed.associations.length > 0) {
+            setAssociations(transformed.associations)
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching about page data:', error)
+      }
+    }
+    fetchData()
+  }, [])
+
   const capabilities = [
     {
       icon: (

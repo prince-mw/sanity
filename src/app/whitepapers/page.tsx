@@ -2,87 +2,122 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getAllWhitepapers, getFeaturedWhitepaper, transformWhitepaper, SanityWhitepaper } from "../../sanity/lib/fetch";
+
+// Whitepaper type
+interface Whitepaper {
+  id?: string
+  title: string
+  description: string
+  category: string
+  pages: number
+  downloads: string
+  publishDate: string
+  topics: string[]
+  featured?: boolean
+  downloadUrl?: string
+}
+
+// Static fallback data
+const staticWhitepapers: Whitepaper[] = [
+  {
+    title: "The State of Digital Out-of-Home Advertising 2025",
+    description: "Comprehensive analysis of DOOH trends, market dynamics, consumer behavior, and ROI metrics across industries.",
+    category: "Industry Report",
+    pages: 45,
+    downloads: "12.5K+",
+    publishDate: "Nov 2025",
+    topics: ["Market Analysis", "Consumer Insights", "ROI Metrics", "Future Trends"],
+    featured: true
+  },
+  {
+    title: "AI-Powered Advertising: The Complete Guide",
+    description: "How machine learning and artificial intelligence are transforming campaign optimization and audience targeting.",
+    category: "Technology",
+    pages: 38,
+    downloads: "8.2K+",
+    publishDate: "Oct 2025",
+    topics: ["Machine Learning", "Optimization", "Targeting", "Automation"]
+  },
+  {
+    title: "Programmatic DOOH: Best Practices for 2025",
+    description: "Strategic framework for implementing and optimizing programmatic digital out-of-home advertising campaigns.",
+    category: "Best Practices",
+    pages: 32,
+    downloads: "9.7K+",
+    publishDate: "Sep 2025",
+    topics: ["Programmatic", "Strategy", "Implementation", "Optimization"]
+  },
+  {
+    title: "Healthcare Marketing Compliance Guide",
+    description: "Navigate HIPAA regulations and healthcare advertising compliance while maximizing campaign effectiveness.",
+    category: "Compliance",
+    pages: 28,
+    downloads: "5.4K+",
+    publishDate: "Aug 2025",
+    topics: ["HIPAA", "Compliance", "Healthcare", "Best Practices"]
+  },
+  {
+    title: "Retail Advertising in the Omnichannel Era",
+    description: "Strategies for connecting online and offline experiences to drive foot traffic and sales.",
+    category: "Industry Guide",
+    pages: 35,
+    downloads: "7.8K+",
+    publishDate: "Jul 2025",
+    topics: ["Retail", "Omnichannel", "Foot Traffic", "Sales"]
+  },
+  {
+    title: "Location Intelligence: Advanced Geo-Targeting",
+    description: "Leveraging location data and geographic insights for precision advertising and audience targeting.",
+    category: "Technology",
+    pages: 42,
+    downloads: "6.3K+",
+    publishDate: "Jun 2025",
+    topics: ["Geo-Targeting", "Location Data", "Audience", "Analytics"]
+  },
+  {
+    title: "Automotive Advertising Playbook",
+    description: "Proven strategies for reaching car shoppers throughout their journey from research to purchase.",
+    category: "Industry Guide",
+    pages: 40,
+    downloads: "4.9K+",
+    publishDate: "May 2025",
+    topics: ["Automotive", "Lead Generation", "Dealerships", "Strategy"]
+  },
+  {
+    title: "Measuring Campaign Success: KPIs That Matter",
+    description: "Comprehensive guide to tracking, analyzing, and optimizing advertising performance with key metrics.",
+    category: "Analytics",
+    pages: 30,
+    downloads: "10.1K+",
+    publishDate: "Apr 2025",
+    topics: ["KPIs", "Analytics", "Measurement", "Optimization"]
+  }
+];
 
 export default function WhitepapersPage() {
   const [showDownloadForm, setShowDownloadForm] = useState(false);
   const [selectedPaper, setSelectedPaper] = useState<string | null>(null);
+  const [whitepapers, setWhitepapers] = useState<Whitepaper[]>(staticWhitepapers);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const whitepapers = [
-    {
-      title: "The State of Digital Out-of-Home Advertising 2025",
-      description: "Comprehensive analysis of DOOH trends, market dynamics, consumer behavior, and ROI metrics across industries.",
-      category: "Industry Report",
-      pages: 45,
-      downloads: "12.5K+",
-      publishDate: "Nov 2025",
-      topics: ["Market Analysis", "Consumer Insights", "ROI Metrics", "Future Trends"],
-      featured: true
-    },
-    {
-      title: "AI-Powered Advertising: The Complete Guide",
-      description: "How machine learning and artificial intelligence are transforming campaign optimization and audience targeting.",
-      category: "Technology",
-      pages: 38,
-      downloads: "8.2K+",
-      publishDate: "Oct 2025",
-      topics: ["Machine Learning", "Optimization", "Targeting", "Automation"]
-    },
-    {
-      title: "Programmatic DOOH: Best Practices for 2025",
-      description: "Strategic framework for implementing and optimizing programmatic digital out-of-home advertising campaigns.",
-      category: "Best Practices",
-      pages: 32,
-      downloads: "9.7K+",
-      publishDate: "Sep 2025",
-      topics: ["Programmatic", "Strategy", "Implementation", "Optimization"]
-    },
-    {
-      title: "Healthcare Marketing Compliance Guide",
-      description: "Navigate HIPAA regulations and healthcare advertising compliance while maximizing campaign effectiveness.",
-      category: "Compliance",
-      pages: 28,
-      downloads: "5.4K+",
-      publishDate: "Aug 2025",
-      topics: ["HIPAA", "Compliance", "Healthcare", "Best Practices"]
-    },
-    {
-      title: "Retail Advertising in the Omnichannel Era",
-      description: "Strategies for connecting online and offline experiences to drive foot traffic and sales.",
-      category: "Industry Guide",
-      pages: 35,
-      downloads: "7.8K+",
-      publishDate: "Jul 2025",
-      topics: ["Retail", "Omnichannel", "Foot Traffic", "Sales"]
-    },
-    {
-      title: "Location Intelligence: Advanced Geo-Targeting",
-      description: "Leveraging location data and geographic insights for precision advertising and audience targeting.",
-      category: "Technology",
-      pages: 42,
-      downloads: "6.3K+",
-      publishDate: "Jun 2025",
-      topics: ["Geo-Targeting", "Location Data", "Audience", "Analytics"]
-    },
-    {
-      title: "Automotive Advertising Playbook",
-      description: "Proven strategies for reaching car shoppers throughout their journey from research to purchase.",
-      category: "Industry Guide",
-      pages: 40,
-      downloads: "4.9K+",
-      publishDate: "May 2025",
-      topics: ["Automotive", "Lead Generation", "Dealerships", "Strategy"]
-    },
-    {
-      title: "Measuring Campaign Success: KPIs That Matter",
-      description: "Comprehensive guide to tracking, analyzing, and optimizing advertising performance with key metrics.",
-      category: "Analytics",
-      pages: 30,
-      downloads: "10.1K+",
-      publishDate: "Apr 2025",
-      topics: ["KPIs", "Analytics", "Measurement", "Optimization"]
+  useEffect(() => {
+    async function fetchWhitepapers() {
+      try {
+        const sanityWhitepapers = await getAllWhitepapers();
+        if (sanityWhitepapers && sanityWhitepapers.length > 0) {
+          setWhitepapers(sanityWhitepapers.map(transformWhitepaper));
+        }
+      } catch (error) {
+        console.error('Error fetching whitepapers from Sanity:', error);
+        // Keep static data as fallback
+      } finally {
+        setIsLoading(false);
+      }
     }
-  ];
+    fetchWhitepapers();
+  }, []);
 
   const handleDownload = (paperTitle: string) => {
     setSelectedPaper(paperTitle);

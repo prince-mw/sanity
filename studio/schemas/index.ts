@@ -1,0 +1,49 @@
+import blogPost from './blogPost'
+import caseStudy from './caseStudy'
+import author from './author'
+import category from './category'
+import pressRelease from './pressRelease'
+import event from './event'
+import landingPage from './landingPage'
+import teamMember from './teamMember'
+import webinar from './webinar'
+import jobPosition from './jobPosition'
+import ebook from './ebook'
+import whitepaper from './whitepaper'
+import blockContent from './blockContent'
+import location from './location'
+import product from './product'
+import companyPage from './companyPage'
+import timelineEvent from './timelineEvent'
+import office from './office'
+import audiencePage from './audiencePage'
+import industryPage from './industryPage'
+import integration from './integration'
+import oohFormat from './oohFormat'
+
+export const schemaTypes = [
+  // Document types
+  blogPost,
+  caseStudy,
+  author,
+  category,
+  pressRelease,
+  event,
+  landingPage,
+  teamMember,
+  webinar,
+  jobPosition,
+  ebook,
+  whitepaper,
+  location,
+  product,
+  companyPage,
+  timelineEvent,
+  office,
+  audiencePage,
+  industryPage,
+  integration,
+  oohFormat,
+  // Object types
+  blockContent,
+]

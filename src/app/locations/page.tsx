@@ -1,7 +1,9 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { getAllLocations, transformLocationForList } from '@/sanity/lib/fetch'
 
 // Animation variants
 const fadeUp = {
@@ -19,8 +21,8 @@ const staggerItem = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
 }
 
-// Location data
-const locations = [
+// Static fallback location data
+const staticLocations = [
   {
     country: "Malaysia",
     city: "Kuala Lumpur",
@@ -111,7 +113,38 @@ const stats = [
   { label: "Partner Networks", value: "250+" },
 ]
 
+interface LocationItem {
+  country: string
+  city: string
+  flag: string
+  href: string
+  description: string
+  billboards: string
+  image: string
+}
+
 export default function LocationsPage() {
+  const [locations, setLocations] = useState<LocationItem[]>(staticLocations)
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    async function fetchLocations() {
+      try {
+        const data = await getAllLocations()
+        if (data && data.length > 0) {
+          const transformed = data.map(transformLocationForList)
+          setLocations(transformed)
+        }
+      } catch (error) {
+        console.error('Error fetching locations:', error)
+        // Keep static data on error
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchLocations()
+  }, [])
+
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}

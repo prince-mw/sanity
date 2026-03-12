@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { getCompanyPage, transformCompanyPage } from "@/sanity/lib/fetch";
 
 // Flowing Dot Component for animated connections
 const FlowingDots = ({ pathId, duration = 3, delay = 0 }: { pathId: string; duration?: number; delay?: number }) => {

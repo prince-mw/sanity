@@ -1,66 +1,89 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import ContactForm from "../../components/ContactForm";
+import { getActiveJobPositions, transformJobPosition, SanityJobPosition } from "../../sanity/lib/fetch";
+
+// Static fallback data
+const staticOpenRoles = [
+  {
+    title: "Senior Software Engineer",
+    department: "Engineering",
+    location: "San Francisco, CA / Remote",
+    type: "Full-time",
+    description: "Build scalable advertising technology platforms using modern web technologies. Lead architecture decisions and mentor junior developers.",
+    requirements: ["5+ years full-stack development", "React/Node.js expertise", "Cloud platforms (AWS/GCP)", "Agile methodologies"],
+    level: "Senior"
+  },
+  {
+    title: "Product Marketing Manager",
+    department: "Marketing",
+    location: "New York, NY / Hybrid",
+    type: "Full-time",
+    description: "Drive go-to-market strategy for our advertising platform products. Work closely with sales and product teams to position our solutions.",
+    requirements: ["3+ years product marketing", "B2B SaaS experience", "Campaign management", "Strong analytical skills"],
+    level: "Mid-Level"
+  },
+  {
+    title: "Data Scientist",
+    department: "Data & Analytics",
+    location: "Austin, TX / Remote",
+    type: "Full-time",
+    description: "Develop machine learning models for audience targeting and campaign optimization. Analyze large datasets to drive product insights.",
+    requirements: ["PhD/MS in relevant field", "Python/R proficiency", "ML/AI frameworks", "Statistical modeling"],
+    level: "Senior"
+  },
+  {
+    title: "Account Executive",
+    department: "Sales",
+    location: "Chicago, IL / Hybrid",
+    type: "Full-time",
+    description: "Manage enterprise client relationships and drive new business growth. Develop strategic partnerships with major brands and agencies.",
+    requirements: ["3+ years B2B sales", "Advertising industry knowledge", "CRM proficiency", "Strong communication"],
+    level: "Mid-Level"
+  },
+  {
+    title: "UX/UI Designer",
+    department: "Design",
+    location: "Los Angeles, CA / Remote",
+    type: "Full-time",
+    description: "Design intuitive user experiences for our advertising platform. Create design systems and conduct user research.",
+    requirements: ["4+ years UX/UI design", "Figma/Sketch expertise", "Design systems", "User research methods"],
+    level: "Mid-Level"
+  },
+  {
+    title: "DevOps Engineer",
+    department: "Engineering",
+    location: "Seattle, WA / Remote",
+    type: "Full-time",
+    description: "Manage cloud infrastructure and deployment pipelines. Ensure platform scalability and security best practices.",
+    requirements: ["4+ years DevOps experience", "Kubernetes/Docker", "CI/CD pipelines", "Security practices"],
+    level: "Senior"
+  }
+];
 
 export default function CareersPage() {
-  const openRoles = [
-    {
-      title: "Senior Software Engineer",
-      department: "Engineering",
-      location: "San Francisco, CA / Remote",
-      type: "Full-time",
-      description: "Build scalable advertising technology platforms using modern web technologies. Lead architecture decisions and mentor junior developers.",
-      requirements: ["5+ years full-stack development", "React/Node.js expertise", "Cloud platforms (AWS/GCP)", "Agile methodologies"],
-      level: "Senior"
-    },
-    {
-      title: "Product Marketing Manager",
-      department: "Marketing",
-      location: "New York, NY / Hybrid",
-      type: "Full-time",
-      description: "Drive go-to-market strategy for our advertising platform products. Work closely with sales and product teams to position our solutions.",
-      requirements: ["3+ years product marketing", "B2B SaaS experience", "Campaign management", "Strong analytical skills"],
-      level: "Mid-Level"
-    },
-    {
-      title: "Data Scientist",
-      department: "Data & Analytics",
-      location: "Austin, TX / Remote",
-      type: "Full-time",
-      description: "Develop machine learning models for audience targeting and campaign optimization. Analyze large datasets to drive product insights.",
-      requirements: ["PhD/MS in relevant field", "Python/R proficiency", "ML/AI frameworks", "Statistical modeling"],
-      level: "Senior"
-    },
-    {
-      title: "Account Executive",
-      department: "Sales",
-      location: "Chicago, IL / Hybrid",
-      type: "Full-time",
-      description: "Manage enterprise client relationships and drive new business growth. Develop strategic partnerships with major brands and agencies.",
-      requirements: ["3+ years B2B sales", "Advertising industry knowledge", "CRM proficiency", "Strong communication"],
-      level: "Mid-Level"
-    },
-    {
-      title: "UX/UI Designer",
-      department: "Design",
-      location: "Los Angeles, CA / Remote",
-      type: "Full-time",
-      description: "Design intuitive user experiences for our advertising platform. Create design systems and conduct user research.",
-      requirements: ["4+ years UX/UI design", "Figma/Sketch expertise", "Design systems", "User research methods"],
-      level: "Mid-Level"
-    },
-    {
-      title: "DevOps Engineer",
-      department: "Engineering",
-      location: "Seattle, WA / Remote",
-      type: "Full-time",
-      description: "Manage cloud infrastructure and deployment pipelines. Ensure platform scalability and security best practices.",
-      requirements: ["4+ years DevOps experience", "Kubernetes/Docker", "CI/CD pipelines", "Security practices"],
-      level: "Senior"
+  const [openRoles, setOpenRoles] = useState(staticOpenRoles);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchJobs() {
+      try {
+        const sanityJobs = await getActiveJobPositions();
+        if (sanityJobs && sanityJobs.length > 0) {
+          const transformedJobs = sanityJobs.map(transformJobPosition);
+          setOpenRoles(transformedJobs);
+        }
+      } catch (error) {
+        console.error("Error fetching jobs from Sanity:", error);
+      } finally {
+        setIsLoading(false);
+      }
     }
-  ];
+    fetchJobs();
+  }, []);
 
   const benefits = [
     {

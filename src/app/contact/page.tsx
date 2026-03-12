@@ -1,9 +1,114 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import ContactForm from "../../components/ContactForm";
+import { getAllOffices, transformOffice } from "@/sanity/lib/fetch";
+
+// Static fallback offices
+const staticOffices = [
+  {
+    city: 'Singapore',
+    country: 'Singapore',
+    type: 'Global Headquarters',
+    address: 'Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545',
+    phone: '+65 8755 6364',
+    email: 'info@movingwalls.com',
+    isHeadquarters: true,
+  },
+  {
+    city: 'Kuala Lumpur',
+    country: 'Malaysia',
+    type: 'Regional Office',
+    address: 'Level 8 (Zone B), Wisma Standard Chartered, No. 2, Jalan Teknologi Taman Teknologi Malaysia, 57000 Bukit Jalil',
+    phone: '+60 3 7610 2044',
+    email: 'info@movingwalls.com',
+    isHeadquarters: false,
+  },
+  {
+    city: 'Manila',
+    country: 'Philippines',
+    type: 'Regional Office',
+    address: 'Unit 1207, Capital House, 9th Avenue, cor Lane S, Taguig',
+    phone: '+63 7527 5672',
+    email: 'info@movingwalls.com',
+    isHeadquarters: false,
+  },
+  {
+    city: 'Jakarta',
+    country: 'Indonesia',
+    type: 'Registered Office',
+    address: 'Tower 45th floor, Jalan Prof Dr Satrio, Kav. 18 Jakarta 12940',
+    phone: '+62 21 3005 3540',
+    email: 'info@movingwalls.com',
+    isHeadquarters: false,
+  },
+  {
+    city: 'Jakarta',
+    country: 'Indonesia',
+    type: 'Operational Office',
+    address: 'Nobel House, 29th Floor, Jl. Dr. Ide Anak Agung Gede Agung Kav. E 4.2 No. 2, Mega Kuningan, Jakarta Selatan 12950',
+    phone: '+62 21 3005 3540',
+    email: 'info@movingwalls.com',
+    isHeadquarters: false,
+  },
+  {
+    city: 'Colombo',
+    country: 'Sri Lanka',
+    type: 'Regional Office',
+    address: '07 Turnour Rd, Colombo 8',
+    phone: '',
+    email: 'info@movingwalls.com',
+    isHeadquarters: false,
+  },
+  {
+    city: 'Bangalore',
+    country: 'India',
+    type: 'Regional Office',
+    address: 'BHIVE Workspace, 3rd Floor, No.467/468, Shri Krishna Temple Rd, Stage 1 Indiranagar, Bengaluru, Karnataka 560038',
+    phone: '',
+    email: 'info@movingwalls.com',
+    isHeadquarters: false,
+  },
+  {
+    city: 'Mumbai',
+    country: 'India',
+    type: 'Regional Office',
+    address: 'Dynasty Business Park, A wing 7th Floor, Near Metro Station, Andheri - Kurla Rd, Vijay Nagar Colony, Chakala, Andheri East, Mumbai, Maharashtra 400065',
+    phone: '',
+    email: 'info@movingwalls.com',
+    isHeadquarters: false,
+  },
+];
+
+interface Office {
+  city: string
+  country: string
+  type: string
+  address: string
+  phone: string
+  email: string
+  isHeadquarters: boolean
+}
 
 export default function ContactPage() {
+  const [offices, setOffices] = useState<Office[]>(staticOffices)
+
+  useEffect(() => {
+    async function fetchOffices() {
+      try {
+        const data = await getAllOffices()
+        if (data && data.length > 0) {
+          const transformed = data.map(transformOffice)
+          setOffices(transformed)
+        }
+      } catch (error) {
+        console.error('Error fetching offices:', error)
+      }
+    }
+    fetchOffices()
+  }, [])
+
   const contactMethods = [
     {
       icon: (
@@ -33,8 +138,8 @@ export default function ContactPage() {
         </svg>
       ),
       title: "Global Offices",
-      details: "8 Cities Worldwide",
-      description: "New York • London • Tokyo • Sydney"
+      details: `${offices.length} Cities Worldwide`,
+      description: "Singapore • KL • Manila • Jakarta"
     },
     {
       icon: (
@@ -46,108 +151,6 @@ export default function ContactPage() {
       details: "Live Product Tour",
       description: "See MW Platform in action now"
     }
-  ];
-
-  const offices = [
-    {
-      city: 'Singapore',
-      country: 'Singapore',
-      type: 'Global Headquarters',
-      address: 'Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545',
-      phone: '+65 8755 6364',
-      email: 'info@movingwalls.com',
-      isHeadquarters: true,
-    },
-    {
-      city: 'Kuala Lumpur',
-      country: 'Malaysia',
-      type: 'Regional Office',
-      address: 'Level 8 (Zone B), Wisma Standard Chartered, No. 2, Jalan Teknologi Taman Teknologi Malaysia, 57000 Bukit Jalil',
-      phone: '+60 3 7610 2044',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'Manila',
-      country: 'Philippines',
-      type: 'Regional Office',
-      address: 'Unit 1207, Capital House, 9th Avenue, cor Lane S, Taguig',
-      phone: '+63 7527 5672',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'Jakarta',
-      country: 'Indonesia',
-      type: 'Registered Office',
-      address: 'Tower 45th floor, Jalan Prof Dr Satrio, Kav. 18 Jakarta 12940',
-      phone: '+62 21 3005 3540',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'Jakarta',
-      country: 'Indonesia',
-      type: 'Operational Office',
-      address: 'Nobel House, 29th Floor, Jl. Dr. Ide Anak Agung Gede Agung Kav. E 4.2 No. 2, Mega Kuningan, Jakarta Selatan 12950',
-      phone: '+62 21 3005 3540',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'Colombo',
-      country: 'Sri Lanka',
-      type: 'Regional Office',
-      address: '07 Turnour Rd, Colombo 8',
-      phone: '',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'Bangalore',
-      country: 'India',
-      type: 'Regional Office',
-      address: 'BHIVE Workspace, 3rd Floor, No.467/468, Shri Krishna Temple Rd, Stage 1 Indiranagar, Bengaluru, Karnataka 560038',
-      phone: '',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'Mumbai',
-      country: 'India',
-      type: 'Regional Office',
-      address: 'Dynasty Business Park, A wing 7th Floor, Near Metro Station, Andheri - Kurla Rd, Vijay Nagar Colony, Chakala, Andheri East, Mumbai, Maharashtra 400065',
-      phone: '',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'Chennai',
-      country: 'India',
-      type: 'Regional Office',
-      address: '2nd & 3rd Floor, Block C, Adwave Towers, South Boag Road, Parthasarathi Puram, T. Nagar, Chennai 600017',
-      phone: '',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'Johannesburg',
-      country: 'South Africa',
-      type: 'Regional Office',
-      address: '2nd Floor, Cedar Square Shopping Centre, Cnr Willow Ave, Cedar Rd, Fourways, Johannesburg, 2055',
-      phone: '',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
-    {
-      city: 'San Francisco',
-      country: 'United States',
-      type: 'Regional Office',
-      address: '447 Sutter St, San Francisco, CA 94108',
-      phone: '',
-      email: 'info@movingwalls.com',
-      isHeadquarters: false,
-    },
   ];
 
   const departments = [

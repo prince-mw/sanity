@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import { getAllEbooks, getFeaturedEbook, transformEbook, SanityEbook } from '../../sanity/lib/fetch'
 
 // Animation variants
 const fadeUp = {
@@ -20,8 +21,22 @@ const staggerItem = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
 }
 
-// E-Book data
-const ebooks = [
+// E-Book type
+interface Ebook {
+  id: number | string
+  title: string
+  description: string
+  category: string
+  image: string
+  featured: boolean
+  isNew?: boolean
+  new?: boolean
+  year: string
+  viewUrl?: string
+}
+
+// Static fallback E-Book data
+const staticEbooks: Ebook[] = [
   {
     id: 1,
     title: "The Ultimate Guide to Programmatic Out-of-Home Advertising",
@@ -244,7 +259,7 @@ const DownloadModal = ({
 }: { 
   isOpen: boolean; 
   onClose: () => void; 
-  ebook: typeof ebooks[0] | null 
+  ebook: Ebook | null 
 }) => {
   const [email, setEmail] = React.useState('')
   const [name, setName] = React.useState('')
@@ -371,8 +386,8 @@ const EbookCard = ({
   ebook, 
   onDownload 
 }: { 
-  ebook: typeof ebooks[0]; 
-  onDownload: (ebook: typeof ebooks[0]) => void 
+  ebook: Ebook; 
+  onDownload: (ebook: Ebook) => void 
 }) => (
   <motion.div
     variants={staggerItem}
@@ -389,7 +404,7 @@ const EbookCard = ({
       
       {/* Badges */}
       <div className="absolute top-4 left-4 flex gap-2">
-        {ebook.new && (
+        {(ebook.new || ebook.isNew) && (
           <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
         )}
         {ebook.featured && (
@@ -469,8 +484,27 @@ const EbookCard = ({
 
 export default function EbooksPage() {
   const [activeCategory, setActiveCategory] = React.useState("All")
-  const [selectedEbook, setSelectedEbook] = React.useState<typeof ebooks[0] | null>(null)
+  const [selectedEbook, setSelectedEbook] = React.useState<Ebook | null>(null)
   const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [ebooks, setEbooks] = React.useState<Ebook[]>(staticEbooks)
+  const [isLoading, setIsLoading] = React.useState(true)
+
+  React.useEffect(() => {
+    async function fetchEbooks() {
+      try {
+        const sanityEbooks = await getAllEbooks()
+        if (sanityEbooks && sanityEbooks.length > 0) {
+          setEbooks(sanityEbooks.map(transformEbook))
+        }
+      } catch (error) {
+        console.error('Error fetching ebooks from Sanity:', error)
+        // Keep static data as fallback
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    fetchEbooks()
+  }, [])
 
   const filteredEbooks = activeCategory === "All" 
     ? ebooks 
@@ -478,7 +512,7 @@ export default function EbooksPage() {
 
   const featuredEbook = ebooks.find(ebook => ebook.featured)
 
-  const handleDownload = (ebook: typeof ebooks[0]) => {
+  const handleDownload = (ebook: Ebook) => {
     setSelectedEbook(ebook)
     setIsModalOpen(true)
   }

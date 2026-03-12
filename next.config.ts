@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
         hostname: 'stg.movingwalls.com',
         pathname: '/**',
       },
+      {
+        protocol: 'https',
+        hostname: 'cdn.sanity.io',
+        pathname: '/**',
+      },
     ],
     // Image optimization settings
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],

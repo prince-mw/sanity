@@ -2,104 +2,126 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getTimelineEvents, transformTimelineEvent } from "@/sanity/lib/fetch";
+
+// Static fallback timeline data
+const staticTimelineMilestones = [
+  {
+    year: "2015",
+    quarter: "Q1",
+    title: "Company Founded",
+    description: "MovingWalls was born from a vision to revolutionize advertising through data-driven insights and innovative technology platforms.",
+    achievement: "Secured initial funding of $2M",
+    icon: "🚀",
+    color: "from-blue-500 to-blue-600"
+  },
+  {
+    year: "2016",
+    quarter: "Q3",
+    title: "First Major Client",
+    description: "Landed our first Fortune 500 client and delivered our inaugural advertising campaign with 300% ROI improvement.",
+    achievement: "Reached $1M ARR milestone",
+    icon: "🎯",
+    color: "from-green-500 to-green-600"
+  },
+  {
+    year: "2017",
+    quarter: "Q2",
+    title: "Transit Partnerships",
+    description: "Secured partnerships with 15 major transit authorities, expanding our out-of-home advertising network across key metropolitan areas.",
+    achievement: "Network expanded to 50+ cities",
+    icon: "🚇",
+    color: "from-purple-500 to-purple-600"
+  },
+  {
+    year: "2018",
+    quarter: "Q4",
+    title: "Digital Platform Launch",
+    description: "Launched our proprietary digital advertising platform with real-time bidding and advanced targeting capabilities.",
+    achievement: "Platform processed 1B+ impressions",
+    icon: "💻",
+    color: "from-orange-500 to-orange-600"
+  },
+  {
+    year: "2019",
+    quarter: "Q1",
+    title: "AI Integration",
+    description: "Introduced machine learning algorithms for audience targeting and campaign optimization, improving performance by 150%.",
+    achievement: "AI-powered 10,000+ campaigns",
+    icon: "🤖",
+    color: "from-red-500 to-red-600"
+  },
+  {
+    year: "2020",
+    quarter: "Q3",
+    title: "Global Expansion",
+    description: "Opened international offices in London, Toronto, and Sydney, establishing MovingWalls as a global advertising technology leader.",
+    achievement: "Expanded to 3 continents",
+    icon: "🌍",
+    color: "from-indigo-500 to-indigo-600"
+  },
+  {
+    year: "2021",
+    quarter: "Q2",
+    title: "IPO Preparation",
+    description: "Achieved unicorn status with $1B valuation and began preparation for initial public offering with strategic partnerships.",
+    achievement: "Valued at $1B+",
+    icon: "🦄",
+    color: "from-pink-500 to-pink-600"
+  },
+  {
+    year: "2022",
+    quarter: "Q4",
+    title: "Market Leadership",
+    description: "Became the fastest-growing advertising technology platform with 1000+ brand partnerships and industry recognition.",
+    achievement: "1000+ active clients",
+    icon: "👑",
+    color: "from-yellow-500 to-yellow-600"
+  },
+  {
+    year: "2023",
+    quarter: "Q1",
+    title: "Innovation Awards",
+    description: "Received multiple industry awards for innovation in advertising technology and sustainable business practices.",
+    achievement: "5 major industry awards",
+    icon: "🏆",
+    color: "from-emerald-500 to-emerald-600"
+  },
+  {
+    year: "2024",
+    quarter: "Q3",
+    title: "Next Generation Platform",
+    description: "Launched MovingWalls 3.0 with advanced analytics, cross-platform integration, and enhanced automation capabilities.",
+    achievement: "Platform 3.0 live globally",
+    icon: "⚡",
+    color: "from-cyan-500 to-cyan-600"
+  }
+];
 
 export default function OurJourneyPage() {
   const [activePhase, setActivePhase] = useState(0);
   const [activeTimeline, setActiveTimeline] = useState(0);
+  const [timelineMilestones, setTimelineMilestones] = useState(staticTimelineMilestones);
 
-  const timelineMilestones = [
-    {
-      year: "2015",
-      quarter: "Q1",
-      title: "Company Founded",
-      description: "MovingWalls was born from a vision to revolutionize advertising through data-driven insights and innovative technology platforms.",
-      achievement: "Secured initial funding of $2M",
-      icon: "🚀",
-      color: "from-blue-500 to-blue-600"
-    },
-    {
-      year: "2016",
-      quarter: "Q3",
-      title: "First Major Client",
-      description: "Landed our first Fortune 500 client and delivered our inaugural advertising campaign with 300% ROI improvement.",
-      achievement: "Reached $1M ARR milestone",
-      icon: "🎯",
-      color: "from-green-500 to-green-600"
-    },
-    {
-      year: "2017",
-      quarter: "Q2",
-      title: "Transit Partnerships",
-      description: "Secured partnerships with 15 major transit authorities, expanding our out-of-home advertising network across key metropolitan areas.",
-      achievement: "Network expanded to 50+ cities",
-      icon: "🚇",
-      color: "from-purple-500 to-purple-600"
-    },
-    {
-      year: "2018",
-      quarter: "Q4",
-      title: "Digital Platform Launch",
-      description: "Launched our proprietary digital advertising platform with real-time bidding and advanced targeting capabilities.",
-      achievement: "Platform processed 1B+ impressions",
-      icon: "💻",
-      color: "from-orange-500 to-orange-600"
-    },
-    {
-      year: "2019",
-      quarter: "Q1",
-      title: "AI Integration",
-      description: "Introduced machine learning algorithms for audience targeting and campaign optimization, improving performance by 150%.",
-      achievement: "AI-powered 10,000+ campaigns",
-      icon: "🤖",
-      color: "from-red-500 to-red-600"
-    },
-    {
-      year: "2020",
-      quarter: "Q3",
-      title: "Global Expansion",
-      description: "Opened international offices in London, Toronto, and Sydney, establishing MovingWalls as a global advertising technology leader.",
-      achievement: "Expanded to 3 continents",
-      icon: "🌍",
-      color: "from-indigo-500 to-indigo-600"
-    },
-    {
-      year: "2021",
-      quarter: "Q2",
-      title: "IPO Preparation",
-      description: "Achieved unicorn status with $1B valuation and began preparation for initial public offering with strategic partnerships.",
-      achievement: "Valued at $1B+",
-      icon: "🦄",
-      color: "from-pink-500 to-pink-600"
-    },
-    {
-      year: "2022",
-      quarter: "Q4",
-      title: "Market Leadership",
-      description: "Became the fastest-growing advertising technology platform with 1000+ brand partnerships and industry recognition.",
-      achievement: "1000+ active clients",
-      icon: "👑",
-      color: "from-yellow-500 to-yellow-600"
-    },
-    {
-      year: "2023",
-      quarter: "Q1",
-      title: "Innovation Awards",
-      description: "Received multiple industry awards for innovation in advertising technology and sustainable business practices.",
-      achievement: "5 major industry awards",
-      icon: "🏆",
-      color: "from-emerald-500 to-emerald-600"
-    },
-    {
-      year: "2024",
-      quarter: "Q3",
-      title: "Next Generation Platform",
-      description: "Launched MovingWalls 3.0 with advanced analytics, cross-platform integration, and enhanced automation capabilities.",
-      achievement: "Platform 3.0 live globally",
-      icon: "⚡",
-      color: "from-cyan-500 to-cyan-600"
+  useEffect(() => {
+    async function fetchTimeline() {
+      try {
+        const data = await getTimelineEvents()
+        if (data && data.length > 0) {
+          const transformed = data.map(transformTimelineEvent).map(event => ({
+            ...event,
+            icon: event.icon || '🚀',
+            color: `from-${event.color || 'blue'}-500 to-${event.color || 'blue'}-600`
+          }))
+          setTimelineMilestones(transformed)
+        }
+      } catch (error) {
+        console.error('Error fetching timeline events:', error)
+      }
     }
-  ];
+    fetchTimeline()
+  }, [])
 
   const growthPhases = [
     {
