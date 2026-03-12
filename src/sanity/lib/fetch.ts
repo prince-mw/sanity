@@ -220,22 +220,95 @@ function formatDate(isoDate: string): string {
   }
 }
 
-// Simple portable text to HTML (for content display)
+// Enhanced portable text to HTML (for content display with proper formatting)
 function portableTextToHtml(blocks: any[] | undefined): string {
   if (!blocks || !Array.isArray(blocks)) return ''
   
   return blocks.map(block => {
     if (block._type === 'block') {
-      const text = block.children?.map((child: any) => child.text || '').join('') || ''
+      // Process children with marks (bold, italic, links, etc.)
+      const processChildren = (children: any[]): string => {
+        if (!children || !Array.isArray(children)) return ''
+        
+        return children.map(child => {
+          let text = child.text || ''
+          const marks = child.marks || []
+          
+          // Find mark definitions for links
+          const markDefs = block.markDefs || []
+          
+          // Apply marks in reverse order for proper nesting
+          marks.forEach((mark: string) => {
+            if (mark === 'strong') {
+              text = `<strong>${text}</strong>`
+            } else if (mark === 'em') {
+              text = `<em>${text}</em>`
+            } else if (mark === 'code') {
+              text = `<code class="bg-mw-gray-100 text-mw-gray-800 px-1.5 py-0.5 rounded text-sm font-mono">${text}</code>`
+            } else if (mark === 'underline') {
+              text = `<span class="underline">${text}</span>`
+            } else if (mark === 'strike-through') {
+              text = `<span class="line-through">${text}</span>`
+            } else {
+              // Check for link marks
+              const linkDef = markDefs.find((def: any) => def._key === mark)
+              if (linkDef && linkDef._type === 'link') {
+                const href = linkDef.href || '#'
+                const isExternal = href.startsWith('http')
+                if (isExternal) {
+                  text = `<a href="${href}" target="_blank" rel="noopener noreferrer" class="text-mw-blue-600 hover:text-mw-blue-700 underline">${text}</a>`
+                } else {
+                  text = `<a href="${href}" class="text-mw-blue-600 hover:text-mw-blue-700 underline">${text}</a>`
+                }
+              }
+            }
+          })
+          
+          return text
+        }).join('')
+      }
+      
+      const content = processChildren(block.children)
+      
       switch (block.style) {
-        case 'h1': return `<h1>${text}</h1>`
-        case 'h2': return `<h2>${text}</h2>`
-        case 'h3': return `<h3>${text}</h3>`
-        case 'h4': return `<h4>${text}</h4>`
-        case 'blockquote': return `<blockquote>${text}</blockquote>`
-        default: return `<p>${text}</p>`
+        case 'h1': return `<h1 class="text-4xl font-bold text-mw-gray-900 mt-12 mb-6">${content}</h1>`
+        case 'h2': return `<h2 class="text-3xl font-bold text-mw-gray-900 mt-10 mb-5">${content}</h2>`
+        case 'h3': return `<h3 class="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">${content}</h3>`
+        case 'h4': return `<h4 class="text-xl font-semibold text-mw-gray-900 mt-6 mb-3">${content}</h4>`
+        case 'blockquote': return `<blockquote class="border-l-4 border-mw-blue-500 bg-mw-blue-50 py-4 px-6 rounded-r-lg my-6 italic text-mw-gray-700">${content}</blockquote>`
+        default: return `<p class="text-mw-gray-700 leading-relaxed mb-6">${content}</p>`
       }
     }
+    
+    // Handle list items
+    if (block._type === 'list') {
+      const listItems = block.children?.map((item: any) => {
+        const itemContent = item.children?.map((child: any) => child.text || '').join('') || ''
+        return `<li class="text-mw-gray-700 leading-relaxed">${itemContent}</li>`
+      }).join('\n') || ''
+      
+      if (block.listItem === 'number') {
+        return `<ol class="list-decimal list-inside space-y-2 my-6 text-mw-gray-700 ml-4">${listItems}</ol>`
+      }
+      return `<ul class="list-disc list-inside space-y-2 my-6 text-mw-gray-700 ml-4">${listItems}</ul>`
+    }
+    
+    // Handle images
+    if (block._type === 'image' && block.asset) {
+      const imageUrl = block.asset?.url || ''
+      const alt = block.alt || 'Content image'
+      const caption = block.caption || ''
+      
+      if (imageUrl) {
+        return `
+          <figure class="my-8">
+            <img src="${imageUrl}" alt="${alt}" class="w-full rounded-xl" loading="lazy" />
+            ${caption ? `<figcaption class="text-center text-sm text-mw-gray-500 mt-3">${caption}</figcaption>` : ''}
+          </figure>
+        `
+      }
+    }
+    
     return ''
   }).join('\n')
 }

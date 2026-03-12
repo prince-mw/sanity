@@ -62,3 +62,31 @@ html {
 ::-webkit-scrollbar-thumb:hover {
   background: #2563eb;
 }
+
+/* Sanity Portable Text Content Styling */
+.portable-text {
+  @apply text-mw-gray-700;
+}
+
+.portable-text > *:first-child {
+  @apply mt-0;
+}
+
+.portable-text > *:last-child {
+  @apply mb-0;
+}
+
+/* Prose overrides for MW brand colors */
+.prose {
+  --tw-prose-body: theme('colors.mw-gray.700');
+  --tw-prose-headings: theme('colors.mw-gray.900');
+  --tw-prose-links: theme('colors.mw-blue.600');
+  --tw-prose-bold: theme('colors.mw-gray.900');
+  --tw-prose-quotes: theme('colors.mw-gray.700');
+  --tw-prose-quote-borders: theme('colors.mw-blue.500');
+}
+
+/* Enhanced blockquote styling */
+.prose blockquote {
+  @apply bg-mw-blue-50 rounded-r-lg not-italic py-4;
+}
