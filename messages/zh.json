@@ -646,76 +646,28 @@
       "description": "听听正在使用MovingWalls转型其广告的品牌和代理商的声音。",
       "reviews": [
         {
-          "quote": "MovingWalls改变了我们的DOOH策略。我们在第一季度看到了156%的投资回报率增长。他们的平台非常直观，支持团队堪称世界级。",
-          "author": "Sarah Johnson",
-          "role": "首席营销官",
-          "company": "TechVision Inc.",
-          "metric": "156%投资回报率增长",
-          "industry": "科技"
+          "quote": "通过定制Moving Walls平台，Jeki利用其交通广告专业知识增加了新服务。我们的目标是建立日本最大的市场平台，拥有全国范围内多样化的OOH库存。",
+          "author": "赤石�的二",
+          "role": "代表取缔役社长",
+          "company": "jeki",
+          "metric": "日本最大OOH市场平台",
+          "industry": "交通广告"
         },
         {
-          "quote": "仅MW Planner工具就为我们每月节省了40小时的活动策划时间。AI推荐非常精准，归因报告最终给了我们所需的可见性。",
-          "author": "Michael Chen",
-          "role": "营销副总裁",
-          "company": "RetailCo Global",
-          "metric": "每月节省40小时",
-          "industry": "零售"
-        },
-        {
-          "quote": "转向MovingWalls是我们今年做出的最佳决定。他们的市场为我们提供了在其他地方无法获得的优质库存，结果不言而喻。",
-          "author": "Emily Rodriguez",
-          "role": "媒体主管",
-          "company": "FinanceFirst",
-          "metric": "28亿+库存访问",
-          "industry": "金融"
-        },
-        {
-          "quote": "实时分析改变了我们的一切。我们现在可以即时优化活动并看到立即的结果。我们的获客成本在短短两个月内下降了45%。",
-          "author": "David Park",
-          "role": "数字营销总监",
-          "company": "AutoMax Group",
-          "metric": "45%更低的CPA",
-          "industry": "汽车"
-        },
-        {
-          "quote": "作为媒体所有者，与MovingWalls合作大大提高了我们的填充率。程序化能力带来了我们以前从未接触过的广告商。",
-          "author": "Amanda Foster",
-          "role": "首席收入官",
-          "company": "CityScreen Media",
-          "metric": "78%填充率增长",
+          "quote": "这一合作伙伴关系为我们提供了尖端的受众测量解决方案，为我们的广告活动带来了前所未有的洞察。",
+          "author": "Saad Bencharef",
+          "role": "数据与数字化转型总监",
+          "company": "FC Media",
+          "metric": "尖端测量",
           "industry": "媒体"
         },
         {
-          "quote": "跨市场活动编排非常出色。我们同时在12个国家推出了本地化创意，这在以前需要几个月的时间。",
-          "author": "Raj Patel",
-          "role": "全球品牌经理",
-          "company": "Unilever APAC",
-          "metric": "1周内覆盖12个市场",
-          "industry": "快消品"
-        },
-        {
-          "quote": "医疗保健广告需要精确性和合规性。MovingWalls两者都做到了，同时帮助我们通过健康活动覆盖了200万患者。",
-          "author": "Dr. Lisa Wang",
-          "role": "营销总监",
-          "company": "HealthFirst Network",
-          "metric": "200万患者覆盖",
-          "industry": "医疗保健"
-        },
-        {
-          "quote": "受众定位能力无与伦比。我们在正确的时刻触达了高端旅行者，推动奢侈品预订增长了320%。",
-          "author": "James Morrison",
-          "role": "首席营销官",
-          "company": "Wanderlust Travel",
-          "metric": "320%预订增长",
-          "industry": "旅游"
-        },
-        {
-          "quote": "MovingWalls首次帮助我们证明了OOH的投资回报率。归因数据说服了我们的CFO将户外广告预算增加了三倍。",
-          "author": "Patricia Lee",
-          "role": "绩效营销主管",
-          "company": "TechStartup Asia",
-          "metric": "3倍预算增长",
-          "industry": "科技"
+          "quote": "当广告商对广告投放和效果有清晰了解时，品牌投资就会增长。这一合作伙伴关系加强了我们的DOOH规划，并扩展了客户的测量能力。",
+          "author": "Yasmin Mallari",
+          "role": "首席投资官",
+          "company": "GroupM, Philippines",
+          "metric": "增强的DOOH规划",
+          "industry": "代理机构"
         }
       ]
     },

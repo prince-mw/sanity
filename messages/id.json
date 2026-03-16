@@ -651,76 +651,28 @@
       "description": "Dengarkan dari brand dan agensi yang mentransformasi periklanan mereka dengan MovingWalls.",
       "reviews": [
         {
-          "quote": "MovingWalls mengubah strategi DOOH kami. Kami melihat peningkatan 156% dalam ROI pada kuartal pertama. Platform mereka sangat intuitif dan tim dukungan berkelas dunia.",
-          "author": "Sarah Johnson",
-          "role": "CMO",
-          "company": "TechVision Inc.",
-          "metric": "Peningkatan ROI 156%",
-          "industry": "Teknologi"
+          "quote": "Dengan mengkustomisasi platform Moving Walls, Jeki menambahkan layanan baru menggunakan keahlian iklan transportasi kami. Kami bertujuan membangun salah satu marketplace terbesar di Jepang dengan inventori OOH yang beragam secara nasional.",
+          "author": "Ryoji Akaishi",
+          "role": "Presiden dan Direktur Perwakilan",
+          "company": "jeki",
+          "metric": "Marketplace OOH Terbesar di Jepang",
+          "industry": "Iklan Transportasi"
         },
         {
-          "quote": "Tool MW Planner saja menghemat 40 jam per bulan dalam perencanaan kampanye. Rekomendasi AI tepat sasaran, dan pelaporan atribusi akhirnya memberi kami visibilitas yang kami butuhkan.",
-          "author": "Michael Chen",
-          "role": "VP Marketing",
-          "company": "RetailCo Global",
-          "metric": "40 Jam Dihemat/Bulan",
-          "industry": "Ritel"
-        },
-        {
-          "quote": "Pindah ke MovingWalls adalah keputusan terbaik yang kami buat tahun ini. Marketplace mereka memberi kami akses ke inventori premium yang tidak bisa kami dapatkan di tempat lain, dan hasilnya berbicara sendiri.",
-          "author": "Emily Rodriguez",
-          "role": "Head of Media",
-          "company": "FinanceFirst",
-          "metric": "2.8B+ Akses Inventori",
-          "industry": "Keuangan"
-        },
-        {
-          "quote": "Analitik real-time mengubah segalanya bagi kami. Kami sekarang dapat mengoptimalkan kampanye dengan cepat dan melihat hasil langsung. Biaya per akuisisi kami turun 45% hanya dalam dua bulan.",
-          "author": "David Park",
-          "role": "Direktur Marketing Digital",
-          "company": "AutoMax Group",
-          "metric": "45% CPA Lebih Rendah",
-          "industry": "Otomotif"
-        },
-        {
-          "quote": "Sebagai pemilik media, bermitra dengan MovingWalls meningkatkan tingkat pengisian kami secara dramatis. Kemampuan programmatic membawa pengiklan yang tidak pernah kami akses sebelumnya.",
-          "author": "Amanda Foster",
-          "role": "Chief Revenue Officer",
-          "company": "CityScreen Media",
-          "metric": "Peningkatan Fill Rate 78%",
+          "quote": "Kemitraan ini memberi kami solusi pengukuran audiens mutakhir yang memberikan wawasan belum pernah ada sebelumnya untuk kampanye iklan kami.",
+          "author": "Saad Bencharef",
+          "role": "Direktur Data dan Transformasi Digital",
+          "company": "FC Media",
+          "metric": "Pengukuran Mutakhir",
           "industry": "Media"
         },
         {
-          "quote": "Orkestrasi kampanye lintas pasar luar biasa. Kami meluncurkan di 12 negara secara bersamaan dengan kreatif lokal, sesuatu yang akan memakan waktu berbulan-bulan sebelumnya.",
-          "author": "Raj Patel",
-          "role": "Global Brand Manager",
-          "company": "Unilever APAC",
-          "metric": "12 Pasar dalam 1 Minggu",
-          "industry": "FMCG"
-        },
-        {
-          "quote": "Periklanan kesehatan membutuhkan presisi dan kepatuhan. MovingWalls memberikan keduanya sambil membantu kami menjangkau 2 juta pasien dengan kampanye wellness kami.",
-          "author": "Dr. Lisa Wang",
-          "role": "Direktur Marketing",
-          "company": "HealthFirst Network",
-          "metric": "Jangkauan 2M Pasien",
-          "industry": "Kesehatan"
-        },
-        {
-          "quote": "Kemampuan penargetan audiens tidak tertandingi. Kami menjangkau traveler premium pada momen yang tepat, mendorong peningkatan 320% dalam pemesanan mewah.",
-          "author": "James Morrison",
-          "role": "CMO",
-          "company": "Wanderlust Travel",
-          "metric": "Peningkatan Pemesanan 320%",
-          "industry": "Perjalanan"
-        },
-        {
-          "quote": "MovingWalls membantu kami membuktikan ROI OOH untuk pertama kalinya. Data atribusi meyakinkan CFO kami untuk melipatgandakan anggaran iklan luar ruang kami tiga kali lipat.",
-          "author": "Patricia Lee",
-          "role": "Head of Performance Marketing",
-          "company": "TechStartup Asia",
-          "metric": "Peningkatan Anggaran 3x",
-          "industry": "Teknologi"
+          "quote": "Investasi brand tumbuh ketika pengiklan memiliki kejelasan tentang penempatan dan kinerja iklan. Kemitraan ini memperkuat perencanaan DOOH kami dan memperluas kemampuan pengukuran untuk klien kami.",
+          "author": "Yasmin Mallari",
+          "role": "Chief Investment Officer",
+          "company": "GroupM, Philippines",
+          "metric": "Perencanaan DOOH yang Ditingkatkan",
+          "industry": "Agensi"
         }
       ]
     },

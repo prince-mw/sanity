@@ -646,76 +646,28 @@
       "description": "MovingWallsで広告を変革しているブランドや代理店の声をお聞きください。",
       "reviews": [
         {
-          "quote": "MovingWallsはDOOH戦略を変革しました。第1四半期でROIが156%増加しました。プラットフォームは非常に直感的で、サポートチームは世界クラスです。",
-          "author": "Sarah Johnson",
-          "role": "CMO",
-          "company": "TechVision Inc.",
-          "metric": "156% ROI増加",
-          "industry": "テクノロジー"
+          "quote": "Moving Wallsのプラットフォームをカスタマイズすることで、jekiは交通広告の専門知識を活かした新しいサービスを追加しています。全国規模の多様なOOH在庫を持つ日本最大のマーケットプレイスの構築を目指しています。",
+          "author": "赤石 亮治",
+          "role": "代表取締役社長",
+          "company": "jeki",
+          "metric": "日本最大のOOHマーケットプレイス",
+          "industry": "交通広告"
         },
         {
-          "quote": "MW Plannerツールだけで、キャンペーン計画で月40時間節約できました。AIレコメンデーションは的確で、アトリビューションレポートはついに必要な可視性を提供してくれます。",
-          "author": "Michael Chen",
-          "role": "マーケティング副社長",
-          "company": "RetailCo Global",
-          "metric": "月40時間節約",
-          "industry": "小売"
-        },
-        {
-          "quote": "MovingWallsへの移行は今年の最良の決断でした。マーケットプレイスにより、他では得られなかったプレミアムインベントリにアクセスでき、結果が物語っています。",
-          "author": "Emily Rodriguez",
-          "role": "メディア責任者",
-          "company": "FinanceFirst",
-          "metric": "28億以上のインベントリアクセス",
-          "industry": "金融"
-        },
-        {
-          "quote": "リアルタイム分析がすべてを変えました。キャンペーンを即座に最適化し、即座に結果を確認できます。獲得コストはわずか2か月で45%低下しました。",
-          "author": "David Park",
-          "role": "デジタルマーケティングディレクター",
-          "company": "AutoMax Group",
-          "metric": "45%低いCPA",
-          "industry": "自動車"
-        },
-        {
-          "quote": "メディアオーナーとして、MovingWallsとのパートナーシップにより、充填率が劇的に向上しました。プログラマティック機能により、以前はアクセスできなかった広告主を獲得しました。",
-          "author": "Amanda Foster",
-          "role": "最高収益責任者",
-          "company": "CityScreen Media",
-          "metric": "78%充填率増加",
+          "quote": "このパートナーシップにより、広告キャンペーンに前例のないインサイトをもたらす最先端のオーディエンス測定ソリューションを提供しています。",
+          "author": "Saad Bencharef",
+          "role": "データ・デジタルトランスフォーメーション部長",
+          "company": "FC Media",
+          "metric": "最先端の測定",
           "industry": "メディア"
         },
         {
-          "quote": "クロスマーケットキャンペーンオーケストレーションは驚異的です。ローカライズされたクリエイティブで12か国に同時に展開しました。以前なら数か月かかったことです。",
-          "author": "Raj Patel",
-          "role": "グローバルブランドマネージャー",
-          "company": "Unilever APAC",
-          "metric": "1週間で12市場",
-          "industry": "FMCG"
-        },
-        {
-          "quote": "ヘルスケア広告には精度とコンプライアンスが必要です。MovingWallsは両方を提供し、ウェルネスキャンペーンで200万人の患者にリーチするのを支援しました。",
-          "author": "Dr. Lisa Wang",
-          "role": "マーケティングディレクター",
-          "company": "HealthFirst Network",
-          "metric": "200万患者リーチ",
-          "industry": "ヘルスケア"
-        },
-        {
-          "quote": "オーディエンスターゲティング機能は比類ありません。プレミアム旅行者に正確なタイミングでリーチし、高級予約が320%増加しました。",
-          "author": "James Morrison",
-          "role": "CMO",
-          "company": "Wanderlust Travel",
-          "metric": "320%予約増加",
-          "industry": "旅行"
-        },
-        {
-          "quote": "MovingWallsはOOHのROIを初めて証明するのを助けてくれました。アトリビューションデータがCFOを説得し、屋外広告予算を3倍にしました。",
-          "author": "Patricia Lee",
-          "role": "パフォーマンスマーケティング責任者",
-          "company": "TechStartup Asia",
-          "metric": "3倍の予算増加",
-          "industry": "テクノロジー"
+          "quote": "広告主が広告配置とパフォーマンスを明確に把握できれば、ブランド投資は増加します。このパートナーシップはDOOHプランニングを強化し、クライアントの測定能力を拡大します。",
+          "author": "Yasmin Mallari",
+          "role": "チーフ・インベストメント・オフィサー",
+          "company": "GroupM, Philippines",
+          "metric": "強化されたDOOHプランニング",
+          "industry": "エージェンシー"
         }
       ]
     },

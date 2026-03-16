@@ -646,76 +646,28 @@
       "description": "Hear from the brands and agencies transforming their advertising with MovingWalls.",
       "reviews": [
         {
-          "quote": "MovingWalls transformed our DOOH strategy. We saw a 156% increase in ROI within the first quarter. Their platform is incredibly intuitive and the support team is world-class.",
-          "author": "Sarah Johnson",
-          "role": "CMO",
-          "company": "TechVision Inc.",
-          "metric": "156% ROI Increase",
-          "industry": "Technology"
+          "quote": "By customising Moving Walls' platform, Jeki adds new services using its transport advertising expertise. We aim to build one of Japan's largest marketplaces with nationwide, diverse OOH inventory.",
+          "author": "Ryoji Akaishi",
+          "role": "President and Representative Director",
+          "company": "jeki",
+          "metric": "Japan's Largest OOH Marketplace",
+          "industry": "Transport Advertising"
         },
         {
-          "quote": "The MW Planner tool alone saved us 40 hours per month in campaign planning. The AI recommendations are spot-on, and the attribution reporting finally gives us the visibility we needed.",
-          "author": "Michael Chen",
-          "role": "VP of Marketing",
-          "company": "RetailCo Global",
-          "metric": "40 Hours Saved/Month",
-          "industry": "Retail"
-        },
-        {
-          "quote": "Moving to MovingWalls was the best decision we made this year. Their marketplace gave us access to premium inventory we couldn't get elsewhere, and the results speak for themselves.",
-          "author": "Emily Rodriguez",
-          "role": "Head of Media",
-          "company": "FinanceFirst",
-          "metric": "2.8B+ Inventory Access",
-          "industry": "Finance"
-        },
-        {
-          "quote": "The real-time analytics changed everything for us. We can now optimize campaigns on the fly and see immediate results. Our cost per acquisition dropped by 45% in just two months.",
-          "author": "David Park",
-          "role": "Digital Marketing Director",
-          "company": "AutoMax Group",
-          "metric": "45% Lower CPA",
-          "industry": "Automotive"
-        },
-        {
-          "quote": "As a media owner, partnering with MovingWalls increased our fill rates dramatically. The programmatic capabilities brought in advertisers we never had access to before.",
-          "author": "Amanda Foster",
-          "role": "Chief Revenue Officer",
-          "company": "CityScreen Media",
-          "metric": "78% Fill Rate Increase",
+          "quote": "This partnership provides us with cutting-edge audience measurement solutions that bring unprecedented insights to our advertising campaigns.",
+          "author": "Saad Bencharef",
+          "role": "Director of Data and Digital Transformation",
+          "company": "FC Media",
+          "metric": "Cutting-edge Measurement",
           "industry": "Media"
         },
         {
-          "quote": "The cross-market campaign orchestration is phenomenal. We launched across 12 countries simultaneously with localized creative, something that would have taken months before.",
-          "author": "Raj Patel",
-          "role": "Global Brand Manager",
-          "company": "Unilever APAC",
-          "metric": "12 Markets in 1 Week",
-          "industry": "FMCG"
-        },
-        {
-          "quote": "Healthcare advertising requires precision and compliance. MovingWalls delivered both while helping us reach 2 million patients with our wellness campaigns.",
-          "author": "Dr. Lisa Wang",
-          "role": "Marketing Director",
-          "company": "HealthFirst Network",
-          "metric": "2M Patient Reach",
-          "industry": "Healthcare"
-        },
-        {
-          "quote": "The audience targeting capabilities are unmatched. We reached premium travelers at exactly the right moments, driving a 320% increase in luxury bookings.",
-          "author": "James Morrison",
-          "role": "CMO",
-          "company": "Wanderlust Travel",
-          "metric": "320% Booking Increase",
-          "industry": "Travel"
-        },
-        {
-          "quote": "MovingWalls helped us prove the ROI of OOH for the first time. The attribution data convinced our CFO to triple our outdoor advertising budget.",
-          "author": "Patricia Lee",
-          "role": "Head of Performance Marketing",
-          "company": "TechStartup Asia",
-          "metric": "3x Budget Increase",
-          "industry": "Technology"
+          "quote": "Brand investments grow when advertisers have clarity on ad placements and performance. This partnership strengthens our DOOH planning and expands measurement capabilities for our clients.",
+          "author": "Yasmin Mallari",
+          "role": "Chief Investment Officer",
+          "company": "GroupM, Philippines",
+          "metric": "Enhanced DOOH Planning",
+          "industry": "Agency"
         }
       ]
     },
