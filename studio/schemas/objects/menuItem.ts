@@ -8,6 +8,13 @@ export default defineType({
   icon: MenuIcon,
   fields: [
     defineField({
+      name: 'isEnabled',
+      title: 'Enable Menu Item',
+      type: 'boolean',
+      description: 'Toggle to show/hide this menu item on the website',
+      initialValue: true,
+    }),
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
@@ -136,16 +143,18 @@ export default defineType({
       columns: 'columns',
       highlight: 'highlight',
       media: 'icon',
+      isEnabled: 'isEnabled',
     },
-    prepare({title, menuType, columns, highlight, media}) {
+    prepare({title, menuType, columns, highlight, media, isEnabled}) {
       const colCount = columns?.length || 0
       let subtitle = menuType === 'megaMenu' ? `Mega Menu (${colCount} columns)` : 'Link'
       if (highlight && highlight !== 'none') {
         subtitle += ` • ${highlight}`
       }
+      const status = isEnabled === false ? '🔴 Disabled' : '🟢 Enabled'
       return {
         title: title || 'Untitled Menu Item',
-        subtitle,
+        subtitle: `${subtitle} • ${status}`,
         media,
       }
     },

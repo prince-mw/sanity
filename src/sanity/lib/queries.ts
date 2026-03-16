@@ -368,6 +368,7 @@ export const megaMenuQuery = `
     title,
     mainNavItems[] {
       _key,
+      isEnabled,
       title,
       menuType,
       linkType,
@@ -381,12 +382,14 @@ export const megaMenuQuery = `
         heading,
         links[] {
           _key,
+          isEnabled,
           title,
           description,
           linkType,
           url,
           internalPage,
           "icon": icon.asset->url,
+          openInNewTab,
           "productRef": productRef->{
             _id,
             title,

@@ -8,6 +8,13 @@ export default defineType({
   icon: LinkIcon,
   fields: [
     defineField({
+      name: 'isEnabled',
+      title: 'Enable Link',
+      type: 'boolean',
+      description: 'Toggle to show/hide this link on the website',
+      initialValue: true,
+    }),
+    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
@@ -140,11 +147,13 @@ export default defineType({
       url: 'url',
       internalPage: 'internalPage',
       media: 'icon',
+      isEnabled: 'isEnabled',
     },
-    prepare({title, linkType, url, internalPage, media}) {
+    prepare({title, linkType, url, internalPage, media, isEnabled}) {
       const path = linkType === 'internal' ? internalPage : url
+      const status = isEnabled === false ? '🔴' : '🟢'
       return {
-        title: title || 'Untitled Link',
+        title: `${status} ${title || 'Untitled Link'}`,
         subtitle: path || linkType,
         media,
       }

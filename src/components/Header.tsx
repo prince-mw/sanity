@@ -9,12 +9,14 @@ import { useLocale, Locale } from "@/i18n/LocaleContext";
 // Types for Sanity mega menu data
 export interface SanityMenuLink {
   _key: string;
+  isEnabled?: boolean;
   title: string;
   description?: string;
   linkType: string;
   url?: string;
   internalPage?: string;
   icon?: string;
+  openInNewTab?: boolean;
   productRef?: { slug: string };
   caseStudyRef?: { slug: string };
   blogPostRef?: { slug: string };
@@ -28,6 +30,7 @@ export interface SanityMenuColumn {
 
 export interface SanityMenuItem {
   _key: string;
+  isEnabled?: boolean;
   title: string;
   menuType: 'link' | 'megaMenu';
   linkType?: string;
@@ -105,7 +108,10 @@ function transformSanityMenu(sanityData: SanityMegaMenuData | null, t: (key: str
   const megaMenuData: Record<string, { sections: Array<{ title: string; items: Array<{ name: string; description: string; href: string }> }> }> = {};
   const navLinks: Array<{ key: string; name: string; translatedName: string; href: string; hasMegaMenu: boolean; openInNewTab?: boolean }> = [];
 
-  sanityData.mainNavItems.forEach((item) => {
+  // Filter to only enabled menu items (isEnabled !== false means enabled by default)
+  const enabledItems = sanityData.mainNavItems.filter(item => item.isEnabled !== false);
+
+  enabledItems.forEach((item) => {
     const navLink = {
       key: item._key,
       name: item.title,
@@ -120,11 +126,14 @@ function transformSanityMenu(sanityData: SanityMegaMenuData | null, t: (key: str
       megaMenuData[item.title] = {
         sections: item.columns.map((column) => ({
           title: column.heading || '',
-          items: column.links.map((link) => ({
-            name: link.title,
-            description: link.description || '',
-            href: resolveHref(link),
-          })),
+          // Filter to only enabled links within each column
+          items: column.links
+            .filter(link => link.isEnabled !== false)
+            .map((link) => ({
+              name: link.title,
+              description: link.description || '',
+              href: resolveHref(link),
+            })),
         })),
       };
     }
