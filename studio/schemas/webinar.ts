@@ -4,12 +4,44 @@ export default defineType({
   name: 'webinar',
   title: 'Webinar',
   type: 'document',
+  groups: [
+    {name: 'content', title: 'Content', default: true},
+    {name: 'speakers', title: 'Speakers'},
+    {name: 'details', title: 'Details'},
+    {name: 'publishing', title: 'Publishing'},
+    {name: 'seo', title: 'SEO'},
+  ],
   fields: [
+    // Publishing controls
+    defineField({
+      name: 'isPublished',
+      title: 'Published',
+      type: 'boolean',
+      description: 'Toggle to show/hide this webinar on the website',
+      initialValue: true,
+      group: 'publishing',
+    }),
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          {title: '📝 Draft', value: 'draft'},
+          {title: '✅ Published', value: 'published'},
+          {title: '📦 Archived', value: 'archived'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'published',
+      group: 'publishing',
+    }),
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'slug',
@@ -20,12 +52,14 @@ export default defineType({
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
       rows: 3,
+      group: 'content',
     }),
     defineField({
       name: 'featuredImage',
@@ -34,6 +68,7 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      group: 'content',
     }),
     defineField({
       name: 'webinarType',
@@ -46,24 +81,28 @@ export default defineType({
         ],
       },
       initialValue: 'upcoming',
+      group: 'details',
     }),
     defineField({
       name: 'date',
       title: 'Date',
       type: 'datetime',
       description: 'For upcoming webinars',
+      group: 'details',
     }),
     defineField({
       name: 'time',
       title: 'Time',
       type: 'string',
       description: 'e.g., "2:00 PM EST"',
+      group: 'details',
     }),
     defineField({
       name: 'duration',
       title: 'Duration',
       type: 'string',
       description: 'e.g., "60 min"',
+      group: 'details',
     }),
     // Legacy single speaker fields (for backward compatibility)
     defineField({
@@ -144,28 +183,33 @@ export default defineType({
         },
       ],
       description: 'Add one or more speakers for this webinar',
+      group: 'speakers',
     }),
     defineField({
       name: 'registrationLink',
       title: 'Registration Link',
       type: 'url',
+      group: 'details',
     }),
     defineField({
       name: 'watchLink',
       title: 'Watch Link',
       type: 'url',
       description: 'For on-demand webinars',
+      group: 'details',
     }),
     defineField({
       name: 'content',
       title: 'Full Content',
       type: 'blockContent',
+      group: 'content',
     }),
     defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',
       description: 'Search engine optimization settings',
+      group: 'seo',
     }),
   ],
   orderings: [
@@ -181,14 +225,18 @@ export default defineType({
       type: 'webinarType',
       date: 'date',
       media: 'featuredImage',
+      isPublished: 'isPublished',
+      status: 'status',
     },
     prepare(selection) {
-      const {title, type, date} = selection
+      const {title, type, date, media, isPublished, status} = selection
+      const statusBadge = status === 'archived' ? '📦' : (status === 'draft' || isPublished === false) ? '📝' : '✅'
       return {
-        ...selection,
+        title: `${statusBadge} ${title}`,
         subtitle: type === 'upcoming' && date 
           ? `Upcoming: ${new Date(date).toLocaleDateString()}` 
           : 'On-Demand',
+        media,
       }
     },
   },

@@ -4,12 +4,44 @@ export default defineType({
   name: 'product',
   title: 'Product',
   type: 'document',
+  groups: [
+    {name: 'basic', title: 'Basic Info', default: true},
+    {name: 'features', title: 'Features'},
+    {name: 'social', title: 'Social Proof'},
+    {name: 'publishing', title: 'Publishing'},
+    {name: 'seo', title: 'SEO'},
+  ],
   fields: [
+    // Publishing controls
+    defineField({
+      name: 'isPublished',
+      title: 'Published',
+      type: 'boolean',
+      description: 'Toggle to show/hide this product on the website',
+      initialValue: true,
+      group: 'publishing',
+    }),
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          {title: '📝 Draft', value: 'draft'},
+          {title: '✅ Published', value: 'published'},
+          {title: '📦 Archived', value: 'archived'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'published',
+      group: 'publishing',
+    }),
     defineField({
       name: 'name',
       title: 'Product Name',
       type: 'string',
       validation: (Rule) => Rule.required(),
+      group: 'basic',
     }),
     defineField({
       name: 'slug',
@@ -20,12 +52,14 @@ export default defineType({
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+      group: 'basic',
     }),
     defineField({
       name: 'tagline',
       title: 'Tagline',
       type: 'string',
       description: 'Short marketing tagline for the product',
+      group: 'basic',
     }),
     defineField({
       name: 'description',
@@ -33,12 +67,14 @@ export default defineType({
       type: 'text',
       rows: 3,
       description: 'Brief product description for hero section',
+      group: 'basic',
     }),
     defineField({
       name: 'icon',
       title: 'Product Icon',
       type: 'string',
       description: 'Icon name or identifier',
+      group: 'basic',
     }),
     defineField({
       name: 'heroImage',
@@ -47,6 +83,7 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      group: 'basic',
     }),
     defineField({
       name: 'category',
@@ -61,6 +98,7 @@ export default defineType({
           { title: 'Creative', value: 'creative' },
         ],
       },
+      group: 'basic',
     }),
     defineField({
       name: 'features',
@@ -77,6 +115,7 @@ export default defineType({
           ],
         },
       ],
+      group: 'features',
     }),
     defineField({
       name: 'benefits',
@@ -84,6 +123,7 @@ export default defineType({
       type: 'array',
       of: [{ type: 'string' }],
       description: 'List of product benefits',
+      group: 'features',
     }),
     defineField({
       name: 'stats',
@@ -99,6 +139,7 @@ export default defineType({
           ],
         },
       ],
+      group: 'features',
     }),
     defineField({
       name: 'integrations',
@@ -114,6 +155,7 @@ export default defineType({
           ],
         },
       ],
+      group: 'social',
     }),
     defineField({
       name: 'testimonials',
@@ -131,6 +173,7 @@ export default defineType({
           ],
         },
       ],
+      group: 'social',
     }),
     defineField({
       name: 'useCases',
@@ -146,29 +189,34 @@ export default defineType({
           ],
         },
       ],
+      group: 'features',
     }),
     defineField({
       name: 'ctaText',
       title: 'CTA Button Text',
       type: 'string',
       initialValue: 'Get Started',
+      group: 'basic',
     }),
     defineField({
       name: 'ctaLink',
       title: 'CTA Link',
       type: 'string',
       initialValue: '/contact',
+      group: 'basic',
     }),
     defineField({
       name: 'demoVideo',
       title: 'Demo Video URL',
       type: 'url',
+      group: 'features',
     }),
     defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',
       description: 'Search engine optimization settings',
+      group: 'seo',
     }),
     defineField({
       name: 'seoTitle',
@@ -188,12 +236,14 @@ export default defineType({
       name: 'order',
       title: 'Display Order',
       type: 'number',
+      group: 'publishing',
     }),
     defineField({
       name: 'isActive',
-      title: 'Is Active',
+      title: 'Is Active (Legacy)',
       type: 'boolean',
       initialValue: true,
+      hidden: true,
     }),
   ],
   preview: {
@@ -201,6 +251,17 @@ export default defineType({
       title: 'name',
       subtitle: 'tagline',
       media: 'heroImage',
+      isPublished: 'isPublished',
+      status: 'status',
+    },
+    prepare(selection) {
+      const {title, subtitle, media, isPublished, status} = selection
+      const statusBadge = status === 'archived' ? '📦' : (status === 'draft' || isPublished === false) ? '📝' : '✅'
+      return {
+        title: `${statusBadge} ${title}`,
+        subtitle,
+        media,
+      }
     },
   },
 })

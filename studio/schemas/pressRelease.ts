@@ -4,12 +4,43 @@ export default defineType({
   name: 'pressRelease',
   title: 'News',
   type: 'document',
+  groups: [
+    {name: 'content', title: 'Content', default: true},
+    {name: 'details', title: 'Details'},
+    {name: 'publishing', title: 'Publishing'},
+    {name: 'seo', title: 'SEO'},
+  ],
   fields: [
+    // Publishing controls
+    defineField({
+      name: 'isPublished',
+      title: 'Published',
+      type: 'boolean',
+      description: 'Toggle to show/hide this news item on the website',
+      initialValue: true,
+      group: 'publishing',
+    }),
+    defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          {title: '📝 Draft', value: 'draft'},
+          {title: '✅ Published', value: 'published'},
+          {title: '📦 Archived', value: 'archived'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'published',
+      group: 'publishing',
+    }),
     defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
       validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'slug',
@@ -20,6 +51,7 @@ export default defineType({
         maxLength: 96,
       },
       validation: (Rule) => Rule.required(),
+      group: 'content',
     }),
     defineField({
       name: 'featuredImage',
@@ -28,22 +60,26 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      group: 'content',
     }),
     defineField({
       name: 'publishedAt',
       title: 'Published At',
       type: 'datetime',
+      group: 'publishing',
     }),
     defineField({
       name: 'source',
       title: 'Source/Publication',
       type: 'string',
+      group: 'details',
     }),
     defineField({
       name: 'externalLink',
       title: 'External Link',
       type: 'url',
       description: 'Link to the original article if published elsewhere',
+      group: 'details',
     }),
     defineField({
       name: 'category',
@@ -64,12 +100,14 @@ export default defineType({
           {title: 'Expansion', value: 'expansion'},
         ],
       },
+      group: 'details',
     }),
     defineField({
       name: 'readTime',
       title: 'Read Time',
       type: 'string',
       description: 'e.g., "3 min read"',
+      group: 'details',
     }),
     defineField({
       name: 'isMediaFeature',
@@ -77,6 +115,7 @@ export default defineType({
       type: 'boolean',
       description: 'Mark as a media feature rather than press release',
       initialValue: false,
+      group: 'details',
     }),
     defineField({
       name: 'hasFullArticle',
@@ -84,6 +123,7 @@ export default defineType({
       type: 'boolean',
       description: 'If true, this press item has a dedicated full article page. If false, it links externally.',
       initialValue: false,
+      group: 'details',
     }),
     defineField({
       name: 'articleSlug',
@@ -94,17 +134,20 @@ export default defineType({
         source: 'title',
         maxLength: 96,
       },
+      group: 'content',
     }),
     defineField({
       name: 'content',
       title: 'Content',
       type: 'blockContent',
+      group: 'content',
     }),
     defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',
       description: 'Search engine optimization settings',
+      group: 'seo',
     }),
   ],
   preview: {
@@ -112,12 +155,16 @@ export default defineType({
       title: 'title',
       date: 'publishedAt',
       media: 'featuredImage',
+      isPublished: 'isPublished',
+      status: 'status',
     },
     prepare(selection) {
-      const {date} = selection
+      const {date, isPublished, status, title, media} = selection
+      const statusBadge = status === 'archived' ? '📦' : (status === 'draft' || isPublished === false) ? '📝' : '✅'
       return {
-        ...selection,
+        title: `${statusBadge} ${title}`,
         subtitle: date ? new Date(date).toLocaleDateString() : 'No date',
+        media,
       }
     },
   },
