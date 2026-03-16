@@ -62,6 +62,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
           { name: t('megaMenu.resources.blog.name'), description: t('megaMenu.resources.blog.description'), href: "/blog" },
           { name: t('megaMenu.resources.caseStudies.name'), description: t('megaMenu.resources.caseStudies.description'), href: "/case-studies" },
           { name: t('megaMenu.resources.ebooks.name'), description: t('megaMenu.resources.ebooks.description'), href: "/ebooks" },
+          { name: t('megaMenu.resources.webinars.name'), description: t('megaMenu.resources.webinars.description'), href: "/webinars" },
           { name: t('megaMenu.resources.oohFormats.name'), description: t('megaMenu.resources.oohFormats.description'), href: "/ooh-formats" },
           { name: t('megaMenu.resources.pressNews.name'), description: t('megaMenu.resources.pressNews.description'), href: "/press-news" },
           { name: t('megaMenu.about.events.name'), description: t('megaMenu.about.events.description'), href: "/events" },
