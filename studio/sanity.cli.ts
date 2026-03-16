@@ -4,5 +4,6 @@ export default defineCliConfig({
   api: {
     projectId: 'u10im6di',
     dataset: 'production'
-  }
+  },
+  studioHost: 'movingwalls-cms'
 })
