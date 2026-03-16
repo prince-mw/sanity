@@ -144,25 +144,28 @@ export const eventBySlugQuery = `
 `
 
 // Landing Pages Queries
+const landingPagePublishedFilter = `isPublished == true && status == "published" && (scheduledPublishAt == null || scheduledPublishAt <= now())`
+
 export const landingPagesQuery = `
-  *[_type == "landingPage" && isPublished == true] | order(_createdAt desc) {
+  *[_type == "landingPage" && ${landingPagePublishedFilter}] | order(_createdAt desc) {
     _id,
     title,
     slug,
     isPublished,
+    status,
     _createdAt,
     _updatedAt
   }
 `
 
 export const landingPageSlugsQuery = `
-  *[_type == "landingPage" && isPublished == true] {
+  *[_type == "landingPage" && ${landingPagePublishedFilter}] {
     "slug": slug.current
   }
 `
 
 export const landingPageBySlugQuery = `
-  *[_type == "landingPage" && slug.current == $slug && isPublished == true][0] {
+  *[_type == "landingPage" && slug.current == $slug && ${landingPagePublishedFilter}][0] {
     _id,
     title,
     slug,
@@ -281,6 +284,112 @@ export const landingPageBySlugQuery = `
   }
 `
 
+// Landing Page Preview Query (no publishing filter - for preview mode)
+export const landingPagePreviewBySlugQuery = `
+  *[_type == "landingPage" && slug.current == $slug][0] {
+    _id,
+    title,
+    slug,
+    isPublished,
+    status,
+    "seo": seo {
+      metaTitle,
+      metaDescription,
+      "ogImage": ogImage.asset->url
+    },
+    sections[] {
+      _type,
+      _key,
+      heading,
+      subheading,
+      content,
+      alignment,
+      maxWidth,
+      backgroundColor,
+      "backgroundImage": backgroundImage.asset->url,
+      backgroundVideo,
+      overlay,
+      ctaText,
+      ctaLink,
+      secondaryCtaText,
+      secondaryCtaLink,
+      height,
+      "image": image.asset->url,
+      imagePosition,
+      columns,
+      features[] {
+        _key,
+        title,
+        description,
+        "icon": icon.asset->url,
+        link
+      },
+      stats[] {
+        _key,
+        value,
+        label,
+        prefix,
+        suffix
+      },
+      logos[] {
+        _key,
+        name,
+        "logo": logo.asset->url,
+        link
+      },
+      grayscale,
+      videoUrl,
+      "thumbnail": thumbnail.asset->url,
+      aspectRatio,
+      autoplay,
+      images[] {
+        _key,
+        "image": image.asset->url,
+        caption,
+        alt
+      },
+      layout,
+      items[] {
+        _key,
+        question,
+        answer,
+        quote,
+        name,
+        role,
+        company,
+        "image": image.asset->url,
+        rating
+      },
+      plans[] {
+        _key,
+        name,
+        description,
+        price,
+        period,
+        features,
+        ctaText,
+        ctaLink,
+        highlighted,
+        badge
+      },
+      formType,
+      fields[] {
+        _key,
+        name,
+        label,
+        type,
+        required,
+        options
+      },
+      submitText,
+      successMessage,
+      showDivider,
+      title,
+      code
+    }
+  }
+`
+
 // Authors Query
 export const authorsQuery = `
   *[_type == "author"] | order(name asc) {
@@ -341,8 +450,9 @@ export async function getEventBySlug(slug: string) {
   return client.fetch(eventBySlugQuery, { slug })
 }
 
-export async function getLandingPageBySlug(slug: string) {
-  return client.fetch(landingPageBySlugQuery, { slug })
+export async function getLandingPageBySlug(slug: string, preview: boolean = false) {
+  const query = preview ? landingPagePreviewBySlugQuery : landingPageBySlugQuery
+  return client.fetch(query, { slug })
 }
 
 export async function getLandingPages() {

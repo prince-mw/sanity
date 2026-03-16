@@ -30,6 +30,21 @@ export default defineType({
       description: 'Toggle to make this page live',
     }),
     defineField({
+      name: 'status',
+      title: 'Status',
+      type: 'string',
+      options: {
+        list: [
+          {title: '📝 Draft', value: 'draft'},
+          {title: '✅ Published', value: 'published'},
+          {title: '📦 Archived', value: 'archived'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'draft',
+      description: 'Set to Archived to hide this page from the site',
+    }),
+    defineField({
       name: 'scheduledPublishAt',
       title: 'Scheduled Publish Date',
       type: 'datetime',
@@ -496,11 +511,13 @@ export default defineType({
       title: 'title',
       slug: 'slug.current',
       isPublished: 'isPublished',
+      status: 'status',
     },
-    prepare({title, slug, isPublished}) {
+    prepare({title, slug, isPublished, status}) {
+      const statusBadge = status === 'archived' ? '📦' : (status === 'draft' || isPublished === false) ? '📝' : '✅'
       return {
-        title: title || 'Untitled',
-        subtitle: `${isPublished ? '🟢' : '🔴'} /${slug || 'no-slug'}`,
+        title: `${statusBadge} ${title || 'Untitled'}`,
+        subtitle: `/${slug || 'no-slug'}`,
       }
     },
   },

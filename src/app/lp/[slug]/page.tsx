@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { draftMode } from "next/headers";
 import { getLandingPageBySlug, getLandingPageSlugs } from "@/sanity/lib/queries";
 import { LandingPageRenderer } from "@/components/landing";
 import Header from "@/components/Header";
@@ -65,11 +66,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function LandingPage({ params }: PageProps) {
   const { slug } = await params;
+  const { isEnabled: isPreview } = await draftMode();
   
   let page;
 
   try {
-    page = await getLandingPageBySlug(slug);
+    page = await getLandingPageBySlug(slug, isPreview);
   } catch (error) {
     console.error("Error fetching landing page:", error);
     notFound();
@@ -83,6 +85,12 @@ export default async function LandingPage({ params }: PageProps) {
     <>
       <Header />
       <main className="min-h-screen">
+        {isPreview && (
+          <div className="bg-yellow-500 text-black text-center py-2 text-sm font-medium">
+            Preview Mode - {page.status === 'draft' ? '📝 Draft' : page.status === 'archived' ? '📦 Archived' : '✅ Published'}
+            <a href="/api/exit-preview" className="ml-4 underline">Exit Preview</a>
+          </div>
+        )}
         <LandingPageRenderer sections={page.sections || []} />
       </main>
       <Footer />

@@ -105,36 +105,17 @@ export default defineConfig({
     visionTool(),
   ],
 
-  // Add document actions for preview
+  // Document actions configuration
   document: {
     actions: (prev, context) => {
-      // Add preview action for content types that support preview
-      if (previewTypes.includes(context.schemaType)) {
-        return [
-          ...prev,
-          // Custom preview action
-          (props: any) => {
-            const {draft, published} = props
-            const doc = draft || published
-            
-            if (!doc?.slug?.current) {
-              return null
-            }
-            
-            return {
-              label: 'Open Preview',
-              icon: () => '👁️',
-              onHandle: () => {
-                const url = resolvePreviewUrl(doc)
-                if (url) {
-                  window.open(url, '_blank')
-                }
-              },
-            }
-          },
-        ]
+      // For singleton types, remove delete action
+      if (singletonTypes.includes(context.schemaType)) {
+        return prev.filter(
+          (action) => action.action !== 'delete' && action.action !== 'duplicate'
+        )
       }
       
+      // For all other types, return all default actions (including delete, archive, duplicate)
       return prev
     },
   },

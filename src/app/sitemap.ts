@@ -38,7 +38,7 @@ async function getSitemapData() {
       "slug": slug.current,
       "lastModified": _updatedAt
     },
-    "landingPages": *[_type == "landingPage" && isPublished == true] {
+    "landingPages": *[_type == "landingPage" && ${publishedFilter}] {
       "slug": slug.current,
       "lastModified": _updatedAt
     },
