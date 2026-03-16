@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
+import { Suspense } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import GlobalCTA from "@/components/GlobalCTA";
@@ -138,7 +139,9 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${poppins.variable} font-sans antialiased bg-white text-mw-gray-900`}>
         {/* Analytics & Tracking - Managed via Sanity CMS */}
-        <Analytics />
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
         
         {/* Structured Data - Organization */}
         <script
