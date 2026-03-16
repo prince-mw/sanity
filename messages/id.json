@@ -648,33 +648,7 @@
       "badge": "Kesuksesan Pelanggan",
       "title": "Apa Kata",
       "titleHighlight": "Klien Kami",
-      "description": "Dengarkan dari brand dan agensi yang mentransformasi periklanan mereka dengan MovingWalls.",
-      "reviews": [
-        {
-          "quote": "Dengan mengkustomisasi platform Moving Walls, Jeki menambahkan layanan baru menggunakan keahlian iklan transportasi kami. Kami bertujuan membangun salah satu marketplace terbesar di Jepang dengan inventori OOH yang beragam secara nasional.",
-          "author": "Ryoji Akaishi",
-          "role": "Presiden dan Direktur Perwakilan",
-          "company": "jeki",
-          "metric": "Marketplace OOH Terbesar di Jepang",
-          "industry": "Iklan Transportasi"
-        },
-        {
-          "quote": "Kemitraan ini memberi kami solusi pengukuran audiens mutakhir yang memberikan wawasan belum pernah ada sebelumnya untuk kampanye iklan kami.",
-          "author": "Saad Bencharef",
-          "role": "Direktur Data dan Transformasi Digital",
-          "company": "FC Media",
-          "metric": "Pengukuran Mutakhir",
-          "industry": "Media"
-        },
-        {
-          "quote": "Investasi brand tumbuh ketika pengiklan memiliki kejelasan tentang penempatan dan kinerja iklan. Kemitraan ini memperkuat perencanaan DOOH kami dan memperluas kemampuan pengukuran untuk klien kami.",
-          "author": "Yasmin Mallari",
-          "role": "Chief Investment Officer",
-          "company": "GroupM, Philippines",
-          "metric": "Perencanaan DOOH yang Ditingkatkan",
-          "industry": "Agensi"
-        }
-      ]
+      "description": "Dengarkan dari brand dan agensi yang mentransformasi periklanan mereka dengan MovingWalls."
     },
     "about": {
       "title": "Mendefinisikan Ulang Periklanan Luar Ruang",

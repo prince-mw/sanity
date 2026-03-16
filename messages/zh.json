@@ -643,33 +643,7 @@
       "badge": "客户成功",
       "title": "我们的客户",
       "titleHighlight": "如是说",
-      "description": "听听正在使用MovingWalls转型其广告的品牌和代理商的声音。",
-      "reviews": [
-        {
-          "quote": "通过定制Moving Walls平台，Jeki利用其交通广告专业知识增加了新服务。我们的目标是建立日本最大的市场平台，拥有全国范围内多样化的OOH库存。",
-          "author": "赤石�的二",
-          "role": "代表取缔役社长",
-          "company": "jeki",
-          "metric": "日本最大OOH市场平台",
-          "industry": "交通广告"
-        },
-        {
-          "quote": "这一合作伙伴关系为我们提供了尖端的受众测量解决方案，为我们的广告活动带来了前所未有的洞察。",
-          "author": "Saad Bencharef",
-          "role": "数据与数字化转型总监",
-          "company": "FC Media",
-          "metric": "尖端测量",
-          "industry": "媒体"
-        },
-        {
-          "quote": "当广告商对广告投放和效果有清晰了解时，品牌投资就会增长。这一合作伙伴关系加强了我们的DOOH规划，并扩展了客户的测量能力。",
-          "author": "Yasmin Mallari",
-          "role": "首席投资官",
-          "company": "GroupM, Philippines",
-          "metric": "增强的DOOH规划",
-          "industry": "代理机构"
-        }
-      ]
+      "description": "听听正在使用MovingWalls转型其广告的品牌和代理商的声音。"
     },
     "about": {
       "title": "重新定义户外广告",

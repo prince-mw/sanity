@@ -643,33 +643,7 @@
       "badge": "고객 성공",
       "title": "고객들이",
       "titleHighlight": "말하는 것",
-      "description": "MovingWalls로 광고를 혁신하고 있는 브랜드와 에이전시의 이야기를 들어보세요.",
-      "reviews": [
-        {
-          "quote": "Moving Walls 플랫폼을 커스터마이즈함으로써 Jeki는 교통 광고 전문성을 활용한 새로운 서비스를 추가하고 있습니다. 우리는 전국적으로 다양한 OOH 인벤토리를 갖춘 일본 최대의 마켓플레이스를 구축하는 것을 목표로 합니다.",
-          "author": "아카이시 료지",
-          "role": "대표이사 사장",
-          "company": "jeki",
-          "metric": "일본 최대 OOH 마켓플레이스",
-          "industry": "교통 광고"
-        },
-        {
-          "quote": "이 파트너십은 광고 캠페인에 전례 없는 인사이트를 제공하는 최첨단 오디언스 측정 솔루션을 제공합니다.",
-          "author": "Saad Bencharef",
-          "role": "데이터 및 디지털 트랜스포메이션 디렉터",
-          "company": "FC Media",
-          "metric": "최첨단 측정",
-          "industry": "미디어"
-        },
-        {
-          "quote": "광고주가 광고 배치와 성과를 명확하게 파악할 때 브랜드 투자가 증가합니다. 이 파트너십은 DOOH 계획을 강화하고 고객의 측정 역량을 확대합니다.",
-          "author": "Yasmin Mallari",
-          "role": "최고 투자 책임자",
-          "company": "GroupM, Philippines",
-          "metric": "강화된 DOOH 계획",
-          "industry": "에이전시"
-        }
-      ]
+      "description": "MovingWalls로 광고를 혁신하고 있는 브랜드와 에이전시의 이야기를 들어보세요."
     },
     "about": {
       "title": "옥외 광고 재정의",

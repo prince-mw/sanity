@@ -23,6 +23,7 @@ import oohFormat from './oohFormat'
 import seo from './seo'
 import analyticsConfig from './analyticsConfig'
 import pageSeo from './pageSeo'
+import testimonial from './testimonial'
 // Mega Menu
 import megaMenu from './megaMenu'
 import menuItem from './objects/menuItem'
@@ -56,6 +57,7 @@ export const schemaTypes = [
   analyticsConfig,
   pageSeo,
   megaMenu,
+  testimonial,
   // Object types
   blockContent,
   seo,

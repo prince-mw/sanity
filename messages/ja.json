@@ -643,33 +643,7 @@
       "badge": "クライアントの成功",
       "title": "お客様の",
       "titleHighlight": "声",
-      "description": "MovingWallsで広告を変革しているブランドや代理店の声をお聞きください。",
-      "reviews": [
-        {
-          "quote": "Moving Wallsのプラットフォームをカスタマイズすることで、jekiは交通広告の専門知識を活かした新しいサービスを追加しています。全国規模の多様なOOH在庫を持つ日本最大のマーケットプレイスの構築を目指しています。",
-          "author": "赤石 亮治",
-          "role": "代表取締役社長",
-          "company": "jeki",
-          "metric": "日本最大のOOHマーケットプレイス",
-          "industry": "交通広告"
-        },
-        {
-          "quote": "このパートナーシップにより、広告キャンペーンに前例のないインサイトをもたらす最先端のオーディエンス測定ソリューションを提供しています。",
-          "author": "Saad Bencharef",
-          "role": "データ・デジタルトランスフォーメーション部長",
-          "company": "FC Media",
-          "metric": "最先端の測定",
-          "industry": "メディア"
-        },
-        {
-          "quote": "広告主が広告配置とパフォーマンスを明確に把握できれば、ブランド投資は増加します。このパートナーシップはDOOHプランニングを強化し、クライアントの測定能力を拡大します。",
-          "author": "Yasmin Mallari",
-          "role": "チーフ・インベストメント・オフィサー",
-          "company": "GroupM, Philippines",
-          "metric": "強化されたDOOHプランニング",
-          "industry": "エージェンシー"
-        }
-      ]
+      "description": "MovingWallsで広告を変革しているブランドや代理店の声をお聞きください。"
     },
     "about": {
       "title": "屋外広告を再定義",

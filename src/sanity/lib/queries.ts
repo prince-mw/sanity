@@ -548,3 +548,46 @@ export const megaMenuQuery = `
 export async function getMegaMenu() {
   return client.fetch(megaMenuQuery)
 }
+
+// Testimonials Filter
+const testimonialPublishedFilter = `isPublished == true && status == "published"`
+
+// Testimonials Queries
+export const testimonialsQuery = `
+  *[_type == "testimonial" && ${testimonialPublishedFilter}] | order(order asc) {
+    _id,
+    quote,
+    author,
+    role,
+    company,
+    image,
+    companyLogo,
+    metric,
+    industry,
+    order,
+    isFeatured
+  }
+`
+
+export const featuredTestimonialsQuery = `
+  *[_type == "testimonial" && ${testimonialPublishedFilter} && isFeatured == true] | order(order asc) {
+    _id,
+    quote,
+    author,
+    role,
+    company,
+    image,
+    companyLogo,
+    metric,
+    industry,
+    order
+  }
+`
+
+export async function getTestimonials() {
+  return client.fetch(testimonialsQuery)
+}
+
+export async function getFeaturedTestimonials() {
+  return client.fetch(featuredTestimonialsQuery)
+}
