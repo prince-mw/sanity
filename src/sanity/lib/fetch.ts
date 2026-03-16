@@ -50,6 +50,7 @@ export interface SanityBlogPost {
   featuredImage?: any
   readTime?: string
   author?: {
+    _id?: string
     name: string
     image?: any
     role?: string
@@ -85,10 +86,13 @@ export interface SanityCaseStudy {
   seo?: SanitySEO
 }
 
+// Helper for publishing filters - content must be published and not scheduled for future
+const publishedFilter = `isPublished == true && status == "published" && (scheduledPublishAt == null || scheduledPublishAt <= now())`
+
 // Blog Post Queries
 export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
   const query = `
-    *[_type == "blogPost"] | order(publishedAt desc) {
+    *[_type == "blogPost" && ${publishedFilter}] | order(publishedAt desc) {
       _id,
       title,
       slug,
@@ -114,7 +118,7 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
       publishedAt,
       readTime,
       featuredImage,
-      "author": author->{name, image, role, bio, linkedin},
+      "author": author->{_id, name, image, role, bio, linkedin},
       "categories": categories[]->{title, slug, color},
       seo {
         metaTitle,
@@ -141,7 +145,7 @@ export async function getBlogCategories(): Promise<Array<{ title: string; slug: 
 
 export async function getFeaturedBlogPost(): Promise<SanityBlogPost | null> {
   const query = `
-    *[_type == "blogPost"] | order(publishedAt desc)[0] {
+    *[_type == "blogPost" && ${publishedFilter}] | order(publishedAt desc)[0] {
       _id,
       title,
       slug,
@@ -156,13 +160,16 @@ export async function getFeaturedBlogPost(): Promise<SanityBlogPost | null> {
   return client.fetch(query)
 }
 
+// Improved related posts algorithm with multi-criteria matching
 export async function getRelatedBlogPosts(
   currentSlug: string,
-  categoryTitle: string,
+  categoryTitles: string[],
+  authorId?: string,
   limit: number = 3
 ): Promise<SanityBlogPost[]> {
+  // First, try to find posts with matching categories or same author
   const query = `
-    *[_type == "blogPost" && slug.current != $currentSlug && $category in categories[]->title] | order(publishedAt desc)[0...$limit] {
+    *[_type == "blogPost" && slug.current != $currentSlug && ${publishedFilter}] {
       _id,
       title,
       slug,
@@ -170,17 +177,69 @@ export async function getRelatedBlogPosts(
       publishedAt,
       readTime,
       featuredImage,
-      "author": author->{name, image, role},
-      "categories": categories[]->{title, slug, color}
+      "author": author->{_id, name, image, role},
+      "categories": categories[]->{title, slug, color},
+      // Calculate relevance score
+      "categoryMatchCount": count(categories[@->title in $categories]),
+      "hasAuthorMatch": author._ref == $authorId
+    }
+    // Sort by category matches (more matches = higher), then author match, then recency
+    | order(categoryMatchCount desc, hasAuthorMatch desc, publishedAt desc)
+    [0...$limit] {
+      _id,
+      title,
+      slug,
+      excerpt,
+      publishedAt,
+      readTime,
+      featuredImage,
+      "author": author,
+      "categories": categories
     }
   `
-  return client.fetch(query, { currentSlug, category: categoryTitle, limit: limit - 1 })
+  
+  const results = await client.fetch(query, { 
+    currentSlug, 
+    categories: categoryTitles.length > 0 ? categoryTitles : [''], 
+    authorId: authorId || '',
+    limit: limit - 1 
+  })
+  
+  // If we don't have enough related posts, supplement with recent posts
+  if (results.length < limit) {
+    const existingSlugs = [currentSlug, ...results.map((p: SanityBlogPost) => p.slug?.current)]
+    const neededCount = limit - results.length
+    
+    const recentQuery = `
+      *[_type == "blogPost" && !(slug.current in $existingSlugs) && ${publishedFilter}] 
+      | order(publishedAt desc)[0...$neededCount] {
+        _id,
+        title,
+        slug,
+        excerpt,
+        publishedAt,
+        readTime,
+        featuredImage,
+        "author": author->{name, image, role},
+        "categories": categories[]->{title, slug, color}
+      }
+    `
+    
+    const recentPosts = await client.fetch(recentQuery, { 
+      existingSlugs, 
+      neededCount: neededCount - 1 
+    })
+    
+    return [...results, ...recentPosts]
+  }
+  
+  return results
 }
 
 // Case Study Queries
 export async function getAllCaseStudies(): Promise<SanityCaseStudy[]> {
   const query = `
-    *[_type == "caseStudy"] | order(publishedAt desc) {
+    *[_type == "caseStudy" && ${publishedFilter}] | order(publishedAt desc) {
       _id,
       title,
       slug,

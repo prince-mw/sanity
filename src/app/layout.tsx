@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Suspense } from "react";
+import { draftMode } from "next/headers";
 import HeaderWrapper from "@/components/HeaderWrapper";
 import Footer from "@/components/Footer";
 import GlobalCTA from "@/components/GlobalCTA";
 import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
+import PreviewBanner from "@/components/PreviewBanner";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import "./globals.css";
 
@@ -130,11 +132,13 @@ const organizationJsonLd = {
   }
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { isEnabled: isPreview } = await draftMode();
+
   return (
     <html lang="en" className="scroll-smooth">
       <body className={`${poppins.variable} font-sans antialiased bg-white text-mw-gray-900`}>
@@ -150,12 +154,13 @@ export default function RootLayout({
         />
         <LocaleProvider>
           <HeaderWrapper />
-          <main>
+          <main className={isPreview ? 'pb-16' : ''}>
             {children}
           </main>
           <GlobalCTA />
           <Footer />
           <CookieConsent />
+          <PreviewBanner isPreview={isPreview} />
         </LocaleProvider>
       </body>
     </html>

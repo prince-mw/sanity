@@ -8,6 +8,16 @@ export const client = createClient({
   useCdn: process.env.NODE_ENV === 'production',
 })
 
+// For preview/draft content (no CDN, uses stega if configured)
+export const previewClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  useCdn: false,
+  perspective: 'previewDrafts',
+  token: process.env.SANITY_API_READ_TOKEN,
+})
+
 // For authenticated requests (drafts, mutations)
 export const writeClient = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di',

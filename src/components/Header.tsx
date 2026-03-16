@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useLocale, Locale } from "@/i18n/LocaleContext";
+import GlobalSearch from "./GlobalSearch";
 
 // Types for Sanity mega menu data
 export interface SanityMenuLink {
@@ -226,6 +227,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(null);
   const [isLanguageOpen, setIsLanguageOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   // Use the locale context
   const { locale, setLocale, localeNames, localeCodes, locales, t } = useLocale();
@@ -386,6 +388,20 @@ export default function Header({ sanityMenuData }: HeaderProps) {
               </AnimatePresence>
             </div>
 
+            {/* Search Button */}
+            <motion.button
+              onClick={() => setIsSearchOpen(true)}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.45 }}
+              className="p-2 text-mw-gray-600 hover:text-mw-blue-600 hover:bg-mw-gray-50 rounded-lg transition-colors duration-200"
+              aria-label="Open search"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </motion.button>
+
             {/* CTA Button - uses Sanity data if available */}
             {(ctaButton?.enabled !== false) && (
               <motion.a
@@ -406,34 +422,48 @@ export default function Header({ sanityMenuData }: HeaderProps) {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden p-2 text-mw-gray-600 hover:text-mw-blue-600"
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* Mobile Search & Menu Buttons */}
+          <div className="flex items-center lg:hidden">
+            {/* Mobile Search Button */}
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 text-mw-gray-600 hover:text-mw-blue-600"
+              aria-label="Open search"
             >
-              {isOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+
+            {/* Mobile Menu Button */}
+            <button
+              className="p-2 text-mw-gray-600 hover:text-mw-blue-600"
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {isOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
 
         {/* Mega Menu */}
@@ -619,6 +649,9 @@ export default function Header({ sanityMenuData }: HeaderProps) {
           )}
         </AnimatePresence>
       </nav>
+
+      {/* Global Search Modal */}
+      <GlobalSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
     </header>
   );
 }

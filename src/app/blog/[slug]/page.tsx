@@ -87,9 +87,10 @@ export default async function BlogPostPage({ params }: PageProps) {
     if (sanityPost) {
       post = transformBlogPost(sanityPost);
       
-      // Get related posts
-      const category = sanityPost.categories?.[0]?.title || 'General';
-      const sanityRelated = await getRelatedBlogPosts(slug, category, 3);
+      // Get related posts with improved algorithm
+      const categoryTitles = sanityPost.categories?.map(c => c.title) || [];
+      const authorId = (sanityPost.author as any)?._id;
+      const sanityRelated = await getRelatedBlogPosts(slug, categoryTitles, authorId, 3);
       relatedPosts = sanityRelated.map(transformBlogPost);
     } else {
       // Fallback to static data

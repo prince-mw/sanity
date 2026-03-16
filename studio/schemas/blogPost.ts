@@ -82,6 +82,13 @@ export default defineType({
       group: 'publishing',
     }),
     defineField({
+      name: 'scheduledPublishAt',
+      title: 'Scheduled Publish Date',
+      type: 'datetime',
+      description: 'Set a future date to automatically publish this post. Leave empty to publish immediately when status is "Published".',
+      group: 'publishing',
+    }),
+    defineField({
       name: 'content',
       title: 'Content',
       type: 'blockContent',

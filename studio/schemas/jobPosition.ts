@@ -128,6 +128,12 @@ export default defineType({
       type: 'datetime',
     }),
     defineField({
+      name: 'scheduledPublishAt',
+      title: 'Scheduled Publish Date',
+      type: 'datetime',
+      description: 'Set a future date to automatically publish this content',
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',

@@ -30,6 +30,12 @@ export default defineType({
       description: 'Toggle to make this page live',
     }),
     defineField({
+      name: 'scheduledPublishAt',
+      title: 'Scheduled Publish Date',
+      type: 'datetime',
+      description: 'Set a future date to automatically publish this page',
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',
