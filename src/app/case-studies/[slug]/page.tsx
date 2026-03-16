@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getCaseStudyBySlug, getAllCaseStudies, transformCaseStudy } from "@/sanity/lib/fetch";
+import { getCaseStudyBySlug, getAllCaseStudies, transformCaseStudy, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { caseStudies as staticCaseStudies } from "@/data/case-studies";
 import CaseStudyDetailClient from "./CaseStudyDetailClient";
 
@@ -13,14 +13,29 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const caseStudy = await getCaseStudyBySlug(slug);
     if (caseStudy) {
       const transformed = transformCaseStudy(caseStudy);
+      const seo = caseStudy.seo;
+      const title = seo?.metaTitle || transformed.title;
+      const description = seo?.metaDescription || transformed.excerpt || `Discover how ${transformed.brand} achieved success with Moving Walls OOH advertising platform.`;
+      const ogImage = seo?.ogImage 
+        ? getSanityImageUrl(seo.ogImage, { width: 1200 })
+        : transformed.featuredImage;
+      
       return {
-        title: `${transformed.title} | Case Study | Moving Walls`,
-        description: transformed.excerpt || `Discover how ${transformed.brand} achieved success with Moving Walls OOH advertising platform.`,
+        title: `${title} | Case Study | Moving Walls`,
+        description,
         openGraph: {
-          title: `${transformed.title} | Case Study`,
-          description: transformed.excerpt || `See how Moving Walls helped ${transformed.brand} transform their advertising.`,
+          title: `${title} | Case Study`,
+          description,
           type: "article",
+          images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
         },
+        twitter: {
+          card: 'summary_large_image',
+          title,
+          description,
+          images: ogImage ? [ogImage] : [],
+        },
+        robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       };
     }
   } catch (error) {

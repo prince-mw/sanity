@@ -137,15 +137,10 @@ export default defineType({
       type: 'blockContent',
     }),
     defineField({
-      name: 'seoTitle',
-      title: 'SEO Title',
-      type: 'string',
-    }),
-    defineField({
-      name: 'seoDescription',
-      title: 'SEO Description',
-      type: 'text',
-      rows: 2,
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
     }),
   ],
   preview: {

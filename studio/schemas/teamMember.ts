@@ -91,6 +91,12 @@ export default defineType({
       type: 'number',
       description: 'Lower numbers appear first',
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
+    }),
   ],
   orderings: [
     {

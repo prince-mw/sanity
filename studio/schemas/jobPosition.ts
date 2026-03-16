@@ -127,6 +127,12 @@ export default defineType({
       title: 'Published At',
       type: 'datetime',
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
+    }),
   ],
   orderings: [
     {

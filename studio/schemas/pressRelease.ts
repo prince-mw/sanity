@@ -106,6 +106,12 @@ export default defineType({
       title: 'Content',
       type: 'blockContent',
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
+    }),
   ],
   preview: {
     select: {

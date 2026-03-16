@@ -23,22 +23,10 @@ export default defineType({
       description: 'The URL path for this page (e.g., "summer-campaign" = /summer-campaign)',
     }),
     defineField({
-      name: 'seoTitle',
-      title: 'SEO Title',
-      type: 'string',
-      description: 'Title for search engines (defaults to page title)',
-    }),
-    defineField({
-      name: 'seoDescription',
-      title: 'SEO Description',
-      type: 'text',
-      rows: 2,
-    }),
-    defineField({
-      name: 'ogImage',
-      title: 'Social Share Image',
-      type: 'image',
-      description: 'Image displayed when shared on social media',
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
     }),
     defineField({
       name: 'sections',

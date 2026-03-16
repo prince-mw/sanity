@@ -78,6 +78,12 @@ export default defineType({
       rows: 3,
     }),
     defineField({
+      name: 'content',
+      title: 'Content',
+      type: 'blockContent',
+      description: 'Main content of the case study',
+    }),
+    defineField({
       name: 'challenge',
       title: 'The Challenge',
       type: 'blockContent',
@@ -121,6 +127,12 @@ export default defineType({
       title: 'Image Gallery',
       type: 'array',
       of: [{type: 'image', options: {hotspot: true}}],
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
     }),
   ],
   preview: {

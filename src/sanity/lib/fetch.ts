@@ -1,5 +1,13 @@
 import { client, urlFor } from './client'
 
+// SEO Interface - reusable for all content types
+export interface SanitySEO {
+  metaTitle?: string
+  metaDescription?: string
+  ogImage?: any
+  noIndex?: boolean
+}
+
 // Helper function to get Sanity image URL with optional transformations
 export function getSanityImageUrl(
   image: any,
@@ -51,6 +59,7 @@ export interface SanityBlogPost {
     slug: { current: string }
     color?: string
   }>
+  seo?: SanitySEO
 }
 
 export interface SanityCaseStudy {
@@ -71,6 +80,7 @@ export interface SanityCaseStudy {
   testimonial?: any
   gallery?: any[]
   publishedAt: string
+  seo?: SanitySEO
 }
 
 // Blog Post Queries
@@ -103,7 +113,13 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
       readTime,
       featuredImage,
       "author": author->{name, image, role, bio, linkedin},
-      "categories": categories[]->{title, slug, color}
+      "categories": categories[]->{title, slug, color},
+      seo {
+        metaTitle,
+        metaDescription,
+        ogImage,
+        noIndex
+      }
     }
   `
   return client.fetch(query, { slug })
@@ -195,7 +211,13 @@ export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy 
       metrics,
       testimonial,
       gallery,
-      publishedAt
+      publishedAt,
+      seo {
+        metaTitle,
+        metaDescription,
+        ogImage,
+        noIndex
+      }
     }
   `
   return client.fetch(query, { slug })
@@ -394,6 +416,7 @@ export interface SanityEvent {
     company?: string
     image?: any
   }>
+  seo?: SanitySEO
 }
 
 export async function getAllEvents(): Promise<SanityEvent[]> {
@@ -548,6 +571,7 @@ export interface SanityPressRelease {
   isMediaFeature?: boolean
   hasFullArticle?: boolean
   articleSlug?: { current: string }
+  seo?: SanitySEO
 }
 
 export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
@@ -607,7 +631,13 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
       readTime,
       isMediaFeature,
       hasFullArticle,
-      articleSlug
+      articleSlug,
+      seo {
+        metaTitle,
+        metaDescription,
+        ogImage,
+        noIndex
+      }
     }
   `
   return client.fetch(query, { slug })
@@ -2213,4 +2243,47 @@ export function transformOohFormat(format: SanityOohFormat) {
     bestFor: format.bestFor || [],
     isFeatured: format.isFeatured || false,
   }
+}
+
+// Analytics Configuration Interface
+export interface AnalyticsConfig {
+  googleAnalytics?: {
+    enabled: boolean
+    measurementId?: string
+  }
+  googleTagManager?: {
+    enabled: boolean
+    containerId?: string
+  }
+  metaPixel?: {
+    enabled: boolean
+    pixelId?: string
+  }
+  linkedinInsight?: {
+    enabled: boolean
+    partnerId?: string
+  }
+  twitterPixel?: {
+    enabled: boolean
+    pixelId?: string
+  }
+  tiktokPixel?: {
+    enabled: boolean
+    pixelId?: string
+  }
+}
+
+// Fetch Analytics Configuration
+export async function getAnalyticsConfig(): Promise<AnalyticsConfig | null> {
+  const query = `
+    *[_type == "analyticsConfig"][0] {
+      googleAnalytics,
+      googleTagManager,
+      metaPixel,
+      linkedinInsight,
+      twitterPixel,
+      tiktokPixel
+    }
+  `
+  return client.fetch(query)
 }

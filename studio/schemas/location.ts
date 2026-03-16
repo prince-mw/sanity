@@ -240,6 +240,12 @@ export default defineType({
       description: 'Whether this location is published',
       initialValue: true,
     }),
+    defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
+    }),
   ],
   preview: {
     select: {

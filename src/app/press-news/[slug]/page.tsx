@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 import { 
   getPressReleaseBySlug, 
   getRelatedPressReleases, 
   transformPressReleaseDetail, 
   transformPressRelease,
-  getAllPressReleases 
+  getAllPressReleases,
+  getSanityImageUrl
 } from "@/sanity/lib/fetch";
 import NewsDetailClient from "@/components/NewsDetailClient";
 
@@ -25,20 +27,35 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata({ params }: PageProps) {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   
   try {
     const release = await getPressReleaseBySlug(slug);
     if (release) {
+      const seo = release.seo;
+      const title = seo?.metaTitle || release.title;
+      const description = seo?.metaDescription || release.excerpt || `Read the latest news from Moving Walls about ${release.title}`;
+      const ogImage = seo?.ogImage 
+        ? getSanityImageUrl(seo.ogImage, { width: 1200 })
+        : getSanityImageUrl(release.featuredImage, { width: 1200 });
+      
       return {
-        title: `${release.title} | Press & News | Moving Walls`,
-        description: release.excerpt || `Read the latest news from Moving Walls about ${release.title}`,
+        title: `${title} | Press & News | Moving Walls`,
+        description,
         openGraph: {
-          title: release.title,
-          description: release.excerpt,
+          title,
+          description,
           type: 'article',
+          images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
         },
+        twitter: {
+          card: 'summary_large_image',
+          title,
+          description,
+          images: ogImage ? [ogImage] : [],
+        },
+        robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       };
     }
   } catch (error) {

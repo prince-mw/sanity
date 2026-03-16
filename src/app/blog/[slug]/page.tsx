@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getBlogPostBySlug, getRelatedBlogPosts, transformBlogPost, getAllBlogPosts } from "@/sanity/lib/fetch";
+import { Metadata } from "next";
+import { getBlogPostBySlug, getRelatedBlogPosts, transformBlogPost, getAllBlogPosts, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
 import BlogDetailClient from "@/components/BlogDetailClient";
 
@@ -18,6 +19,48 @@ export async function generateStaticParams() {
   } catch {
     return [];
   }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  
+  try {
+    const post = await getBlogPostBySlug(slug);
+    
+    if (post) {
+      const seo = post.seo;
+      const title = seo?.metaTitle || post.title;
+      const description = seo?.metaDescription || post.excerpt;
+      const ogImage = seo?.ogImage 
+        ? getSanityImageUrl(seo.ogImage, { width: 1200 })
+        : getSanityImageUrl(post.featuredImage, { width: 1200 });
+      
+      return {
+        title: `${title} | Blog | Moving Walls`,
+        description,
+        openGraph: {
+          title,
+          description,
+          type: 'article',
+          images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
+        },
+        twitter: {
+          card: 'summary_large_image',
+          title,
+          description,
+          images: ogImage ? [ogImage] : [],
+        },
+        robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+      };
+    }
+  } catch (error) {
+    console.error("Error generating metadata:", error);
+  }
+  
+  return {
+    title: 'Blog | Moving Walls',
+    description: 'Latest insights and news from Moving Walls.',
+  };
 }
 
 export default async function BlogPostPage({ params }: PageProps) {

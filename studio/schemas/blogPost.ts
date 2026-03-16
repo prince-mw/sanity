@@ -59,17 +59,10 @@ export default defineType({
       type: 'blockContent',
     }),
     defineField({
-      name: 'seoTitle',
-      title: 'SEO Title',
-      type: 'string',
-      description: 'Override the default title for search engines',
-    }),
-    defineField({
-      name: 'seoDescription',
-      title: 'SEO Description',
-      type: 'text',
-      rows: 2,
-      description: 'Override the excerpt for search engines',
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
     }),
   ],
   preview: {

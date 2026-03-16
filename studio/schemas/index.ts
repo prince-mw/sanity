@@ -20,6 +20,8 @@ import audiencePage from './audiencePage'
 import industryPage from './industryPage'
 import integration from './integration'
 import oohFormat from './oohFormat'
+import seo from './seo'
+import analyticsConfig from './analyticsConfig'
 
 export const schemaTypes = [
   // Document types
@@ -44,6 +46,8 @@ export const schemaTypes = [
   industryPage,
   integration,
   oohFormat,
+  analyticsConfig,
   // Object types
   blockContent,
+  seo,
 ]

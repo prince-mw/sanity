@@ -165,6 +165,12 @@ export default defineType({
       type: 'url',
     }),
     defineField({
+      name: 'seo',
+      title: 'SEO',
+      type: 'seo',
+      description: 'Search engine optimization settings',
+    }),
+    defineField({
       name: 'order',
       title: 'Display Order',
       type: 'number',
