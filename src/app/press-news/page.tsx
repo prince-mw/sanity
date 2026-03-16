@@ -115,7 +115,8 @@ export default async function PressNewsPage() {
           title: transformed.title,
           excerpt: transformed.excerpt,
           readTime: transformed.readTime || '3 min read',
-          thumbnail: transformed.thumbnail
+          thumbnail: transformed.thumbnail,
+          slug: transformed.slug
         }
       })
     }
