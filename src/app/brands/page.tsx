@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
-import TestimonialSection from '@/components/TestimonialSection'
+import TestimonialSectionClient from '@/components/TestimonialSectionClient'
 
 export default function BrandsPage() {
   const [activeTab, setActiveTab] = useState('retail')
@@ -1356,7 +1356,7 @@ export default function BrandsPage() {
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialSection />
+      <TestimonialSectionClient />
 
       {/* FAQ Section */}
       <section className="py-20 bg-white">

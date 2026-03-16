@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
-import TestimonialSection from '@/components/TestimonialSection'
+import TestimonialSectionClient from '@/components/TestimonialSectionClient'
 
 export default function AgenciesPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -1200,7 +1200,7 @@ Your Complete OOH Platform
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialSection />
+      <TestimonialSectionClient />
 
       {/* FAQ Section */}
       <section className="py-20 bg-white">
