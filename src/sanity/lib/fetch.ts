@@ -879,6 +879,13 @@ export interface SanityWebinar {
   level?: string
   registrationLink?: string
   watchLink?: string
+  content?: any
+  seo?: {
+    metaTitle?: string
+    metaDescription?: string
+    ogImage?: any
+    noIndex?: boolean
+  }
 }
 
 export async function getAllWebinars(): Promise<SanityWebinar[]> {
@@ -973,6 +980,55 @@ export function transformWebinar(webinar: SanityWebinar) {
     registrationLink: webinar.registrationLink,
     watchLink: webinar.watchLink,
   }
+}
+
+export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | null> {
+  const query = `
+    *[_type == "webinar" && slug.current == $slug][0] {
+      _id,
+      title,
+      slug,
+      description,
+      featuredImage,
+      speakerImage,
+      webinarType,
+      date,
+      time,
+      duration,
+      speaker,
+      speakerRole,
+      attendees,
+      views,
+      rating,
+      level,
+      registrationLink,
+      watchLink,
+      content,
+      seo
+    }
+  `
+  return client.fetch(query, { slug })
+}
+
+export async function getRelatedWebinars(currentSlug: string, limit: number = 3): Promise<SanityWebinar[]> {
+  const query = `
+    *[_type == "webinar" && slug.current != $currentSlug] | order(date desc)[0...$limit] {
+      _id,
+      title,
+      slug,
+      description,
+      featuredImage,
+      speakerImage,
+      webinarType,
+      date,
+      time,
+      duration,
+      speaker,
+      speakerRole,
+      level
+    }
+  `
+  return client.fetch(query, { currentSlug, limit })
 }
 
 // Job Position Types and Queries

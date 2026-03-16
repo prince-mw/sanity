@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 
 export interface UpcomingWebinar {
+  slug?: string
   title: string
   description: string
   date: string
@@ -19,6 +20,7 @@ export interface UpcomingWebinar {
 }
 
 export interface PastWebinar {
+  slug?: string
   title: string
   description: string
   date: string
@@ -137,25 +139,29 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                   <div className="grid lg:grid-cols-3 gap-6 p-6">
                     {/* Webinar Image/Preview */}
                     <div className="lg:col-span-1">
-                      <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 rounded-lg flex items-center justify-center relative overflow-hidden">
-                        {webinar.featuredImage ? (
-                          <img src={webinar.featuredImage} alt={webinar.title} className="w-full h-full object-cover" />
-                        ) : (
-                          <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                          </svg>
-                        )}
-                        <span className="absolute top-3 left-3 px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
-                          {webinar.level}
-                        </span>
-                      </div>
+                      <Link href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}>
+                        <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 rounded-lg flex items-center justify-center relative overflow-hidden cursor-pointer">
+                          {webinar.featuredImage ? (
+                            <img src={webinar.featuredImage} alt={webinar.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                            </svg>
+                          )}
+                          <span className="absolute top-3 left-3 px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
+                            {webinar.level}
+                          </span>
+                        </div>
+                      </Link>
                     </div>
 
                     {/* Webinar Details */}
                     <div className="lg:col-span-2">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <h3 className="text-2xl font-bold text-mw-gray-900 mb-2">{webinar.title}</h3>
+                          <Link href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}>
+                            <h3 className="text-2xl font-bold text-mw-gray-900 mb-2 hover:text-mw-blue-600 transition-colors cursor-pointer">{webinar.title}</h3>
+                          </Link>
                           <p className="text-mw-gray-600 mb-4">{webinar.description}</p>
                         </div>
                       </div>
@@ -194,9 +200,12 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                         </div>
                       </div>
 
-                      <button className="px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md">
-                        Register Now
-                      </button>
+                      <Link 
+                        href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}
+                        className="inline-block px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
+                      >
+                        View Details & Register
+                      </Link>
                     </div>
                   </div>
                 </motion.div>
@@ -227,28 +236,32 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                   <div className="grid lg:grid-cols-3 gap-6 p-6">
                     {/* Webinar Image/Preview */}
                     <div className="lg:col-span-1">
-                      <div className="aspect-video bg-gradient-to-br from-mw-gray-400 to-mw-gray-600 rounded-lg flex items-center justify-center relative overflow-hidden">
-                        {webinar.featuredImage ? (
-                          <img src={webinar.featuredImage} alt={webinar.title} className="w-full h-full object-cover" />
-                        ) : (
-                          <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
-                          </svg>
-                        )}
-                        <span className="absolute top-3 left-3 px-3 py-1 bg-mw-gray-100 text-mw-gray-700 text-xs font-medium rounded-full">
-                          {webinar.level}
-                        </span>
-                        <span className="absolute top-3 right-3 px-3 py-1 bg-mw-gray-700 text-white text-xs font-medium rounded-full">
-                          Recorded
-                        </span>
-                      </div>
+                      <Link href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}>
+                        <div className="aspect-video bg-gradient-to-br from-mw-gray-400 to-mw-gray-600 rounded-lg flex items-center justify-center relative overflow-hidden cursor-pointer">
+                          {webinar.featuredImage ? (
+                            <img src={webinar.featuredImage} alt={webinar.title} className="w-full h-full object-cover" />
+                          ) : (
+                            <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                            </svg>
+                          )}
+                          <span className="absolute top-3 left-3 px-3 py-1 bg-mw-gray-100 text-mw-gray-700 text-xs font-medium rounded-full">
+                            {webinar.level}
+                          </span>
+                          <span className="absolute top-3 right-3 px-3 py-1 bg-mw-gray-700 text-white text-xs font-medium rounded-full">
+                            Recorded
+                          </span>
+                        </div>
+                      </Link>
                     </div>
 
                     {/* Webinar Details */}
                     <div className="lg:col-span-2">
                       <div className="flex items-start justify-between mb-3">
                         <div>
-                          <h3 className="text-2xl font-bold text-mw-gray-900 mb-2">{webinar.title}</h3>
+                          <Link href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}>
+                            <h3 className="text-2xl font-bold text-mw-gray-900 mb-2 hover:text-mw-blue-600 transition-colors cursor-pointer">{webinar.title}</h3>
+                          </Link>
                           <p className="text-mw-gray-600 mb-4">{webinar.description}</p>
                         </div>
                       </div>
@@ -281,9 +294,12 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                         </div>
                       </div>
 
-                      <button className="px-6 py-3 bg-mw-gray-600 hover:bg-mw-gray-700 text-white font-medium rounded-lg transition-colors shadow-mw-md">
-                        Watch Recording
-                      </button>
+                      <Link 
+                        href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}
+                        className="inline-block px-6 py-3 bg-mw-gray-600 hover:bg-mw-gray-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
+                      >
+                        View Details & Watch
+                      </Link>
                     </div>
                   </div>
                 </motion.div>

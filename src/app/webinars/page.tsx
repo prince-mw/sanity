@@ -107,6 +107,7 @@ export default async function WebinarsPage() {
       upcomingWebinars = upcoming.map(w => {
         const transformed = transformWebinar(w)
         return {
+          slug: transformed.slug,
           title: transformed.title,
           description: transformed.description,
           date: transformed.date || 'TBD',
@@ -114,6 +115,8 @@ export default async function WebinarsPage() {
           duration: transformed.duration || '60 min',
           speaker: transformed.speaker || 'TBD',
           speakerRole: transformed.speakerRole || '',
+          featuredImage: transformed.featuredImage || '',
+          speakerImage: transformed.speakerImage || '',
           attendees: transformed.attendees || 0,
           level: transformed.level || 'All Levels'
         }
@@ -124,6 +127,7 @@ export default async function WebinarsPage() {
       pastWebinars = past.map(w => {
         const transformed = transformWebinar(w)
         return {
+          slug: transformed.slug,
           title: transformed.title,
           description: transformed.description,
           date: transformed.date || 'TBD',
@@ -131,6 +135,8 @@ export default async function WebinarsPage() {
           duration: transformed.duration || '60 min',
           speaker: transformed.speaker || 'TBD',
           speakerRole: transformed.speakerRole || '',
+          featuredImage: transformed.featuredImage || '',
+          speakerImage: transformed.speakerImage || '',
           level: transformed.level || 'All Levels'
         }
       })
