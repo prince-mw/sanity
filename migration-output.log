@@ -1,0 +1,264 @@
+🚀 WordPress Blog Import Script - WITH FULL IMAGE MIGRATION
+=============================================================
+📂 Reading: /Users/vivekanandchoudhari/Downloads/Blog Posts.xml
+
+📚 Found 200 published blog posts
+📷 Found 314 total images to migrate
+
+📋 First 5 posts:
+  1. Programmatic Digital Out-of-Home (pDOOH)... (0 images)
+  2. Why OOH Media Owners Need a More Efficient Way to ... (0 images)
+  3. An E-Commerce Platform: The Solution Media Owners ... (2 images)
+  4. A Guide to Choosing the Right Content Management S... (0 images)
+  5. Location Media Xchange Launches Revenue Management... (0 images)
+
+📁 Creating/updating categories...
+  ✓ Category exists: Industry Trends
+  ✓ Category exists: Media Owners
+
+🗑️  Deleting existing blog posts...
+  Found 190 existing posts to delete
+  Deleted batch 1/4
+  Deleted batch 2/4
+  Deleted batch 3/4
+  Deleted batch 4/4
+  ✓ All existing blog posts deleted
+
+📝 Migrating 200 blog posts to Sanity WITH IMAGES...
+   (This will take longer due to image uploads)
+
+    ⚠ Failed to upload image: https://lh3.googleusercontent.com/7MLHTkmOO6KvxJsq... - Failed to download image: 404
+  ✓ [1/200] Programmatic Digital Out-of-Home (pDOOH)... (0 images)
+  ✓ [2/200] Why OOH Media Owners Need a More Efficient Way to ... (0 images)
+  ✓ [3/200] An E-Commerce Platform: The Solution Media Owners ... (3 images)
+  ✓ [4/200] A Guide to Choosing the Right Content Management S... (0 images)
+  ✓ [5/200] Location Media Xchange Launches Revenue Management... (0 images)
+  ✓ [6/200] Why do you need a CMS solution in your ad campaign... (0 images)
+  ✓ [7/200] Build Stronger Offline Presence for Small Business... (0 images)
+  ✓ [8/200] Promote Active Audience Participation with Locatio... (0 images)
+  ✓ [9/200] Build a Strong Customer Base with a Highly Flexibl... (0 images)
+  ✓ [10/200] Out-of-Home Media Owners - Increase Your Conversio... (0 images)
+    ⚠ Failed to upload image: https://sitebuilder-785213962.zohositescontent.com... - Bad Request - Invalid image, could not read metadata
+    ⚠ Failed to upload image: https://sitebuilder-785213962.zohositescontent.com... - Bad Request - Invalid image, could not read metadata
+  ✓ [11/200] Moving Walls Group Receives SOC 2 Type Compliance,... (0 images)
+  ✓ [12/200] Self-Serve Advertising: Making Out-of-Home (OOH) M... (2 images)
+  ✓ [13/200] Everything You Need to Know About Out-of-Home Adve... (5 images)
+  ✓ [14/200] Measuring the Impact of Digital Screens in Shoppin... (0 images)
+  ✓ [15/200] Location Media Xchange: Your Partner to Unlock Pro... (0 images)
+  ✓ [16/200] What Are the Benefits of Programmatic DOOH?... (0 images)
+  ✓ [17/200] Transforming OOH with Artificial Intelligence (AI)... (2 images)
+  ✓ [18/200] Sporting Events and Digital OOH – Strategic Synchr... (0 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+  ✓ [19/200] The Current State of OOH: A Privacy-First Performa... (8 images)
+  ✓ [20/200] OOH Advertising Trends in 2021: The Resurrection o... (3 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+  ✓ [21/200] OOH vs Online Media: How They Compare across Three... (4 images)
+  ✓ [22/200] OOH 101: A Guide to Successful OOH Campaign Measur... (2 images)
+  ✓ [23/200] The Metrics that define DOOH ROI... (3 images)
+  ✓ [24/200] Interactive Billboards: The Future of DOOH Adverti... (0 images)
+  ✓ [25/200] How IoT is Transforming the Retail Industry... (0 images)
+  ✓ [26/200] Why Millennials and Gen Z Prefer Outdoor Advertisi... (0 images)
+  ✓ [27/200] Foodpanda Embraces Innovation and Data-Advancement... (5 images)
+  ✓ [28/200] Benefits of Impression-Based Digital Outdoor Adver... (0 images)
+  ✓ [29/200] A Single QR Code Can Transform Your Outdoor Advert... (2 images)
+  ✓ [30/200] 2021 Advertising Trends Highlight the Rise of DOOH... (3 images)
+  ✓ [31/200] 4 Reasons to Always Include DOOH in Your Digital C... (0 images)
+  ✓ [32/200] How are Advertisers Measuring Screen Performance?... (0 images)
+  ✓ [33/200] Tourism Recovery Is Accelerating. The Real Opportu... (2 images)
+  ✓ [34/200] Why OOH Remains a Show-Stopper for Luxury Retail... (2 images)
+  ✓ [35/200] DOOH Advertising During Ramadan: Turning Cultural ... (0 images)
+  ✓ [36/200] How DOOH advertising can Amplify User Generated Co... (4 images)
+  ✓ [37/200] Stepping Up the Retail Game: How Programmatic DOOH... (2 images)
+  ✓ [38/200] OOH: The Hottest Destination for Online Travel Bra... (3 images)
+  ✓ [39/200] LMX Unveils Self-Serve Advertising Solution for Me... (1 images)
+  ✓ [40/200] Weather-Proof Your OOH Business: Unlocking the Pot... (1 images)
+  ✓ [41/200] Maximizing Out-of-Home Advertising Revenue with Ef... (2 images)
+  ✓ [42/200] Unlocking OOH Revenue Potential: How Technology Dr... (1 images)
+  ✓ [43/200] Cut Through the Clutter: Why Smart Brands Are Rewr... (0 images)
+  ✓ [44/200] Maximizing Out-of-Home (OOH) Media Revenue for the... (0 images)
+  ✓ [45/200] Why Your Content Management Software is Key to Unl... (0 images)
+  ✓ [46/200] The Future of the OOH Industry: AI Advancements an... (0 images)
+  ✓ [47/200] Partner Spotlight: Anjels Media... (0 images)
+  ✓ [48/200] Maximizing OOH Advertising Impact with Intelligent... (0 images)
+  ✓ [49/200] Built for the Realities of DOOH: How Moving Audien... (3 images)
+  ✓ [50/200] Amplifying Sporting Events with Smarter OOH: From ... (0 images)
+  ✓ [51/200] Partner Spotlight: MING Media Promotion... (0 images)
+  ✓ [52/200] OOH Dominance Starts Here: Turbocharge Your OOH Bu... (4 images)
+  ✓ [53/200] Maximizing Digital Signage Efficiency with Content... (0 images)
+  ✓ [54/200] A Win-Win for OOH Media Owners and Charitable Caus... (0 images)
+  ✓ [55/200] Partner Spotlight: Rainbow... (0 images)
+  ✓ [56/200] Unleashing Smarter OOH: Why Measurement Is Now the... (3 images)
+  ✓ [57/200] Picking the Perfect Out-of-Home Advertising Format... (5 images)
+  ✓ [58/200] A Blend of Tradition and Innovation at WOO 2023 Ba... (3 images)
+  ✓ [59/200] Moving Walls Group Receives SOC 2 Type Compliance,... (2 images)
+  ✓ [60/200] Driving Tourism Performance with Programmatic OOH... (3 images)
+  ✓ [61/200] Solving the OOH Attribution Gap with Sequenced OOH... (0 images)
+  ✓ [62/200] LMX's 2023 Triumph: A Symphony of Growth, Innovati... (0 images)
+  ✓ [63/200] Maximizing Impact: The Role of Content Management ... (0 images)
+  ✓ [64/200] Programmatic DOOH: The Gateway to Revenue Growth f... (3 images)
+  ✓ [65/200] Unlocking the Future of Out-of-Home Advertising fo... (3 images)
+  ✓ [66/200] Beyond Billboards: Technology’s Impact on OOH Busi... (3 images)
+  ✓ [67/200] Decoding OOH Success: Essential Supply-Side Platfo... (2 images)
+  ✓ [68/200] Moving Walls at DIGIMAX IMMAP 2023... (2 images)
+  ✓ [69/200] Demystifying Programmatic Digital Out-of-Home (pDO... (2 images)
+  ✓ [70/200] Unlocking Revenue Potential with Programmatic Digi... (3 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - socket hang up
+  ✓ [71/200] Balancing Act: The Continuing Relevance of Static ... (4 images)
+  ✓ [72/200] The Rise of Retail Media in Out-of-Home Advertisin... (3 images)
+  ✓ [73/200] Challenges and Strategies for OOH Media Owners in ... (3 images)
+  ✓ [74/200] Essential SSP Features for Retail Media Owners in ... (3 images)
+  ✓ [75/200] Optimizing OOH Media Assets: How Media Owners Can ... (2 images)
+  ✓ [76/200] Content Management for Digital Signage in Indian H... (0 images)
+  ✓ [77/200] Streamlining Content Scheduling in Hotels to Maxim... (0 images)
+  ✓ [78/200] Optimizing DOOH Advertising in Malaysia: Simplifyi... (3 images)
+  ✓ [79/200] Future of Digital Out-of-Home (DOOH) Marketing... (5 images)
+  ✓ [80/200] Empowering Singaporean Educational Institutions wi... (0 images)
+  ✓ [81/200] Five Structural Shifts Defining DOOH in 2024... (0 images)
+  ✓ [82/200] Insights from Moving Walls at the DDX Workshop... (3 images)
+  ✓ [83/200] Singapore AdMarCom Festival 2024: Spotlight the br... (2 images)
+  ✓ [84/200] Moving Hearts sets the stage for 2024 with Digital... (2 images)
+  ✓ [85/200] Driving Measurable Retail Outcomes with Digital Ou... (2 images)
+  ✓ [86/200] MASTRUM: A New Benchmark for OOH in Japan... (4 images)
+  ✓ [87/200] DOOH: The Perfect Political Marketers' Platform... (0 images)
+  ✓ [88/200] Reflecting on the success of Knight Frank Singapor... (2 images)
+  ✓ [89/200] Moving Wall’s Journey at the 45th IAA World Congre... (2 images)
+  ✓ [90/200] Moving Walls at WOO Africa 2024 ... (2 images)
+  ✓ [91/200] Transforming Digital Signage: Unlock the Power of ... (0 images)
+  ✓ [92/200] Captivate and Convert: Mastering Digital Signage f... (0 images)
+  ✓ [93/200] Optimizing Digital Signage with Moving Audiences X... (2 images)
+  ✓ [94/200] Reach Millions on the Move: The Power of DOOH... (2 images)
+  ✓ [95/200] Beyond Billboards: Amplifying DOOH for IPL... (2 images)
+  ✓ [96/200] DOOH: The New Shopfront for Retail Brands... (2 images)
+  ✓ [97/200] Capture Attention & Drive Sales: Unlocking the Pow... (2 images)
+  ✓ [98/200] Hyperlocal Marketing: The Key to Unlocking the Ful... (3 images)
+  ✓ [99/200] Touch, Tap, & Transform: A Guide to Interactive Di... (2 images)
+  ✓ [100/200] Moving Walls Makes Waves at WOO Global Congress in... (3 images)
+  ✓ [101/200] Out-of-Home vs. Digital: The Perfect Marketing Mix... (2 images)
+  ✓ [102/200] Unipole Billboards: The Towering Giants of Outdoor... (0 images)
+  ✓ [103/200] Wall Facade Advertising: Urban Architecture Meets ... (0 images)
+  ✓ [104/200] E-Buntings: The Digital Evolution of Traditional O... (0 images)
+  ✓ [105/200] Overhead Bridge Signages: Immediate Visibility Mee... (0 images)
+  ✓ [106/200] OOH in the Digital Age: Moving Walls at ATS Singap... (0 images)
+  ✓ [107/200] Wheels of Change: The Dynamic Impact of LED Truck ... (0 images)
+  ✓ [108/200] Bus Shelter Advertising: The Most Underestimated P... (0 images)
+  ✓ [109/200] The Captivating Power of Cinema Advertising... (0 images)
+  ✓ [110/200] Digital Bulletins: Beacons of Brand Visibility... (0 images)
+  ✓ [111/200] There’s More to OOH... (0 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - Failed to download image: 404
+  ✓ [112/200] A Roadmap Towards Sustainable OOH Media... (5 images)
+  ✓ [113/200] Unlocking Success: Navigating the Costs of Program... (0 images)
+  ✓ [114/200] Unlocking the Power of OOH: Optimize Your Digital ... (5 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - socket hang up
+  ✓ [115/200] Seamless Campaign Planning for Advertisers with Mo... (5 images)
+  ✓ [116/200] From Impressions to Impact How Moving Walls Transf... (2 images)
+  ✓ [117/200] An Exclusive Evening of Sake, Strategy, and OOH In... (5 images)
+  ✓ [118/200] Captivating the Captive: The Power of Airport Scre... (0 images)
+  ✓ [119/200] Why Transformation is Key for DOOH to Unlock Big R... (0 images)
+  ✓ [120/200] Luxury OOH: From Glances to Lasting Impressions... (0 images)
+  ✓ [121/200] Simplify Digital Display Operations for Restaurant... (2 images)
+  ✓ [122/200] From Steakhouse Deals to Self-Service: How OOH's B... (0 images)
+  ✓ [123/200] From Street Stunt to Strategic Breakthrough: How a... (0 images)
+  ✓ [124/200] How Creativity Meets Data: Building High-Impact OO... (0 images)
+  ✓ [125/200] DOOH Advertising: How OOH Media Teams Can Evolve w... (0 images)
+  ✓ [126/200] The 5 SSP Features Every DOOH Media Owner Needs to... (8 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - socket hang up
+  ✓ [127/200] Level Up Your Marketing: Reach Customers In-Store ... (5 images)
+  ✓ [128/200] Unlocking Talent Potential in the Age of AI... (2 images)
+  ✓ [129/200] Cannes by Foot, by Boat, and by the Glass... (4 images)
+  ✓ [130/200] Bringing Online Brands Offline: E-Commerce and Pro... (5 images)
+  ✓ [131/200] How Moving Walls Measure Empower Media Owners with... (0 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - socket hang up
+  ✓ [132/200] From Billboards to Big Wins: How 5 Global Brands A... (4 images)
+  ✓ [133/200] Unlocking Retail Growth: Insights from the Last Mi... (0 images)
+  ✓ [134/200] 3 Steps to Grow In-Mall Revenue with Programmatic ... (7 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - socket hang up
+  ✓ [135/200] Programmatic DOOH Explained: How Smart Outdoor Ads... (4 images)
+  ✓ [136/200] The Targeting Paradox: How to Optimize DOOH Withou... (3 images)
+  ✓ [137/200] The Future of DOOH Monetisation: Why Media Owners ... (4 images)
+  ✓ [138/200] From Billboards to Borderless: How OOH Media Owner... (2 images)
+  ✓ [139/200] How Does OOH Advertising Capitalize on Real-Time O... (4 images)
+  ✓ [140/200] Proving Value with Data: How Media Owners Can Win ... (3 images)
+  ✓ [141/200] The World is Heating Up. Can Advertising Cool It D... (2 images)
+  ✓ [142/200] India’s Billboards Are Ready for the Carbon Challe... (2 images)
+  ✓ [143/200] Carbon Neutral, One Campaign at a Time: Why Southe... (2 images)
+  ✓ [144/200] Measuring DOOH Performance: From Impressions to In... (5 images)
+  ✓ [145/200] Why the 10:10 Sale Needs to Go Beyond the Feed?... (6 images)
+  ✓ [146/200] Why Inventory Management is the Backbone of OOH Sa... (5 images)
+  ✓ [147/200] From Screens to Systems: Why OOH Operators Are Ret... (6 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - socket hang up
+  ✓ [148/200] Why Crypto Brands Should Bet Big on Out-of-Home Ad... (3 images)
+  ✓ [149/200] Digital’s Final Frontier: How Data and Automation ... (2 images)
+    ⚠ Failed to upload image: https://stg.movingwalls.com/wp-content/uploads/202... - socket hang up
+  ✓ [150/200] The Smart Sequence: How Successful Media Owners Gr... (4 images)
+  ✓ [151/200] OOH Advertising Strategies for Luxury Brands: Stan... (4 images)
+  ✓ [152/200] From Visibility to Accountability: How SaaS Tools ... (5 images)
+  ✓ [153/200] Integrating DOOH into Omnichannel Campaigns: The N... (5 images)
+  ✓ [154/200] The great reset in Out-of-Home is here: The time t... (2 images)
+  ✓ [155/200] From Screens to Outcomes - OOH Media's Transformat... (2 images)
+  ✓ [156/200] Build Your OOH Online Store: How Media Owners Can ... (2 images)
+  ✓ [157/200] From Billboards to Automation: The New Era of Smar... (3 images)
+  ✓ [158/200] Meet Moving Walls Planner: The Social Media Ads Ma... (4 images)
+  ✓ [159/200] The Art and Science of Attention: 7 OOH Masterclas... (13 images)
+  ✓ [160/200] DOOH Strategies for Different Campaign Objectives:... (6 images)
+  ✓ [161/200] Measure Beyond Impressions and Reach: Redefining O... (3 images)
+  ✓ [162/200] Grow Your Digital Signage Revenues with Programmat... (0 images)
+  ✓ [163/200] Employee Spotlight: This International Women's Day... (0 images)
+  ✓ [164/200] What is a Revenue Management System and How Does i... (0 images)
+  ✓ [165/200] The 4 Key Features of a Supply Side Platform (SSP)... (0 images)
+  ✓ [166/200] Audience Measurement – Justifying OOH Ad-Expenditu... (0 images)
+  ✓ [167/200] OOH Advertising for Startups – A Guide to Emerging... (0 images)
+  ✓ [168/200] What are the Key Features of a Supply-Side Platfor... (0 images)
+  ✓ [169/200] 3 Key Steps For Your Media Assets to be an Adverti... (0 images)
+  ✓ [170/200] An Introduction to Supply-Side Platform (SSP)... (0 images)
+  ✓ [171/200] HTML5 and DCO for Digital Out of Home (DOOH)... (0 images)
+  ✓ [172/200] Top 3 Key Features You Need In Your Content Manage... (0 images)
+  ✓ [173/200] Reach More Out-of-Home Advertisers & Increase Reve... (1 images)
+  ✓ [174/200] Out-of-Home Media Owners can Now Reach New Adverti... (0 images)
+  ✓ [175/200] Unlocking the Full Potential of Digital Signage Ne... (0 images)
+  ✓ [176/200] Boost Advertiser Trust: How a Self-Serve Portal an... (3 images)
+  ✓ [177/200] The OOH Media Owner’s Guide to Impression-Based Sa... (0 images)
+  ✓ [178/200] A Simple Guide to Out-of-Home (OOH) Advertising: E... (2 images)
+  ✓ [179/200] Unlocking OOH Advertising Success: Spots vs. Impre... (0 images)
+  ✓ [180/200] Moving Walls at Google's DV 360 Partner Roadshow 2... (3 images)
+  ✓ [181/200] Moving Walls and Dentsu Africa: Growing the Role o... (0 images)
+    ⚠ Failed to upload image: https://lh7-us.googleusercontent.com/Y7mWLSFIbCGTT... - Failed to download image: 404
+    ⚠ Failed to upload image: https://lh7-us.googleusercontent.com/q6s9eMtGso0Rw... - Failed to download image: 404
+  ✓ [182/200] Unlocking OOH Success: The Power of Data-Driven Pr... (0 images)
+  ✓ [183/200] The Evolving Landscape of OOH Advertising in Indon... (3 images)
+  ✓ [184/200] Launch Your OOH Storefront in Minutes - No Code Ne... (4 images)
+  ✓ [185/200] Why DOOH Showed Up With a Knife to the CES 2026 Gu... (2 images)
+  ✓ [186/200] OOH Measurement Made Simple: How to Read, Understa... (5 images)
+  ✓ [187/200] Selling OOH in 2026: Why Audience Forecasting Is a... (0 images)
+  ✓ [188/200] Why OOH Planning Needs a Smarter Planner... (4 images)
+  ✓ [189/200] The 6-Second Rule: How to Design Out-of-Home (OOH)... (9 images)
+  ✓ [190/200] One Size Does Not Fit All: See How Your Ad Really ... (7 images)
+  ✓ [191/200] Airport Advertising at Global Scale: How Brands Ca... (7 images)
+  ✓ [192/200] Why showing up still matters: What CES and NRF sig... (5 images)
+  ✓ [193/200] How Multi-Market Media Owners Can Scale OOH Withou... (5 images)
+  ✓ [194/200] Digital Media in 2026: Why Agencies Must Rethink M... (6 images)
+  ✓ [195/200] Control Comes Before Conversion: Why Early Invento... (3 images)
+  ✓ [196/200] How DOOH Helps Agencies Win More Pitches in 2026... (5 images)
+  ✓ [197/200] MW Influence: Built for Media Owners Who Need Deli... (4 images)
+  ✓ [198/200] Beyond Eyeballs: Why Measurement Credibility Defin... (3 images)
+  ✓ [199/200] How Buyers Select OOH Screens And What That Means ... (4 images)
+  ✓ [200/200] From Reach to Revenue: How DOOH Fits Into Performa... (4 images)
+
+📊 Migration complete: 200 success, 0 errors, 417 images uploaded
+
+📄 Generating static TypeScript data file...
+  ✓ Generated: /Users/vivekanandchoudhari/Desktop/WEBSITEMWNEW/src/data/blog-posts.ts
+  ✓ Generated: /Users/vivekanandchoudhari/Desktop/WEBSITEMWNEW/scripts/blog-posts.json
+
+✅ Import complete!
+   Total posts imported: 200
+   Total images uploaded: 291
+   Run "npm run dev" to see the changes on your website

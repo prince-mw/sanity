@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { getAllBlogPosts, getBlogCategories, transformBlogPost, getPageSeo, getSanityImageUrl } from "@/sanity/lib/fetch";
-import { blogPosts as staticBlogPosts, blogCategories as staticCategories } from "@/data/blog-posts";
+import { blogPosts as staticBlogPosts, getAllCategories } from "@/data/blog-posts";
 import BlogListClient from "@/components/BlogListClient";
 
 const defaultMeta = {
@@ -43,13 +43,13 @@ export default async function BlogPage() {
     } else {
       // Fallback to static data if Sanity is empty
       posts = staticBlogPosts;
-      categories = staticCategories;
+      categories = ["All", ...getAllCategories()];
     }
   } catch (error) {
     // Fallback to static data on error
     console.error("Error fetching from Sanity, using static data:", error);
     posts = staticBlogPosts;
-    categories = staticCategories;
+    categories = ["All", ...getAllCategories()];
   }
 
   return <BlogListClient posts={posts} categories={categories} />;

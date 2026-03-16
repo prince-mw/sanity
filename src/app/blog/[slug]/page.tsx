@@ -96,7 +96,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       const staticPost = getPostBySlug(slug);
       if (staticPost) {
         post = staticPost;
-        relatedPosts = getRelatedPosts(slug, staticPost.category, 3);
+        relatedPosts = getRelatedPosts(slug, 3);
       }
     }
   } catch (error) {
@@ -105,7 +105,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     const staticPost = getPostBySlug(slug);
     if (staticPost) {
       post = staticPost;
-      relatedPosts = getRelatedPosts(slug, staticPost.category, 3);
+      relatedPosts = getRelatedPosts(slug, 3);
     }
   }
 
