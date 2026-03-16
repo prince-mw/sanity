@@ -31,13 +31,41 @@ interface TestimonialSectionProps {
   testimonials?: Testimonial[];
 }
 
+// Fallback testimonials data when Sanity data is not available
+const fallbackTestimonials: Testimonial[] = [
+  {
+    quote: "By customising Moving Walls' platform, Jeki adds new services using its transport advertising expertise. We aim to build one of Japan's largest marketplaces with nationwide, diverse OOH inventory.",
+    author: "Ryoji Akaishi",
+    role: "President and Representative Director",
+    company: "jeki",
+    metric: "Japan's Largest OOH Marketplace",
+    industry: "Transport Advertising"
+  },
+  {
+    quote: "This partnership provides us with cutting-edge audience measurement solutions that bring unprecedented insights to our advertising campaigns.",
+    author: "Saad Bencharef",
+    role: "Director of Data and Digital Transformation",
+    company: "FC Media",
+    metric: "Cutting-edge Measurement",
+    industry: "Media"
+  },
+  {
+    quote: "Brand investments grow when advertisers have clarity on ad placements and performance. This partnership strengthens our DOOH planning and expands measurement capabilities for our clients.",
+    author: "Yasmin Mallari",
+    role: "Chief Investment Officer",
+    company: "GroupM, Philippines",
+    metric: "Enhanced DOOH Planning",
+    industry: "Agency"
+  }
+];
+
 export default function TestimonialSection({ testimonials: sanityTestimonials }: TestimonialSectionProps) {
   const { t } = useLocale();
   
-  // Use Sanity testimonials if provided, otherwise fall back to translations
+  // Use Sanity testimonials if provided, otherwise fall back to hardcoded data
   const testimonials: Testimonial[] = sanityTestimonials && sanityTestimonials.length > 0 
     ? sanityTestimonials 
-    : t('landingPage.testimonials.reviews');
+    : fallbackTestimonials;
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
