@@ -1,38 +1,62 @@
 import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
+import {Iframe} from 'sanity-plugin-iframe-pane'
 import {schemaTypes} from './schemas'
 
 // Preview configuration
 const PREVIEW_SECRET = process.env.SANITY_STUDIO_PREVIEW_SECRET || 'preview-secret-key'
 const PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
 
+// Content types that support preview
+const previewTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper', 'product', 'landingPage']
+
+// Type to URL path mapping
+const typeToPath: Record<string, string> = {
+  blogPost: '/blog',
+  caseStudy: '/case-studies',
+  pressRelease: '/press-news',
+  event: '/events',
+  webinar: '/webinars',
+  ebook: '/ebooks',
+  whitepaper: '/whitepapers',
+  product: '/products',
+  landingPage: '',
+}
+
 // URL resolver for preview
 function resolvePreviewUrl(doc: any): string | null {
-  const typeToPath: Record<string, string> = {
-    blogPost: '/blog',
-    caseStudy: '/case-studies',
-    pressRelease: '/press-news',
-    event: '/events',
-    webinar: '/webinars',
-    ebook: '/ebooks',
-    whitepaper: '/whitepapers',
-    product: '/products',
-    landingPage: '',
-  }
-
   const basePath = typeToPath[doc._type]
   if (basePath === undefined) return null
 
   const slug = doc.slug?.current
   if (!slug && basePath !== '') return null
 
-  const previewPath = basePath ? `${basePath}/${slug}` : `/${slug}`
   return `${PREVIEW_URL}/api/preview?secret=${PREVIEW_SECRET}&type=${doc._type}&slug=${slug || ''}`
 }
 
 // Singleton document types - only one document should exist
 const singletonTypes = ['analyticsConfig', 'megaMenu']
+
+// Default document node with preview pane
+const defaultDocumentNode = (S: any, {schemaType}: {schemaType: string}) => {
+  // Only add preview pane for content types that support it
+  if (previewTypes.includes(schemaType)) {
+    return S.document().views([
+      S.view.form(),
+      S.view
+        .component(Iframe)
+        .options({
+          url: (doc: any) => resolvePreviewUrl(doc),
+          reload: {
+            button: true,
+          },
+        })
+        .title('Preview'),
+    ])
+  }
+  return S.document().views([S.view.form()])
+}
 
 // Custom structure for singletons
 const structure = (S: any) =>
@@ -74,7 +98,10 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [
-    structureTool({structure}),
+    structureTool({
+      structure,
+      defaultDocumentNode,
+    }),
     visionTool(),
   ],
 
@@ -82,8 +109,6 @@ export default defineConfig({
   document: {
     actions: (prev, context) => {
       // Add preview action for content types that support preview
-      const previewTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper', 'product', 'landingPage']
-      
       if (previewTypes.includes(context.schemaType)) {
         return [
           ...prev,
