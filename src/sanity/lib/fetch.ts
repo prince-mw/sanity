@@ -681,6 +681,42 @@ export function transformMediaFeature(pr: SanityPressRelease) {
   }
 }
 
+// Get related press releases (excluding current one, same category preferred)
+export async function getRelatedPressReleases(currentSlug: string, category?: string, limit: number = 3): Promise<SanityPressRelease[]> {
+  const query = `
+    *[_type == "pressRelease" && slug.current != $currentSlug && !isMediaFeature] | order(publishedAt desc)[0...$limit] {
+      _id,
+      title,
+      slug,
+      featuredImage,
+      publishedAt,
+      source,
+      externalLink,
+      excerpt,
+      category,
+      readTime,
+      isMediaFeature
+    }
+  `
+  return client.fetch(query, { currentSlug, limit: limit - 1 })
+}
+
+// Transform press release with full content for detail page
+export function transformPressReleaseDetail(pr: SanityPressRelease) {
+  return {
+    date: pr.publishedAt ? formatDate(pr.publishedAt) : '',
+    category: formatPressCategory(pr.category),
+    title: pr.title || '',
+    excerpt: pr.excerpt || '',
+    readTime: pr.readTime || '3 min read',
+    slug: pr.slug?.current || '',
+    externalLink: pr.externalLink,
+    source: pr.source || '',
+    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 1200 }) || '/assets/images/press-placeholder.svg',
+    content: pr.content ? portableTextToHtml(pr.content) : '',
+  }
+}
+
 function formatPressCategory(category: string | undefined): string {
   const categories: Record<string, string> = {
     'product-news': 'Product News',
@@ -1046,7 +1082,7 @@ export interface SanityEbook {
   featured?: boolean
   isNew?: boolean
   viewUrl?: string
-  pdfFile?: any
+  pdfFileUrl?: string
   pages?: number
   downloads?: string
   topics?: string[]
@@ -1066,6 +1102,7 @@ export async function getAllEbooks(): Promise<SanityEbook[]> {
       featured,
       isNew,
       viewUrl,
+      "pdfFileUrl": pdfFile.asset->url,
       pages,
       downloads,
       topics,
@@ -1110,6 +1147,7 @@ export async function getEbooksByCategory(category: string): Promise<SanityEbook
       featured,
       isNew,
       viewUrl,
+      "pdfFileUrl": pdfFile.asset->url,
       pages,
       downloads,
       topics,
@@ -1120,6 +1158,9 @@ export async function getEbooksByCategory(category: string): Promise<SanityEbook
 }
 
 export function transformEbook(ebook: SanityEbook) {
+  // Use viewUrl if set, otherwise use pdfFileUrl if available
+  const viewUrl = ebook.viewUrl || ebook.pdfFileUrl || '';
+  
   return {
     id: ebook._id,
     title: ebook.title || '',
@@ -1130,7 +1171,7 @@ export function transformEbook(ebook: SanityEbook) {
     year: ebook.year || '',
     featured: ebook.featured || false,
     isNew: ebook.isNew || false,
-    viewUrl: ebook.viewUrl,
+    viewUrl: viewUrl,
     pages: ebook.pages || 0,
     downloads: ebook.downloads || '0',
     topics: ebook.topics || [],

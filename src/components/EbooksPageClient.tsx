@@ -205,18 +205,20 @@ const EbookCard = ({
       </div>
 
       <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <a
-          href={ebook.viewUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-white text-mw-blue-600 px-5 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-mw-blue-50 shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-          View
-        </a>
+        {ebook.viewUrl && ebook.viewUrl !== '#' && (
+          <a
+            href={ebook.viewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white text-mw-blue-600 px-5 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-mw-blue-50 shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+            </svg>
+            View
+          </a>
+        )}
         <button
           onClick={() => onDownload(ebook)}
           className="bg-mw-blue-600 text-white px-5 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-mw-blue-700 shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75"
@@ -240,17 +242,19 @@ const EbookCard = ({
         {ebook.description}
       </p>
       <div className="flex items-center gap-4">
-        <a
-          href={ebook.viewUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-gray-600 font-medium text-sm flex items-center gap-1 hover:text-mw-blue-600 hover:gap-2 transition-all"
-        >
-          View E-Book
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
+        {ebook.viewUrl && ebook.viewUrl !== '#' && (
+          <a
+            href={ebook.viewUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-gray-600 font-medium text-sm flex items-center gap-1 hover:text-mw-blue-600 hover:gap-2 transition-all"
+          >
+            View E-Book
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        )}
         <button
           onClick={() => onDownload(ebook)}
           className="text-mw-blue-600 font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all"

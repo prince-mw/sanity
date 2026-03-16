@@ -11,6 +11,7 @@ export interface PressRelease {
   excerpt: string
   readTime: string
   thumbnail?: string
+  slug?: string
 }
 
 export interface MediaFeature {
@@ -80,8 +81,9 @@ export default function PressNewsPageClient({ pressReleases, mediaFeatures }: Pr
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-mw-lg border border-mw-gray-100 overflow-hidden hover:shadow-mw-xl transition-shadow cursor-pointer"
+                className="bg-white rounded-xl shadow-mw-lg border border-mw-gray-100 overflow-hidden hover:shadow-mw-xl transition-shadow"
               >
+                <Link href={release.slug ? `/press-news/${release.slug}` : '#'} className="block">
                 <div className="relative h-48 bg-gradient-to-br from-mw-blue-50 to-mw-blue-100">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
@@ -137,6 +139,7 @@ export default function PressNewsPageClient({ pressReleases, mediaFeatures }: Pr
                     </svg>
                   </span>
                 </div>
+                </Link>
               </motion.article>
             ))}
           </div>
