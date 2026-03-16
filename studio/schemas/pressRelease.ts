@@ -2,7 +2,7 @@ import {defineField, defineType} from 'sanity'
 
 export default defineType({
   name: 'pressRelease',
-  title: 'Press Release',
+  title: 'News',
   type: 'document',
   fields: [
     defineField({
@@ -63,6 +63,11 @@ export default defineType({
           {title: 'Partnership', value: 'partnership'},
           {title: 'Award', value: 'award'},
           {title: 'Industry News', value: 'industry-news'},
+          {title: 'Funding', value: 'funding'},
+          {title: 'Product Launch', value: 'product-launch'},
+          {title: 'Recognition', value: 'recognition'},
+          {title: 'Product Update', value: 'product-update'},
+          {title: 'Expansion', value: 'expansion'},
         ],
       },
     }),
