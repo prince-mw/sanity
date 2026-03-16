@@ -4,7 +4,7 @@ import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemas'
 
 // Singleton document types - only one document should exist
-const singletonTypes = ['analyticsConfig']
+const singletonTypes = ['analyticsConfig', 'megaMenu']
 
 // Custom structure for singletons
 const structure = (S: any) =>
@@ -16,16 +16,25 @@ const structure = (S: any) =>
         (listItem: any) => !singletonTypes.includes(listItem.getId())
       ),
       S.divider(),
-      // Singleton: Analytics & Tracking (at bottom)
+      // Singleton: Analytics & Tracking
       S.listItem()
         .title('Analytics & Tracking')
         .id('analyticsConfig')
-        .icon(() => '📊')
         .child(
           S.document()
             .schemaType('analyticsConfig')
             .documentId('analyticsConfig')
             .title('Analytics & Tracking')
+        ),
+      // Mega Menu at the bottom
+      S.listItem()
+        .title('Mega Menu')
+        .id('megaMenu')
+        .child(
+          S.document()
+            .schemaType('megaMenu')
+            .documentId('megaMenu')
+            .title('Mega Menu Configuration')
         ),
     ])
 

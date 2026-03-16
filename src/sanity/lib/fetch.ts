@@ -5,6 +5,8 @@ export interface SanitySEO {
   metaTitle?: string
   metaDescription?: string
   ogImage?: any
+  keywords?: string[]
+  enableKeywords?: boolean
   noIndex?: boolean
 }
 
@@ -118,6 +120,8 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
         metaTitle,
         metaDescription,
         ogImage,
+        keywords,
+        enableKeywords,
         noIndex
       }
     }
@@ -216,6 +220,8 @@ export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy 
         metaTitle,
         metaDescription,
         ogImage,
+        keywords,
+        enableKeywords,
         noIndex
       }
     }
@@ -636,6 +642,8 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
         metaTitle,
         metaDescription,
         ogImage,
+        keywords,
+        enableKeywords,
         noIndex
       }
     }
@@ -779,6 +787,7 @@ export interface SanityTeamMember {
   email?: string
   isLeadership?: boolean
   order?: number
+  seo?: SanitySEO
 }
 
 export async function getAllTeamMembers(): Promise<SanityTeamMember[]> {
@@ -838,7 +847,15 @@ export async function getTeamMemberBySlug(slug: string): Promise<SanityTeamMembe
       twitter,
       email,
       isLeadership,
-      order
+      order,
+      seo {
+        metaTitle,
+        metaDescription,
+        ogImage,
+        keywords,
+        enableKeywords,
+        noIndex
+      }
     }
   `
   return client.fetch(query, { slug })
@@ -860,6 +877,16 @@ export function transformTeamMember(member: SanityTeamMember) {
 }
 
 // Webinar Types and Queries
+export interface WebinarSpeaker {
+  _key?: string
+  name: string
+  role?: string
+  company?: string
+  bio?: string
+  image?: any
+  linkedin?: string
+}
+
 export interface SanityWebinar {
   _id: string
   title: string
@@ -873,10 +900,7 @@ export interface SanityWebinar {
   duration?: string
   speaker?: string
   speakerRole?: string
-  attendees?: number
-  views?: number
-  rating?: number
-  level?: string
+  speakers?: WebinarSpeaker[]
   registrationLink?: string
   watchLink?: string
   content?: any
@@ -884,6 +908,8 @@ export interface SanityWebinar {
     metaTitle?: string
     metaDescription?: string
     ogImage?: any
+    keywords?: string[]
+    enableKeywords?: boolean
     noIndex?: boolean
   }
 }
@@ -903,10 +929,15 @@ export async function getAllWebinars(): Promise<SanityWebinar[]> {
       duration,
       speaker,
       speakerRole,
-      attendees,
-      views,
-      rating,
-      level,
+      speakers[] {
+        _key,
+        name,
+        role,
+        company,
+        bio,
+        image,
+        linkedin
+      },
       registrationLink,
       watchLink
     }
@@ -929,8 +960,15 @@ export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
       duration,
       speaker,
       speakerRole,
-      attendees,
-      level,
+      speakers[] {
+        _key,
+        name,
+        role,
+        company,
+        bio,
+        image,
+        linkedin
+      },
       registrationLink
     }
   `
@@ -950,9 +988,15 @@ export async function getPastWebinars(): Promise<SanityWebinar[]> {
       duration,
       speaker,
       speakerRole,
-      views,
-      rating,
-      level,
+      speakers[] {
+        _key,
+        name,
+        role,
+        company,
+        bio,
+        image,
+        linkedin
+      },
       watchLink
     }
   `
@@ -972,13 +1016,18 @@ export function transformWebinar(webinar: SanityWebinar) {
     speakerRole: webinar.speakerRole || '',
     speakerImage: getSanityImageUrl(webinar.speakerImage, { width: 200 }) || '',
     featuredImage: getSanityImageUrl(webinar.featuredImage, { width: 800 }) || '',
-    attendees: webinar.attendees || 0,
-    views: webinar.views || 0,
-    rating: webinar.rating || 0,
-    level: webinar.level || 'all-levels',
     webinarType: webinar.webinarType,
     registrationLink: webinar.registrationLink,
     watchLink: webinar.watchLink,
+    speakers: webinar.speakers?.map(s => ({
+      _key: s._key,
+      name: s.name || '',
+      role: s.role || '',
+      company: s.company || '',
+      bio: s.bio || '',
+      image: getSanityImageUrl(s.image, { width: 200 }) || '',
+      linkedin: s.linkedin || '',
+    })) || [],
   }
 }
 
@@ -997,10 +1046,15 @@ export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | nu
       duration,
       speaker,
       speakerRole,
-      attendees,
-      views,
-      rating,
-      level,
+      speakers[] {
+        _key,
+        name,
+        role,
+        company,
+        bio,
+        image,
+        linkedin
+      },
       registrationLink,
       watchLink,
       content,
@@ -1025,7 +1079,15 @@ export async function getRelatedWebinars(currentSlug: string, limit: number = 3)
       duration,
       speaker,
       speakerRole,
-      level
+      speakers[] {
+        _key,
+        name,
+        role,
+        company,
+        bio,
+        image,
+        linkedin
+      }
     }
   `
   return client.fetch(query, { currentSlug, limit })
@@ -1438,6 +1500,7 @@ export interface SanityLocation {
   partners?: string[]
   order?: number
   isActive?: boolean
+  seo?: SanitySEO
 }
 
 export async function getAllLocations(): Promise<SanityLocation[]> {
@@ -1485,7 +1548,15 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
       caseStudies,
       partners,
       order,
-      isActive
+      isActive,
+      seo {
+        metaTitle,
+        metaDescription,
+        ogImage,
+        keywords,
+        enableKeywords,
+        noIndex
+      }
     }
   `
   return client.fetch(query, { slug })
@@ -2331,15 +2402,51 @@ export interface AnalyticsConfig {
 
 // Fetch Analytics Configuration
 export async function getAnalyticsConfig(): Promise<AnalyticsConfig | null> {
-  const query = `
-    *[_type == "analyticsConfig"][0] {
-      googleAnalytics,
-      googleTagManager,
-      metaPixel,
-      linkedinInsight,
-      twitterPixel,
-      tiktokPixel
-    }
-  `
-  return client.fetch(query)
+  try {
+    const query = `
+      *[_type == "analyticsConfig"][0] {
+        googleAnalytics,
+        googleTagManager,
+        metaPixel,
+        linkedinInsight,
+        twitterPixel,
+        tiktokPixel
+      }
+    `
+    return await client.fetch(query)
+  } catch (error) {
+    console.error('Failed to fetch analytics config:', error)
+    return null
+  }
+}
+
+// Page SEO Interface
+export interface PageSeoConfig {
+  pageId: string
+  pageName?: string
+  seo?: SanitySEO
+}
+
+// Fetch SEO configuration for a specific page
+export async function getPageSeo(pageId: string): Promise<PageSeoConfig | null> {
+  try {
+    const query = `
+      *[_type == "pageSeo" && pageId == $pageId][0] {
+        pageId,
+        pageName,
+        seo {
+          metaTitle,
+          metaDescription,
+          ogImage,
+          keywords,
+          enableKeywords,
+          noIndex
+        }
+      }
+    `
+    return await client.fetch(query, { pageId })
+  } catch (error) {
+    console.error('Failed to fetch page SEO:', error)
+    return null
+  }
 }

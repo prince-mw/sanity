@@ -6,6 +6,133 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLocale, Locale } from "@/i18n/LocaleContext";
 
+// Types for Sanity mega menu data
+export interface SanityMenuLink {
+  _key: string;
+  title: string;
+  description?: string;
+  linkType: string;
+  url?: string;
+  internalPage?: string;
+  icon?: string;
+  productRef?: { slug: string };
+  caseStudyRef?: { slug: string };
+  blogPostRef?: { slug: string };
+}
+
+export interface SanityMenuColumn {
+  _key: string;
+  heading?: string;
+  links: SanityMenuLink[];
+}
+
+export interface SanityMenuItem {
+  _key: string;
+  title: string;
+  menuType: 'link' | 'megaMenu';
+  linkType?: string;
+  url?: string;
+  internalPage?: string;
+  openInNewTab?: boolean;
+  highlight?: string;
+  icon?: string;
+  columns?: SanityMenuColumn[];
+  featuredContent?: {
+    enabled: boolean;
+    title?: string;
+    description?: string;
+    image?: string;
+    linkType?: string;
+    url?: string;
+    internalPage?: string;
+    buttonText?: string;
+  };
+  showFeaturedContent?: boolean;
+}
+
+export interface SanityMegaMenuData {
+  _id: string;
+  title: string;
+  mainNavItems: SanityMenuItem[];
+  ctaButton?: {
+    enabled: boolean;
+    text: string;
+    linkType: string;
+    url?: string;
+    internalPage?: string;
+    style: string;
+  };
+  settings?: {
+    stickyHeader?: boolean;
+    showSearch?: boolean;
+    mobileBreakpoint?: string;
+  };
+}
+
+// Helper to resolve link href from Sanity data
+function resolveHref(link: SanityMenuLink): string {
+  switch (link.linkType) {
+    case 'custom':
+      return link.url || '#';
+    case 'internal':
+      return link.internalPage || '#';
+    case 'product':
+      return link.productRef?.slug ? `/products/${link.productRef.slug}` : '#';
+    case 'caseStudy':
+      return link.caseStudyRef?.slug ? `/case-studies/${link.caseStudyRef.slug}` : '#';
+    case 'blogPost':
+      return link.blogPostRef?.slug ? `/blog/${link.blogPostRef.slug}` : '#';
+    default:
+      return link.url || link.internalPage || '#';
+  }
+}
+
+// Helper to resolve menu item href
+function resolveMenuItemHref(item: SanityMenuItem): string {
+  if (item.menuType === 'link') {
+    if (item.linkType === 'custom') {
+      return item.url || '#';
+    }
+    return item.internalPage || '#';
+  }
+  return '#';
+}
+
+// Transform Sanity menu data to the format used by the component
+function transformSanityMenu(sanityData: SanityMegaMenuData | null, t: (key: string) => string) {
+  if (!sanityData?.mainNavItems) return null;
+
+  const megaMenuData: Record<string, { sections: Array<{ title: string; items: Array<{ name: string; description: string; href: string }> }> }> = {};
+  const navLinks: Array<{ key: string; name: string; translatedName: string; href: string; hasMegaMenu: boolean; openInNewTab?: boolean }> = [];
+
+  sanityData.mainNavItems.forEach((item) => {
+    const navLink = {
+      key: item._key,
+      name: item.title,
+      translatedName: item.title,
+      href: item.menuType === 'megaMenu' ? `#${item.title.toLowerCase()}` : resolveMenuItemHref(item),
+      hasMegaMenu: item.menuType === 'megaMenu',
+      openInNewTab: item.openInNewTab,
+    };
+    navLinks.push(navLink);
+
+    if (item.menuType === 'megaMenu' && item.columns) {
+      megaMenuData[item.title] = {
+        sections: item.columns.map((column) => ({
+          title: column.heading || '',
+          items: column.links.map((link) => ({
+            name: link.title,
+            description: link.description || '',
+            href: resolveHref(link),
+          })),
+        })),
+      };
+    }
+  });
+
+  return { megaMenuData, navLinks, ctaButton: sanityData.ctaButton };
+}
+
 // Function to create translated mega menu data
 const createMegaMenuData = (t: (key: string) => string) => ({
   Solutions: {
@@ -72,7 +199,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
   },
 });
 
-// Navigation links with translation keys
+// Navigation links with translation keys (fallback)
 const navLinkKeys = [
   { key: "nav.solutions", name: "Solutions", href: "#solutions", hasMegaMenu: true },
   { key: "nav.products", name: "Products", href: "#products", hasMegaMenu: true },
@@ -81,7 +208,11 @@ const navLinkKeys = [
   { key: "nav.contact", name: "Contact", href: "/contact", hasMegaMenu: false },
 ];
 
-export default function Header() {
+interface HeaderProps {
+  sanityMenuData?: SanityMegaMenuData | null;
+}
+
+export default function Header({ sanityMenuData }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(null);
@@ -90,14 +221,28 @@ export default function Header() {
   // Use the locale context
   const { locale, setLocale, localeNames, localeCodes, locales, t } = useLocale();
   
-  // Create translated mega menu data
-  const megaMenuData = useMemo(() => createMegaMenuData(t), [t]);
+  // Transform Sanity data or fall back to local data
+  const transformedSanityData = useMemo(() => transformSanityMenu(sanityMenuData || null, t), [sanityMenuData, t]);
   
-  // Create translated nav links
-  const navLinks = useMemo(() => navLinkKeys.map(link => ({
-    ...link,
-    translatedName: t(link.key)
-  })), [t]);
+  // Create translated mega menu data (fallback)
+  const fallbackMegaMenuData = useMemo(() => createMegaMenuData(t), [t]);
+  
+  // Use Sanity data if available, otherwise use fallback
+  const megaMenuData = transformedSanityData?.megaMenuData || fallbackMegaMenuData;
+  
+  // Create translated nav links (use Sanity data or fallback)
+  const navLinks = useMemo(() => {
+    if (transformedSanityData?.navLinks) {
+      return transformedSanityData.navLinks;
+    }
+    return navLinkKeys.map(link => ({
+      ...link,
+      translatedName: t(link.key)
+    }));
+  }, [t, transformedSanityData]);
+  
+  // CTA button from Sanity or default
+  const ctaButton = transformedSanityData?.ctaButton;
   
   // Build languages array from locale context
   const languages = locales.map((loc) => ({
@@ -232,15 +377,24 @@ export default function Header() {
               </AnimatePresence>
             </div>
 
-            <motion.a
-              href="/contact"
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.5 }}
-              className="bg-mw-blue-600 hover:bg-mw-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-block"
-            >
-              Get Started
-            </motion.a>
+            {/* CTA Button - uses Sanity data if available */}
+            {(ctaButton?.enabled !== false) && (
+              <motion.a
+                href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.5 }}
+                className={`px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-block ${
+                  ctaButton?.style === 'secondary' 
+                    ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                    : ctaButton?.style === 'outline'
+                      ? 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50'
+                      : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
+                }`}
+              >
+                {ctaButton?.text || 'Get Started'}
+              </motion.a>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -436,9 +590,21 @@ export default function Header() {
                   </button>
                 </div>
 
-                <a href="/contact" className="block w-full bg-mw-blue-600 hover:bg-mw-blue-700 text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 mt-4 text-center">
-                  Get Started
-                </a>
+                {/* Mobile CTA Button */}
+                {(ctaButton?.enabled !== false) && (
+                  <a 
+                    href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')} 
+                    className={`block w-full px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 mt-4 text-center ${
+                      ctaButton?.style === 'secondary' 
+                        ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                        : ctaButton?.style === 'outline'
+                          ? 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50'
+                          : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
+                    }`}
+                  >
+                    {ctaButton?.text || 'Get Started'}
+                  </a>
+                )}
               </div>
             </motion.div>
           )}

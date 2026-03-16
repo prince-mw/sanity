@@ -1,15 +1,28 @@
 import { Metadata } from 'next'
-import { getAllEvents, transformEvent } from '@/sanity/lib/fetch'
+import { getAllEvents, transformEvent, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 import EventsPageClient, { Event } from '@/components/EventsPageClient'
 
-export const metadata: Metadata = {
+const defaultMeta = {
   title: 'Events & Training | Moving Walls',
   description: 'Join Moving Walls events, webinars, workshops, conferences, and training sessions. Learn best practices and connect with advertising professionals.',
-  openGraph: {
-    title: 'Events & Training | Moving Walls',
-    description: 'Join our events, webinars, workshops, and training sessions.',
-    type: 'website',
-  },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('events');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || defaultMeta.title,
+      description: seo?.metaDescription || 'Join our events, webinars, workshops, and training sessions.',
+      type: 'website',
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
 }
 
 export const revalidate = 300

@@ -1,15 +1,28 @@
 import { Metadata } from 'next'
-import { getPressReleases, getMediaFeatures, transformPressRelease, transformMediaFeature } from '@/sanity/lib/fetch'
+import { getPressReleases, getMediaFeatures, transformPressRelease, transformMediaFeature, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 import PressNewsPageClient, { PressRelease, MediaFeature } from '@/components/PressNewsPageClient'
 
-export const metadata: Metadata = {
+const defaultMeta = {
   title: 'Press & News | Moving Walls',
   description: 'Stay updated with MovingWalls latest announcements, product launches, partnerships, and industry recognition.',
-  openGraph: {
-    title: 'Press & News | Moving Walls',
-    description: 'Latest news and announcements from Moving Walls.',
-    type: 'website',
-  },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('press-news');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || defaultMeta.title,
+      description: seo?.metaDescription || 'Latest news and announcements from Moving Walls.',
+      type: 'website',
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
 }
 
 export const revalidate = 300

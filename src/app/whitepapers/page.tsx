@@ -1,15 +1,28 @@
 import { Metadata } from 'next'
-import { getAllWhitepapers, transformWhitepaper } from '@/sanity/lib/fetch'
+import { getAllWhitepapers, transformWhitepaper, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 import WhitepapersPageClient, { Whitepaper } from '@/components/WhitepapersPageClient'
 
-export const metadata: Metadata = {
+const defaultMeta = {
   title: 'Whitepapers & Research Reports | Moving Walls',
   description: 'Access in-depth whitepapers, research reports, and industry insights about out-of-home advertising, programmatic DOOH, and advertising technology.',
-  openGraph: {
-    title: 'Whitepapers & Research Reports | Moving Walls',
-    description: 'Access in-depth whitepapers, research reports, and industry insights about out-of-home advertising.',
-    type: 'website',
-  },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('whitepapers');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || defaultMeta.title,
+      description: seo?.metaDescription || 'Access in-depth whitepapers, research reports, and industry insights.',
+      type: 'website',
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
 }
 
 export const revalidate = 300

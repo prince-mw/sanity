@@ -171,6 +171,20 @@ export default defineType({
       description: 'Search engine optimization settings',
     }),
     defineField({
+      name: 'seoTitle',
+      title: 'SEO Title (Legacy)',
+      type: 'string',
+      description: 'Legacy SEO title field - use the SEO object above instead',
+      hidden: true,
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'SEO Description (Legacy)',
+      type: 'text',
+      description: 'Legacy SEO description field - use the SEO object above instead',
+      hidden: true,
+    }),
+    defineField({
       name: 'order',
       title: 'Display Order',
       type: 'number',

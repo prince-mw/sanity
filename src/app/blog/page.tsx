@@ -1,17 +1,30 @@
 import { Metadata } from "next";
-import { getAllBlogPosts, getBlogCategories, transformBlogPost } from "@/sanity/lib/fetch";
+import { getAllBlogPosts, getBlogCategories, transformBlogPost, getPageSeo, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { blogPosts as staticBlogPosts, blogCategories as staticCategories } from "@/data/blog-posts";
 import BlogListClient from "@/components/BlogListClient";
 
-export const metadata: Metadata = {
+const defaultMeta = {
   title: "Blog | Moving Walls",
   description: "Insights, trends, and expert perspectives on out-of-home advertising, programmatic DOOH, audience measurement, and marketing technology.",
-  openGraph: {
-    title: "Blog | Moving Walls",
-    description: "Latest insights and trends in out-of-home advertising technology.",
-    type: "website",
-  },
 };
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('blog');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || defaultMeta.title,
+      description: seo?.metaDescription || "Latest insights and trends in out-of-home advertising technology.",
+      type: "website",
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
+}
 
 export const revalidate = 60; // Revalidate every 60 seconds
 

@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
-import { getLocationBySlug, transformLocationFull } from '@/sanity/lib/fetch'
+import { getLocationBySlug, transformLocationFull, getSanityImageUrl } from '@/sanity/lib/fetch'
 import { getStaticLocationData, STATIC_LOCATION_SLUGS, LocationData } from '@/data/staticLocationData'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -10,14 +10,24 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Try Sanity first
   const sanityLocation = await getLocationBySlug(slug)
   if (sanityLocation) {
+    const seo = sanityLocation.seo
+    const title = seo?.metaTitle || `${sanityLocation.country} | OOH Advertising | Moving Walls`
+    const description = seo?.metaDescription || sanityLocation.description || `Explore OOH advertising opportunities in ${sanityLocation.country}.`
+    const ogImage = seo?.ogImage 
+      ? getSanityImageUrl(seo.ogImage, { width: 1200 })
+      : getSanityImageUrl(sanityLocation.heroImage, { width: 1200 })
+    
     return {
-      title: `${sanityLocation.country} | OOH Advertising | Moving Walls`,
-      description: sanityLocation.description || `Explore OOH advertising opportunities in ${sanityLocation.country}.`,
+      title,
+      description,
+      keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
       openGraph: {
-        title: `OOH Advertising in ${sanityLocation.country} | Moving Walls`,
-        description: sanityLocation.description || `Out-of-home advertising solutions in ${sanityLocation.country}.`,
+        title: seo?.metaTitle || `OOH Advertising in ${sanityLocation.country} | Moving Walls`,
+        description,
         type: 'website',
+        images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
       },
+      robots: seo?.noIndex ? { index: false, follow: false } : undefined,
     }
   }
   

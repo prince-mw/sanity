@@ -1,0 +1,153 @@
+import {defineType, defineField} from 'sanity'
+import {LinkIcon} from '@sanity/icons'
+
+export default defineType({
+  name: 'menuLink',
+  title: 'Menu Link',
+  type: 'object',
+  icon: LinkIcon,
+  fields: [
+    defineField({
+      name: 'title',
+      title: 'Title',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'string',
+      description: 'Optional short description shown below the title',
+    }),
+    defineField({
+      name: 'icon',
+      title: 'Icon',
+      type: 'image',
+      description: 'Optional icon (recommended size: 24x24 or 32x32)',
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
+      name: 'linkType',
+      title: 'Link Type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Custom URL', value: 'custom'},
+          {title: 'Internal Page', value: 'internal'},
+          {title: 'Product', value: 'product'},
+          {title: 'Case Study', value: 'caseStudy'},
+          {title: 'Blog Post', value: 'blogPost'},
+          {title: 'Event', value: 'event'},
+          {title: 'Webinar', value: 'webinar'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'custom',
+    }),
+    defineField({
+      name: 'url',
+      title: 'URL',
+      type: 'string',
+      description: 'External or internal URL path (e.g., /about or https://example.com)',
+      hidden: ({parent}) => parent?.linkType !== 'custom',
+    }),
+    defineField({
+      name: 'internalPage',
+      title: 'Internal Page',
+      type: 'string',
+      description: 'Select a page path',
+      options: {
+        list: [
+          {title: 'Home', value: '/'},
+          {title: 'About', value: '/about'},
+          {title: 'Our Story', value: '/our-story'},
+          {title: 'Our Journey', value: '/our-journey'},
+          {title: 'Leadership', value: '/leadership'},
+          {title: 'Careers', value: '/careers'},
+          {title: 'Contact', value: '/contact'},
+          {title: 'Blog', value: '/blog'},
+          {title: 'Case Studies', value: '/case-studies'},
+          {title: 'Press & News', value: '/press-news'},
+          {title: 'Events', value: '/events'},
+          {title: 'Webinars', value: '/webinars'},
+          {title: 'Platform', value: '/platform'},
+          {title: 'Products', value: '/products'},
+          {title: 'Integrations', value: '/integrations'},
+          {title: 'Brands', value: '/brands'},
+          {title: 'Agencies', value: '/agencies'},
+          {title: 'Media Owners', value: '/media-owners'},
+          {title: 'Retail', value: '/retail'},
+          {title: 'Finance', value: '/finance'},
+          {title: 'Healthcare', value: '/healthcare'},
+          {title: 'OOH Formats', value: '/ooh-formats'},
+          {title: 'Ebooks', value: '/ebooks'},
+          {title: 'Whitepapers', value: '/whitepapers'},
+          {title: 'Help Center', value: '/help-center'},
+          {title: 'Documentation', value: '/documentation'},
+          {title: 'API Reference', value: '/api-reference'},
+        ],
+      },
+      hidden: ({parent}) => parent?.linkType !== 'internal',
+    }),
+    defineField({
+      name: 'productRef',
+      title: 'Product',
+      type: 'reference',
+      to: [{type: 'product'}],
+      hidden: ({parent}) => parent?.linkType !== 'product',
+    }),
+    defineField({
+      name: 'caseStudyRef',
+      title: 'Case Study',
+      type: 'reference',
+      to: [{type: 'caseStudy'}],
+      hidden: ({parent}) => parent?.linkType !== 'caseStudy',
+    }),
+    defineField({
+      name: 'blogPostRef',
+      title: 'Blog Post',
+      type: 'reference',
+      to: [{type: 'blogPost'}],
+      hidden: ({parent}) => parent?.linkType !== 'blogPost',
+    }),
+    defineField({
+      name: 'eventRef',
+      title: 'Event',
+      type: 'reference',
+      to: [{type: 'event'}],
+      hidden: ({parent}) => parent?.linkType !== 'event',
+    }),
+    defineField({
+      name: 'webinarRef',
+      title: 'Webinar',
+      type: 'reference',
+      to: [{type: 'webinar'}],
+      hidden: ({parent}) => parent?.linkType !== 'webinar',
+    }),
+    defineField({
+      name: 'openInNewTab',
+      title: 'Open in New Tab',
+      type: 'boolean',
+      initialValue: false,
+    }),
+  ],
+  preview: {
+    select: {
+      title: 'title',
+      linkType: 'linkType',
+      url: 'url',
+      internalPage: 'internalPage',
+      media: 'icon',
+    },
+    prepare({title, linkType, url, internalPage, media}) {
+      const path = linkType === 'internal' ? internalPage : url
+      return {
+        title: title || 'Untitled Link',
+        subtitle: path || linkType,
+        media,
+      }
+    },
+  },
+})

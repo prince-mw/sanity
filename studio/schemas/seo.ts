@@ -31,6 +31,23 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'keywords',
+      title: 'SEO Keywords',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Keywords for search engine optimization (comma-separated)',
+      options: {
+        layout: 'tags',
+      },
+    }),
+    defineField({
+      name: 'enableKeywords',
+      title: 'Enable SEO Keywords',
+      type: 'boolean',
+      description: 'Toggle to enable/disable keywords meta tag for this page',
+      initialValue: true,
+    }),
+    defineField({
       name: 'noIndex',
       title: 'Hide from Search Engines',
       type: 'boolean',

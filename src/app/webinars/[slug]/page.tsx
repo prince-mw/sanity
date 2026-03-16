@@ -37,6 +37,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       return {
         title: `${title} | Webinars | Moving Walls`,
         description,
+        keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
         openGraph: {
           title,
           description,
@@ -87,14 +88,19 @@ export default async function WebinarDetailPage({ params }: PageProps) {
       speakerRole: webinar.speakerRole || '',
       speakerImage: getSanityImageUrl(webinar.speakerImage, { width: 200 }) || '',
       featuredImage: getSanityImageUrl(webinar.featuredImage, { width: 1200 }) || '',
-      attendees: webinar.attendees || 0,
-      views: webinar.views || 0,
-      rating: webinar.rating || 0,
-      level: webinar.level || 'All Levels',
       webinarType: webinar.webinarType,
       registrationLink: webinar.registrationLink || '',
       watchLink: webinar.watchLink || '',
       content: webinar.content,
+      speakers: webinar.speakers?.map(s => ({
+        _key: s._key || '',
+        name: s.name || '',
+        role: s.role || '',
+        company: s.company || '',
+        bio: s.bio || '',
+        image: getSanityImageUrl(s.image, { width: 200 }) || '',
+        linkedin: s.linkedin || '',
+      })) || [],
     };
     
     const transformedRelated = relatedWebinars.map(w => ({
@@ -106,8 +112,16 @@ export default async function WebinarDetailPage({ params }: PageProps) {
       speaker: w.speaker || '',
       speakerRole: w.speakerRole || '',
       featuredImage: getSanityImageUrl(w.featuredImage, { width: 400 }) || '',
-      level: w.level || 'All Levels',
       webinarType: w.webinarType,
+      speakers: w.speakers?.map(s => ({
+        _key: s._key || '',
+        name: s.name || '',
+        role: s.role || '',
+        company: s.company || '',
+        bio: s.bio || '',
+        image: getSanityImageUrl(s.image, { width: 200 }) || '',
+        linkedin: s.linkedin || '',
+      })) || [],
     }));
     
     return <WebinarDetailClient webinar={transformedWebinar} relatedWebinars={transformedRelated} />;

@@ -15,8 +15,6 @@ export interface UpcomingWebinar {
   speakerRole: string
   speakerImage?: string
   featuredImage?: string
-  attendees: number
-  level: string
 }
 
 export interface PastWebinar {
@@ -30,7 +28,6 @@ export interface PastWebinar {
   speakerRole: string
   speakerImage?: string
   featuredImage?: string
-  level: string
 }
 
 interface WebinarsPageClientProps {
@@ -68,11 +65,10 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
             </p>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8 max-w-xl mx-auto">
               {[
                 { number: '50+', label: 'Webinars' },
-                { number: '10K+', label: 'Attendees' },
-                { number: '4.8★', label: 'Avg Rating' }
+                { number: '10K+', label: 'Industry Experts' }
               ].map((stat, index) => (
                 <motion.div
                   key={index}
@@ -149,7 +145,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                             </svg>
                           )}
                           <span className="absolute top-3 left-3 px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
-                            {webinar.level}
+                            Upcoming
                           </span>
                         </div>
                       </Link>
@@ -191,12 +187,6 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                             <p className="font-medium text-mw-gray-900">{webinar.speaker}</p>
                             <p className="text-xs text-mw-gray-500">{webinar.speakerRole}</p>
                           </div>
-                        </div>
-                        <div className="flex items-center gap-2 text-sm text-mw-gray-600">
-                          <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                          </svg>
-                          <span>{webinar.attendees} registered</span>
                         </div>
                       </div>
 
@@ -245,9 +235,6 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                               <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
                             </svg>
                           )}
-                          <span className="absolute top-3 left-3 px-3 py-1 bg-mw-gray-100 text-mw-gray-700 text-xs font-medium rounded-full">
-                            {webinar.level}
-                          </span>
                           <span className="absolute top-3 right-3 px-3 py-1 bg-mw-gray-700 text-white text-xs font-medium rounded-full">
                             Recorded
                           </span>

@@ -1,15 +1,28 @@
 import { Metadata } from 'next'
-import { getUpcomingWebinars, getPastWebinars, transformWebinar } from '@/sanity/lib/fetch'
+import { getUpcomingWebinars, getPastWebinars, transformWebinar, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 import WebinarsPageClient, { UpcomingWebinar, PastWebinar } from '@/components/WebinarsPageClient'
 
-export const metadata: Metadata = {
+const defaultMeta = {
   title: 'Webinars & Live Events | Moving Walls',
   description: 'Join live webinars with industry experts or watch recordings of past webinars about out-of-home advertising and programmatic DOOH.',
-  openGraph: {
-    title: 'Webinars & Live Events | Moving Walls',
-    description: 'Join live webinars with industry experts or watch past webinar recordings.',
-    type: 'website',
-  },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('webinars');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || defaultMeta.title,
+      description: seo?.metaDescription || 'Join live webinars with industry experts or watch past webinar recordings.',
+      type: 'website',
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
 }
 
 export const revalidate = 300
@@ -22,9 +35,7 @@ const fallbackUpcomingWebinars: UpcomingWebinar[] = [
     time: "2:00 PM EST",
     duration: "60 min",
     speaker: "Dr. Sarah Mitchell",
-    speakerRole: "Chief Data Scientist",
-    attendees: 234,
-    level: "Advanced"
+    speakerRole: "Chief Data Scientist"
   },
   {
     title: "Getting Started with Programmatic DOOH",
@@ -33,9 +44,7 @@ const fallbackUpcomingWebinars: UpcomingWebinar[] = [
     time: "11:00 AM EST",
     duration: "45 min",
     speaker: "Michael Torres",
-    speakerRole: "Product Manager",
-    attendees: 456,
-    level: "Beginner"
+    speakerRole: "Product Manager"
   },
   {
     title: "Healthcare Marketing Compliance & Best Practices",
@@ -44,9 +53,7 @@ const fallbackUpcomingWebinars: UpcomingWebinar[] = [
     time: "1:00 PM EST",
     duration: "50 min",
     speaker: "Dr. Amanda Lee",
-    speakerRole: "Healthcare Marketing Expert",
-    attendees: 189,
-    level: "Intermediate"
+    speakerRole: "Healthcare Marketing Expert"
   }
 ]
 
@@ -58,8 +65,7 @@ const fallbackPastWebinars: PastWebinar[] = [
     time: "2:00 PM EST",
     duration: "75 min",
     speaker: "James Wilson",
-    speakerRole: "Senior Solutions Architect",
-    level: "Intermediate"
+    speakerRole: "Senior Solutions Architect"
   },
   {
     title: "The Future of Retail Advertising in 2025",
@@ -68,8 +74,7 @@ const fallbackPastWebinars: PastWebinar[] = [
     time: "11:00 AM EST",
     duration: "45 min",
     speaker: "Lisa Chen",
-    speakerRole: "Industry Analyst",
-    level: "All Levels"
+    speakerRole: "Industry Analyst"
   },
   {
     title: "Location-Based Targeting Masterclass",
@@ -78,8 +83,7 @@ const fallbackPastWebinars: PastWebinar[] = [
     time: "3:00 PM EST",
     duration: "60 min",
     speaker: "Robert Martinez",
-    speakerRole: "Targeting Specialist",
-    level: "Advanced"
+    speakerRole: "Targeting Specialist"
   },
   {
     title: "Creative Best Practices for DOOH Campaigns",
@@ -88,8 +92,7 @@ const fallbackPastWebinars: PastWebinar[] = [
     time: "1:00 PM EST",
     duration: "40 min",
     speaker: "Emily Rodriguez",
-    speakerRole: "Creative Director",
-    level: "All Levels"
+    speakerRole: "Creative Director"
   }
 ]
 
@@ -116,9 +119,7 @@ export default async function WebinarsPage() {
           speaker: transformed.speaker || 'TBD',
           speakerRole: transformed.speakerRole || '',
           featuredImage: transformed.featuredImage || '',
-          speakerImage: transformed.speakerImage || '',
-          attendees: transformed.attendees || 0,
-          level: transformed.level || 'All Levels'
+          speakerImage: transformed.speakerImage || ''
         }
       })
     }
@@ -136,8 +137,7 @@ export default async function WebinarsPage() {
           speaker: transformed.speaker || 'TBD',
           speakerRole: transformed.speakerRole || '',
           featuredImage: transformed.featuredImage || '',
-          speakerImage: transformed.speakerImage || '',
-          level: transformed.level || 'All Levels'
+          speakerImage: transformed.speakerImage || ''
         }
       })
     }

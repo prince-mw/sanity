@@ -65,55 +65,85 @@ export default defineType({
       type: 'string',
       description: 'e.g., "60 min"',
     }),
+    // Legacy single speaker fields (for backward compatibility)
     defineField({
       name: 'speaker',
-      title: 'Speaker Name',
+      title: 'Speaker Name (Legacy)',
       type: 'string',
+      hidden: true,
     }),
     defineField({
       name: 'speakerRole',
-      title: 'Speaker Role',
+      title: 'Speaker Role (Legacy)',
       type: 'string',
+      hidden: true,
     }),
     defineField({
       name: 'speakerImage',
-      title: 'Speaker Image',
+      title: 'Speaker Image (Legacy)',
       type: 'image',
       options: {
         hotspot: true,
       },
+      hidden: true,
     }),
+    // New multiple speakers array
     defineField({
-      name: 'attendees',
-      title: 'Attendees',
-      type: 'number',
-      description: 'Number of registrants (for upcoming)',
-    }),
-    defineField({
-      name: 'views',
-      title: 'Views',
-      type: 'number',
-      description: 'Number of views (for on-demand)',
-    }),
-    defineField({
-      name: 'rating',
-      title: 'Rating',
-      type: 'number',
-      description: 'Rating out of 5 (for on-demand)',
-      validation: (Rule) => Rule.min(0).max(5),
-    }),
-    defineField({
-      name: 'level',
-      title: 'Level',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Beginner', value: 'beginner'},
-          {title: 'Intermediate', value: 'intermediate'},
-          {title: 'Advanced', value: 'advanced'},
-          {title: 'All Levels', value: 'all-levels'},
-        ],
-      },
+      name: 'speakers',
+      title: 'Speakers',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'speakerInfo',
+          title: 'Speaker',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Name',
+              type: 'string',
+              validation: (Rule) => Rule.required(),
+            }),
+            defineField({
+              name: 'role',
+              title: 'Role/Title',
+              type: 'string',
+            }),
+            defineField({
+              name: 'company',
+              title: 'Company',
+              type: 'string',
+            }),
+            defineField({
+              name: 'bio',
+              title: 'Bio',
+              type: 'text',
+              rows: 3,
+            }),
+            defineField({
+              name: 'image',
+              title: 'Photo',
+              type: 'image',
+              options: {
+                hotspot: true,
+              },
+            }),
+            defineField({
+              name: 'linkedin',
+              title: 'LinkedIn URL',
+              type: 'url',
+            }),
+          ],
+          preview: {
+            select: {
+              title: 'name',
+              subtitle: 'role',
+              media: 'image',
+            },
+          },
+        },
+      ],
+      description: 'Add one or more speakers for this webinar',
     }),
     defineField({
       name: 'registrationLink',
@@ -143,11 +173,6 @@ export default defineType({
       title: 'Date (Newest)',
       name: 'dateDesc',
       by: [{field: 'date', direction: 'desc'}],
-    },
-    {
-      title: 'Views',
-      name: 'viewsDesc',
-      by: [{field: 'views', direction: 'desc'}],
     },
   ],
   preview: {

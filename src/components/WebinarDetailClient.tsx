@@ -1,8 +1,41 @@
 'use client'
 
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
+
+// Helper to build Sanity image URL from asset reference
+function buildSanityImageUrl(image: any, width?: number): string {
+  if (!image?.asset?._ref) return ''
+  
+  // Parse the asset reference: image-{id}-{dimensions}-{format}
+  const ref = image.asset._ref
+  const [, id, dimensions, format] = ref.split('-')
+  
+  if (!id || !dimensions || !format) return ''
+  
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di'
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+  
+  let url = `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${dimensions}.${format}`
+  
+  if (width) {
+    url += `?w=${width}&q=85&auto=format`
+  }
+  
+  return url
+}
+
+interface Speaker {
+  _key: string
+  name: string
+  role: string
+  company: string
+  bio: string
+  image: string
+  linkedin: string
+}
 
 interface WebinarDetail {
   id: string
@@ -16,14 +49,11 @@ interface WebinarDetail {
   speakerRole: string
   speakerImage: string
   featuredImage: string
-  attendees: number
-  views: number
-  rating: number
-  level: string
   webinarType: 'upcoming' | 'past'
   registrationLink: string
   watchLink: string
   content?: any
+  speakers?: Speaker[]
 }
 
 interface RelatedWebinar {
@@ -35,8 +65,8 @@ interface RelatedWebinar {
   speaker: string
   speakerRole: string
   featuredImage: string
-  level: string
   webinarType: 'upcoming' | 'past'
+  speakers?: Speaker[]
 }
 
 interface WebinarDetailClientProps {
@@ -47,11 +77,13 @@ interface WebinarDetailClientProps {
 const portableTextComponents = {
   types: {
     image: ({ value }: any) => {
-      if (!value?.asset?._ref) return null
+      if (!value?.asset) return null
+      const imageUrl = buildSanityImageUrl(value, 800)
+      if (!imageUrl) return null
       return (
         <figure className="my-8">
           <img
-            src={value.asset.url}
+            src={imageUrl}
             alt={value.alt || ''}
             className="rounded-xl w-full"
           />
@@ -63,13 +95,62 @@ const portableTextComponents = {
         </figure>
       )
     },
+    video: ({ value }: any) => {
+      if (!value?.url) return null
+      // Extract video ID for YouTube/Vimeo embeds
+      const getVideoEmbed = (url: string) => {
+        if (url.includes('youtube.com') || url.includes('youtu.be')) {
+          const videoId = url.includes('youtu.be') 
+            ? url.split('/').pop() 
+            : url.split('v=')[1]?.split('&')[0]
+          return `https://www.youtube.com/embed/${videoId}`
+        }
+        if (url.includes('vimeo.com')) {
+          const videoId = url.split('/').pop()
+          return `https://player.vimeo.com/video/${videoId}`
+        }
+        return url
+      }
+      return (
+        <figure className="my-8">
+          <div className="aspect-video rounded-xl overflow-hidden">
+            <iframe
+              src={getVideoEmbed(value.url)}
+              className="w-full h-full"
+              allowFullScreen
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            />
+          </div>
+          {value.caption && (
+            <figcaption className="text-center text-sm text-mw-gray-500 mt-2">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      )
+    },
+    codeBlock: ({ value }: any) => {
+      return (
+        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-xl overflow-x-auto text-sm">
+          <code className={`language-${value.language || 'text'}`}>
+            {value.code}
+          </code>
+        </pre>
+      )
+    },
   },
   block: {
+    h1: ({ children }: any) => (
+      <h1 className="text-3xl font-bold text-mw-gray-900 mt-10 mb-6">{children}</h1>
+    ),
     h2: ({ children }: any) => (
       <h2 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">{children}</h2>
     ),
     h3: ({ children }: any) => (
       <h3 className="text-xl font-bold text-mw-gray-900 mt-6 mb-3">{children}</h3>
+    ),
+    h4: ({ children }: any) => (
+      <h4 className="text-lg font-bold text-mw-gray-900 mt-4 mb-2">{children}</h4>
     ),
     normal: ({ children }: any) => (
       <p className="text-mw-gray-700 mb-4 leading-relaxed">{children}</p>
@@ -84,8 +165,8 @@ const portableTextComponents = {
     link: ({ children, value }: any) => (
       <a 
         href={value?.href} 
-        target="_blank" 
-        rel="noopener noreferrer"
+        target={value?.blank ? '_blank' : undefined}
+        rel={value?.blank ? 'noopener noreferrer' : undefined}
         className="text-mw-blue-600 hover:underline"
       >
         {children}
@@ -93,6 +174,18 @@ const portableTextComponents = {
     ),
     strong: ({ children }: any) => (
       <strong className="font-semibold text-mw-gray-900">{children}</strong>
+    ),
+    em: ({ children }: any) => (
+      <em className="italic">{children}</em>
+    ),
+    underline: ({ children }: any) => (
+      <span className="underline">{children}</span>
+    ),
+    'strike-through': ({ children }: any) => (
+      <span className="line-through">{children}</span>
+    ),
+    code: ({ children }: any) => (
+      <code className="bg-mw-gray-100 text-mw-blue-600 px-1.5 py-0.5 rounded text-sm font-mono">{children}</code>
     ),
   },
   list: {
@@ -102,6 +195,10 @@ const portableTextComponents = {
     number: ({ children }: any) => (
       <ol className="list-decimal list-inside mb-4 space-y-2 text-mw-gray-700">{children}</ol>
     ),
+  },
+  listItem: {
+    bullet: ({ children }: any) => <li>{children}</li>,
+    number: ({ children }: any) => <li>{children}</li>,
   },
 }
 
@@ -115,15 +212,37 @@ function formatDate(dateString: string): string {
   })
 }
 
-function formatLevel(level: string): string {
-  if (!level) return 'All Levels'
-  return level.split('-').map(word => 
-    word.charAt(0).toUpperCase() + word.slice(1)
-  ).join(' ')
+// Helper to get embeddable video URL
+function getVideoEmbedUrl(url: string | undefined): string {
+  if (!url) return ''
+  
+  // YouTube
+  if (url.includes('youtube.com') || url.includes('youtu.be')) {
+    let videoId = ''
+    if (url.includes('youtu.be')) {
+      videoId = url.split('/').pop()?.split('?')[0] || ''
+    } else if (url.includes('v=')) {
+      videoId = url.split('v=')[1]?.split('&')[0] || ''
+    } else if (url.includes('/embed/')) {
+      videoId = url.split('/embed/')[1]?.split('?')[0] || ''
+    }
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=1` : url
+  }
+  
+  // Vimeo
+  if (url.includes('vimeo.com')) {
+    const videoId = url.split('/').pop()?.split('?')[0] || ''
+    return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1` : url
+  }
+  
+  return url
 }
 
 export default function WebinarDetailClient({ webinar, relatedWebinars }: WebinarDetailClientProps) {
   const isUpcoming = webinar.webinarType === 'upcoming'
+  const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
+  
+  const videoEmbedUrl = getVideoEmbedUrl(webinar.watchLink)
 
   return (
     <div className="min-h-screen bg-white">
@@ -161,9 +280,6 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
                       : 'bg-mw-gray-100 text-mw-gray-700'
                   }`}>
                     {isUpcoming ? 'Upcoming Webinar' : 'Past Webinar'}
-                  </span>
-                  <span className="px-3 py-1 bg-mw-gray-100 text-mw-gray-600 rounded-full text-xs font-medium">
-                    {formatLevel(webinar.level)}
                   </span>
                 </div>
 
@@ -214,20 +330,6 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
                       <p className="font-medium text-mw-gray-900">{webinar.duration || '60 min'}</p>
                     </div>
                   </div>
-
-                  {isUpcoming && webinar.attendees > 0 && (
-                    <div className="flex items-center gap-3 text-mw-gray-600">
-                      <div className="w-10 h-10 bg-mw-blue-100 rounded-lg flex items-center justify-center">
-                        <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <p className="text-xs text-mw-gray-500">Registered</p>
-                        <p className="font-medium text-mw-gray-900">{webinar.attendees.toLocaleString()} attendees</p>
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* CTA Buttons */}
@@ -254,17 +356,15 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
                     </>
                   ) : (
                     <>
-                      <a
-                        href={webinar.watchLink || '#'}
-                        target={webinar.watchLink ? '_blank' : undefined}
-                        rel={webinar.watchLink ? 'noopener noreferrer' : undefined}
+                      <button
+                        onClick={() => webinar.watchLink && setIsVideoModalOpen(true)}
                         className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
                       >
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                         </svg>
                         Watch Recording
-                      </a>
+                      </button>
                       <Link
                         href="/webinars"
                         className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-mw-gray-200 hover:border-mw-blue-600 text-mw-gray-700 hover:text-mw-blue-600 font-semibold rounded-xl transition-all"
@@ -279,7 +379,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
                 </div>
               </div>
 
-              {/* Featured Image / Video */}
+              {/* Featured Image */}
               <div className="relative">
                 <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 rounded-2xl overflow-hidden shadow-2xl relative">
                   {webinar.featuredImage ? (
@@ -290,14 +390,17 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
                     />
                   ) : (
                     <div className="w-full h-full flex items-center justify-center">
-                      <svg className="w-24 h-24 text-white/20" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                      <svg className="w-24 h-24 text-white/20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
                     </div>
                   )}
-                  {!isUpcoming && (
+                  {!isUpcoming && webinar.watchLink && (
                     <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                      <button className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+                      <button 
+                        onClick={() => setIsVideoModalOpen(true)}
+                        className="w-20 h-20 bg-white rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform"
+                      >
                         <svg className="w-10 h-10 text-mw-blue-600 ml-1" fill="currentColor" viewBox="0 0 20 20">
                           <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                         </svg>
@@ -311,7 +414,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
         </div>
       </section>
 
-      {/* Speaker Section */}
+      {/* Speakers Section */}
       <section className="py-16 bg-white border-b border-mw-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -320,26 +423,84 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">About the Speaker</h2>
-            <div className="flex items-center gap-6 bg-mw-gray-50 rounded-2xl p-6">
-              {webinar.speakerImage ? (
-                <img 
-                  src={webinar.speakerImage} 
-                  alt={webinar.speaker}
-                  className="w-24 h-24 rounded-full object-cover"
-                />
-              ) : (
-                <div className="w-24 h-24 bg-mw-blue-100 rounded-full flex items-center justify-center">
-                  <span className="text-3xl font-bold text-mw-blue-600">
-                    {webinar.speaker?.charAt(0) || 'S'}
-                  </span>
-                </div>
-              )}
-              <div>
-                <h3 className="text-xl font-bold text-mw-gray-900">{webinar.speaker || 'Speaker TBD'}</h3>
-                <p className="text-mw-gray-600">{webinar.speakerRole || 'Moving Walls'}</p>
+            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">
+              {webinar.speakers && webinar.speakers.length > 1 ? 'Meet the Speakers' : 'About the Speaker'}
+            </h2>
+            
+            {webinar.speakers && webinar.speakers.length > 0 ? (
+              <div className={`grid gap-6 ${webinar.speakers.length > 1 ? 'md:grid-cols-2 lg:grid-cols-3' : ''}`}>
+                {webinar.speakers.map((speaker, index) => (
+                  <motion.div
+                    key={speaker._key || index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="bg-mw-gray-50 rounded-2xl p-6"
+                  >
+                    <div className="flex items-start gap-4">
+                      {speaker.image ? (
+                        <img 
+                          src={speaker.image} 
+                          alt={speaker.name}
+                          className="w-20 h-20 rounded-full object-cover flex-shrink-0"
+                        />
+                      ) : (
+                        <div className="w-20 h-20 bg-mw-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <span className="text-2xl font-bold text-mw-blue-600">
+                            {speaker.name?.charAt(0) || 'S'}
+                          </span>
+                        </div>
+                      )}
+                      <div className="flex-1 min-w-0">
+                        <h3 className="text-lg font-bold text-mw-gray-900">{speaker.name}</h3>
+                        <p className="text-mw-blue-600 font-medium">{speaker.role}</p>
+                        {speaker.company && (
+                          <p className="text-mw-gray-500 text-sm">{speaker.company}</p>
+                        )}
+                        {speaker.linkedin && (
+                          <a 
+                            href={speaker.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-sm text-mw-blue-600 hover:text-mw-blue-700 mt-2"
+                          >
+                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                            </svg>
+                            LinkedIn
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    {speaker.bio && (
+                      <p className="text-mw-gray-600 text-sm mt-4 leading-relaxed">{speaker.bio}</p>
+                    )}
+                  </motion.div>
+                ))}
               </div>
-            </div>
+            ) : (
+              // Fallback to legacy single speaker
+              <div className="flex items-center gap-6 bg-mw-gray-50 rounded-2xl p-6">
+                {webinar.speakerImage ? (
+                  <img 
+                    src={webinar.speakerImage} 
+                    alt={webinar.speaker}
+                    className="w-24 h-24 rounded-full object-cover"
+                  />
+                ) : (
+                  <div className="w-24 h-24 bg-mw-blue-100 rounded-full flex items-center justify-center">
+                    <span className="text-3xl font-bold text-mw-blue-600">
+                      {webinar.speaker?.charAt(0) || 'S'}
+                    </span>
+                  </div>
+                )}
+                <div>
+                  <h3 className="text-xl font-bold text-mw-gray-900">{webinar.speaker || 'Speaker TBD'}</h3>
+                  <p className="text-mw-gray-600">{webinar.speakerRole || 'Moving Walls'}</p>
+                </div>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>
@@ -473,6 +634,53 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
           </motion.div>
         </div>
       </section>
+
+      {/* Video Modal */}
+      <AnimatePresence>
+        {isVideoModalOpen && videoEmbedUrl && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
+            onClick={() => setIsVideoModalOpen(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              className="relative w-full max-w-5xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Close Button */}
+              <button
+                onClick={() => setIsVideoModalOpen(false)}
+                className="absolute -top-12 right-0 text-white hover:text-mw-gray-300 transition-colors"
+              >
+                <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+              
+              {/* Video Container */}
+              <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl">
+                <iframe
+                  src={videoEmbedUrl}
+                  className="w-full h-full"
+                  allowFullScreen
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                />
+              </div>
+              
+              {/* Video Title */}
+              <div className="mt-4 text-center">
+                <h3 className="text-white text-xl font-semibold">{webinar.title}</h3>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

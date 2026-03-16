@@ -1,15 +1,28 @@
 import { Metadata } from 'next'
-import { getAllOohFormats, transformOohFormat } from '@/sanity/lib/fetch'
+import { getAllOohFormats, transformOohFormat, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 import OOHFormatsPageClient, { OOHFormat } from '@/components/OOHFormatsPageClient'
 
-export const metadata: Metadata = {
+const defaultMeta = {
   title: 'OOH Formats | Moving Walls',
   description: 'Explore all out-of-home advertising formats - from digital billboards and transit ads to airport displays and LED trucks.',
-  openGraph: {
-    title: 'OOH Advertising Formats | Moving Walls',
-    description: 'Complete guide to out-of-home advertising formats and their benefits.',
-    type: 'website',
-  },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('ooh-formats');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || 'OOH Advertising Formats | Moving Walls',
+      description: seo?.metaDescription || 'Complete guide to out-of-home advertising formats and their benefits.',
+      type: 'website',
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
 }
 
 export const revalidate = 300

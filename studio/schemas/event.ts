@@ -68,12 +68,6 @@ export default defineType({
       ],
     }),
     defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
       name: 'content',
       title: 'Content',
       type: 'blockContent',

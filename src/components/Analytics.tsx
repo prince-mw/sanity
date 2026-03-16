@@ -8,7 +8,11 @@ export default function Analytics() {
   const [config, setConfig] = useState<AnalyticsConfig | null>(null)
 
   useEffect(() => {
-    getAnalyticsConfig().then(setConfig)
+    getAnalyticsConfig()
+      .then(setConfig)
+      .catch((error) => {
+        console.error('Analytics config fetch failed:', error)
+      })
   }, [])
 
   if (!config) return null

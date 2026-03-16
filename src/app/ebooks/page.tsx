@@ -1,15 +1,28 @@
 import { Metadata } from 'next'
-import { getAllEbooks, transformEbook } from '@/sanity/lib/fetch'
+import { getAllEbooks, transformEbook, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 import EbooksPageClient, { Ebook } from '@/components/EbooksPageClient'
 
-export const metadata: Metadata = {
-  title: 'E-Books &amp; Resources | Moving Walls',
+const defaultMeta = {
+  title: 'E-Books & Resources | Moving Walls',
   description: 'Download free e-books, guides, and whitepapers about out-of-home advertising, programmatic DOOH, and advertising technology from Moving Walls.',
-  openGraph: {
-    title: 'E-Books &amp; Resources | Moving Walls',
-    description: 'Download free e-books, guides, and whitepapers about out-of-home advertising, programmatic DOOH, and advertising technology.',
-    type: 'website',
-  },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('ebooks');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || defaultMeta.title,
+      description: seo?.metaDescription || 'Download free e-books, guides, and whitepapers about out-of-home advertising.',
+      type: 'website',
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
 }
 
 // Revalidate every 5 minutes

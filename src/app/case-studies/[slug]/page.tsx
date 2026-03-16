@@ -23,6 +23,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       return {
         title: `${title} | Case Study | Moving Walls`,
         description,
+        keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
         openGraph: {
           title: `${title} | Case Study`,
           description,

@@ -47,13 +47,6 @@ export default defineType({
       type: 'datetime',
     }),
     defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text',
-      rows: 3,
-      description: 'Brief summary for listings and SEO',
-    }),
-    defineField({
       name: 'content',
       title: 'Content',
       type: 'blockContent',

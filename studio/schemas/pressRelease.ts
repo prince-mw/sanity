@@ -46,12 +46,6 @@ export default defineType({
       description: 'Link to the original article if published elsewhere',
     }),
     defineField({
-      name: 'excerpt',
-      title: 'Excerpt',
-      type: 'text',
-      rows: 3,
-    }),
-    defineField({
       name: 'category',
       title: 'Category',
       type: 'string',

@@ -1,15 +1,28 @@
 import { Metadata } from 'next'
-import { getAllOffices, transformOffice } from '@/sanity/lib/fetch'
+import { getAllOffices, transformOffice, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 import ContactPageClient, { Office } from '@/components/ContactPageClient'
 
-export const metadata: Metadata = {
+const defaultMeta = {
   title: 'Contact Us | Moving Walls',
   description: 'Get in touch with Moving Walls. Contact our global offices in Singapore, Malaysia, Philippines, Indonesia, India and more.',
-  openGraph: {
-    title: 'Contact Us | Moving Walls',
-    description: 'Reach out to our global team for advertising solutions.',
-    type: 'website',
-  },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('contact');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || defaultMeta.title,
+      description: seo?.metaDescription || 'Reach out to our global team for advertising solutions.',
+      type: 'website',
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
 }
 
 export const revalidate = 300

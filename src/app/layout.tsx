@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Suspense } from "react";
-import Header from "@/components/Header";
+import HeaderWrapper from "@/components/HeaderWrapper";
 import Footer from "@/components/Footer";
 import GlobalCTA from "@/components/GlobalCTA";
 import CookieConsent from "@/components/CookieConsent";
@@ -149,7 +149,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <LocaleProvider>
-          <Header />
+          <HeaderWrapper />
           <main>
             {children}
           </main>

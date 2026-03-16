@@ -1,15 +1,28 @@
 import { Metadata } from 'next'
-import { getAllIntegrations, transformIntegration } from '@/sanity/lib/fetch'
+import { getAllIntegrations, transformIntegration, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 import IntegrationsPageClient, { Integration } from '@/components/IntegrationsPageClient'
 
-export const metadata: Metadata = {
+const defaultMeta = {
   title: 'Integrations | Moving Walls',
   description: 'Connect Moving Walls with your existing marketing stack. Explore integrations with DSPs, SSPs, data providers, and analytics platforms.',
-  openGraph: {
-    title: 'Integrations | Moving Walls',
-    description: 'Seamless integrations with leading advertising technology platforms.',
-    type: 'website',
-  },
+};
+
+export async function generateMetadata(): Promise<Metadata> {
+  const pageSeo = await getPageSeo('integrations');
+  const seo = pageSeo?.seo;
+  
+  return {
+    title: seo?.metaTitle || defaultMeta.title,
+    description: seo?.metaDescription || defaultMeta.description,
+    keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
+    openGraph: {
+      title: seo?.metaTitle || defaultMeta.title,
+      description: seo?.metaDescription || 'Seamless integrations with leading advertising technology platforms.',
+      type: 'website',
+      images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+  };
 }
 
 export const revalidate = 300

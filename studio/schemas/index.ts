@@ -22,6 +22,13 @@ import integration from './integration'
 import oohFormat from './oohFormat'
 import seo from './seo'
 import analyticsConfig from './analyticsConfig'
+import pageSeo from './pageSeo'
+// Mega Menu
+import megaMenu from './megaMenu'
+import menuItem from './objects/menuItem'
+import menuColumn from './objects/menuColumn'
+import menuLink from './objects/menuLink'
+import featuredContent from './objects/featuredContent'
 
 export const schemaTypes = [
   // Document types
@@ -47,7 +54,13 @@ export const schemaTypes = [
   integration,
   oohFormat,
   analyticsConfig,
+  pageSeo,
+  megaMenu,
   // Object types
   blockContent,
   seo,
+  menuItem,
+  menuColumn,
+  menuLink,
+  featuredContent,
 ]

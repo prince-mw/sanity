@@ -144,15 +144,140 @@ export const eventBySlugQuery = `
 `
 
 // Landing Pages Queries
-export const landingPageBySlugQuery = `
-  *[_type == "landingPage" && slug.current == $slug][0] {
+export const landingPagesQuery = `
+  *[_type == "landingPage" && isPublished == true] | order(_createdAt desc) {
     _id,
     title,
     slug,
-    seoTitle,
-    seoDescription,
-    ogImage,
-    sections
+    isPublished,
+    _createdAt,
+    _updatedAt
+  }
+`
+
+export const landingPageSlugsQuery = `
+  *[_type == "landingPage" && isPublished == true] {
+    "slug": slug.current
+  }
+`
+
+export const landingPageBySlugQuery = `
+  *[_type == "landingPage" && slug.current == $slug && isPublished == true][0] {
+    _id,
+    title,
+    slug,
+    isPublished,
+    "seo": seo {
+      metaTitle,
+      metaDescription,
+      "ogImage": ogImage.asset->url
+    },
+    sections[] {
+      _type,
+      _key,
+      heading,
+      subheading,
+      content,
+      alignment,
+      maxWidth,
+      backgroundColor,
+      // Hero specific
+      "backgroundImage": backgroundImage.asset->url,
+      backgroundVideo,
+      overlay,
+      ctaText,
+      ctaLink,
+      secondaryCtaText,
+      secondaryCtaLink,
+      height,
+      // Two Column specific
+      "image": image.asset->url,
+      imagePosition,
+      // Feature Grid specific
+      columns,
+      features[] {
+        _key,
+        title,
+        description,
+        "icon": icon.asset->url,
+        link
+      },
+      // Stats specific
+      stats[] {
+        _key,
+        value,
+        label,
+        prefix,
+        suffix
+      },
+      // Logo Carousel specific
+      logos[] {
+        _key,
+        name,
+        "logo": logo.asset->url,
+        link
+      },
+      grayscale,
+      // Video Embed specific
+      videoUrl,
+      "thumbnail": thumbnail.asset->url,
+      aspectRatio,
+      autoplay,
+      // Image Gallery specific
+      images[] {
+        _key,
+        "image": image.asset->url,
+        caption,
+        alt
+      },
+      layout,
+      // Testimonials specific
+      items[] {
+        _key,
+        quote,
+        name,
+        role,
+        company,
+        "image": image.asset->url,
+        rating
+      },
+      // FAQ specific
+      "faqItems": items[] {
+        _key,
+        question,
+        answer
+      },
+      // Pricing specific
+      plans[] {
+        _key,
+        name,
+        description,
+        price,
+        period,
+        features,
+        ctaText,
+        ctaLink,
+        highlighted,
+        badge
+      },
+      // Contact Form specific
+      formType,
+      fields[] {
+        _key,
+        name,
+        label,
+        type,
+        required,
+        options
+      },
+      submitText,
+      successMessage,
+      // Spacer specific
+      showDivider,
+      // Custom Embed specific
+      title,
+      code
+    }
   }
 `
 
@@ -220,10 +345,93 @@ export async function getLandingPageBySlug(slug: string) {
   return client.fetch(landingPageBySlugQuery, { slug })
 }
 
+export async function getLandingPages() {
+  return client.fetch(landingPagesQuery)
+}
+
+export async function getLandingPageSlugs() {
+  return client.fetch(landingPageSlugsQuery)
+}
+
 export async function getAuthors() {
   return client.fetch(authorsQuery)
 }
 
 export async function getCategories() {
   return client.fetch(categoriesQuery)
+}
+
+// Mega Menu Query
+export const megaMenuQuery = `
+  *[_type == "megaMenu" && _id == "megaMenu"][0] {
+    _id,
+    title,
+    mainNavItems[] {
+      _key,
+      title,
+      menuType,
+      linkType,
+      url,
+      internalPage,
+      openInNewTab,
+      highlight,
+      "icon": icon.asset->url,
+      columns[] {
+        _key,
+        heading,
+        links[] {
+          _key,
+          title,
+          description,
+          linkType,
+          url,
+          internalPage,
+          "icon": icon.asset->url,
+          "productRef": productRef->{
+            _id,
+            title,
+            "slug": slug.current
+          },
+          "caseStudyRef": caseStudyRef->{
+            _id,
+            title,
+            "slug": slug.current
+          },
+          "blogPostRef": blogPostRef->{
+            _id,
+            title,
+            "slug": slug.current
+          }
+        }
+      },
+      featuredContent {
+        enabled,
+        title,
+        description,
+        "image": image.asset->url,
+        linkType,
+        url,
+        internalPage,
+        buttonText
+      },
+      showFeaturedContent
+    },
+    ctaButton {
+      enabled,
+      text,
+      linkType,
+      url,
+      internalPage,
+      style
+    },
+    settings {
+      stickyHeader,
+      showSearch,
+      mobileBreakpoint
+    }
+  }
+`
+
+export async function getMegaMenu() {
+  return client.fetch(megaMenuQuery)
 }
