@@ -42,7 +42,7 @@ export default defineType({
       options: {
         list: [
           {title: 'Upcoming', value: 'upcoming'},
-          {title: 'On-Demand', value: 'on-demand'},
+          {title: 'Past', value: 'past'},
         ],
       },
       initialValue: 'upcoming',

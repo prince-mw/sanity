@@ -18,25 +18,25 @@ export interface UpcomingWebinar {
   level: string
 }
 
-export interface OnDemandWebinar {
+export interface PastWebinar {
   title: string
   description: string
+  date: string
+  time: string
   duration: string
   speaker: string
   speakerRole: string
   speakerImage?: string
   featuredImage?: string
-  views: number
-  rating: number
   level: string
 }
 
 interface WebinarsPageClientProps {
   upcomingWebinars: UpcomingWebinar[]
-  onDemandWebinars: OnDemandWebinar[]
+  pastWebinars: PastWebinar[]
 }
 
-export default function WebinarsPageClient({ upcomingWebinars, onDemandWebinars }: WebinarsPageClientProps) {
+export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: WebinarsPageClientProps) {
   const [activeTab, setActiveTab] = useState('upcoming')
 
   return (
@@ -103,14 +103,14 @@ export default function WebinarsPageClient({ upcomingWebinars, onDemandWebinars 
               Upcoming Webinars
             </button>
             <button
-              onClick={() => setActiveTab('ondemand')}
+              onClick={() => setActiveTab('past')}
               className={`px-6 py-3 rounded-lg font-medium transition-all ${
-                activeTab === 'ondemand'
+                activeTab === 'past'
                   ? 'bg-mw-blue-600 text-white shadow-mw-sm'
                   : 'bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200'
               }`}
             >
-              On-Demand Library
+              Past Webinars
             </button>
           </div>
         </div>
@@ -206,75 +206,84 @@ export default function WebinarsPageClient({ upcomingWebinars, onDemandWebinars 
         </section>
       )}
 
-      {/* On-Demand Library */}
-      {activeTab === 'ondemand' && (
+      {/* Past Webinars */}
+      {activeTab === 'past' && (
         <section className="py-16 bg-mw-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">On-Demand Library</h2>
-              <p className="text-lg text-mw-gray-600">Watch anytime, anywhere</p>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">Past Webinars</h2>
+              <p className="text-lg text-mw-gray-600">Catch up on what you missed</p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {onDemandWebinars.map((webinar, index) => (
+            <div className="space-y-6">
+              {pastWebinars.map((webinar, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 group"
+                  className="bg-white border border-mw-gray-200 rounded-xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
                 >
-                  <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative overflow-hidden">
-                    {webinar.featuredImage && (
-                      <img src={webinar.featuredImage} alt={webinar.title} className="absolute inset-0 w-full h-full object-cover" />
-                    )}
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <button className="w-16 h-16 bg-white rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-mw-lg">
-                        <svg className="w-8 h-8 text-mw-blue-600 ml-1" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                        </svg>
-                      </button>
+                  <div className="grid lg:grid-cols-3 gap-6 p-6">
+                    {/* Webinar Image/Preview */}
+                    <div className="lg:col-span-1">
+                      <div className="aspect-video bg-gradient-to-br from-mw-gray-400 to-mw-gray-600 rounded-lg flex items-center justify-center relative overflow-hidden">
+                        {webinar.featuredImage ? (
+                          <img src={webinar.featuredImage} alt={webinar.title} className="w-full h-full object-cover" />
+                        ) : (
+                          <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M2 6a2 2 0 012-2h6a2 2 0 012 2v8a2 2 0 01-2 2H4a2 2 0 01-2-2V6zm12.553 1.106A1 1 0 0014 8v4a1 1 0 00.553.894l2 1A1 1 0 0018 13V7a1 1 0 00-1.447-.894l-2 1z" />
+                          </svg>
+                        )}
+                        <span className="absolute top-3 left-3 px-3 py-1 bg-mw-gray-100 text-mw-gray-700 text-xs font-medium rounded-full">
+                          {webinar.level}
+                        </span>
+                        <span className="absolute top-3 right-3 px-3 py-1 bg-mw-gray-700 text-white text-xs font-medium rounded-full">
+                          Recorded
+                        </span>
+                      </div>
                     </div>
-                    <div className="absolute top-4 left-4">
-                      <span className="px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
-                        {webinar.level}
-                      </span>
-                    </div>
-                    <div className="absolute bottom-4 right-4">
-                      <span className="px-2 py-1 bg-black/70 text-white text-xs font-medium rounded">
-                        {webinar.duration}
-                      </span>
-                    </div>
-                  </div>
 
-                  <div className="p-6">
-                    <h3 className="text-xl font-bold text-mw-gray-900 mb-3 group-hover:text-mw-blue-600 transition-colors line-clamp-2">
-                      {webinar.title}
-                    </h3>
-                    <p className="text-sm text-mw-gray-600 mb-4 line-clamp-2">{webinar.description}</p>
-
-                    <div className="flex items-center gap-2 mb-4 pb-4 border-b border-mw-gray-200">
-                      {webinar.speakerImage ? (
-                        <img src={webinar.speakerImage} alt={webinar.speaker} className="w-10 h-10 rounded-full object-cover" />
-                      ) : (
-                        <div className="w-10 h-10 bg-mw-gray-200 rounded-full flex items-center justify-center">
-                          <span className="text-sm font-medium text-mw-gray-600">{webinar.speaker[0]}</span>
+                    {/* Webinar Details */}
+                    <div className="lg:col-span-2">
+                      <div className="flex items-start justify-between mb-3">
+                        <div>
+                          <h3 className="text-2xl font-bold text-mw-gray-900 mb-2">{webinar.title}</h3>
+                          <p className="text-mw-gray-600 mb-4">{webinar.description}</p>
                         </div>
-                      )}
-                      <div>
-                        <p className="text-sm font-medium text-mw-gray-900">{webinar.speaker}</p>
-                        <p className="text-xs text-mw-gray-500">{webinar.speakerRole}</p>
                       </div>
-                    </div>
 
-                    <div className="flex items-center justify-between text-sm">
-                      <div className="flex items-center gap-1">
-                        <svg className="w-4 h-4 text-yellow-500" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                        <span className="font-medium text-mw-gray-900">{webinar.rating}</span>
+                      <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                        <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                          <svg className="w-5 h-5 text-mw-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                          <span>{webinar.date}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                          <svg className="w-5 h-5 text-mw-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                          <span>{webinar.duration}</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                          {webinar.speakerImage ? (
+                            <img src={webinar.speakerImage} alt={webinar.speaker} className="w-10 h-10 rounded-full object-cover" />
+                          ) : (
+                            <svg className="w-5 h-5 text-mw-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                            </svg>
+                          )}
+                          <div>
+                            <p className="font-medium text-mw-gray-900">{webinar.speaker}</p>
+                            <p className="text-xs text-mw-gray-500">{webinar.speakerRole}</p>
+                          </div>
+                        </div>
                       </div>
-                      <span className="text-mw-gray-500">{webinar.views.toLocaleString()} views</span>
+
+                      <button className="px-6 py-3 bg-mw-gray-600 hover:bg-mw-gray-700 text-white font-medium rounded-lg transition-colors shadow-mw-md">
+                        Watch Recording
+                      </button>
                     </div>
                   </div>
                 </motion.div>

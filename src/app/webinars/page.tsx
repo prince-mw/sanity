@@ -1,13 +1,13 @@
 import { Metadata } from 'next'
-import { getUpcomingWebinars, getOnDemandWebinars, transformWebinar } from '@/sanity/lib/fetch'
-import WebinarsPageClient, { UpcomingWebinar, OnDemandWebinar } from '@/components/WebinarsPageClient'
+import { getUpcomingWebinars, getPastWebinars, transformWebinar } from '@/sanity/lib/fetch'
+import WebinarsPageClient, { UpcomingWebinar, PastWebinar } from '@/components/WebinarsPageClient'
 
 export const metadata: Metadata = {
   title: 'Webinars & Live Events | Moving Walls',
-  description: 'Join live webinars with industry experts or access our library of on-demand webinars about out-of-home advertising and programmatic DOOH.',
+  description: 'Join live webinars with industry experts or watch recordings of past webinars about out-of-home advertising and programmatic DOOH.',
   openGraph: {
     title: 'Webinars & Live Events | Moving Walls',
-    description: 'Join live webinars with industry experts or access our on-demand library.',
+    description: 'Join live webinars with industry experts or watch past webinar recordings.',
     type: 'website',
   },
 }
@@ -50,57 +50,57 @@ const fallbackUpcomingWebinars: UpcomingWebinar[] = [
   }
 ]
 
-const fallbackOnDemandWebinars: OnDemandWebinar[] = [
+const fallbackPastWebinars: PastWebinar[] = [
   {
     title: "Maximizing ROI with MW Planner: Complete Workshop",
     description: "Deep dive into campaign planning and optimization strategies using MW Planner platform.",
+    date: "Nov 15, 2025",
+    time: "2:00 PM EST",
     duration: "75 min",
     speaker: "James Wilson",
     speakerRole: "Senior Solutions Architect",
-    views: 2456,
-    rating: 4.8,
     level: "Intermediate"
   },
   {
     title: "The Future of Retail Advertising in 2025",
     description: "Explore emerging trends and technologies shaping the future of retail marketing.",
+    date: "Oct 20, 2025",
+    time: "11:00 AM EST",
     duration: "45 min",
     speaker: "Lisa Chen",
     speakerRole: "Industry Analyst",
-    views: 3892,
-    rating: 4.9,
     level: "All Levels"
   },
   {
     title: "Location-Based Targeting Masterclass",
     description: "Advanced techniques for geo-targeting and location intelligence in advertising.",
+    date: "Sep 10, 2025",
+    time: "3:00 PM EST",
     duration: "60 min",
     speaker: "Robert Martinez",
     speakerRole: "Targeting Specialist",
-    views: 1823,
-    rating: 4.7,
     level: "Advanced"
   },
   {
     title: "Creative Best Practices for DOOH Campaigns",
     description: "Design principles and creative strategies that drive engagement in outdoor advertising.",
+    date: "Aug 5, 2025",
+    time: "1:00 PM EST",
     duration: "40 min",
     speaker: "Emily Rodriguez",
     speakerRole: "Creative Director",
-    views: 4123,
-    rating: 4.9,
     level: "All Levels"
   }
 ]
 
 export default async function WebinarsPage() {
   let upcomingWebinars: UpcomingWebinar[] = fallbackUpcomingWebinars
-  let onDemandWebinars: OnDemandWebinar[] = fallbackOnDemandWebinars
+  let pastWebinars: PastWebinar[] = fallbackPastWebinars
   
   try {
-    const [upcoming, onDemand] = await Promise.all([
+    const [upcoming, past] = await Promise.all([
       getUpcomingWebinars(),
-      getOnDemandWebinars()
+      getPastWebinars()
     ])
     
     if (upcoming && upcoming.length > 0) {
@@ -120,17 +120,17 @@ export default async function WebinarsPage() {
       })
     }
     
-    if (onDemand && onDemand.length > 0) {
-      onDemandWebinars = onDemand.map(w => {
+    if (past && past.length > 0) {
+      pastWebinars = past.map(w => {
         const transformed = transformWebinar(w)
         return {
           title: transformed.title,
           description: transformed.description,
+          date: transformed.date || 'TBD',
+          time: transformed.time || 'TBD',
           duration: transformed.duration || '60 min',
           speaker: transformed.speaker || 'TBD',
           speakerRole: transformed.speakerRole || '',
-          views: transformed.views || 0,
-          rating: transformed.rating || 4.5,
           level: transformed.level || 'All Levels'
         }
       })
@@ -139,5 +139,5 @@ export default async function WebinarsPage() {
     console.error('Error fetching webinars from Sanity:', error)
   }
   
-  return <WebinarsPageClient upcomingWebinars={upcomingWebinars} onDemandWebinars={onDemandWebinars} />
+  return <WebinarsPageClient upcomingWebinars={upcomingWebinars} pastWebinars={pastWebinars} />
 }

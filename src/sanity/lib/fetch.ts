@@ -867,7 +867,7 @@ export interface SanityWebinar {
   description?: string
   featuredImage?: any
   speakerImage?: any
-  webinarType: 'upcoming' | 'on-demand'
+  webinarType: 'upcoming' | 'past'
   date?: string
   time?: string
   duration?: string
@@ -930,9 +930,9 @@ export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
   return client.fetch(query)
 }
 
-export async function getOnDemandWebinars(): Promise<SanityWebinar[]> {
+export async function getPastWebinars(): Promise<SanityWebinar[]> {
   const query = `
-    *[_type == "webinar" && webinarType == "on-demand"] | order(views desc) {
+    *[_type == "webinar" && webinarType == "past"] | order(date desc) {
       _id,
       title,
       slug,
