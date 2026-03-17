@@ -576,6 +576,7 @@ async function migrateNewsItems(items) {
         isPublished: true,
         status: 'published',
         hasFullArticle: true,
+        isMediaFeature: false,  // Explicit false to ensure query works
       };
       
       // Add featured image if uploaded
