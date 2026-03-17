@@ -8,10 +8,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('healthcare');
   
   return {
-    title: seo?.metaTitle || 'Healthcare Marketing | MovingWalls',
-    description: seo?.metaDescription || 'Build trust, increase awareness, and drive patient engagement with healthcare advertising that reaches your community.',
-    openGraph: seo?.ogImage ? {
-      images: [{ url: seo.ogImage }],
+    title: seo?.seo?.metaTitle || 'Healthcare Marketing | MovingWalls',
+    description: seo?.seo?.metaDescription || 'Build trust, increase awareness, and drive patient engagement with healthcare advertising that reaches your community.',
+    openGraph: seo?.seo?.ogImage ? {
+      images: [{ url: seo.seo.ogImage }],
     } : undefined,
   };
 }

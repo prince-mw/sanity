@@ -8,10 +8,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('finance');
   
   return {
-    title: seo?.metaTitle || 'Finance & Banking | MovingWalls',
-    description: seo?.metaDescription || 'Transform your financial services marketing with strategic out-of-home campaigns that build trust, credibility, and drive customer acquisition.',
-    openGraph: seo?.ogImage ? {
-      images: [{ url: seo.ogImage }],
+    title: seo?.seo?.metaTitle || 'Finance & Banking | MovingWalls',
+    description: seo?.seo?.metaDescription || 'Transform your financial services marketing with strategic out-of-home campaigns that build trust, credibility, and drive customer acquisition.',
+    openGraph: seo?.seo?.ogImage ? {
+      images: [{ url: seo.seo.ogImage }],
     } : undefined,
   };
 }

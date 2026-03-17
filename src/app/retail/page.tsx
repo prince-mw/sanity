@@ -8,10 +8,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('retail');
   
   return {
-    title: seo?.metaTitle || 'Retail & E-commerce | MovingWalls',
-    description: seo?.metaDescription || 'Transform your retail advertising with strategic out-of-home campaigns that connect with shoppers at the right moment.',
-    openGraph: seo?.ogImage ? {
-      images: [{ url: seo.ogImage }],
+    title: seo?.seo?.metaTitle || 'Retail & E-commerce | MovingWalls',
+    description: seo?.seo?.metaDescription || 'Transform your retail advertising with strategic out-of-home campaigns that connect with shoppers at the right moment.',
+    openGraph: seo?.seo?.ogImage ? {
+      images: [{ url: seo.seo.ogImage }],
     } : undefined,
   };
 }
