@@ -636,7 +636,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               From Inefficiency to Maximum Yield
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See how MovingWalls transforms your inventory monetization
+              See how Moving Walls transforms your inventory monetization
             </p>
           </motion.div>
 
@@ -863,7 +863,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">MovingWalls SSP</h3>
+                    <h3 className="text-2xl font-bold text-white mb-2">Moving Walls SSP</h3>
                     <p className="text-blue-200 text-sm">Your complete monetization solution</p>
                   </div>
                   <div className="space-y-3">
@@ -1351,7 +1351,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-gray-600">
-              Everything you need to know about partnering with MovingWalls
+              Everything you need to know about partnering with Moving Walls
             </p>
           </motion.div>
 

@@ -47,7 +47,7 @@ export default function PressNewsPageClient({ pressReleases, mediaFeatures }: Pr
               <span className="text-mw-blue-600 block">Latest Updates</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Stay updated with MovingWalls&apos;s latest announcements, product launches, 
+              Stay updated with Moving Walls&apos;s latest announcements, product launches, 
               partnerships, and industry recognition. Access our media resources 
               and press materials.
             </p>
@@ -69,7 +69,7 @@ export default function PressNewsPageClient({ pressReleases, mediaFeatures }: Pr
               Latest Press Releases
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
-              Get the latest news and announcements directly from MovingWalls.
+              Get the latest news and announcements directly from Moving Walls.
             </p>
           </motion.div>
 
@@ -160,7 +160,7 @@ export default function PressNewsPageClient({ pressReleases, mediaFeatures }: Pr
               Media Coverage
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-2xl mx-auto">
-              See what industry publications are saying about MovingWalls and our impact on advertising technology.
+              See what industry publications are saying about Moving Walls and our impact on advertising technology.
             </p>
           </motion.div>
 

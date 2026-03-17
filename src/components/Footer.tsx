@@ -138,7 +138,7 @@ export default function Footer() {
             </Link>
             {/* Description */}
             <p className="text-mw-gray-300 text-base leading-relaxed max-w-4xl">
-              MovingWalls connects the global Out of Home ecosystem into one unified cloud platform. From audience discovery to booking, activation, measurement, and optimisation, we simplify complexity so brands can grow confidently across markets.
+              Moving Walls connects the global Out of Home ecosystem into one unified cloud platform. From audience discovery to booking, activation, measurement, and optimisation, we simplify complexity so brands can grow confidently across markets.
             </p>
           </div>
 
@@ -449,7 +449,7 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
                 <p className="text-mw-gray-400 text-sm text-center md:text-left">
-                  © {new Date().getFullYear()} MovingWalls. All rights reserved.
+                  © {new Date().getFullYear()} Moving Walls. All rights reserved.
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 text-sm">
                   <Link href="/privacy" className="text-mw-gray-400 hover:text-white transition-colors">

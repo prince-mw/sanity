@@ -99,7 +99,7 @@ const fallbackIntegrations: Integration[] = [
     id: 'max',
     name: 'MAX',
     category: 'dsp',
-    description: 'MovingWalls\' programmatic OOH buying platform for automated, data-driven outdoor advertising campaigns.',
+    description: 'Moving Walls\' programmatic OOH buying platform for automated, data-driven outdoor advertising campaigns.',
     products: ['MW Planner', 'MW Activate', 'MW Measure'],
     features: ['Automated buying', 'Audience data', 'Campaign optimization', 'Real-time reporting'],
     apiDocs: '/api-reference',

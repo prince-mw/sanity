@@ -14,8 +14,8 @@ import ContactForm from "../components/ContactForm";
 import { getPageSeo, getSanityImageUrl } from "@/sanity/lib/fetch";
 
 const defaultMeta = {
-  title: "MovingWalls - Connected Media Platform for OOH Advertising",
-  description: "Transform your advertising with MovingWalls' AI-powered OOH platform. Access 2.8B+ screens, real-time analytics, and programmatic buying across 30+ countries. Book a demo today.",
+  title: "Moving Walls - Connected Media Platform for OOH Advertising",
+  description: "Transform your advertising with Moving Walls' AI-powered OOH platform. Access 2.8B+ screens, real-time analytics, and programmatic buying across 30+ countries. Book a demo today.",
 };
 
 export async function generateMetadata(): Promise<Metadata> {

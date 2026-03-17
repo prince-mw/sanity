@@ -255,7 +255,7 @@ export const malaysiaData: LocationData = {
     { question: "What types of OOH advertising are available?", answer: "Billboards, transit ads (buses, taxis, trains), street furniture, malls, airports, and digital billboards in high-traffic areas." },
     { question: "How can I measure campaign effectiveness?", answer: "Track impressions, engagement rates, conversions, and real-time insights via programmatic DOOH analytics." },
     { question: "What are the benefits of DOOH advertising?", answer: "High visibility, dynamic content, precise audience targeting, and actionable performance data." },
-    { question: "How does MovingWalls help advertisers in Malaysia?", answer: "Our Moving Audiences platform enables precise targeting, real-time analytics, and seamless campaign execution across DOOH networks." },
+    { question: "How does Moving Walls help advertisers in Malaysia?", answer: "Our Moving Audiences platform enables precise targeting, real-time analytics, and seamless campaign execution across DOOH networks." },
   ],
   caseStudies: [],
   partners: [],

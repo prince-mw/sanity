@@ -3,7 +3,7 @@ import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
   title: 'OOH Advertising Solutions for Brands',
-  description: 'Elevate your brand with MovingWalls OOH advertising solutions. Reach consumers at every stage of their journey with targeted outdoor campaigns.',
+  description: 'Elevate your brand with Moving Walls OOH advertising solutions. Reach consumers at every stage of their journey with targeted outdoor campaigns.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -15,7 +15,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description: seo?.metaDescription || defaultMeta.description,
     keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
     openGraph: {
-      title: seo?.metaTitle || 'OOH Advertising Solutions for Brands | MovingWalls',
+      title: seo?.metaTitle || 'OOH Advertising Solutions for Brands | Moving Walls',
       description: seo?.metaDescription || 'Elevate your brand with targeted outdoor advertising campaigns.',
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },

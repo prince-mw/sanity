@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
     getPageSeo(ARTICLE_SLUG),
   ]);
 
-  const title = seo?.seo?.metaTitle || article?.title || "AI-Powered Audience Targeting Platform | MovingWalls";
+  const title = seo?.seo?.metaTitle || article?.title || "AI-Powered Audience Targeting Platform | Moving Walls";
   const description = seo?.seo?.metaDescription || article?.excerpt || 
     "Revolutionary machine learning algorithms improve campaign performance by 40%.";
 
@@ -52,7 +52,7 @@ function FallbackContent() {
     <PressArticleClient
       article={{
         _id: "fallback",
-        title: "MovingWalls Launches AI-Powered Audience Targeting Platform",
+        title: "Moving Walls Launches AI-Powered Audience Targeting Platform",
         excerpt: "Revolutionary machine learning algorithms improve campaign performance by 40% while reducing cost per acquisition across all advertising channels.",
         publishedAt: "2024-11-15T09:00:00Z",
         category: "product-launch",

@@ -6,7 +6,7 @@ export const revalidate = 3600; // Revalidate every hour
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('healthcare');
-  const title = seo?.seo?.metaTitle || 'Healthcare Marketing | MovingWalls';
+  const title = seo?.seo?.metaTitle || 'Healthcare Marketing | Moving Walls';
   const description = seo?.seo?.metaDescription || 'Build trust and drive patient engagement with healthcare advertising that reaches your community effectively.';
   
   return {

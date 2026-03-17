@@ -55,7 +55,7 @@ const audiencePages = [
     pageType: 'agencies',
     title: 'White Label OOH Platform',
     titleHighlight: 'Built for Agencies',
-    subtitle: 'Offer your clients a complete out of home solution under your own brand. MovingWalls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.',
+    subtitle: 'Offer your clients a complete out of home solution under your own brand. Moving Walls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.',
     primaryCTA: { text: 'Become a Partner', href: '/contact' },
     secondaryCTA: { text: 'Watch Demo', href: '#platform' },
     platformFeatures: [
@@ -407,7 +407,7 @@ const integrations = [
     name: 'MAX',
     slug: { _type: 'slug', current: 'max' },
     category: 'dsp',
-    description: 'MovingWalls\' programmatic OOH buying platform for automated, data-driven outdoor advertising campaigns.',
+    description: 'Moving Walls\' programmatic OOH buying platform for automated, data-driven outdoor advertising campaigns.',
     products: ['MW Planner', 'MW Activate', 'MW Measure'],
     features: ['Automated buying', 'Audience data', 'Campaign optimization', 'Real-time reporting'],
     apiDocs: '/api-reference',

@@ -33,7 +33,7 @@ const eventsData = [
     featured: true
   },
   {
-    title: "MovingWalls at AdTech Conference 2025",
+    title: "Moving Walls at AdTech Conference 2025",
     eventType: "conference",
     startDate: "2025-01-22T09:00:00-08:00",
     endDate: "2025-01-24T18:00:00-08:00",
@@ -83,7 +83,7 @@ const eventsData = [
       isVirtual: true,
       venue: "Virtual Event",
     },
-    excerpt: "Learn from successful campaigns and discover best practices from leading brands using MovingWalls platforms.",
+    excerpt: "Learn from successful campaigns and discover best practices from leading brands using Moving Walls platforms.",
     speakers: [
       { name: "Michael Brown", role: "CRO" },
       { name: "Customer Success Team", role: "" }
@@ -94,7 +94,7 @@ const eventsData = [
     featured: false
   },
   {
-    title: "MovingWalls European Summit",
+    title: "Moving Walls European Summit",
     eventType: "conference",
     startDate: "2025-03-15T09:00:00+00:00",
     endDate: "2025-03-15T17:00:00+00:00",

@@ -7,7 +7,7 @@ export const agenciesPageData = {
   pageType: 'agencies' as const,
   title: 'White Label OOH Platform',
   titleHighlight: 'Built for Agencies',
-  subtitle: 'Offer your clients a complete out of home solution under your own brand. MovingWalls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.',
+  subtitle: 'Offer your clients a complete out of home solution under your own brand. Moving Walls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.',
   primaryCTA: { text: 'Become a Partner', href: '/contact' },
   secondaryCTA: { text: 'Watch Demo', href: '#platform' },
   platformFeatures: [

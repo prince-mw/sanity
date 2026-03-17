@@ -720,7 +720,7 @@ export default function MWInfluencePage() {
                 <div className="p-2 bg-blue-100 rounded-lg">
                   <ServerIcon className="w-6 h-6 text-blue-600" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900">MovingWalls Ecosystem</h3>
+                <h3 className="text-xl font-bold text-gray-900">Moving Walls Ecosystem</h3>
               </div>
               <ul className="space-y-4">
                 {[

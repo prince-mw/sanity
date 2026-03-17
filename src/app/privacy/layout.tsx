@@ -3,7 +3,7 @@ import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
   title: 'Privacy Policy | Moving Walls',
-  description: 'MovingWalls Privacy Policy. Learn how we collect, use, and protect your personal data in compliance with GDPR and CCPA.',
+  description: 'Moving Walls Privacy Policy. Learn how we collect, use, and protect your personal data in compliance with GDPR and CCPA.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -55,7 +55,7 @@ export default defineType({
     }),
     defineField({
       name: 'products',
-      title: 'MovingWalls Products',
+      title: 'Moving Walls Products',
       type: 'array',
       of: [{ type: 'string' }],
       description: 'Which MW products this integration works with',

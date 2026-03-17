@@ -195,7 +195,7 @@ export default function PressArticleClient({ article }: PressArticleClientProps)
               <div className="bg-mw-gray-50 rounded-lg p-6 mt-8">
                 <h3 className="text-lg font-bold text-mw-gray-900 mb-4">Media Contact</h3>
                 <p className="text-mw-gray-700">
-                  MovingWalls Communications<br/>
+                  Moving Walls Communications<br/>
                   Email: media@movingwalls.com
                 </p>
               </div>

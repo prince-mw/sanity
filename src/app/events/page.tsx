@@ -42,7 +42,7 @@ const fallbackEvents: Event[] = [
     featured: true
   },
   {
-    title: "MovingWalls at AdTech Conference 2025",
+    title: "Moving Walls at AdTech Conference 2025",
     type: "Conference",
     date: "January 22-24, 2025",
     time: "9:00 AM - 6:00 PM PST",
@@ -73,7 +73,7 @@ const fallbackEvents: Event[] = [
     date: "February 20, 2025",
     time: "1:00 PM - 2:00 PM EST",
     location: "Virtual Event",
-    description: "Learn from successful campaigns and discover best practices from leading brands using MovingWalls platforms.",
+    description: "Learn from successful campaigns and discover best practices from leading brands using Moving Walls platforms.",
     speakers: ["Michael Brown, CRO", "Customer Success Team"],
     price: "Free",
     capacity: "1000 attendees",
@@ -81,7 +81,7 @@ const fallbackEvents: Event[] = [
     featured: false
   },
   {
-    title: "MovingWalls European Summit",
+    title: "Moving Walls European Summit",
     type: "Summit",
     date: "March 15, 2025",
     time: "9:00 AM - 5:00 PM GMT",

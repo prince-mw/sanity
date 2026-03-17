@@ -4,7 +4,7 @@ import CareersPageClient, { JobPosition } from '@/components/CareersPageClient'
 
 const defaultMeta = {
   title: 'Careers | Moving Walls',
-  description: 'Join MovingWalls and help revolutionize the advertising industry. Explore open positions and build your career with us.',
+  description: 'Join Moving Walls and help revolutionize the advertising industry. Explore open positions and build your career with us.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {

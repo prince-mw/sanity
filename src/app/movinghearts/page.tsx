@@ -121,7 +121,7 @@ export default function MovingHeartsPage() {
                 Our Mission
               </h2>
               <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                Moving Hearts is MovingWalls&apos; ESG initiative aimed at harnessing the power of unbooked OOH inventory 
+                Moving Hearts is Moving Walls&apos; ESG initiative aimed at harnessing the power of unbooked OOH inventory 
                 for Corporate Social Responsibility programs, connecting local charities to unused advertising space 
                 to create meaningful impact in communities worldwide.
               </p>

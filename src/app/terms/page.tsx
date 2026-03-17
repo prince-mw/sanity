@@ -68,7 +68,7 @@ export default function TermsAndConditionsPage() {
                 Last updated: {lastUpdated}
               </span>
               <span className="text-gray-300">|</span>
-              <span>MovingWalls Pte. Ltd.</span>
+              <span>Moving Walls Pte. Ltd.</span>
             </div>
           </div>
         </div>
@@ -132,7 +132,7 @@ export default function TermsAndConditionsPage() {
                   <section id="introduction" className="mb-12 scroll-mt-24">
                     <div className="space-y-4">
                       <p className="text-gray-600 leading-relaxed">
-                        The following terms and conditions (the &quot;Master Terms and Conditions&quot;) shall govern the use of MovingWalls Pte Ltd (&quot;MovingWalls&quot;) products and services (the &quot;Services&quot;) described in any Moving Audiences Media Booking Agreement, the Moving Audiences Order Form, or Moving Audiences Statement of Work, as the case may be, (collectively referred to herein as the &quot;Agreement&quot;) entered into between You (the &quot;Company&quot;) and MovingWalls.
+                        The following terms and conditions (the &quot;Master Terms and Conditions&quot;) shall govern the use of Moving Walls Pte Ltd (&quot;MovingWalls&quot;) products and services (the &quot;Services&quot;) described in any Moving Audiences Media Booking Agreement, the Moving Audiences Order Form, or Moving Audiences Statement of Work, as the case may be, (collectively referred to herein as the &quot;Agreement&quot;) entered into between You (the &quot;Company&quot;) and MovingWalls.
                       </p>
                       <p className="text-gray-600 leading-relaxed">
                         If You are entering into these Master Terms and Conditions on behalf of a company or other legal entity, You represent that You have the legal authority to bind the legal entity to these Standard Terms, in which case &quot;You&quot; or &quot;Your&quot; shall mean such entity. If You do not have such authority or if You disagree with any of the terms in these Standard Terms, MovingWalls does not grant You a license to use the Services.
@@ -783,7 +783,7 @@ export default function TermsAndConditionsPage() {
                           </svg>
                         </div>
                         <div>
-                          <h4 className="font-bold text-gray-900 text-lg mb-2">MovingWalls Pte. Ltd.</h4>
+                          <h4 className="font-bold text-gray-900 text-lg mb-2">Moving Walls Pte. Ltd.</h4>
                           <div className="space-y-2 text-gray-700">
                             <p className="flex items-center gap-2">
                               <svg className="w-4 h-4 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">

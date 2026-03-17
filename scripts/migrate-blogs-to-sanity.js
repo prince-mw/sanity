@@ -115,17 +115,17 @@ async function createDefaultAuthor() {
 
     if (existing) {
       defaultAuthorId = existing._id;
-      console.log('  ✓ Author exists: MovingWalls Team');
+      console.log('  ✓ Author exists: Moving Walls Team');
     } else {
       const author = await client.create({
         _type: 'author',
-        name: 'MovingWalls Team',
+        name: 'Moving Walls Team',
         slug: { _type: 'slug', current: 'movingwalls-team' },
         role: 'Content Team',
-        bio: 'The MovingWalls content team writes about OOH advertising, DOOH technology, and industry trends.'
+        bio: 'The Moving Walls content team writes about OOH advertising, DOOH technology, and industry trends.'
       });
       defaultAuthorId = author._id;
-      console.log('  + Created author: MovingWalls Team');
+      console.log('  + Created author: Moving Walls Team');
     }
   } catch (error) {
     console.error('  ✗ Error with author:', error.message);

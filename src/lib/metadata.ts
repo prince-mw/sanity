@@ -3,7 +3,7 @@ import { Metadata } from "next";
 // Metadata for Brands solution page
 export const brandsMetadata: Metadata = {
   title: "OOH Advertising Solutions for Brands",
-  description: "Elevate your brand with MovingWalls' OOH advertising platform. Access 2.8B+ screens, AI-powered targeting, real-time analytics, and measurable ROI across 30+ countries.",
+  description: "Elevate your brand with Moving Walls' OOH advertising platform. Access 2.8B+ screens, AI-powered targeting, real-time analytics, and measurable ROI across 30+ countries.",
   keywords: [
     "brand advertising",
     "OOH for brands",
@@ -16,7 +16,7 @@ export const brandsMetadata: Metadata = {
     canonical: "https://www.movingwalls.com/solutions/brands",
   },
   openGraph: {
-    title: "OOH Advertising Solutions for Brands - MovingWalls",
+    title: "OOH Advertising Solutions for Brands - Moving Walls",
     description: "Elevate your brand with AI-powered OOH advertising. Access 2.8B+ screens and real-time measurement.",
     url: "https://www.movingwalls.com/solutions/brands",
   },
@@ -25,7 +25,7 @@ export const brandsMetadata: Metadata = {
 // Metadata for Agencies solution page
 export const agenciesMetadata: Metadata = {
   title: "OOH Platform for Advertising Agencies",
-  description: "Scale your agency's OOH capabilities with MovingWalls. White-label solutions, multi-market campaigns, automated reporting, and access to 2.8B+ premium screens worldwide.",
+  description: "Scale your agency's OOH capabilities with Moving Walls. White-label solutions, multi-market campaigns, automated reporting, and access to 2.8B+ premium screens worldwide.",
   keywords: [
     "agency OOH platform",
     "advertising agency tools",
@@ -38,7 +38,7 @@ export const agenciesMetadata: Metadata = {
     canonical: "https://www.movingwalls.com/solutions/agencies",
   },
   openGraph: {
-    title: "OOH Platform for Advertising Agencies - MovingWalls",
+    title: "OOH Platform for Advertising Agencies - Moving Walls",
     description: "Scale your agency's OOH capabilities with white-label solutions and access to 2.8B+ screens.",
     url: "https://www.movingwalls.com/solutions/agencies",
   },
@@ -47,7 +47,7 @@ export const agenciesMetadata: Metadata = {
 // Metadata for Media Owners solution page
 export const mediaOwnersMetadata: Metadata = {
   title: "OOH Monetization Platform for Media Owners",
-  description: "Maximize your OOH inventory revenue with MovingWalls. Dynamic pricing, automated marketplace, real-time analytics, and programmatic capabilities for media owners.",
+  description: "Maximize your OOH inventory revenue with Moving Walls. Dynamic pricing, automated marketplace, real-time analytics, and programmatic capabilities for media owners.",
   keywords: [
     "media owner platform",
     "OOH inventory management",
@@ -60,7 +60,7 @@ export const mediaOwnersMetadata: Metadata = {
     canonical: "https://www.movingwalls.com/solutions/media-owners",
   },
   openGraph: {
-    title: "OOH Monetization Platform for Media Owners - MovingWalls",
+    title: "OOH Monetization Platform for Media Owners - Moving Walls",
     description: "Maximize your OOH inventory revenue with dynamic pricing and programmatic capabilities.",
     url: "https://www.movingwalls.com/solutions/media-owners",
   },

@@ -158,7 +158,7 @@ export default function HealthcarePageClient({
             className="text-center mb-12"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-mw-gray-900 mb-4">
-              Why Healthcare Providers Choose MovingWalls
+              Why Healthcare Providers Choose Moving Walls
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Build community trust and patient relationships with sensitive, effective healthcare advertising.

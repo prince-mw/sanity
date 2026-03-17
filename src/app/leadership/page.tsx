@@ -4,7 +4,7 @@ import LeadershipPageClient, { LeadershipMember } from '@/components/LeadershipP
 
 const defaultMeta = {
   title: 'Leadership Team | Moving Walls',
-  description: 'Meet the visionaries behind MovingWalls - the team driving innovation in outdoor advertising technology across the globe.',
+  description: 'Meet the visionaries behind Moving Walls - the team driving innovation in outdoor advertising technology across the globe.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -32,7 +32,7 @@ export default function DocumentationPage() {
               <span className="text-mw-blue-600 block">Technical Guides</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
-              Comprehensive guides and technical documentation for the MovingWalls platform.
+              Comprehensive guides and technical documentation for the Moving Walls platform.
             </p>
           </motion.div>
         </div>
@@ -68,15 +68,15 @@ export default function DocumentationPage() {
                 <h2 className="text-3xl font-bold text-mw-gray-900 mb-6">Quick Start Guide</h2>
                 
                 <div className="prose max-w-none">
-                  <h3 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Getting Started with MovingWalls</h3>
+                  <h3 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Getting Started with Moving Walls</h3>
                   <p className="text-mw-gray-600 mb-6">
-                    Welcome to MovingWalls! This guide will help you get up and running with our advertising platform in minutes.
+                    Welcome to Moving Walls! This guide will help you get up and running with our advertising platform in minutes.
                   </p>
 
                   <h4 className="text-xl font-bold text-mw-gray-900 mt-6 mb-3">Step 1: Account Setup</h4>
                   <div className="bg-mw-gray-50 rounded-lg p-6 mb-6">
                     <ol className="list-decimal list-inside space-y-2 text-mw-gray-700">
-                      <li>Log in to your MovingWalls account</li>
+                      <li>Log in to your Moving Walls account</li>
                       <li>Complete your company profile</li>
                       <li>Add payment methods</li>
                       <li>Set up team members and permissions</li>

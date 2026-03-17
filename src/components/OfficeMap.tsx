@@ -137,7 +137,7 @@ export default function OfficeMap() {
             <span className="text-mw-blue-600 block">Local Expertise</span>
           </h2>
           <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
-            With 9 offices strategically located across Asia, MovingWalls delivers 
+            With 9 offices strategically located across Asia, Moving Walls delivers 
             global advertising solutions with deep local market knowledge and round-the-clock support.
           </p>
         </motion.div>

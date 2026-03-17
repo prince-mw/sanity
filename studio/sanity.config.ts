@@ -92,7 +92,7 @@ const structure = (S: any) =>
 
 export default defineConfig({
   name: 'movingwalls-website',
-  title: 'MovingWalls Website',
+  title: 'Moving Walls Website',
 
   projectId: 'u10im6di',
   dataset: 'production',

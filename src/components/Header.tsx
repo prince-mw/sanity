@@ -183,7 +183,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
       {
         title: t('megaMenu.about.company'),
         items: [
-          { name: "About Us", description: "Learn about MovingWalls", href: "/about" },
+          { name: "About Us", description: "Learn about Moving Walls", href: "/about" },
           { name: t('megaMenu.about.ourStory.name'), description: t('megaMenu.about.ourStory.description'), href: "/our-story" },
           { name: t('megaMenu.about.leadership.name'), description: t('megaMenu.about.leadership.description'), href: "/leadership" },
           { name: t('megaMenu.about.careers.name'), description: t('megaMenu.about.careers.description'), href: "/careers" },

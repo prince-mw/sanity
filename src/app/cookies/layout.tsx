@@ -3,7 +3,7 @@ import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
   title: 'Cookie Policy | Moving Walls',
-  description: 'MovingWalls Cookie Policy. Understand how we use cookies and similar technologies to enhance your browsing experience.',
+  description: 'Moving Walls Cookie Policy. Understand how we use cookies and similar technologies to enhance your browsing experience.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -15,8 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: seo?.metaDescription || defaultMeta.description,
     keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
     openGraph: {
-      title: seo?.metaTitle || 'Cookie Policy | MovingWalls',
-      description: seo?.metaDescription || 'Understand how MovingWalls uses cookies and similar technologies.',
+      title: seo?.metaTitle || 'Cookie Policy | Moving Walls',
+      description: seo?.metaDescription || 'Understand how Moving Walls uses cookies and similar technologies.',
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
     robots: seo?.noIndex ? { index: false, follow: false } : undefined,
