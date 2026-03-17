@@ -6,13 +6,17 @@ export const revalidate = 3600; // Revalidate every hour
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('retail');
+  const title = seo?.seo?.metaTitle || 'Retail & E-commerce | MovingWalls';
+  const description = seo?.seo?.metaDescription || 'Transform your retail advertising with strategic out-of-home campaigns that connect with shoppers at the right moment.';
   
   return {
-    title: seo?.seo?.metaTitle || 'Retail & E-commerce | MovingWalls',
-    description: seo?.seo?.metaDescription || 'Transform your retail advertising with strategic out-of-home campaigns that connect with shoppers at the right moment.',
-    openGraph: seo?.seo?.ogImage ? {
-      images: [{ url: seo.seo.ogImage }],
-    } : undefined,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      ...(seo?.seo?.ogImage && { images: [{ url: seo.seo.ogImage }] }),
+    },
   };
 }
 

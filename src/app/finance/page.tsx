@@ -6,13 +6,17 @@ export const revalidate = 3600; // Revalidate every hour
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('finance');
+  const title = seo?.seo?.metaTitle || 'Finance & Banking | MovingWalls';
+  const description = seo?.seo?.metaDescription || 'Transform your financial services marketing with strategic out-of-home campaigns that build trust and drive customer acquisition.';
   
   return {
-    title: seo?.seo?.metaTitle || 'Finance & Banking | MovingWalls',
-    description: seo?.seo?.metaDescription || 'Transform your financial services marketing with strategic out-of-home campaigns that build trust, credibility, and drive customer acquisition.',
-    openGraph: seo?.seo?.ogImage ? {
-      images: [{ url: seo.seo.ogImage }],
-    } : undefined,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      ...(seo?.seo?.ogImage && { images: [{ url: seo.seo.ogImage }] }),
+    },
   };
 }
 

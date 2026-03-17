@@ -6,13 +6,17 @@ export const revalidate = 3600; // Revalidate every hour
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('healthcare');
+  const title = seo?.seo?.metaTitle || 'Healthcare Marketing | MovingWalls';
+  const description = seo?.seo?.metaDescription || 'Build trust and drive patient engagement with healthcare advertising that reaches your community effectively.';
   
   return {
-    title: seo?.seo?.metaTitle || 'Healthcare Marketing | MovingWalls',
-    description: seo?.seo?.metaDescription || 'Build trust, increase awareness, and drive patient engagement with healthcare advertising that reaches your community.',
-    openGraph: seo?.seo?.ogImage ? {
-      images: [{ url: seo.seo.ogImage }],
-    } : undefined,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      ...(seo?.seo?.ogImage && { images: [{ url: seo.seo.ogImage }] }),
+    },
   };
 }
 

@@ -804,7 +804,7 @@ export default function MWPlannerPageClient() {
               </p>
             </div>
             <Link
-              href="/resources"
+              href="/blog"
               className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2 mt-4 md:mt-0"
             >
               View All Resources
