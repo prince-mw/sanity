@@ -1,6 +1,6 @@
 import {definePlugin} from 'sanity'
 import {ChartUpwardIcon} from '@sanity/icons'
-import SeoDashboard from './SeoDashboard'
+import SeoDashboard from './SeoDashboard.js'
 
 export const seoDashboardTool = definePlugin({
   name: 'seo-dashboard',
