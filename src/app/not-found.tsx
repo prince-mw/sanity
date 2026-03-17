@@ -47,7 +47,7 @@ export default function NotFound() {
           className="mb-8"
         >
           <div className="relative inline-block">
-            <span className="text-[180px] md:text-[220px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-mw-blue-400 leading-none select-none">
+            <span className="text-[100px] sm:text-[140px] md:text-[180px] lg:text-[220px] font-bold text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-mw-blue-400 leading-none select-none">
               404
             </span>
             <motion.div
@@ -56,7 +56,7 @@ export default function NotFound() {
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             >
               <svg 
-                className="w-24 h-24 text-mw-blue-500 opacity-20"
+                className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 text-mw-blue-500 opacity-20"
                 fill="currentColor" 
                 viewBox="0 0 24 24"
               >

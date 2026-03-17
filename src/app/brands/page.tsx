@@ -227,8 +227,8 @@ export default function BrandsPage() {
           </motion.div>
 
           {/* Top Tabs - Campaigns, Real Time, Measurement */}
-          <div className="flex justify-center mb-16">
-            <div className="inline-flex border border-mw-gray-200 p-1.5 rounded-xl gap-1">
+          <div className="flex justify-center mb-16 px-4">
+            <div className="inline-flex flex-wrap justify-center border border-mw-gray-200 p-1.5 rounded-xl gap-1">
               {[
                 { id: 'campaigns', name: 'Campaign Creation', icon: (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -249,14 +249,14 @@ export default function BrandsPage() {
                 <button
                   key={tab.id}
                   onClick={() => setActivePlatform(tab.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                  className={`flex items-center gap-1 sm:gap-2 px-3 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold transition-all duration-300 text-xs sm:text-base ${
                     activePlatform === tab.id
                       ? 'bg-mw-blue-600 text-white'
                       : 'text-mw-gray-600 hover:text-mw-blue-600 hover:bg-mw-gray-50'
                   }`}
                 >
                   {tab.icon}
-                  {tab.name}
+                  <span className="hidden sm:inline">{tab.name}</span>
                 </button>
               ))}
             </div>
@@ -285,8 +285,8 @@ export default function BrandsPage() {
                     Turn your brief into an optimised OOH proposal instantly.
                   </p>
                   
-                  {/* Horizontal Pipeline Steps */}
-                  <div className="flex items-center justify-between mb-8">
+                  {/* Horizontal/Vertical Pipeline Steps */}
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4 sm:gap-0">
                     {[
                       { label: 'Define your audience', icon: (
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -309,9 +309,9 @@ export default function BrandsPage() {
                         </svg>
                       )},
                     ].map((step, i) => (
-                      <div key={i} className="flex items-center flex-1">
-                        <div className="flex flex-col items-center text-center">
-                          <div className="relative">
+                      <div key={i} className="flex items-center sm:flex-1 w-full sm:w-auto">
+                        <div className="flex flex-row sm:flex-col items-center sm:text-center gap-3 sm:gap-0">
+                          <div className="relative flex-shrink-0">
                             {/* Ripple ring when active */}
                             {activeStep === i && (
                               <motion.div
@@ -322,7 +322,7 @@ export default function BrandsPage() {
                               />
                             )}
                             <motion.div
-                              className={`w-12 h-12 rounded-full flex items-center justify-center mb-2 transition-colors duration-300 ${
+                              className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center sm:mb-2 transition-colors duration-300 ${
                                 activeStep === i
                                   ? 'bg-mw-blue-600 text-white shadow-lg shadow-blue-300'
                                   : 'bg-mw-blue-50 text-mw-blue-600 border-2 border-mw-blue-200'
@@ -333,12 +333,12 @@ export default function BrandsPage() {
                               {step.icon}
                             </motion.div>
                           </div>
-                          <span className={`text-xs font-semibold max-w-[100px] leading-tight transition-colors duration-300 ${
+                          <span className={`text-xs font-semibold sm:max-w-[100px] leading-tight transition-colors duration-300 ${
                             activeStep === i ? 'text-mw-blue-700' : 'text-mw-gray-700'
                           }`}>{step.label}</span>
                         </div>
                         {i < 3 && (
-                          <div className="flex-1 mx-2 mt-[-20px]">
+                          <div className="hidden sm:block flex-1 mx-2 mt-[-20px]">
                             <div className="h-0.5 bg-gradient-to-r from-mw-blue-200 to-mw-blue-300 relative overflow-hidden">
                               {/* Animated fill when transitioning from this step */}
                               {activeStep > i && (

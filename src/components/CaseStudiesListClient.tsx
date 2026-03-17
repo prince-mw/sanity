@@ -153,24 +153,24 @@ export default function CaseStudiesListClient({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex flex-wrap items-center gap-4">
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
                 <span className="text-sm text-mw-gray-600 whitespace-nowrap">Country:</span>
                 <select
                   value={selectedCountry}
                   onChange={(e) => handleCountryChange(e.target.value)}
-                  className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer min-w-[140px]"
+                  className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer flex-1 sm:flex-none sm:min-w-[140px]"
                 >
                   {countries.map((country) => (
                     <option key={country} value={country}>{country}</option>
                   ))}
                 </select>
               </div>
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 w-full sm:w-auto">
                 <span className="text-sm text-mw-gray-600 whitespace-nowrap">Industry:</span>
                 <select
                   value={selectedIndustry}
                   onChange={(e) => handleIndustryChange(e.target.value)}
-                  className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer min-w-[160px]"
+                  className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer flex-1 sm:flex-none sm:min-w-[160px]"
                 >
                   {industries.map((industry) => (
                     <option key={industry} value={industry}>{industry}</option>

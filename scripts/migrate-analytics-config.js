@@ -3,11 +3,14 @@
 
 const { createClient } = require('@sanity/client');
 
+// Hardcoded token for migrations (has write permissions)
+const SANITY_TOKEN = 'skjvkHRa4ivcG1V1JgDhBrQiLTQ9nv511zbMagRQt1jtJDd0cTc4se20lfjZULVk32BQvQevUjbUMhUDrtDOgVYPZmnK0Hozbcz4PP0hPYhXQ8INkRjuJc0k21FuViGoXO6p81DFVy3CYliivDiCwGoFWWGphjgANw3JUOLY9eImF6Il0PcO';
+
 const client = createClient({
   projectId: 'u10im6di',
   dataset: 'production',
   useCdn: false,
-  token: process.env.SANITY_WRITE_TOKEN,
+  token: SANITY_TOKEN,
   apiVersion: '2024-01-01',
 });
 

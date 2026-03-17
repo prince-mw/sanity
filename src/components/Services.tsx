@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Image from "next/image";
 import { useLocale } from "@/i18n/LocaleContext";
+import { MultiScreenNetwork, ProgrammaticAuctionFlow, ScreenPortfolioManager } from "@/components/animations";
 
 export default function Services() {
   const { t } = useLocale();
@@ -90,12 +90,9 @@ export default function Services() {
               {/* Illustration */}
               <div className={`relative ${index % 2 === 1 ? 'lg:col-start-2' : ''}`}>
                 <div className="relative h-[280px] sm:h-[350px] md:h-[420px] lg:h-[500px] w-full">
-                  <Image
-                    src={solution.image}
-                    alt={`${t(solution.titleKey)} illustration`}
-                    fill
-                    className="object-contain object-center lg:object-left"
-                  />
+                  {index === 0 && <MultiScreenNetwork />}
+                  {index === 1 && <ProgrammaticAuctionFlow />}
+                  {index === 2 && <ScreenPortfolioManager />}
                 </div>
               </div>
 

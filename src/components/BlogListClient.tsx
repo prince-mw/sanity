@@ -161,7 +161,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
       </section>
 
       {/* Filter & Sort Bar */}
-      <section className="py-6 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
+      <section className="py-6 bg-white border-b border-mw-gray-200 sticky top-14 lg:top-16 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-3">
