@@ -8,6 +8,7 @@ export default defineType({
     {name: 'content', title: 'Content', default: true},
     {name: 'details', title: 'Details'},
     {name: 'publishing', title: 'Publishing'},
+    {name: 'workflow', title: 'Workflow'},
     {name: 'seo', title: 'SEO'},
   ],
   fields: [
@@ -27,12 +28,14 @@ export default defineType({
       options: {
         list: [
           {title: '📝 Draft', value: 'draft'},
-          {title: '✅ Published', value: 'published'},
+          {title: '👀 In Review', value: 'review'},
+          {title: '✅ Approved', value: 'approved'},
+          {title: '🚀 Published', value: 'published'},
           {title: '📦 Archived', value: 'archived'},
         ],
         layout: 'radio',
       },
-      initialValue: 'published',
+      initialValue: 'draft',
       group: 'publishing',
     }),
     defineField({
@@ -143,6 +146,23 @@ export default defineType({
       },
       group: 'content',
     }),
+    // Workflow fields
+    defineField({
+      name: 'assignedTo',
+      title: 'Assigned To',
+      type: 'reference',
+      to: [{type: 'teamMember'}],
+      description: 'Team member responsible for this content',
+      group: 'workflow',
+    }),
+    defineField({
+      name: 'reviewNotes',
+      title: 'Review Notes',
+      type: 'text',
+      rows: 3,
+      description: 'Notes for reviewers or collaborators',
+      group: 'workflow',
+    }),
     defineField({
       name: 'content',
       title: 'Content',
@@ -167,7 +187,14 @@ export default defineType({
     },
     prepare(selection) {
       const {date, isPublished, status, title, media} = selection
-      const statusBadge = status === 'archived' ? '📦' : (status === 'draft' || isPublished === false) ? '📝' : '✅'
+      const statusIcons: Record<string, string> = {
+        draft: '📝',
+        review: '👀',
+        approved: '✅',
+        published: '🚀',
+        archived: '📦',
+      }
+      const statusBadge = statusIcons[status] || (isPublished ? '🚀' : '📝')
       return {
         title: `${statusBadge} ${title}`,
         subtitle: date ? new Date(date).toLocaleDateString() : 'No date',

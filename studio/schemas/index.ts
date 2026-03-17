@@ -37,6 +37,15 @@ import ctaButton from './objects/ctaButton'
 import tableBlock from './objects/tableBlock'
 import testimonialBlock from './objects/testimonialBlock'
 import accordionBlock from './objects/accordionBlock'
+// Workflow & i18n
+import workflow from './objects/workflow'
+import localeString from './objects/localeString'
+import localeText from './objects/localeText'
+import localeBlockContent from './objects/localeBlockContent'
+// Reusable Content Blocks
+import reusableTestimonial from './reusableTestimonial'
+import reusableStatBlock from './reusableStatBlock'
+import reusableCTA from './reusableCTA'
 
 export const schemaTypes = [
   // Document types
@@ -79,4 +88,13 @@ export const schemaTypes = [
   tableBlock,
   testimonialBlock,
   accordionBlock,
+  // Workflow & i18n
+  workflow,
+  localeString,
+  localeText,
+  localeBlockContent,
+  // Reusable Content Blocks
+  reusableTestimonial,
+  reusableStatBlock,
+  reusableCTA,
 ]

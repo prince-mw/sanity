@@ -17,6 +17,7 @@
     "react-is": "^19.2.4",
     "sanity": "^3.57.0",
     "sanity-plugin-iframe-pane": "^3.2.2",
+    "sanity-plugin-media": "^4.1.1",
     "styled-components": "^6.3.11"
   },
   "devDependencies": {
