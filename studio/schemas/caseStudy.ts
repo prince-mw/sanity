@@ -137,13 +137,6 @@ export default defineType({
       group: 'publishing',
     }),
     defineField({
-      name: 'scheduledPublishAt',
-      title: 'Scheduled Publish Date',
-      type: 'datetime',
-      description: 'Set a future date to automatically publish this content',
-      group: 'publishing',
-    }),
-    defineField({
       name: 'content',
       title: 'Content',
       type: 'blockContent',
