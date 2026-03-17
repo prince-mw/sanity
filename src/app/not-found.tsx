@@ -4,6 +4,43 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
+// SVG Icon Components
+const PlatformIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+  </svg>
+);
+
+const CaseStudiesIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+  </svg>
+);
+
+const BlogIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+  </svg>
+);
+
+const ContactIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+  </svg>
+);
+
+const AboutIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const CareersIcon = () => (
+  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+  </svg>
+);
+
 export default function NotFound() {
   const [searchQuery, setSearchQuery] = useState("");
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
@@ -28,12 +65,12 @@ export default function NotFound() {
   };
 
   const popularLinks = [
-    { name: "Our Platform", href: "/platform", icon: "🚀" },
-    { name: "Case Studies", href: "/case-studies", icon: "📊" },
-    { name: "Blog", href: "/blog", icon: "📝" },
-    { name: "Contact Us", href: "/contact", icon: "✉️" },
-    { name: "About Us", href: "/about", icon: "ℹ️" },
-    { name: "Careers", href: "/careers", icon: "💼" },
+    { name: "Our Platform", href: "/platform", icon: <PlatformIcon /> },
+    { name: "Case Studies", href: "/case-studies", icon: <CaseStudiesIcon /> },
+    { name: "Blog", href: "/blog", icon: <BlogIcon /> },
+    { name: "Contact Us", href: "/contact", icon: <ContactIcon /> },
+    { name: "About Us", href: "/about", icon: <AboutIcon /> },
+    { name: "Careers", href: "/careers", icon: <CareersIcon /> },
   ];
 
   return (
@@ -131,7 +168,7 @@ export default function NotFound() {
                 href={link.href}
                 className="flex items-center gap-2 px-4 py-3 bg-white rounded-lg border border-mw-gray-200 hover:border-mw-blue-300 hover:bg-mw-blue-50 transition-all group"
               >
-                <span className="text-lg">{link.icon}</span>
+                <span className="text-mw-gray-500 group-hover:text-mw-blue-600">{link.icon}</span>
                 <span className="text-sm font-medium text-mw-gray-700 group-hover:text-mw-blue-600">
                   {link.name}
                 </span>
