@@ -371,10 +371,11 @@ export default function SeoDashboard() {
 
         {filteredData.length === 0 && (
           <Card padding={6} radius={2} tone="caution">
-            <Stack space={3} align="center">
-              <SearchIcon style={{fontSize: 48, opacity: 0.5}} />
-              <Text align="center">No content found matching your filters.</Text>
-            </Stack>
+            <Flex justify="center">
+              <Stack space={3}>
+                <Text align="center" style={{opacity: 0.5}}>No content found matching your filters.</Text>
+              </Stack>
+            </Flex>
           </Card>
         )}
       </Stack>
