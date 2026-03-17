@@ -76,7 +76,7 @@ export default defineType({
     prepare({stats}) {
       const count = stats?.length || 0
       return {
-        title: `📊 Statistics Block`,
+        title: `Statistics Block`,
         subtitle: `${count} stat${count !== 1 ? 's' : ''}`,
       }
     },

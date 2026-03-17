@@ -15,30 +15,30 @@ export default defineType({
   fields: [
     defineField({
       name: 'en',
-      title: '🇺🇸 English',
+      title: 'English',
       type: 'blockContent',
     }),
     defineField({
       name: 'zh',
-      title: '🇨🇳 Chinese',
+      title: 'Chinese',
       type: 'blockContent',
       fieldset: 'translations',
     }),
     defineField({
       name: 'ja',
-      title: '🇯🇵 Japanese',
+      title: 'Japanese',
       type: 'blockContent',
       fieldset: 'translations',
     }),
     defineField({
       name: 'ko',
-      title: '🇰🇷 Korean',
+      title: 'Korean',
       type: 'blockContent',
       fieldset: 'translations',
     }),
     defineField({
       name: 'id',
-      title: '🇮🇩 Indonesian',
+      title: 'Indonesian',
       type: 'blockContent',
       fieldset: 'translations',
     }),

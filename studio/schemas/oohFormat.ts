@@ -148,12 +148,12 @@ export default defineType({
     },
     prepare({ title, subtitle }) {
       const categoryLabels: Record<string, string> = {
-        dooh: '📺 DOOH',
-        traditional: '📋 Traditional',
-        transit: '🚇 Transit',
-        mobile: '🚚 Mobile',
-        'place-based': '📍 Place-Based',
-        'street-furniture': '🚏 Street Furniture',
+        dooh: 'DOOH',
+        traditional: 'Traditional',
+        transit: 'Transit',
+        mobile: 'Mobile',
+        'place-based': 'Place-Based',
+        'street-furniture': 'Street Furniture',
       }
       return {
         title,

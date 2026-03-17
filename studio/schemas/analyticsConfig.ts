@@ -4,7 +4,6 @@ export default defineType({
   name: 'analyticsConfig',
   title: 'Analytics & Tracking',
   type: 'document',
-  icon: () => '📊',
   fields: [
     defineField({
       name: 'title',

@@ -4,7 +4,6 @@ export default defineType({
   name: 'reusableCTA',
   title: 'Call-to-Action Block',
   type: 'document',
-  icon: () => '🔘',
   fields: [
     defineField({
       name: 'internalName',

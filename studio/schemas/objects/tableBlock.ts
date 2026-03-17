@@ -63,7 +63,7 @@ export default defineType({
       const colCount = headers?.length || 0
       const rowCount = rows?.length || 0
       return {
-        title: caption || '📋 Table',
+        title: caption || 'Table',
         subtitle: `${colCount} columns × ${rowCount} rows`,
       }
     },

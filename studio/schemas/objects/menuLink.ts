@@ -151,9 +151,9 @@ export default defineType({
     },
     prepare({title, linkType, url, internalPage, media, isEnabled}) {
       const path = linkType === 'internal' ? internalPage : url
-      const status = isEnabled === false ? '🔴' : '🟢'
+      const status = isEnabled === false ? '[Disabled]' : ''
       return {
-        title: `${status} ${title || 'Untitled Link'}`,
+        title: status ? `${status} ${title || 'Untitled Link'}` : (title || 'Untitled Link'),
         subtitle: path || linkType,
         media,
       }

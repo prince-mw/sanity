@@ -26,9 +26,9 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: '📝 Draft', value: 'draft'},
-          {title: '✅ Published', value: 'published'},
-          {title: '📦 Archived', value: 'archived'},
+          {title: 'Draft', value: 'draft'},
+          {title: 'Published', value: 'published'},
+          {title: 'Archived', value: 'archived'},
         ],
         layout: 'radio',
       },
@@ -179,10 +179,9 @@ export default defineType({
     },
     prepare(selection) {
       const {title, category, publishDate, media, isPublished, status} = selection
-      const statusBadge = status === 'archived' ? '📦' : (status === 'draft' || isPublished === false) ? '📝' : '✅'
       return {
-        title: `${statusBadge} ${title}`,
-        subtitle: `${category || 'No category'} • ${publishDate || ''}`,
+        title: title,
+        subtitle: `${category || 'No category'} - ${publishDate || ''}`,
         media,
       }
     },

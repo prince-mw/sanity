@@ -187,14 +187,14 @@ export default defineType({
     },
     prepare({ title, subtitle }) {
       const industryNames: Record<string, string> = {
-        finance: '💰 Finance',
-        healthcare: '🏥 Healthcare',
-        retail: '🛒 Retail',
-        automotive: '🚗 Automotive',
-        technology: '💻 Technology',
-        travel: '✈️ Travel',
-        entertainment: '🎬 Entertainment',
-        'real-estate': '🏠 Real Estate',
+        finance: 'Finance',
+        healthcare: 'Healthcare',
+        retail: 'Retail',
+        automotive: 'Automotive',
+        technology: 'Technology',
+        travel: 'Travel',
+        entertainment: 'Entertainment',
+        'real-estate': 'Real Estate',
       }
       return {
         title: industryNames[title] || title,

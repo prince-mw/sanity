@@ -152,9 +152,9 @@ export default defineType({
     },
     prepare({ title, subtitle }) {
       const pageNames: Record<string, string> = {
-        agencies: '🏢 Agencies',
-        brands: '🏷️ Brands',
-        'media-owners': '📺 Media Owners',
+        agencies: 'Agencies',
+        brands: 'Brands',
+        'media-owners': 'Media Owners',
       }
       return {
         title: pageNames[title] || title,

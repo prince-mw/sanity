@@ -296,7 +296,7 @@ export default function SeoDashboard() {
       <Stack space={5}>
         {/* Header */}
         <Flex justify="space-between" align="center">
-          <Heading as="h1" size={3}>📊 SEO Dashboard</Heading>
+          <Heading as="h1" size={3}>SEO Dashboard</Heading>
           <Button
             icon={SyncIcon}
             text="Refresh"

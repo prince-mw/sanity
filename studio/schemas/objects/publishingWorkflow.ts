@@ -19,9 +19,9 @@ export default defineType({
       type: 'string',
       options: {
         list: [
-          {title: '📝 Draft', value: 'draft'},
-          {title: '✅ Published', value: 'published'},
-          {title: '📦 Archived', value: 'archived'},
+          {title: 'Draft', value: 'draft'},
+          {title: 'Published', value: 'published'},
+          {title: 'Archived', value: 'archived'},
         ],
         layout: 'radio',
       },
@@ -46,9 +46,9 @@ export const publishingFields = [
     type: 'string',
     options: {
       list: [
-        {title: '📝 Draft', value: 'draft'},
-        {title: '✅ Published', value: 'published'},
-        {title: '📦 Archived', value: 'archived'},
+        {title: 'Draft', value: 'draft'},
+        {title: 'Published', value: 'published'},
+        {title: 'Archived', value: 'archived'},
       ],
       layout: 'radio',
     },
@@ -59,7 +59,7 @@ export const publishingFields = [
 
 // Helper to get status badge for previews
 export function getStatusBadge(isPublished?: boolean, status?: string): string {
-  if (status === 'archived') return '📦'
-  if (status === 'draft' || isPublished === false) return '📝'
-  return '✅'
+  if (status === 'archived') return '[Archived]'
+  if (status === 'draft' || isPublished === false) return '[Draft]'
+  return ''
 }

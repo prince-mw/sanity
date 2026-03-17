@@ -79,7 +79,7 @@ const structure = (S: any) =>
     .items([
       // Content section
       S.listItem()
-        .title('📝 Content')
+        .title('Content')
         .child(
           S.list()
             .title('Content')
@@ -95,7 +95,7 @@ const structure = (S: any) =>
         ),
       // Products & Pages
       S.listItem()
-        .title('📦 Products & Pages')
+        .title('Products & Pages')
         .child(
           S.list()
             .title('Products & Pages')
@@ -109,7 +109,7 @@ const structure = (S: any) =>
         ),
       // Team & Organization
       S.listItem()
-        .title('👥 Team & Organization')
+        .title('Team & Organization')
         .child(
           S.list()
             .title('Team & Organization')
@@ -122,7 +122,7 @@ const structure = (S: any) =>
         ),
       // Reusable Blocks
       S.listItem()
-        .title('🧩 Reusable Blocks')
+        .title('Reusable Blocks')
         .child(
           S.list()
             .title('Reusable Blocks')
@@ -134,7 +134,7 @@ const structure = (S: any) =>
         ),
       // Taxonomies
       S.listItem()
-        .title('🏷️ Taxonomies')
+        .title('Taxonomies')
         .child(
           S.list()
             .title('Taxonomies')
@@ -148,7 +148,7 @@ const structure = (S: any) =>
       S.divider(),
       // Settings section
       S.listItem()
-        .title('⚙️ Settings')
+        .title('Settings')
         .child(
           S.list()
             .title('Settings')

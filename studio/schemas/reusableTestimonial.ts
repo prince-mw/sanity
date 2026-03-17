@@ -4,7 +4,6 @@ export default defineType({
   name: 'reusableTestimonial',
   title: 'Testimonial',
   type: 'document',
-  icon: () => '💬',
   fields: [
     defineField({
       name: 'internalName',

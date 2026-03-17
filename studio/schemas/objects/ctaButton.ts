@@ -56,7 +56,7 @@ export default defineType({
     select: {text: 'text', url: 'url', style: 'style'},
     prepare({text, url, style}) {
       return {
-        title: `🔘 ${text}`,
+        title: text,
         subtitle: `${style} → ${url}`,
       }
     },

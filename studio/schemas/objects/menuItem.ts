@@ -151,10 +151,10 @@ export default defineType({
       if (highlight && highlight !== 'none') {
         subtitle += ` • ${highlight}`
       }
-      const status = isEnabled === false ? '🔴 Disabled' : '🟢 Enabled'
+      const status = isEnabled === false ? 'Disabled' : 'Enabled'
       return {
         title: title || 'Untitled Menu Item',
-        subtitle: `${subtitle} • ${status}`,
+        subtitle: `${subtitle} - ${status}`,
         media,
       }
     },

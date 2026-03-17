@@ -4,7 +4,6 @@ export default defineType({
   name: 'reusableStatBlock',
   title: 'Statistics Block',
   type: 'document',
-  icon: () => '📊',
   fields: [
     defineField({
       name: 'internalName',
@@ -53,14 +52,14 @@ export default defineType({
               type: 'string',
               options: {
                 list: [
-                  {title: '📈 Chart Up', value: 'chart-up'},
-                  {title: '👥 Users', value: 'users'},
-                  {title: '🌍 Globe', value: 'globe'},
-                  {title: '🏆 Trophy', value: 'trophy'},
-                  {title: '⭐ Star', value: 'star'},
-                  {title: '💰 Money', value: 'money'},
-                  {title: '📱 Screen', value: 'screen'},
-                  {title: '🎯 Target', value: 'target'},
+                  {title: 'Chart Up', value: 'chart-up'},
+                  {title: 'Users', value: 'users'},
+                  {title: 'Globe', value: 'globe'},
+                  {title: 'Trophy', value: 'trophy'},
+                  {title: 'Star', value: 'star'},
+                  {title: 'Money', value: 'money'},
+                  {title: 'Screen', value: 'screen'},
+                  {title: 'Target', value: 'target'},
                 ],
               },
             },

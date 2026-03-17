@@ -120,10 +120,9 @@ export default defineType({
     },
     prepare(selection) {
       const { title, subtitle, media, isFeatured, status } = selection
-      const statusIcon = status === 'published' ? '✅' : status === 'archived' ? '📦' : '📝'
-      const featuredIcon = isFeatured ? '⭐' : ''
+      const featuredIcon = isFeatured ? '[Featured] ' : ''
       return {
-        title: `${statusIcon} ${featuredIcon} ${title}`,
+        title: `${featuredIcon}${title}`,
         subtitle: subtitle,
         media: media,
       }
