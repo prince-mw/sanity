@@ -9,3 +9,9 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
+# Landing page redirects (CMS published pages)
+[[redirects]]
+  from = "/ooh-advertising-connected-commerce-report"
+  to = "/lp/ooh-advertising-connected-commerce-report"
+  status = 200
+
