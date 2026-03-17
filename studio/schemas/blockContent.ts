@@ -124,5 +124,24 @@ export default defineType({
         },
       },
     }),
+    // Custom block types for rich content
+    defineArrayMember({
+      type: 'callout',
+    }),
+    defineArrayMember({
+      type: 'statBlock',
+    }),
+    defineArrayMember({
+      type: 'ctaButton',
+    }),
+    defineArrayMember({
+      type: 'tableBlock',
+    }),
+    defineArrayMember({
+      type: 'testimonialBlock',
+    }),
+    defineArrayMember({
+      type: 'accordionBlock',
+    }),
   ],
 })

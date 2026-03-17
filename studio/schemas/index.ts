@@ -30,6 +30,13 @@ import menuItem from './objects/menuItem'
 import menuColumn from './objects/menuColumn'
 import menuLink from './objects/menuLink'
 import featuredContent from './objects/featuredContent'
+// Rich Text Block Types
+import callout from './objects/callout'
+import statBlock from './objects/statBlock'
+import ctaButton from './objects/ctaButton'
+import tableBlock from './objects/tableBlock'
+import testimonialBlock from './objects/testimonialBlock'
+import accordionBlock from './objects/accordionBlock'
 
 export const schemaTypes = [
   // Document types
@@ -65,4 +72,11 @@ export const schemaTypes = [
   menuColumn,
   menuLink,
   featuredContent,
+  // Rich Text Block Types
+  callout,
+  statBlock,
+  ctaButton,
+  tableBlock,
+  testimonialBlock,
+  accordionBlock,
 ]
