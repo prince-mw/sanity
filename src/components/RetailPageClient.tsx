@@ -185,7 +185,7 @@ export default function RetailPageClient(props: RetailPageProps) {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => (
+            {content.benefits.map((benefit, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -194,7 +194,7 @@ export default function RetailPageClient(props: RetailPageProps) {
                 transition={{ delay: index * 0.1 }}
                 className="text-center p-6 rounded-xl bg-white border border-mw-gray-200 shadow-mw-sm hover:shadow-mw-md transition-shadow"
               >
-                <div className="text-mw-blue-600 mb-4 flex justify-center">{benefit.icon}</div>
+                <div className="text-mw-blue-600 mb-4 flex justify-center"><BenefitIcon index={index} /></div>
                 <h3 className="text-xl font-semibold text-mw-gray-900 mb-2">{benefit.title}</h3>
                 <p className="text-mw-gray-600">{benefit.description}</p>
               </motion.div>
@@ -218,7 +218,7 @@ export default function RetailPageClient(props: RetailPageProps) {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            {caseStudies.map((study, index) => (
+            {content.caseStudies.map((study, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
