@@ -4,6 +4,7 @@ import {visionTool} from '@sanity/vision'
 import {media, mediaAssetSource} from 'sanity-plugin-media'
 import {Iframe} from 'sanity-plugin-iframe-pane'
 import {schemaTypes} from './schemas'
+import {seoDashboardTool} from './components/seo-dashboard'
 
 // Preview configuration
 const PREVIEW_SECRET = process.env.SANITY_STUDIO_PREVIEW_SECRET || 'preview-secret-key'
@@ -189,6 +190,7 @@ export default defineConfig({
     }),
     visionTool(),
     media(),
+    seoDashboardTool(),
   ],
 
   // Form configuration for media asset source

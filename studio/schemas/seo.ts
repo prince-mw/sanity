@@ -10,16 +10,24 @@ export default defineType({
       name: 'metaTitle',
       title: 'Meta Title',
       type: 'string',
-      description: 'Title for search engines (50-60 characters recommended)',
-      validation: (Rule) => Rule.max(70).warning('Meta title should be under 60 characters for best SEO results'),
+      description: 'Title for search engines. Optimal: 50-60 characters. Current count shown below.',
+      validation: (Rule) => [
+        Rule.required().warning('Meta title is recommended for SEO'),
+        Rule.min(30).warning('Meta title should be at least 30 characters'),
+        Rule.max(60).warning('Meta title should be under 60 characters for best results'),
+      ],
     }),
     defineField({
       name: 'metaDescription',
       title: 'Meta Description',
       type: 'text',
       rows: 3,
-      description: 'Description for search engines (150-160 characters recommended)',
-      validation: (Rule) => Rule.max(170).warning('Meta description should be under 160 characters for best SEO results'),
+      description: 'Description for search engines. Optimal: 150-160 characters. Current count shown below.',
+      validation: (Rule) => [
+        Rule.required().warning('Meta description is recommended for SEO'),
+        Rule.min(120).warning('Meta description should be at least 120 characters'),
+        Rule.max(160).warning('Meta description should be under 160 characters for best results'),
+      ],
     }),
     defineField({
       name: 'ogImage',
