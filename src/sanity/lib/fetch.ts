@@ -1685,6 +1685,7 @@ export interface SanityProductTestimonial {
   role: string
   company: string
   metric?: string
+  avatar?: any
 }
 
 export interface SanityProduct {
@@ -2507,5 +2508,351 @@ export async function getPageSeo(pageId: string): Promise<PageSeoConfig | null> 
   } catch (error) {
     console.error('Failed to fetch page SEO:', error)
     return null
+  }
+}
+
+// ============================================
+// ENHANCED PRODUCT PAGE TYPES AND QUERIES
+// ============================================
+
+export interface SanityProductPainPoint {
+  _key?: string
+  icon?: string
+  title: string
+  description: string
+  beforeState?: string
+  afterState?: string
+}
+
+export interface SanityProductHowItWorksStep {
+  _key?: string
+  stepNumber?: number
+  title: string
+  description: string
+  icon?: string
+  image?: any
+}
+
+export interface SanityProductExternalResource {
+  _key?: string
+  title: string
+  description?: string
+  url: string
+  type?: 'documentation' | 'api' | 'guide' | 'video' | 'other'
+}
+
+export interface SanityEnhancedProduct extends SanityProduct {
+  // Hero Section
+  heroBadge?: string
+  heroTitle?: string
+  heroSubtitle?: string
+  heroGradient?: string
+  heroVideo?: string
+  secondaryCta?: {
+    text: string
+    link?: string
+    isVideo?: boolean
+  }
+  heroStats?: Array<{ _key?: string; value: string; label: string }>
+  
+  // Pain Points Section
+  painPointsTitle?: string
+  painPointsSubtitle?: string
+  painPoints?: SanityProductPainPoint[]
+  
+  // Features Section (enhanced)
+  featuresTitle?: string
+  featuresSubtitle?: string
+  featuresLayout?: '2-col' | '3-col' | 'alternating'
+  
+  // How It Works Section
+  howItWorksTitle?: string
+  howItWorksSubtitle?: string
+  howItWorksSteps?: SanityProductHowItWorksStep[]
+  
+  // Integrations Section (enhanced)
+  integrationsTitle?: string
+  integrationsSubtitle?: string
+  
+  // Testimonials Section (enhanced)
+  testimonialsTitle?: string
+  
+  // Resources Section
+  resourcesTitle?: string
+  relatedCaseStudies?: SanityCaseStudy[]
+  relatedBlogPosts?: SanityBlogPost[]
+  relatedWhitepapers?: SanityWhitepaper[]
+  externalResources?: SanityProductExternalResource[]
+  
+  // Final CTA
+  finalCtaTitle?: string
+  finalCtaSubtitle?: string
+  
+  // SEO
+  seo?: SanitySEO
+}
+
+export async function getEnhancedProductBySlug(slug: string): Promise<SanityEnhancedProduct | null> {
+  const query = `
+    *[_type == "product" && slug.current == $slug][0] {
+      _id,
+      name,
+      slug,
+      tagline,
+      description,
+      icon,
+      heroImage,
+      category,
+      
+      // Hero Section
+      heroBadge,
+      heroTitle,
+      heroSubtitle,
+      heroGradient,
+      heroVideo,
+      secondaryCta,
+      heroStats,
+      
+      // Pain Points Section
+      painPointsTitle,
+      painPointsSubtitle,
+      painPoints[] {
+        _key,
+        icon,
+        title,
+        description,
+        beforeState,
+        afterState
+      },
+      
+      // Features Section
+      featuresTitle,
+      featuresSubtitle,
+      featuresLayout,
+      features[] {
+        _key,
+        icon,
+        title,
+        description,
+        metric
+      },
+      
+      // How It Works Section
+      howItWorksTitle,
+      howItWorksSubtitle,
+      howItWorksSteps[] {
+        _key,
+        stepNumber,
+        title,
+        description,
+        icon,
+        image
+      },
+      
+      // Integrations Section
+      integrationsTitle,
+      integrationsSubtitle,
+      integrations[] {
+        _key,
+        name,
+        logo,
+        category
+      },
+      
+      // Testimonials Section
+      testimonialsTitle,
+      testimonials[] {
+        _key,
+        quote,
+        author,
+        role,
+        company,
+        avatar,
+        metric
+      },
+      
+      // Resources Section
+      resourcesTitle,
+      "relatedCaseStudies": relatedCaseStudies[]->{
+        _id,
+        title,
+        slug,
+        client,
+        featuredImage,
+        excerpt
+      },
+      "relatedBlogPosts": relatedBlogPosts[]->{
+        _id,
+        title,
+        slug,
+        featuredImage,
+        excerpt,
+        publishedAt
+      },
+      "relatedWhitepapers": relatedWhitepapers[]->{
+        _id,
+        title,
+        slug,
+        image,
+        description
+      },
+      externalResources[] {
+        _key,
+        title,
+        description,
+        url,
+        type
+      },
+      
+      // Final CTA
+      finalCtaTitle,
+      finalCtaSubtitle,
+      
+      // Basic fields
+      benefits,
+      stats,
+      useCases,
+      ctaText,
+      ctaLink,
+      demoVideo,
+      order,
+      isActive,
+      
+      // SEO
+      seo {
+        metaTitle,
+        metaDescription,
+        ogImage,
+        keywords,
+        enableKeywords,
+        noIndex
+      }
+    }
+  `
+  return client.fetch(query, { slug })
+}
+
+// Transform enhanced product for use with section components
+export function transformEnhancedProduct(product: SanityEnhancedProduct) {
+  return {
+    // Basic Info
+    name: product.name || '',
+    slug: product.slug?.current || '',
+    tagline: product.tagline || '',
+    description: product.description || '',
+    icon: product.icon || '',
+    category: product.category || '',
+    
+    // Hero Section
+    hero: {
+      badge: product.heroBadge || '',
+      title: product.heroTitle || product.name || '',
+      subtitle: product.heroSubtitle || '',
+      description: product.tagline || product.description || '',
+      gradient: product.heroGradient || 'blue-indigo',
+      heroImage: getSanityImageUrl(product.heroImage, { width: 1200 }) || '',
+      heroVideo: product.heroVideo || product.demoVideo || '',
+      ctaText: product.ctaText || 'Get Started',
+      ctaLink: product.ctaLink || '/contact',
+      secondaryCta: product.secondaryCta || undefined,
+      stats: product.heroStats || product.stats?.map(s => ({ value: s.value, label: s.label })) || [],
+    },
+    
+    // Pain Points Section
+    painPoints: {
+      title: product.painPointsTitle || 'Common Challenges',
+      subtitle: product.painPointsSubtitle || '',
+      items: product.painPoints || [],
+    },
+    
+    // Features Section
+    features: {
+      title: product.featuresTitle || 'Features',
+      subtitle: product.featuresSubtitle || '',
+      layout: product.featuresLayout || '3-col',
+      items: product.features || [],
+    },
+    
+    // How It Works Section
+    howItWorks: {
+      title: product.howItWorksTitle || 'How It Works',
+      subtitle: product.howItWorksSubtitle || '',
+      steps: (product.howItWorksSteps || []).map((step, index) => ({
+        stepNumber: step.stepNumber || index + 1,
+        title: step.title,
+        description: step.description,
+        icon: step.icon || '',
+        image: getSanityImageUrl(step.image, { width: 600 }) || '',
+      })),
+    },
+    
+    // Integrations Section
+    integrations: {
+      title: product.integrationsTitle || 'Seamless Integrations',
+      subtitle: product.integrationsSubtitle || '',
+      items: (product.integrations || []).map(i => ({
+        name: i.name,
+        logo: getSanityImageUrl(i.logo, { width: 200 }) || '',
+        category: i.category || '',
+      })),
+    },
+    
+    // Testimonials Section
+    testimonials: {
+      title: product.testimonialsTitle || 'What Our Customers Say',
+      items: (product.testimonials || []).map(t => ({
+        quote: t.quote,
+        author: t.author,
+        role: t.role,
+        company: t.company,
+        avatar: getSanityImageUrl(t.avatar, { width: 100 }) || '',
+        metric: t.metric || '',
+      })),
+    },
+    
+    // Resources Section
+    resources: {
+      title: product.resourcesTitle || 'Resources',
+      caseStudies: (product.relatedCaseStudies || []).map(cs => ({
+        _id: cs._id,
+        title: cs.title,
+        slug: cs.slug,
+        client: cs.client,
+        heroImage: getSanityImageUrl(cs.featuredImage, { width: 600 }) || '',
+        excerpt: cs.excerpt || '',
+      })),
+      blogPosts: (product.relatedBlogPosts || []).map(bp => ({
+        _id: bp._id,
+        title: bp.title,
+        slug: bp.slug,
+        featuredImage: getSanityImageUrl(bp.featuredImage, { width: 600 }) || '',
+        excerpt: bp.excerpt || '',
+        publishedAt: bp.publishedAt,
+      })),
+      whitepapers: (product.relatedWhitepapers || []).map(wp => ({
+        _id: wp._id,
+        title: wp.title,
+        slug: wp.slug,
+        coverImage: getSanityImageUrl(wp.image, { width: 400 }) || '',
+        description: wp.description || '',
+      })),
+      externalResources: product.externalResources || [],
+    },
+    
+    // Final CTA
+    finalCta: {
+      title: product.finalCtaTitle || 'Ready to Get Started?',
+      subtitle: product.finalCtaSubtitle || `Transform your advertising with ${product.name}.`,
+      ctaText: product.ctaText || 'Schedule a Demo',
+      ctaLink: product.ctaLink || '/contact',
+    },
+    
+    // Legacy fields for backwards compatibility
+    benefits: product.benefits || [],
+    useCases: product.useCases || [],
+    demoVideo: product.demoVideo || '',
+    
+    // SEO
+    seo: product.seo || {},
   }
 }
