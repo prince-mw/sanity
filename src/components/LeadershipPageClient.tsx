@@ -164,52 +164,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                  </svg>
-                ),
-                title: 'Innovation First',
-                description: 'We constantly push the boundaries of what\'s possible in advertising technology, pioneering new solutions that transform the industry.'
-              },
-              {
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                ),
-                title: 'Customer Success',
-                description: 'Our clients\' success is our success. We build deep partnerships and deliver measurable results that drive their business forward.'
-              },
-              {
-                icon: (
-                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ),
-                title: 'Global Mindset',
-                description: 'Born in Asia, global by design. We embrace diverse perspectives and build solutions that work across cultures and markets.'
-              }
-            ].map((value, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl p-8 shadow-mw-md border border-mw-gray-100"
-              >
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-mw-blue-100 rounded-lg text-mw-blue-600 mb-6">
-                  {value.icon}
-                </div>
-                <h3 className="text-xl font-bold text-mw-gray-900 mb-3">{value.title}</h3>
-                <p className="text-mw-gray-600">{value.description}</p>
-              </motion.div>
-            ))}
-          </div>
+          {/* Values section removed. Replace with CMS-synced values if available. */}
         </div>
       </section>
 

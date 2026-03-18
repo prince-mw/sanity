@@ -20,45 +20,6 @@ interface TeamMember {
   email?: string;
 }
 
-// Static fallback data
-const staticLeadership: TeamMember[] = [
-  {
-    name: "Srikanth Ramachandran",
-    slug: "srikanth-ramachandran",
-    role: "Founder & Group CEO",
-    department: "executive",
-    bio: "Srikanth is the visionary founder of Moving Walls with over 20 years of experience in advertising technology. He has been instrumental in transforming out-of-home advertising through data-driven solutions.",
-    linkedin: "https://www.linkedin.com/in/srikanthramachandran/",
-    image: "/assets/images/team-placeholder.svg",
-  },
-  {
-    name: "Natasha Rawlings",
-    slug: "natasha-rawlings",
-    role: "Chief Revenue Officer",
-    department: "executive",
-    bio: "Natasha leads global revenue strategy with deep expertise in digital advertising and enterprise sales. She has driven significant growth across APAC and European markets.",
-    linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.svg",
-  },
-  {
-    name: "Gautam Bhirani",
-    slug: "gautam-bhirani",
-    role: "Co-Founder & CEO, Moving Walls India",
-    department: "executive",
-    bio: "Gautam co-founded Moving Walls and leads Indian operations. His expertise in media planning and technology has been pivotal in building the company's presence in one of the world's fastest-growing markets.",
-    linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.svg",
-  },
-  {
-    name: "Dr. Ahmad Nazri",
-    slug: "dr-ahmad-nazri",
-    role: "Chief Technology Officer",
-    department: "technology",
-    bio: "Dr. Ahmad oversees all technology initiatives and R&D. He brings a wealth of experience in AI/ML, ad-tech platforms, and scalable cloud architectures.",
-    linkedin: "https://www.linkedin.com/",
-    image: "/assets/images/team-placeholder.svg",
-  },
-];
 
 export default function LeadershipDetailClient() {
   const params = useParams();
@@ -90,25 +51,11 @@ export default function LeadershipDetailClient() {
             setOtherMembers(others);
           }
         } else {
-          // Fallback to static data
-          const staticMember = staticLeadership.find(m => m.slug === slug);
-          if (staticMember) {
-            setMember(staticMember);
-            setOtherMembers(staticLeadership.filter(m => m.slug !== slug).slice(0, 3));
-          } else {
-            setNotFound(true);
-          }
+          setNotFound(true);
         }
       } catch (error) {
         console.error('Error fetching team member from Sanity:', error);
-        // Fallback to static data
-        const staticMember = staticLeadership.find(m => m.slug === slug);
-        if (staticMember) {
-          setMember(staticMember);
-          setOtherMembers(staticLeadership.filter(m => m.slug !== slug).slice(0, 3));
-        } else {
-          setNotFound(true);
-        }
+        setNotFound(true);
       } finally {
         setIsLoading(false);
       }
