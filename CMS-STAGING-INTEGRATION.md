@@ -1,6 +1,8 @@
 # CMS to Staging Integration Guide
 
-This document describes how to integrate the Sanity CMS with the Moving Walls staging environment at `manage-stg.movingwalls.com`.
+This document describes how to integrate the Sanity CMS with the Moving Walls systems:
+- **CMS Backend**: `https://manage-stg.movingwalls.com/test`
+- **Staging Website**: `https://stg.movingwalls.com`
 
 ## Configuration Overview
 
@@ -9,7 +11,10 @@ This document describes how to integrate the Sanity CMS with the Moving Walls st
 In `studio/.env.local`:
 
 ```bash
-# Staging deployment URL
+# Website preview URL (staging)
+SANITY_STUDIO_PREVIEW_URL=https://stg.movingwalls.com
+
+# CMS Backend URL
 SANITY_STUDIO_STAGING_URL=https://manage-stg.movingwalls.com/test
 
 # API key for authentication (get from IT team)
@@ -23,7 +28,7 @@ Go to **https://manage.sanity.io** → Select your project → **Settings** → 
 #### CORS Origins
 Add these CORS origins:
 - `https://manage-stg.movingwalls.com`
-- `https://movingwalls.netlify.app`
+- `https://stg.movingwalls.com`
 - `http://localhost:3000` (for development)
 
 Check "Allow credentials" for each.
