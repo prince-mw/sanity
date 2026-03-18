@@ -5,14 +5,10 @@ import {media, mediaAssetSource} from 'sanity-plugin-media'
 import {Iframe} from 'sanity-plugin-iframe-pane'
 import {schemaTypes} from './schemas'
 import {seoDashboardTool} from './components/seo-dashboard'
-import {deployToStagingAction} from './actions/deployToStaging'
 
 // Preview configuration
 const PREVIEW_SECRET = process.env.SANITY_STUDIO_PREVIEW_SECRET || 'preview-secret-key'
 const PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
-
-// Staging deployment configuration
-const STAGING_URL = process.env.SANITY_STUDIO_STAGING_URL || 'https://manage-stg.movingwalls.com/test'
 
 // Content types that support preview
 const previewTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper', 'product', 'landingPage']
@@ -55,9 +51,6 @@ const supportedLanguages = [
 
 // Content types that support workflow
 const workflowTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper']
-
-// Content types that support staging deployment
-const deployableTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper', 'product', 'landingPage']
 
 // Default document node with preview pane
 const defaultDocumentNode = (S: any, {schemaType}: {schemaType: string}) => {
@@ -220,12 +213,7 @@ export default defineConfig({
         )
       }
       
-      // For deployable types, add the deploy to staging action
-      if (deployableTypes.includes(context.schemaType)) {
-        return [...prev, deployToStagingAction]
-      }
-      
-      // For all other types, return all default actions (including delete, archive, duplicate)
+      // For all other types, return all default actions
       return prev
     },
   },
