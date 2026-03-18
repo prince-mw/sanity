@@ -23,4 +23,3 @@ export const revalidate = 300
 export default function LeadershipPage() {
   return null;
 }
-}
