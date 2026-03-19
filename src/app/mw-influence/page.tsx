@@ -360,12 +360,6 @@ export default function MWInfluencePage() {
                 >
                   Request a Demo
                 </Link>
-                <a
-                  href="#workflow"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all border border-white/20"
-                >
-                  See How It Works
-                </a>
               </div>
             </motion.div>
 
@@ -481,19 +475,19 @@ export default function MWInfluencePage() {
             {[
               {
                 title: "Beyond Loops",
-                competitor: "Broadsign was built to play files in a loop.",
+                challenge: "Legacy ad servers were built to play files in a loop.",
                 mwInfluence: "We maximize the revenue of every spot with intelligent, real-time decisioning.",
                 differentiator: "API-first composable architecture means you can integrate without replacing your entire stack."
               },
               {
                 title: "Transparent Control",
-                competitor: "Vistar's black-box algorithm prioritizes their programmatic demand.",
+                challenge: "Traditional platforms use black-box algorithms that prioritize their demand over yours.",
                 mwInfluence: "Glass-box transparency. You see exactly why every ad decision was made and control the yield optimization rules.",
                 differentiator: "Built for media owners, not advertisers. Your revenue, your rules."
               },
               {
                 title: "Enterprise Platform",
-                competitor: "Programmatic layers offer just one feature in your stack.",
+                challenge: "Most programmatic layers offer just one feature in your stack.",
                 mwInfluence: "Complete operating system for DOOH inventory management, campaign execution, and yield optimization.",
                 differentiator: "Manage digital, static, and transit networks from one unified control plane."
               }
@@ -509,8 +503,8 @@ export default function MWInfluencePage() {
                 <h3 className="text-xl font-bold text-white mb-6">{card.title}</h3>
                 <div className="space-y-4 mb-6">
                   <div>
-                    <span className="text-red-400 text-sm font-medium">Competitor:</span>
-                    <p className="text-gray-400 mt-1">{card.competitor}</p>
+                    <span className="text-amber-400 text-sm font-medium">Industry Challenge:</span>
+                    <p className="text-gray-400 mt-1">{card.challenge}</p>
                   </div>
                   <div>
                     <span className="text-green-400 text-sm font-medium">MW Influence:</span>
@@ -970,18 +964,6 @@ export default function MWInfluencePage() {
                     <span className="text-gray-700">{category}</span>
                   </div>
                 ))}
-              </div>
-
-              <div className="mt-8">
-                <a
-                  href="/integrations"
-                  className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2"
-                >
-                  View All Integrations
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </a>
               </div>
             </motion.div>
 

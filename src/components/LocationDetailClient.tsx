@@ -112,6 +112,7 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)
   const [selectedMarket, setSelectedMarket] = useState(0)
   const [currentTime, setCurrentTime] = useState(new Date())
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false)
 
   // Update current time every minute for the chart indicator
   useEffect(() => {
@@ -170,12 +171,24 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
               </p>
               
               <div className="flex flex-wrap gap-4">
-                <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105">
-                  Get Started
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
+                {location.contactFormUrl ? (
+                  <button 
+                    onClick={() => setIsContactFormOpen(true)}
+                    className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105"
+                  >
+                    Get Started
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </button>
+                ) : (
+                  <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105">
+                    Get Started
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                )}
                 <Link href="/locations" className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">
                   All Locations
                 </Link>
@@ -506,31 +519,51 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
         </section>
       )}
 
-      {/* CTA Section */}
-      <section className="py-16 bg-mw-blue-900">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Ready to Launch Your Campaign in {location.name}?
-          </h2>
-          <p className="text-mw-blue-100 mb-8">
-            Connect with our local team to discover premium OOH advertising opportunities.
-          </p>
-          <div className="flex flex-wrap gap-4 justify-center">
-            <Link
-              href="/contact"
-              className="inline-flex items-center px-8 py-3 bg-white text-mw-blue-900 font-semibold rounded-lg hover:bg-mw-blue-50 transition-colors"
-            >
-              Contact Us
-            </Link>
-            <Link
-              href="/mw-planner"
-              className="inline-flex items-center px-8 py-3 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-colors"
-            >
-              Explore MW Planner
-            </Link>
-          </div>
+      {/* Contact Form Modal */}
+      {isContactFormOpen && location.contactFormUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setIsContactFormOpen(false)}
+          />
+          
+          {/* Modal */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden z-10"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
+              <h3 className="text-lg font-semibold text-white">Contact Our {location.name} Team</h3>
+              <button
+                onClick={() => setIsContactFormOpen(false)}
+                className="p-2 hover:bg-white/20 rounded-full transition-colors"
+              >
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            
+            {/* Form iframe */}
+            <div className="h-[70vh]">
+              <iframe
+                src={location.contactFormUrl}
+                width="100%"
+                height="100%"
+                frameBorder={0}
+                style={{ border: 'none' }}
+                title={`${location.name} Contact Form`}
+                allow="geolocation"
+              />
+            </div>
+          </motion.div>
         </div>
-      </section>
+      )}
+
     </main>
   )
 }

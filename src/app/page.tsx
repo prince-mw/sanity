@@ -11,7 +11,7 @@ import About from "../components/About";
 import Newsletter from "../components/Newsletter";
 import CaseStudiesSection from "../components/CaseStudiesSection";
 import ContactForm from "../components/ContactForm";
-import { getPageSeo, getSanityImageUrl } from "@/sanity/lib/fetch";
+import { getPageSeo, getSanityImageUrl, getAllCaseStudies } from "@/sanity/lib/fetch";
 
 const defaultMeta = {
   title: "Moving Walls - Connected Media Platform for OOH Advertising",
@@ -39,7 +39,16 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function Home() {
+export default async function Home() {
+  // Fetch case studies server-side
+  let caseStudies = [];
+  try {
+    const data = await getAllCaseStudies();
+    caseStudies = data?.slice(0, 4) || [];
+  } catch (error) {
+    console.error("Error fetching case studies:", error);
+  }
+
   return (
     <>
       <Hero />
@@ -52,7 +61,7 @@ export default function Home() {
       <TestimonialSection />
       {/* <About /> */}
       <Newsletter />
-      <CaseStudiesSection />
+      <CaseStudiesSection initialCaseStudies={caseStudies} />
       <ContactForm />
     </>
   );

@@ -754,6 +754,7 @@ export async function getAllPressArticles(): Promise<SanityPressRelease[]> {
 }
 
 export function transformPressRelease(pr: SanityPressRelease) {
+  const imageUrl = getSanityImageUrl(pr.featuredImage, { width: 800 })
   return {
     date: pr.publishedAt ? formatDate(pr.publishedAt) : '',
     category: formatPressCategory(pr.category),
@@ -762,11 +763,12 @@ export function transformPressRelease(pr: SanityPressRelease) {
     readTime: pr.readTime || '3 min read',
     slug: pr.slug?.current || '',
     externalLink: pr.externalLink,
-    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 800 }) || '/assets/images/press-placeholder.svg',
+    thumbnail: imageUrl || '', // Empty string lets component show category icons
   }
 }
 
 export function transformMediaFeature(pr: SanityPressRelease) {
+  const imageUrl = getSanityImageUrl(pr.featuredImage, { width: 800 })
   return {
     outlet: pr.source || '',
     title: pr.title || '',
@@ -774,7 +776,7 @@ export function transformMediaFeature(pr: SanityPressRelease) {
     type: formatPressCategory(pr.category),
     slug: pr.slug?.current || '',
     externalLink: pr.externalLink,
-    thumbnail: getSanityImageUrl(pr.featuredImage, { width: 800 }) || '/assets/images/press-placeholder.svg',
+    thumbnail: imageUrl || '', // Empty string lets component show category icons
   }
 }
 
@@ -1531,6 +1533,8 @@ export interface SanityLocation {
   description?: string
   fullDescription?: string
   billboards?: string
+  contactFormUrl?: string
+  whyInvest?: string[]
   highVisibilityBillboards?: Array<{
     name: string
     location: string
@@ -1591,6 +1595,8 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
       description,
       fullDescription,
       billboards,
+      contactFormUrl,
+      whyInvest,
       highVisibilityBillboards[] {
         name,
         location,
@@ -1641,6 +1647,8 @@ export function transformLocationFull(location: SanityLocation) {
     flag: location.flag || '',
     description: location.fullDescription || location.description || '',
     heroImage: getSanityImageUrl(location.heroImage, { width: 1200 }) || '',
+    contactFormUrl: location.contactFormUrl || '',
+    whyInvest: location.whyInvest || [],
     highVisibilityBillboards: (location.highVisibilityBillboards || []).map(billboard => ({
       name: billboard.name || '',
       location: billboard.location || '',

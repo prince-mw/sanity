@@ -292,10 +292,6 @@ export default function MWPlannerPageClient() {
                   Start Free Trial
                   <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
-                <button className="group bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/20 transition-all duration-300 flex items-center justify-center gap-2">
-                  <PlayIcon className="w-6 h-6 text-blue-400" />
-                  Watch Demo
-                </button>
               </div>
 
 
@@ -660,16 +656,6 @@ export default function MWPlannerPageClient() {
                     <span className="text-gray-700">{category}</span>
                   </div>
                 ))}
-              </div>
-
-              <div className="mt-8">
-                <Link
-                  href="/integrations"
-                  className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2"
-                >
-                  View All Integrations
-                  <ArrowRightIcon className="w-4 h-4" />
-                </Link>
               </div>
             </motion.div>
 

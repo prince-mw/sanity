@@ -10,6 +10,8 @@ export interface LocationData {
   heroImage: string
   heroTagline?: string
   billboards?: string
+  contactFormUrl?: string
+  whyInvest?: string[]
   highVisibilityBillboards: Array<{
     name: string
     location: string
@@ -70,6 +72,7 @@ export const malaysiaData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in Malaysia',
   billboards: '50,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/MalaysiaContact',
   highVisibilityBillboards: [
     {
       name: "KL City Center",
@@ -271,6 +274,7 @@ export const singaporeData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in Singapore',
   billboards: '25,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/SingaporeContact',
   highVisibilityBillboards: [
     {
       name: "Orchard Road",
@@ -358,6 +362,7 @@ export const indonesiaData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in Indonesia',
   billboards: '100,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/IndonesiaContact',
   highVisibilityBillboards: [
     {
       name: "Jakarta CBD",
@@ -435,6 +440,7 @@ export const thailandData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in Thailand',
   billboards: '45,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/ThailandContact',
   highVisibilityBillboards: [
     {
       name: "Siam Square",
@@ -512,6 +518,7 @@ export const philippinesData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in Philippines',
   billboards: '35,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/PhilippinesContact',
   highVisibilityBillboards: [
     {
       name: "EDSA Guadalupe",
@@ -589,6 +596,7 @@ export const indiaData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in India',
   billboards: '200,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/IndiaContact',
   highVisibilityBillboards: [
     {
       name: "Mumbai BKC",
@@ -666,6 +674,7 @@ export const japanData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in Japan',
   billboards: '60,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/JapanContact',
   highVisibilityBillboards: [
     {
       name: "Shibuya Crossing",
@@ -743,6 +752,7 @@ export const australiaData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in Australia',
   billboards: '30,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/AustraliaContact',
   highVisibilityBillboards: [
     {
       name: "Sydney CBD",
@@ -820,6 +830,7 @@ export const sriLankaData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in Sri Lanka',
   billboards: '8,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/SriLankaContact',
   highVisibilityBillboards: [
     {
       name: "Colombo Fort",
@@ -897,6 +908,7 @@ export const usaData: LocationData = {
   heroImage: '',
   heroTagline: 'OOH Advertising in USA',
   billboards: '400,000+',
+  contactFormUrl: 'https://forms.zoho.com/movingwallsholdingpteltd/form/USAContact',
   highVisibilityBillboards: [
     {
       name: "Times Square",

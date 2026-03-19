@@ -3,8 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { getAllCaseStudies, getSanityImageUrl } from "@/sanity/lib/fetch";
+import { getSanityImageUrl } from "@/sanity/lib/fetch";
 
 interface CaseStudy {
   _id: string;
@@ -19,23 +18,13 @@ interface CaseStudy {
   publishedAt: string;
 }
 
-export default function CaseStudiesSection() {
-  const [caseStudies, setCaseStudies] = useState<CaseStudy[]>([]);
-  const [loading, setLoading] = useState(true);
+interface CaseStudiesSectionProps {
+  initialCaseStudies?: CaseStudy[];
+}
 
-  useEffect(() => {
-    async function fetchCaseStudies() {
-      try {
-        const data = await getAllCaseStudies();
-        setCaseStudies(data.slice(0, 4)); // Show only 4 for landing page
-      } catch (error) {
-        setCaseStudies([]);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchCaseStudies();
-  }, []);
+export default function CaseStudiesSection({ initialCaseStudies = [] }: CaseStudiesSectionProps) {
+  const caseStudies = initialCaseStudies;
+  const loading = false;
 
   return (
     <section className="py-20 bg-white">

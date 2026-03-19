@@ -21,7 +21,7 @@ export default function MultiScreenNetwork() {
   const controlCenter = { x: 50, y: 75 }
 
   return (
-    <div className="relative w-full h-full min-h-[400px] bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 rounded-2xl overflow-hidden">
+    <div className="relative w-full h-full min-h-[280px] sm:min-h-[350px] md:min-h-[400px] bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 rounded-2xl overflow-hidden">
       {/* Animated grid background */}
       <div className="absolute inset-0 opacity-20">
         <svg width="100%" height="100%" className="absolute inset-0">

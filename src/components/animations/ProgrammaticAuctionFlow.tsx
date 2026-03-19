@@ -21,7 +21,7 @@ export default function ProgrammaticAuctionFlow() {
   ]
 
   return (
-    <div className="relative w-full h-full min-h-[400px] bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 rounded-2xl overflow-hidden p-6">
+    <div className="relative w-full h-full min-h-[280px] sm:min-h-[350px] md:min-h-[400px] bg-gradient-to-br from-indigo-900 via-purple-900 to-slate-900 rounded-2xl overflow-hidden p-3 sm:p-4 md:p-6">
       {/* Animated grid background */}
       <div className="absolute inset-0 opacity-10">
         <svg width="100%" height="100%">
@@ -59,12 +59,12 @@ export default function ProgrammaticAuctionFlow() {
       <div className="relative z-10 h-full flex flex-col justify-center">
         {/* Flow Title */}
         <motion.div
-          className="text-center mb-6"
+          className="text-center mb-3 sm:mb-4 md:mb-6"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="text-xs font-semibold text-purple-300 uppercase tracking-wider">Real-Time Programmatic</span>
+          <span className="text-[10px] sm:text-xs font-semibold text-purple-300 uppercase tracking-wider">Real-Time Programmatic</span>
         </motion.div>
 
         {/* Horizontal Flow Line with Steps */}
@@ -81,7 +81,7 @@ export default function ProgrammaticAuctionFlow() {
           </div>
 
           {/* Steps */}
-          <div className="relative flex justify-between px-4">
+          <div className="relative flex justify-between px-1 sm:px-2 md:px-4">
             {steps.map((step, index) => (
               <motion.div
                 key={step.id}
@@ -92,7 +92,7 @@ export default function ProgrammaticAuctionFlow() {
               >
                 {/* Step Icon */}
                 <motion.div
-                  className={`relative w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg`}
+                  className={`relative w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 rounded-lg sm:rounded-xl bg-gradient-to-br ${step.color} flex items-center justify-center shadow-lg`}
                   animate={{
                     boxShadow: [
                       '0 0 0 0 rgba(168, 85, 247, 0)',
@@ -104,27 +104,27 @@ export default function ProgrammaticAuctionFlow() {
                 >
                   {/* Icons */}
                   {step.icon === 'screen' && (
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                     </svg>
                   )}
                   {step.icon === 'broadcast' && (
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
                     </svg>
                   )}
                   {step.icon === 'bids' && (
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                   )}
                   {step.icon === 'winner' && (
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                     </svg>
                   )}
                   {step.icon === 'deploy' && (
-                    <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
                   )}
@@ -138,8 +138,8 @@ export default function ProgrammaticAuctionFlow() {
                 </motion.div>
 
                 {/* Step Label */}
-                <div className="mt-2 sm:mt-3 text-center">
-                  <span className="text-[8px] sm:text-[10px] text-white/80 font-medium whitespace-pre-line leading-tight">
+                <div className="mt-1 sm:mt-2 md:mt-3 text-center">
+                  <span className="text-[7px] sm:text-[9px] md:text-[11px] text-white/80 font-medium whitespace-pre-line leading-tight">
                     {step.label}
                   </span>
                 </div>
@@ -163,12 +163,12 @@ export default function ProgrammaticAuctionFlow() {
         </div>
 
         {/* Bidding Cards Section */}
-        <div className="mt-8 relative">
-          <div className="flex justify-center gap-3">
+        <div className="mt-4 sm:mt-6 md:mt-8 relative">
+          <div className="flex justify-center gap-1 sm:gap-2 md:gap-3">
             {bidders.map((bidder, i) => (
               <motion.div
                 key={bidder.name}
-                className={`relative px-3 py-2 rounded-lg border backdrop-blur-sm ${
+                className={`relative px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg border backdrop-blur-sm ${
                   bidder.winner
                     ? 'bg-green-500/20 border-green-400/50'
                     : 'bg-slate-800/50 border-slate-600/50'
@@ -190,9 +190,9 @@ export default function ProgrammaticAuctionFlow() {
                     </div>
                   </motion.div>
                 )}
-                <div className="text-[7px] sm:text-[9px] text-slate-400 uppercase">{bidder.name}</div>
+                <div className="text-[6px] sm:text-[8px] md:text-[9px] text-slate-400 uppercase">{bidder.name}</div>
                 <motion.div
-                  className={`text-xs sm:text-sm font-bold ${bidder.winner ? 'text-green-400' : 'text-white'}`}
+                  className={`text-[10px] sm:text-xs md:text-sm font-bold ${bidder.winner ? 'text-green-400' : 'text-white'}`}
                   animate={bidder.winner ? { scale: [1, 1.05, 1] } : {}}
                   transition={{ duration: 1, repeat: Infinity }}
                 >

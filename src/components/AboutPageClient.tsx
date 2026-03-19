@@ -443,36 +443,37 @@ export default function AboutPageClient() {
             <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-mw-gray-50 to-transparent z-10" />
             <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-mw-gray-50 to-transparent z-10" />
 
-            {/* Scrolling logos */}
-            <motion.div
-              animate={{ x: [0, -1440] }}
-              transition={{
-                x: {
-                  repeat: Infinity,
-                  repeatType: "loop",
-                  duration: 30,
-                  ease: "linear",
-                },
-              }}
-              className="flex gap-8"
-            >
-              {/* Triple the associations for seamless loop */}
-              {[...associations, ...associations, ...associations].map((association, index) => (
-                <div
-                  key={index}
-                  className="flex-shrink-0 w-40 h-20 bg-white rounded-xl border-2 border-mw-gray-200 flex items-center justify-center group hover:border-mw-blue-400 hover:shadow-mw-lg transition-all duration-300 px-4"
-                >
-                  <div className="flex items-center justify-center group-hover:scale-110 transition-transform duration-300 h-12 w-full relative">
+            {/* Scrolling logos - improved animation */}
+            <div className="flex overflow-hidden">
+              <motion.div
+                animate={{ x: ["0%", "-50%"] }}
+                transition={{
+                  x: {
+                    repeat: Infinity,
+                    repeatType: "loop",
+                    duration: 25,
+                    ease: "linear",
+                  },
+                }}
+                className="flex gap-8 pr-8"
+              >
+                {/* Double the associations for seamless loop */}
+                {[...associations, ...associations].map((association, index) => (
+                  <div
+                    key={index}
+                    className="flex-shrink-0 w-40 h-20 bg-white rounded-xl border-2 border-mw-gray-200 flex items-center justify-center group hover:border-mw-blue-400 hover:shadow-mw-lg transition-all duration-300 px-4"
+                  >
                     <Image
                       src={association.logo}
                       alt={association.name}
-                      fill
-                      className="object-contain"
+                      width={120}
+                      height={48}
+                      className="object-contain max-h-12 group-hover:scale-110 transition-transform duration-300"
                     />
                   </div>
-                </div>
-              ))}
-            </motion.div>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </div>
       </section>

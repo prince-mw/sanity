@@ -279,9 +279,6 @@ export default function MWStudio() {
                   Get Started Free
                   <BoltIcon className="w-5 h-5" />
                 </button>
-                <button className="border-2 border-cyan-400 text-cyan-300 px-8 py-4 rounded-xl font-bold text-lg hover:bg-cyan-400/10 transition-all">
-                  Watch Demo
-                </button>
               </motion.div>
             </motion.div>
 
@@ -649,18 +646,6 @@ export default function MWStudio() {
                     <span className="text-gray-700">{category}</span>
                   </div>
                 ))}
-              </div>
-
-              <div className="mt-8">
-                <a
-                  href="/integrations"
-                  className="text-blue-600 font-semibold hover:text-blue-700 flex items-center gap-2"
-                >
-                  View All Integrations
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </a>
               </div>
             </motion.div>
 

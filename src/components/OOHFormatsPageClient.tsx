@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import React from 'react'
 import { motion } from 'framer-motion'
 
@@ -120,14 +121,12 @@ export default function OOHFormatsPageClient({ oohFormats }: OOHFormatsPageClien
             </div>
             <motion.div initial="hidden" animate="visible" variants={fadeUp} className="hidden lg:block">
               <div className="relative aspect-video rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 shadow-2xl">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="text-center">
-                    <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center cursor-pointer hover:bg-white/30 transition-colors">
-                      <svg className="w-10 h-10 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                    </div>
-                    <p className="text-white/80 text-sm">Watch OOH Formats Overview</p>
-                  </div>
-                </div>
+                <Image
+                  src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=800&q=80"
+                  alt="OOH Advertising Formats"
+                  fill
+                  className="object-cover"
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-mw-blue-900/50 to-transparent"></div>
               </div>
             </motion.div>

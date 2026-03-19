@@ -2,18 +2,63 @@
 
 import Script from 'next/script'
 import { useEffect, useState } from 'react'
-import { getAnalyticsConfig, AnalyticsConfig } from '@/sanity/lib/fetch'
+import { AnalyticsConfig } from '@/sanity/lib/fetch'
+
+// Client-side fetch for analytics config with retry logic
+async function fetchAnalyticsConfig(retries = 3): Promise<AnalyticsConfig | null> {
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di'
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+  const query = encodeURIComponent(`*[_type == "analyticsConfig"][0] {
+    googleAnalytics,
+    googleTagManager,
+    metaPixel,
+    linkedinInsight,
+    twitterPixel,
+    tiktokPixel
+  }`)
+  
+  const url = `https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${query}`
+  
+  for (let attempt = 0; attempt < retries; attempt++) {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store'
+      })
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`)
+      }
+      
+      const data = await response.json()
+      return data.result
+    } catch (error) {
+      if (attempt === retries - 1) {
+        // Only log on final failure
+        console.warn('Analytics config fetch failed after retries:', error)
+        return null
+      }
+      // Wait before retry (exponential backoff)
+      await new Promise(resolve => setTimeout(resolve, Math.pow(2, attempt) * 500))
+    }
+  }
+  return null
+}
 
 export default function Analytics() {
   const [config, setConfig] = useState<AnalyticsConfig | null>(null)
+  const [loaded, setLoaded] = useState(false)
 
   useEffect(() => {
-    getAnalyticsConfig()
-      .then(setConfig)
-      .catch((error) => {
-        console.error('Analytics config fetch failed:', error)
+    if (loaded) return
+    
+    fetchAnalyticsConfig()
+      .then((result) => {
+        setConfig(result)
+        setLoaded(true)
       })
-  }, [])
+  }, [loaded])
 
   if (!config) return null
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, PanInfo } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 import { useLocale } from "@/i18n/LocaleContext";
 import Image from "next/image";
@@ -59,6 +59,29 @@ const fallbackTestimonials: Testimonial[] = [
   }
 ];
 
+// Custom hook to detect screen size
+function useResponsiveItemsPerView() {
+  const [itemsPerView, setItemsPerView] = useState(3);
+
+  useEffect(() => {
+    const updateItemsPerView = () => {
+      if (window.innerWidth < 768) {
+        setItemsPerView(1); // Mobile: 1 card
+      } else if (window.innerWidth < 1024) {
+        setItemsPerView(2); // Tablet: 2 cards
+      } else {
+        setItemsPerView(3); // Desktop: 3 cards
+      }
+    };
+
+    updateItemsPerView();
+    window.addEventListener('resize', updateItemsPerView);
+    return () => window.removeEventListener('resize', updateItemsPerView);
+  }, []);
+
+  return itemsPerView;
+}
+
 export default function TestimonialSection({ testimonials: sanityTestimonials }: TestimonialSectionProps) {
   const { t } = useLocale();
   
@@ -69,8 +92,15 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const itemsPerView = 3;
+  const itemsPerView = useResponsiveItemsPerView();
   const totalSlides = Math.ceil(testimonials.length / itemsPerView);
+
+  // Reset currentIndex when itemsPerView changes to prevent out-of-bounds
+  useEffect(() => {
+    if (currentIndex >= totalSlides) {
+      setCurrentIndex(0);
+    }
+  }, [itemsPerView, totalSlides, currentIndex]);
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) => (prev + 1) % totalSlides);
@@ -82,6 +112,16 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
 
   const goToSlide = (index: number) => {
     setCurrentIndex(index);
+  };
+
+  // Handle swipe gestures for mobile
+  const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
+    const swipeThreshold = 50;
+    if (info.offset.x < -swipeThreshold) {
+      nextSlide();
+    } else if (info.offset.x > swipeThreshold) {
+      prevSlide();
+    }
   };
 
   // Auto-play functionality
@@ -104,6 +144,13 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
   // Get author initials
   const getInitials = (name: string) => {
     return name.split(' ').map((n: string) => n[0]).join('');
+  };
+
+  // Dynamic grid columns based on items per view
+  const getGridCols = () => {
+    if (itemsPerView === 1) return 'grid-cols-1';
+    if (itemsPerView === 2) return 'grid-cols-1 md:grid-cols-2';
+    return 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
   };
 
   return (
@@ -133,10 +180,10 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
           onMouseEnter={() => setIsAutoPlaying(false)}
           onMouseLeave={() => setIsAutoPlaying(true)}
         >
-          {/* Navigation Arrows */}
+          {/* Navigation Arrows - hidden on mobile, visible on md+ */}
           <button
             onClick={prevSlide}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
+            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
             aria-label="Previous testimonials"
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -146,7 +193,7 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
           
           <button
             onClick={nextSlide}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
+            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
             aria-label="Next testimonials"
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -154,15 +201,19 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
             </svg>
           </button>
 
-          {/* Cards Container */}
+          {/* Cards Container with Swipe Support */}
           <div className="overflow-hidden px-1">
             <motion.div
-              key={currentIndex}
+              key={`${currentIndex}-${itemsPerView}`}
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -50 }}
               transition={{ duration: 0.5, ease: "easeInOut" }}
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8"
+              drag={itemsPerView === 1 ? "x" : false}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.2}
+              onDragEnd={handleDragEnd}
+              className={`grid ${getGridCols()} gap-6 md:gap-8 cursor-grab active:cursor-grabbing md:cursor-default`}
             >
               {getVisibleTestimonials().map((testimonial, index) => (
                 <motion.div
@@ -210,8 +261,16 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
             </motion.div>
           </div>
 
+          {/* Mobile Swipe Hint */}
+          <div className="flex md:hidden justify-center items-center gap-2 mt-6 text-mw-gray-500 text-sm">
+            <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+            </svg>
+            <span>Swipe to navigate</span>
+          </div>
+
           {/* Pagination Dots */}
-          <div className="flex justify-center items-center gap-2 mt-10">
+          <div className="flex justify-center items-center gap-2 mt-6 md:mt-10">
             {Array.from({ length: totalSlides }).map((_, index) => (
               <button
                 key={index}
@@ -238,7 +297,7 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
                   ease: "linear",
                   repeat: Infinity,
                 }}
-                key={currentIndex}
+                key={`progress-${currentIndex}-${itemsPerView}`}
               />
             </div>
           </div>

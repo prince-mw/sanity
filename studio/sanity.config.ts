@@ -11,7 +11,7 @@ const PREVIEW_SECRET = process.env.SANITY_STUDIO_PREVIEW_SECRET || 'preview-secr
 const PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
 
 // Content types that support preview
-const previewTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper', 'product', 'landingPage']
+const previewTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper', 'product', 'landingPage', 'location']
 
 // Type to URL path mapping
 const typeToPath: Record<string, string> = {
@@ -24,6 +24,7 @@ const typeToPath: Record<string, string> = {
   whitepaper: '/whitepapers',
   product: '/products',
   landingPage: '',
+  location: '/locations',
 }
 
 // URL resolver for preview
@@ -117,7 +118,19 @@ const structure = (S: any) =>
               S.documentTypeListItem('teamMember').title('Team Members'),
               S.documentTypeListItem('jobPosition').title('Job Positions'),
               S.documentTypeListItem('office').title('Offices'),
-              S.documentTypeListItem('location').title('Locations'),
+              S.listItem()
+                .title('Locations')
+                .schemaType('location')
+                .child(
+                  S.documentTypeList('location')
+                    .title('Locations')
+                    .defaultOrdering([{ field: 'order', direction: 'asc' }])
+                    .filter('_type == "location"')
+                    .menuItems([
+                      S.orderingMenuItem({ title: 'Display Order', by: [{ field: 'order', direction: 'asc' }] }),
+                      S.orderingMenuItem({ title: 'Country (A-Z)', by: [{ field: 'country', direction: 'asc' }] }),
+                    ])
+                ),
             ])
         ),
       // Reusable Blocks
