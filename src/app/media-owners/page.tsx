@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getAudiencePage, getPageSeo } from '@/sanity/lib/fetch';
+import { getAudiencePage, getPageSeo, getTestimonialsByCategory, transformTestimonial } from '@/sanity/lib/fetch';
 import MediaOwnersPageClient from '@/components/MediaOwnersPageClient';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -31,7 +31,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 3600;
 
 export default async function MediaOwnersPage() {
-  const pageData = await getAudiencePage('media-owners');
+  const [pageData, testimonials] = await Promise.all([
+    getAudiencePage('media-owners'),
+    getTestimonialsByCategory('media-owners')
+  ]);
+
+  // Transform testimonials for client component
+  const transformedTestimonials = testimonials.map(t => transformTestimonial(t));
 
   const clientProps = pageData ? {
     title: pageData.title,
@@ -50,7 +56,8 @@ export default async function MediaOwnersPage() {
       linkText: f.linkText,
     })),
     faqs: pageData.faqs?.map(f => ({ question: f.question, answer: f.answer })),
-  } : {};
+    testimonials: transformedTestimonials,
+  } : { testimonials: transformedTestimonials };
 
   return <MediaOwnersPageClient {...clientProps} />;
 }

@@ -53,6 +53,7 @@ interface WebinarDetail {
   registrationLink: string
   watchLink: string
   content?: any
+  htmlContent?: string
   speakers?: Speaker[]
 }
 
@@ -243,6 +244,15 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Webina
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
   
   const videoEmbedUrl = getVideoEmbedUrl(webinar.watchLink)
+
+  // If htmlContent exists, render only the custom HTML
+  if (webinar.htmlContent) {
+    return (
+      <div className="min-h-screen">
+        <div dangerouslySetInnerHTML={{ __html: webinar.htmlContent }} />
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-white">

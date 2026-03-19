@@ -185,6 +185,7 @@ const structure = (S: any) =>
                     .title('Mega Menu Configuration')
                 ),
               S.documentTypeListItem('pageSeo').title('Page SEO Settings'),
+              S.documentTypeListItem('zohoForm').title('Zoho Forms'),
             ])
         ),
     ])

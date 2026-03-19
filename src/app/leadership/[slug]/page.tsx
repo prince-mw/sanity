@@ -10,7 +10,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     
     if (member) {
       const seo = member.seo
-      const title = seo?.metaTitle || `${member.name} | Leadership | Moving Walls`
+      const title = seo?.metaTitle || member.name
       const description = seo?.metaDescription || member.bio || `Meet ${member.name} - ${member.role} at Moving Walls.`
       const ogImage = seo?.ogImage 
         ? getSanityImageUrl(seo.ogImage, { width: 1200 })
@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         description,
         keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
         openGraph: {
-          title: seo?.metaTitle || `${member.name} | Moving Walls Leadership`,
+          title,
           description,
           type: 'profile',
           images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
@@ -36,10 +36,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const formattedName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
   
   return {
-    title: `${formattedName} | Leadership | Moving Walls`,
+    title: formattedName,
     description: `Meet ${formattedName} - a key leader driving innovation at Moving Walls.`,
     openGraph: {
-      title: `${formattedName} | Moving Walls Leadership`,
+      title: formattedName,
       description: `Learn about ${formattedName}'s role and contributions at Moving Walls.`,
       type: 'profile',
     },

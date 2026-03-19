@@ -21,11 +21,11 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
         : transformed.featuredImage;
       
       return {
-        title: `${title} | Case Study | Moving Walls`,
+        title,
         description,
         keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
         openGraph: {
-          title: `${title} | Case Study`,
+          title,
           description,
           type: "article",
           images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
   
   return {
-    title: "Case Study | Moving Walls",
+    title: "Case Study",
     description: "Discover how brands achieve success with Moving Walls OOH advertising platform.",
   };
 }

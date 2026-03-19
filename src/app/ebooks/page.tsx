@@ -106,6 +106,7 @@ export default async function EbooksPage() {
         return {
           id: transformed.id,
           title: transformed.title,
+          slug: transformed.slug,
           description: transformed.description,
           category: transformed.category,
           image: transformed.image || '/assets/images/ebooks/default-ebook.jpg',

@@ -212,6 +212,14 @@ export default defineType({
       group: 'content',
     }),
     defineField({
+      name: 'htmlContent',
+      title: 'Custom HTML Page',
+      type: 'text',
+      description: 'Paste complete HTML code here. When filled, this replaces the entire webinar detail page content.',
+      rows: 20,
+      group: 'content',
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',

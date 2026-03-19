@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         : getSanityImageUrl(release.featuredImage, { width: 1200 });
       
       return {
-        title: `${title} | Press & News | Moving Walls`,
+        title,
         description,
         keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
         openGraph: {
@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
   
   return {
-    title: 'Press & News | Moving Walls',
+    title: 'Press & News',
     description: 'Latest news and announcements from Moving Walls.',
   };
 }

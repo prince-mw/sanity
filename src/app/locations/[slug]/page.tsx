@@ -11,7 +11,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const sanityLocation = await getLocationBySlug(slug)
   if (sanityLocation) {
     const seo = sanityLocation.seo
-    const title = seo?.metaTitle || `${sanityLocation.country} | OOH Advertising | Moving Walls`
+    const title = seo?.metaTitle || sanityLocation.country
     const description = seo?.metaDescription || sanityLocation.description || `Explore OOH advertising opportunities in ${sanityLocation.country}.`
     const ogImage = seo?.ogImage 
       ? getSanityImageUrl(seo.ogImage, { width: 1200 })
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       description,
       keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
       openGraph: {
-        title: seo?.metaTitle || `OOH Advertising in ${sanityLocation.country} | Moving Walls`,
+        title,
         description,
         type: 'website',
         images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
@@ -35,10 +35,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const staticData = getStaticLocationData(slug)
   if (staticData) {
     return {
-      title: `${staticData.name} | OOH Advertising | Moving Walls`,
+      title: staticData.name,
       description: staticData.description,
       openGraph: {
-        title: `OOH Advertising in ${staticData.name} | Moving Walls`,
+        title: staticData.name,
         description: staticData.description,
         type: 'website',
       },
@@ -48,7 +48,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   // Default metadata for unknown slugs
   const formattedName = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
   return {
-    title: `${formattedName} | Locations | Moving Walls`,
+    title: formattedName,
     description: `Explore Moving Walls operations and OOH advertising opportunities in ${formattedName}.`,
   }
 }

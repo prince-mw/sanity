@@ -1,10 +1,11 @@
 import {defineField, defineType} from 'sanity'
+import {DocumentIcon} from '@sanity/icons'
 
 export default defineType({
   name: 'zohoForm',
   title: 'Zoho Form',
   type: 'document',
-  icon: () => '📝',
+  icon: DocumentIcon,
   fields: [
     defineField({
       name: 'name',

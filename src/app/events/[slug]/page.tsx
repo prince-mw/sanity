@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         : getSanityImageUrl(event.featuredImage, { width: 1200 });
       
       return {
-        title: `${title} | Events | Moving Walls`,
+        title,
         description,
         keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
         openGraph: {
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
   
   return {
-    title: 'Event | Moving Walls',
+    title: 'Event',
     description: 'Join our events and connect with the advertising community.',
   };
 }

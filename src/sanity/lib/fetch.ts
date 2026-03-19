@@ -970,6 +970,7 @@ export interface SanityWebinar {
   registrationLink?: string
   watchLink?: string
   content?: any
+  htmlContent?: string
   seo?: {
     metaTitle?: string
     metaDescription?: string
@@ -1124,6 +1125,7 @@ export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | nu
       registrationLink,
       watchLink,
       content,
+      htmlContent,
       seo
     }
   `
@@ -1311,8 +1313,10 @@ export interface SanityEbook {
   pages?: number
   downloads?: string
   topics?: string[]
+  body?: any[]
   order?: number
   zohoForm?: ZohoFormData
+  seo?: SanitySEO
 }
 
 export async function getAllEbooks(): Promise<SanityEbook[]> {
@@ -1346,6 +1350,41 @@ export async function getAllEbooks(): Promise<SanityEbook[]> {
     }
   `
   return client.fetch(query)
+}
+
+export async function getEbookBySlug(slug: string): Promise<SanityEbook | null> {
+  const query = `
+    *[_type == "ebook" && slug.current == $slug][0] {
+      _id,
+      title,
+      slug,
+      description,
+      category,
+      image,
+      year,
+      featured,
+      isNew,
+      viewUrl,
+      "pdfFileUrl": pdfFile.asset->url,
+      pages,
+      downloads,
+      topics,
+      body,
+      order,
+      seo,
+      zohoForm->{
+        _id,
+        name,
+        formUrl,
+        formType,
+        "displayMode": embedSettings.displayMode,
+        "height": embedSettings.height,
+        "width": embedSettings.width,
+        isActive
+      }
+    }
+  `
+  return client.fetch(query, { slug })
 }
 
 export async function getFeaturedEbook(): Promise<SanityEbook | null> {
@@ -1411,6 +1450,7 @@ export function transformEbook(ebook: SanityEbook) {
     pages: ebook.pages || 0,
     downloads: ebook.downloads || '0',
     topics: ebook.topics || [],
+    body: ebook.body || [],
     zohoForm: ebook.zohoForm && ebook.zohoForm.isActive !== false ? {
       formUrl: ebook.zohoForm.formUrl,
       name: ebook.zohoForm.name,
@@ -2146,6 +2186,76 @@ export function transformAudiencePage(page: SanityAudiencePage) {
     faqs: page.faqs || [],
     seoTitle: page.seoTitle || '',
     seoDescription: page.seoDescription || '',
+  }
+}
+
+// ============================================
+// TESTIMONIALS BY CATEGORY
+// ============================================
+
+export interface SanityTestimonial {
+  _id: string
+  internalName: string
+  quote: { en?: string; [key: string]: string | undefined }
+  author: string
+  role?: string
+  company?: string
+  avatar?: any
+  companyLogo?: any
+  rating?: number
+  featured?: boolean
+  categories?: string[]
+}
+
+export async function getTestimonialsByCategory(category: string): Promise<SanityTestimonial[]> {
+  const query = `
+    *[_type == "reusableTestimonial" && $category in categories] | order(featured desc) {
+      _id,
+      internalName,
+      quote,
+      author,
+      role,
+      company,
+      avatar,
+      companyLogo,
+      rating,
+      featured,
+      categories
+    }
+  `
+  return client.fetch(query, { category })
+}
+
+export async function getAllTestimonials(): Promise<SanityTestimonial[]> {
+  const query = `
+    *[_type == "reusableTestimonial"] | order(featured desc) {
+      _id,
+      internalName,
+      quote,
+      author,
+      role,
+      company,
+      avatar,
+      companyLogo,
+      rating,
+      featured,
+      categories
+    }
+  `
+  return client.fetch(query)
+}
+
+export function transformTestimonial(testimonial: SanityTestimonial, locale: string = 'en') {
+  return {
+    _id: testimonial._id,
+    quote: testimonial.quote?.[locale] || testimonial.quote?.en || '',
+    author: testimonial.author || '',
+    role: testimonial.role || '',
+    company: testimonial.company || '',
+    image: testimonial.avatar ? { asset: { _ref: testimonial.avatar.asset?._ref } } : undefined,
+    companyLogo: testimonial.companyLogo ? { asset: { _ref: testimonial.companyLogo.asset?._ref } } : undefined,
+    metric: '',
+    industry: '',
   }
 }
 

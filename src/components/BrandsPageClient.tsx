@@ -24,6 +24,17 @@ interface BrandsPageProps {
     linkText?: string;
   }>;
   faqs?: Array<{ question: string; answer: string }>;
+  testimonials?: Array<{
+    _id?: string;
+    quote: string;
+    author: string;
+    role: string;
+    company: string;
+    metric?: string;
+    industry?: string;
+    image?: { asset: { _ref: string } };
+    companyLogo?: { asset: { _ref: string } };
+  }>;
 }
 
 // Default values for fallback
@@ -1452,7 +1463,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialSectionClient />
+      <TestimonialSectionClient testimonials={props.testimonials} />
 
       {/* FAQ Section */}
       <section className="py-20 bg-white">

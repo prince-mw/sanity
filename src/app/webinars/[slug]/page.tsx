@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         : getSanityImageUrl(webinar.featuredImage, { width: 1200 });
       
       return {
-        title: `${title} | Webinars | Moving Walls`,
+        title,
         description,
         keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
         openGraph: {
@@ -58,7 +58,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
   
   return {
-    title: 'Webinar | Moving Walls',
+    title: 'Webinar',
     description: 'Watch webinars from Moving Walls.',
   };
 }
@@ -92,6 +92,7 @@ export default async function WebinarDetailPage({ params }: PageProps) {
       registrationLink: webinar.registrationLink || '',
       watchLink: webinar.watchLink || '',
       content: webinar.content,
+      htmlContent: webinar.htmlContent || '',
       speakers: webinar.speakers?.map(s => ({
         _key: s._key || '',
         name: s.name || '',

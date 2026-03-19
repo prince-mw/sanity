@@ -22,8 +22,8 @@ const siteUrl = "https://www.movingwalls.com";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "MovingWalls - Connected Media Platform for OOH Advertising",
-    template: "%s | MovingWalls",
+    default: "Moving Walls - Connected Media Platform for OOH Advertising",
+    template: "%s",
   },
   icons: {
     icon: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
       { url: "/apple-icon.svg", type: "image/svg+xml" },
     ],
   },
-  description: "MovingWalls delivers innovative out-of-home advertising solutions with AI-powered media planning, programmatic buying, and real-time measurement to amplify your brand reach across 2.8B+ screens worldwide.",
+  description: "Moving Walls delivers innovative out-of-home advertising solutions with AI-powered media planning, programmatic buying, and real-time measurement to amplify your brand reach across 2.8B+ screens worldwide.",
   keywords: [
     "OOH advertising",
     "out-of-home advertising",
@@ -44,11 +44,11 @@ export const metadata: Metadata = {
     "billboard advertising",
     "outdoor advertising",
     "advertising platform",
-    "MovingWalls",
+    "Moving Walls",
   ],
-  authors: [{ name: "MovingWalls" }],
-  creator: "MovingWalls",
-  publisher: "MovingWalls",
+  authors: [{ name: "Moving Walls" }],
+  creator: "Moving Walls",
+  publisher: "Moving Walls",
   formatDetection: {
     email: false,
     address: false,
@@ -61,21 +61,21 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "MovingWalls",
-    title: "MovingWalls - Connected Media Platform for OOH Advertising",
+    siteName: "Moving Walls",
+    title: "Moving Walls - Connected Media Platform for OOH Advertising",
     description: "Transform your advertising with AI-powered OOH media planning, programmatic buying, and real-time measurement across 2.8B+ screens worldwide.",
     images: [
       {
         url: "/assets/images/og-image.svg",
         width: 1200,
         height: 630,
-        alt: "MovingWalls - Connected Media Platform",
+        alt: "Moving Walls - Connected Media Platform",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "MovingWalls - Connected Media Platform for OOH Advertising",
+    title: "Moving Walls - Connected Media Platform for OOH Advertising",
     description: "Transform your advertising with AI-powered OOH media planning, programmatic buying, and real-time measurement.",
     images: ["/assets/images/og-image.svg"],
     creator: "@movingwalls",

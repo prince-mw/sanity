@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getAudiencePage, getPageSeo } from '@/sanity/lib/fetch';
+import { getAudiencePage, getPageSeo, getTestimonialsByCategory, transformTestimonial } from '@/sanity/lib/fetch';
 import BrandsPageClient from '@/components/BrandsPageClient';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -31,7 +31,13 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 3600; // Revalidate every hour
 
 export default async function BrandsPage() {
-  const pageData = await getAudiencePage('brands');
+  const [pageData, testimonials] = await Promise.all([
+    getAudiencePage('brands'),
+    getTestimonialsByCategory('brands')
+  ]);
+
+  // Transform testimonials for client component
+  const transformedTestimonials = testimonials.map(t => transformTestimonial(t));
 
   // Transform Sanity data to match client component props
   const clientProps = pageData ? {
@@ -51,7 +57,8 @@ export default async function BrandsPage() {
       linkText: f.linkText,
     })),
     faqs: pageData.faqs?.map(f => ({ question: f.question, answer: f.answer })),
-  } : {};
+    testimonials: transformedTestimonials,
+  } : { testimonials: transformedTestimonials };
 
   return <BrandsPageClient {...clientProps} />;
 }
