@@ -37,3 +37,6 @@ next-env.d.ts
 
 # studio build output
 studio/dist/
+
+# studio dependencies
+studio/node_modules

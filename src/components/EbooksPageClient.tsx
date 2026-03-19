@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import React, { useState } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 
 // Animation variants
 const fadeUp = {
@@ -20,6 +20,15 @@ const staggerItem = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
 }
 
+// Zoho Form interface
+interface ZohoFormConfig {
+  formUrl: string
+  name: string
+  displayMode: 'iframe' | 'modal' | 'newtab'
+  height: number
+  width: string
+}
+
 // E-Book type
 export interface Ebook {
   id: number | string
@@ -35,12 +44,13 @@ export interface Ebook {
   pages?: number
   downloads?: string
   topics?: string[]
+  zohoForm?: ZohoFormConfig
 }
 
 // Categories for filtering
 const categories = ["All", "Guide", "Whitepaper", "Playbook", "Market Report"]
 
-// Download Modal Component
+// Download Modal Component - Now supports Zoho Forms
 const DownloadModal = ({ 
   isOpen, 
   onClose, 
@@ -69,22 +79,51 @@ const DownloadModal = ({
 
   if (!isOpen || !ebook) return null
 
+  // If ebook has a Zoho form configured, show the Zoho form iframe
+  const hasZohoForm = ebook.zohoForm && ebook.zohoForm.formUrl
+
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-      onClick={onClose}
-    >
+    <AnimatePresence>
       <motion.div 
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 md:p-8"
-        onClick={(e) => e.stopPropagation()}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        onClick={onClose}
       >
-        {!submitted ? (
+        <motion.div 
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          className={`bg-white rounded-2xl shadow-2xl w-full p-6 md:p-8 ${hasZohoForm ? 'max-w-2xl' : 'max-w-md'}`}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {hasZohoForm ? (
+            // Zoho Form Embed
+            <>
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h3 className="text-xl font-bold text-gray-900">Get Your Copy</h3>
+                  <p className="text-sm text-gray-500 mt-1">{ebook.title}</p>
+                </div>
+                <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="overflow-hidden rounded-lg">
+                <iframe
+                  src={ebook.zohoForm!.formUrl}
+                  width={ebook.zohoForm!.width || '100%'}
+                  height={ebook.zohoForm!.height || 600}
+                  style={{ border: 'none' }}
+                  title={ebook.zohoForm!.name || 'Download Form'}
+                  loading="lazy"
+                />
+              </div>
+            </>
+          ) : !submitted ? (
           <>
             <div className="flex justify-between items-start mb-6">
               <div>
@@ -164,8 +203,9 @@ const DownloadModal = ({
             <p className="text-gray-500">Your e-book is being downloaded. Check your downloads folder.</p>
           </div>
         )}
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </AnimatePresence>
   )
 }
 

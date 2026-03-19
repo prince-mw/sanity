@@ -1,9 +1,11 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import ContactForm from './ContactForm'
+import Link from 'next/link'
+import { useState } from 'react'
 
 export interface Event {
+  slug?: string
   title: string
   type: string
   date: string
@@ -21,41 +23,17 @@ export interface Event {
 }
 
 interface EventsPageClientProps {
-  events: Event[]
+  upcomingEvents: Event[]
+  pastEvents: Event[]
 }
 
-export default function EventsPageClient({ events }: EventsPageClientProps) {
-  const eventTypes = [
-    {
-      icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
-      title: 'Webinars',
-      description: 'Free online sessions covering industry trends and product updates',
-      count: '12+ per year'
-    },
-    {
-      icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h4a1 1 0 011 1v5m-6 0h6" /></svg>,
-      title: 'Workshops',
-      description: 'Interactive, hands-on training sessions at our global offices',
-      count: '8+ per year'
-    },
-    {
-      icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>,
-      title: 'Conferences',
-      description: 'Industry conferences where you can meet our team and see demos',
-      count: '15+ per year'
-    },
-    {
-      icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>,
-      title: 'Training',
-      description: 'Deep-dive training sessions and certification programs',
-      count: '6+ per year'
-    }
-  ]
+export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsPageClientProps) {
+  const [activeTab, setActiveTab] = useState('upcoming')
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-mw-gray-50">
+      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -64,161 +42,335 @@ export default function EventsPageClient({ events }: EventsPageClientProps) {
             className="text-center"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-mw-blue-100 rounded-full mb-8">
-              <span className="text-mw-blue-600 text-sm font-medium">Learning & Networking</span>
+              <svg className="w-4 h-4 text-mw-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+              </svg>
+              <span className="text-mw-blue-600 text-sm font-medium">Learn & Connect</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
-              Events & Training
-              <span className="text-mw-blue-600 block">Learn & Connect</span>
+              Events &
+              <span className="text-mw-blue-600 block">Training</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Join us for webinars, workshops, conferences, and training sessions. 
-              Stay ahead of industry trends, learn best practices, and connect with 
-              fellow advertising professionals.
+              Join us for conferences, workshops, and training sessions. Stay ahead of industry trends, 
+              learn best practices, and connect with fellow advertising professionals.
             </p>
+
+            {/* Stats */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto">
+              {[
+                { number: '30+', label: 'Events per Year' },
+                { number: '15+', label: 'Countries' },
+                { number: '5K+', label: 'Attendees' }
+              ].map((stat, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
+                  className="text-center"
+                >
+                  <div className="text-3xl font-bold text-mw-blue-600 mb-1">{stat.number}</div>
+                  <div className="text-sm text-mw-gray-600">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Upcoming Events - Timeline View */}
-      <section className="py-20 bg-mw-gray-50">
+      {/* Tab Navigation */}
+      <section className="py-8 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+          <div className="flex items-center gap-4">
+            <button
+              onClick={() => setActiveTab('upcoming')}
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'upcoming'
+                  ? 'bg-mw-blue-600 text-white shadow-mw-sm'
+                  : 'bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200'
+              }`}
+            >
               Upcoming Events
-            </h2>
-            <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
-              Don&apos;t miss these upcoming opportunities to learn, network, and advance your advertising expertise.
-            </p>
-          </motion.div>
-
-          {/* Timeline */}
-          <div className="relative">
-            {/* Timeline line */}
-            <div className="absolute left-8 md:left-1/2 md:-translate-x-px top-0 bottom-0 w-0.5 bg-mw-blue-200"></div>
-
-            <div className="space-y-12">
-              {events.map((event, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`relative flex flex-col md:flex-row gap-8 ${
-                    index % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'
-                  }`}
-                >
-                  {/* Timeline dot */}
-                  <div className="absolute left-8 md:left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-mw-blue-600 border-4 border-white shadow-lg z-10"></div>
-
-                  {/* Date badge - mobile */}
-                  <div className="ml-16 md:hidden mb-2">
-                    <span className="inline-block px-3 py-1 bg-mw-blue-600 text-white text-sm font-semibold rounded-full">
-                      {event.date}
-                    </span>
-                  </div>
-
-                  {/* Content */}
-                  <div className={`ml-16 md:ml-0 md:w-1/2 ${index % 2 === 0 ? 'md:pr-12 md:text-right' : 'md:pl-12 md:text-left'}`}>
-                    {/* Date badge - desktop */}
-                    <div className={`hidden md:block mb-3 ${index % 2 === 0 ? 'text-right' : 'text-left'}`}>
-                      <span className="inline-block px-3 py-1 bg-mw-blue-600 text-white text-sm font-semibold rounded-full">
-                        {event.date}
-                      </span>
-                    </div>
-
-                    <div className={`bg-white rounded-xl shadow-lg border border-mw-gray-100 p-6 hover:shadow-xl transition-shadow ${
-                      event.featured ? 'border-mw-blue-300 ring-2 ring-mw-blue-100' : ''
-                    }`}>
-                      <div className={`flex items-center gap-2 mb-3 flex-wrap ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
-                        {event.featured && (
-                          <span className="px-2 py-1 bg-mw-blue-100 text-mw-blue-600 text-xs font-medium rounded-full">
-                            Featured
-                          </span>
-                        )}
-                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                          event.type === 'Webinar' ? 'bg-green-100 text-green-600' :
-                          event.type === 'Workshop' ? 'bg-purple-100 text-purple-600' :
-                          event.type === 'Conference' ? 'bg-orange-100 text-orange-600' :
-                          event.type === 'Summit' ? 'bg-red-100 text-red-600' :
-                          'bg-blue-100 text-blue-600'
-                        }`}>
-                          {event.type}
-                        </span>
-                      </div>
-
-                      <h3 className={`text-xl font-bold text-mw-gray-900 mb-2 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                        {event.title}
-                      </h3>
-                      
-                      <p className={`text-mw-gray-600 text-sm mb-4 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                        {event.description}
-                      </p>
-
-                      <div className={`flex flex-col gap-2 text-sm text-mw-gray-500 mb-4 ${index % 2 === 0 ? 'md:items-end' : 'md:items-start'}`}>
-                        <div className="flex items-center gap-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                          </svg>
-                          <span>{event.time}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                          </svg>
-                          <span>{event.location}</span>
-                        </div>
-                      </div>
-
-                      <div className={`flex items-center gap-3 ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
-                        <span className="text-mw-blue-600 font-semibold">{event.price}</span>
-                        <button className="px-4 py-2 bg-mw-blue-600 hover:bg-mw-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
-                          {event.price === 'Free' ? 'Register Free' : 
-                           event.price === 'Conference Pass Required' ? 'Find Us There' :
-                           event.price === 'Invitation Only' ? 'Request Invite' : 'Register Now'}
-                        </button>
-                      </div>
-
-                      {/* Speakers with images */}
-                      {event.speakersList && event.speakersList.length > 0 && (
-                        <div className={`mt-4 pt-4 border-t border-mw-gray-100 ${index % 2 === 0 ? 'md:text-right' : 'md:text-left'}`}>
-                          <p className="text-xs text-mw-gray-500 mb-2">Speakers</p>
-                          <div className={`flex items-center gap-2 flex-wrap ${index % 2 === 0 ? 'md:justify-end' : 'md:justify-start'}`}>
-                            {event.speakersList.slice(0, 4).map((speaker, spkIdx) => (
-                              <div key={spkIdx} className="flex items-center gap-2">
-                                {speaker.image ? (
-                                  <img src={speaker.image} alt={speaker.name} className="w-8 h-8 rounded-full object-cover" />
-                                ) : (
-                                  <div className="w-8 h-8 bg-mw-gray-200 rounded-full flex items-center justify-center">
-                                    <span className="text-xs font-medium text-mw-gray-600">{speaker.name[0]}</span>
-                                  </div>
-                                )}
-                                <span className="text-sm text-mw-gray-700">{speaker.name}</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Spacer for alternating layout */}
-                  <div className="hidden md:block md:w-1/2"></div>
-                </motion.div>
-              ))}
-            </div>
+            </button>
+            <button
+              onClick={() => setActiveTab('past')}
+              className={`px-6 py-3 rounded-lg font-medium transition-all ${
+                activeTab === 'past'
+                  ? 'bg-mw-blue-600 text-white shadow-mw-sm'
+                  : 'bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200'
+              }`}
+            >
+              Past Events
+            </button>
           </div>
         </div>
       </section>
 
-      <ContactForm />
+      {/* Upcoming Events */}
+      {activeTab === 'upcoming' && (
+        <section className="py-16 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">Upcoming Events</h2>
+              <p className="text-lg text-mw-gray-600">Register now to secure your spot</p>
+            </div>
+
+            {upcomingEvents.length === 0 ? (
+              <div className="text-center py-16 bg-mw-gray-50 rounded-xl">
+                <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Upcoming Events</h3>
+                <p className="text-mw-gray-500">Check back soon for new events or browse our past events.</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {upcomingEvents.map((event, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="bg-white border border-mw-gray-200 rounded-xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
+                  >
+                    <div className="grid lg:grid-cols-3 gap-6 p-6">
+                      {/* Event Image/Preview */}
+                      <div className="lg:col-span-1">
+                        <Link href={event.slug ? `/events/${event.slug}` : '#'}>
+                          <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 rounded-lg flex items-center justify-center relative overflow-hidden cursor-pointer">
+                            {event.featuredImage ? (
+                              <img src={event.featuredImage} alt={event.title} className="w-full h-full object-cover" />
+                            ) : (
+                              <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                              </svg>
+                            )}
+                            <div className="absolute top-3 left-3 flex gap-2">
+                              <span className="px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
+                                Upcoming
+                              </span>
+                              {event.featured && (
+                                <span className="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-medium rounded-full">
+                                  Featured
+                                </span>
+                              )}
+                            </div>
+                            <span className={`absolute top-3 right-3 px-3 py-1 text-xs font-medium rounded-full ${
+                              event.type === 'Webinar' ? 'bg-green-100 text-green-700' :
+                              event.type === 'Workshop' ? 'bg-purple-100 text-purple-700' :
+                              event.type === 'Conference' ? 'bg-orange-100 text-orange-700' :
+                              event.type === 'Summit' ? 'bg-red-100 text-red-700' :
+                              'bg-blue-100 text-blue-700'
+                            }`}>
+                              {event.type}
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+
+                      {/* Event Details */}
+                      <div className="lg:col-span-2">
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <Link href={event.slug ? `/events/${event.slug}` : '#'}>
+                              <h3 className="text-2xl font-bold text-mw-gray-900 mb-2 hover:text-mw-blue-600 transition-colors cursor-pointer">{event.title}</h3>
+                            </Link>
+                            <p className="text-mw-gray-600 mb-4">{event.description}</p>
+                          </div>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                          <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                            <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>{event.date}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                            <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span>{event.time}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                            <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>{event.location}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                            <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                            <span className="font-semibold text-mw-blue-600">{event.price}</span>
+                          </div>
+                        </div>
+
+                        {/* Speakers */}
+                        {event.speakersList && event.speakersList.length > 0 && (
+                          <div className="mb-4">
+                            <p className="text-xs text-mw-gray-500 mb-2">Speakers</p>
+                            <div className="flex items-center gap-3 flex-wrap">
+                              {event.speakersList.slice(0, 3).map((speaker, spkIdx) => (
+                                <div key={spkIdx} className="flex items-center gap-2">
+                                  {speaker.image ? (
+                                    <img src={speaker.image} alt={speaker.name} className="w-8 h-8 rounded-full object-cover" />
+                                  ) : (
+                                    <div className="w-8 h-8 bg-mw-gray-200 rounded-full flex items-center justify-center">
+                                      <span className="text-xs font-medium text-mw-gray-600">{speaker.name[0]}</span>
+                                    </div>
+                                  )}
+                                  <div>
+                                    <p className="text-sm font-medium text-mw-gray-900">{speaker.name}</p>
+                                    {speaker.role && <p className="text-xs text-mw-gray-500">{speaker.role}</p>}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <Link 
+                          href={event.slug ? `/events/${event.slug}` : '#'}
+                          className="inline-block px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
+                        >
+                          {event.price === 'Free' ? 'Register Free' : 
+                           event.price === 'Conference Pass Required' ? 'Learn More' :
+                           event.price === 'Invitation Only' ? 'Request Invite' : 'Register Now'}
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* Past Events */}
+      {activeTab === 'past' && (
+        <section className="py-16 bg-mw-gray-50">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">Past Events</h2>
+              <p className="text-lg text-mw-gray-600">Browse our event history</p>
+            </div>
+
+            {pastEvents.length === 0 ? (
+              <div className="text-center py-16 bg-white rounded-xl">
+                <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Past Events</h3>
+                <p className="text-mw-gray-500">Events will appear here once they&apos;ve concluded.</p>
+              </div>
+            ) : (
+              <div className="space-y-6">
+                {pastEvents.map((event, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    className="bg-white border border-mw-gray-200 rounded-xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
+                  >
+                    <div className="grid lg:grid-cols-3 gap-6 p-6">
+                      {/* Event Image/Preview */}
+                      <div className="lg:col-span-1">
+                        <Link href={event.slug ? `/events/${event.slug}` : '#'}>
+                          <div className="aspect-video bg-gradient-to-br from-mw-gray-400 to-mw-gray-600 rounded-lg flex items-center justify-center relative overflow-hidden cursor-pointer">
+                            {event.featuredImage ? (
+                              <img src={event.featuredImage} alt={event.title} className="w-full h-full object-cover grayscale-[30%]" />
+                            ) : (
+                              <svg className="w-16 h-16 text-white/30" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clipRule="evenodd" />
+                              </svg>
+                            )}
+                            <span className="absolute top-3 right-3 px-3 py-1 bg-mw-gray-700 text-white text-xs font-medium rounded-full">
+                              Completed
+                            </span>
+                            <span className={`absolute top-3 left-3 px-3 py-1 text-xs font-medium rounded-full ${
+                              event.type === 'Webinar' ? 'bg-green-100 text-green-700' :
+                              event.type === 'Workshop' ? 'bg-purple-100 text-purple-700' :
+                              event.type === 'Conference' ? 'bg-orange-100 text-orange-700' :
+                              event.type === 'Summit' ? 'bg-red-100 text-red-700' :
+                              'bg-blue-100 text-blue-700'
+                            }`}>
+                              {event.type}
+                            </span>
+                          </div>
+                        </Link>
+                      </div>
+
+                      {/* Event Details */}
+                      <div className="lg:col-span-2">
+                        <div className="flex items-start justify-between mb-3">
+                          <div>
+                            <Link href={event.slug ? `/events/${event.slug}` : '#'}>
+                              <h3 className="text-2xl font-bold text-mw-gray-900 mb-2 hover:text-mw-blue-600 transition-colors cursor-pointer">{event.title}</h3>
+                            </Link>
+                            <p className="text-mw-gray-600 mb-4">{event.description}</p>
+                          </div>
+                        </div>
+
+                        <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                          <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                            <svg className="w-5 h-5 text-mw-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>{event.date}</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-sm text-mw-gray-600">
+                            <svg className="w-5 h-5 text-mw-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>{event.location}</span>
+                          </div>
+                        </div>
+
+                        {/* Speakers */}
+                        {event.speakersList && event.speakersList.length > 0 && (
+                          <div className="mb-4">
+                            <p className="text-xs text-mw-gray-500 mb-2">Speakers</p>
+                            <div className="flex items-center gap-3 flex-wrap">
+                              {event.speakersList.slice(0, 3).map((speaker, spkIdx) => (
+                                <div key={spkIdx} className="flex items-center gap-2">
+                                  {speaker.image ? (
+                                    <img src={speaker.image} alt={speaker.name} className="w-8 h-8 rounded-full object-cover" />
+                                  ) : (
+                                    <div className="w-8 h-8 bg-mw-gray-200 rounded-full flex items-center justify-center">
+                                      <span className="text-xs font-medium text-mw-gray-600">{speaker.name[0]}</span>
+                                    </div>
+                                  )}
+                                  <div>
+                                    <p className="text-sm font-medium text-mw-gray-900">{speaker.name}</p>
+                                    {speaker.role && <p className="text-xs text-mw-gray-500">{speaker.role}</p>}
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        <Link 
+                          href={event.slug ? `/events/${event.slug}` : '#'}
+                          className="inline-block px-6 py-3 bg-mw-gray-600 hover:bg-mw-gray-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
+                        >
+                          View Event Details
+                        </Link>
+                      </div>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      )}
     </div>
   )
 }

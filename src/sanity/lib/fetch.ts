@@ -486,54 +486,7 @@ export interface SanityEvent {
 
 export async function getAllEvents(): Promise<SanityEvent[]> {
   const query = `
-    *[_type == "event"] | order(startDate asc) {
-      _id,
-      title,
-      slug,
-      featuredImage,
-      eventType,
-      startDate,
-      endDate,
-      location,
-      excerpt,
-      registrationLink,
-      price,
-      capacity,
-      category,
-      featured,
-      speakers
-    }
-  `
-  return client.fetch(query)
-}
-
-export async function getUpcomingEvents(limit: number = 10): Promise<SanityEvent[]> {
-  const now = new Date().toISOString()
-  const query = `
-    *[_type == "event" && startDate >= $now] | order(startDate asc)[0...$limit] {
-      _id,
-      title,
-      slug,
-      featuredImage,
-      eventType,
-      startDate,
-      endDate,
-      location,
-      excerpt,
-      registrationLink,
-      price,
-      capacity,
-      category,
-      featured,
-      speakers
-    }
-  `
-  return client.fetch(query, { now, limit: limit - 1 })
-}
-
-export async function getEventBySlug(slug: string): Promise<SanityEvent | null> {
-  const query = `
-    *[_type == "event" && slug.current == $slug][0] {
+    *[_type == "event" && ${publishedFilter}] | order(startDate asc) {
       _id,
       title,
       slug,
@@ -549,7 +502,59 @@ export async function getEventBySlug(slug: string): Promise<SanityEvent | null> 
       capacity,
       category,
       featured,
-      speakers
+      speakers,
+      seo
+    }
+  `
+  return client.fetch(query)
+}
+
+export async function getUpcomingEvents(limit: number = 10): Promise<SanityEvent[]> {
+  const now = new Date().toISOString()
+  const query = `
+    *[_type == "event" && ${publishedFilter} && startDate >= $now] | order(startDate asc)[0...$limit] {
+      _id,
+      title,
+      slug,
+      featuredImage,
+      eventType,
+      startDate,
+      endDate,
+      location,
+      excerpt,
+      content,
+      registrationLink,
+      price,
+      capacity,
+      category,
+      featured,
+      speakers,
+      seo
+    }
+  `
+  return client.fetch(query, { now, limit: limit - 1 })
+}
+
+export async function getEventBySlug(slug: string): Promise<SanityEvent | null> {
+  const query = `
+    *[_type == "event" && slug.current == $slug && ${publishedFilter}][0] {
+      _id,
+      title,
+      slug,
+      featuredImage,
+      eventType,
+      startDate,
+      endDate,
+      location,
+      excerpt,
+      content,
+      registrationLink,
+      price,
+      capacity,
+      category,
+      featured,
+      speakers,
+      seo
     }
   `
   return client.fetch(query, { slug })
@@ -1280,6 +1285,17 @@ function formatJobType(type: string | undefined): string {
 }
 
 // Ebook Types and Queries
+export interface ZohoFormData {
+  _id: string
+  name: string
+  formUrl: string
+  formType?: string
+  displayMode?: 'iframe' | 'modal' | 'newtab'
+  height?: number
+  width?: string
+  isActive?: boolean
+}
+
 export interface SanityEbook {
   _id: string
   title: string
@@ -1296,6 +1312,7 @@ export interface SanityEbook {
   downloads?: string
   topics?: string[]
   order?: number
+  zohoForm?: ZohoFormData
 }
 
 export async function getAllEbooks(): Promise<SanityEbook[]> {
@@ -1315,7 +1332,17 @@ export async function getAllEbooks(): Promise<SanityEbook[]> {
       pages,
       downloads,
       topics,
-      order
+      order,
+      zohoForm->{
+        _id,
+        name,
+        formUrl,
+        formType,
+        "displayMode": embedSettings.displayMode,
+        "height": embedSettings.height,
+        "width": embedSettings.width,
+        isActive
+      }
     }
   `
   return client.fetch(query)
@@ -1384,6 +1411,13 @@ export function transformEbook(ebook: SanityEbook) {
     pages: ebook.pages || 0,
     downloads: ebook.downloads || '0',
     topics: ebook.topics || [],
+    zohoForm: ebook.zohoForm && ebook.zohoForm.isActive !== false ? {
+      formUrl: ebook.zohoForm.formUrl,
+      name: ebook.zohoForm.name,
+      displayMode: ebook.zohoForm.displayMode || 'modal',
+      height: ebook.zohoForm.height || 600,
+      width: ebook.zohoForm.width || '100%',
+    } : undefined,
   }
 }
 

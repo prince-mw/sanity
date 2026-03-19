@@ -177,6 +177,8 @@ async function migrateEvents() {
         capacity: event.capacity,
         category: event.category,
         featured: event.featured,
+        isPublished: true,
+        status: 'published',
       }
 
       if (existing) {

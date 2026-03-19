@@ -119,6 +119,14 @@ export default defineType({
       group: 'details',
     }),
     defineField({
+      name: 'zohoForm',
+      title: 'Download Form',
+      type: 'reference',
+      to: [{type: 'zohoForm'}],
+      description: 'Select a Zoho form for lead capture before download',
+      group: 'details',
+    }),
+    defineField({
       name: 'pdfFile',
       title: 'PDF File',
       type: 'file',

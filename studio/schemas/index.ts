@@ -46,6 +46,7 @@ import localeBlockContent from './objects/localeBlockContent'
 import reusableTestimonial from './reusableTestimonial'
 import reusableStatBlock from './reusableStatBlock'
 import reusableCTA from './reusableCTA'
+import zohoForm from './zohoForm'
 
 export const schemaTypes = [
   // Document types
@@ -97,4 +98,6 @@ export const schemaTypes = [
   reusableTestimonial,
   reusableStatBlock,
   reusableCTA,
+  // Forms
+  zohoForm,
 ]

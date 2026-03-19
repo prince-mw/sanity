@@ -295,31 +295,6 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
           </div>
         </section>
       )}
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-mw-blue-600 to-mw-blue-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-          >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-              Want to Host a Webinar?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Share your expertise with our community. We&apos;re always looking for industry experts to collaborate with.
-            </p>
-            <Link
-              href="/contact"
-              className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-medium rounded-lg hover:bg-blue-50 transition-colors shadow-mw-lg"
-            >
-              Become a Speaker
-            </Link>
-          </motion.div>
-        </div>
-      </section>
     </div>
   )
 }

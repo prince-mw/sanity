@@ -71,6 +71,14 @@ export default defineType({
       group: 'content',
     }),
     defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'text',
+      rows: 3,
+      description: 'A brief summary of the event',
+      group: 'content',
+    }),
+    defineField({
       name: 'eventType',
       title: 'Event Type',
       type: 'string',

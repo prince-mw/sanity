@@ -27,24 +27,37 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 300
 
-const fallbackEvents: Event[] = [
+// Helper function to check if event date is in the past
+function isEventPast(dateString: string): boolean {
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  
+  // Try to parse the date string
+  const eventDate = new Date(dateString)
+  if (isNaN(eventDate.getTime())) {
+    // If parsing fails, try extracting just numbers for year/month/day
+    const match = dateString.match(/(\w+)\s+(\d+)(?:-\d+)?,?\s*(\d{4})?/)
+    if (match) {
+      const months: Record<string, number> = {
+        'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
+        'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
+      }
+      const month = months[match[1]] ?? 0
+      const day = parseInt(match[2])
+      const year = match[3] ? parseInt(match[3]) : today.getFullYear()
+      const parsedDate = new Date(year, month, day)
+      return parsedDate < today
+    }
+    return false
+  }
+  return eventDate < today
+}
+
+const fallbackUpcomingEvents: Event[] = [
   {
-    title: "The Future of Programmatic Advertising",
-    type: "Webinar",
-    date: "December 15, 2024",
-    time: "2:00 PM - 3:00 PM PST",
-    location: "Virtual Event",
-    description: "Join our experts as we explore emerging trends in programmatic advertising and discuss how AI is reshaping the industry.",
-    speakers: ["Sarah Mitchell, CEO", "David Chen, CTO"],
-    price: "Free",
-    capacity: "500 attendees",
-    category: "Technology",
-    featured: true
-  },
-  {
-    title: "Moving Walls at AdTech Conference 2025",
+    title: "Moving Walls at AdTech Conference 2026",
     type: "Conference",
-    date: "January 22-24, 2025",
+    date: "April 22-24, 2026",
     time: "9:00 AM - 6:00 PM PST",
     location: "Moscone Center, San Francisco",
     description: "Meet our team at booth #245 and see live demos of our latest advertising technology innovations.",
@@ -52,12 +65,12 @@ const fallbackEvents: Event[] = [
     price: "Conference Pass Required",
     capacity: "Meet at Booth #245",
     category: "Conference",
-    featured: false
+    featured: true
   },
   {
     title: "Data Privacy in Modern Advertising",
     type: "Workshop",
-    date: "February 8, 2025",
+    date: "May 8, 2026",
     time: "10:00 AM - 4:00 PM EST",
     location: "New York Office",
     description: "Interactive workshop covering privacy-first advertising strategies and compliance with global data regulations.",
@@ -68,22 +81,9 @@ const fallbackEvents: Event[] = [
     featured: false
   },
   {
-    title: "Customer Success Stories & Best Practices",
-    type: "Webinar",
-    date: "February 20, 2025",
-    time: "1:00 PM - 2:00 PM EST",
-    location: "Virtual Event",
-    description: "Learn from successful campaigns and discover best practices from leading brands using Moving Walls platforms.",
-    speakers: ["Michael Brown, CRO", "Customer Success Team"],
-    price: "Free",
-    capacity: "1000 attendees",
-    category: "Case Studies",
-    featured: false
-  },
-  {
     title: "Moving Walls European Summit",
     type: "Summit",
-    date: "March 15, 2025",
+    date: "June 15, 2026",
     time: "9:00 AM - 5:00 PM GMT",
     location: "London Office",
     description: "Annual European summit featuring keynotes, networking, and deep-dive sessions on advertising innovation.",
@@ -92,11 +92,40 @@ const fallbackEvents: Event[] = [
     capacity: "150 attendees",
     category: "Summit",
     featured: true
+  }
+]
+
+const fallbackPastEvents: Event[] = [
+  {
+    title: "The Future of Programmatic Advertising",
+    type: "Webinar",
+    date: "December 15, 2025",
+    time: "2:00 PM - 3:00 PM PST",
+    location: "Virtual Event",
+    description: "Our experts explored emerging trends in programmatic advertising and discussed how AI is reshaping the industry.",
+    speakers: ["Sarah Mitchell, CEO", "David Chen, CTO"],
+    price: "Free",
+    capacity: "500 attendees",
+    category: "Technology",
+    featured: false
+  },
+  {
+    title: "Customer Success Stories & Best Practices",
+    type: "Webinar",
+    date: "February 20, 2025",
+    time: "1:00 PM - 2:00 PM EST",
+    location: "Virtual Event",
+    description: "Learning from successful campaigns and best practices from leading brands using Moving Walls platforms.",
+    speakers: ["Michael Brown, CRO", "Customer Success Team"],
+    price: "Free",
+    capacity: "1000 attendees",
+    category: "Case Studies",
+    featured: false
   },
   {
     title: "Mobile Advertising Masterclass",
     type: "Training",
-    date: "March 28, 2025",
+    date: "January 28, 2025",
     time: "11:00 AM - 3:00 PM PST",
     location: "San Francisco Office",
     description: "Hands-on training session focused on mobile advertising strategies and campaign optimization techniques.",
@@ -109,15 +138,17 @@ const fallbackEvents: Event[] = [
 ]
 
 export default async function EventsPage() {
-  let events: Event[] = fallbackEvents
+  let upcomingEvents: Event[] = fallbackUpcomingEvents
+  let pastEvents: Event[] = fallbackPastEvents
   
   try {
     const sanityEvents = await getAllEvents()
     
     if (sanityEvents && sanityEvents.length > 0) {
-      events = sanityEvents.map(e => {
+      const allEvents = sanityEvents.map(e => {
         const transformed = transformEvent(e)
         return {
+          slug: transformed.slug,
           title: transformed.title,
           type: transformed.type || 'Event',
           date: transformed.date || 'TBD',
@@ -134,10 +165,14 @@ export default async function EventsPage() {
           content: transformed.content
         }
       })
+      
+      // Separate into upcoming and past events
+      upcomingEvents = allEvents.filter(event => !isEventPast(event.date))
+      pastEvents = allEvents.filter(event => isEventPast(event.date))
     }
   } catch (error) {
     console.error('Error fetching events from Sanity:', error)
   }
   
-  return <EventsPageClient events={events} />
+  return <EventsPageClient upcomingEvents={upcomingEvents} pastEvents={pastEvents} />
 }

@@ -98,37 +98,24 @@ export default function OOHFormatsPageClient({ oohFormats }: OOHFormatsPageClien
           <div className="absolute inset-0" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
         </div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <motion.div initial="hidden" animate="visible" variants={fadeUp} className="mb-6">
-                <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
-                  Out-of-Home Advertising Demystified
-                </h1>
-                <p className="text-mw-blue-200 text-lg">Learn the basics of outdoor advertising and become an expert</p>
-              </motion.div>
-              <motion.p initial="hidden" animate="visible" variants={fadeUp} className="text-xl text-mw-blue-100 max-w-3xl mb-10">
-                Unlock the basics of outdoor advertising with our comprehensive guide. Discover the most effective OOH formats to reach your target audience.
-              </motion.p>
-              <motion.div initial="hidden" animate="visible" variants={fadeUp} className="flex flex-wrap gap-4">
-                <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-colors">
-                  Plan Your Campaign
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                </Link>
-                <Link href="/locations" className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                  View Locations
-                </Link>
-              </motion.div>
-            </div>
-            <motion.div initial="hidden" animate="visible" variants={fadeUp} className="hidden lg:block">
-              <div className="relative aspect-video rounded-2xl overflow-hidden bg-white/10 backdrop-blur-sm border border-white/20 shadow-2xl">
-                <Image
-                  src="https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=800&q=80"
-                  alt="OOH Advertising Formats"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-mw-blue-900/50 to-transparent"></div>
-              </div>
+          <div className="max-w-4xl mx-auto text-center">
+            <motion.div initial="hidden" animate="visible" variants={fadeUp} className="mb-6">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4">
+                Out-of-Home Advertising Demystified
+              </h1>
+              <p className="text-mw-blue-200 text-lg">Learn the basics of outdoor advertising and become an expert</p>
+            </motion.div>
+            <motion.p initial="hidden" animate="visible" variants={fadeUp} className="text-xl text-mw-blue-100 mb-10">
+              Unlock the basics of outdoor advertising with our comprehensive guide. Discover the most effective OOH formats to reach your target audience.
+            </motion.p>
+            <motion.div initial="hidden" animate="visible" variants={fadeUp} className="flex flex-wrap gap-4 justify-center">
+              <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-colors">
+                Plan Your Campaign
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+              </Link>
+              <Link href="/locations" className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
+                View Locations
+              </Link>
             </motion.div>
           </div>
         </div>

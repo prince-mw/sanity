@@ -115,7 +115,8 @@ export default async function EbooksPage() {
           viewUrl: transformed.viewUrl || '#',
           pages: transformed.pages,
           downloads: transformed.downloads,
-          topics: transformed.topics
+          topics: transformed.topics,
+          zohoForm: transformed.zohoForm
         }
       })
     }
