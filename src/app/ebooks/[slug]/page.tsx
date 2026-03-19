@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getEbookBySlug, getAllEbooks, transformEbook, getSanityImageUrl } from "@/sanity/lib/fetch";
-import EbookDetailClient from "@/components/EbookDetailClient";
+import EbookDetailClient from "../../../components/EbookDetailClient";
 
 export const revalidate = 60;
 

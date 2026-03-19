@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getEventBySlug, getAllEvents, transformEvent, getSanityImageUrl } from "@/sanity/lib/fetch";
-import EventDetailClient from "@/components/EventDetailClient";
+import EventDetailClient from "../../../components/EventDetailClient";
 
 export const revalidate = 60;
 
