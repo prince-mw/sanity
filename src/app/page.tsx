@@ -11,7 +11,7 @@ import About from "../components/About";
 import Newsletter from "../components/Newsletter";
 import CaseStudiesSection from "../components/CaseStudiesSection";
 import ContactForm from "../components/ContactForm";
-import { getPageSeo, getSanityImageUrl, getAllCaseStudies } from "@/sanity/lib/fetch";
+import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy } from "@/sanity/lib/fetch";
 
 const defaultMeta = {
   title: "Moving Walls - Connected Media Platform for OOH Advertising",
@@ -41,7 +41,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export default async function Home() {
   // Fetch case studies server-side
-  let caseStudies = [];
+  let caseStudies: SanityCaseStudy[] = [];
   try {
     const data = await getAllCaseStudies();
     caseStudies = data?.slice(0, 4) || [];
