@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { getWebinarBySlug, getRelatedWebinars, getAllWebinars, getSanityImageUrl } from "@/sanity/lib/fetch";
 import WebinarDetailClient from "@/components/WebinarDetailClient";
 
-export const revalidate = 60;
+export const revalidate = 10;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
