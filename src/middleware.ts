@@ -26,7 +26,9 @@ async function fetchRedirects(): Promise<RedirectRule[]> {
     )
     const url = `https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${query}`
 
-    const res = await fetch(url, { next: { revalidate: 60 } })
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+    })
     if (!res.ok) {
       console.error('Failed to fetch redirects:', res.status)
       return redirectCache || []
@@ -55,26 +57,37 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
-  const redirects = await fetchRedirects()
-  if (!redirects.length) return NextResponse.next()
-
-  // Normalize: match with and without trailing slash
+  // Normalize: strip trailing slash for consistent matching
   const normalizedPath = pathname.endsWith('/') && pathname !== '/'
     ? pathname.slice(0, -1)
     : pathname
 
-  const match = redirects.find(
-    (r) => r.source === normalizedPath || r.source === pathname
-  )
+  const redirects = await fetchRedirects()
 
-  if (match) {
-    const destination = match.destination.startsWith('http')
-      ? match.destination
-      : new URL(match.destination, request.url).toString()
-
-    return NextResponse.redirect(destination, {
-      status: match.permanent ? 308 : 307,
+  if (redirects.length) {
+    const match = redirects.find((r) => {
+      const normalizedSource = r.source.endsWith('/') && r.source !== '/'
+        ? r.source.slice(0, -1)
+        : r.source
+      return normalizedSource === normalizedPath
     })
+
+    if (match) {
+      const destination = match.destination.startsWith('http')
+        ? match.destination
+        : new URL(match.destination, request.url).toString()
+
+      return NextResponse.redirect(destination, {
+        status: match.permanent ? 308 : 307,
+      })
+    }
+  }
+
+  // Handle trailing slash normalization (since skipTrailingSlashRedirect is enabled)
+  if (pathname !== normalizedPath) {
+    const url = request.nextUrl.clone()
+    url.pathname = normalizedPath
+    return NextResponse.redirect(url, 308)
   }
 
   return NextResponse.next()

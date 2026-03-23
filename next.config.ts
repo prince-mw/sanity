@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Allow middleware to handle trailing slash redirects for CMS redirect rules
+  skipTrailingSlashRedirect: true,
+
   /* Performance Optimizations */
   images: {
     remotePatterns: [
