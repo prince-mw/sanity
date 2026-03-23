@@ -187,7 +187,7 @@ export default function OurStoryPageClient() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, index) => (
+            {displayValues.map((value, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -236,7 +236,7 @@ export default function OurStoryPageClient() {
                 </svg>
               </Link>
               <Link
-                href="/solutions"
+                href="/brands"
                 className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"
               >
                 Explore Solutions
