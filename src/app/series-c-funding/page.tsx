@@ -1,8 +1,7 @@
 import { Metadata } from "next";
 import { getPressArticleBySlug, getPageSeo } from "@/sanity/lib/fetch";
 import PressArticleClient from "@/components/PressArticleClient";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
 
 const ARTICLE_SLUG = "series-c-funding";
 
@@ -55,7 +54,6 @@ export default async function SeriesCFundingPage() {
 function FallbackContent() {
   return (
     <div className="min-h-screen bg-black text-white">
-      <Header />
       <main className="pt-24 pb-16">
         <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <header className="mb-8">
@@ -97,7 +95,6 @@ function FallbackContent() {
           </div>
         </article>
       </main>
-      <Footer />
     </div>
   );
 }

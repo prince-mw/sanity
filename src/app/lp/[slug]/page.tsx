@@ -3,8 +3,7 @@ import { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { getLandingPageBySlug, getLandingPageSlugs } from "@/sanity/lib/queries";
 import { LandingPageRenderer } from "@/components/landing";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
 
 export const revalidate = 60;
 
@@ -83,7 +82,6 @@ export default async function LandingPage({ params }: PageProps) {
 
   return (
     <>
-      <Header />
       <main className="min-h-screen">
         {isPreview && (
           <div className="bg-yellow-500 text-black text-center py-2 text-sm font-medium">
@@ -93,7 +91,6 @@ export default async function LandingPage({ params }: PageProps) {
         )}
         <LandingPageRenderer sections={page.sections || []} />
       </main>
-      <Footer />
     </>
   );
 }

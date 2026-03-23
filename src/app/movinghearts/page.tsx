@@ -1,15 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+
 import Link from "next/link";
 import Image from "next/image";
 
 export default function MovingHeartsPage() {
   return (
     <>
-      <Header />
       <main className="min-h-screen bg-gradient-to-b from-rose-50 to-white">
         {/* Hero Section */}
         <section className="relative pt-32 pb-20 overflow-hidden">
@@ -329,7 +327,6 @@ export default function MovingHeartsPage() {
           </div>
         </section>
       </main>
-      <Footer />
     </>
   );
 }

@@ -11,15 +11,17 @@ interface AgenciesPageProps {
   title?: string;
   titleHighlight?: string;
   subtitle?: string;
+  heroImage?: string;
   primaryCTA?: { text: string; href: string };
   secondaryCTA?: { text: string; href: string };
   stats?: Array<{ value: string; label: string }>;
-  benefits?: Array<{ title: string; description: string }>;
+  benefits?: Array<{ title: string; description: string; image?: string }>;
   platformFeatures?: Array<{
     id: string;
     name: string;
     title: string;
     description: string;
+    image?: string;
     linkHref?: string;
     linkText?: string;
   }>;
@@ -184,14 +186,25 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
               </div>
             </motion.div>
 
-            {/* Right Side - Isometric City with Animated Screens */}
+            {/* Right Side - Hero Image or Isometric City with Animated Screens */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
               className="relative flex items-center justify-center"
-              style={{ perspective: '1000px' }}
             >
+              {props.heroImage ? (
+                <div className="relative w-full max-w-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                  <Image
+                    src={props.heroImage}
+                    alt={content.title}
+                    width={1200}
+                    height={800}
+                    className="w-full h-auto object-cover"
+                    priority
+                  />
+                </div>
+              ) : (
               <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px]">
                 {/* Isometric City Container */}
                 <motion.div
@@ -384,6 +397,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
 
 
               </div>
+              )}
             </motion.div>
           </div>
         </div>

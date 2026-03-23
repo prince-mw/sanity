@@ -2141,6 +2141,9 @@ export interface SanityAudiencePage {
     name: string
     title: string
     description: string
+    image?: any
+    icon?: string
+    features?: string[]
     linkHref?: string
     linkText?: string
   }>
@@ -2148,6 +2151,8 @@ export interface SanityAudiencePage {
     _key: string
     title: string
     description: string
+    icon?: string
+    image?: any
   }>
   stats?: Array<{
     _key: string
@@ -2158,6 +2163,8 @@ export interface SanityAudiencePage {
     _key: string
     title: string
     description: string
+    icon?: string
+    image?: any
     offerings: string[]
   }>
   faqs?: Array<{
@@ -2201,10 +2208,19 @@ export function transformAudiencePage(page: SanityAudiencePage) {
     primaryCTA: page.primaryCTA || { text: 'Contact Us', href: '/contact' },
     secondaryCTA: page.secondaryCTA || { text: 'Learn More', href: '#' },
     heroImage: getSanityImageUrl(page.heroImage, { width: 1200 }) || '',
-    platformFeatures: page.platformFeatures || [],
-    benefits: page.benefits || [],
+    platformFeatures: (page.platformFeatures || []).map(f => ({
+      ...f,
+      image: f.image ? getSanityImageUrl(f.image, { width: 800 }) : '',
+    })),
+    benefits: (page.benefits || []).map(b => ({
+      ...b,
+      image: b.image ? getSanityImageUrl(b.image, { width: 600 }) : '',
+    })),
     stats: page.stats || [],
-    services: page.services || [],
+    services: (page.services || []).map(s => ({
+      ...s,
+      image: s.image ? getSanityImageUrl(s.image, { width: 800 }) : '',
+    })),
     faqs: page.faqs || [],
     seoTitle: page.seoTitle || '',
     seoDescription: page.seoDescription || '',

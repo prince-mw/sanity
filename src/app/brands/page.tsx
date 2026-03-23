@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getAudiencePage, getPageSeo, getTestimonialsByCategory, transformTestimonial } from '@/sanity/lib/fetch';
+import { getAudiencePage, getPageSeo, getTestimonialsByCategory, transformTestimonial, getSanityImageUrl } from '@/sanity/lib/fetch';
 import BrandsPageClient from '@/components/BrandsPageClient';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -46,13 +46,15 @@ export default async function BrandsPage() {
     subtitle: pageData.subtitle,
     primaryCTA: pageData.primaryCTA,
     secondaryCTA: pageData.secondaryCTA,
+    heroImage: pageData.heroImage ? getSanityImageUrl(pageData.heroImage, { width: 1200 }) : undefined,
     stats: pageData.stats?.map(s => ({ value: s.value, label: s.label })),
-    benefits: pageData.benefits?.map(b => ({ title: b.title, description: b.description })),
+    benefits: pageData.benefits?.map(b => ({ title: b.title, description: b.description, image: b.image ? getSanityImageUrl(b.image, { width: 600 }) : undefined })),
     platformFeatures: pageData.platformFeatures?.map(f => ({
       id: f.id,
       name: f.name,
       title: f.title,
       description: f.description,
+      image: f.image ? getSanityImageUrl(f.image, { width: 800 }) : undefined,
       linkHref: f.linkHref,
       linkText: f.linkText,
     })),

@@ -11,15 +11,17 @@ interface MediaOwnersPageProps {
   title?: string;
   titleHighlight?: string;
   subtitle?: string;
+  heroImage?: string;
   primaryCTA?: { text: string; href: string };
   secondaryCTA?: { text: string; href: string };
   stats?: Array<{ value: string; label: string }>;
-  benefits?: Array<{ title: string; description: string }>;
+  benefits?: Array<{ title: string; description: string; image?: string }>;
   platformFeatures?: Array<{
     id: string;
     name: string;
     title: string;
     description: string;
+    image?: string;
     linkHref?: string;
     linkText?: string;
   }>;
@@ -187,14 +189,25 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               </div>
             </motion.div>
 
-            {/* Right Side - 3D Billboard Network Grid */}
+            {/* Right Side - Hero Image or 3D Billboard Network Grid */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
               className="relative flex items-center justify-center"
-              style={{ perspective: '1000px' }}
             >
+              {props.heroImage ? (
+                <div className="relative w-full max-w-[500px] rounded-2xl overflow-hidden shadow-2xl">
+                  <Image
+                    src={props.heroImage}
+                    alt={content.title}
+                    width={1200}
+                    height={800}
+                    className="w-full h-auto object-cover"
+                    priority
+                  />
+                </div>
+              ) : (
               <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px]">
                 {/* 3D Billboard Network Container */}
                 <motion.div
@@ -361,6 +374,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
 
 
               </div>
+              )}
             </motion.div>
           </div>
         </div>
@@ -505,33 +519,35 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
             <div className="order-1 lg:order-2 relative">
               <div className="bg-gradient-to-br from-mw-gray-100 to-mw-gray-200 rounded-2xl p-4">
                 <div className="rounded-xl overflow-hidden">
-                  {activePlatform === 'marketplace' && (
-                    <Image
-                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop"
-                      alt="Demand Marketplace Dashboard"
-                      width={800}
-                      height={500}
-                      className="w-full h-auto object-cover"
-                    />
-                  )}
-                  {activePlatform === 'inventory' && (
-                    <Image
-                      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop"
-                      alt="Inventory Management Dashboard"
-                      width={800}
-                      height={500}
-                      className="w-full h-auto object-cover"
-                    />
-                  )}
-                  {activePlatform === 'yield' && (
-                    <Image
-                      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&q=80"
-                      alt="Yield Optimization Dashboard"
-                      width={800}
-                      height={500}
-                      className="w-full h-auto object-cover"
-                    />
-                  )}
+                  {(() => {
+                    const activeFeature = content.platformFeatures.find(f => f.id === activePlatform);
+                    if (activeFeature && 'image' in activeFeature && activeFeature.image) {
+                      return (
+                        <Image
+                          src={activeFeature.image}
+                          alt={activeFeature.title || 'Feature'}
+                          width={800}
+                          height={500}
+                          className="w-full h-auto object-cover"
+                        />
+                      );
+                    }
+                    const fallbackImages: Record<string, { src: string; alt: string }> = {
+                      marketplace: { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop', alt: 'Demand Marketplace Dashboard' },
+                      inventory: { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop', alt: 'Inventory Management Dashboard' },
+                      yield: { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&q=80', alt: 'Yield Optimization Dashboard' },
+                    };
+                    const fallback = fallbackImages[activePlatform] || fallbackImages.marketplace;
+                    return (
+                      <Image
+                        src={fallback.src}
+                        alt={fallback.alt}
+                        width={800}
+                        height={500}
+                        className="w-full h-auto object-cover"
+                      />
+                    );
+                  })()}
                 </div>
               </div>
             </div>

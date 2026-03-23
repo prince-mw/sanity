@@ -168,9 +168,6 @@ export default async function RootLayout({
           </Suspense>
           <CookieConsent />
           <PreviewBanner isPreview={isPreview} />
-          <Footer />
-          <CookieConsent />
-          <PreviewBanner isPreview={isPreview} />
         </LocaleProvider>
       </body>
     </html>
