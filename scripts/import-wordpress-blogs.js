@@ -227,13 +227,13 @@ function mapCategory(wpCategory) {
 
 function getDefaultImage(category) {
   const images = {
-    'Industry Trends': 'https://stg.movingwalls.com/wp-content/uploads/2024/01/industry-trends.webp',
-    'Case Studies': 'https://stg.movingwalls.com/wp-content/uploads/2024/01/case-studies.webp',
-    'Technology': 'https://stg.movingwalls.com/wp-content/uploads/2024/01/technology.webp',
-    'Programmatic DOOH': 'https://stg.movingwalls.com/wp-content/uploads/2024/01/programmatic.webp',
-    'Measurement': 'https://stg.movingwalls.com/wp-content/uploads/2024/01/measurement.webp',
-    'Media Owners': 'https://stg.movingwalls.com/wp-content/uploads/2024/01/media-owners.webp',
-    'Best Practices': 'https://stg.movingwalls.com/wp-content/uploads/2024/01/best-practices.webp',
+    'Industry Trends': 'https://www.movingwalls.com/wp-content/uploads/2024/01/industry-trends.webp',
+    'Case Studies': 'https://www.movingwalls.com/wp-content/uploads/2024/01/case-studies.webp',
+    'Technology': 'https://www.movingwalls.com/wp-content/uploads/2024/01/technology.webp',
+    'Programmatic DOOH': 'https://www.movingwalls.com/wp-content/uploads/2024/01/programmatic.webp',
+    'Measurement': 'https://www.movingwalls.com/wp-content/uploads/2024/01/measurement.webp',
+    'Media Owners': 'https://www.movingwalls.com/wp-content/uploads/2024/01/media-owners.webp',
+    'Best Practices': 'https://www.movingwalls.com/wp-content/uploads/2024/01/best-practices.webp',
   };
   return images[category] || images['Industry Trends'];
 }

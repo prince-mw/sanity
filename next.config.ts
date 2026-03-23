@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'stg.movingwalls.com',
+        hostname: 'www.movingwalls.com',
         pathname: '/**',
       },
       {
