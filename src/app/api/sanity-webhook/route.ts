@@ -33,7 +33,15 @@ export async function POST(request: NextRequest) {
     // Verify webhook secret
     const signature = request.headers.get('sanity-webhook-signature')
     
-    if (WEBHOOK_SECRET && signature !== WEBHOOK_SECRET) {
+    if (!WEBHOOK_SECRET) {
+      console.error('[Sanity Webhook] SANITY_WEBHOOK_SECRET not configured')
+      return NextResponse.json(
+        { error: 'Webhook secret not configured' },
+        { status: 500 }
+      )
+    }
+
+    if (signature !== WEBHOOK_SECRET) {
       return NextResponse.json(
         { error: 'Invalid webhook signature' },
         { status: 401 }
