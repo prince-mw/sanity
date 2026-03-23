@@ -16,15 +16,27 @@ interface AgenciesPageProps {
   secondaryCTA?: { text: string; href: string };
   stats?: Array<{ value: string; label: string }>;
   benefits?: Array<{ title: string; description: string; image?: string }>;
+  platformSectionTitle?: string;
+  platformSectionSubtitle?: string;
   platformFeatures?: Array<{
     id: string;
+    tabLabel?: string;
     name: string;
     title: string;
     description: string;
     image?: string;
+    features?: string[];
     linkHref?: string;
     linkText?: string;
   }>;
+  trustBarTitle?: string;
+  customerLogos?: Array<{ name: string; logo?: string }>;
+  journeyTitle?: string;
+  journeySubtitle?: string;
+  journeySteps?: Array<{ stepLabel: string; stepName: string; description: string; items: string[] }>;
+  featureGridTitle?: string;
+  featureGridSubtitle?: string;
+  featureGrid?: Array<{ title: string; description: string; iconName?: string }>;
   faqs?: Array<{ question: string; answer: string }>;
   testimonials?: Array<{
     _id?: string;
@@ -113,6 +125,52 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
     platformFeatures: props.platformFeatures?.length ? props.platformFeatures : defaultContent.platformFeatures,
     faqs: props.faqs?.length ? props.faqs : defaultContent.faqs,
   };
+
+  // Trust bar logos - CMS or fallback
+  const trustBarTitle = props.trustBarTitle || 'TRUSTED BY LEADING AGENCIES WORLDWIDE';
+  const customerLogos = props.customerLogos?.length ? props.customerLogos : [
+    { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
+    { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
+    { name: 'Samsung', logo: '/assets/images/our-customers-logos/samsung.png' },
+    { name: 'Netflix', logo: '/assets/images/our-customers-logos/netflix.png' },
+    { name: 'Dell', logo: '/assets/images/our-customers-logos/dell.png' },
+    { name: 'Bosch', logo: '/assets/images/our-customers-logos/bosch.png' },
+    { name: "L'Oreal Paris", logo: '/assets/images/our-customers-logos/l_oreal paris.png' },
+    { name: 'Sunsilk', logo: '/assets/images/our-customers-logos/sunsilk.png' },
+    { name: 'AirAsia', logo: '/assets/images/our-customers-logos/airasia.png' },
+    { name: 'Grab', logo: '/assets/images/our-customers-logos/grab.png' },
+    { name: 'Foodpanda', logo: '/assets/images/our-customers-logos/foodpanda.png' },
+    { name: 'Lalamove', logo: '/assets/images/our-customers-logos/lalamove.png' },
+    { name: 'HBO Go', logo: '/assets/images/our-customers-logos/hbo-go.png' },
+    { name: 'Astro', logo: '/assets/images/our-customers-logos/astro.png' },
+    { name: 'Gamuda', logo: '/assets/images/our-customers-logos/gamuda.png' },
+    { name: 'Laguna', logo: '/assets/images/our-customers-logos/laguna.png' },
+    { name: 'SeaOil', logo: '/assets/images/our-customers-logos/seaoil.png' },
+    { name: 'Fair Price', logo: '/assets/images/our-customers-logos/fair-price.png' },
+  ];
+
+  // Journey section - CMS or fallback
+  const journeyTitle = props.journeyTitle || 'From Complexity to Clarity';
+  const journeySubtitle = props.journeySubtitle || "See how MovingWalls transforms your agency's OOH capabilities";
+  const journeySteps = props.journeySteps?.length ? props.journeySteps : [
+    { stepLabel: 'The Old Way', stepName: 'Challenges', description: '', items: ['Manual RFPs taking weeks slows growth', 'Limited inventory access restricts scale', 'No real-time performance data', 'Complex billing bottlenecks', 'Scaling operations difficult'] },
+    { stepLabel: 'Transformation', stepName: 'The MovingWalls Transformation', description: 'Your complete agency solution', items: ['White-Label Platform', 'Global Inventory Access', 'Real-Time Analytics', 'Automated Workflows', 'Scalable Infrastructure'] },
+    { stepLabel: 'The New Way', stepName: 'Results', description: '', items: ['Launch in under 5 minutes', '500K+ screens available', 'Real-time tracking', 'Automated billing & invoicing', '3x revenue scaling'] },
+  ];
+
+  // Feature grid section - CMS or fallback
+  const featureGridTitle = props.featureGridTitle || 'Built for Agencies That Want to Grow';
+  const featureGridSubtitle = props.featureGridSubtitle || 'Powerful tools designed specifically for agencies to win more clients and deliver exceptional OOH campaigns';
+  const featureGrid = props.featureGrid?.length ? props.featureGrid : [
+    { title: 'White-Label Platform', description: 'Keeps your brand front and center while offering a full OOH solution' },
+    { title: 'Multi-Client Management', description: 'Allows management of all campaigns, budgets, and teams in one dashboard' },
+    { title: 'Client Reporting', description: 'Delivers branded reports with real-time metrics and attribution data' },
+    { title: 'Approval Workflows', description: 'Streamlines notifications and approvals, saving hours each week' },
+    { title: 'Global Inventory Access', description: 'Connects your clients to premium screens across 50+ countries' },
+    { title: 'Margin Control', description: 'Sets client-specific pricing while maintaining transparency' },
+    { title: 'Team Collaboration', description: 'Enables role-based access, task management, and shared dashboards' },
+    { title: 'API Integration', description: 'Connects seamlessly with CRMs, DSPs, and internal systems' },
+  ];
 
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [activePlatform, setActivePlatform] = useState('planning')
@@ -575,7 +633,7 @@ Your Complete OOH Platform
       {/* Trust Bar */}
       <section className="py-12 bg-gray-50 border-b overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-600 mb-8 font-semibold">TRUSTED BY LEADING AGENCIES WORLDWIDE</p>
+          <p className="text-center text-gray-600 mb-8 font-semibold">{trustBarTitle}</p>
         </div>
         <div className="relative">
           <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10"></div>
@@ -596,60 +654,22 @@ Your Complete OOH Platform
                 },
               }}
             >
-              {[
-                { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
-                { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
-                { name: 'Samsung', logo: '/assets/images/our-customers-logos/samsung.png' },
-                { name: 'Netflix', logo: '/assets/images/our-customers-logos/netflix.png' },
-                { name: 'Dell', logo: '/assets/images/our-customers-logos/dell.png' },
-                { name: 'Bosch', logo: '/assets/images/our-customers-logos/bosch.png' },
-                { name: "L'Oreal Paris", logo: '/assets/images/our-customers-logos/l_oreal paris.png' },
-                { name: 'Sunsilk', logo: '/assets/images/our-customers-logos/sunsilk.png' },
-                { name: 'AirAsia', logo: '/assets/images/our-customers-logos/airasia.png' },
-                { name: 'Grab', logo: '/assets/images/our-customers-logos/grab.png' },
-                { name: 'Foodpanda', logo: '/assets/images/our-customers-logos/foodpanda.png' },
-                { name: 'Lalamove', logo: '/assets/images/our-customers-logos/lalamove.png' },
-                { name: 'HBO Go', logo: '/assets/images/our-customers-logos/hbo-go.png' },
-                { name: 'Astro', logo: '/assets/images/our-customers-logos/astro.png' },
-                { name: 'Gamuda', logo: '/assets/images/our-customers-logos/gamuda.png' },
-                { name: 'Laguna', logo: '/assets/images/our-customers-logos/laguna.png' },
-                { name: 'SeaOil', logo: '/assets/images/our-customers-logos/seaoil.png' },
-                { name: 'Fair Price', logo: '/assets/images/our-customers-logos/fair-price.png' },
-              ].map((brand, i) => (
+              {customerLogos.map((brand, i) => (
                 <div key={i} className="flex-shrink-0 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
-                    src={brand.logo} 
+                    src={brand.logo || ''} 
                     alt={brand.name}
                     className="h-8 w-auto max-w-[120px] object-contain"
                     loading="lazy"
                   />
                 </div>
               ))}
-              {[
-                { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
-                { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
-                { name: 'Samsung', logo: '/assets/images/our-customers-logos/samsung.png' },
-                { name: 'Netflix', logo: '/assets/images/our-customers-logos/netflix.png' },
-                { name: 'Dell', logo: '/assets/images/our-customers-logos/dell.png' },
-                { name: 'Bosch', logo: '/assets/images/our-customers-logos/bosch.png' },
-                { name: "L'Oreal Paris", logo: '/assets/images/our-customers-logos/l_oreal paris.png' },
-                { name: 'Sunsilk', logo: '/assets/images/our-customers-logos/sunsilk.png' },
-                { name: 'AirAsia', logo: '/assets/images/our-customers-logos/airasia.png' },
-                { name: 'Grab', logo: '/assets/images/our-customers-logos/grab.png' },
-                { name: 'Foodpanda', logo: '/assets/images/our-customers-logos/foodpanda.png' },
-                { name: 'Lalamove', logo: '/assets/images/our-customers-logos/lalamove.png' },
-                { name: 'HBO Go', logo: '/assets/images/our-customers-logos/hbo-go.png' },
-                { name: 'Astro', logo: '/assets/images/our-customers-logos/astro.png' },
-                { name: 'Gamuda', logo: '/assets/images/our-customers-logos/gamuda.png' },
-                { name: 'Laguna', logo: '/assets/images/our-customers-logos/laguna.png' },
-                { name: 'SeaOil', logo: '/assets/images/our-customers-logos/seaoil.png' },
-                { name: 'Fair Price', logo: '/assets/images/our-customers-logos/fair-price.png' },
-              ].map((brand, i) => (
+              {customerLogos.map((brand, i) => (
                 <div key={`dup-${i}`} className="flex-shrink-0 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
-                    src={brand.logo} 
+                    src={brand.logo || ''} 
                     alt={brand.name}
                     className="h-8 w-auto max-w-[120px] object-contain"
                     loading="lazy"
@@ -671,10 +691,10 @@ Your Complete OOH Platform
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              From Complexity to Clarity
+              {journeyTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See how MovingWalls transforms your agency&apos;s OOH capabilities
+              {journeySubtitle}
             </p>
           </motion.div>
 
@@ -846,18 +866,12 @@ Your Complete OOH Platform
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-red-500 uppercase tracking-wider">The Old Way</span>
-                      <h3 className="text-xl font-bold text-gray-800">Challenges</h3>
+                      <span className="text-xs font-bold text-red-500 uppercase tracking-wider">{journeySteps[0]?.stepLabel || 'The Old Way'}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || 'Challenges'}</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {[
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>, text: 'Manual RFPs taking weeks slows growth' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>, text: 'Limited inventory access restricts scale' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>, text: 'No real-time performance data' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'Complex billing bottlenecks' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>, text: 'Scaling operations difficult' },
-                    ].map((item, index) => (
+                    {(journeySteps[0]?.items || ['Manual RFPs taking weeks slows growth', 'Limited inventory access restricts scale', 'No real-time performance data', 'Complex billing bottlenecks', 'Scaling operations difficult']).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -10 }}
@@ -866,8 +880,10 @@ Your Complete OOH Platform
                         transition={{ delay: index * 0.1 }}
                         className="flex items-center gap-3 bg-white/60 rounded-lg p-3"
                       >
-                        <div className="flex-shrink-0">{item.icon}</div>
-                        <span className="text-gray-700 text-sm">{item.text}</span>
+                        <div className="flex-shrink-0">
+                          <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </div>
+                        <span className="text-gray-700 text-sm">{item}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -892,7 +908,7 @@ Your Complete OOH Platform
                 <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 shadow-2xl h-full transform lg:-translate-y-4">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">
-                      Transformation
+                      {journeySteps[1]?.stepLabel || 'Transformation'}
                     </span>
                   </div>
                   <div className="text-center mb-6 pt-4">
@@ -901,17 +917,17 @@ Your Complete OOH Platform
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">The MovingWalls Transformation</h3>
-                    <p className="text-blue-200 text-sm">Your complete agency solution</p>
+                    <h3 className="text-2xl font-bold text-white mb-2">{journeySteps[1]?.stepName || 'The MovingWalls Transformation'}</h3>
+                    <p className="text-blue-200 text-sm">{journeySteps[1]?.description || 'Your complete agency solution'}</p>
                   </div>
                   <div className="space-y-3">
-                    {[
+                    {(journeySteps[1]?.items || [
                       'White-Label Platform',
                       'Global Inventory Access',
                       'Real-Time Analytics',
                       'Automated Workflows',
                       'Scalable Infrastructure',
-                    ].map((feature, index) => (
+                    ]).map((feature, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -963,18 +979,12 @@ Your Complete OOH Platform
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">The New Way</span>
-                      <h3 className="text-xl font-bold text-gray-800">Results</h3>
+                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || 'The New Way'}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || 'Results'}</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {[
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'Launch in under 5 minutes', metric: '< 5 mins' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>, text: '500K+ screens available', metric: 'Global reach' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>, text: 'Real-time tracking', metric: 'Live data' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>, text: 'Automated billing & invoicing', metric: '68% time saved' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>, text: '3x revenue scaling', metric: '3x growth' },
-                    ].map((item, index) => (
+                    {(journeySteps[2]?.items || ['Launch in under 5 minutes', '500K+ screens available', 'Real-time tracking', 'Automated billing & invoicing', '3x revenue scaling']).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 10 }}
@@ -983,11 +993,10 @@ Your Complete OOH Platform
                         transition={{ delay: 0.5 + index * 0.1 }}
                         className="flex items-center gap-3 bg-white/80 rounded-lg p-3"
                       >
-                        <div className="flex-shrink-0">{item.icon}</div>
-                        <div className="flex-1">
-                          <span className="text-gray-700 text-sm block">{item.text}</span>
-                          <span className="text-green-600 text-xs font-bold">{item.metric}</span>
+                        <div className="flex-shrink-0">
+                          <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                         </div>
+                        <span className="text-gray-700 text-sm">{item}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -1014,110 +1023,44 @@ Your Complete OOH Platform
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Built for Agencies That Want to Grow
+              {featureGridTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Powerful tools designed specifically for agencies to win more clients and deliver exceptional OOH campaigns
+              {featureGridSubtitle}
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                title: 'White-Label Platform',
-                description: 'Keeps your brand front and center while offering a full OOH solution',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-                  </svg>
-                ),
-                color: 'from-blue-500 to-blue-600'
-              },
-              {
-                title: 'Multi-Client Management',
-                description: 'Allows management of all campaigns, budgets, and teams in one dashboard',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                ),
-                color: 'from-indigo-500 to-indigo-600'
-              },
-              {
-                title: 'Client Reporting',
-                description: 'Delivers branded reports with real-time metrics and attribution data',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                ),
-                color: 'from-purple-500 to-purple-600'
-              },
-              {
-                title: 'Approval Workflows',
-                description: 'Streamlines notifications and approvals, saving hours each week',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                ),
-                color: 'from-pink-500 to-pink-600'
-              },
-              {
-                title: 'Global Inventory Access',
-                description: 'Connects your clients to premium screens across 50+ countries',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ),
-                color: 'from-yellow-500 to-yellow-600'
-              },
-              {
-                title: 'Margin Control',
-                description: 'Sets client-specific pricing while maintaining transparency',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ),
-                color: 'from-green-500 to-green-600'
-              },
-              {
-                title: 'Team Collaboration',
-                description: 'Enables role-based access, task management, and shared dashboards',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                  </svg>
-                ),
-                color: 'from-cyan-500 to-cyan-600'
-              },
-              {
-                title: 'API Integration',
-                description: 'Connects seamlessly with CRMs, DSPs, and internal systems',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
-                  </svg>
-                ),
-                color: 'from-teal-500 to-teal-600'
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
-              >
-                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${feature.color} p-3 text-white mb-6 group-hover:scale-110 transition-transform`}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
+            {(() => {
+              const featureIcons = [
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>, color: 'from-blue-500 to-blue-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>, color: 'from-indigo-500 to-indigo-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>, color: 'from-purple-500 to-purple-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>, color: 'from-pink-500 to-pink-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, color: 'from-yellow-500 to-yellow-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, color: 'from-green-500 to-green-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>, color: 'from-cyan-500 to-cyan-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" /></svg>, color: 'from-teal-500 to-teal-600' },
+              ];
+              return featureGrid.map((feature, index) => {
+                const visual = featureIcons[index % featureIcons.length];
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
+                  >
+                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${visual.color} p-3 text-white mb-6 group-hover:scale-110 transition-transform`}>
+                      {visual.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                    <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  </motion.div>
+                );
+              });
+            })()}
           </div>
         </div>
       </section>

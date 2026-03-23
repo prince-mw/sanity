@@ -2135,9 +2135,12 @@ export interface SanityAudiencePage {
   primaryCTA?: { text: string; href: string }
   secondaryCTA?: { text: string; href: string }
   heroImage?: any
+  platformSectionTitle?: string
+  platformSectionSubtitle?: string
   platformFeatures?: Array<{
     _key: string
     id: string
+    tabLabel?: string
     name: string
     title: string
     description: string
@@ -2146,6 +2149,42 @@ export interface SanityAudiencePage {
     features?: string[]
     linkHref?: string
     linkText?: string
+  }>
+  trustBarTitle?: string
+  customerLogos?: Array<{
+    _key: string
+    name: string
+    logo?: any
+  }>
+  journeyTitle?: string
+  journeySubtitle?: string
+  journeySteps?: Array<{
+    _key: string
+    stepLabel: string
+    stepName: string
+    description: string
+    items: string[]
+  }>
+  caseStudySectionTitle?: string
+  caseStudySectionSubtitle?: string
+  caseStudies?: Array<{
+    _key: string
+    client: string
+    category: string
+    title: string
+    description: string
+    image?: any
+    duration: string
+    budget: string
+    metrics: Array<{ label: string; value: string }>
+  }>
+  featureGridTitle?: string
+  featureGridSubtitle?: string
+  featureGrid?: Array<{
+    _key: string
+    title: string
+    description: string
+    iconName?: string
   }>
   benefits?: Array<{
     _key: string
@@ -2187,7 +2226,34 @@ export async function getAudiencePage(pageType: string): Promise<SanityAudienceP
       primaryCTA,
       secondaryCTA,
       heroImage,
+      platformSectionTitle,
+      platformSectionSubtitle,
       platformFeatures,
+      trustBarTitle,
+      customerLogos[] {
+        _key,
+        name,
+        logo
+      },
+      journeyTitle,
+      journeySubtitle,
+      journeySteps,
+      caseStudySectionTitle,
+      caseStudySectionSubtitle,
+      caseStudies[] {
+        _key,
+        client,
+        category,
+        title,
+        description,
+        image,
+        duration,
+        budget,
+        metrics
+      },
+      featureGridTitle,
+      featureGridSubtitle,
+      featureGrid,
       benefits,
       stats,
       services,
@@ -2208,10 +2274,29 @@ export function transformAudiencePage(page: SanityAudiencePage) {
     primaryCTA: page.primaryCTA || { text: 'Contact Us', href: '/contact' },
     secondaryCTA: page.secondaryCTA || { text: 'Learn More', href: '#' },
     heroImage: getSanityImageUrl(page.heroImage, { width: 1200 }) || '',
+    platformSectionTitle: page.platformSectionTitle || '',
+    platformSectionSubtitle: page.platformSectionSubtitle || '',
     platformFeatures: (page.platformFeatures || []).map(f => ({
       ...f,
       image: f.image ? getSanityImageUrl(f.image, { width: 800 }) : '',
     })),
+    trustBarTitle: page.trustBarTitle || '',
+    customerLogos: (page.customerLogos || []).map(l => ({
+      name: l.name,
+      logo: l.logo ? getSanityImageUrl(l.logo, { width: 240 }) : '',
+    })),
+    journeyTitle: page.journeyTitle || '',
+    journeySubtitle: page.journeySubtitle || '',
+    journeySteps: page.journeySteps || [],
+    caseStudySectionTitle: page.caseStudySectionTitle || '',
+    caseStudySectionSubtitle: page.caseStudySectionSubtitle || '',
+    caseStudies: (page.caseStudies || []).map(cs => ({
+      ...cs,
+      image: cs.image ? getSanityImageUrl(cs.image, { width: 800 }) : '',
+    })),
+    featureGridTitle: page.featureGridTitle || '',
+    featureGridSubtitle: page.featureGridSubtitle || '',
+    featureGrid: page.featureGrid || [],
     benefits: (page.benefits || []).map(b => ({
       ...b,
       image: b.image ? getSanityImageUrl(b.image, { width: 600 }) : '',

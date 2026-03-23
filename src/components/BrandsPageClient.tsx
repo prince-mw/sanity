@@ -16,14 +16,35 @@ interface BrandsPageProps {
   secondaryCTA?: { text: string; href: string };
   stats?: Array<{ value: string; label: string }>;
   benefits?: Array<{ title: string; description: string; image?: string }>;
+  platformSectionTitle?: string;
+  platformSectionSubtitle?: string;
   platformFeatures?: Array<{
     id: string;
+    tabLabel?: string;
     name: string;
     title: string;
     description: string;
     image?: string;
+    features?: string[];
     linkHref?: string;
     linkText?: string;
+  }>;
+  trustBarTitle?: string;
+  customerLogos?: Array<{ name: string; logo?: string }>;
+  journeyTitle?: string;
+  journeySubtitle?: string;
+  journeySteps?: Array<{ stepLabel: string; stepName: string; description: string; items: string[] }>;
+  caseStudySectionTitle?: string;
+  caseStudySectionSubtitle?: string;
+  caseStudies?: Array<{
+    client: string;
+    category: string;
+    title: string;
+    description: string;
+    image?: string;
+    duration: string;
+    budget: string;
+    metrics: Array<{ label: string; value: string }>;
   }>;
   faqs?: Array<{ question: string; answer: string }>;
   testimonials?: Array<{
@@ -121,6 +142,50 @@ export default function BrandsPageClient(props: BrandsPageProps) {
     platformFeatures: props.platformFeatures?.length ? props.platformFeatures : defaultContent.platformFeatures,
     faqs: props.faqs?.length ? props.faqs : defaultContent.faqs,
   };
+
+  // Trust bar logos - CMS or fallback
+  const trustBarTitle = props.trustBarTitle || 'Trusted by leading brands worldwide';
+  const customerLogos = props.customerLogos?.length ? props.customerLogos : [
+    { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
+    { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
+    { name: 'Samsung', logo: '/assets/images/our-customers-logos/samsung.png' },
+    { name: 'Netflix', logo: '/assets/images/our-customers-logos/netflix.png' },
+    { name: 'Dell', logo: '/assets/images/our-customers-logos/dell.png' },
+    { name: 'Bosch', logo: '/assets/images/our-customers-logos/bosch.png' },
+    { name: "L'Oreal Paris", logo: '/assets/images/our-customers-logos/l_oreal paris.png' },
+    { name: 'Sunsilk', logo: '/assets/images/our-customers-logos/sunsilk.png' },
+    { name: 'AirAsia', logo: '/assets/images/our-customers-logos/airasia.png' },
+    { name: 'Grab', logo: '/assets/images/our-customers-logos/grab.png' },
+    { name: 'Foodpanda', logo: '/assets/images/our-customers-logos/foodpanda.png' },
+    { name: 'Lalamove', logo: '/assets/images/our-customers-logos/lalamove.png' },
+    { name: 'HBO Go', logo: '/assets/images/our-customers-logos/hbo-go.png' },
+    { name: 'Astro', logo: '/assets/images/our-customers-logos/astro.png' },
+    { name: 'Gamuda', logo: '/assets/images/our-customers-logos/gamuda.png' },
+    { name: 'Laguna', logo: '/assets/images/our-customers-logos/laguna.png' },
+    { name: 'SeaOil', logo: '/assets/images/our-customers-logos/seaoil.png' },
+    { name: 'Fair Price', logo: '/assets/images/our-customers-logos/fair-price.png' },
+  ];
+
+  // Journey section - CMS or fallback
+  const journeyTitle = props.journeyTitle || 'Your Journey with Moving Walls';
+  const journeySubtitle = props.journeySubtitle || 'Create. Execute. Measure. A seamless journey from brief to results.';
+  const journeySteps = props.journeySteps?.length ? props.journeySteps : [
+    { stepLabel: 'Step 1', stepName: 'Create', description: 'Go from concept to live without operational drag.', items: ['Define your audience', 'Set objectives', 'Receive optimised inventory recommendations', 'Launch instantly'] },
+    { stepLabel: 'Step 2', stepName: 'Execute', description: 'Outdoor becomes responsive, not static.', items: ['Monitor campaigns in real time', 'Adjust placements dynamically', 'Optimise creative and locations', 'Track performance live'] },
+    { stepLabel: 'Step 3', stepName: 'Measure', description: 'Full transparency from impression to outcome.', items: ['Transparent impression tracking', 'Footfall uplift measurement', 'Attribution insights', 'Clear ROI reporting'] },
+  ];
+
+  // Case studies - CMS or fallback
+  const caseStudySectionTitle = props.caseStudySectionTitle || 'Our Case Studies';
+  const caseStudySectionSubtitle = props.caseStudySectionSubtitle || 'Discover how leading brands achieved remarkable results with Moving Walls';
+  const caseStudies = props.caseStudies?.length ? props.caseStudies : [
+    { client: 'Luxury Auto Group', category: 'Automotive', title: 'Premium Automotive Brand Achieves 300% ROI in Q4', description: 'Increase dealership visits and test drive bookings during competitive holiday season', image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop', duration: '90 days', budget: '$250K', metrics: [{ label: 'ROI Increase', value: '+300%' }, { label: 'Dealership Visits', value: '+187%' }] },
+    { client: 'FashionForward Stores', category: 'Retail', title: 'National Retail Chain Drives 45% Foot Traffic Increase', description: 'Combat declining in-store visits amid shift to online shopping', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop', duration: '120 days', budget: '$180K', metrics: [{ label: 'Foot Traffic', value: '+45%' }, { label: 'In-Store Sales', value: '+62%' }] },
+    { client: 'MedCare Network', category: 'Healthcare', title: 'Healthcare Provider Reaches 2M Patients with Compliance', description: 'Increase awareness of preventive care services while maintaining HIPAA compliance', image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop', duration: '60 days', budget: '$95K', metrics: [{ label: 'Impressions', value: '2.1M' }, { label: 'Appointments', value: '+78%' }] },
+    { client: 'NextGen Financial', category: 'Finance', title: 'Fintech Startup Generates 5,000+ Quality Leads', description: 'Build brand awareness and generate qualified leads in competitive market', image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop', duration: '45 days', budget: '$125K', metrics: [{ label: 'Qualified Leads', value: '5,234' }, { label: 'Brand Lift', value: '+89%' }] },
+    { client: 'InnovateTech Corp', category: 'Technology', title: 'Tech Company Launches Product with 10M Impressions', description: 'Create buzz for new product launch in saturated market', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop', duration: '30 days', budget: '$200K', metrics: [{ label: 'Impressions', value: '10.2M' }, { label: 'Pre-orders', value: '12.5K' }] },
+    { client: 'Global Consumer Brands', category: 'FMCG', title: "FMCG Giant's Multi-Market Launch Success", description: 'Orchestrate a synchronized product launch across 8 Asian markets', image: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=600&fit=crop', duration: '60 days', budget: '$350K', metrics: [{ label: 'Markets', value: '8' }, { label: 'Sales Lift', value: '+89%' }] },
+  ];
 
   const [activeTab, setActiveTab] = useState('retail')
   const [openFaq, setOpenFaq] = useState<number | null>(null)
@@ -559,7 +624,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       {/* Trust Bar */}
       <section className="py-12 bg-gray-50 border-b overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-600 mb-8 font-semibold">Trusted by leading brands worldwide</p>
+          <p className="text-center text-gray-600 mb-8 font-semibold">{trustBarTitle}</p>
         </div>
         <div className="relative">
           {/* Gradient overlays for smooth fade effect */}
@@ -582,27 +647,8 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 },
               }}
             >
-              {/* First set of logos - using actual customer logos */}
-              {[
-                { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
-                { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
-                { name: 'Samsung', logo: '/assets/images/our-customers-logos/samsung.png' },
-                { name: 'Netflix', logo: '/assets/images/our-customers-logos/netflix.png' },
-                { name: 'Dell', logo: '/assets/images/our-customers-logos/dell.png' },
-                { name: 'Bosch', logo: '/assets/images/our-customers-logos/bosch.png' },
-                { name: "L'Oreal Paris", logo: '/assets/images/our-customers-logos/l_oreal paris.png' },
-                { name: 'Sunsilk', logo: '/assets/images/our-customers-logos/sunsilk.png' },
-                { name: 'AirAsia', logo: '/assets/images/our-customers-logos/airasia.png' },
-                { name: 'Grab', logo: '/assets/images/our-customers-logos/grab.png' },
-                { name: 'Foodpanda', logo: '/assets/images/our-customers-logos/foodpanda.png' },
-                { name: 'Lalamove', logo: '/assets/images/our-customers-logos/lalamove.png' },
-                { name: 'HBO Go', logo: '/assets/images/our-customers-logos/hbo-go.png' },
-                { name: 'Astro', logo: '/assets/images/our-customers-logos/astro.png' },
-                { name: 'Gamuda', logo: '/assets/images/our-customers-logos/gamuda.png' },
-                { name: 'Laguna', logo: '/assets/images/our-customers-logos/laguna.png' },
-                { name: 'SeaOil', logo: '/assets/images/our-customers-logos/seaoil.png' },
-                { name: 'Fair Price', logo: '/assets/images/our-customers-logos/fair-price.png' },
-              ].map((brand, i) => (
+              {/* First set of logos */}
+              {customerLogos.map((brand, i) => (
                 <div key={i} className="flex-shrink-0 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
@@ -614,26 +660,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 </div>
               ))}
               {/* Duplicate set for seamless loop */}
-              {[
-                { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
-                { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
-                { name: 'Samsung', logo: '/assets/images/our-customers-logos/samsung.png' },
-                { name: 'Netflix', logo: '/assets/images/our-customers-logos/netflix.png' },
-                { name: 'Dell', logo: '/assets/images/our-customers-logos/dell.png' },
-                { name: 'Bosch', logo: '/assets/images/our-customers-logos/bosch.png' },
-                { name: "L'Oreal Paris", logo: '/assets/images/our-customers-logos/l_oreal paris.png' },
-                { name: 'Sunsilk', logo: '/assets/images/our-customers-logos/sunsilk.png' },
-                { name: 'AirAsia', logo: '/assets/images/our-customers-logos/airasia.png' },
-                { name: 'Grab', logo: '/assets/images/our-customers-logos/grab.png' },
-                { name: 'Foodpanda', logo: '/assets/images/our-customers-logos/foodpanda.png' },
-                { name: 'Lalamove', logo: '/assets/images/our-customers-logos/lalamove.png' },
-                { name: 'HBO Go', logo: '/assets/images/our-customers-logos/hbo-go.png' },
-                { name: 'Astro', logo: '/assets/images/our-customers-logos/astro.png' },
-                { name: 'Gamuda', logo: '/assets/images/our-customers-logos/gamuda.png' },
-                { name: 'Laguna', logo: '/assets/images/our-customers-logos/laguna.png' },
-                { name: 'SeaOil', logo: '/assets/images/our-customers-logos/seaoil.png' },
-                { name: 'Fair Price', logo: '/assets/images/our-customers-logos/fair-price.png' },
-              ].map((brand, i) => (
+              {customerLogos.map((brand, i) => (
                 <div key={`dup-${i}`} className="flex-shrink-0 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
@@ -659,10 +686,10 @@ export default function BrandsPageClient(props: BrandsPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Your Journey with Moving Walls
+              {journeyTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Create. Execute. Measure. A seamless journey from brief to results.
+              {journeySubtitle}
             </p>
           </motion.div>
 
@@ -777,15 +804,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                       </svg>
                     </motion.div>
                     <div>
-                      <span className="text-xs font-bold text-mw-blue-600 uppercase tracking-wider">Step 1</span>
-                      <h3 className="text-xl font-bold text-gray-800">Create</h3>
+                      <span className="text-xs font-bold text-mw-blue-600 uppercase tracking-wider">{journeySteps[0]?.stepLabel || 'Step 1'}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || 'Create'}</h3>
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6">
-                    Go from concept to live without operational drag.
+                    {journeySteps[0]?.description || 'Go from concept to live without operational drag.'}
                   </p>
                   <div className="space-y-3">
-                    {['Define your audience', 'Set objectives', 'Receive optimised inventory recommendations', 'Launch instantly'].map((item, index) => (
+                    {(journeySteps[0]?.items || ['Define your audience', 'Set objectives', 'Receive optimised inventory recommendations', 'Launch instantly']).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -10 }}
@@ -849,15 +876,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                       </svg>
                     </motion.div>
                     <div>
-                      <span className="text-xs font-bold text-purple-200 uppercase tracking-wider">Step 2</span>
-                      <h3 className="text-xl font-bold text-white">Execute</h3>
+                      <span className="text-xs font-bold text-purple-200 uppercase tracking-wider">{journeySteps[1]?.stepLabel || 'Step 2'}</span>
+                      <h3 className="text-xl font-bold text-white">{journeySteps[1]?.stepName || 'Execute'}</h3>
                     </div>
                   </div>
                   <p className="text-purple-100 mb-6">
-                    Outdoor becomes responsive, not static.
+                    {journeySteps[1]?.description || 'Outdoor becomes responsive, not static.'}
                   </p>
                   <div className="space-y-3">
-                    {['Monitor campaigns in real time', 'Adjust placements dynamically', 'Optimise creative and locations', 'Track performance live'].map((item, index) => (
+                    {(journeySteps[1]?.items || ['Monitor campaigns in real time', 'Adjust placements dynamically', 'Optimise creative and locations', 'Track performance live']).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -910,15 +937,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                       </svg>
                     </motion.div>
                     <div>
-                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">Step 3</span>
-                      <h3 className="text-xl font-bold text-gray-800">Measure</h3>
+                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || 'Step 3'}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || 'Measure'}</h3>
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6">
-                    Full transparency from impression to outcome.
+                    {journeySteps[2]?.description || 'Full transparency from impression to outcome.'}
                   </p>
                   <div className="space-y-3">
-                    {['Transparent impression tracking', 'Footfall uplift measurement', 'Attribution insights', 'Clear ROI reporting'].map((item, index) => (
+                    {(journeySteps[2]?.items || ['Transparent impression tracking', 'Footfall uplift measurement', 'Attribution insights', 'Clear ROI reporting']).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 10 }}
@@ -967,10 +994,10 @@ export default function BrandsPageClient(props: BrandsPageProps) {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Our Case Studies
+              {caseStudySectionTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover how leading brands achieved remarkable results with Moving Walls
+              {caseStudySectionSubtitle}
             </p>
           </motion.div>
 
@@ -997,86 +1024,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 }}
               >
                 {/* Case Study Cards - First Set */}
-                {[
-                  {
-                    client: 'Luxury Auto Group',
-                    category: 'Automotive',
-                    title: 'Premium Automotive Brand Achieves 300% ROI in Q4',
-                    description: 'Increase dealership visits and test drive bookings during competitive holiday season',
-                    image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop',
-                    duration: '90 days',
-                    budget: '$250K',
-                    metrics: [
-                      { label: 'ROI Increase', value: '+300%' },
-                      { label: 'Dealership Visits', value: '+187%' },
-                    ],
-                  },
-                  {
-                    client: 'FashionForward Stores',
-                    category: 'Retail',
-                    title: 'National Retail Chain Drives 45% Foot Traffic Increase',
-                    description: 'Combat declining in-store visits amid shift to online shopping',
-                    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
-                    duration: '120 days',
-                    budget: '$180K',
-                    metrics: [
-                      { label: 'Foot Traffic', value: '+45%' },
-                      { label: 'In-Store Sales', value: '+62%' },
-                    ],
-                  },
-                  {
-                    client: 'MedCare Network',
-                    category: 'Healthcare',
-                    title: 'Healthcare Provider Reaches 2M Patients with Compliance',
-                    description: 'Increase awareness of preventive care services while maintaining HIPAA compliance',
-                    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop',
-                    duration: '60 days',
-                    budget: '$95K',
-                    metrics: [
-                      { label: 'Impressions', value: '2.1M' },
-                      { label: 'Appointments', value: '+78%' },
-                    ],
-                  },
-                  {
-                    client: 'NextGen Financial',
-                    category: 'Finance',
-                    title: 'Fintech Startup Generates 5,000+ Quality Leads',
-                    description: 'Build brand awareness and generate qualified leads in competitive market',
-                    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop',
-                    duration: '45 days',
-                    budget: '$125K',
-                    metrics: [
-                      { label: 'Qualified Leads', value: '5,234' },
-                      { label: 'Brand Lift', value: '+89%' },
-                    ],
-                  },
-                  {
-                    client: 'InnovateTech Corp',
-                    category: 'Technology',
-                    title: 'Tech Company Launches Product with 10M Impressions',
-                    description: 'Create buzz for new product launch in saturated market',
-                    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop',
-                    duration: '30 days',
-                    budget: '$200K',
-                    metrics: [
-                      { label: 'Impressions', value: '10.2M' },
-                      { label: 'Pre-orders', value: '12.5K' },
-                    ],
-                  },
-                  {
-                    client: 'Global Consumer Brands',
-                    category: 'FMCG',
-                    title: "FMCG Giant's Multi-Market Launch Success",
-                    description: 'Orchestrate a synchronized product launch across 8 Asian markets',
-                    image: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=600&fit=crop',
-                    duration: '60 days',
-                    budget: '$350K',
-                    metrics: [
-                      { label: 'Markets', value: '8' },
-                      { label: 'Sales Lift', value: '+89%' },
-                    ],
-                  },
-                ].map((study, index) => (
+                {caseStudies.map((study, index) => (
                   <motion.div
                     key={index}
                     className="flex-shrink-0 w-[85vw] sm:w-[380px]"
@@ -1132,86 +1080,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                   </motion.div>
                 ))}
                 {/* Duplicate Set for Seamless Loop */}
-                {[
-                  {
-                    client: 'Luxury Auto Group',
-                    category: 'Automotive',
-                    title: 'Premium Automotive Brand Achieves 300% ROI in Q4',
-                    description: 'Increase dealership visits and test drive bookings during competitive holiday season',
-                    image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop',
-                    duration: '90 days',
-                    budget: '$250K',
-                    metrics: [
-                      { label: 'ROI Increase', value: '+300%' },
-                      { label: 'Dealership Visits', value: '+187%' },
-                    ],
-                  },
-                  {
-                    client: 'FashionForward Stores',
-                    category: 'Retail',
-                    title: 'National Retail Chain Drives 45% Foot Traffic Increase',
-                    description: 'Combat declining in-store visits amid shift to online shopping',
-                    image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop',
-                    duration: '120 days',
-                    budget: '$180K',
-                    metrics: [
-                      { label: 'Foot Traffic', value: '+45%' },
-                      { label: 'In-Store Sales', value: '+62%' },
-                    ],
-                  },
-                  {
-                    client: 'MedCare Network',
-                    category: 'Healthcare',
-                    title: 'Healthcare Provider Reaches 2M Patients with Compliance',
-                    description: 'Increase awareness of preventive care services while maintaining HIPAA compliance',
-                    image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop',
-                    duration: '60 days',
-                    budget: '$95K',
-                    metrics: [
-                      { label: 'Impressions', value: '2.1M' },
-                      { label: 'Appointments', value: '+78%' },
-                    ],
-                  },
-                  {
-                    client: 'NextGen Financial',
-                    category: 'Finance',
-                    title: 'Fintech Startup Generates 5,000+ Quality Leads',
-                    description: 'Build brand awareness and generate qualified leads in competitive market',
-                    image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop',
-                    duration: '45 days',
-                    budget: '$125K',
-                    metrics: [
-                      { label: 'Qualified Leads', value: '5,234' },
-                      { label: 'Brand Lift', value: '+89%' },
-                    ],
-                  },
-                  {
-                    client: 'InnovateTech Corp',
-                    category: 'Technology',
-                    title: 'Tech Company Launches Product with 10M Impressions',
-                    description: 'Create buzz for new product launch in saturated market',
-                    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop',
-                    duration: '30 days',
-                    budget: '$200K',
-                    metrics: [
-                      { label: 'Impressions', value: '10.2M' },
-                      { label: 'Pre-orders', value: '12.5K' },
-                    ],
-                  },
-                  {
-                    client: 'Global Consumer Brands',
-                    category: 'FMCG',
-                    title: "FMCG Giant's Multi-Market Launch Success",
-                    description: 'Orchestrate a synchronized product launch across 8 Asian markets',
-                    image: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=600&fit=crop',
-                    duration: '60 days',
-                    budget: '$350K',
-                    metrics: [
-                      { label: 'Markets', value: '8' },
-                      { label: 'Sales Lift', value: '+89%' },
-                    ],
-                  },
-                ].map((study, index) => (
+                {caseStudies.map((study, index) => (
                   <motion.div
                     key={`dup-${index}`}
                     className="flex-shrink-0 w-[85vw] sm:w-[380px]"

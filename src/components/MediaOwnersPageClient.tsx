@@ -16,15 +16,27 @@ interface MediaOwnersPageProps {
   secondaryCTA?: { text: string; href: string };
   stats?: Array<{ value: string; label: string }>;
   benefits?: Array<{ title: string; description: string; image?: string }>;
+  platformSectionTitle?: string;
+  platformSectionSubtitle?: string;
   platformFeatures?: Array<{
     id: string;
+    tabLabel?: string;
     name: string;
     title: string;
     description: string;
     image?: string;
+    features?: string[];
     linkHref?: string;
     linkText?: string;
   }>;
+  trustBarTitle?: string;
+  customerLogos?: Array<{ name: string; logo?: string }>;
+  journeyTitle?: string;
+  journeySubtitle?: string;
+  journeySteps?: Array<{ stepLabel: string; stepName: string; description: string; items: string[] }>;
+  featureGridTitle?: string;
+  featureGridSubtitle?: string;
+  featureGrid?: Array<{ title: string; description: string; iconName?: string }>;
   faqs?: Array<{ question: string; answer: string }>;
   testimonials?: Array<{
     _id?: string;
@@ -113,6 +125,52 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
     platformFeatures: props.platformFeatures?.length ? props.platformFeatures : defaultContent.platformFeatures,
     faqs: props.faqs?.length ? props.faqs : defaultContent.faqs,
   };
+
+  // Trust bar logos - CMS or fallback
+  const trustBarTitle = props.trustBarTitle || 'TRUSTED BY LEADING MEDIA OWNERS WORLDWIDE';
+  const customerLogos = props.customerLogos?.length ? props.customerLogos : [
+    { name: '3thirds Inc', logo: '/assets/images/media-owners/3thirds-inc.png' },
+    { name: 'Act Media', logo: '/assets/images/media-owners/act-media.png' },
+    { name: 'Aqua Corporation', logo: '/assets/images/media-owners/aqua-corporation.png' },
+    { name: 'Brands on Road', logo: '/assets/images/media-owners/brands-on-road.png' },
+    { name: 'Bright Sky', logo: '/assets/images/media-owners/bright-sky.png' },
+    { name: 'Eye', logo: '/assets/images/media-owners/eye.png' },
+    { name: 'FC Media', logo: '/assets/images/media-owners/fc-media.png' },
+    { name: 'Focus Media Network', logo: '/assets/images/media-owners/focus-media-network.png' },
+    { name: 'Lantern Media', logo: '/assets/images/media-owners/lantern-media.png' },
+    { name: 'Medik TV', logo: '/assets/images/media-owners/medik-tv.png' },
+    { name: 'Ming Media Promotion', logo: '/assets/images/media-owners/ming-media-promotion.png' },
+    { name: 'Moove Media', logo: '/assets/images/media-owners/moove-media.png' },
+    { name: 'Phar', logo: '/assets/images/media-owners/phar.png' },
+    { name: 'Primedia Outdoor', logo: '/assets/images/media-owners/primedia-outdoor.png' },
+    { name: 'Spectrum Outdoor', logo: '/assets/images/media-owners/spectrum-outdoor.png' },
+    { name: 'Times OOH', logo: '/assets/images/media-owners/times-ooh.png' },
+    { name: 'Vlink Interactive', logo: '/assets/images/media-owners/vlink-interactive.png' },
+    { name: 'Warna Warni', logo: '/assets/images/media-owners/warna-warni.png' },
+  ];
+
+  // Journey section - CMS or fallback
+  const journeyTitle = props.journeyTitle || 'From Inefficiency to Maximum Yield';
+  const journeySubtitle = props.journeySubtitle || 'See how Moving Walls transforms your inventory monetization';
+  const journeySteps = props.journeySteps?.length ? props.journeySteps : [
+    { stepLabel: 'The Old Way', stepName: 'Challenges', description: '', items: ['Low fill rates', 'Limited demand access', 'Manual booking', 'No real-time insights', 'Complicated pricing slowed growth'] },
+    { stepLabel: 'Transformation', stepName: 'Moving Walls SSP', description: 'Your complete monetization solution', items: ['Premium demand access', 'Automated yield optimization', 'Real-time analytics', 'Fully streamlined workflows'] },
+    { stepLabel: 'Results for Media Owners', stepName: 'Results', description: '', items: ['95% fill rate achieved', '+35% eCPM improvement', 'Global demand access', 'Real-time performance insights', '80% operations time saved'] },
+  ];
+
+  // Feature grid section - CMS or fallback
+  const featureGridTitle = props.featureGridTitle || 'Everything Media Owners Need to Succeed';
+  const featureGridSubtitle = props.featureGridSubtitle || '';
+  const featureGrid = props.featureGrid?.length ? props.featureGrid : [
+    { title: 'SSP Technology', description: 'Connect to programmatic demand and premium advertisers globally while keeping full control over pricing and availability' },
+    { title: 'Inventory Management', description: 'Centralized dashboard to oversee all screens, campaigns, and pricing rules at a glance' },
+    { title: 'Yield Optimization', description: 'Continuous optimization to ensure every impression is sold at maximum value' },
+    { title: 'Proof of Play', description: 'Automated verification and reporting for every campaign' },
+    { title: 'Demand Connections', description: 'Direct integrations with agencies, DSPs, and brand advertisers around the world' },
+    { title: 'Revenue Analytics', description: 'Real-time dashboards to monitor fill rates, revenue trends, and eCPM growth' },
+    { title: 'Creative Trafficking', description: 'Automatic scheduling and delivery of creative content to screens' },
+    { title: 'Billing & Invoicing', description: 'Automated reconciliation and financial reporting' },
+  ];
 
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [activePlatform, setActivePlatform] = useState('marketplace')
@@ -558,7 +616,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
       {/* Trust Bar */}
       <section className="py-12 bg-gray-50 border-b overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-center text-gray-600 mb-8 font-semibold">TRUSTED BY LEADING MEDIA OWNERS WORLDWIDE</p>
+          <p className="text-center text-gray-600 mb-8 font-semibold">{trustBarTitle}</p>
         </div>
         <div className="relative">
           <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-gray-50 to-transparent z-10"></div>
@@ -579,26 +637,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 },
               }}
             >
-              {[
-                { name: '3thirds Inc', logo: '/assets/images/media-owners/3thirds-inc.png' },
-                { name: 'Act Media', logo: '/assets/images/media-owners/act-media.png' },
-                { name: 'Aqua Corporation', logo: '/assets/images/media-owners/aqua-corporation.png' },
-                { name: 'Brands on Road', logo: '/assets/images/media-owners/brands-on-road.png' },
-                { name: 'Bright Sky', logo: '/assets/images/media-owners/bright-sky.png' },
-                { name: 'Eye', logo: '/assets/images/media-owners/eye.png' },
-                { name: 'FC Media', logo: '/assets/images/media-owners/fc-media.png' },
-                { name: 'Focus Media Network', logo: '/assets/images/media-owners/focus-media-network.png' },
-                { name: 'Lantern Media', logo: '/assets/images/media-owners/lantern-media.png' },
-                { name: 'Medik TV', logo: '/assets/images/media-owners/medik-tv.png' },
-                { name: 'Ming Media Promotion', logo: '/assets/images/media-owners/ming-media-promotion.png' },
-                { name: 'Moove Media', logo: '/assets/images/media-owners/moove-media.png' },
-                { name: 'Phar', logo: '/assets/images/media-owners/phar.png' },
-                { name: 'Primedia Outdoor', logo: '/assets/images/media-owners/primedia-outdoor.png' },
-                { name: 'Spectrum Outdoor', logo: '/assets/images/media-owners/spectrum-outdoor.png' },
-                { name: 'Times OOH', logo: '/assets/images/media-owners/times-ooh.png' },
-                { name: 'Vlink Interactive', logo: '/assets/images/media-owners/vlink-interactive.png' },
-                { name: 'Warna Warni', logo: '/assets/images/media-owners/warna-warni.png' },
-              ].map((brand, i) => (
+              {customerLogos.map((brand, i) => (
                 <div key={i} className="flex-shrink-0 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
@@ -609,26 +648,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   />
                 </div>
               ))}
-              {[
-                { name: '3thirds Inc', logo: '/assets/images/media-owners/3thirds-inc.png' },
-                { name: 'Act Media', logo: '/assets/images/media-owners/act-media.png' },
-                { name: 'Aqua Corporation', logo: '/assets/images/media-owners/aqua-corporation.png' },
-                { name: 'Brands on Road', logo: '/assets/images/media-owners/brands-on-road.png' },
-                { name: 'Bright Sky', logo: '/assets/images/media-owners/bright-sky.png' },
-                { name: 'Eye', logo: '/assets/images/media-owners/eye.png' },
-                { name: 'FC Media', logo: '/assets/images/media-owners/fc-media.png' },
-                { name: 'Focus Media Network', logo: '/assets/images/media-owners/focus-media-network.png' },
-                { name: 'Lantern Media', logo: '/assets/images/media-owners/lantern-media.png' },
-                { name: 'Medik TV', logo: '/assets/images/media-owners/medik-tv.png' },
-                { name: 'Ming Media Promotion', logo: '/assets/images/media-owners/ming-media-promotion.png' },
-                { name: 'Moove Media', logo: '/assets/images/media-owners/moove-media.png' },
-                { name: 'Phar', logo: '/assets/images/media-owners/phar.png' },
-                { name: 'Primedia Outdoor', logo: '/assets/images/media-owners/primedia-outdoor.png' },
-                { name: 'Spectrum Outdoor', logo: '/assets/images/media-owners/spectrum-outdoor.png' },
-                { name: 'Times OOH', logo: '/assets/images/media-owners/times-ooh.png' },
-                { name: 'Vlink Interactive', logo: '/assets/images/media-owners/vlink-interactive.png' },
-                { name: 'Warna Warni', logo: '/assets/images/media-owners/warna-warni.png' },
-              ].map((brand, i) => (
+              {customerLogos.map((brand, i) => (
                 <div key={`dup-${i}`} className="flex-shrink-0 grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img 
@@ -654,10 +674,10 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              From Inefficiency to Maximum Yield
+              {journeyTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              See how Moving Walls transforms your inventory monetization
+              {journeySubtitle}
             </p>
           </motion.div>
 
@@ -829,18 +849,12 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-red-500 uppercase tracking-wider">The Old Way</span>
-                      <h3 className="text-xl font-bold text-gray-800">Challenges</h3>
+                      <span className="text-xs font-bold text-red-500 uppercase tracking-wider">{journeySteps[0]?.stepLabel || 'The Old Way'}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || 'Challenges'}</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {[
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'Low fill rates' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>, text: 'Limited demand access' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>, text: 'Manual booking' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'No real-time insights' },
-                      { icon: <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" /></svg>, text: 'Complicated pricing slowed growth' },
-                    ].map((item, index) => (
+                    {(journeySteps[0]?.items || ['Low fill rates', 'Limited demand access', 'Manual booking', 'No real-time insights', 'Complicated pricing slowed growth']).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -10 }}
@@ -849,8 +863,10 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                         transition={{ delay: index * 0.1 }}
                         className="flex items-center gap-3 bg-white/60 rounded-lg p-3"
                       >
-                        <div className="flex-shrink-0">{item.icon}</div>
-                        <span className="text-gray-700 text-sm">{item.text}</span>
+                        <div className="flex-shrink-0">
+                          <svg className="w-5 h-5 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                        </div>
+                        <span className="text-gray-700 text-sm">{item}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -875,7 +891,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 shadow-2xl h-full transform lg:-translate-y-4">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">
-                      Transformation
+                      {journeySteps[1]?.stepLabel || 'Transformation'}
                     </span>
                   </div>
                   <div className="text-center mb-6 pt-4">
@@ -884,16 +900,16 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">Moving Walls SSP</h3>
-                    <p className="text-blue-200 text-sm">Your complete monetization solution</p>
+                    <h3 className="text-2xl font-bold text-white mb-2">{journeySteps[1]?.stepName || 'Moving Walls SSP'}</h3>
+                    <p className="text-blue-200 text-sm">{journeySteps[1]?.description || 'Your complete monetization solution'}</p>
                   </div>
                   <div className="space-y-3">
-                    {[
+                    {(journeySteps[1]?.items || [
                       'Premium demand access',
                       'Automated yield optimization',
                       'Real-time analytics',
                       'Fully streamlined workflows',
-                    ].map((feature, index) => (
+                    ]).map((feature, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -945,18 +961,12 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">Results for Media Owners</span>
-                      <h3 className="text-xl font-bold text-gray-800">Results</h3>
+                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || 'Results for Media Owners'}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || 'Results'}</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {[
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>, text: 'Average 95% fill rate', metric: '95% fill' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>, text: '+35% eCPM', metric: '+35% eCPM' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, text: 'Global reach', metric: 'Global reach' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>, text: 'Real-time performance insights', metric: 'Live data' },
-                      { icon: <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>, text: '80% time saved in operations', metric: '80% time saved' },
-                    ].map((item, index) => (
+                    {(journeySteps[2]?.items || ['95% fill rate achieved', '+35% eCPM improvement', 'Global demand access', 'Real-time performance insights', '80% operations time saved']).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 10 }}
@@ -965,11 +975,10 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                         transition={{ delay: 0.5 + index * 0.1 }}
                         className="flex items-center gap-3 bg-white/80 rounded-lg p-3"
                       >
-                        <div className="flex-shrink-0">{item.icon}</div>
-                        <div className="flex-1">
-                          <span className="text-gray-700 text-sm block">{item.text}</span>
-                          <span className="text-green-600 text-xs font-bold">{item.metric}</span>
+                        <div className="flex-shrink-0">
+                          <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                         </div>
+                        <span className="text-gray-700 text-sm">{item}</span>
                       </motion.div>
                     ))}
                   </div>
@@ -996,109 +1005,44 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Everything Media Owners Need to Succeed
+              {featureGridTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              {featureGridSubtitle}
             </p>
           </motion.div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                title: 'SSP Technology',
-                description: 'Connect to programmatic demand and premium advertisers globally while keeping full control over pricing and availability',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                ),
-                color: 'from-blue-500 to-blue-600'
-              },
-              {
-                title: 'Inventory Management',
-                description: 'Centralized dashboard to oversee all screens, campaigns, and pricing rules at a glance',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-                  </svg>
-                ),
-                color: 'from-indigo-500 to-indigo-600'
-              },
-              {
-                title: 'Yield Optimization',
-                description: 'Continuous optimization to ensure every impression is sold at maximum value',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
-                  </svg>
-                ),
-                color: 'from-purple-500 to-purple-600'
-              },
-              {
-                title: 'Proof of Play',
-                description: 'Automated verification and reporting for every campaign',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                ),
-                color: 'from-pink-500 to-pink-600'
-              },
-              {
-                title: 'Demand Connections',
-                description: 'Direct integrations with agencies, DSPs, and brand advertisers around the world',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ),
-                color: 'from-yellow-500 to-yellow-600'
-              },
-              {
-                title: 'Revenue Analytics',
-                description: 'Real-time dashboards to monitor fill rates, revenue trends, and eCPM growth',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                ),
-                color: 'from-green-500 to-green-600'
-              },
-              {
-                title: 'Creative Trafficking',
-                description: 'Automatic scheduling and delivery of creative content to screens',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                ),
-                color: 'from-cyan-500 to-cyan-600'
-              },
-              {
-                title: 'Billing & Invoicing',
-                description: 'Automated reconciliation and financial reporting',
-                icon: (
-                  <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                  </svg>
-                ),
-                color: 'from-teal-500 to-teal-600'
-              }
-            ].map((feature, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
-              >
-                <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${feature.color} p-3 text-white mb-6 group-hover:scale-110 transition-transform`}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-              </motion.div>
-            ))}
+            {(() => {
+              const featureIcons = [
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>, color: 'from-blue-500 to-blue-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" /></svg>, color: 'from-indigo-500 to-indigo-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>, color: 'from-purple-500 to-purple-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>, color: 'from-pink-500 to-pink-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>, color: 'from-yellow-500 to-yellow-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>, color: 'from-green-500 to-green-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>, color: 'from-cyan-500 to-cyan-600' },
+                { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>, color: 'from-teal-500 to-teal-600' },
+              ];
+              return featureGrid.map((feature, index) => {
+                const visual = featureIcons[index % featureIcons.length];
+                return (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                    className="bg-white p-8 rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 group hover:-translate-y-1"
+                  >
+                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${visual.color} p-3 text-white mb-6 group-hover:scale-110 transition-transform`}>
+                      {visual.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
+                    <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                  </motion.div>
+                );
+              });
+            })()}
           </div>
         </div>
       </section>
