@@ -112,8 +112,15 @@ export default defineType({
     }),
     defineField({
       name: 'applyLink',
-      title: 'Application Link',
+      title: 'External Application Link',
       type: 'url',
+      description: 'External ATS URL (opens in new tab). If Application Form URL is set, this is ignored.',
+    }),
+    defineField({
+      name: 'applicationFormUrl',
+      title: 'Application Form URL',
+      type: 'url',
+      description: 'Zoho form URL to display in a popup modal when Apply is clicked (e.g., Zoho Public Form URL)',
     }),
     defineField({
       name: 'isActive',

@@ -1176,6 +1176,7 @@ export interface SanityJobPosition {
   benefits?: string[]
   salaryRange?: string
   applyLink?: string
+  applicationFormUrl?: string
   isActive?: boolean
   publishedAt?: string
 }
@@ -1195,7 +1196,8 @@ export async function getActiveJobPositions(): Promise<SanityJobPosition[]> {
       responsibilities,
       benefits,
       salaryRange,
-      applyLink
+      applyLink,
+      applicationFormUrl
     }
   `
   return client.fetch(query)
@@ -1235,6 +1237,7 @@ export async function getJobPositionBySlug(slug: string): Promise<SanityJobPosit
       benefits,
       salaryRange,
       applyLink,
+      applicationFormUrl,
       isActive,
       publishedAt
     }
@@ -1257,6 +1260,7 @@ export function transformJobPosition(job: SanityJobPosition) {
     benefits: job.benefits || [],
     salaryRange: job.salaryRange || '',
     applyLink: job.applyLink || '',
+    applicationFormUrl: job.applicationFormUrl || '',
     isActive: job.isActive ?? true,
   }
 }

@@ -104,7 +104,8 @@ export default async function CareersPage() {
           responsibilities: transformed.responsibilities || [],
           benefits: transformed.benefits || [],
           salaryRange: transformed.salaryRange,
-          applyLink: transformed.applyLink
+          applyLink: transformed.applyLink,
+          applicationFormUrl: transformed.applicationFormUrl
         }
       })
     }

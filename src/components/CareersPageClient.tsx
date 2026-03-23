@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import ContactForm from './ContactForm'
@@ -16,6 +17,7 @@ export interface JobPosition {
   benefits?: string[]
   salaryRange?: string
   applyLink?: string
+  applicationFormUrl?: string
 }
 
 interface CareersPageClientProps {
@@ -72,6 +74,8 @@ const stats = [
 ]
 
 export default function CareersPageClient({ jobs }: CareersPageClientProps) {
+  const [applicationModal, setApplicationModal] = useState<{ isOpen: boolean; formUrl: string; jobTitle: string }>({ isOpen: false, formUrl: '', jobTitle: '' })
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -265,7 +269,14 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
                     }`}>
                       {role.level}
                     </span>
-                    {role.applyLink ? (
+                    {role.applicationFormUrl ? (
+                      <button
+                        onClick={() => setApplicationModal({ isOpen: true, formUrl: role.applicationFormUrl!, jobTitle: role.title })}
+                        className="px-6 py-2 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors"
+                      >
+                        Apply Now
+                      </button>
+                    ) : role.applyLink ? (
                       <a href={role.applyLink} target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors">
                         Apply Now
                       </a>
@@ -374,6 +385,45 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
       </section>
 
       <ContactForm />
+
+      {/* Application Form Modal */}
+      {applicationModal.isOpen && applicationModal.formUrl && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setApplicationModal({ isOpen: false, formUrl: '', jobTitle: '' })}
+          />
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden z-10"
+          >
+            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
+              <h3 className="text-lg font-semibold text-white">Apply for {applicationModal.jobTitle}</h3>
+              <button
+                onClick={() => setApplicationModal({ isOpen: false, formUrl: '', jobTitle: '' })}
+                className="p-2 hover:bg-white/20 rounded-full transition-colors"
+              >
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <div className="h-[70vh]">
+              <iframe
+                src={applicationModal.formUrl}
+                width="100%"
+                height="100%"
+                frameBorder={0}
+                style={{ border: 'none' }}
+                title={`Application Form - ${applicationModal.jobTitle}`}
+                allow="geolocation"
+              />
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   )
 }
