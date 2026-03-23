@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { LocationData } from '@/data/staticLocationData'
 import { CTAButton } from './CTAButton'
+import { LandingPageRenderer } from './landing'
 
 // Animation variants
 const fadeUp = {
@@ -130,6 +131,13 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
 
   const currentMarket = location.keyMarkets?.[selectedMarket]
 
+  const hasCmsSections = location.sections && location.sections.length > 0
+  const sectionsPosition = location.sectionsPosition || 'after-faqs'
+
+  const cmsSections = hasCmsSections ? (
+    <LandingPageRenderer sections={location.sections!} />
+  ) : null
+
   // Render location page
   return (
     <main className="min-h-screen bg-white">
@@ -215,6 +223,9 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
           </div>
         </div>
       </section>
+
+      {/* CMS Sections - After Hero */}
+      {sectionsPosition === 'after-hero' && cmsSections}
 
       {/* Stats Section - Mobile */}
       {location.stats && location.stats.length > 0 && (
@@ -492,6 +503,9 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
         </section>
       )}
 
+      {/* CMS Sections - Before FAQs */}
+      {sectionsPosition === 'before-faqs' && cmsSections}
+
       {/* FAQs */}
       {location.faqs && location.faqs.length > 0 && (
         <section className="py-16 bg-gray-50">
@@ -517,6 +531,9 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
           </div>
         </section>
       )}
+
+      {/* CMS Sections - After FAQs */}
+      {sectionsPosition === 'after-faqs' && cmsSections}
 
       {/* Contact Form Modal */}
       {isContactFormOpen && location.contactFormUrl && (

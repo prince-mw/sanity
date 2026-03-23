@@ -60,6 +60,8 @@ export interface LocationData {
   faqs: Array<{ question: string; answer: string }>
   caseStudies: Array<{ title: string; client: string; results: string }>
   partners: string[]
+  sections?: any[]
+  sectionsPosition?: string
 }
 
 // Malaysia static data

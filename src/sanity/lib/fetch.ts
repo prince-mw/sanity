@@ -1660,6 +1660,8 @@ export interface SanityLocation {
   order?: number
   isActive?: boolean
   seo?: SanitySEO
+  sections?: any[]
+  sectionsPosition?: string
 }
 
 export async function getAllLocations(): Promise<SanityLocation[]> {
@@ -1710,6 +1712,8 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
       partners,
       order,
       isActive,
+      sections,
+      sectionsPosition,
       seo {
         metaTitle,
         metaDescription,
@@ -1760,6 +1764,8 @@ export function transformLocationFull(location: SanityLocation) {
     faqs: location.faqs || [],
     caseStudies: location.caseStudies || [],
     partners: location.partners || [],
+    sections: location.sections || [],
+    sectionsPosition: location.sectionsPosition || 'after-faqs',
   }
 }
 

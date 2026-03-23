@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import { pageSections } from './sections'
 
 export default defineType({
   name: 'location',
@@ -9,6 +10,7 @@ export default defineType({
     { name: 'content', title: 'Content' },
     { name: 'markets', title: 'Markets & Stats' },
     { name: 'billboards', title: 'Billboards' },
+    { name: 'sections', title: 'Page Sections' },
     { name: 'meta', title: 'Settings & SEO' },
   ],
   fields: [
@@ -303,6 +305,32 @@ export default defineType({
           },
         },
       ],
+    }),
+    
+    // Page Sections Group
+    defineField({
+      name: 'sections',
+      title: 'Page Sections',
+      type: 'array',
+      group: 'sections',
+      description: 'Add and arrange custom sections for this location page. Drag to reorder.',
+      of: pageSections,
+    }),
+    defineField({
+      name: 'sectionsPosition',
+      title: 'Sections Position',
+      type: 'string',
+      group: 'sections',
+      description: 'Where to display custom sections relative to the default location content',
+      options: {
+        list: [
+          { title: 'After All Content (before FAQs)', value: 'before-faqs' },
+          { title: 'After FAQs (end of page)', value: 'after-faqs' },
+          { title: 'Before All Content (after hero)', value: 'after-hero' },
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'after-faqs',
     }),
     
     // Settings & SEO Group
