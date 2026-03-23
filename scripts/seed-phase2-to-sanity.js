@@ -213,7 +213,7 @@ const legalPages = [
       {
         _key: generateKey(), id: 'your-rights', title: '9. Your Rights',
         content: [
-          textBlock('Subject to applicable law, you may have various rights including the right to access your data, request deletion, opt out of data processing, and lodge a complaint with a supervisory authority. To exercise any of these rights, please contact us at privacy@movingwalls.com.'),
+          textBlock('Subject to applicable law, you may have various rights including the right to access your data, request deletion, opt out of data processing, and lodge a complaint with a supervisory authority. To exercise any of these rights, please contact us at info@movingwalls.com.'),
         ],
       },
       {
@@ -225,7 +225,7 @@ const legalPages = [
       {
         _key: generateKey(), id: 'contact', title: '11. Contacting Us',
         content: [
-          textBlock('If you have any questions about this Privacy Policy, please contact us at: Moving Walls Pte. Ltd., Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545. Email: privacy@movingwalls.com'),
+          textBlock('If you have any questions about this Privacy Policy, please contact us at: Moving Walls Pte. Ltd., Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545. Email: info@movingwalls.com'),
         ],
       },
     ],
@@ -282,7 +282,7 @@ const legalPages = [
       {
         _key: generateKey(), id: 'contact', title: '6. Contact Us',
         content: [
-          textBlock('If you have any questions about our use of cookies or this Cookie Policy, please contact us at: Moving Walls Pte. Ltd., Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545. Email: privacy@movingwalls.com'),
+          textBlock('If you have any questions about our use of cookies or this Cookie Policy, please contact us at: Moving Walls Pte. Ltd., Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545. Email: info@movingwalls.com'),
         ],
       },
     ],
@@ -371,7 +371,7 @@ const legalPages = [
       {
         _key: generateKey(), id: 'technical-support', title: '9. Technical Support',
         content: [
-          textBlock('MovingWalls shall provide technical support to Company during normal business hours. Support requests can be submitted through the Platform or via email to support@movingwalls.com.'),
+          textBlock('MovingWalls shall provide technical support to Company during normal business hours. Support requests can be submitted through the Platform or via email to info@movingwalls.com.'),
         ],
       },
       {

@@ -143,33 +143,7 @@ const features = [
   },
 ]
 
-// Testimonials
-const testimonials = [
-  {
-    quote: "MW Planner's AI recommendations saved us from a $400K budget misallocation. The predictive insights are game-changing.",
-    author: 'Sarah Chen',
-    role: 'CMO',
-    company: 'TechFlow Solutions',
-    metric: '287% ROI',
-    image: '/assets/images/testimonials/sarah.jpg',
-  },
-  {
-    quote: "We went from reactive to predictive. MW Planner anticipated our Black Friday surge and optimized our spend perfectly.",
-    author: 'Marcus Johnson',
-    role: 'VP Marketing',
-    company: 'RetailMax Group',
-    metric: '164% CVR',
-    image: '/assets/images/testimonials/marcus.jpg',
-  },
-  {
-    quote: "The compliance-aware optimization freed up 40 hours per week while improving our lead quality significantly.",
-    author: 'Diana Rodriguez',
-    role: 'Marketing Director',
-    company: 'FinanceFirst',
-    metric: '231% Leads',
-    image: '/assets/images/testimonials/diana.jpg',
-  },
-]
+
 
 // Resources/Blog posts - minimal fallback for when CMS is empty
 const defaultResources = [
@@ -187,7 +161,6 @@ interface ProductData {
   tagline: string
   description: string
   features: Array<{ icon?: string; title: string; description: string; metric?: string }>
-  testimonials: Array<{ quote: string; author: string; role: string; company: string; metric?: string }>
   stats: Array<{ value: string; label: string }>
 }
 
@@ -203,7 +176,6 @@ interface MWPlannerPageProps {
 }
 
 export default function MWPlannerPageClient({ latestBlogPosts }: MWPlannerPageProps) {
-  const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [productData, setProductData] = useState<ProductData | null>(null)
 
   // Fetch product data from Sanity
@@ -221,21 +193,8 @@ export default function MWPlannerPageClient({ latestBlogPosts }: MWPlannerPagePr
     fetchProduct()
   }, [])
 
-  // Get display data with Sanity override
-  const displayTestimonials = productData?.testimonials && productData.testimonials.length > 0 
-    ? productData.testimonials.map((t, i) => ({ ...t, image: testimonials[i]?.image || '' }))
-    : testimonials
-
   // Use latest blog posts from Sanity or fallback
   const resources = latestBlogPosts?.length ? latestBlogPosts : defaultResources;
-
-  // Auto-rotate testimonials
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveTestimonial((prev) => (prev + 1) % displayTestimonials.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [displayTestimonials.length])
 
   return (
     <div className="min-h-screen bg-white">
@@ -686,90 +645,7 @@ export default function MWPlannerPageClient({ latestBlogPosts }: MWPlannerPagePr
         </div>
       </section>
 
-      {/* Testimonials Carousel */}
-      <section className="py-24 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
-        {/* Background Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl"></div>
-        </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Real Results. Real Customers.
-            </h2>
-            <p className="text-xl text-blue-200/70 max-w-3xl mx-auto">
-              See how leading brands transformed their campaign performance
-            </p>
-          </motion.div>
-
-          {/* Testimonial Cards */}
-          <div className="relative max-w-4xl mx-auto">
-            {testimonials.map((testimonial, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: index === activeTestimonial ? 1 : 0 }}
-                transition={{ duration: 0.5 }}
-                className={`${index === activeTestimonial ? 'block' : 'hidden'}`}
-              >
-                <div className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl p-8 md:p-12">
-                  <div className="flex flex-col md:flex-row items-center gap-8">
-                    {/* Metric */}
-                    <div className="text-center md:text-left">
-                      <div className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent mb-2">
-                        {testimonial.metric}
-                      </div>
-                      <div className="text-blue-200/70">Improvement</div>
-                    </div>
-
-                    {/* Divider */}
-                    <div className="hidden md:block w-px h-32 bg-white/20"></div>
-
-                    {/* Quote */}
-                    <div className="flex-1">
-                      <p className="text-xl text-white/90 mb-6 leading-relaxed italic">
-                        &ldquo;{testimonial.quote}&rdquo;
-                      </p>
-                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
-                          {testimonial.author.charAt(0)}
-                        </div>
-                        <div>
-                          <div className="text-white font-semibold">{testimonial.author}</div>
-                          <div className="text-blue-200/70 text-sm">{testimonial.role}, {testimonial.company}</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-
-            {/* Dots Navigation */}
-            <div className="flex justify-center gap-2 mt-8">
-              {testimonials.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setActiveTestimonial(index)}
-                  className={`w-3 h-3 rounded-full transition-all ${
-                    index === activeTestimonial
-                      ? 'bg-blue-400 w-8'
-                      : 'bg-white/30 hover:bg-white/50'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Resources Section */}
       <section className="py-24 bg-gray-50">

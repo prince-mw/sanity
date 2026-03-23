@@ -4,39 +4,91 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { useLocale } from "@/i18n/LocaleContext";
 
+const ZOHO_FORM_PERMALINK = "U0Rmmz1KaZyfpwtqHbfK6sbw19RecVMg6aMmZ3G0vuw";
+const ZOHO_PORTAL_NAME = "movingwallsholdingpteltd";
+
+const COUNTRIES = [
+  "Afghanistan","Albania","Algeria","American Samoa","Andorra","Angola","Antigua and Barbuda","Argentina","Armenia","Australia","Austria","Azerbaijan",
+  "Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia and Herzegovina","Botswana","Brazil","Brunei","Bulgaria","Burkina Faso","Burma","Burundi",
+  "Cambodia","Cameroon","Canada","Cape Verde","Central African Republic","Chad","Chile","China","Colombia","Comoros","Congo","Costa Rica","Croatia","Cuba","Cyprus","Czech Republic",
+  "Denmark","Djibouti","Dominica","Dominican Republic",
+  "Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia",
+  "Fiji","Finland","France",
+  "Gabon","Gambia","Georgia","Germany","Ghana","Greece","Grenada","Guatemala","Guinea","Guinea-Bissau","Guyana",
+  "Haiti","Honduras","Hong Kong","Hungary",
+  "Iceland","India","Indonesia","Iran","Iraq","Ireland","Israel","Italy",
+  "Jamaica","Japan","Jordan",
+  "Kazakhstan","Kenya","Kiribati","Korea (North)","Korea (South)","Kuwait","Kyrgyzstan",
+  "Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg",
+  "Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Morocco","Mozambique","Myanmar",
+  "Namibia","Nauru","Nepal","Netherlands","New Zealand","Nicaragua","Niger","Nigeria","Norway",
+  "Oman",
+  "Pakistan","Palau","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal",
+  "Qatar",
+  "Romania","Russia","Rwanda",
+  "Saint Kitts and Nevis","Saint Lucia","Samoa","San Marino","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Sudan","Spain","Sri Lanka","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria",
+  "Taiwan","Tajikistan","Tanzania","Thailand","Timor-Leste","Togo","Tonga","Trinidad and Tobago","Tunisia","Turkey","Turkmenistan","Tuvalu",
+  "Uganda","Ukraine","United Arab Emirates","United Kingdom","United States","Uruguay","Uzbekistan",
+  "Vanuatu","Venezuela","Vietnam",
+  "Yemen",
+  "Zambia","Zimbabwe"
+];
+
 export default function ContactForm() {
   const { t } = useLocale();
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
+    firstName: "",
+    lastName: "",
     company: "",
+    email: "",
     phone: "",
+    role: "",
+    country: "",
     message: "",
-    service: "",
-    budget: ""
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log("Form submitted:", formData);
-    setIsSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({
-        name: "",
-        email: "",
-        company: "",
-        phone: "",
-        message: "",
-        service: "",
-        budget: ""
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/zoho-form", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          zohoFormPermalink: ZOHO_FORM_PERMALINK,
+          zohoPortalName: ZOHO_PORTAL_NAME,
+          fields: {
+            "Name_First": formData.firstName,
+            "Name_Last": formData.lastName,
+            "SingleLine": formData.company,
+            "Email": formData.email,
+            "PhoneNumber_countrycode": formData.phone,
+            "Radio": formData.role,
+            "Address_Country": formData.country,
+            "MultiLine": formData.message,
+            "Page_Source": typeof window !== "undefined" ? window.location.pathname : "",
+            "Page_URL": typeof window !== "undefined" ? window.location.href : "",
+          },
+        }),
       });
-    }, 3000);
+
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.error || "Submission failed");
+      }
+
+      setIsSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -126,26 +178,63 @@ export default function ContactForm() {
             >
               <div className="bg-white rounded-2xl shadow-mw-lg p-8">
                 {!isSubmitted ? (
-                  <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid md:grid-cols-2 gap-6">
+                  <form onSubmit={handleSubmit} className="space-y-5">
+                    {/* First Name / Last Name */}
+                    <div className="grid md:grid-cols-2 gap-5">
                       <div>
-                        <label htmlFor="name" className="block text-sm font-medium text-mw-gray-700 mb-2">
-                          {t('landingPage.contactForm.form.name')} *
+                        <label htmlFor="firstName" className="block text-sm font-medium text-mw-gray-700 mb-2">
+                          First Name <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="text"
-                          id="name"
-                          name="name"
+                          id="firstName"
+                          name="firstName"
                           required
-                          value={formData.name}
+                          value={formData.firstName}
                           onChange={handleChange}
                           className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
-                          placeholder="John Doe"
+                          placeholder="First Name"
                         />
                       </div>
                       <div>
+                        <label htmlFor="lastName" className="block text-sm font-medium text-mw-gray-700 mb-2">
+                          Last Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="lastName"
+                          name="lastName"
+                          required
+                          value={formData.lastName}
+                          onChange={handleChange}
+                          className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
+                          placeholder="Last Name"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Company Name */}
+                    <div>
+                      <label htmlFor="company" className="block text-sm font-medium text-mw-gray-700 mb-2">
+                        Company Name <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        required
+                        value={formData.company}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
+                        placeholder="Company Name"
+                      />
+                    </div>
+
+                    {/* Company Email / Phone */}
+                    <div className="grid md:grid-cols-2 gap-5">
+                      <div>
                         <label htmlFor="email" className="block text-sm font-medium text-mw-gray-700 mb-2">
-                          {t('landingPage.contactForm.form.email')} *
+                          Company Email <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="email"
@@ -155,108 +244,111 @@ export default function ContactForm() {
                           value={formData.email}
                           onChange={handleChange}
                           className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
-                          placeholder="john@company.com"
+                          placeholder="Company Email"
                         />
-                      </div>
-                    </div>
-
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="company" className="block text-sm font-medium text-mw-gray-700 mb-2">
-                          {t('landingPage.contactForm.form.company')}
-                        </label>
-                        <input
-                          type="text"
-                          id="company"
-                          name="company"
-                          value={formData.company}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
-                          placeholder="Your Company"
-                        />
+                        <p className="text-xs text-mw-gray-500 mt-1">Please use your company email</p>
                       </div>
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-mw-gray-700 mb-2">
-                          {t('landingPage.contactForm.form.phone')}
+                          Phone Number <span className="text-red-500">*</span>
                         </label>
                         <input
                           type="tel"
                           id="phone"
                           name="phone"
+                          required
                           value={formData.phone}
                           onChange={handleChange}
                           className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
-                          placeholder="(555) 123-4567"
+                          placeholder="Phone Number"
                         />
                       </div>
                     </div>
 
-                    <div className="grid md:grid-cols-2 gap-6">
-                      <div>
-                        <label htmlFor="service" className="block text-sm font-medium text-mw-gray-700 mb-2">
-                          {t('landingPage.contactForm.form.service')}
-                        </label>
-                        <select
-                          id="service"
-                          name="service"
-                          value={formData.service}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
-                        >
-                          <option value="">{t('landingPage.contactForm.selectService')}</option>
-                          <option value="brandAdvertising">{t('landingPage.contactForm.services.brandAdvertising')}</option>
-                          <option value="mediaOwnerSolutions">{t('landingPage.contactForm.services.mediaOwnerSolutions')}</option>
-                          <option value="agencyServices">{t('landingPage.contactForm.services.agencyServices')}</option>
-                          <option value="programmaticDOOH">{t('landingPage.contactForm.services.programmaticDOOH')}</option>
-                          <option value="customSolution">{t('landingPage.contactForm.services.customSolution')}</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label htmlFor="budget" className="block text-sm font-medium text-mw-gray-700 mb-2">
-                          {t('landingPage.contactForm.form.budget')}
-                        </label>
-                        <select
-                          id="budget"
-                          name="budget"
-                          value={formData.budget || ''}
-                          onChange={handleChange}
-                          className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
-                        >
-                          <option value="">{t('landingPage.contactForm.selectBudget')}</option>
-                          <option value="under10k">{t('landingPage.contactForm.budgets.under10k')}</option>
-                          <option value="10k50k">{t('landingPage.contactForm.budgets.10k50k')}</option>
-                          <option value="50k100k">{t('landingPage.contactForm.budgets.50k100k')}</option>
-                          <option value="100k500k">{t('landingPage.contactForm.budgets.100k500k')}</option>
-                          <option value="over500k">{t('landingPage.contactForm.budgets.over500k')}</option>
-                        </select>
-                      </div>
+                    {/* I am a.. (Dropdown) */}
+                    <div>
+                      <label htmlFor="role" className="block text-sm font-medium text-mw-gray-700 mb-2">
+                        I am a.. <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        id="role"
+                        name="role"
+                        required
+                        value={formData.role}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 outline-none transition-all text-sm bg-white appearance-none"
+                      >
+                        <option value="" disabled>Select...</option>
+                        <option value="Brand">Brand</option>
+                        <option value="Agency">Agency</option>
+                        <option value="Media Owner">Media Owner</option>
+                        <option value="Others">Others</option>
+                      </select>
                     </div>
 
+                    {/* Country */}
+                    <div>
+                      <label htmlFor="country" className="block text-sm font-medium text-mw-gray-700 mb-2">
+                        Country <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        id="country"
+                        name="country"
+                        required
+                        value={formData.country}
+                        onChange={handleChange}
+                        className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors"
+                      >
+                        <option value="">Select Country</option>
+                        {COUNTRIES.map((c) => (
+                          <option key={c} value={c}>{c}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Message */}
                     <div>
                       <label htmlFor="message" className="block text-sm font-medium text-mw-gray-700 mb-2">
-                        {t('landingPage.contactForm.form.message')} *
+                        Message
                       </label>
                       <textarea
                         id="message"
                         name="message"
-                        required
                         rows={4}
+                        maxLength={2000}
                         value={formData.message}
                         onChange={handleChange}
                         className="w-full px-4 py-3 border border-mw-gray-300 rounded-lg focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 transition-colors resize-vertical"
-                        placeholder="Share your advertising challenges, current performance metrics, and what success looks like for your business..."
+                        placeholder="Tell us more about your request"
                       />
                     </div>
 
+                    {error && (
+                      <p className="text-red-600 text-sm bg-red-50 px-4 py-2 rounded-lg">{error}</p>
+                    )}
+
                     <button
                       type="submit"
-                      className="w-full bg-gradient-to-r from-mw-blue-600 to-indigo-600 hover:from-mw-blue-700 hover:to-indigo-700 text-white font-semibold py-4 px-6 rounded-lg shadow-mw-md hover:shadow-mw-lg transform hover:-translate-y-0.5 transition-all duration-200 relative overflow-hidden"
+                      disabled={isSubmitting}
+                      className="w-full bg-gradient-to-r from-mw-blue-600 to-indigo-600 hover:from-mw-blue-700 hover:to-indigo-700 text-white font-semibold py-4 px-6 rounded-lg shadow-mw-md hover:shadow-mw-lg transform hover:-translate-y-0.5 transition-all duration-200 relative overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none"
                     >
                       <span className="relative z-10 flex items-center justify-center gap-2">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-                        </svg>
-                        {t('landingPage.contactForm.form.submit')}
+                        {isSubmitting ? (
+                          <>
+                            <svg className="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                            </svg>
+                            Submitting...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                            {t('landingPage.contactForm.form.submit')}
+                          </>
+                        )}
                       </span>
                     </button>
                   </form>

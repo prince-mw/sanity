@@ -322,8 +322,8 @@ export default function MWInfluencePage({ caseStudies = [] }: MWInfluenceClientP
       answer: "Yes. Unlike legacy systems that separate direct IO and programmatic into different waterfalls, MW Influence uses a unified decision engine that evaluates all demand sources fairly in real-time, maximizing revenue from every available spot."
     },
     {
-      question: "What makes MW Influence different from Broadsign or Vistar?",
-      answer: "MW Influence is built for media owners, not advertisers. Unlike Broadsign's monolithic loop-based system or Vistar's demand-side black box, we provide transparent, composable technology that optimizes for your yield. You maintain full control over pricing, decisioning logic, and inventory management."
+      question: "What makes MW Influence different from other DOOH ad servers?",
+      answer: "MW Influence is built for media owners, not advertisers. Unlike monolithic loop-based systems or demand-side black boxes, we provide transparent, composable technology that optimizes for your yield. You maintain full control over pricing, decisioning logic, and inventory management."
     },
     {
       question: "How long does implementation take?",
@@ -695,84 +695,7 @@ export default function MWInfluencePage({ caseStudies = [] }: MWInfluenceClientP
         </div>
       </section>
 
-      {/* Integration Ecosystem */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Seamlessly Connects Your Entire Tech Stack
-            </h2>
-          </motion.div>
 
-          <div className="grid md:grid-cols-2 gap-12">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="bg-white rounded-2xl p-8 shadow-sm"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <ServerIcon className="w-6 h-6 text-blue-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">Moving Walls Ecosystem</h3>
-              </div>
-              <ul className="space-y-4">
-                {[
-                  { name: "MW Planner", desc: "Campaign forecasting and inventory selection" },
-                  { name: "MW Studio", desc: "CMS and device management for media owners" },
-                  { name: "MW Measure", desc: "Reporting, analytics, and campaign intelligence" },
-                  { name: "MW Activate (DSP)", desc: "Programmatic demand activation" }
-                ].map((item) => (
-                  <li key={item.name} className="flex items-start gap-3">
-                    <CheckIcon className="w-5 h-5 text-blue-600 mt-0.5" />
-                    <div>
-                      <span className="font-semibold text-gray-900">{item.name}:</span>
-                      <span className="text-gray-600 ml-1">{item.desc}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-              className="bg-white rounded-2xl p-8 shadow-sm"
-            >
-              <div className="flex items-center gap-3 mb-6">
-                <div className="p-2 bg-indigo-100 rounded-lg">
-                  <CodeIcon className="w-6 h-6 text-indigo-600" />
-                </div>
-                <h3 className="text-xl font-bold text-gray-900">Third-Party Systems</h3>
-              </div>
-              <ul className="space-y-4">
-                {[
-                  { name: "SSPs/DSPs", desc: "Vistar, Place Exchange, Magnite, VIOOH via RTB protocols" },
-                  { name: "CMS Players", desc: "Broadsign, third-party content management systems" },
-                  { name: "Data Providers", desc: "Audience data (Quadrant), traffic data (Google Maps)" },
-                  { name: "ERP/Billing", desc: "Financial system integrations for invoicing and reconciliation" }
-                ].map((item) => (
-                  <li key={item.name} className="flex items-start gap-3">
-                    <CheckIcon className="w-5 h-5 text-indigo-600 mt-0.5" />
-                    <div>
-                      <span className="font-semibold text-gray-900">{item.name}:</span>
-                      <span className="text-gray-600 ml-1">{item.desc}</span>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          </div>
-        </div>
-      </section>
 
       {/* Social Proof Section */}
       <section className="py-20 bg-slate-900">
@@ -1050,8 +973,8 @@ export default function MWInfluencePage({ caseStudies = [] }: MWInfluenceClientP
 
             <p className="text-gray-400 text-sm">
               Prefer to talk to an expert first? Contact our team at{' '}
-              <a href="mailto:sales@movingwalls.com" className="text-blue-400 hover:underline">
-                sales@movingwalls.com
+              <a href="mailto:info@movingwalls.com" className="text-blue-400 hover:underline">
+                info@movingwalls.com
               </a>
             </p>
           </motion.div>

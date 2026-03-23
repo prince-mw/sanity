@@ -386,7 +386,7 @@ export default function TermsAndConditionsPage() {
                             MovingWalls will Invoice Company for Annual Client License Fees, where applicable, due whenever a client license is activated. MovingWalls will also invoice Company during the first week of each month for the Media Spendings and Platform Fees due to MovingWalls for the previous month pursuant to this Agreement and the MovingWalls Order Form in connection with inventory booked via the MovingWalls Service.
                           </p>
                           <p>
-                            MovingWalls&apos;s inventory count and MovingWalls&apos;s record of the price per inventory will be controlling and final. Any complaints relating to an invoice must be submitted to MovingWalls in writing or by email to <span className="text-mw-blue-600 font-medium">finance@movingwalls.com</span> within two weeks upon receipt of the invoice. If no such complaint has been made within two weeks upon receipt of invoice, the invoice is deemed to be accepted.
+                            MovingWalls&apos;s inventory count and MovingWalls&apos;s record of the price per inventory will be controlling and final. Any complaints relating to an invoice must be submitted to MovingWalls in writing or by email to <span className="text-mw-blue-600 font-medium">info@movingwalls.com</span> within two weeks upon receipt of the invoice. If no such complaint has been made within two weeks upon receipt of invoice, the invoice is deemed to be accepted.
                           </p>
                           <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
                             <p className="text-amber-800 font-medium">
