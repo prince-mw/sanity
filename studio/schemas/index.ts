@@ -49,6 +49,11 @@ import reusableCTA from './reusableCTA'
 import zohoForm from './zohoForm'
 import formField from './objects/formField'
 import redirectSettings from './redirectSettings'
+import helpCenterFaq from './helpCenterFaq'
+import apiReferencePage from './apiReferencePage'
+import communityPage from './communityPage'
+import legalPage from './legalPage'
+import platformConfig from './platformConfig'
 
 export const schemaTypes = [
   // Document types
@@ -105,4 +110,10 @@ export const schemaTypes = [
   formField,
   // Settings
   redirectSettings,
+  // Phase 2: New content types
+  helpCenterFaq,
+  apiReferencePage,
+  communityPage,
+  legalPage,
+  platformConfig,
 ]
