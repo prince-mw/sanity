@@ -4,6 +4,7 @@ import { motion } from "framer-motion"
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
+import { CTAButton } from "@/components/CTAButton"
 
 // Icons
 const ClipboardIcon = ({ className }: { className?: string }) => (
@@ -354,12 +355,12 @@ export default function MWInfluencePage() {
                 Built for large enterprise DOOH media owners, MW Influence gives you spot-level precision, transparent decisioning, and the flexibility to integrate with your existing tech stack—without ripping everything out.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
+                <CTAButton
                   href="/contact"
                   className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl"
                 >
                   Request a Demo
-                </Link>
+                </CTAButton>
               </div>
             </motion.div>
 
@@ -1028,18 +1029,18 @@ export default function MWInfluencePage() {
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
-              <Link
+              <CTAButton
                 href="/contact"
                 className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl"
               >
                 Schedule Your Demo
-              </Link>
-              <Link
+              </CTAButton>
+              <CTAButton
                 href="/contact"
                 className="inline-flex items-center justify-center px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-lg transition-all border border-white/20"
               >
                 Contact Sales
-              </Link>
+              </CTAButton>
             </div>
 
             <p className="text-gray-400 text-sm">

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { useState, useMemo } from "react";
+import { CTAButton } from "./CTAButton";
 
 interface CaseStudy {
   slug: string;
@@ -372,7 +373,7 @@ export default function CaseStudiesListClient({
           <p className="text-mw-gray-600 mb-8 max-w-2xl mx-auto">
             Join leading brands who have achieved measurable results with our platform.
           </p>
-          <Link
+          <CTAButton
             href="/contact"
             className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white rounded-xl hover:bg-mw-blue-700 transition-colors font-medium"
           >
@@ -380,7 +381,7 @@ export default function CaseStudiesListClient({
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </Link>
+          </CTAButton>
         </div>
       </section>
     </div>

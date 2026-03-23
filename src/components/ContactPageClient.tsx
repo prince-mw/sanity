@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import ContactForm from "./ContactForm";
+import { CTAButton } from "./CTAButton";
 
 export interface Office {
   city: string
@@ -154,9 +155,9 @@ export default function ContactPageClient({ offices }: ContactPageClientProps) {
               or scaling a global advertising strategy, our team of experts is ready to turn your vision into measurable results.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <button className="px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg shadow-mw-md hover:shadow-mw-lg transform hover:-translate-y-0.5 transition-all duration-200">
+              <CTAButton href="/contact" className="px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg shadow-mw-md hover:shadow-mw-lg transform hover:-translate-y-0.5 transition-all duration-200">
                 Book a Free Demo
-              </button>
+              </CTAButton>
             </div>
           </motion.div>
         </div>

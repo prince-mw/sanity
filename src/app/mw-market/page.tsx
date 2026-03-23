@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { CTAButton } from "@/components/CTAButton"
 
 // Custom SVG icons
 const CheckIcon = ({ className }: { className?: string }) => (
@@ -869,57 +870,16 @@ export default function MWMarketPage() {
                 See how MW Market can transform your OOH advertising strategy in just 15 minutes
               </p>
               
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
-                  <input
-                    type="text"
-                    placeholder="John Smith"
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Work Email *</label>
-                  <input
-                    type="email"
-                    placeholder="john@company.com"
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Company Name *</label>
-                  <input
-                    type="text"
-                    placeholder="Your Company"
-                    className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900"
-                  />
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Monthly Ad Budget</label>
-                  <select className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-blue-600 focus:ring-2 focus:ring-blue-200 outline-none transition-all text-gray-900">
-                    <option>Select budget range</option>
-                    <option>$10K - $50K</option>
-                    <option>$50K - $100K</option>
-                    <option>$100K - $500K</option>
-                    <option>$500K+</option>
-                  </select>
-                </div>
-                
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl"
-                >
-                  Schedule My Demo
-                </motion.button>
-                
-                <p className="text-xs text-gray-500 text-center">
-                  No credit card required • 15-minute demo • Free consultation
-                </p>
-              </div>
+              <CTAButton
+                href="/contact"
+                className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl text-center block"
+              >
+                Schedule My Demo
+              </CTAButton>
+              
+              <p className="text-xs text-gray-500 text-center mt-4">
+                No credit card required • 15-minute demo • Free consultation
+              </p>
             </motion.div>
 
             {/* Right: Benefits */}

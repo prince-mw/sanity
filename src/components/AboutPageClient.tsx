@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "./ContactForm";
+import { CTAButton } from "./CTAButton";
 import { getCompanyPage, transformCompanyPage } from "@/sanity/lib/fetch";
 
 const staticAssociations = [
@@ -497,7 +498,7 @@ export default function AboutPageClient() {
               audiences in the physical world.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
+              <CTAButton
                 href="/contact"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-mw-gray-50 text-mw-blue-600 font-semibold rounded-lg transition-colors shadow-lg"
               >
@@ -505,7 +506,7 @@ export default function AboutPageClient() {
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </Link>
+              </CTAButton>
               <Link
                 href="/our-story"
                 className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"

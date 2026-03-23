@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import ContactForm from "./ContactForm";
+import { CTAButton } from "./CTAButton";
 
 // Types for CMS-managed content
 interface RetailPageProps {
@@ -83,12 +84,12 @@ export default function RetailPageClient(props: RetailPageProps) {
                 {content.subtitle}
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
-                  href="#contact"
+                <CTAButton
+                  href="/contact"
                   className="px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
                 >
                   Start Your Campaign
-                </Link>
+                </CTAButton>
                 <Link
                   href="#case-studies"
                   className="px-6 py-3 border border-mw-gray-300 hover:bg-mw-gray-50 text-mw-gray-700 font-medium rounded-lg transition-colors"
@@ -250,7 +251,7 @@ export default function RetailPageClient(props: RetailPageProps) {
             <p className="text-lg text-mw-blue-100 mb-8">
               Let's discuss how our retail-focused OOH solutions can drive more customers to your stores.
             </p>
-            <Link
+            <CTAButton
               href="/contact"
               className="inline-flex items-center gap-2 px-8 py-3 bg-white text-mw-blue-600 font-medium rounded-lg hover:bg-mw-gray-50 transition-colors shadow-mw-md"
             >
@@ -258,7 +259,7 @@ export default function RetailPageClient(props: RetailPageProps) {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </Link>
+            </CTAButton>
           </motion.div>
         </div>
       </section>

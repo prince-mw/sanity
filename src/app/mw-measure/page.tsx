@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
 import Image from 'next/image'
+import { CTAButton } from "@/components/CTAButton"
 
 // Custom SVG icons
 const MapIcon = ({ className }: { className?: string }) => (
@@ -978,24 +979,22 @@ export default function MWMeasure() {
               and attribution modeling to maximize their Out-of-Home advertising ROI.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <CTAButton
+                href="/contact"
                 className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
               >
                 View Live Demo
                 <EyeIcon className="w-5 h-5" />
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              </CTAButton>
+              <CTAButton
+                href="/contact"
                 className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center gap-2"
               >
                 Book a Free Demo
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-              </motion.button>
+              </CTAButton>
             </div>
           </motion.div>
         </div>
