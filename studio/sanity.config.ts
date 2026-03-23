@@ -39,7 +39,7 @@ function resolvePreviewUrl(doc: any): string | null {
 }
 
 // Singleton document types - only one document should exist
-const singletonTypes = ['analyticsConfig', 'megaMenu']
+const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings']
 
 // Supported languages for i18n
 const supportedLanguages = [
@@ -183,6 +183,15 @@ const structure = (S: any) =>
                     .schemaType('megaMenu')
                     .documentId('megaMenu')
                     .title('Mega Menu Configuration')
+                ),
+              S.listItem()
+                .title('URL Redirects')
+                .id('redirectSettings')
+                .child(
+                  S.document()
+                    .schemaType('redirectSettings')
+                    .documentId('redirectSettings')
+                    .title('URL Redirects')
                 ),
               S.documentTypeListItem('pageSeo').title('Page SEO Settings'),
               S.documentTypeListItem('zohoForm').title('Zoho Forms'),

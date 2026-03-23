@@ -48,6 +48,7 @@ import reusableStatBlock from './reusableStatBlock'
 import reusableCTA from './reusableCTA'
 import zohoForm from './zohoForm'
 import formField from './objects/formField'
+import redirectSettings from './redirectSettings'
 
 export const schemaTypes = [
   // Document types
@@ -102,4 +103,6 @@ export const schemaTypes = [
   // Forms
   zohoForm,
   formField,
+  // Settings
+  redirectSettings,
 ]

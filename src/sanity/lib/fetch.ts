@@ -3229,3 +3229,27 @@ export async function getZohoFormsForPage(pagePath: string): Promise<ZohoFormDat
     return []
   }
 }
+
+// URL Redirects
+export interface RedirectRule {
+  source: string
+  destination: string
+  permanent: boolean
+}
+
+export async function getRedirects(): Promise<RedirectRule[]> {
+  try {
+    const query = `*[_type == "redirectSettings" && _id == "redirectSettings"][0]{
+      "redirects": redirects[isActive == true]{
+        source,
+        destination,
+        permanent
+      }
+    }`
+    const result = await client.fetch(query)
+    return result?.redirects || []
+  } catch (error) {
+    console.error('Error fetching redirects:', error)
+    return []
+  }
+}
