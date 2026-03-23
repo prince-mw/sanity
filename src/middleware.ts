@@ -73,6 +73,21 @@ export async function middleware(request: NextRequest) {
     })
 
     if (match) {
+      // Prevent redirect loops: if the destination (normalized) is the same as the current path, skip
+      const normalizedDestination = match.destination.endsWith('/') && match.destination !== '/'
+        ? match.destination.slice(0, -1)
+        : match.destination
+
+      if (!match.destination.startsWith('http') && normalizedDestination === normalizedPath) {
+        // Only redirect if the actual pathname differs (e.g., trailing slash removal)
+        if (pathname !== normalizedDestination) {
+          const url = request.nextUrl.clone()
+          url.pathname = normalizedDestination
+          return NextResponse.redirect(url, { status: match.permanent ? 308 : 307 })
+        }
+        return NextResponse.next()
+      }
+
       const destination = match.destination.startsWith('http')
         ? match.destination
         : new URL(match.destination, request.url).toString()
