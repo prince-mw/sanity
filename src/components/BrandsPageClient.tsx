@@ -175,16 +175,11 @@ export default function BrandsPageClient(props: BrandsPageProps) {
     { stepLabel: 'Step 3', stepName: 'Measure', description: 'Full transparency from impression to outcome.', items: ['Transparent impression tracking', 'Footfall uplift measurement', 'Attribution insights', 'Clear ROI reporting'] },
   ];
 
-  // Case studies - CMS or fallback
+  // Case studies - CMS or fallback (real case studies from Sanity are passed as props)
   const caseStudySectionTitle = props.caseStudySectionTitle || 'Our Case Studies';
   const caseStudySectionSubtitle = props.caseStudySectionSubtitle || 'Discover how leading brands achieved remarkable results with Moving Walls';
   const caseStudies = props.caseStudies?.length ? props.caseStudies : [
-    { client: 'Luxury Auto Group', category: 'Automotive', title: 'Premium Automotive Brand Achieves 300% ROI in Q4', description: 'Increase dealership visits and test drive bookings during competitive holiday season', image: 'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=800&h=600&fit=crop', duration: '90 days', budget: '$250K', metrics: [{ label: 'ROI Increase', value: '+300%' }, { label: 'Dealership Visits', value: '+187%' }] },
-    { client: 'FashionForward Stores', category: 'Retail', title: 'National Retail Chain Drives 45% Foot Traffic Increase', description: 'Combat declining in-store visits amid shift to online shopping', image: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=600&fit=crop', duration: '120 days', budget: '$180K', metrics: [{ label: 'Foot Traffic', value: '+45%' }, { label: 'In-Store Sales', value: '+62%' }] },
-    { client: 'MedCare Network', category: 'Healthcare', title: 'Healthcare Provider Reaches 2M Patients with Compliance', description: 'Increase awareness of preventive care services while maintaining HIPAA compliance', image: 'https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=800&h=600&fit=crop', duration: '60 days', budget: '$95K', metrics: [{ label: 'Impressions', value: '2.1M' }, { label: 'Appointments', value: '+78%' }] },
-    { client: 'NextGen Financial', category: 'Finance', title: 'Fintech Startup Generates 5,000+ Quality Leads', description: 'Build brand awareness and generate qualified leads in competitive market', image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?w=800&h=600&fit=crop', duration: '45 days', budget: '$125K', metrics: [{ label: 'Qualified Leads', value: '5,234' }, { label: 'Brand Lift', value: '+89%' }] },
-    { client: 'InnovateTech Corp', category: 'Technology', title: 'Tech Company Launches Product with 10M Impressions', description: 'Create buzz for new product launch in saturated market', image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&h=600&fit=crop', duration: '30 days', budget: '$200K', metrics: [{ label: 'Impressions', value: '10.2M' }, { label: 'Pre-orders', value: '12.5K' }] },
-    { client: 'Global Consumer Brands', category: 'FMCG', title: "FMCG Giant's Multi-Market Launch Success", description: 'Orchestrate a synchronized product launch across 8 Asian markets', image: 'https://images.unsplash.com/photo-1604719312566-8912e9227c6a?w=800&h=600&fit=crop', duration: '60 days', budget: '$350K', metrics: [{ label: 'Markets', value: '8' }, { label: 'Sales Lift', value: '+89%' }] },
+    { client: 'Moving Walls', category: 'OOH', title: 'Driving Brand Awareness with OOH', description: 'Discover how brands achieve measurable results with outdoor advertising campaigns.', image: '/assets/images/case-study-placeholder.svg', duration: '', budget: '', metrics: [{ label: 'Results', value: 'View Details' }] },
   ];
 
   const [activeTab, setActiveTab] = useState('retail')

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getIndustryPage, getPageSeo } from '@/sanity/lib/fetch';
+import { getIndustryPage, getPageSeo, getAllCaseStudies, transformCaseStudy } from '@/sanity/lib/fetch';
 import RetailPageClient from '@/components/RetailPageClient';
 
 export const revalidate = 3600; // Revalidate every hour
@@ -21,7 +21,20 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function RetailPage() {
-  const pageData = await getIndustryPage('retail');
+  const [pageData, sanityCaseStudies] = await Promise.all([
+    getIndustryPage('retail'),
+    getAllCaseStudies()
+  ]);
+
+  // Transform real case studies from Sanity as fallback (limit to 3)
+  const latestCaseStudies = sanityCaseStudies.slice(0, 3).map(cs => {
+    const transformed = transformCaseStudy(cs);
+    return {
+      brand: transformed.brand || transformed.title,
+      metric: transformed.metrics?.[0]?.value || 'View Details',
+      description: transformed.excerpt || transformed.title,
+    };
+  });
 
   return (
     <RetailPageClient
@@ -30,7 +43,7 @@ export default async function RetailPage() {
       titleHighlight={pageData?.titleHighlight}
       subtitle={pageData?.subtitle}
       benefits={pageData?.benefits}
-      caseStudies={pageData?.caseStudies}
+      caseStudies={pageData?.caseStudies?.length ? pageData.caseStudies : latestCaseStudies.length ? latestCaseStudies : undefined}
       heroStats={pageData?.heroStats}
     />
   );

@@ -171,28 +171,14 @@ const testimonials = [
   },
 ]
 
-// Resources/Blog posts
-const resources = [
+// Resources/Blog posts - minimal fallback for when CMS is empty
+const defaultResources = [
   {
     title: 'The Future of AI in Campaign Planning',
     description: 'How machine learning is revolutionizing media buying and budget allocation.',
     category: 'Blog',
     readTime: '5 min read',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=600&h=400&fit=crop',
-  },
-  {
-    title: 'Maximizing ROAS: A Complete Guide',
-    description: 'Proven strategies from brands achieving 200%+ return on ad spend.',
-    category: 'Guide',
-    readTime: '12 min read',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop',
-  },
-  {
-    title: 'Cross-Channel Attribution Decoded',
-    description: 'Understanding the customer journey across touchpoints for better optimization.',
-    category: 'Whitepaper',
-    readTime: '8 min read',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&h=400&fit=crop',
+    image: '/assets/images/blog-placeholder.svg',
   },
 ]
 
@@ -205,7 +191,18 @@ interface ProductData {
   stats: Array<{ value: string; label: string }>
 }
 
-export default function MWPlannerPageClient() {
+interface MWPlannerPageProps {
+  latestBlogPosts?: Array<{
+    title: string;
+    description: string;
+    category: string;
+    readTime: string;
+    image: string;
+    slug: string;
+  }>;
+}
+
+export default function MWPlannerPageClient({ latestBlogPosts }: MWPlannerPageProps) {
   const [activeTestimonial, setActiveTestimonial] = useState(0)
   const [productData, setProductData] = useState<ProductData | null>(null)
 
@@ -228,6 +225,9 @@ export default function MWPlannerPageClient() {
   const displayTestimonials = productData?.testimonials && productData.testimonials.length > 0 
     ? productData.testimonials.map((t, i) => ({ ...t, image: testimonials[i]?.image || '' }))
     : testimonials
+
+  // Use latest blog posts from Sanity or fallback
+  const resources = latestBlogPosts?.length ? latestBlogPosts : defaultResources;
 
   // Auto-rotate testimonials
   useEffect(() => {
@@ -800,39 +800,43 @@ export default function MWPlannerPageClient() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {resources.map((resource, index) => (
-              <motion.div
+              <Link
                 key={resource.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group cursor-pointer"
+                href={'slug' in resource && resource.slug ? `/blog/${resource.slug}` : '/blog'}
               >
-                {/* Image Thumbnail */}
-                <div className="h-48 overflow-hidden relative">
-                  <img
-                    src={resource.image}
-                    alt={resource.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-                </div>
-
-                <div className="p-6">
-                  <div className="flex items-center gap-2 mb-3">
-                    <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
-                      {resource.category}
-                    </span>
-                    <span className="text-gray-400 text-xs">{resource.readTime}</span>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  viewport={{ once: true }}
+                  className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow group cursor-pointer h-full"
+                >
+                  {/* Image Thumbnail */}
+                  <div className="h-48 overflow-hidden relative">
+                    <img
+                      src={resource.image}
+                      alt={resource.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                   </div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
-                    {resource.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">
-                    {resource.description}
-                  </p>
-                </div>
-              </motion.div>
+
+                  <div className="p-6">
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
+                        {resource.category}
+                      </span>
+                      <span className="text-gray-400 text-xs">{resource.readTime}</span>
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                      {resource.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm">
+                      {resource.description}
+                    </p>
+                  </div>
+                </motion.div>
+              </Link>
             ))}
           </div>
         </div>
