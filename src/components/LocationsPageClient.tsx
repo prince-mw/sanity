@@ -236,12 +236,9 @@ export default function LocationsPageClient() {
                         style={{ backgroundImage: `url(${location.image})` }}
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                      <div className="absolute bottom-4 left-4 flex items-center gap-2">
-                        <span className="text-3xl">{location.flag}</span>
-                        <div>
-                          <h3 className="text-xl font-bold text-white">{location.country}</h3>
-                          <p className="text-white/80 text-sm">{location.city}</p>
-                        </div>
+                      <div className="absolute bottom-4 left-4">
+                        <h3 className="text-xl font-bold text-white">{location.country}</h3>
+                        <p className="text-white/80 text-sm">{location.city}</p>
                       </div>
                     </div>
 

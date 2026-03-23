@@ -158,8 +158,6 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
-              {location.flag && <span className="text-5xl mb-4 block">{location.flag}</span>}
-              
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
                 OOH Advertising in{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
