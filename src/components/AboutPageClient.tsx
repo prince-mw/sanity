@@ -469,6 +469,8 @@ export default function AboutPageClient() {
                       alt={association.name}
                       width={120}
                       height={48}
+                      loading="eager"
+                      unoptimized
                       className="object-contain max-h-12 group-hover:scale-110 transition-transform duration-300"
                     />
                   </div>
