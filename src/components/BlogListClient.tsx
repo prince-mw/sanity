@@ -224,8 +224,6 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                         <span>{featuredArticle.author}</span>
                         <span>•</span>
                         <span>{featuredArticle.date}</span>
-                        <span>•</span>
-                        <span>{featuredArticle.readTime}</span>
                       </div>
                     </div>
                     {featuredArticle.featuredImage && (
@@ -312,8 +310,6 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                         <p className="text-mw-gray-600 mb-4 line-clamp-2 flex-grow">{article.excerpt}</p>
                         <div className="flex items-center gap-3 text-sm text-mw-gray-500 mt-auto">
                           <span>{article.date}</span>
-                          <span>•</span>
-                          <span>{article.readTime}</span>
                         </div>
                       </div>
                     </Link>
