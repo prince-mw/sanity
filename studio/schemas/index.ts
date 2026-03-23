@@ -47,6 +47,7 @@ import reusableTestimonial from './reusableTestimonial'
 import reusableStatBlock from './reusableStatBlock'
 import reusableCTA from './reusableCTA'
 import zohoForm from './zohoForm'
+import formField from './objects/formField'
 
 export const schemaTypes = [
   // Document types
@@ -100,4 +101,5 @@ export const schemaTypes = [
   reusableCTA,
   // Forms
   zohoForm,
+  formField,
 ]

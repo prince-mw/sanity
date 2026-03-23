@@ -22,7 +22,7 @@ const staggerItem = {
 
 // Zoho Form interface
 interface ZohoFormConfig {
-  formUrl: string
+  formUrl?: string
   name: string
   displayMode: 'iframe' | 'modal' | 'newtab'
   height: number

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useLocale, Locale } from "@/i18n/LocaleContext";
 import GlobalSearch from "./GlobalSearch";
+import { CTAButton } from "./CTAButton";
 
 // Types for Sanity mega menu data
 export interface SanityMenuLink {
@@ -405,21 +406,24 @@ export default function Header({ sanityMenuData }: HeaderProps) {
 
             {/* CTA Button - uses Sanity data if available */}
             {(ctaButton?.enabled !== false) && (
-              <motion.a
-                href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')}
+              <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 }}
-                className={`px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-block ${
-                  ctaButton?.style === 'secondary' 
-                    ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-                    : ctaButton?.style === 'outline'
-                      ? 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50'
-                      : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
-                }`}
               >
-                {ctaButton?.text || 'Get Started'}
-              </motion.a>
+                <CTAButton
+                  href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')}
+                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-block ${
+                    ctaButton?.style === 'secondary' 
+                      ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                      : ctaButton?.style === 'outline'
+                        ? 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50'
+                        : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
+                  }`}
+                >
+                  {ctaButton?.text || 'Get Started'}
+                </CTAButton>
+              </motion.div>
             )}
           </div>
 
@@ -632,7 +636,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
 
                 {/* Mobile CTA Button */}
                 {(ctaButton?.enabled !== false) && (
-                  <a 
+                  <CTAButton 
                     href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')} 
                     className={`block w-full px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 mt-4 text-center ${
                       ctaButton?.style === 'secondary' 
@@ -643,7 +647,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                     }`}
                   >
                     {ctaButton?.text || 'Get Started'}
-                  </a>
+                  </CTAButton>
                 )}
               </div>
             </motion.div>

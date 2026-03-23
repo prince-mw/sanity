@@ -3,6 +3,7 @@
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 import { useLocale } from "@/i18n/LocaleContext";
+import { CTAButton } from "./CTAButton";
 
 // Digital Noise Overlay Component
 function DigitalNoiseOverlay() {
@@ -478,9 +479,9 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
-          <a href="/contact" className="px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-mw-md hover:shadow-mw-lg inline-block text-center">
+          <CTAButton href="/contact" className="px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-all duration-200 shadow-mw-md hover:shadow-mw-lg inline-block text-center">
             {t('hero.cta.primary')}
-          </a>
+          </CTAButton>
         </motion.div>
       </div>
 

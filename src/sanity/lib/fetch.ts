@@ -1287,15 +1287,37 @@ function formatJobType(type: string | undefined): string {
 }
 
 // Ebook Types and Queries
+export interface ZohoFormFieldData {
+  label: string
+  zohoFieldName: string
+  fieldType: 'text' | 'email' | 'phone' | 'number' | 'textarea' | 'select' | 'radio' | 'checkbox' | 'hidden'
+  placeholder?: string
+  required?: boolean
+  halfWidth?: boolean
+  options?: string[]
+  defaultValue?: string
+  validationPattern?: string
+  validationMessage?: string
+}
+
 export interface ZohoFormData {
   _id: string
   name: string
-  formUrl: string
+  formUrl?: string
   formType?: string
+  renderMode: 'iframe' | 'native'
   displayMode?: 'iframe' | 'modal' | 'newtab'
   height?: number
   width?: string
   isActive?: boolean
+  assignedPages?: string[]
+  // Native mode fields
+  zohoFormPermalink?: string
+  zohoPortalName?: string
+  fields?: ZohoFormFieldData[]
+  submitButtonText?: string
+  successMessage?: string
+  successRedirectUrl?: string
 }
 
 export interface SanityEbook {
@@ -3006,5 +3028,103 @@ export function transformEnhancedProduct(product: SanityEnhancedProduct) {
     
     // SEO
     seo: product.seo || {},
+  }
+}
+
+// ── Zoho Form Queries ──────────────────────────────────────
+
+const zohoFormProjection = `{
+  _id,
+  name,
+  formUrl,
+  formType,
+  renderMode,
+  "displayMode": embedSettings.displayMode,
+  "height": embedSettings.height,
+  "width": embedSettings.width,
+  isActive,
+  assignedPages,
+  zohoFormPermalink,
+  zohoPortalName,
+  fields[] {
+    label,
+    zohoFieldName,
+    fieldType,
+    placeholder,
+    required,
+    halfWidth,
+    options,
+    defaultValue,
+    validationPattern,
+    validationMessage
+  },
+  submitButtonText,
+  successMessage,
+  successRedirectUrl
+}`
+
+function transformZohoForm(form: any): ZohoFormData | undefined {
+  if (!form || form.isActive === false) return undefined
+  return {
+    _id: form._id,
+    name: form.name,
+    formUrl: form.formUrl,
+    formType: form.formType,
+    renderMode: form.renderMode || 'iframe',
+    displayMode: form.displayMode || 'iframe',
+    height: form.height || 600,
+    width: form.width || '100%',
+    isActive: form.isActive,
+    assignedPages: form.assignedPages || [],
+    zohoFormPermalink: form.zohoFormPermalink,
+    zohoPortalName: form.zohoPortalName,
+    fields: form.fields || [],
+    submitButtonText: form.submitButtonText || 'Submit',
+    successMessage: form.successMessage || 'Thank you! Your submission has been received.',
+    successRedirectUrl: form.successRedirectUrl,
+  }
+}
+
+export async function getZohoFormById(formId: string): Promise<ZohoFormData | undefined> {
+  try {
+    const query = `*[_type == "zohoForm" && _id == $formId][0] ${zohoFormProjection}`
+    const form = await client.fetch(query, { formId })
+    return transformZohoForm(form)
+  } catch (error) {
+    console.error('Error fetching Zoho form by ID:', error)
+    return undefined
+  }
+}
+
+export async function getZohoFormsByType(formType: string): Promise<ZohoFormData[]> {
+  try {
+    const query = `*[_type == "zohoForm" && formType == $formType && isActive != false] ${zohoFormProjection}`
+    const forms = await client.fetch(query, { formType })
+    return (forms || []).map(transformZohoForm).filter(Boolean) as ZohoFormData[]
+  } catch (error) {
+    console.error('Error fetching Zoho forms by type:', error)
+    return []
+  }
+}
+
+export async function getAllActiveZohoForms(): Promise<ZohoFormData[]> {
+  try {
+    const query = `*[_type == "zohoForm" && isActive != false] | order(name asc) ${zohoFormProjection}`
+    const forms = await client.fetch(query)
+    return (forms || []).map(transformZohoForm).filter(Boolean) as ZohoFormData[]
+  } catch (error) {
+    console.error('Error fetching all Zoho forms:', error)
+    return []
+  }
+}
+
+export async function getZohoFormsForPage(pagePath: string): Promise<ZohoFormData[]> {
+  try {
+    const query = `*[_type == "zohoForm" && isActive != false && $pagePath in assignedPages] | order(name asc) ${zohoFormProjection}`
+    const forms = await client.fetch(query, { pagePath })
+    return (forms || []).map(transformZohoForm).filter(Boolean) as ZohoFormData[]
+  } catch (error) {
+    console.error('Error fetching Zoho forms for page:', error)
+    return []
   }
 }

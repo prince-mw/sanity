@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
 import { getBackgroundClasses, getButtonClasses, type BackgroundColor } from "./utils";
+import { CTAButton } from "../CTAButton";
 
 interface CTABannerSectionProps {
   heading?: string;
@@ -68,20 +68,21 @@ export function CTABannerSection({
           {(ctaText || secondaryCtaText) && (
             <div className="flex flex-wrap gap-4 justify-center">
               {ctaText && ctaLink && (
-                <Link 
+                <CTAButton 
                   href={ctaLink}
                   className={getButtonClasses('primary', isDark || !!backgroundImage)}
                 >
                   {ctaText}
-                </Link>
+                </CTAButton>
               )}
               {secondaryCtaText && secondaryCtaLink && (
-                <Link 
+                <CTAButton 
                   href={secondaryCtaLink}
+                  forceNavigate
                   className={getButtonClasses('secondary', isDark || !!backgroundImage)}
                 >
                   {secondaryCtaText}
-                </Link>
+                </CTAButton>
               )}
             </div>
           )}

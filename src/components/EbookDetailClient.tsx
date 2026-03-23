@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { PortableText } from '@portabletext/react'
 
 interface ZohoFormConfig {
-  formUrl: string
+  formUrl?: string
   name: string
   displayMode: 'iframe' | 'modal' | 'newtab'
   height: number

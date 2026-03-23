@@ -137,6 +137,13 @@ export default defineType({
       type: 'blockContent',
     }),
     defineField({
+      name: 'zohoForm',
+      title: 'Page Form',
+      type: 'reference',
+      to: [{type: 'zohoForm'}],
+      description: 'Attach a Zoho form to this page (e.g., contact, demo request)',
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',

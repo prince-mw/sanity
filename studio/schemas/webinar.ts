@@ -220,6 +220,14 @@ export default defineType({
       group: 'content',
     }),
     defineField({
+      name: 'zohoForm',
+      title: 'Registration Form',
+      type: 'reference',
+      to: [{type: 'zohoForm'}],
+      description: 'Attach a Zoho form for webinar registration',
+      group: 'content',
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',

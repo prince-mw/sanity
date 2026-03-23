@@ -57,6 +57,13 @@ export default defineType({
       description: 'Search engine optimization settings',
     }),
     defineField({
+      name: 'zohoForm',
+      title: 'Page Form',
+      type: 'reference',
+      to: [{type: 'zohoForm'}],
+      description: 'Attach a Zoho form to this landing page (e.g., lead capture, demo request)',
+    }),
+    defineField({
       name: 'sections',
       title: 'Page Sections',
       type: 'array',

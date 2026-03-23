@@ -9,6 +9,8 @@ import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
 import PreviewBanner from "@/components/PreviewBanner";
 import { LocaleProvider } from "@/i18n/LocaleContext";
+import { FormPopupProvider } from "@/components/FormPopupProvider";
+import { getAllActiveZohoForms } from "@/sanity/lib/fetch";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -138,6 +140,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { isEnabled: isPreview } = await draftMode();
+  const allForms = await getAllActiveZohoForms();
 
   return (
     <html lang="en" className="scroll-smooth">
@@ -153,11 +156,18 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <LocaleProvider>
-          <HeaderWrapper />
-          <main className={isPreview ? 'pb-16' : ''}>
-            {children}
-          </main>
-          <GlobalCTA />
+          <Suspense fallback={null}>
+            <FormPopupProvider forms={allForms}>
+              <HeaderWrapper />
+              <main className={isPreview ? 'pb-16' : ''}>
+                {children}
+              </main>
+              <GlobalCTA />
+              <Footer />
+            </FormPopupProvider>
+          </Suspense>
+          <CookieConsent />
+          <PreviewBanner isPreview={isPreview} />
           <Footer />
           <CookieConsent />
           <PreviewBanner isPreview={isPreview} />
