@@ -49,6 +49,7 @@ import reusableCTA from './reusableCTA'
 import zohoForm from './zohoForm'
 import formField from './objects/formField'
 import redirectSettings from './redirectSettings'
+import careersPage from './careersPage'
 import helpCenterFaq from './helpCenterFaq'
 import apiReferencePage from './apiReferencePage'
 import communityPage from './communityPage'
@@ -110,6 +111,7 @@ export const schemaTypes = [
   formField,
   // Settings
   redirectSettings,
+  careersPage,
   // Phase 2: New content types
   helpCenterFaq,
   apiReferencePage,

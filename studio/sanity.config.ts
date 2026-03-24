@@ -39,7 +39,7 @@ function resolvePreviewUrl(doc: any): string | null {
 }
 
 // Singleton document types - only one document should exist
-const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings']
+const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage']
 
 // Supported languages for i18n
 const supportedLanguages = [
@@ -195,6 +195,15 @@ const structure = (S: any) =>
                 ),
               S.documentTypeListItem('pageSeo').title('Page SEO Settings'),
               S.documentTypeListItem('zohoForm').title('Zoho Forms'),
+              S.listItem()
+                .title('Careers Page')
+                .id('careersPage')
+                .child(
+                  S.document()
+                    .schemaType('careersPage')
+                    .documentId('careersPage')
+                    .title('Careers Page Content')
+                ),
             ])
         ),
     ])

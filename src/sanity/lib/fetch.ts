@@ -3266,3 +3266,83 @@ export async function getRedirects(): Promise<RedirectRule[]> {
     return []
   }
 }
+
+// Careers Page Content
+export interface CareersPageStat {
+  number: string
+  label: string
+}
+
+export interface CareersPageBenefit {
+  title: string
+  description: string
+  iconName: string
+}
+
+export interface CareersPageDepartment {
+  name: string
+  departmentKey: string
+  color: string
+  roleCount: number
+}
+
+export interface CareersPageContent {
+  heroBadge: string
+  heroTitle: string
+  heroTitleHighlight: string
+  heroDescription: string
+  heroCtaText: string
+  stats: CareersPageStat[]
+  benefitsTitle: string
+  benefitsDescription: string
+  benefits: CareersPageBenefit[]
+  departmentsTitle: string
+  departmentsDescription: string
+  departments: CareersPageDepartment[]
+  openPositionsTitle: string
+  openPositionsDescription: string
+  ctaTitle: string
+  ctaDescription: string
+  ctaPrimaryButtonText: string
+  ctaPrimaryButtonLink: string
+  ctaSecondaryButtonText: string
+  ctaSecondaryButtonLink: string
+}
+
+export async function getCareersPageContent(): Promise<CareersPageContent | null> {
+  try {
+    const query = `
+      *[_type == "careersPage" && _id == "careersPage"][0] {
+        heroBadge,
+        heroTitle,
+        heroTitleHighlight,
+        heroDescription,
+        heroCtaText,
+        stats[] { number, label },
+        benefitsTitle,
+        benefitsDescription,
+        benefits[] { title, description, iconName },
+        departmentsTitle,
+        departmentsDescription,
+        departments[] {
+          name,
+          departmentKey,
+          color,
+          "roleCount": count(*[_type == "jobPosition" && isActive == true && department == ^.departmentKey])
+        },
+        openPositionsTitle,
+        openPositionsDescription,
+        ctaTitle,
+        ctaDescription,
+        ctaPrimaryButtonText,
+        ctaPrimaryButtonLink,
+        ctaSecondaryButtonText,
+        ctaSecondaryButtonLink
+      }
+    `
+    return client.fetch(query)
+  } catch (error) {
+    console.error('Error fetching careers page content:', error)
+    return null
+  }
+}

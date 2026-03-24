@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import ContactForm from './ContactForm'
+import { CareersPageContent } from '@/sanity/lib/fetch'
 
 export interface JobPosition {
   title: string
@@ -22,59 +23,66 @@ export interface JobPosition {
 
 interface CareersPageClientProps {
   jobs: JobPosition[]
+  pageContent: CareersPageContent | null
 }
 
-const benefits = [
-  {
-    icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>,
-    title: 'Health & Wellness',
-    description: 'Comprehensive medical, dental, and vision coverage plus wellness programs'
-  },
-  {
-    icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" /></svg>,
-    title: 'Competitive Compensation',
-    description: 'Market-leading salaries with equity participation and performance bonuses'
-  },
-  {
-    icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>,
-    title: 'Learning & Development',
-    description: 'Professional development budget, conference attendance, and skill-building programs'
-  },
-  {
-    icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
-    title: 'Flexible Work',
-    description: 'Remote-first culture with flexible hours and unlimited PTO policy'
-  },
-  {
-    icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>,
-    title: 'Team Culture',
-    description: 'Collaborative environment with team events, mentorship, and inclusive culture'
-  },
-  {
-    icon: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,
-    title: 'Innovation Time',
-    description: '20% time for passion projects and innovation initiatives'
-  }
+const iconMap: Record<string, JSX.Element> = {
+  heart: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>,
+  dollar: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" /></svg>,
+  book: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>,
+  globe: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
+  people: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>,
+  lightning: <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,
+}
+
+const defaultBenefits = [
+  { title: 'Health & Wellness', description: 'Comprehensive medical, dental, and vision coverage plus wellness programs', iconName: 'heart' },
+  { title: 'Competitive Compensation', description: 'Market-leading salaries with equity participation and performance bonuses', iconName: 'dollar' },
+  { title: 'Learning & Development', description: 'Professional development budget, conference attendance, and skill-building programs', iconName: 'book' },
+  { title: 'Flexible Work', description: 'Remote-first culture with flexible hours and unlimited PTO policy', iconName: 'globe' },
+  { title: 'Team Culture', description: 'Collaborative environment with team events, mentorship, and inclusive culture', iconName: 'people' },
+  { title: 'Innovation Time', description: '20% time for passion projects and innovation initiatives', iconName: 'lightning' },
 ]
 
-const departments = [
-  { name: 'Engineering', count: '12 roles', color: 'bg-blue-100 text-blue-600' },
-  { name: 'Sales', count: '8 roles', color: 'bg-green-100 text-green-600' },
-  { name: 'Marketing', count: '6 roles', color: 'bg-purple-100 text-purple-600' },
-  { name: 'Data & Analytics', count: '5 roles', color: 'bg-orange-100 text-orange-600' },
-  { name: 'Design', count: '4 roles', color: 'bg-pink-100 text-pink-600' },
-  { name: 'Operations', count: '3 roles', color: 'bg-indigo-100 text-indigo-600' }
+const defaultDepartments = [
+  { name: 'Engineering', departmentKey: 'engineering', color: 'bg-blue-100 text-blue-600', roleCount: 0 },
+  { name: 'Sales', departmentKey: 'sales', color: 'bg-green-100 text-green-600', roleCount: 0 },
+  { name: 'Marketing', departmentKey: 'marketing', color: 'bg-purple-100 text-purple-600', roleCount: 0 },
+  { name: 'Data & Analytics', departmentKey: 'data-analytics', color: 'bg-orange-100 text-orange-600', roleCount: 0 },
+  { name: 'Design', departmentKey: 'design', color: 'bg-pink-100 text-pink-600', roleCount: 0 },
+  { name: 'Operations', departmentKey: 'operations', color: 'bg-indigo-100 text-indigo-600', roleCount: 0 },
 ]
 
-const stats = [
+const defaultStats = [
   { number: '200+', label: 'Team Members' },
   { number: '25+', label: 'Open Positions' },
   { number: '9', label: 'Global Offices' },
-  { number: '4.9/5', label: 'Glassdoor Rating' }
+  { number: '4.9/5', label: 'Glassdoor Rating' },
 ]
 
-export default function CareersPageClient({ jobs }: CareersPageClientProps) {
+export default function CareersPageClient({ jobs, pageContent }: CareersPageClientProps) {
   const [applicationModal, setApplicationModal] = useState<{ isOpen: boolean; formUrl: string; jobTitle: string }>({ isOpen: false, formUrl: '', jobTitle: '' })
+
+  const heroBadge = pageContent?.heroBadge || 'Join Our Team'
+  const heroTitle = pageContent?.heroTitle || 'Build Your Career'
+  const heroTitleHighlight = pageContent?.heroTitleHighlight || 'Shape the Future'
+  const heroDescription = pageContent?.heroDescription || "Join Moving Walls and help revolutionize the advertising industry. We're looking for passionate innovators who want to make a real impact while growing their careers in a dynamic, supportive environment."
+  const heroCtaText = pageContent?.heroCtaText || 'View Open Roles'
+  const statsData = pageContent?.stats?.length ? pageContent.stats : defaultStats
+  const benefitsTitle = pageContent?.benefitsTitle || 'Why Choose Moving Walls?'
+  const benefitsDescription = pageContent?.benefitsDescription || 'We believe in empowering our people to do their best work while building the future of advertising technology.'
+  const benefitsData = pageContent?.benefits?.length ? pageContent.benefits : defaultBenefits
+  const departmentsTitle = pageContent?.departmentsTitle || 'Teams & Departments'
+  const departmentsDescription = pageContent?.departmentsDescription || 'Explore opportunities across our diverse teams and find where your skills can make the biggest impact.'
+  const departmentsData = pageContent?.departments?.length ? pageContent.departments : defaultDepartments
+  const openPositionsTitle = pageContent?.openPositionsTitle || 'Open Positions'
+  const openPositionsDescription = pageContent?.openPositionsDescription || 'Ready to make an impact? Explore our current openings and find your next opportunity.'
+  const ctaTitle = pageContent?.ctaTitle || "Don't See Your Perfect Role?"
+  const ctaDescription = pageContent?.ctaDescription || "We're always looking for exceptional talent. Send us your resume and let us know how you'd like to contribute to our mission of transforming advertising."
+  const ctaPrimaryButtonText = pageContent?.ctaPrimaryButtonText || 'Send Your Resume'
+  const ctaPrimaryButtonLink = pageContent?.ctaPrimaryButtonLink || '#contact'
+  const ctaSecondaryButtonText = pageContent?.ctaSecondaryButtonText || 'Meet Our Leaders'
+  const ctaSecondaryButtonLink = pageContent?.ctaSecondaryButtonLink || '/leadership'
 
   return (
     <div className="min-h-screen bg-white">
@@ -88,21 +96,19 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
             className="text-center"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-mw-blue-100 rounded-full mb-8">
-              <span className="text-mw-blue-600 text-sm font-medium">Join Our Team</span>
+              <span className="text-mw-blue-600 text-sm font-medium">{heroBadge}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
-              Build Your Career
-              <span className="text-mw-blue-600 block">Shape the Future</span>
+              {heroTitle}
+              <span className="text-mw-blue-600 block">{heroTitleHighlight}</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Join Moving Walls and help revolutionize the advertising industry. We&apos;re looking for 
-              passionate innovators who want to make a real impact while growing their careers 
-              in a dynamic, supportive environment.
+              {heroDescription}
             </p>
             
             {/* Company Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mb-8">
-              {stats.map((stat, index) => (
+              {statsData.map((stat, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -120,7 +126,7 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
               href="#open-roles"
               className="inline-flex items-center gap-2 px-8 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg transition-colors shadow-mw-md"
             >
-              View Open Roles
+              {heroCtaText}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -140,15 +146,15 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Why Choose Moving Walls?
+              {benefitsTitle}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
-              We believe in empowering our people to do their best work while building the future of advertising technology.
+              {benefitsDescription}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {benefits.map((benefit, index) => (
+            {benefitsData.map((benefit, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -158,7 +164,7 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
                 className="text-center p-6"
               >
                 <div className="inline-flex items-center justify-center w-12 h-12 bg-mw-blue-100 rounded-lg text-mw-blue-600 mb-4">
-                  {benefit.icon}
+                  {iconMap[benefit.iconName] || iconMap.lightning}
                 </div>
                 <h3 className="text-xl font-bold text-mw-gray-900 mb-3">{benefit.title}</h3>
                 <p className="text-mw-gray-600 leading-relaxed">{benefit.description}</p>
@@ -179,15 +185,15 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Teams & Departments
+              {departmentsTitle}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-2xl mx-auto">
-              Explore opportunities across our diverse teams and find where your skills can make the biggest impact.
+              {departmentsDescription}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {departments.map((dept, index) => (
+            {departmentsData.map((dept, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -199,7 +205,7 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-mw-gray-900">{dept.name}</h3>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${dept.color}`}>
-                    {dept.count}
+                    {dept.roleCount === 1 ? '1 role' : `${dept.roleCount} roles`}
                   </span>
                 </div>
               </motion.div>
@@ -219,10 +225,10 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Open Positions
+              {openPositionsTitle}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
-              Ready to make an impact? Explore our current openings and find your next opportunity.
+              {openPositionsDescription}
             </p>
           </motion.div>
 
@@ -357,27 +363,26 @@ export default function CareersPageClient({ jobs }: CareersPageClientProps) {
             className="text-center text-white"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Don&apos;t See Your Perfect Role?
+              {ctaTitle}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-              We&apos;re always looking for exceptional talent. Send us your resume and let us know 
-              how you&apos;d like to contribute to our mission of transforming advertising.
+              {ctaDescription}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="#contact"
+                href={ctaPrimaryButtonLink}
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-mw-gray-50 text-mw-blue-600 font-semibold rounded-lg transition-colors shadow-lg"
               >
-                Send Your Resume
+                {ctaPrimaryButtonText}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
               </Link>
               <Link
-                href="/leadership"
+                href={ctaSecondaryButtonLink}
                 className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"
               >
-                Meet Our Leaders
+                {ctaSecondaryButtonText}
               </Link>
             </div>
           </motion.div>

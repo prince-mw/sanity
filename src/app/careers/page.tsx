@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { getActiveJobPositions, transformJobPosition, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getActiveJobPositions, transformJobPosition, getPageSeo, getSanityImageUrl, getCareersPageContent, CareersPageContent } from '@/sanity/lib/fetch'
 import CareersPageClient, { JobPosition } from '@/components/CareersPageClient'
 
 const defaultMeta = {
@@ -115,6 +115,13 @@ export default async function CareersPage() {
   } catch (error) {
     console.error('Error fetching jobs from Sanity:', error)
   }
+
+  let pageContent: CareersPageContent | null = null
+  try {
+    pageContent = await getCareersPageContent()
+  } catch (error) {
+    console.error('Error fetching careers page content:', error)
+  }
   
-  return <CareersPageClient jobs={jobs} />
+  return <CareersPageClient jobs={jobs} pageContent={pageContent} />
 }
