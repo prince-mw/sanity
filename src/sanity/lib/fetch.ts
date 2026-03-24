@@ -3298,6 +3298,17 @@ export async function getZohoFormsForPage(pagePath: string): Promise<ZohoFormDat
   }
 }
 
+export async function getContactZohoForm(): Promise<ZohoFormData | undefined> {
+  try {
+    const query = `*[_type == "zohoForm" && formType == "contact" && isActive != false] | order(_createdAt asc) [0] ${zohoFormProjection}`
+    const form = await client.fetch(query)
+    return transformZohoForm(form)
+  } catch (error) {
+    console.error('Error fetching contact Zoho form:', error)
+    return undefined
+  }
+}
+
 // URL Redirects
 export interface RedirectRule {
   source: string

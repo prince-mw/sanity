@@ -22,6 +22,7 @@ const typeToPath: Record<string, string[]> = {
   contactPage: ['/contact'],
   trustBar: ['/'],
   clientPartners: ['/'],
+  zohoForm: ['/'],
   office: ['/locations', '/offices', '/'],
   redirectSettings: ['/'],
 }

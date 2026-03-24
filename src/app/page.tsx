@@ -11,7 +11,7 @@ import About from "../components/About";
 import Newsletter from "../components/Newsletter";
 import CaseStudiesSection from "../components/CaseStudiesSection";
 import ContactForm from "../components/ContactForm";
-import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent } from "@/sanity/lib/fetch";
+import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm } from "@/sanity/lib/fetch";
 
 const defaultMeta = {
   title: "Moving Walls - Connected Media Platform for OOH Advertising",
@@ -52,6 +52,9 @@ export default async function Home() {
   // Fetch trust bar stats
   const trustBarContent = await getTrustBarContent();
 
+  // Fetch contact form from CMS
+  const contactForm = await getContactZohoForm();
+
   return (
     <>
       <Hero />
@@ -65,7 +68,10 @@ export default async function Home() {
       {/* <About /> */}
       <Newsletter />
       <CaseStudiesSection initialCaseStudies={caseStudies} />
-      <ContactForm />
+      <ContactForm
+        zohoFormUrl={contactForm?.formUrl}
+        zohoFormHeight={contactForm?.height}
+      />
     </>
   );
 }
