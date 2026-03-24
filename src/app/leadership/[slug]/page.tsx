@@ -26,7 +26,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
           type: 'profile',
           images: ogImage ? [{ url: ogImage, width: 1200, height: 630 }] : [],
         },
-        robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+        alternates: {
+      canonical: `https://www.movingwalls.com/leadership/${slug}`,
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       }
     }
   } catch (error) {

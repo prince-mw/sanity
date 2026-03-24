@@ -19,6 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description: seo?.metaDescription || 'Learn how MovingWalls collects, uses, and protects your personal data.',
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
+    alternates: {
+      canonical: "https://www.movingwalls.com/privacy",
+    },
     robots: seo?.noIndex ? { index: false, follow: false } : undefined,
   };
 }

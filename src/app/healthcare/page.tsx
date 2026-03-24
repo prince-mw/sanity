@@ -17,6 +17,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       ...(seo?.seo?.ogImage && { images: [{ url: seo.seo.ogImage }] }),
     },
+    alternates: {
+      canonical: "https://www.movingwalls.com/healthcare",
+    },
   };
 }
 

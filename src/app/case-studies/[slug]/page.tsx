@@ -36,7 +36,10 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
           description,
           images: ogImage ? [ogImage] : [],
         },
-        robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+        alternates: {
+      canonical: `https://www.movingwalls.com/case-studies/${slug}`,
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       };
     }
   } catch (error) {

@@ -19,6 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description: seo?.metaDescription || 'Elevate your brand with targeted outdoor advertising campaigns.',
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
+    alternates: {
+      canonical: "https://www.movingwalls.com/brands",
+    },
     robots: seo?.noIndex ? { index: false, follow: false } : undefined,
   };
 }

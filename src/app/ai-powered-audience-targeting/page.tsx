@@ -22,6 +22,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description,
       type: "article",
     },
+    alternates: {
+      canonical: "https://www.movingwalls.com/ai-powered-audience-targeting",
+    },
   };
 }
 

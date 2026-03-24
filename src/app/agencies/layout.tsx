@@ -19,6 +19,9 @@ export async function generateMetadata(): Promise<Metadata> {
       description: seo?.metaDescription || 'Scale your agency\'s OOH capabilities with Moving Walls.',
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
+    alternates: {
+      canonical: "https://www.movingwalls.com/agencies",
+    },
     robots: seo?.noIndex ? { index: false, follow: false } : undefined,
   };
 }

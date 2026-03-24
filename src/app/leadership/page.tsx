@@ -5,6 +5,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title: 'Leadership Team | Moving Walls',
     description: 'Meet the visionaries behind Moving Walls - coming soon.',
+    alternates: {
+      canonical: "https://www.movingwalls.com/leadership",
+    },
     robots: { index: false, follow: false },
   };
 }

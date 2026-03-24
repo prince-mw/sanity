@@ -51,7 +51,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           description,
           images: ogImage ? [ogImage] : [],
         },
-        robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+        alternates: {
+      canonical: `https://www.movingwalls.com/blog/${slug}`,
+    },
+    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       };
     }
   } catch (error) {

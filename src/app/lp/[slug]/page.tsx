@@ -51,6 +51,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           description,
           images: ogImage ? [ogImage] : [],
         },
+        alternates: {
+          canonical: `https://www.movingwalls.com/lp/${slug}`,
+        },
       };
     }
   } catch (error) {

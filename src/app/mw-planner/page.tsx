@@ -21,6 +21,9 @@ export async function generateMetadata(): Promise<Metadata> {
       type: 'website',
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
+    alternates: {
+      canonical: "https://www.movingwalls.com/mw-planner",
+    },
     robots: seo?.noIndex ? { index: false, follow: false } : undefined,
   };
 }

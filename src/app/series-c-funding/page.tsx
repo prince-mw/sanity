@@ -26,6 +26,9 @@ export async function generateMetadata(): Promise<Metadata> {
       title,
       description,
     },
+    alternates: {
+      canonical: "https://www.movingwalls.com/series-c-funding",
+    },
   };
 }
 
