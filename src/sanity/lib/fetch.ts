@@ -1812,14 +1812,45 @@ export interface SanityProduct {
   icon?: string
   heroImage?: any
   category?: string
+  heroBadge?: string
+  heroTitle?: string
+  heroSubtitle?: string
+  heroGradient?: string
+  heroStats?: Array<{ value: string; label: string }>
+  painPointsTitle?: string
+  painPointsSubtitle?: string
+  painPoints?: Array<{ icon?: string; title: string; description: string; beforeState?: string; afterState?: string }>
+  featuresTitle?: string
+  featuresSubtitle?: string
   features?: SanityProductFeature[]
   benefits?: string[]
   stats?: SanityProductStat[]
+  integrationsTitle?: string
+  integrationsSubtitle?: string
   integrations?: SanityProductIntegration[]
   testimonials?: SanityProductTestimonial[]
   useCases?: Array<{ title: string; description: string; industry?: string }>
+  howItWorksTitle?: string
+  howItWorksSubtitle?: string
+  howItWorksSteps?: Array<{ stepNumber?: number; title: string; description: string; icon?: string }>
+  detailPageSections?: Array<{
+    sectionKey: string
+    sectionTitle?: string
+    sectionSubtitle?: string
+    items?: Array<{
+      title: string
+      description?: string
+      detail?: string
+      metric?: string
+      metricLabel?: string
+      iconName?: string
+    }>
+  }>
+  finalCtaTitle?: string
+  finalCtaSubtitle?: string
   ctaText?: string
   ctaLink?: string
+  secondaryCta?: { text?: string; link?: string; isVideo?: boolean }
   demoVideo?: string
   order?: number
   isActive?: boolean
@@ -1853,14 +1884,38 @@ export async function getProductBySlug(slug: string): Promise<SanityProduct | nu
       icon,
       heroImage,
       category,
+      heroBadge,
+      heroTitle,
+      heroSubtitle,
+      heroGradient,
+      heroStats[] { value, label },
+      painPointsTitle,
+      painPointsSubtitle,
+      painPoints[] { icon, title, description, beforeState, afterState },
+      featuresTitle,
+      featuresSubtitle,
       features,
       benefits,
       stats,
+      integrationsTitle,
+      integrationsSubtitle,
       integrations,
       testimonials,
       useCases,
+      howItWorksTitle,
+      howItWorksSubtitle,
+      howItWorksSteps[] { stepNumber, title, description, icon },
+      detailPageSections[] {
+        sectionKey,
+        sectionTitle,
+        sectionSubtitle,
+        items[] { title, description, detail, metric, metricLabel, iconName }
+      },
+      finalCtaTitle,
+      finalCtaSubtitle,
       ctaText,
       ctaLink,
+      secondaryCta,
       demoVideo,
       order,
       isActive
@@ -3473,6 +3528,65 @@ export async function getContactPageContent(): Promise<ContactPageContent | null
     return client.fetch(query)
   } catch (error) {
     console.error('Error fetching contact page content:', error)
+    return null
+  }
+}
+
+// Trust Bar Configuration
+export interface TrustBarStat {
+  value: string
+  label: string
+}
+
+export interface TrustBarContent {
+  stats: TrustBarStat[]
+}
+
+export async function getTrustBarContent(): Promise<TrustBarContent | null> {
+  try {
+    const query = `
+      *[_type == "trustBar" && _id == "trustBar"][0] {
+        stats[] { value, label }
+      }
+    `
+    return client.fetch(query)
+  } catch (error) {
+    console.error('Error fetching trust bar content:', error)
+    return null
+  }
+}
+
+// Client Partners Configuration
+export interface ClientPartner {
+  name: string
+  category: string
+  logo?: any
+  url?: string
+}
+
+export interface ClientPartnersContent {
+  sectionTitle?: string
+  sectionDescription?: string
+  partners: ClientPartner[]
+}
+
+export async function getClientPartnersContent(): Promise<ClientPartnersContent | null> {
+  try {
+    const query = `
+      *[_type == "clientPartners" && _id == "clientPartners"][0] {
+        sectionTitle,
+        sectionDescription,
+        partners[] {
+          name,
+          category,
+          logo,
+          url
+        }
+      }
+    `
+    return client.fetch(query)
+  } catch (error) {
+    console.error('Error fetching client partners content:', error)
     return null
   }
 }

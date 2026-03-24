@@ -1,10 +1,10 @@
 'use client'
 
 import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getProductBySlug, transformProduct } from '@/sanity/lib/fetch'
+import type { SanityProduct } from '@/sanity/lib/fetch'
 
 // Icon Components
 const CheckCircleIcon = ({ className }: { className?: string }) => (
@@ -156,14 +156,6 @@ const defaultResources = [
   },
 ]
 
-interface ProductData {
-  name: string
-  tagline: string
-  description: string
-  features: Array<{ icon?: string; title: string; description: string; metric?: string }>
-  stats: Array<{ value: string; label: string }>
-}
-
 interface MWPlannerPageProps {
   latestBlogPosts?: Array<{
     title: string;
@@ -173,25 +165,17 @@ interface MWPlannerPageProps {
     image: string;
     slug: string;
   }>;
+  product?: SanityProduct | null;
 }
 
-export default function MWPlannerPageClient({ latestBlogPosts }: MWPlannerPageProps) {
-  const [productData, setProductData] = useState<ProductData | null>(null)
-
-  // Fetch product data from Sanity
-  useEffect(() => {
-    async function fetchProduct() {
-      try {
-        const data = await getProductBySlug('mw-planner')
-        if (data) {
-          setProductData(transformProduct(data))
-        }
-      } catch (error) {
-        console.error('Error fetching product data:', error)
-      }
-    }
-    fetchProduct()
-  }, [])
+export default function MWPlannerPageClient({ latestBlogPosts, product }: MWPlannerPageProps) {
+  // CMS-driven hero content with fallbacks
+  const heroBadge = product?.heroBadge || 'AI-Powered Campaign Intelligence'
+  const heroTitle = product?.heroTitle || 'Turn Data Into'
+  const heroSubtitle = product?.heroSubtitle || 'Campaign Success'
+  const heroDescription = product?.description || 'The AI command center that predicts performance, optimizes budgets, and delivers measurable ROI—before you spend a dollar.'
+  const ctaText = product?.ctaText || 'Start Free Trial'
+  const ctaLink = product?.ctaLink || '/contact'
 
   // Use latest blog posts from Sanity or fallback
   const resources = latestBlogPosts?.length ? latestBlogPosts : defaultResources;
@@ -226,29 +210,29 @@ export default function MWPlannerPageClient({ latestBlogPosts }: MWPlannerPagePr
                 className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 px-4 py-2 rounded-full mb-6"
               >
                 <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span className="text-blue-200 text-sm font-medium">AI-Powered Campaign Intelligence</span>
+                <span className="text-blue-200 text-sm font-medium">{heroBadge}</span>
               </motion.div>
 
               {/* Main Headline */}
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
-                Turn Data Into
+                {heroTitle}
                 <span className="block bg-gradient-to-r from-blue-400 to-cyan-400 bg-clip-text text-transparent">
-                  Campaign Success
+                  {heroSubtitle}
                 </span>
               </h1>
 
               {/* Subheadline */}
               <p className="text-xl text-blue-100/80 mb-8 max-w-xl leading-relaxed">
-                The AI command center that predicts performance, optimizes budgets, and delivers measurable ROI—before you spend a dollar.
+                {heroDescription}
               </p>
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
                 <Link
-                  href="/contact"
+                  href={ctaLink}
                   className="group bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center gap-2"
                 >
-                  Start Free Trial
+                  {ctaText}
                   <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </div>

@@ -4,9 +4,11 @@ import { motion } from "framer-motion"
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
+import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWScienceClientProps {
   caseStudies?: any[]
+  product?: SanityProduct | null
 }
 
 // Custom SVG icons
@@ -58,7 +60,12 @@ const integrations = [
   { name: 'Mediasmart', category: 'DSP', logo: '/assets/images/integrations/mediasmart.svg' },
 ]
 
-export default function MWScience({ caseStudies = [] }: MWScienceClientProps) {
+export default function MWSciencePage({ caseStudies = [], product }: MWScienceClientProps) {
+  // CMS-driven hero content with fallbacks
+  const heroTitle = product?.heroTitle || 'MW Science'
+  const heroSubtitle = product?.heroSubtitle || 'AI-Powered Audience Intelligence'
+  const heroDescription = product?.description || 'Transform data into strategic advantage with machine learning models that deliver'
+
   const features = [
     {
       icon: BeakerIcon,
@@ -130,14 +137,14 @@ export default function MWScience({ caseStudies = [] }: MWScienceClientProps) {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                MW Science
+                {heroTitle}
                 <span className="block text-3xl md:text-4xl font-light mt-3 text-purple-200">
-                  AI-Powered Audience Intelligence
+                  {heroSubtitle}
                 </span>
               </h1>
               
               <p className="text-xl md:text-2xl mb-8 leading-relaxed text-violet-100">
-                Transform data into strategic advantage with machine learning models that deliver
+                {heroDescription}
                 <span className="text-yellow-300 font-semibold"> 94% prediction accuracy</span>.
               </p>
 

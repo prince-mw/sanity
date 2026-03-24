@@ -52,6 +52,8 @@ import redirectSettings from './redirectSettings'
 import careersPage from './careersPage'
 import footerConfig from './footerConfig'
 import contactPage from './contactPage'
+import trustBar from './trustBar'
+import clientPartners from './clientPartners'
 import helpCenterFaq from './helpCenterFaq'
 import apiReferencePage from './apiReferencePage'
 import communityPage from './communityPage'
@@ -116,6 +118,8 @@ export const schemaTypes = [
   careersPage,
   footerConfig,
   contactPage,
+  trustBar,
+  clientPartners,
   // Phase 2: New content types
   helpCenterFaq,
   apiReferencePage,

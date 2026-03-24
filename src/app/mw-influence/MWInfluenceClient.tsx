@@ -6,9 +6,11 @@ import Link from "next/link"
 import Image from "next/image"
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
+import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWInfluenceClientProps {
   caseStudies?: any[]
+  product?: SanityProduct | null
 }
 
 // Icons
@@ -181,8 +183,15 @@ const integrations = [
   { name: 'Mediasmart', category: 'DSP', logo: '/assets/images/integrations/mediasmart.svg' },
 ]
 
-export default function MWInfluencePage({ caseStudies = [] }: MWInfluenceClientProps) {
+export default function MWInfluencePage({ caseStudies = [], product }: MWInfluenceClientProps) {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
+
+  // CMS-driven hero content with fallbacks
+  const heroTitle = product?.heroTitle || 'The DOOH Ad Server Built for Revenue, Not Just Reliability'
+  const heroSubtitle = product?.heroSubtitle || 'Future-Proof Your Network with Composable, API-First Ad Technology'
+  const heroDescription = product?.description || 'Stop settling for loop-based scheduling and estimated delivery. MW Influence is the intelligent control plane that unifies your inventory management, campaign execution, and yield optimization into one revenue-maximizing engine.'
+  const ctaText = product?.ctaText || 'Request a Demo'
+  const ctaLink = product?.ctaLink || '/contact'
 
   const problems = [
     {
@@ -348,23 +357,23 @@ export default function MWInfluencePage({ caseStudies = [] }: MWInfluenceClientP
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
-                The DOOH Ad Server Built for Revenue, Not Just Reliability
+                {heroTitle}
               </h1>
               <h2 className="text-xl md:text-2xl text-blue-200 mb-6 font-light">
-                Future-Proof Your Network with Composable, API-First Ad Technology
+                {heroSubtitle}
               </h2>
               <p className="text-lg text-gray-300 mb-4 leading-relaxed">
-                Stop settling for loop-based scheduling and estimated delivery. MW Influence is the intelligent control plane that unifies your inventory management, campaign execution, and yield optimization into one revenue-maximizing engine.
+                {heroDescription}
               </p>
               <p className="text-lg text-gray-300 mb-8 leading-relaxed">
                 Built for large enterprise DOOH media owners, MW Influence gives you spot-level precision, transparent decisioning, and the flexibility to integrate with your existing tech stack—without ripping everything out.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <CTAButton
-                  href="/contact"
+                  href={ctaLink}
                   className="inline-flex items-center justify-center px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all shadow-lg hover:shadow-xl"
                 >
-                  Request a Demo
+                  {ctaText}
                 </CTAButton>
               </div>
             </motion.div>

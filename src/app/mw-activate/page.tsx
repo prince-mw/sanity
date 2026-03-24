@@ -1,4 +1,4 @@
-import { getAllCaseStudies, SanityCaseStudy } from "@/sanity/lib/fetch";
+import { getAllCaseStudies, SanityCaseStudy, getProductBySlug } from "@/sanity/lib/fetch";
 import MWActivate from "./MWActivateClient";
 
 export const revalidate = 60;
@@ -12,5 +12,7 @@ export default async function MWActivatePage() {
     console.error("Error fetching case studies:", error);
   }
 
-  return <MWActivate caseStudies={caseStudies} />;
+  const product = await getProductBySlug('mw-activate');
+
+  return <MWActivate caseStudies={caseStudies} product={product} />;
 }

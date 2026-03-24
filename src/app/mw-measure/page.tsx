@@ -1,4 +1,4 @@
-import { getAllCaseStudies, SanityCaseStudy } from "@/sanity/lib/fetch";
+import { getAllCaseStudies, SanityCaseStudy, getProductBySlug } from "@/sanity/lib/fetch";
 import MWMeasure from "./MWMeasureClient";
 
 export const revalidate = 60;
@@ -12,5 +12,7 @@ export default async function MWMeasurePage() {
     console.error("Error fetching case studies:", error);
   }
 
-  return <MWMeasure caseStudies={caseStudies} />;
+  const product = await getProductBySlug('mw-measure');
+
+  return <MWMeasure caseStudies={caseStudies} product={product} />;
 }

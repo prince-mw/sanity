@@ -1,4 +1,4 @@
-import { getAllCaseStudies, SanityCaseStudy } from "@/sanity/lib/fetch";
+import { getAllCaseStudies, SanityCaseStudy, getProductBySlug } from "@/sanity/lib/fetch";
 import MWScience from "./MWScienceClient";
 
 export const revalidate = 60;
@@ -12,5 +12,7 @@ export default async function MWSciencePage() {
     console.error("Error fetching case studies:", error);
   }
 
-  return <MWScience caseStudies={caseStudies} />;
+  const product = await getProductBySlug('mw-science');
+
+  return <MWScience caseStudies={caseStudies} product={product} />;
 }

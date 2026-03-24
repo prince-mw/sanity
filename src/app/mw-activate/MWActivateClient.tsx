@@ -5,9 +5,11 @@ import { useState } from "react"
 import Image from "next/image"
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
+import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWActivateClientProps {
   caseStudies?: any[]
+  product?: SanityProduct | null
 }
 
 // Custom SVG icons with sci-fi styling
@@ -64,7 +66,7 @@ const integrations = [
   { name: 'Mediasmart', category: 'DSP', logo: '/assets/images/integrations/mediasmart.svg' },
 ]
 
-export default function MWActivate({ caseStudies = [] }: MWActivateClientProps) {
+export default function MWActivate({ caseStudies = [], product }: MWActivateClientProps) {
   const [activeMode, setActiveMode] = useState<'owners' | 'buyers'>('owners')
   const [systemStatus] = useState({
     online: true,
@@ -72,6 +74,13 @@ export default function MWActivate({ caseStudies = [] }: MWActivateClientProps) 
     dataProcessed: '2.4TB',
     uptime: '99.97%'
   })
+
+  // CMS-driven hero content with fallbacks
+  const heroTitle = product?.heroTitle || 'MW Activate'
+  const heroSubtitle = product?.heroSubtitle || 'A Complete Demand-Side Platform for DOOH and In-Store Retail Media Advertising'
+  const heroDescription = product?.description || 'Launch and optimize campaigns instantly with AI-powered automation that delivers'
+  const ctaText = product?.ctaText || 'Book Demo'
+  const ctaLink = product?.ctaLink || '/contact'
 
   const ownersFeatures = [
     {
@@ -147,14 +156,14 @@ export default function MWActivate({ caseStudies = [] }: MWActivateClientProps) 
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                MW Activate
+                {heroTitle}
                 <span className="block text-3xl md:text-4xl font-light mt-3 text-white/80">
-                  A Complete Demand-Side Platform for DOOH and In-Store Retail Media Advertising
+                  {heroSubtitle}
                 </span>
               </h1>
               
               <p className="text-xl md:text-2xl mb-8 leading-relaxed text-blue-100">
-                Launch and optimize campaigns instantly with AI-powered automation that delivers
+                {heroDescription}
                 <span className="text-yellow-300 font-semibold"> +167% ROI improvement</span> while you sleep.
               </p>
 
@@ -164,8 +173,8 @@ export default function MWActivate({ caseStudies = [] }: MWActivateClientProps) 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                <CTAButton href="/contact" className="bg-white text-mw-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl inline-flex items-center gap-2">
-                  Book Demo
+                <CTAButton href={ctaLink} className="bg-white text-mw-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl inline-flex items-center gap-2">
+                  {ctaText}
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>

@@ -12,6 +12,7 @@ export default defineType({
     {name: 'howItWorks', title: 'How It Works'},
     {name: 'social', title: 'Social Proof'},
     {name: 'resources', title: 'Resources'},
+    {name: 'detailPage', title: 'Detail Page Sections'},
     {name: 'publishing', title: 'Publishing'},
     {name: 'seo', title: 'SEO'},
   ],
@@ -508,6 +509,50 @@ export default defineType({
       type: 'text',
       rows: 2,
       group: 'resources',
+    }),
+    // ============== DETAIL PAGE SECTIONS ==============
+    defineField({
+      name: 'detailPageSections',
+      title: 'Detail Page Content Sections',
+      type: 'array',
+      description: 'Additional content sections specific to this product detail page',
+      group: 'detailPage',
+      of: [
+        {
+          type: 'object',
+          name: 'contentSection',
+          title: 'Content Section',
+          fields: [
+            defineField({ name: 'sectionKey', title: 'Section Key', type: 'string', description: 'Unique identifier for this section (e.g. "transformation", "ownerFeatures", "workflow")' }),
+            defineField({ name: 'sectionTitle', title: 'Section Title', type: 'string' }),
+            defineField({ name: 'sectionSubtitle', title: 'Section Subtitle', type: 'text', rows: 2 }),
+            defineField({
+              name: 'items',
+              title: 'Items',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    defineField({ name: 'title', title: 'Title', type: 'string' }),
+                    defineField({ name: 'description', title: 'Description', type: 'text', rows: 2 }),
+                    defineField({ name: 'detail', title: 'Detail / Secondary Text', type: 'string', description: 'Before/after state, metric, etc.' }),
+                    defineField({ name: 'metric', title: 'Metric Value', type: 'string' }),
+                    defineField({ name: 'metricLabel', title: 'Metric Label', type: 'string' }),
+                    defineField({ name: 'iconName', title: 'Icon Name', type: 'string' }),
+                  ],
+                  preview: {
+                    select: { title: 'title', subtitle: 'description' },
+                  },
+                },
+              ],
+            }),
+          ],
+          preview: {
+            select: { title: 'sectionTitle', subtitle: 'sectionKey' },
+          },
+        },
+      ],
     }),
     defineField({
       name: 'seo',

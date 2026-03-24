@@ -11,7 +11,7 @@ import About from "../components/About";
 import Newsletter from "../components/Newsletter";
 import CaseStudiesSection from "../components/CaseStudiesSection";
 import ContactForm from "../components/ContactForm";
-import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy } from "@/sanity/lib/fetch";
+import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent } from "@/sanity/lib/fetch";
 
 const defaultMeta = {
   title: "Moving Walls - Connected Media Platform for OOH Advertising",
@@ -49,10 +49,13 @@ export default async function Home() {
     console.error("Error fetching case studies:", error);
   }
 
+  // Fetch trust bar stats
+  const trustBarContent = await getTrustBarContent();
+
   return (
     <>
       <Hero />
-      <TrustBar />
+      <TrustBar stats={trustBarContent?.stats} />
       <AsianBornGlobal />
       <Services />
       {/* <Clients /> */}

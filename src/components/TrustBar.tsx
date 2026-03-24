@@ -1,13 +1,20 @@
 "use client";
 
 import { motion } from "framer-motion";
+import type { TrustBarStat } from "@/sanity/lib/fetch";
 
-export default function TrustBar() {
-  const stats = [
-    { value: "40+", label: "Markets Covered" },
-    { value: "1,500+", label: "Media Owners" },
-    { value: "1,000,000+", label: "OOH Sites" },
-  ];
+interface TrustBarProps {
+  stats?: TrustBarStat[] | null
+}
+
+const defaultStats: TrustBarStat[] = [
+  { value: "40+", label: "Markets Covered" },
+  { value: "1,500+", label: "Media Owners" },
+  { value: "1,000,000+", label: "OOH Sites" },
+];
+
+export default function TrustBar({ stats }: TrustBarProps) {
+  const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
   return (
     <section className="py-8 bg-mw-gray-50 border-y border-mw-gray-200">
@@ -19,7 +26,7 @@ export default function TrustBar() {
           transition={{ duration: 0.6 }}
           className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 items-center"
         >
-          {stats.map((stat, index) => (
+          {displayStats.map((stat, index) => (
             <motion.div
               key={stat.label}
               initial={{ opacity: 0, y: 20 }}

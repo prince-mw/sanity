@@ -5,9 +5,11 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
+import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWMarketClientProps {
   caseStudies?: any[]
+  product?: SanityProduct | null
 }
 
 // Custom SVG icons
@@ -89,11 +91,16 @@ const integrations = [
   { name: 'Mediasmart', category: 'DSP', logo: '/assets/images/integrations/mediasmart.svg' },
 ]
 
-export default function MWMarketPage({ caseStudies = [] }: MWMarketClientProps) {
+export default function MWMarketPage({ caseStudies = [], product }: MWMarketClientProps) {
   const [selectedContinent, setSelectedContinent] = useState<string | null>(null)
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null)
   const [currency, setCurrency] = useState('USD')
   const [livePurchases, setLivePurchases] = useState<Array<{location: string, price: number, time: string, billboard: string}>>([])
+
+  // CMS-driven hero content with fallbacks
+  const heroTitle = product?.heroTitle || 'MW Market'
+  const heroSubtitle = product?.heroSubtitle || 'Global OOH Billboard Market'
+  const heroDescription = product?.description || 'Classic & Digital Billboards Available Worldwide'
 
   const currencies = [
     { code: 'USD', symbol: '$', rate: 1, name: 'US Dollar' },
@@ -282,7 +289,7 @@ export default function MWMarketPage({ caseStudies = [] }: MWMarketClientProps) 
               transition={{ duration: 0.8 }}
               className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6"
             >
-              MW Market
+              {heroTitle}
             </motion.h1>
             
             <motion.h2
@@ -291,7 +298,7 @@ export default function MWMarketPage({ caseStudies = [] }: MWMarketClientProps) 
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-2xl md:text-3xl lg:text-4xl font-light mb-4 text-gray-100"
             >
-              Global OOH Billboard Market
+              {heroSubtitle}
             </motion.h2>
 
             <motion.p
@@ -300,7 +307,7 @@ export default function MWMarketPage({ caseStudies = [] }: MWMarketClientProps) 
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-xl md:text-2xl mb-8 text-gray-200"
             >
-              Classic & Digital Billboards Available Worldwide
+              {heroDescription}
             </motion.p>
           </div>
 

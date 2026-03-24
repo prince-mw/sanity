@@ -5,9 +5,11 @@ import { useState } from "react"
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
+import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWMeasureClientProps {
   caseStudies?: any[]
+  product?: SanityProduct | null
 }
 
 // Custom SVG icons
@@ -90,10 +92,15 @@ const integrations = [
   { name: 'Mediasmart', category: 'DSP', logo: '/assets/images/integrations/mediasmart.svg' },
 ]
 
-export default function MWMeasure({ caseStudies = [] }: MWMeasureClientProps) {
+export default function MWMeasure({ caseStudies = [], product }: MWMeasureClientProps) {
   const [selectedLocation, setSelectedLocation] = useState('downtown')
   const [hoveredFormat, setHoveredFormat] = useState<string | null>(null)
   const [animatedMetrics, setAnimatedMetrics] = useState<{[key: string]: number}>({})
+
+  // CMS-driven hero content with fallbacks
+  const heroTitle = product?.heroTitle || 'MW Measure'
+  const heroSubtitle = product?.heroSubtitle || 'OOH Analytics Dashboard'
+  const heroDescription = product?.description || 'Transform Out-of-Home advertising with real-time location intelligence,'
 
   const locations = [
     { 
@@ -238,14 +245,14 @@ export default function MWMeasure({ caseStudies = [] }: MWMeasureClientProps) {
               transition={{ duration: 0.8 }}
             >
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                MW Measure
+                {heroTitle}
                 <span className="block text-3xl md:text-4xl font-light mt-3 text-blue-200">
-                  OOH Analytics Dashboard
+                  {heroSubtitle}
                 </span>
               </h1>
               
               <p className="text-xl md:text-2xl mb-8 leading-relaxed text-blue-100">
-                Transform Out-of-Home advertising with real-time location intelligence, 
+                {heroDescription}
                 <span className="text-yellow-300 font-semibold"> audience measurement</span>, and 
                 <span className="text-blue-300 font-semibold"> attribution analytics</span>.
               </p>

@@ -20,6 +20,8 @@ const typeToPath: Record<string, string[]> = {
   careersPage: ['/careers'],
   footerConfig: ['/'],
   contactPage: ['/contact'],
+  trustBar: ['/'],
+  clientPartners: ['/'],
   office: ['/locations', '/offices', '/'],
   redirectSettings: ['/'],
 }

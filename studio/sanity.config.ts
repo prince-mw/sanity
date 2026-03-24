@@ -39,7 +39,7 @@ function resolvePreviewUrl(doc: any): string | null {
 }
 
 // Singleton document types - only one document should exist
-const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig', 'contactPage']
+const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig', 'contactPage', 'trustBar', 'clientPartners']
 
 // Supported languages for i18n
 const supportedLanguages = [
@@ -221,6 +221,24 @@ const structure = (S: any) =>
                     .schemaType('contactPage')
                     .documentId('contactPage')
                     .title('Contact Page Content')
+                ),
+              S.listItem()
+                .title('Trust Bar')
+                .id('trustBar')
+                .child(
+                  S.document()
+                    .schemaType('trustBar')
+                    .documentId('trustBar')
+                    .title('Trust Bar Stats')
+                ),
+              S.listItem()
+                .title('Client Partners')
+                .id('clientPartners')
+                .child(
+                  S.document()
+                    .schemaType('clientPartners')
+                    .documentId('clientPartners')
+                    .title('Client Partners')
                 ),
             ])
         ),

@@ -2,8 +2,16 @@
 
 import { motion } from "framer-motion";
 import { useLocale } from "@/i18n/LocaleContext";
+import type { ClientPartner } from "@/sanity/lib/fetch";
+import { getSanityImageUrl } from "@/sanity/lib/fetch";
 
-const clients = [
+interface ClientsProps {
+  partners?: ClientPartner[] | null
+  sectionTitle?: string | null
+  sectionDescription?: string | null
+}
+
+const defaultPartners = [
   { 
     name: "Vistar Media", 
     category: "DOOH SSP",
@@ -38,8 +46,9 @@ const clients = [
   },
 ];
 
-export default function Clients() {
+export default function Clients({ partners, sectionTitle, sectionDescription }: ClientsProps) {
   const { t } = useLocale();
+  const hasCmsPartners = partners && partners.length > 0;
   
   return (
     <section className="py-16 bg-white border-y border-mw-gray-200">
@@ -52,12 +61,41 @@ export default function Clients() {
           className="text-center mb-12"
         >
           <span className="text-mw-gray-500 text-sm font-medium uppercase tracking-wider">
-            {t('landingPage.clients.title')}
+            {sectionTitle || t('landingPage.clients.title')}
           </span>
         </motion.div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {clients.map((client, index) => (
+          {hasCmsPartners ? partners.map((partner, index) => (
+            <motion.div
+              key={partner.name}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              className="flex flex-col items-center justify-center p-6 bg-mw-gray-50 rounded-xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
+            >
+              <div className="w-16 h-16 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                {partner.logo ? (
+                  <img
+                    src={getSanityImageUrl(partner.logo, { width: 80 })}
+                    alt={partner.name}
+                    className="w-10 h-10 object-contain"
+                  />
+                ) : (
+                  <div className="w-10 h-10 bg-mw-blue-100 rounded-lg flex items-center justify-center text-mw-blue-600 font-bold text-lg">
+                    {partner.name.charAt(0)}
+                  </div>
+                )}
+              </div>
+              <div className="text-center">
+                <div className="text-sm font-semibold text-mw-gray-900 group-hover:text-mw-blue-600 transition-colors">
+                  {partner.name}
+                </div>
+                <div className="text-xs text-mw-gray-500 mt-1">{partner.category}</div>
+              </div>
+            </motion.div>
+          )) : defaultPartners.map((client, index) => (
             <motion.div
               key={client.name}
               initial={{ opacity: 0, y: 20 }}
@@ -86,7 +124,7 @@ export default function Clients() {
           transition={{ duration: 0.6, delay: 0.3 }}
           className="text-center text-mw-gray-500 mt-12 text-sm"
         >
-          {t('landingPage.clients.description')}
+          {sectionDescription || t('landingPage.clients.description')}
         </motion.p>
       </div>
     </section>
