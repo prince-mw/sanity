@@ -45,6 +45,10 @@ async function getSitemapData() {
     "products": *[_type == "product" && ${publishedFilter}] {
       "slug": slug.current,
       "lastModified": _updatedAt
+    },
+    "teamMembers": *[_type == "teamMember" && ${publishedFilter}] {
+      "slug": slug.current,
+      "lastModified": _updatedAt
     }
   }`
   
@@ -96,6 +100,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/api-reference', priority: 0.6, changeFreq: 'monthly' as const },
     { route: '/documentation', priority: 0.6, changeFreq: 'monthly' as const },
     { route: '/community', priority: 0.6, changeFreq: 'monthly' as const },
+    { route: '/help-center', priority: 0.6, changeFreq: 'monthly' as const },
+    { route: '/products', priority: 0.85, changeFreq: 'monthly' as const },
+    { route: '/movinghearts', priority: 0.4, changeFreq: 'yearly' as const },
     { route: '/search', priority: 0.5, changeFreq: 'weekly' as const },
     // Legal
     { route: '/privacy', priority: 0.3, changeFreq: 'yearly' as const },
@@ -113,7 +120,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Location pages
   const locationPages = [
     'australia', 'india', 'indonesia', 'japan', 'malaysia',
-    'philippines', 'singapore', 'sri-lanka', 'thailand'
+    'philippines', 'singapore', 'sri-lanka', 'thailand', 'usa'
   ].map(loc => ({
     route: `/locations/${loc}`,
     priority: 0.6,
@@ -131,6 +138,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     whitepapers: [] as Array<{ slug: string; lastModified: string }>,
     landingPages: [] as Array<{ slug: string; lastModified: string }>,
     products: [] as Array<{ slug: string; lastModified: string }>,
+    teamMembers: [] as Array<{ slug: string; lastModified: string }>,
   }
 
   try {
@@ -227,14 +235,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }))
 
-  // Products entries (from Sanity, if different from static)
-  const productEntries: MetadataRoute.Sitemap = sanityData.products
-    .filter(p => p.slug)
-    .map(p => ({
-      url: `${baseUrl}/products/${p.slug}`,
-      lastModified: p.lastModified || currentDate,
+  // Leadership/team member entries
+  const leadershipEntries: MetadataRoute.Sitemap = sanityData.teamMembers
+    .filter(member => member.slug)
+    .map(member => ({
+      url: `${baseUrl}/leadership/${member.slug}`,
+      lastModified: member.lastModified || currentDate,
       changeFrequency: 'monthly' as const,
-      priority: 0.85,
+      priority: 0.5,
     }))
 
   return [
@@ -247,6 +255,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...ebookEntries,
     ...whitepaperEntries,
     ...landingPageEntries,
-    ...productEntries,
+    ...leadershipEntries,
   ]
 }
