@@ -3410,3 +3410,69 @@ export async function getFooterContent(): Promise<FooterContent | null> {
     return null
   }
 }
+
+// Contact Page Configuration
+export interface ContactMethod {
+  iconType: 'phone' | 'email' | 'location' | 'demo'
+  title: string
+  details: string
+  description: string
+}
+
+export interface ContactDepartment {
+  title: string
+  email: string
+  description: string
+  iconType: 'growth' | 'settings' | 'enterprise' | 'partnerships' | 'press' | 'careers'
+  responseTime: string
+}
+
+export interface ContactPageContent {
+  heroTitle: string
+  heroTitleHighlight: string
+  heroDescription: string
+  heroCtaText: string
+  heroCtaLink: string
+  officesSectionTitle: string
+  officesSectionDescription: string
+  contactMethods: ContactMethod[]
+  departments: ContactDepartment[]
+  formSectionTitle: string
+  formSectionDescription: string
+  companyName: string
+  companyAddress: string
+  companyPhone: string
+  companyEmail: string
+  zohoFormUrl: string
+  zohoFormHeight: number
+}
+
+export async function getContactPageContent(): Promise<ContactPageContent | null> {
+  try {
+    const query = `
+      *[_type == "contactPage" && _id == "contactPage"][0] {
+        heroTitle,
+        heroTitleHighlight,
+        heroDescription,
+        heroCtaText,
+        heroCtaLink,
+        officesSectionTitle,
+        officesSectionDescription,
+        contactMethods[] { iconType, title, details, description },
+        departments[] { title, email, description, iconType, responseTime },
+        formSectionTitle,
+        formSectionDescription,
+        companyName,
+        companyAddress,
+        companyPhone,
+        companyEmail,
+        zohoFormUrl,
+        zohoFormHeight
+      }
+    `
+    return client.fetch(query)
+  } catch (error) {
+    console.error('Error fetching contact page content:', error)
+    return null
+  }
+}

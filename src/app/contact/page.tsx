@@ -1,5 +1,5 @@
 import { Metadata } from 'next'
-import { getAllOffices, transformOffice, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getAllOffices, transformOffice, getPageSeo, getSanityImageUrl, getContactPageContent } from '@/sanity/lib/fetch'
 import ContactPageClient, { Office } from '@/components/ContactPageClient'
 
 const defaultMeta = {
@@ -108,5 +108,7 @@ export default async function ContactPage() {
     console.error('Error fetching offices from Sanity:', error)
   }
 
-  return <ContactPageClient offices={offices} />
+  const content = await getContactPageContent()
+
+  return <ContactPageClient offices={offices} content={content} />
 }

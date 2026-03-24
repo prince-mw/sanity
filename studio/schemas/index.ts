@@ -51,6 +51,7 @@ import formField from './objects/formField'
 import redirectSettings from './redirectSettings'
 import careersPage from './careersPage'
 import footerConfig from './footerConfig'
+import contactPage from './contactPage'
 import helpCenterFaq from './helpCenterFaq'
 import apiReferencePage from './apiReferencePage'
 import communityPage from './communityPage'
@@ -114,6 +115,7 @@ export const schemaTypes = [
   redirectSettings,
   careersPage,
   footerConfig,
+  contactPage,
   // Phase 2: New content types
   helpCenterFaq,
   apiReferencePage,

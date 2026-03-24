@@ -3,8 +3,37 @@
 import { motion } from "framer-motion";
 import { useLocale } from "@/i18n/LocaleContext";
 
-export default function ContactForm() {
+interface ContactFormProps {
+  formSectionTitle?: string
+  formSectionDescription?: string
+  companyName?: string
+  companyAddress?: string
+  companyPhone?: string
+  companyEmail?: string
+  zohoFormUrl?: string
+  zohoFormHeight?: number
+}
+
+export default function ContactForm({
+  formSectionTitle,
+  formSectionDescription,
+  companyName,
+  companyAddress,
+  companyPhone,
+  companyEmail,
+  zohoFormUrl,
+  zohoFormHeight,
+}: ContactFormProps) {
   const { t } = useLocale();
+
+  const title = formSectionTitle || t('landingPage.contactForm.title');
+  const description = formSectionDescription || t('landingPage.contactForm.description');
+  const name = companyName || 'Moving Walls Pte Ltd';
+  const address = companyAddress || '14, Robinson Road #8-02\nFar East Financial Building\nSingapore 048545';
+  const phone = companyPhone || '+65 6714 6699';
+  const email = companyEmail || 'info@movingwalls.com';
+  const formUrl = zohoFormUrl || 'https://forms.zohopublic.com/movingwallsholdingpteltd/form/MWContactUs/formperma/U0Rmmz1KaZyfpwtqHbfK6sbw19RecVMg6aMmZ3G0vuw';
+  const formHeight = zohoFormHeight || 800;
 
   return (
     <section id="contact" className="py-16 bg-gradient-to-br from-mw-gray-50 to-white">
@@ -18,10 +47,10 @@ export default function ContactForm() {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              {t('landingPage.contactForm.title')}
+              {title}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
-              {t('landingPage.contactForm.description')}
+              {description}
             </p>
           </motion.div>
 
@@ -44,8 +73,10 @@ export default function ContactForm() {
                       </svg>
                     </div>
                     <div>
-                      <h4 className="font-semibold text-mw-gray-900 mb-1">Moving Walls Pte Ltd</h4>
-                      <p className="text-mw-gray-600">14, Robinson Road #8-02<br />Far East Financial Building<br />Singapore 048545</p>
+                      <h4 className="font-semibold text-mw-gray-900 mb-1">{name}</h4>
+                      <p className="text-mw-gray-600">{address.split('\n').map((line, i) => (
+                        <span key={i}>{line}{i < address.split('\n').length - 1 && <br />}</span>
+                      ))}</p>
                     </div>
                   </div>
 
@@ -57,7 +88,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-mw-gray-900 mb-1">Direct Line</h4>
-                      <p className="text-mw-gray-600 font-medium">+65 6714 6699</p>
+                      <p className="text-mw-gray-600 font-medium">{phone}</p>
                     </div>
                   </div>
 
@@ -69,7 +100,7 @@ export default function ContactForm() {
                     </div>
                     <div>
                       <h4 className="font-semibold text-mw-gray-900 mb-1">Email</h4>
-                      <a href="mailto:info@movingwalls.com" className="text-mw-gray-600 font-medium hover:text-mw-blue-600 transition-colors">info@movingwalls.com</a>
+                      <a href={`mailto:${email}`} className="text-mw-gray-600 font-medium hover:text-mw-blue-600 transition-colors">{email}</a>
                     </div>
                   </div>
                 </div>
@@ -85,9 +116,9 @@ export default function ContactForm() {
             >
               <div className="bg-white rounded-2xl shadow-mw-lg overflow-hidden">
                 <iframe
-                  src="https://forms.zohopublic.com/movingwallsholdingpteltd/form/MWContactUs/formperma/U0Rmmz1KaZyfpwtqHbfK6sbw19RecVMg6aMmZ3G0vuw"
+                  src={formUrl}
                   title="Contact Us"
-                  style={{ border: 'none', width: '100%', height: '800px' }}
+                  style={{ border: 'none', width: '100%', height: `${formHeight}px` }}
                   loading="lazy"
                   referrerPolicy="no-referrer"
                 />

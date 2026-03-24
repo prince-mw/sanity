@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import ContactForm from "./ContactForm";
 import { CTAButton } from "./CTAButton";
+import type { ContactPageContent } from "@/sanity/lib/fetch";
 
 export interface Office {
   city: string
@@ -16,9 +17,18 @@ export interface Office {
 
 interface ContactPageClientProps {
   offices: Office[]
+  content: ContactPageContent | null
 }
 
-export default function ContactPageClient({ offices }: ContactPageClientProps) {
+export default function ContactPageClient({ offices, content }: ContactPageClientProps) {
+  const heroTitle = content?.heroTitle || "Let's Build Something";
+  const heroTitleHighlight = content?.heroTitleHighlight || "Extraordinary Together";
+  const heroDescription = content?.heroDescription || "Every great campaign starts with a conversation. Whether you're launching your first digital campaign or scaling a global advertising strategy, our team of experts is ready to turn your vision into measurable results.";
+  const heroCtaText = content?.heroCtaText || "Book a Free Demo";
+  const heroCtaLink = content?.heroCtaLink || "/contact";
+  const officesSectionTitle = content?.officesSectionTitle || "Our Global Presence";
+  const officesSectionDescription = content?.officesSectionDescription || "With offices strategically located across Asia, we're always close to our clients.";
+
   const contactMethods = [
     {
       icon: (
@@ -145,18 +155,17 @@ export default function ContactPageClient({ offices }: ContactPageClientProps) {
             className="text-center"
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
-              Let's Build Something
+              {heroTitle}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-indigo-600 block">
-                Extraordinary Together
+                {heroTitleHighlight}
               </span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-4xl mx-auto mb-8 leading-relaxed">
-              Every great campaign starts with a conversation. Whether you're launching your first digital campaign 
-              or scaling a global advertising strategy, our team of experts is ready to turn your vision into measurable results.
+              {heroDescription}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-              <CTAButton href="/contact" className="px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg shadow-mw-md hover:shadow-mw-lg transform hover:-translate-y-0.5 transition-all duration-200">
-                Book a Free Demo
+              <CTAButton href={heroCtaLink} className="px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg shadow-mw-md hover:shadow-mw-lg transform hover:-translate-y-0.5 transition-all duration-200">
+                {heroCtaText}
               </CTAButton>
             </div>
           </motion.div>
@@ -174,10 +183,10 @@ export default function ContactPageClient({ offices }: ContactPageClientProps) {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Our Global Presence
+              {officesSectionTitle}
             </h2>
             <p className="text-xl text-mw-gray-600 max-w-2xl mx-auto">
-              With offices strategically located across Asia, we&apos;re always close to our clients.
+              {officesSectionDescription}
             </p>
           </motion.div>
 
@@ -217,7 +226,16 @@ export default function ContactPageClient({ offices }: ContactPageClientProps) {
       </section>
 
       {/* Contact Form */}
-      <ContactForm />
+      <ContactForm
+        formSectionTitle={content?.formSectionTitle}
+        formSectionDescription={content?.formSectionDescription}
+        companyName={content?.companyName}
+        companyAddress={content?.companyAddress}
+        companyPhone={content?.companyPhone}
+        companyEmail={content?.companyEmail}
+        zohoFormUrl={content?.zohoFormUrl}
+        zohoFormHeight={content?.zohoFormHeight}
+      />
     </div>
   );
 }

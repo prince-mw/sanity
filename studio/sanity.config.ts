@@ -39,7 +39,7 @@ function resolvePreviewUrl(doc: any): string | null {
 }
 
 // Singleton document types - only one document should exist
-const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig']
+const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig', 'contactPage']
 
 // Supported languages for i18n
 const supportedLanguages = [
@@ -212,6 +212,15 @@ const structure = (S: any) =>
                     .schemaType('footerConfig')
                     .documentId('footerConfig')
                     .title('Footer Configuration')
+                ),
+              S.listItem()
+                .title('Contact Page')
+                .id('contactPage')
+                .child(
+                  S.document()
+                    .schemaType('contactPage')
+                    .documentId('contactPage')
+                    .title('Contact Page Content')
                 ),
             ])
         ),
