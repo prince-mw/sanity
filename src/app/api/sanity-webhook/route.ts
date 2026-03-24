@@ -18,6 +18,7 @@ const typeToPath: Record<string, string[]> = {
   teamMember: ['/leadership', '/about', '/'],
   jobPosition: ['/careers', '/'],
   careersPage: ['/careers'],
+  footerConfig: ['/'],
   office: ['/locations', '/offices', '/'],
   redirectSettings: ['/'],
 }

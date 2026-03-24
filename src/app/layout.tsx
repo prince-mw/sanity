@@ -10,7 +10,7 @@ import Analytics from "@/components/Analytics";
 import PreviewBanner from "@/components/PreviewBanner";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
-import { getAllActiveZohoForms } from "@/sanity/lib/fetch";
+import { getAllActiveZohoForms, getFooterContent } from "@/sanity/lib/fetch";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -141,6 +141,7 @@ export default async function RootLayout({
 }>) {
   const { isEnabled: isPreview } = await draftMode();
   const allForms = await getAllActiveZohoForms();
+  const footerContent = await getFooterContent();
 
   return (
     <html lang="en" className="scroll-smooth">
@@ -163,7 +164,7 @@ export default async function RootLayout({
                 {children}
               </main>
               <GlobalCTA />
-              <Footer />
+              <Footer content={footerContent} />
             </FormPopupProvider>
           </Suspense>
           <CookieConsent />

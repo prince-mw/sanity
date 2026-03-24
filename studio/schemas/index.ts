@@ -50,6 +50,7 @@ import zohoForm from './zohoForm'
 import formField from './objects/formField'
 import redirectSettings from './redirectSettings'
 import careersPage from './careersPage'
+import footerConfig from './footerConfig'
 import helpCenterFaq from './helpCenterFaq'
 import apiReferencePage from './apiReferencePage'
 import communityPage from './communityPage'
@@ -112,6 +113,7 @@ export const schemaTypes = [
   // Settings
   redirectSettings,
   careersPage,
+  footerConfig,
   // Phase 2: New content types
   helpCenterFaq,
   apiReferencePage,

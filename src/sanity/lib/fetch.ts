@@ -3346,3 +3346,67 @@ export async function getCareersPageContent(): Promise<CareersPageContent | null
     return null
   }
 }
+
+// Footer Configuration
+export interface FooterNavLink {
+  name: string
+  href: string
+}
+
+export interface FooterNavCategory {
+  title: string
+  showLocationIcon: boolean
+  links: FooterNavLink[]
+}
+
+export interface FooterSocialLink {
+  platform: string
+  url: string
+}
+
+export interface FooterLegalLink {
+  label: string
+  href: string
+}
+
+export interface FooterContent {
+  companyDescription: string
+  navCategories: FooterNavCategory[]
+  socialLinks: FooterSocialLink[]
+  movingHeartsTitle: string
+  movingHeartsStatsValue: string
+  movingHeartsStatsLabel: string
+  movingHeartsTagline: string
+  movingHeartsUrl: string
+  movingHeartsCtaText: string
+  legalLinks: FooterLegalLink[]
+  copyrightText: string
+}
+
+export async function getFooterContent(): Promise<FooterContent | null> {
+  try {
+    const query = `
+      *[_type == "footerConfig" && _id == "footerConfig"][0] {
+        companyDescription,
+        navCategories[] {
+          title,
+          showLocationIcon,
+          links[] { name, href }
+        },
+        socialLinks[] { platform, url },
+        movingHeartsTitle,
+        movingHeartsStatsValue,
+        movingHeartsStatsLabel,
+        movingHeartsTagline,
+        movingHeartsUrl,
+        movingHeartsCtaText,
+        legalLinks[] { label, href },
+        copyrightText
+      }
+    `
+    return client.fetch(query)
+  } catch (error) {
+    console.error('Error fetching footer content:', error)
+    return null
+  }
+}
