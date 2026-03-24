@@ -35,7 +35,6 @@ export default function ContactForm() {
               className="space-y-8"
             >
               <div>
-                <h3 className="text-2xl font-bold text-mw-gray-900 mb-6">Multiple Ways to Connect</h3>
                 <div className="space-y-6 mb-8">
                   <div className="flex items-start space-x-4">
                     <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-mw-blue-100 to-indigo-100 rounded-xl flex items-center justify-center">
