@@ -44,6 +44,13 @@ async function fetchRedirects(): Promise<RedirectRule[]> {
   }
 }
 
+// Build a redirect URL string using native URL (avoids NextURL trailing-slash bugs)
+function buildRedirectUrl(request: NextRequest, pathname: string): string {
+  const url = new URL(request.url)
+  url.pathname = pathname
+  return url.toString()
+}
+
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
@@ -69,40 +76,34 @@ export async function middleware(request: NextRequest) {
       const normalizedSource = r.source.endsWith('/') && r.source !== '/'
         ? r.source.slice(0, -1)
         : r.source
-      return normalizedSource === normalizedPath
+      return normalizedSource.toLowerCase() === normalizedPath.toLowerCase()
     })
 
     if (match) {
-      // Prevent redirect loops: if the destination (normalized) is the same as the current path, skip
       const normalizedDestination = match.destination.endsWith('/') && match.destination !== '/'
         ? match.destination.slice(0, -1)
         : match.destination
 
-      if (!match.destination.startsWith('http') && normalizedDestination === normalizedPath) {
-        // Only redirect if the actual pathname differs (e.g., trailing slash removal)
-        if (pathname !== normalizedDestination) {
-          const url = request.nextUrl.clone()
-          url.pathname = normalizedDestination
-          return NextResponse.redirect(url, { status: match.permanent ? 308 : 307 })
-        }
-        return NextResponse.next()
+      // Skip self-referencing redirects (e.g., /careers/ -> /careers)
+      // The trailing-slash handler below will take care of slash normalization
+      if (!match.destination.startsWith('http') && normalizedDestination.toLowerCase() === normalizedPath.toLowerCase()) {
+        // Fall through to trailing-slash handler
+      } else {
+        // Redirect to a different path or external URL
+        const destination = match.destination.startsWith('http')
+          ? match.destination
+          : buildRedirectUrl(request, match.destination)
+
+        return NextResponse.redirect(destination, {
+          status: match.permanent ? 301 : 302,
+        })
       }
-
-      const destination = match.destination.startsWith('http')
-        ? match.destination
-        : new URL(match.destination, request.url).toString()
-
-      return NextResponse.redirect(destination, {
-        status: match.permanent ? 308 : 307,
-      })
     }
   }
 
   // Handle trailing slash normalization (since skipTrailingSlashRedirect is enabled)
   if (pathname !== normalizedPath) {
-    const url = request.nextUrl.clone()
-    url.pathname = normalizedPath
-    return NextResponse.redirect(url, 308)
+    return NextResponse.redirect(buildRedirectUrl(request, normalizedPath), 301)
   }
 
   return NextResponse.next()
