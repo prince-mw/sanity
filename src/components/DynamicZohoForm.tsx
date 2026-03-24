@@ -8,6 +8,7 @@ import type { ZohoFormFieldData } from '@/sanity/lib/fetch'
 interface DynamicZohoFormProps {
   fields: ZohoFormFieldData[]
   zohoFormPermalink: string
+  zohoFormLinkName?: string
   zohoPortalName?: string
   submitButtonText?: string
   successMessage?: string
@@ -57,6 +58,7 @@ function validateField(field: ZohoFormFieldData, value: string): string | undefi
 export function DynamicZohoForm({
   fields,
   zohoFormPermalink,
+  zohoFormLinkName,
   zohoPortalName,
   submitButtonText = 'Submit',
   successMessage = 'Thank you! Your submission has been received.',
@@ -123,7 +125,8 @@ export function DynamicZohoForm({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           zohoFormPermalink,
-          zohoPortalName: zohoPortalName || 'movingwalls',
+          zohoFormLinkName: zohoFormLinkName || '',
+          zohoPortalName: zohoPortalName || 'movingwallsholdingpteltd',
           fields: formData,
         }),
       })

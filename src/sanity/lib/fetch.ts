@@ -1317,6 +1317,7 @@ export interface ZohoFormData {
   assignedPages?: string[]
   // Native mode fields
   zohoFormPermalink?: string
+  zohoFormLinkName?: string
   zohoPortalName?: string
   fields?: ZohoFormFieldData[]
   submitButtonText?: string
@@ -3156,6 +3157,7 @@ const zohoFormProjection = `{
   isActive,
   assignedPages,
   zohoFormPermalink,
+  zohoFormLinkName,
   zohoPortalName,
   fields[] {
     label,
@@ -3188,6 +3190,7 @@ function transformZohoForm(form: any): ZohoFormData | undefined {
     isActive: form.isActive,
     assignedPages: form.assignedPages || [],
     zohoFormPermalink: form.zohoFormPermalink,
+    zohoFormLinkName: form.zohoFormLinkName,
     zohoPortalName: form.zohoPortalName,
     fields: form.fields || [],
     submitButtonText: form.submitButtonText || 'Submit',

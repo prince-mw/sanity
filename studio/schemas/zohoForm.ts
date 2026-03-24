@@ -201,12 +201,29 @@ export default defineType({
       title: 'Zoho Form Permalink',
       type: 'string',
       description:
-        'The Zoho form permalink string from the form URL (e.g., "formperma/abcdef123456"). Used for API submission.',
+        'The Zoho form permalink string from the form URL (e.g., "U0Rmmz1KaZyfpwtqHbfK6sbw19RecVMg6aMmZ3G0vuw"). Used for API submission.',
       validation: (Rule) =>
         Rule.custom((value, context) => {
           const doc = context.document as any
           if (doc?.renderMode === 'native' && !value) {
             return 'Zoho Form Permalink is required for native mode'
+          }
+          return true
+        }),
+      hidden: ({document}) => document?.renderMode !== 'native',
+      group: 'native',
+    }),
+    defineField({
+      name: 'zohoFormLinkName',
+      title: 'Zoho Form Link Name',
+      type: 'string',
+      description:
+        'The form link name from your Zoho form URL (e.g., "ContactUs" from .../form/ContactUs/formperma/...). Required for native mode submission.',
+      validation: (Rule) =>
+        Rule.custom((value, context) => {
+          const doc = context.document as any
+          if (doc?.renderMode === 'native' && !value) {
+            return 'Zoho Form Link Name is required for native mode'
           }
           return true
         }),

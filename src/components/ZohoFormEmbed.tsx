@@ -52,6 +52,7 @@ export function ZohoFormEmbed({
       <DynamicZohoForm
         fields={form.fields}
         zohoFormPermalink={form.zohoFormPermalink}
+        zohoFormLinkName={form.zohoFormLinkName}
         zohoPortalName={form.zohoPortalName}
         submitButtonText={form.submitButtonText}
         successMessage={form.successMessage}

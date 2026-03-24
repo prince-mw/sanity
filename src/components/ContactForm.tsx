@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useLocale } from "@/i18n/LocaleContext";
 
 const ZOHO_FORM_PERMALINK = "U0Rmmz1KaZyfpwtqHbfK6sbw19RecVMg6aMmZ3G0vuw";
+const ZOHO_FORM_LINK_NAME = "ContactUs";
 const ZOHO_PORTAL_NAME = "movingwallsholdingpteltd";
 
 const COUNTRIES = [
@@ -62,6 +63,7 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           zohoFormPermalink: ZOHO_FORM_PERMALINK,
+          zohoFormLinkName: ZOHO_FORM_LINK_NAME,
           zohoPortalName: ZOHO_PORTAL_NAME,
           fields: {
             "Name_First": formData.firstName,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 
 interface ZohoSubmissionRequest {
   zohoFormPermalink: string
+  zohoFormLinkName: string
   zohoPortalName: string
   fields: Record<string, string>
 }
@@ -36,12 +37,12 @@ export async function POST(request: NextRequest) {
     }
 
     const body = (await request.json()) as ZohoSubmissionRequest
-    const { zohoFormPermalink, zohoPortalName, fields } = body
+    const { zohoFormPermalink, zohoFormLinkName, zohoPortalName, fields } = body
 
     // Validate required fields
-    if (!zohoFormPermalink || !fields || typeof fields !== 'object') {
+    if (!zohoFormPermalink || !zohoFormLinkName || !fields || typeof fields !== 'object') {
       return NextResponse.json(
-        { success: false, error: 'Missing required fields: zohoFormPermalink and fields' },
+        { success: false, error: 'Missing required fields: zohoFormPermalink, zohoFormLinkName, and fields' },
         { status: 400 }
       )
     }
@@ -57,8 +58,8 @@ export async function POST(request: NextRequest) {
     delete sanitizedFields._honeypot
 
     // Build the Zoho Forms submission URL
-    const portalName = zohoPortalName || 'movingwalls'
-    const zohoUrl = `https://forms.zoho.com/${encodeURIComponent(portalName)}/${encodeURIComponent(zohoFormPermalink)}/htmlRecords/submit`
+    const portalName = zohoPortalName || 'movingwallsholdingpteltd'
+    const zohoUrl = `https://forms.zohopublic.com/${encodeURIComponent(portalName)}/form/${encodeURIComponent(zohoFormLinkName)}/formperma/${encodeURIComponent(zohoFormPermalink)}/htmlRecords/submit`
 
     // Build form data for Zoho submission
     const formData = new URLSearchParams()
