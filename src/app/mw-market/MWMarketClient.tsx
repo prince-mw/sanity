@@ -449,6 +449,22 @@ export default function MWMarketPage({ caseStudies = [] }: MWMarketClientProps) 
               </div>
             </div>
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-center mt-8"
+          >
+            <a
+              href="https://market.movingwalls.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-gradient-to-r from-blue-500 to-indigo-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-600 hover:to-indigo-600 transition-all shadow-xl hover:shadow-2xl"
+            >
+              Explore Market
+            </a>
+          </motion.div>
         </div>
       </section>
 

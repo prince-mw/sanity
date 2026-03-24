@@ -263,9 +263,9 @@ export default function MultiScreenNetwork() {
       <motion.div
         className="absolute"
         style={{
-          left: `${controlCenter.x - 10}%`,
+          left: `${controlCenter.x - 18}%`,
           top: `${controlCenter.y - 5}%`,
-          width: '20%',
+          width: '36%',
           zIndex: 15,
         }}
         initial={{ opacity: 0, scale: 0 }}
