@@ -16,13 +16,13 @@ const landingPages = [
     _type: 'landingPage',
     title: 'Series C Funding Announcement',
     slug: { _type: 'slug', current: 'series-c-funding' },
-    seoTitle: 'MovingWalls Series C Funding | $30M Investment Round',
-    seoDescription: 'MovingWalls announces $30M Series C funding to accelerate global expansion and product innovation.',
+    seoTitle: 'Moving Walls Series C Funding | $30M Investment Round',
+    seoDescription: 'Moving Walls announces $30M Series C funding to accelerate global expansion and product innovation.',
     sections: [
       {
         _type: 'hero',
         _key: 'hero1',
-        heading: 'MovingWalls Raises $30M Series C',
+        heading: 'Moving Walls Raises $30M Series C',
         subheading: 'Accelerating the future of programmatic out-of-home advertising with strategic investment from leading global investors.',
         ctaText: 'Read the Full Story',
         ctaLink: '/press-news',
@@ -33,8 +33,8 @@ const landingPages = [
     _type: 'landingPage',
     title: 'Transit Partnership Program',
     slug: { _type: 'slug', current: 'transit-partnership' },
-    seoTitle: 'Transit Partnership | MovingWalls',
-    seoDescription: 'Partner with MovingWalls to monetize your transit advertising inventory with programmatic technology.',
+    seoTitle: 'Transit Partnership | Moving Walls',
+    seoDescription: 'Partner with Moving Walls to monetize your transit advertising inventory with programmatic technology.',
     sections: [
       {
         _type: 'hero',
@@ -50,8 +50,8 @@ const landingPages = [
     _type: 'landingPage',
     title: 'Privacy-First Measurement',
     slug: { _type: 'slug', current: 'privacy-first-measurement' },
-    seoTitle: 'Privacy-First OOH Measurement | MovingWalls',
-    seoDescription: 'Learn how MovingWalls delivers accurate audience measurement while respecting consumer privacy.',
+    seoTitle: 'Privacy-First OOH Measurement | Moving Walls',
+    seoDescription: 'Learn how Moving Walls delivers accurate audience measurement while respecting consumer privacy.',
     sections: [
       {
         _type: 'hero',
@@ -67,7 +67,7 @@ const landingPages = [
     _type: 'landingPage',
     title: 'AI-Powered Audience Targeting',
     slug: { _type: 'slug', current: 'ai-powered-audience-targeting' },
-    seoTitle: 'AI Audience Targeting for OOH | MovingWalls',
+    seoTitle: 'AI Audience Targeting for OOH | Moving Walls',
     seoDescription: 'Leverage AI and machine learning to reach the right audiences at the right moments with precision OOH targeting.',
     sections: [
       {
@@ -84,8 +84,8 @@ const landingPages = [
     _type: 'landingPage',
     title: 'AdTech Company of the Year',
     slug: { _type: 'slug', current: 'adtech-company-of-year' },
-    seoTitle: 'AdTech Company of the Year | MovingWalls',
-    seoDescription: 'MovingWalls recognized as AdTech Company of the Year for innovation in programmatic OOH advertising.',
+    seoTitle: 'AdTech Company of the Year | Moving Walls',
+    seoDescription: 'Moving Walls recognized as AdTech Company of the Year for innovation in programmatic OOH advertising.',
     sections: [
       {
         _type: 'hero',
@@ -101,13 +101,13 @@ const landingPages = [
     _type: 'landingPage',
     title: 'London Headquarters',
     slug: { _type: 'slug', current: 'london-headquarters' },
-    seoTitle: 'London Office | MovingWalls UK',
-    seoDescription: 'Visit MovingWalls London headquarters - our European hub for programmatic OOH solutions.',
+    seoTitle: 'London Office | Moving Walls UK',
+    seoDescription: 'Visit Moving Walls London headquarters - our European hub for programmatic OOH solutions.',
     sections: [
       {
         _type: 'hero',
         _key: 'hero1',
-        heading: 'MovingWalls London',
+        heading: 'Moving Walls London',
         subheading: 'Our European headquarters, serving brands and agencies across the UK and EMEA region.',
         ctaText: 'Contact Us',
         ctaLink: '/contact',
@@ -125,7 +125,7 @@ const audiencePages = [
     pageType: 'agencies',
     title: 'White Label OOH Platform',
     titleHighlight: 'Built for Agencies',
-    subtitle: 'Offer your clients a complete out of home solution under your own brand. MovingWalls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.',
+    subtitle: 'Offer your clients a complete out of home solution under your own brand. Moving Walls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.',
     ctaPrimary: 'Become a Partner',
     ctaPrimaryLink: '/contact',
     ctaSecondary: 'Watch Demo',
@@ -247,7 +247,7 @@ const industryPages = [
       { _key: 'b3', title: 'Target Demographics', description: 'Reach specific financial planning segments effectively', icon: 'target' },
       { _key: 'b4', title: 'Security Messaging', description: 'Communicate safety and security of financial services', icon: 'shield' },
     ],
-    benefitsSectionTitle: 'Why Financial Brands Choose MovingWalls',
+    benefitsSectionTitle: 'Why Financial Brands Choose Moving Walls',
     benefitsSectionSubtitle: 'Build customer trust and drive business growth with advertising that communicates stability and reliability.',
     services: [
       { _key: 's1', title: 'Banking & Credit Unions', description: 'Drive branch visits and account openings with local community focus', icon: 'bank', offerings: ['Branch Promotion', 'Account Acquisition', 'Loan Services', 'Community Banking'] },
@@ -286,7 +286,7 @@ const industryPages = [
       { _key: 'b3', title: 'Health Awareness', description: 'Educate communities about health services and prevention', icon: 'education' },
       { _key: 'b4', title: 'Emergency Services', description: 'Promote urgent care and emergency services when needed', icon: 'emergency' },
     ],
-    benefitsSectionTitle: 'Why Healthcare Providers Choose MovingWalls',
+    benefitsSectionTitle: 'Why Healthcare Providers Choose Moving Walls',
     benefitsSectionSubtitle: 'Build community trust and patient relationships with sensitive, effective healthcare advertising.',
     services: [
       { _key: 's1', title: 'Hospital & Health Systems', description: 'Build community trust and drive patient acquisition for health systems', icon: 'hospital', offerings: ['Brand Awareness', 'Service Promotion', 'Community Outreach', 'Emergency Care'] },
@@ -318,7 +318,7 @@ const industryPages = [
       { _key: 'b3', title: 'Target Shoppers', description: 'Reach customers when they are in shopping mode near retail locations', icon: 'target' },
       { _key: 'b4', title: 'Omnichannel Integration', description: 'Connect offline advertising with online experiences seamlessly', icon: 'omnichannel' },
     ],
-    benefitsSectionTitle: 'Why Retailers Choose MovingWalls',
+    benefitsSectionTitle: 'Why Retailers Choose Moving Walls',
     benefitsSectionSubtitle: 'Drive measurable foot traffic and sales with data-driven OOH advertising.',
     services: [
       { _key: 's1', title: 'Fashion & Apparel', description: 'Seasonal campaigns and new collection launches', icon: 'fashion', offerings: ['Seasonal Campaigns', 'Collection Launches', 'Store Openings', 'Sale Events'] },

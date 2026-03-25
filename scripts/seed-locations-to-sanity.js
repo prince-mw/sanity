@@ -259,7 +259,7 @@ const malaysiaData = {
       answer: 'High visibility, dynamic content, precise audience targeting, and actionable performance data.',
     },
     {
-      question: 'How does MovingWalls help advertisers in Malaysia?',
+      question: 'How does Moving Walls help advertisers in Malaysia?',
       answer: 'Our Moving Audiences platform enables precise targeting, real-time analytics, and seamless campaign execution across DOOH networks.',
     },
   ],

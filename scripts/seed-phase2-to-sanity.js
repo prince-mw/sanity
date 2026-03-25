@@ -313,47 +313,47 @@ const legalPages = [
       {
         _key: generateKey(), id: 'introduction', title: 'Introduction',
         content: [
-          textBlock('The following terms and conditions (the "Master Terms and Conditions") shall govern the use of Moving Walls Pte Ltd ("MovingWalls") products and services (the "Services") described in any Moving Audiences Media Booking Agreement, the Moving Audiences Order Form, or Moving Audiences Statement of Work (collectively the "Agreement") entered into between You (the "Company") and MovingWalls.'),
+          textBlock('The following terms and conditions (the "Master Terms and Conditions") shall govern the use of Moving Walls Pte Ltd ("Moving Walls") products and services (the "Services") described in any Moving Audiences Media Booking Agreement, the Moving Audiences Order Form, or Moving Audiences Statement of Work (collectively the "Agreement") entered into between You (the "Company") and Moving Walls.'),
           textBlock('If You are entering into these Master Terms and Conditions on behalf of a company or other legal entity, You represent that You have the legal authority to bind the legal entity to these Standard Terms, in which case "You" or "Your" shall mean such entity.'),
         ],
       },
       {
         _key: generateKey(), id: 'agreement', title: '1. Agreement',
         content: [
-          textBlock('These Master Terms and Conditions, together with the Moving Audiences Platform "Order Form" (collectively, the "Agreement") govern the relationship between Company and MovingWalls. MovingWalls reserves the right to modify these Standard Terms and Conditions with effect for the future at any time.'),
+          textBlock('These Master Terms and Conditions, together with the Moving Audiences Platform "Order Form" (collectively, the "Agreement") govern the relationship between Company and Moving Walls. Moving Walls reserves the right to modify these Standard Terms and Conditions with effect for the future at any time.'),
         ],
       },
       {
         _key: generateKey(), id: 'definitions', title: '2. Definitions',
         content: [
-          textBlock('"Inventory" means digital out-of-home advertising or mobile advertising inventory displayed and sold through MovingWalls\' Moving Audiences Platform service. This includes "Partner Inventory" (procured from Supply Side Platforms with direct MovingWalls relationships) and "Company Inventory" (procured from Publishers with direct Company relationships).'),
+          textBlock('"Inventory" means digital out-of-home advertising or mobile advertising inventory displayed and sold through Moving Walls\' Moving Audiences Platform service. This includes "Partner Inventory" (procured from Supply Side Platforms with direct Moving Walls relationships) and "Company Inventory" (procured from Publishers with direct Company relationships).'),
           textBlock('"Creatives" means any visual material provided by company for delivery on digital out-of-home media sites or mobile advertising inventory. "Delivery Reports" refers to the record of ad plays or slots played on DOOH inventory or impressions delivered on mobile advertising.'),
           textBlock('"Intellectual Property Rights" means patent rights, copyright rights, trade secret rights, and any other intellectual property rights recognized by the law of each applicable jurisdiction.'),
-          textBlock('"Client Licence" refers to the subscribed licenses that the Company will get access to for planning, buying, verifying, and analysis. "Platform Fee" is the fee payable by Company for MovingWalls\' Moving Audiences Platform Service.'),
+          textBlock('"Client Licence" refers to the subscribed licenses that the Company will get access to for planning, buying, verifying, and analysis. "Platform Fee" is the fee payable by Company for Moving Walls\' Moving Audiences Platform Service.'),
         ],
       },
       {
         _key: generateKey(), id: 'grant-of-license', title: '3. Grant of License; Limitations',
         content: [
-          textBlock('Subject to the terms and conditions of the Agreement, MovingWalls grants Company a non-exclusive, non-transferable, limited license to use the Services. Company shall not sublicense, distribute, sell, resell, or otherwise transfer the Services to any third party.'),
+          textBlock('Subject to the terms and conditions of the Agreement, Moving Walls grants Company a non-exclusive, non-transferable, limited license to use the Services. Company shall not sublicense, distribute, sell, resell, or otherwise transfer the Services to any third party.'),
         ],
       },
       {
         _key: generateKey(), id: 'inventory-supply', title: '4. Inventory Supply',
         content: [
-          textBlock('MovingWalls will use commercially reasonable efforts to make Inventory available to Company through the Platform. Inventory availability is subject to change based on market conditions and Publisher agreements.'),
+          textBlock('Moving Walls will use commercially reasonable efforts to make Inventory available to Company through the Platform. Inventory availability is subject to change based on market conditions and Publisher agreements.'),
         ],
       },
       {
         _key: generateKey(), id: 'payment-terms', title: '5. Payment Terms; Publisher Expenses',
         content: [
-          textBlock('Company shall pay MovingWalls the applicable fees as set forth in the Order Form. Payment is due within thirty (30) days of the invoice date. Late payments may accrue interest at 1.5% per month or the maximum rate permitted by law.'),
+          textBlock('Company shall pay Moving Walls the applicable fees as set forth in the Order Form. Payment is due within thirty (30) days of the invoice date. Late payments may accrue interest at 1.5% per month or the maximum rate permitted by law.'),
         ],
       },
       {
         _key: generateKey(), id: 'privacy', title: '6. Privacy',
         content: [
-          textBlock('Each Party shall comply with all applicable data protection and privacy laws and regulations. Company acknowledges that MovingWalls collects and processes data as described in the Moving Walls Privacy Policy.'),
+          textBlock('Each Party shall comply with all applicable data protection and privacy laws and regulations. Company acknowledges that Moving Walls collects and processes data as described in the Moving Walls Privacy Policy.'),
         ],
       },
       {
@@ -371,7 +371,7 @@ const legalPages = [
       {
         _key: generateKey(), id: 'technical-support', title: '9. Technical Support',
         content: [
-          textBlock('MovingWalls shall provide technical support to Company during normal business hours. Support requests can be submitted through the Platform or via email to info@movingwalls.com.'),
+          textBlock('Moving Walls shall provide technical support to Company during normal business hours. Support requests can be submitted through the Platform or via email to info@movingwalls.com.'),
         ],
       },
       {
@@ -389,7 +389,7 @@ const legalPages = [
       {
         _key: generateKey(), id: 'disclaimer', title: '12. Disclaimer',
         content: [
-          textBlock('THE SERVICES ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. MOVINGWALLS DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.'),
+          textBlock('THE SERVICES ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND. MOVING WALLS DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.'),
         ],
       },
       {

@@ -306,7 +306,7 @@ export function transformBlogPost(post: SanityBlogPost) {
     excerpt: post.excerpt || '',
     content: portableTextToHtml(post.content) || '',
     category: post.categories?.[0]?.title || 'General',
-    author: post.author?.name || 'MovingWalls Team',
+    author: post.author?.name || 'Moving Walls Team',
     authorRole: post.author?.role,
     authorImage: getSanityImageUrl(post.author?.image, { width: 100 }) || '',
     authorBio: post.author?.bio ? portableTextToHtml(post.author.bio) : '',

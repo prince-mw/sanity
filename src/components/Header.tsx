@@ -287,7 +287,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
             >
               <Image
                 src="/assets/logo/MW-logo-web.svg"
-                alt="MovingWalls Logo"
+                alt="Moving Walls Logo"
                 width={180}
                 height={40}
                 priority

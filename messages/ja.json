@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "MovingWalls - 屋外広告プラットフォーム",
-    "description": "MovingWallsは、単一のインテリジェントなクラウドプラットフォームを通じて、OOHエコシステム全体を統合します。"
+    "title": "Moving Walls - 屋外広告プラットフォーム",
+    "description": "Moving Wallsは、単一のインテリジェントなクラウドプラットフォームを通じて、OOHエコシステム全体を統合します。"
   },
   "nav": {
     "solutions": "ソリューション",
@@ -90,7 +90,7 @@
     "badge": "事例紹介",
     "title": "インスピレーションを与える",
     "titleHighlight": "成功事例",
-    "description": "MovingWallsで卓越した成果を達成した主要ブランドの事例をご覧ください。"
+    "description": "Moving Wallsで卓越した成果を達成した主要ブランドの事例をご覧ください。"
   },
   "newsletter": {
     "title": "業界インサイトを",
@@ -108,7 +108,7 @@
     "termsOfService": "利用規約"
   },
   "footer": {
-    "description": "MovingWallsは、単一のインテリジェントなクラウドプラットフォームを通じて、OOHエコシステム全体を統合します。オーディエンスの発見から予約、アクティベーション、測定、最適化まで、データ駆動の精度ですべてのステップを合理化します。",
+    "description": "Moving Wallsは、単一のインテリジェントなクラウドプラットフォームを通じて、OOHエコシステム全体を統合します。オーディエンスの発見から予約、アクティベーション、測定、最適化まで、データ駆動の精度ですべてのステップを合理化します。",
     "followUs": "フォローする",
     "company": "会社情報",
     "solutions": "ソリューション",
@@ -116,7 +116,7 @@
     "resources": "リソース",
     "support": "サポート",
     "billboardLocations": "看板設置場所",
-    "copyright": "© 2024 MovingWalls. All rights reserved.",
+    "copyright": "© 2024 Moving Walls. All rights reserved.",
     "privacy": "プライバシーポリシー",
     "terms": "利用規約",
     "cookies": "Cookie設定"
@@ -152,7 +152,7 @@
       "badge": "私たちの物語",
       "title": "OOH広告を",
       "titleHighlight": "グローバルに変革",
-      "description": "2015年以来、MovingWallsは屋外広告業界の革命の最前線に立っています。"
+      "description": "2015年以来、Moving Wallsは屋外広告業界の革命の最前線に立っています。"
     },
     "leadership": {
       "badge": "リーダーシップ",
@@ -484,7 +484,7 @@
         },
         "transformation": {
           "badge": "Transformation",
-          "title": "MovingWalls Platform",
+          "title": "Moving Walls Platform",
           "subtitle": "Your complete OOH solution",
           "features": [
             "AI-Powered Planning",
@@ -649,11 +649,11 @@
       "badge": "クライアントの成功",
       "title": "お客様の",
       "titleHighlight": "声",
-      "description": "MovingWallsで広告を変革しているブランドや代理店の声をお聞きください。"
+      "description": "Moving Wallsで広告を変革しているブランドや代理店の声をお聞きください。"
     },
     "about": {
       "title": "屋外広告を再定義",
-      "description1": "MovingWallsは、革新的なプラットフォームと深い業界専門知識を組み合わせ、世界中のブランドに卓越した結果を提供する、テクノロジー主導の屋外広告の主要企業です。",
+      "description1": "Moving Wallsは、革新的なプラットフォームと深い業界専門知識を組み合わせ、世界中のブランドに卓越した結果を提供する、テクノロジー主導の屋外広告の主要企業です。",
       "description2": "私たちの使命は、屋外広告をデジタル広告と同様にターゲット可能、測定可能、効果的にすることです—両方の世界の長所を取り入れ、ブランドが有意義な方法でオーディエンスとつながることを支援します。",
       "features": {
         "yearsOfExcellence": "卓越の年数",
@@ -743,7 +743,7 @@
     "platformEcosystem": {
       "badge": "MW Platform Ecosystem",
       "title": "Where Movement Meets Media",
-      "intro": "At the heart of MovingWalls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
       "cards": {
         "data": {
           "label": "Data Inputs",

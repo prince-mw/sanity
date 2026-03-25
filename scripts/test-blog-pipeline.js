@@ -31,7 +31,7 @@ function transformBlogPost(post) {
     title: post.title || '',
     excerpt: post.excerpt || '',
     category: post.categories?.[0]?.title || 'General',
-    author: post.author?.name || 'MovingWalls Team',
+    author: post.author?.name || 'Moving Walls Team',
     date: post.publishedAt || '',
     readTime: post.readTime || '5 min read',
     featuredImage: getSanityImageUrl(post.featuredImage, { width: 1200 }) || '/assets/images/blog-placeholder.svg',

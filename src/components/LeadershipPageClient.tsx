@@ -66,7 +66,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
               </span>
             </h1>
             <p className="text-xl text-mw-blue-200/80 max-w-3xl mx-auto leading-relaxed">
-              Meet the visionaries behind MovingWalls — the team driving innovation 
+              Meet the visionaries behind Moving Walls — the team driving innovation 
               in outdoor advertising technology across the globe.
             </p>
           </motion.div>

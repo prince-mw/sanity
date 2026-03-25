@@ -55,7 +55,7 @@ interface AgenciesPageProps {
 const defaultContent = {
   title: "White Label OOH Platform",
   titleHighlight: "Built for Agencies",
-  subtitle: "Offer your clients a complete out of home solution under your own brand. MovingWalls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.",
+  subtitle: "Offer your clients a complete out of home solution under your own brand. Moving Walls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.",
   primaryCTA: { text: "Become a Partner", href: "/contact" },
   secondaryCTA: { text: "Watch Demo", href: "#platform" },
   stats: [
@@ -151,10 +151,10 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
 
   // Journey section - CMS or fallback
   const journeyTitle = props.journeyTitle || 'From Complexity to Clarity';
-  const journeySubtitle = props.journeySubtitle || "See how MovingWalls transforms your agency's OOH capabilities";
+  const journeySubtitle = props.journeySubtitle || "See how Moving Walls transforms your agency's OOH capabilities";
   const journeySteps = props.journeySteps?.length ? props.journeySteps : [
     { stepLabel: 'The Old Way', stepName: 'Challenges', description: '', items: ['Manual RFPs taking weeks slows growth', 'Limited inventory access restricts scale', 'No real-time performance data', 'Complex billing bottlenecks', 'Scaling operations difficult'] },
-    { stepLabel: 'Transformation', stepName: 'The MovingWalls Transformation', description: 'Your complete agency solution', items: ['White-Label Platform', 'Global Inventory Access', 'Real-Time Analytics', 'Automated Workflows', 'Scalable Infrastructure'] },
+    { stepLabel: 'Transformation', stepName: 'The Moving Walls Transformation', description: 'Your complete agency solution', items: ['White-Label Platform', 'Global Inventory Access', 'Real-Time Analytics', 'Automated Workflows', 'Scalable Infrastructure'] },
     { stepLabel: 'The New Way', stepName: 'Results', description: '', items: ['Launch in under 5 minutes', '500K+ screens available', 'Real-time tracking', 'Automated billing & invoicing', '3x revenue scaling'] },
   ];
 
@@ -917,7 +917,7 @@ Your Complete OOH Platform
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">{journeySteps[1]?.stepName || 'The MovingWalls Transformation'}</h3>
+                    <h3 className="text-2xl font-bold text-white mb-2">{journeySteps[1]?.stepName || 'The Moving Walls Transformation'}</h3>
                     <p className="text-blue-200 text-sm">{journeySteps[1]?.description || 'Your complete agency solution'}</p>
                   </div>
                   <div className="space-y-3">
@@ -1271,7 +1271,7 @@ Your Complete OOH Platform
               Frequently Asked Questions
             </h2>
             <p className="text-xl text-gray-600">
-              Everything you need to know about partnering with MovingWalls
+              Everything you need to know about partnering with Moving Walls
             </p>
           </motion.div>
 

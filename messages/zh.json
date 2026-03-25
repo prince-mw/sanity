@@ -1,7 +1,7 @@
 {
   "metadata": {
-    "title": "MovingWalls - 户外广告平台",
-    "description": "MovingWalls通过单一智能云平台统一整个户外广告生态系统。"
+    "title": "Moving Walls - 户外广告平台",
+    "description": "Moving Walls通过单一智能云平台统一整个户外广告生态系统。"
   },
   "nav": {
     "solutions": "解决方案",
@@ -90,7 +90,7 @@
     "badge": "案例研究",
     "title": "鼓舞人心的",
     "titleHighlight": "成功故事",
-    "description": "了解领先品牌如何通过MovingWalls取得卓越成果。"
+    "description": "了解领先品牌如何通过Moving Walls取得卓越成果。"
   },
   "newsletter": {
     "title": "获取行业洞察",
@@ -108,7 +108,7 @@
     "termsOfService": "服务条款"
   },
   "footer": {
-    "description": "MovingWalls通过单一智能云平台统一整个OOH生态系统。从受众发现到预订、激活、测量和优化，我们通过数据驱动的精确度简化每个步骤。",
+    "description": "Moving Walls通过单一智能云平台统一整个OOH生态系统。从受众发现到预订、激活、测量和优化，我们通过数据驱动的精确度简化每个步骤。",
     "followUs": "关注我们",
     "company": "公司",
     "solutions": "解决方案",
@@ -116,7 +116,7 @@
     "resources": "资源",
     "support": "支持",
     "billboardLocations": "广告牌位置",
-    "copyright": "© 2024 MovingWalls. 保留所有权利。",
+    "copyright": "© 2024 Moving Walls. 保留所有权利。",
     "privacy": "隐私政策",
     "terms": "服务条款",
     "cookies": "Cookie设置"
@@ -152,7 +152,7 @@
       "badge": "我们的故事",
       "title": "全球变革",
       "titleHighlight": "户外广告",
-      "description": "自2015年以来，MovingWalls一直走在革新户外广告行业的前沿。"
+      "description": "自2015年以来，Moving Walls一直走在革新户外广告行业的前沿。"
     },
     "leadership": {
       "badge": "领导团队",
@@ -484,7 +484,7 @@
         },
         "transformation": {
           "badge": "转型",
-          "title": "MovingWalls平台",
+          "title": "Moving Walls平台",
           "subtitle": "您完整的OOH解决方案",
           "features": [
             "AI驱动的计划",
@@ -649,11 +649,11 @@
       "badge": "客户成功",
       "title": "我们的客户",
       "titleHighlight": "如是说",
-      "description": "听听正在使用MovingWalls转型其广告的品牌和代理商的声音。"
+      "description": "听听正在使用Moving Walls转型其广告的品牌和代理商的声音。"
     },
     "about": {
       "title": "重新定义户外广告",
-      "description1": "MovingWalls是领先的技术驱动型户外广告公司，将创新平台与深厚的行业专业知识相结合，为全球品牌提供卓越的结果。",
+      "description1": "Moving Walls是领先的技术驱动型户外广告公司，将创新平台与深厚的行业专业知识相结合，为全球品牌提供卓越的结果。",
       "description2": "我们的使命是让户外广告像数字广告一样可定向、可衡量、有效——融合两个世界的优势，帮助品牌以有意义的方式与受众建立联系。",
       "features": {
         "yearsOfExcellence": "卓越年份",
@@ -743,7 +743,7 @@
     "platformEcosystem": {
       "badge": "MW Platform Ecosystem",
       "title": "Where Movement Meets Media",
-      "intro": "At the heart of MovingWalls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
       "cards": {
         "data": {
           "label": "Data Inputs",
