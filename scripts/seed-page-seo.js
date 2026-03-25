@@ -523,6 +523,28 @@ const pageSeoData = [
     },
   },
   {
+    pageId: 'products',
+    pageName: 'Products Overview',
+    seo: {
+      metaTitle: 'OOH Advertising Products & Solutions | Moving Walls',
+      metaDescription: 'Explore the full suite of Moving Walls OOH advertising products — planning, activation, measurement, marketplace, creative studio, and audience intelligence.',
+      keywords: ['OOH products', 'advertising solutions', 'DOOH tools', 'Moving Walls products'],
+      enableKeywords: true,
+      noIndex: false,
+    },
+  },
+  {
+    pageId: 'search',
+    pageName: 'Search',
+    seo: {
+      metaTitle: 'Search | Moving Walls',
+      metaDescription: 'Search across Moving Walls content — blogs, case studies, resources, and documentation.',
+      keywords: ['search', 'find content'],
+      enableKeywords: false,
+      noIndex: true,
+    },
+  },
+  {
     pageId: 'sitemap',
     pageName: 'Sitemap',
     seo: {

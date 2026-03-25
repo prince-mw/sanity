@@ -1,5 +1,15 @@
 import { client, urlFor } from './client'
 
+// Safe fetch wrapper - prevents page crashes on Sanity network errors
+async function safeFetch<T>(query: string, params?: Record<string, unknown>, fallback?: T): Promise<T> {
+  try {
+    return await client.fetch(query, params)
+  } catch (error) {
+    console.error('[Sanity Fetch Error]', error)
+    return (fallback !== undefined ? fallback : null) as T
+  }
+}
+
 // SEO Interface - reusable for all content types
 export interface SanitySEO {
   metaTitle?: string
@@ -104,7 +114,7 @@ export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
       "categories": categories[]->{title, slug, color}
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | null> {
@@ -130,7 +140,7 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
       }
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export async function getBlogCategories(): Promise<Array<{ title: string; slug: { current: string } }>> {
@@ -140,7 +150,7 @@ export async function getBlogCategories(): Promise<Array<{ title: string; slug: 
       slug
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getFeaturedBlogPost(): Promise<SanityBlogPost | null> {
@@ -157,7 +167,7 @@ export async function getFeaturedBlogPost(): Promise<SanityBlogPost | null> {
       "categories": categories[]->{title, slug, color}
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 // Improved related posts algorithm with multi-criteria matching
@@ -198,12 +208,12 @@ export async function getRelatedBlogPosts(
     }
   `
   
-  const results = await client.fetch(query, { 
+  const results = await safeFetch<SanityBlogPost[]>(query, { 
     currentSlug, 
     categories: categoryTitles.length > 0 ? categoryTitles : [''], 
     authorId: authorId || '',
     limit: limit - 1 
-  })
+  }, [])
   
   // If we don't have enough related posts, supplement with recent posts
   if (results.length < limit) {
@@ -225,10 +235,10 @@ export async function getRelatedBlogPosts(
       }
     `
     
-    const recentPosts = await client.fetch(recentQuery, { 
+    const recentPosts = await safeFetch<SanityBlogPost[]>(recentQuery, { 
       existingSlugs, 
       neededCount: neededCount - 1 
-    })
+    }, [])
     
     return [...results, ...recentPosts]
   }
@@ -252,7 +262,7 @@ export async function getAllCaseStudies(): Promise<SanityCaseStudy[]> {
       publishedAt
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy | null> {
@@ -285,7 +295,7 @@ export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy 
       }
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 // Helper to convert Sanity blog post to format compatible with existing UI
@@ -506,7 +516,7 @@ export async function getAllEvents(): Promise<SanityEvent[]> {
       seo
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getUpcomingEvents(limit: number = 10): Promise<SanityEvent[]> {
@@ -532,7 +542,7 @@ export async function getUpcomingEvents(limit: number = 10): Promise<SanityEvent
       seo
     }
   `
-  return client.fetch(query, { now, limit: limit - 1 })
+  return safeFetch(query, { now, limit: limit - 1 })
 }
 
 export async function getEventBySlug(slug: string): Promise<SanityEvent | null> {
@@ -557,7 +567,7 @@ export async function getEventBySlug(slug: string): Promise<SanityEvent | null> 
       seo
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export function transformEvent(event: SanityEvent) {
@@ -660,7 +670,7 @@ export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
       isMediaFeature
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getPressReleases(limit?: number): Promise<SanityPressRelease[]> {
@@ -671,7 +681,7 @@ export async function getPressReleases(limit?: number): Promise<SanityPressRelea
     : `*[_type == "pressRelease" && !isMediaFeature] | order(publishedAt desc) {
         _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
       }`
-  return client.fetch(query, { limit: limit ? limit - 1 : undefined })
+  return safeFetch(query, { limit: limit ? limit - 1 : undefined })
 }
 
 export async function getMediaFeatures(limit?: number): Promise<SanityPressRelease[]> {
@@ -682,7 +692,7 @@ export async function getMediaFeatures(limit?: number): Promise<SanityPressRelea
     : `*[_type == "pressRelease" && isMediaFeature == true] | order(publishedAt desc) {
         _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
       }`
-  return client.fetch(query, { limit: limit ? limit - 1 : undefined })
+  return safeFetch(query, { limit: limit ? limit - 1 : undefined })
 }
 
 export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRelease | null> {
@@ -712,7 +722,7 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
       }
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 // Fetch full article press release by articleSlug (for dedicated article pages like /series-c-funding)
@@ -735,7 +745,7 @@ export async function getPressArticleBySlug(articleSlug: string): Promise<Sanity
       articleSlug
     }
   `
-  return client.fetch(query, { articleSlug })
+  return safeFetch(query, { articleSlug })
 }
 
 // Get all press articles that have full article pages
@@ -755,7 +765,7 @@ export async function getAllPressArticles(): Promise<SanityPressRelease[]> {
       articleSlug
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export function transformPressRelease(pr: SanityPressRelease) {
@@ -802,7 +812,7 @@ export async function getRelatedPressReleases(currentSlug: string, category?: st
       isMediaFeature
     }
   `
-  return client.fetch(query, { currentSlug, limit: limit - 1 })
+  return safeFetch(query, { currentSlug, limit: limit - 1 })
 }
 
 // Transform press release with full content for detail page
@@ -874,7 +884,7 @@ export async function getAllTeamMembers(): Promise<SanityTeamMember[]> {
       order
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getLeadershipTeam(): Promise<SanityTeamMember[]> {
@@ -895,7 +905,7 @@ export async function getLeadershipTeam(): Promise<SanityTeamMember[]> {
       order
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getTeamMemberBySlug(slug: string): Promise<SanityTeamMember | null> {
@@ -924,7 +934,7 @@ export async function getTeamMemberBySlug(slug: string): Promise<SanityTeamMembe
       }
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export function transformTeamMember(member: SanityTeamMember) {
@@ -1009,7 +1019,7 @@ export async function getAllWebinars(): Promise<SanityWebinar[]> {
       watchLink
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
@@ -1039,7 +1049,7 @@ export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
       registrationLink
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getPastWebinars(): Promise<SanityWebinar[]> {
@@ -1067,7 +1077,7 @@ export async function getPastWebinars(): Promise<SanityWebinar[]> {
       watchLink
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export function transformWebinar(webinar: SanityWebinar) {
@@ -1129,7 +1139,7 @@ export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | nu
       seo
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export async function getRelatedWebinars(currentSlug: string, limit: number = 3): Promise<SanityWebinar[]> {
@@ -1158,7 +1168,7 @@ export async function getRelatedWebinars(currentSlug: string, limit: number = 3)
       }
     }
   `
-  return client.fetch(query, { currentSlug, limit })
+  return safeFetch(query, { currentSlug, limit })
 }
 
 // Job Position Types and Queries
@@ -1200,7 +1210,7 @@ export async function getActiveJobPositions(): Promise<SanityJobPosition[]> {
       applicationFormUrl
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getAllJobPositions(): Promise<SanityJobPosition[]> {
@@ -1218,7 +1228,7 @@ export async function getAllJobPositions(): Promise<SanityJobPosition[]> {
       isActive
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getJobPositionBySlug(slug: string): Promise<SanityJobPosition | null> {
@@ -1242,7 +1252,7 @@ export async function getJobPositionBySlug(slug: string): Promise<SanityJobPosit
       publishedAt
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export function transformJobPosition(job: SanityJobPosition) {
@@ -1376,7 +1386,7 @@ export async function getAllEbooks(): Promise<SanityEbook[]> {
       }
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getEbookBySlug(slug: string): Promise<SanityEbook | null> {
@@ -1411,7 +1421,7 @@ export async function getEbookBySlug(slug: string): Promise<SanityEbook | null> 
       }
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export async function getFeaturedEbook(): Promise<SanityEbook | null> {
@@ -1433,7 +1443,7 @@ export async function getFeaturedEbook(): Promise<SanityEbook | null> {
       order
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getEbooksByCategory(category: string): Promise<SanityEbook[]> {
@@ -1456,7 +1466,7 @@ export async function getEbooksByCategory(category: string): Promise<SanityEbook
       order
     }
   `
-  return client.fetch(query, { category })
+  return safeFetch(query, { category })
 }
 
 export function transformEbook(ebook: SanityEbook) {
@@ -1535,7 +1545,7 @@ export async function getAllWhitepapers(): Promise<SanityWhitepaper[]> {
       order
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getFeaturedWhitepaper(): Promise<SanityWhitepaper | null> {
@@ -1556,7 +1566,7 @@ export async function getFeaturedWhitepaper(): Promise<SanityWhitepaper | null> 
       order
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export function transformWhitepaper(paper: SanityWhitepaper) {
@@ -1683,7 +1693,7 @@ export async function getAllLocations(): Promise<SanityLocation[]> {
       order
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getLocationBySlug(slug: string): Promise<SanityLocation | null> {
@@ -1729,7 +1739,7 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
       }
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export function transformLocationForList(location: SanityLocation) {
@@ -1870,7 +1880,7 @@ export async function getAllProducts(): Promise<SanityProduct[]> {
       order
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getProductBySlug(slug: string): Promise<SanityProduct | null> {
@@ -1921,7 +1931,7 @@ export async function getProductBySlug(slug: string): Promise<SanityProduct | nu
       isActive
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export function transformProduct(product: SanityProduct) {
@@ -2009,7 +2019,7 @@ export async function getCompanyPage(pageType: string): Promise<SanityCompanyPag
       seoDescription
     }
   `
-  return client.fetch(query, { pageType })
+  return safeFetch(query, { pageType })
 }
 
 export function transformCompanyPage(page: SanityCompanyPage) {
@@ -2071,7 +2081,7 @@ export async function getTimelineEvents(): Promise<SanityTimelineEvent[]> {
       isHighlight
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getTimelineEventsByPhase(phase: string): Promise<SanityTimelineEvent[]> {
@@ -2091,7 +2101,7 @@ export async function getTimelineEventsByPhase(phase: string): Promise<SanityTim
       isHighlight
     }
   `
-  return client.fetch(query, { phase })
+  return safeFetch(query, { phase })
 }
 
 export function transformTimelineEvent(event: SanityTimelineEvent) {
@@ -2147,7 +2157,7 @@ export async function getAllOffices(): Promise<SanityOffice[]> {
       order
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getHeadquarters(): Promise<SanityOffice | null> {
@@ -2168,7 +2178,7 @@ export async function getHeadquarters(): Promise<SanityOffice | null> {
       isHeadquarters
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export function transformOffice(office: SanityOffice) {
@@ -2328,7 +2338,7 @@ export async function getAudiencePage(pageType: string): Promise<SanityAudienceP
       seoDescription
     }
   `
-  return client.fetch(query, { pageType })
+  return safeFetch(query, { pageType })
 }
 
 export function transformAudiencePage(page: SanityAudiencePage) {
@@ -2412,7 +2422,7 @@ export async function getTestimonialsByCategory(category: string): Promise<Sanit
       categories
     }
   `
-  return client.fetch(query, { category })
+  return safeFetch(query, { category })
 }
 
 export async function getAllTestimonials(): Promise<SanityTestimonial[]> {
@@ -2431,7 +2441,7 @@ export async function getAllTestimonials(): Promise<SanityTestimonial[]> {
       categories
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export function transformTestimonial(testimonial: SanityTestimonial, locale: string = 'en') {
@@ -2522,7 +2532,7 @@ export async function getIndustryPage(industry: string): Promise<SanityIndustryP
       seoDescription
     }
   `
-  return client.fetch(query, { industry })
+  return safeFetch(query, { industry })
 }
 
 export async function getAllIndustryPages(): Promise<SanityIndustryPage[]> {
@@ -2537,7 +2547,7 @@ export async function getAllIndustryPages(): Promise<SanityIndustryPage[]> {
       heroImage
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export function transformIndustryPage(page: SanityIndustryPage) {
@@ -2606,7 +2616,7 @@ export async function getAllIntegrations(): Promise<SanityIntegration[]> {
       isFeatured
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getIntegrationsByCategory(category: string): Promise<SanityIntegration[]> {
@@ -2626,7 +2636,7 @@ export async function getIntegrationsByCategory(category: string): Promise<Sanit
       status
     }
   `
-  return client.fetch(query, { category })
+  return safeFetch(query, { category })
 }
 
 export async function getFeaturedIntegrations(): Promise<SanityIntegration[]> {
@@ -2644,7 +2654,7 @@ export async function getFeaturedIntegrations(): Promise<SanityIntegration[]> {
       status
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export function transformIntegration(integration: SanityIntegration) {
@@ -2710,7 +2720,7 @@ export async function getAllOohFormats(): Promise<SanityOohFormat[]> {
       isFeatured
     }
   `
-  return client.fetch(query)
+  return safeFetch(query)
 }
 
 export async function getOohFormatsByCategory(category: string): Promise<SanityOohFormat[]> {
@@ -2728,7 +2738,7 @@ export async function getOohFormatsByCategory(category: string): Promise<SanityO
       imageUrl
     }
   `
-  return client.fetch(query, { category })
+  return safeFetch(query, { category })
 }
 
 export async function getOohFormatBySlug(slug: string): Promise<SanityOohFormat | null> {
@@ -2751,7 +2761,7 @@ export async function getOohFormatBySlug(slug: string): Promise<SanityOohFormat 
       bestFor
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 export function transformOohFormat(format: SanityOohFormat) {
@@ -3070,7 +3080,7 @@ export async function getEnhancedProductBySlug(slug: string): Promise<SanityEnha
       }
     }
   `
-  return client.fetch(query, { slug })
+  return safeFetch(query, { slug })
 }
 
 // Transform enhanced product for use with section components
@@ -3406,7 +3416,7 @@ export async function getCareersPageContent(): Promise<CareersPageContent | null
         ctaSecondaryButtonLink
       }
     `
-    return client.fetch(query)
+    return safeFetch(query)
   } catch (error) {
     console.error('Error fetching careers page content:', error)
     return null
@@ -3470,7 +3480,7 @@ export async function getFooterContent(): Promise<FooterContent | null> {
         copyrightText
       }
     `
-    return client.fetch(query)
+    return safeFetch(query)
   } catch (error) {
     console.error('Error fetching footer content:', error)
     return null
@@ -3536,7 +3546,7 @@ export async function getContactPageContent(): Promise<ContactPageContent | null
         zohoFormHeight
       }
     `
-    return client.fetch(query)
+    return safeFetch(query)
   } catch (error) {
     console.error('Error fetching contact page content:', error)
     return null
@@ -3560,7 +3570,7 @@ export async function getTrustBarContent(): Promise<TrustBarContent | null> {
         stats[] { value, label }
       }
     `
-    return client.fetch(query)
+    return safeFetch(query)
   } catch (error) {
     console.error('Error fetching trust bar content:', error)
     return null
@@ -3595,7 +3605,7 @@ export async function getClientPartnersContent(): Promise<ClientPartnersContent 
         }
       }
     `
-    return client.fetch(query)
+    return safeFetch(query)
   } catch (error) {
     console.error('Error fetching client partners content:', error)
     return null

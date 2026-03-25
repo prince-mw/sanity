@@ -2,8 +2,8 @@ import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { NextRequest } from 'next/server'
 
-// Preview secret - use environment variable or fallback for development
-const PREVIEW_SECRET = process.env.SANITY_PREVIEW_SECRET || 'preview-secret-key'
+// Preview secret - must be set via environment variable
+const PREVIEW_SECRET = process.env.SANITY_PREVIEW_SECRET
 
 export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url)

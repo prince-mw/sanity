@@ -2,7 +2,7 @@ import { revalidatePath } from 'next/cache'
 import { NextRequest, NextResponse } from 'next/server'
 
 // Secret token to validate webhook requests from Sanity
-const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET || 'your-secret-token'
+const REVALIDATE_SECRET = process.env.REVALIDATE_SECRET
 
 // Map Sanity document types to their page paths
 const documentTypeToPath: Record<string, string[]> = {
@@ -26,6 +26,13 @@ export async function POST(request: NextRequest) {
     // Verify the secret token
     const secret = request.nextUrl.searchParams.get('secret')
     
+    if (!REVALIDATE_SECRET) {
+      return NextResponse.json(
+        { message: 'REVALIDATE_SECRET not configured' },
+        { status: 500 }
+      )
+    }
+
     if (secret !== REVALIDATE_SECRET) {
       return NextResponse.json(
         { message: 'Invalid secret token' },
