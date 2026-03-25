@@ -5,6 +5,7 @@ import { useState } from "react"
 import Image from "next/image"
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
+import { getDisplayIntegrations } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWActivateClientProps {
@@ -49,22 +50,7 @@ const BoltIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-// Integration logos for Don't Replace. Integrate. section
-const integrations = [
-  { name: 'VIOOH', category: 'SSP', logo: '/assets/images/integrations/viooh.svg' },
-  { name: 'DV360', category: 'SSP', logo: '/assets/images/integrations/dv360.svg' },
-  { name: 'Magnite', category: 'SSP', logo: '/assets/images/integrations/magnite.svg' },
-  { name: 'Google Ad Manager 360', category: 'SSP', logo: '/assets/images/integrations/google-ad-manager-360.svg' },
-  { name: 'The Trade Desk', category: 'DSP', logo: '/assets/images/integrations/the-trade-desk.svg' },
-  { name: 'Cassie', category: 'DSP', logo: '/assets/images/integrations/cassie.svg' },
-  { name: 'MAX', category: 'DSP', logo: '/assets/images/integrations/max.svg' },
-  { name: 'StackAdapt', category: 'DSP', logo: '/assets/images/integrations/stackadapt.svg' },
-  { name: 'Amobee', category: 'DSP', logo: '/assets/images/integrations/amobee.svg' },
-  { name: 'AppNexus', category: 'DSP', logo: '/assets/images/integrations/appnexus.svg' },
-  { name: 'MediaMath', category: 'DSP', logo: '/assets/images/integrations/mediamath.svg' },
-  { name: 'Verizon Media', category: 'DSP', logo: '/assets/images/integrations/verizon.svg' },
-  { name: 'Mediasmart', category: 'DSP', logo: '/assets/images/integrations/mediasmart.svg' },
-]
+
 
 export default function MWActivate({ caseStudies = [], product }: MWActivateClientProps) {
   const [activeMode, setActiveMode] = useState<'owners' | 'buyers'>('owners')
@@ -81,6 +67,7 @@ export default function MWActivate({ caseStudies = [], product }: MWActivateClie
   const heroDescription = product?.description || 'Launch and optimize campaigns instantly with AI-powered automation that delivers'
   const ctaText = product?.ctaText || 'Book Demo'
   const ctaLink = product?.ctaLink || '/contact'
+  const integrations = getDisplayIntegrations(product?.integrations)
 
   const ownersFeatures = [
     {

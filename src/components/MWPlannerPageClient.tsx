@@ -5,6 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { SanityProduct } from '@/sanity/lib/fetch'
+import { getDisplayIntegrations } from '@/data/default-integrations'
 
 // Icon Components
 const CheckCircleIcon = ({ className }: { className?: string }) => (
@@ -92,22 +93,7 @@ const PresentationChartIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-// Integration partners for Don't Replace. Integrate. section
-const integrations = [
-  { name: 'VIOOH', category: 'SSP', logo: '/assets/images/integrations/viooh.svg' },
-  { name: 'DV360', category: 'SSP', logo: '/assets/images/integrations/dv360.svg' },
-  { name: 'Magnite', category: 'SSP', logo: '/assets/images/integrations/magnite.svg' },
-  { name: 'Google Ad Manager 360', category: 'SSP', logo: '/assets/images/integrations/google-ad-manager-360.svg' },
-  { name: 'The Trade Desk', category: 'DSP', logo: '/assets/images/integrations/the-trade-desk.svg' },
-  { name: 'Cassie', category: 'DSP', logo: '/assets/images/integrations/cassie.svg' },
-  { name: 'MAX', category: 'DSP', logo: '/assets/images/integrations/max.svg' },
-  { name: 'StackAdapt', category: 'DSP', logo: '/assets/images/integrations/stackadapt.svg' },
-  { name: 'Amobee', category: 'DSP', logo: '/assets/images/integrations/amobee.svg' },
-  { name: 'AppNexus', category: 'DSP', logo: '/assets/images/integrations/appnexus.svg' },
-  { name: 'MediaMath', category: 'DSP', logo: '/assets/images/integrations/mediamath.svg' },
-  { name: 'Verizon Media', category: 'DSP', logo: '/assets/images/integrations/verizon.svg' },
-  { name: 'Mediasmart', category: 'DSP', logo: '/assets/images/integrations/mediasmart.svg' },
-]
+
 
 // Features data
 const features = [
@@ -176,6 +162,7 @@ export default function MWPlannerPageClient({ latestBlogPosts, product }: MWPlan
   const heroDescription = product?.description || 'The AI command center that predicts performance, optimizes budgets, and delivers measurable ROI—before you spend a dollar.'
   const ctaText = product?.ctaText || 'Start Free Trial'
   const ctaLink = product?.ctaLink || '/contact'
+  const integrations = getDisplayIntegrations(product?.integrations)
 
   // Use latest blog posts from Sanity or fallback
   const resources = latestBlogPosts?.length ? latestBlogPosts : defaultResources;

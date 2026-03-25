@@ -8,9 +8,9 @@ interface TrustBarProps {
 }
 
 const defaultStats: TrustBarStat[] = [
-  { value: "40+", label: "Markets Covered" },
-  { value: "1,500+", label: "Media Owners" },
-  { value: "1,000,000+", label: "OOH Sites" },
+  { value: "1M+", label: "OOH Sites" },
+  { value: "50+", label: "Markets" },
+  { value: "500+", label: "Clients" },
 ];
 
 export default function TrustBar({ stats }: TrustBarProps) {

@@ -19,8 +19,8 @@ const trustBarData = {
   _type: 'trustBar',
   stats: [
     { _key: 'stat-1', value: '1M+', label: 'OOH Sites' },
-    { _key: 'stat-2', value: '35+', label: 'Markets' },
-    { _key: 'stat-3', value: '100+', label: 'Clients' },
+    { _key: 'stat-2', value: '50+', label: 'Markets' },
+    { _key: 'stat-3', value: '500+', label: 'Clients' },
   ],
 };
 

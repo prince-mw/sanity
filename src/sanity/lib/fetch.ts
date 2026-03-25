@@ -124,7 +124,14 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
       title,
       slug,
       excerpt,
-      content,
+      content[] {
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
       publishedAt,
       readTime,
       featuredImage,
@@ -305,6 +312,7 @@ export function transformBlogPost(post: SanityBlogPost) {
     title: post.title || '',
     excerpt: post.excerpt || '',
     content: portableTextToHtml(post.content) || '',
+    rawContent: post.content || null,
     category: post.categories?.[0]?.title || 'General',
     author: post.author?.name || 'Moving Walls Team',
     authorRole: post.author?.role,
@@ -1909,7 +1917,7 @@ export async function getProductBySlug(slug: string): Promise<SanityProduct | nu
       stats,
       integrationsTitle,
       integrationsSubtitle,
-      integrations,
+      integrations[] { name, logo, category },
       testimonials,
       useCases,
       howItWorksTitle,

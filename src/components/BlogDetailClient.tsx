@@ -3,12 +3,14 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import SanityPortableText from "./SanityPortableText";
 
 interface BlogPost {
   slug: string;
   title: string;
   excerpt: string;
   content: string;
+  rawContent?: any[] | null;
   category: string;
   author: string;
   authorRole?: string;
@@ -152,8 +154,13 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
               prose-ul:my-6 prose-li:text-mw-gray-700 prose-li:mb-2
               prose-ol:my-6
               prose-blockquote:border-l-4 prose-blockquote:border-mw-blue-500 prose-blockquote:bg-mw-blue-50 prose-blockquote:py-4 prose-blockquote:px-6 prose-blockquote:rounded-r-lg prose-blockquote:not-italic"
-            dangerouslySetInnerHTML={{ __html: post.content }}
-          />
+          >
+            {post.rawContent && post.rawContent.length > 0 ? (
+              <SanityPortableText value={post.rawContent} />
+            ) : (
+              <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            )}
+          </motion.article>
         </div>
       </section>
 

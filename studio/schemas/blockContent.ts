@@ -72,10 +72,42 @@ export default defineType({
       title: 'Video Embed',
       fields: [
         {
+          name: 'videoType',
+          type: 'string',
+          title: 'Video Source',
+          description: 'Choose how to add the video',
+          options: {
+            list: [
+              {title: 'YouTube / Vimeo URL', value: 'url'},
+              {title: 'Upload Video File', value: 'file'},
+            ],
+            layout: 'radio',
+          },
+          initialValue: 'url',
+        },
+        {
           name: 'url',
           type: 'url',
           title: 'Video URL',
           description: 'YouTube or Vimeo URL',
+          hidden: ({parent}: {parent: {videoType?: string}}) => parent?.videoType === 'file',
+        },
+        {
+          name: 'videoFile',
+          type: 'file',
+          title: 'Video File',
+          description: 'Upload MP4, WebM, or MOV video',
+          options: {
+            accept: 'video/*',
+          },
+          hidden: ({parent}: {parent: {videoType?: string}}) => parent?.videoType !== 'file',
+        },
+        {
+          name: 'thumbnail',
+          type: 'image',
+          title: 'Thumbnail / Poster Image',
+          description: 'Optional poster image shown before video plays',
+          options: {hotspot: true},
         },
         {
           name: 'caption',
@@ -84,9 +116,10 @@ export default defineType({
         },
       ],
       preview: {
-        select: {url: 'url'},
-        prepare({url}) {
-          return {title: 'Video', subtitle: url}
+        select: {url: 'url', videoType: 'videoType', fileName: 'videoFile.asset.originalFilename'},
+        prepare({url, videoType, fileName}: {url?: string; videoType?: string; fileName?: string}) {
+          const subtitle = videoType === 'file' ? (fileName || 'Uploaded video') : (url || 'No URL')
+          return {title: 'Video', subtitle}
         },
       },
     }),
