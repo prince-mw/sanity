@@ -33,7 +33,7 @@ const DataSourceCard = ({ icon, label, index }: { icon: React.ReactNode; label: 
   <motion.div
     initial={{ opacity: 0, x: -30 }}
     animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.5, delay: index * 0.1 }}
+    transition={{ type: "spring", stiffness: 120, damping: 14, delay: index * 0.08 }}
     className="flex items-center gap-2 relative w-full"
   >
     <div className="flex items-center gap-2 bg-white rounded-md px-3 py-1.5 shadow-sm border border-gray-200 hover:border-cyan-400 hover:shadow-md transition-all cursor-default w-full">
@@ -48,7 +48,7 @@ const OutputCard = ({ icon, label, index }: { icon: React.ReactNode; label: stri
   <motion.div
     initial={{ opacity: 0, x: 30 }}
     animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
+    transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.6 + index * 0.08 }}
     className="flex items-center gap-2 relative w-full"
   >
     <div className="flex items-center gap-2 bg-white rounded-md px-3 py-1.5 shadow-sm border border-gray-200 hover:border-violet-400 hover:shadow-md transition-all cursor-default w-full">
@@ -84,7 +84,7 @@ const ProductCard = ({ icon, label, href, index }: { icon: React.ReactNode; labe
       href={href}
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
+      transition={{ type: "spring", stiffness: 100, damping: 12, delay: 1 + index * 0.08 }}
       className="relative flex flex-col items-center gap-2 bg-white border border-dashed border-blue-400 rounded-md px-4 py-4 text-gray-800 hover:border-blue-600 hover:bg-blue-50 transition-all hover:scale-105 cursor-pointer overflow-hidden"
     >
       {/* Shimmer flash animation */}
@@ -196,7 +196,7 @@ export default function PlatformPageClient() {
               className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block" 
               style={{ zIndex: 1 }}
               viewBox="0 0 1000 600"
-              preserveAspectRatio="none"
+              preserveAspectRatio="xMidYMid meet"
             >
               <defs>
                 {/* Gradient for left (input) lines - cyan to blue */}
@@ -221,146 +221,168 @@ export default function PlatformPageClient() {
                 </filter>
                 {/* Glow filter for center hub */}
                 <filter id="hubGlow" x="-100%" y="-100%" width="300%" height="300%">
-                  <feGaussianBlur stdDeviation="8" result="coloredBlur"/>
+                  <feGaussianBlur stdDeviation="12" result="coloredBlur"/>
                   <feMerge>
                     <feMergeNode in="coloredBlur"/>
                     <feMergeNode in="SourceGraphic"/>
                   </feMerge>
                 </filter>
+                {/* Comet head gradient - cyan */}
+                <radialGradient id="cyanComet" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#22D3EE" stopOpacity="1" />
+                  <stop offset="60%" stopColor="#22D3EE" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#22D3EE" stopOpacity="0" />
+                </radialGradient>
+                {/* Comet head gradient - purple */}
+                <radialGradient id="purpleComet" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stopColor="#A855F7" stopOpacity="1" />
+                  <stop offset="60%" stopColor="#A855F7" stopOpacity="0.4" />
+                  <stop offset="100%" stopColor="#A855F7" stopOpacity="0" />
+                </radialGradient>
               </defs>
               
-              {/* Center glow effect */}
-              <circle cx="500" cy="235" r="40" fill="#3B82F6" opacity="0.15" filter="url(#hubGlow)">
-                <animate attributeName="r" values="40;55;40" dur="3s" repeatCount="indefinite" />
-                <animate attributeName="opacity" values="0.15;0.25;0.15" dur="3s" repeatCount="indefinite" />
+              {/* === Multi-ring rotating hub === */}
+              <circle cx="500" cy="235" r="60" fill="#3B82F6" opacity="0.08" filter="url(#hubGlow)">
+                <animate attributeName="r" values="55;70;55" dur="4s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.08;0.15;0.08" dur="4s" repeatCount="indefinite" />
               </circle>
-              
-              {/* Left side - 9 connection lines from Data Sources to MW Engine center */}
+              {/* Rotating dashed ring */}
+              <circle cx="500" cy="235" r="48" fill="none" stroke="#3B82F6" strokeWidth="1" strokeDasharray="8 6" opacity="0.25">
+                <animateTransform attributeName="transform" type="rotate" values="0 500 235;360 500 235" dur="25s" repeatCount="indefinite" />
+              </circle>
+              {/* Counter-rotating dotted ring */}
+              <circle cx="500" cy="235" r="56" fill="none" stroke="#8B5CF6" strokeWidth="0.8" strokeDasharray="3 8" opacity="0.2">
+                <animateTransform attributeName="transform" type="rotate" values="360 500 235;0 500 235" dur="35s" repeatCount="indefinite" />
+              </circle>
+              {/* Expanding pulse rings */}
+              <circle cx="500" cy="235" r="40" fill="none" stroke="#3B82F6" strokeWidth="1.5" opacity="0.3">
+                <animate attributeName="r" values="40;65;40" dur="3s" repeatCount="indefinite" />
+                <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="500" cy="235" r="40" fill="none" stroke="#8B5CF6" strokeWidth="1" opacity="0.2">
+                <animate attributeName="r" values="40;75;40" dur="3s" repeatCount="indefinite" begin="1s" />
+                <animate attributeName="opacity" values="0.2;0;0.2" dur="3s" repeatCount="indefinite" begin="1s" />
+              </circle>
+              <circle cx="500" cy="235" r="40" fill="none" stroke="#22D3EE" strokeWidth="0.8" opacity="0.15">
+                <animate attributeName="r" values="40;85;40" dur="3s" repeatCount="indefinite" begin="2s" />
+                <animate attributeName="opacity" values="0.15;0;0.15" dur="3s" repeatCount="indefinite" begin="2s" />
+              </circle>
+              {/* Orbital dots */}
+              <g>
+                <animateTransform attributeName="transform" type="rotate" values="0 500 235;360 500 235" dur="8s" repeatCount="indefinite" />
+                <circle cx="552" cy="235" r="3" fill="#22D3EE" opacity="0.8" filter="url(#dotGlow)" />
+              </g>
+              <g>
+                <animateTransform attributeName="transform" type="rotate" values="360 500 235;0 500 235" dur="12s" repeatCount="indefinite" />
+                <circle cx="500" cy="179" r="2.5" fill="#A855F7" opacity="0.6" filter="url(#dotGlow)" />
+              </g>
+              <g>
+                <animateTransform attributeName="transform" type="rotate" values="0 500 235;360 500 235" dur="15s" repeatCount="indefinite" begin="3s" />
+                <circle cx="455" cy="235" r="2" fill="#3B82F6" opacity="0.5" filter="url(#dotGlow)" />
+              </g>
+
+              {/* === Ambient floating particles === */}
+              {[
+                { x: 280, y: 140, dx: 15, dy: -8, dur: 10 },
+                { x: 370, y: 310, dx: -12, dy: 10, dur: 12 },
+                { x: 440, y: 120, dx: 8, dy: 15, dur: 9 },
+                { x: 560, y: 340, dx: -18, dy: -6, dur: 11 },
+                { x: 650, y: 150, dx: 10, dy: 12, dur: 13 },
+                { x: 320, y: 250, dx: -8, dy: -14, dur: 10 },
+                { x: 700, y: 200, dx: 14, dy: 8, dur: 12 },
+                { x: 580, y: 280, dx: 12, dy: -10, dur: 11 },
+              ].map((p, i) => (
+                <circle key={`ambient-${i}`} r={1 + (i % 3) * 0.3} fill={['#22D3EE', '#3B82F6', '#A855F7'][i % 3]} opacity="0">
+                  <animate attributeName="cx" values={`${p.x};${p.x + p.dx};${p.x}`} dur={`${p.dur}s`} repeatCount="indefinite" begin={`${i * 0.8}s`} />
+                  <animate attributeName="cy" values={`${p.y};${p.y + p.dy};${p.y}`} dur={`${p.dur * 0.7}s`} repeatCount="indefinite" begin={`${i * 0.8}s`} />
+                  <animate attributeName="opacity" values="0;0.25;0.15;0.25;0" dur={`${p.dur}s`} repeatCount="indefinite" begin={`${i * 0.8}s`} />
+                </circle>
+              ))}
+
+              {/* Left side - 9 curved connections from Data Sources to MW Engine */}
               {[115, 145, 175, 205, 235, 265, 295, 325, 355].map((y, i) => (
                 <g key={`left-conn-${i}`}>
-                  <line
-                    x1="220"
-                    y1={y}
-                    x2="500"
-                    y2="235"
+                  {/* Curved bezier path */}
+                  <path
+                    d={`M 220,${y} C 340,${y} 420,235 500,235`}
                     stroke="url(#inputGradient)"
                     strokeWidth="1.5"
-                    strokeDasharray="6 4"
+                    fill="none"
+                    opacity="0.6"
                   />
-                  {/* Main dot with glow */}
-                  <circle r="5" fill="#22D3EE" filter="url(#dotGlow)">
-                    <animate
-                      attributeName="cx"
-                      values={`220;500;220`}
-                      dur={`${10 + i * 0.5}s`}
+                  {/* Lead particle with comet glow */}
+                  <circle r="5" fill="url(#cyanComet)" filter="url(#dotGlow)">
+                    <animateMotion
+                      dur={`${3 + i * 0.3}s`}
                       repeatCount="indefinite"
+                      begin={`${i * 0.4}s`}
+                      path={`M 220,${y} C 340,${y} 420,235 500,235`}
                     />
-                    <animate
-                      attributeName="cy"
-                      values={`${y};235;${y}`}
-                      dur={`${10 + i * 0.5}s`}
-                      repeatCount="indefinite"
-                    />
+                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.9;1" dur={`${3 + i * 0.3}s`} repeatCount="indefinite" begin={`${i * 0.4}s`} />
                   </circle>
-                  {/* Trailing particle 1 */}
-                  <circle r="2.5" fill="#22D3EE" opacity="0.5">
-                    <animate
-                      attributeName="cx"
-                      values={`220;500;220`}
-                      dur={`${10 + i * 0.5}s`}
+                  {/* Trail particle 1 */}
+                  <circle r="3" fill="#22D3EE" opacity="0.4">
+                    <animateMotion
+                      dur={`${3 + i * 0.3}s`}
                       repeatCount="indefinite"
-                      begin="-0.3s"
+                      begin={`${i * 0.4 + 0.12}s`}
+                      path={`M 220,${y} C 340,${y} 420,235 500,235`}
                     />
-                    <animate
-                      attributeName="cy"
-                      values={`${y};235;${y}`}
-                      dur={`${10 + i * 0.5}s`}
-                      repeatCount="indefinite"
-                      begin="-0.3s"
-                    />
+                    <animate attributeName="opacity" values="0;0.4;0.4;0" keyTimes="0;0.05;0.9;1" dur={`${3 + i * 0.3}s`} repeatCount="indefinite" begin={`${i * 0.4 + 0.12}s`} />
                   </circle>
-                  {/* Trailing particle 2 */}
-                  <circle r="1.5" fill="#22D3EE" opacity="0.3">
-                    <animate
-                      attributeName="cx"
-                      values={`220;500;220`}
-                      dur={`${10 + i * 0.5}s`}
+                  {/* Trail particle 2 */}
+                  <circle r="1.5" fill="#22D3EE" opacity="0.2">
+                    <animateMotion
+                      dur={`${3 + i * 0.3}s`}
                       repeatCount="indefinite"
-                      begin="-0.6s"
+                      begin={`${i * 0.4 + 0.24}s`}
+                      path={`M 220,${y} C 340,${y} 420,235 500,235`}
                     />
-                    <animate
-                      attributeName="cy"
-                      values={`${y};235;${y}`}
-                      dur={`${10 + i * 0.5}s`}
-                      repeatCount="indefinite"
-                      begin="-0.6s"
-                    />
+                    <animate attributeName="opacity" values="0;0.2;0.2;0" keyTimes="0;0.05;0.9;1" dur={`${3 + i * 0.3}s`} repeatCount="indefinite" begin={`${i * 0.4 + 0.24}s`} />
                   </circle>
                 </g>
               ))}
               
-              {/* Right side - 9 connection lines from MW Engine center to Outputs */}
+              {/* Right side - 9 curved connections from MW Engine to Outputs */}
               {[115, 145, 175, 205, 235, 265, 295, 325, 355].map((y, i) => (
                 <g key={`right-conn-${i}`}>
-                  <line
-                    x1="500"
-                    y1="235"
-                    x2="780"
-                    y2={y}
+                  {/* Curved bezier path */}
+                  <path
+                    d={`M 500,235 C 580,235 660,${y} 780,${y}`}
                     stroke="url(#outputGradient)"
                     strokeWidth="1.5"
-                    strokeDasharray="6 4"
+                    fill="none"
+                    opacity="0.6"
                   />
-                  {/* Main dot with glow */}
-                  <circle r="5" fill="#A855F7" filter="url(#dotGlow)">
-                    <animate
-                      attributeName="cx"
-                      values={`500;780;500`}
-                      dur={`${10 + i * 0.5}s`}
+                  {/* Lead particle with comet glow */}
+                  <circle r="5" fill="url(#purpleComet)" filter="url(#dotGlow)">
+                    <animateMotion
+                      dur={`${3 + i * 0.3}s`}
                       repeatCount="indefinite"
-                      begin={`${i * 0.6}s`}
+                      begin={`${i * 0.4 + 1.5}s`}
+                      path={`M 500,235 C 580,235 660,${y} 780,${y}`}
                     />
-                    <animate
-                      attributeName="cy"
-                      values={`235;${y};235`}
-                      dur={`${10 + i * 0.5}s`}
-                      repeatCount="indefinite"
-                      begin={`${i * 0.6}s`}
-                    />
+                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.9;1" dur={`${3 + i * 0.3}s`} repeatCount="indefinite" begin={`${i * 0.4 + 1.5}s`} />
                   </circle>
-                  {/* Trailing particle 1 */}
-                  <circle r="2.5" fill="#A855F7" opacity="0.5">
-                    <animate
-                      attributeName="cx"
-                      values={`500;780;500`}
-                      dur={`${10 + i * 0.5}s`}
+                  {/* Trail particle 1 */}
+                  <circle r="3" fill="#A855F7" opacity="0.4">
+                    <animateMotion
+                      dur={`${3 + i * 0.3}s`}
                       repeatCount="indefinite"
-                      begin={`${i * 0.6 - 0.3}s`}
+                      begin={`${i * 0.4 + 1.62}s`}
+                      path={`M 500,235 C 580,235 660,${y} 780,${y}`}
                     />
-                    <animate
-                      attributeName="cy"
-                      values={`235;${y};235`}
-                      dur={`${10 + i * 0.5}s`}
-                      repeatCount="indefinite"
-                      begin={`${i * 0.6 - 0.3}s`}
-                    />
+                    <animate attributeName="opacity" values="0;0.4;0.4;0" keyTimes="0;0.05;0.9;1" dur={`${3 + i * 0.3}s`} repeatCount="indefinite" begin={`${i * 0.4 + 1.62}s`} />
                   </circle>
-                  {/* Trailing particle 2 */}
-                  <circle r="1.5" fill="#A855F7" opacity="0.3">
-                    <animate
-                      attributeName="cx"
-                      values={`500;780;500`}
-                      dur={`${10 + i * 0.5}s`}
+                  {/* Trail particle 2 */}
+                  <circle r="1.5" fill="#A855F7" opacity="0.2">
+                    <animateMotion
+                      dur={`${3 + i * 0.3}s`}
                       repeatCount="indefinite"
-                      begin={`${i * 0.6 - 0.6}s`}
+                      begin={`${i * 0.4 + 1.74}s`}
+                      path={`M 500,235 C 580,235 660,${y} 780,${y}`}
                     />
-                    <animate
-                      attributeName="cy"
-                      values={`235;${y};235`}
-                      dur={`${10 + i * 0.5}s`}
-                      repeatCount="indefinite"
-                      begin={`${i * 0.6 - 0.6}s`}
-                    />
+                    <animate attributeName="opacity" values="0;0.2;0.2;0" keyTimes="0;0.05;0.9;1" dur={`${3 + i * 0.3}s`} repeatCount="indefinite" begin={`${i * 0.4 + 1.74}s`} />
                   </circle>
                 </g>
               ))}
@@ -458,25 +480,46 @@ export default function PlatformPageClient() {
 
               {/* Central Hub with MW Engine */}
               <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
+                initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.9 }}
+                transition={{ type: "spring", stiffness: 100, damping: 15, delay: 0.9 }}
                 className="relative py-4"
               >
                 {/* SVG Container for Hub */}
-                <div className="relative flex items-center justify-center" style={{ height: '120px' }}>
-                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 120">
-                    {/* Outer pulse rings */}
+                <div className="relative flex items-center justify-center" style={{ height: '160px' }}>
+                  <svg className="absolute inset-0 w-full h-full" viewBox="0 0 600 160">
                     {isClient && (
                       <>
-                        <circle cx="300" cy="60" r="35" fill="none" stroke="#3B82F6" strokeWidth="1" opacity="0.3">
-                          <animate attributeName="r" values="35;55;35" dur="2s" repeatCount="indefinite" />
-                          <animate attributeName="opacity" values="0.3;0;0.3" dur="2s" repeatCount="indefinite" />
+                        {/* Rotating dashed ring */}
+                        <circle cx="300" cy="80" r="52" fill="none" stroke="#3B82F6" strokeWidth="1.5" strokeDasharray="10 6" opacity="0.25">
+                          <animateTransform attributeName="transform" type="rotate" values="0 300 80;360 300 80" dur="20s" repeatCount="indefinite" />
                         </circle>
-                        <circle cx="300" cy="60" r="35" fill="none" stroke="#3B82F6" strokeWidth="1" opacity="0.2">
-                          <animate attributeName="r" values="35;65;35" dur="2s" repeatCount="indefinite" begin="0.5s" />
-                          <animate attributeName="opacity" values="0.2;0;0.2" dur="2s" repeatCount="indefinite" begin="0.5s" />
+                        {/* Counter-rotating dotted ring */}
+                        <circle cx="300" cy="80" r="62" fill="none" stroke="#8B5CF6" strokeWidth="1" strokeDasharray="4 10" opacity="0.2">
+                          <animateTransform attributeName="transform" type="rotate" values="360 300 80;0 300 80" dur="30s" repeatCount="indefinite" />
                         </circle>
+                        {/* Pulse rings */}
+                        <circle cx="300" cy="80" r="42" fill="none" stroke="#3B82F6" strokeWidth="1.5" opacity="0.3">
+                          <animate attributeName="r" values="42;62;42" dur="2.5s" repeatCount="indefinite" />
+                          <animate attributeName="opacity" values="0.3;0;0.3" dur="2.5s" repeatCount="indefinite" />
+                        </circle>
+                        <circle cx="300" cy="80" r="42" fill="none" stroke="#8B5CF6" strokeWidth="1" opacity="0.2">
+                          <animate attributeName="r" values="42;72;42" dur="2.5s" repeatCount="indefinite" begin="0.8s" />
+                          <animate attributeName="opacity" values="0.2;0;0.2" dur="2.5s" repeatCount="indefinite" begin="0.8s" />
+                        </circle>
+                        <circle cx="300" cy="80" r="42" fill="none" stroke="#22D3EE" strokeWidth="0.8" opacity="0.15">
+                          <animate attributeName="r" values="42;82;42" dur="2.5s" repeatCount="indefinite" begin="1.6s" />
+                          <animate attributeName="opacity" values="0.15;0;0.15" dur="2.5s" repeatCount="indefinite" begin="1.6s" />
+                        </circle>
+                        {/* Orbital dots */}
+                        <g>
+                          <animateTransform attributeName="transform" type="rotate" values="0 300 80;360 300 80" dur="6s" repeatCount="indefinite" />
+                          <circle cx="356" cy="80" r="2.5" fill="#22D3EE" opacity="0.8" />
+                        </g>
+                        <g>
+                          <animateTransform attributeName="transform" type="rotate" values="360 300 80;0 300 80" dur="9s" repeatCount="indefinite" />
+                          <circle cx="300" cy="22" r="2" fill="#A855F7" opacity="0.6" />
+                        </g>
                       </>
                     )}
                   </svg>
@@ -484,13 +527,13 @@ export default function PlatformPageClient() {
                   {/* Central Hub Circle */}
                   <motion.div
                     className="relative z-10"
-                    animate={{ scale: [1, 1.02, 1] }}
-                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    animate={{ scale: [1, 1.04, 1] }}
+                    transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
                   >
-                    <div className="w-20 h-20 rounded-full bg-blue-600 flex items-center justify-center shadow-xl border-4 border-white">
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 flex items-center justify-center shadow-2xl border-4 border-white/90 ring-2 ring-blue-400/20">
                       <div className="text-center">
-                        <img src="/assets/logo/MW-logo-web.svg" alt="MW" className="w-8 h-8 mx-auto brightness-0 invert" />
-                        <span className="text-[9px] text-white font-semibold mt-0.5 block">ENGINE</span>
+                        <img src="/assets/logo/MW-logo-web.svg" alt="MW" className="w-10 h-10 mx-auto brightness-0 invert" />
+                        <span className="text-[10px] text-white/90 font-bold mt-0.5 block tracking-wider">ENGINE</span>
                       </div>
                     </div>
                   </motion.div>
