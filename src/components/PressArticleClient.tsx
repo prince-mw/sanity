@@ -133,8 +133,6 @@ export default function PressArticleClient({ article }: PressArticleClientProps)
                 {formatCategory(article.category)}
               </span>
               <span className="text-mw-gray-500">{formatDate(article.publishedAt)}</span>
-              <span className="text-mw-gray-400">•</span>
-              <span className="text-mw-gray-500">{article.readTime || '3 min read'}</span>
             </div>
             
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-mw-gray-900 mb-6 leading-tight">

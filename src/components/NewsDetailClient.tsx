@@ -91,12 +91,6 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
                   </svg>
                   {release.date}
                 </span>
-                <span className="flex items-center gap-1">
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {release.readTime}
-                </span>
               </div>
             </div>
           </motion.div>
@@ -256,9 +250,8 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
                         {news.title}
                       </h3>
                       <p className="text-mw-gray-600 mb-4 line-clamp-2">{news.excerpt}</p>
-                      <div className="flex items-center justify-between pt-4 border-t border-mw-gray-200">
+                      <div className="flex items-center pt-4 border-t border-mw-gray-200">
                         <span className="text-sm text-mw-gray-500">{news.date}</span>
-                        <span className="text-sm text-mw-gray-500">{news.readTime}</span>
                       </div>
                     </div>
                   </Link>

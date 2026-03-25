@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
 import { getDisplayIntegrations } from '@/data/default-integrations'
 import type { SanityProduct } from '@/sanity/lib/fetch'
@@ -269,10 +270,10 @@ export default function MWStudio({ caseStudies = [], product }: MWStudioClientPr
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="flex gap-4"
               >
-                <button className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-cyan-400 hover:to-blue-400 transition-all shadow-2xl hover:shadow-cyan-500/50 inline-flex items-center gap-2">
+                <Link href="/contact" className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-cyan-400 hover:to-blue-400 transition-all shadow-2xl hover:shadow-cyan-500/50 inline-flex items-center gap-2">
                   Get Started Free
                   <BoltIcon className="w-5 h-5" />
-                </button>
+                </Link>
               </motion.div>
             </motion.div>
 
@@ -470,14 +471,6 @@ export default function MWStudio({ caseStudies = [], product }: MWStudioClientPr
                     <p className="text-sm text-white/90">{template.description}</p>
                   </div>
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity">
-                    <div className="flex gap-3">
-                      <span className="text-sm font-semibold flex items-center gap-2 bg-white/20 px-4 py-2 rounded-lg">
-                        Preview
-                      </span>
-                      <span className="text-sm font-semibold flex items-center gap-2 bg-white text-gray-900 px-4 py-2 rounded-lg">
-                        Use Template
-                      </span>
-                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -686,25 +679,6 @@ export default function MWStudio({ caseStudies = [], product }: MWStudioClientPr
               Join 1,200+ media owners using MW Studio to create professional 
               OOH campaigns without designers or developers.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-white text-cyan-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-colors shadow-2xl inline-flex items-center justify-center gap-2"
-              >
-                Start Free Trial
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </motion.button>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-cyan-600 transition-colors"
-              >
-                Browse Templates
-              </motion.button>
-            </div>
             <p className="text-sm text-cyan-100 mt-6">✓ 500+ templates  ✓ Drag & drop builder  ✓ One-click deploy</p>
           </motion.div>
         </div>

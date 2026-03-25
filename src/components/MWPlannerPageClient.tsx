@@ -673,7 +673,6 @@ export default function MWPlannerPageClient({ latestBlogPosts, product }: MWPlan
                       <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
                         {resource.category}
                       </span>
-                      <span className="text-gray-400 text-xs">{resource.readTime}</span>
                     </div>
                     <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                       {resource.title}

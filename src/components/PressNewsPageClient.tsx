@@ -146,8 +146,6 @@ export default function PressNewsPageClient({ pressReleases, mediaFeatures }: Pr
                       {release.category}
                     </span>
                     <span className="text-mw-gray-500 text-sm">{release.date}</span>
-                    <span className="text-mw-gray-400 text-sm">•</span>
-                    <span className="text-mw-gray-500 text-sm">{release.readTime}</span>
                   </div>
                   <h3 className="text-xl font-bold text-mw-gray-900 mb-3 hover:text-mw-blue-600 transition-colors">
                     {release.title}
