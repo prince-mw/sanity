@@ -100,3 +100,9 @@ html {
     background-position: -200% 0;
   }
 }
+
+/* SVG path draw-in animation */
+@keyframes drawPath {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}

@@ -5,13 +5,15 @@ import { useEffect, useState } from "react";
 import { useLocale } from "@/i18n/LocaleContext";
 
 // Data Source Card Component
-const DataSourceCard = ({ icon, label, index }: { icon: React.ReactNode; label: string; index: number }) => (
+const DataSourceCard = ({ icon, label, index, onHoverStart, onHoverEnd }: { icon: React.ReactNode; label: string; index: number; onHoverStart?: () => void; onHoverEnd?: () => void }) => (
   <motion.div
     initial={{ opacity: 0, x: -30 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
     transition={{ type: "spring", stiffness: 120, damping: 14, delay: index * 0.08 }}
     className="flex items-center gap-2 relative w-full"
+    onMouseEnter={onHoverStart}
+    onMouseLeave={onHoverEnd}
   >
     <div className="flex items-center gap-2 bg-white rounded-md px-3 py-1.5 shadow-sm border border-gray-200 hover:border-cyan-400 hover:shadow-md transition-all cursor-default w-full">
       <div className="text-cyan-500 text-sm">{icon}</div>
@@ -21,13 +23,15 @@ const DataSourceCard = ({ icon, label, index }: { icon: React.ReactNode; label: 
 );
 
 // Output Card Component
-const OutputCard = ({ icon, label, index }: { icon: React.ReactNode; label: string; index: number }) => (
+const OutputCard = ({ icon, label, index, onHoverStart, onHoverEnd }: { icon: React.ReactNode; label: string; index: number; onHoverStart?: () => void; onHoverEnd?: () => void }) => (
   <motion.div
     initial={{ opacity: 0, x: 30 }}
     whileInView={{ opacity: 1, x: 0 }}
     viewport={{ once: true }}
     transition={{ type: "spring", stiffness: 120, damping: 14, delay: 0.6 + index * 0.08 }}
     className="flex items-center gap-2 relative w-full"
+    onMouseEnter={onHoverStart}
+    onMouseLeave={onHoverEnd}
   >
     <div className="flex items-center gap-2 bg-white rounded-md px-3 py-1.5 shadow-sm border border-gray-200 hover:border-violet-400 hover:shadow-md transition-all cursor-default w-full">
       <div className="text-sm" style={{ color: '#8B5CF6' }}>{icon}</div>
@@ -97,6 +101,8 @@ const ProductCard = ({ icon, label, href, index }: { icon: React.ReactNode; labe
 
 export default function PlatformEcosystem() {
   const [isClient, setIsClient] = useState(false);
+  const [hoveredInput, setHoveredInput] = useState<number | null>(null);
+  const [hoveredOutput, setHoveredOutput] = useState<number | null>(null);
   const { t } = useLocale();
 
   useEffect(() => {
@@ -372,13 +378,22 @@ export default function PlatformEcosystem() {
 
               {/* Left side - 9 curved connections from Data Sources to MW Engine */}
               {[115, 145, 175, 205, 235, 265, 295, 325, 355].map((y, i) => (
-                <g key={`left-conn-${i}`}>
-                  {/* Curved bezier path */}
+                <g key={`left-conn-${i}`} style={{
+                  opacity: hoveredInput !== null ? (hoveredInput === i ? 1 : 0.12) : 1,
+                  transition: 'opacity 0.3s ease',
+                }}>
+                  {/* Curved bezier path with draw animation */}
                   <path
                     d={`M 220,${y} C 340,${y} 420,235 500,235`}
                     stroke="url(#ecosystemInputGradient)"
-                    strokeWidth="1.5"
                     fill="none"
+                    pathLength="1"
+                    style={{
+                      strokeWidth: hoveredInput === i ? 2.5 : 1.5,
+                      strokeDasharray: 1,
+                      animation: `drawPath 0.8s ease-out ${0.3 + i * 0.1}s both`,
+                      transition: 'stroke-width 0.3s ease',
+                    }}
                     opacity="0.6"
                   />
                   {/* Lead particle with comet glow */}
@@ -416,13 +431,22 @@ export default function PlatformEcosystem() {
               
               {/* Right side - 9 curved connections from MW Engine to Outputs */}
               {[115, 145, 175, 205, 235, 265, 295, 325, 355].map((y, i) => (
-                <g key={`right-conn-${i}`}>
-                  {/* Curved bezier path */}
+                <g key={`right-conn-${i}`} style={{
+                  opacity: hoveredOutput !== null ? (hoveredOutput === i ? 1 : 0.12) : 1,
+                  transition: 'opacity 0.3s ease',
+                }}>
+                  {/* Curved bezier path with draw animation */}
                   <path
                     d={`M 500,235 C 580,235 660,${y} 780,${y}`}
                     stroke="url(#ecosystemOutputGradient)"
-                    strokeWidth="1.5"
                     fill="none"
+                    pathLength="1"
+                    style={{
+                      strokeWidth: hoveredOutput === i ? 2.5 : 1.5,
+                      strokeDasharray: 1,
+                      animation: `drawPath 0.8s ease-out ${1.2 + i * 0.1}s both`,
+                      transition: 'stroke-width 0.3s ease',
+                    }}
                     opacity="0.6"
                   />
                   {/* Lead particle with comet glow */}
@@ -475,7 +499,10 @@ export default function PlatformEcosystem() {
                 Data Sources
               </motion.div>
               {dataSources.map((source, index) => (
-                <DataSourceCard key={source.label} {...source} index={index} />
+                <DataSourceCard key={source.label} {...source} index={index}
+                  onHoverStart={() => setHoveredInput(index)}
+                  onHoverEnd={() => setHoveredInput(null)}
+                />
               ))}
             </div>
 
@@ -672,7 +699,10 @@ export default function PlatformEcosystem() {
               <div className="relative">
                 {outputs.map((output, index) => (
                   <div key={output.label} className="mb-2">
-                    <OutputCard {...output} index={index} />
+                    <OutputCard {...output} index={index}
+                      onHoverStart={() => setHoveredOutput(index)}
+                      onHoverEnd={() => setHoveredOutput(null)}
+                    />
                   </div>
                 ))}
               </div>
