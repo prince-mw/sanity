@@ -3,7 +3,7 @@ import { client, urlFor } from './client'
 // Safe fetch wrapper - prevents page crashes on Sanity network errors
 async function safeFetch<T>(query: string, params?: Record<string, unknown>, fallback?: T): Promise<T> {
   try {
-    return await client.fetch(query, params)
+    return await client.fetch(query, params, { next: { tags: ['sanity'] } })
   } catch (error) {
     console.error('[Sanity Fetch Error]', error)
     return (fallback !== undefined ? fallback : null) as T

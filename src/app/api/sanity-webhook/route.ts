@@ -50,8 +50,11 @@ interface SanityWebhookPayload {
 
 export async function POST(request: NextRequest) {
   try {
-    // Verify webhook secret
-    const signature = request.headers.get('sanity-webhook-signature')
+    // Verify webhook secret - check multiple header locations for compatibility
+    // Sanity webhooks can send secret via custom header or query param depending on config
+    const signature = request.headers.get('sanity-webhook-signature') 
+      || request.headers.get('x-webhook-secret')
+      || request.nextUrl.searchParams.get('secret')
     
     if (!WEBHOOK_SECRET) {
       console.error('[Sanity Webhook] SANITY_WEBHOOK_SECRET not configured')
@@ -61,7 +64,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (signature !== WEBHOOK_SECRET) {
+    if (!signature || signature !== WEBHOOK_SECRET) {
+      console.error('[Sanity Webhook] Invalid signature received')
       return NextResponse.json(
         { error: 'Invalid webhook signature' },
         { status: 401 }

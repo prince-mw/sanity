@@ -1,4 +1,4 @@
-import { client } from './client'
+import { client, previewClient } from './client'
 
 // Blog Posts Queries
 export const blogPostsQuery = `
@@ -452,7 +452,8 @@ export async function getEventBySlug(slug: string) {
 
 export async function getLandingPageBySlug(slug: string, preview: boolean = false) {
   const query = preview ? landingPagePreviewBySlugQuery : landingPageBySlugQuery
-  return client.fetch(query, { slug })
+  const queryClient = preview ? previewClient : client
+  return queryClient.fetch(query, { slug })
 }
 
 export async function getLandingPages() {

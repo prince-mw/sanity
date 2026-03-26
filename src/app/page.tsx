@@ -16,6 +16,8 @@ const CaseStudiesSection = dynamic(() => import("../components/CaseStudiesSectio
 const ContactForm = dynamic(() => import("../components/ContactForm"));
 import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm } from "@/sanity/lib/fetch";
 
+export const revalidate = 60;
+
 const defaultMeta = {
   title: "Moving Walls - Connected Media Platform for OOH Advertising",
   description: "Transform your advertising with Moving Walls' AI-powered OOH platform. Access 2.8B+ screens, real-time analytics, and programmatic buying across 30+ countries. Book a demo today.",
