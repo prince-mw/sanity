@@ -10,7 +10,7 @@ import Analytics from "@/components/Analytics";
 import PreviewBanner from "@/components/PreviewBanner";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
-import { getAllActiveZohoForms, getFooterContent } from "@/sanity/lib/fetch";
+import { getAllActiveZohoForms, getFooterContent, getAnalyticsConfig } from "@/sanity/lib/fetch";
 import "./globals.css";
 
 const poppins = Poppins({
@@ -142,13 +142,21 @@ export default async function RootLayout({
   const { isEnabled: isPreview } = await draftMode();
   const allForms = await getAllActiveZohoForms();
   const footerContent = await getFooterContent();
+  const analyticsConfig = await getAnalyticsConfig();
 
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="preload" href="/assets/videos/SequenceBG.mp4" as="video" type="video/mp4" />
+        <link rel="preconnect" href="https://cdn.sanity.io" />
+        <link rel="preconnect" href="https://u10im6di.api.sanity.io" />
+        <link rel="dns-prefetch" href="https://cdn.sanity.io" />
+        <link rel="dns-prefetch" href="https://u10im6di.api.sanity.io" />
+      </head>
       <body className={`${poppins.variable} font-sans antialiased bg-white text-mw-gray-900`}>
         {/* Analytics & Tracking - Managed via Sanity CMS */}
         <Suspense fallback={null}>
-          <Analytics />
+          <Analytics config={analyticsConfig} />
         </Suspense>
         
         {/* Structured Data - Organization */}

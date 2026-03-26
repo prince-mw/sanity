@@ -101,6 +101,7 @@ export default function CaseStudiesSection({ initialCaseStudies = [] }: CaseStud
                   <Link 
                     href={`/case-studies/${study.slug.current}`}
                     className="inline-flex items-center gap-2 text-mw-blue-600 font-semibold text-sm group-hover:gap-3 transition-all duration-300"
+                    aria-label={`Read more about ${study.title}`}
                   >
                     Read More
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

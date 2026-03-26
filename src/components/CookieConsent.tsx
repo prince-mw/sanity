@@ -114,7 +114,7 @@ export default function CookieConsent() {
                       <div className="flex-1">
                         <p className="text-gray-600 text-sm">
                           We use cookies to enhance your experience.{' '}
-                          <Link href="/cookies" className="text-blue-600 hover:underline">Learn more</Link>
+                          <Link href="/cookies" className="text-blue-600 hover:underline" aria-label="Learn more about our cookie policy">Learn more</Link>
                         </p>
                       </div>
 

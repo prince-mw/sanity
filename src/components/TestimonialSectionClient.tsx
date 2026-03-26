@@ -275,13 +275,17 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`transition-all duration-300 ${
-                  currentIndex === index
-                    ? "w-8 h-3 bg-mw-blue-600 rounded-full"
-                    : "w-3 h-3 bg-mw-gray-300 rounded-full hover:bg-mw-blue-400"
-                }`}
+                className="p-3 -m-3 flex items-center justify-center"
                 aria-label={`Go to slide ${index + 1}`}
-              />
+              >
+                <span
+                  className={`block transition-all duration-300 rounded-full ${
+                    currentIndex === index
+                      ? "w-8 h-3 bg-mw-blue-600"
+                      : "w-3 h-3 bg-mw-gray-300 hover:bg-mw-blue-400"
+                  }`}
+                />
+              </button>
             ))}
           </div>
 

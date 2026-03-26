@@ -365,6 +365,7 @@ export default function Footer({ content }: FooterProps) {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="ml-0 sm:ml-4 px-6 py-2.5 bg-white text-emerald-600 font-semibold rounded-[6px] hover:bg-lime-50 transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(163,230,53,0.4)] flex items-center gap-2 group"
+                  aria-label={`${movingHeartsCtaText} about ${movingHeartsTitle}`}
                 >
                   {movingHeartsCtaText}
                   <svg 

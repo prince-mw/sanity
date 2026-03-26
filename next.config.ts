@@ -47,6 +47,16 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      // Videos - Long-term cache
+      {
+        source: '/:path*.(mp4|webm|ogg)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
       // Fonts - Long-term cache
       {
         source: '/:path*.(woff|woff2|ttf|otf|eot)',

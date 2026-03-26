@@ -1,16 +1,19 @@
 import { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Hero from "../components/Hero";
 import TrustBar from "../components/TrustBar";
 import AsianBornGlobal from "../components/AsianBornGlobal";
 import Services from "../components/Services";
 import Clients from "../components/Clients";
-import PlatformEcosystem from "../components/PlatformEcosystem";
-import CustomerLogos from "../components/CustomerLogos";
 import TestimonialSection from "../components/TestimonialSection";
-import About from "../components/About";
-import Newsletter from "../components/Newsletter";
-import CaseStudiesSection from "../components/CaseStudiesSection";
-import ContactForm from "../components/ContactForm";
+
+// Lazy-load below-fold client components to reduce initial bundle size and TBT
+const PlatformEcosystem = dynamic(() => import("../components/PlatformEcosystem"));
+const CustomerLogos = dynamic(() => import("../components/CustomerLogos"));
+const About = dynamic(() => import("../components/About"));
+const Newsletter = dynamic(() => import("../components/Newsletter"));
+const CaseStudiesSection = dynamic(() => import("../components/CaseStudiesSection"));
+const ContactForm = dynamic(() => import("../components/ContactForm"));
 import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm } from "@/sanity/lib/fetch";
 
 const defaultMeta = {

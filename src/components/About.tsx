@@ -90,7 +90,7 @@ export default function About() {
                 { label: t('landingPage.about.features.innovation.label'), desc: t('landingPage.about.features.innovation.desc') },
               ].map((item, index) => (
                 <div key={index}>
-                  <h4 className="text-mw-gray-900 font-semibold mb-1">{item.label}</h4>
+                  <h3 className="text-mw-gray-900 font-semibold mb-1">{item.label}</h3>
                   <p className="text-mw-gray-500 text-sm">{item.desc}</p>
                 </div>
               ))}
