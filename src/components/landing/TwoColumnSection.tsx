@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { CTAButton } from "../CTAButton";
 import { getBackgroundClasses, getButtonClasses, type BackgroundColor } from "./utils";
 import { PortableText } from "@portabletext/react";
 
@@ -53,9 +53,9 @@ export function TwoColumnSection({
             )}
 
             {ctaText && ctaLink && (
-              <Link href={ctaLink} className={getButtonClasses('primary', isDark)}>
+              <CTAButton href={ctaLink} className={getButtonClasses('primary', isDark)}>
                 {ctaText}
-              </Link>
+              </CTAButton>
             )}
           </motion.div>
 

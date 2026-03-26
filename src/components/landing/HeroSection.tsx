@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
-import Link from "next/link";
+import { CTAButton } from "../CTAButton";
 import { getHeightClasses, getAlignmentClasses, getButtonClasses, parseVideoUrl } from "./utils";
 
 interface HeroSectionProps {
@@ -95,20 +95,20 @@ export function HeroSection({
           {(ctaText || secondaryCtaText) && (
             <div className={`flex flex-wrap gap-4 ${alignment === 'center' ? 'justify-center' : alignment === 'right' ? 'justify-end' : ''}`}>
               {ctaText && ctaLink && (
-                <Link 
+                <CTAButton 
                   href={ctaLink}
                   className={getButtonClasses('primary', true)}
                 >
                   {ctaText}
-                </Link>
+                </CTAButton>
               )}
               {secondaryCtaText && secondaryCtaLink && (
-                <Link 
+                <CTAButton 
                   href={secondaryCtaLink}
                   className={getButtonClasses('secondary', true)}
                 >
                   {secondaryCtaText}
-                </Link>
+                </CTAButton>
               )}
             </div>
           )}

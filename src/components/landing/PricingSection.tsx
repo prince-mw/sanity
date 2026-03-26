@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Link from "next/link";
+import { CTAButton } from "../CTAButton";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
 
 interface PricingPlan {
@@ -152,7 +152,7 @@ export function PricingSection({
 
               {/* CTA Button */}
               {plan.ctaText && plan.ctaLink && (
-                <Link
+                <CTAButton
                   href={plan.ctaLink}
                   className={`block w-full text-center py-3 px-6 rounded-lg font-semibold transition-colors ${
                     plan.highlighted
@@ -161,7 +161,7 @@ export function PricingSection({
                   }`}
                 >
                   {plan.ctaText}
-                </Link>
+                </CTAButton>
               )}
             </motion.div>
           ))}

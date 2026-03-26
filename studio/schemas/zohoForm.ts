@@ -103,6 +103,12 @@ export default defineType({
           {title: 'Privacy Policy', value: '/privacy'},
           {title: 'Terms of Service', value: '/terms'},
           {title: 'Cookie Policy', value: '/cookies'},
+          // ── Landing Pages ──
+          {title: 'All Landing Pages (/lp/*)', value: '/lp/*'},
+          {title: 'Airport Inventory', value: '/airport-inventory'},
+          {title: 'DOOH Advertising', value: '/dooh-advertising'},
+          {title: 'Programmatic DOOH', value: '/programmatic-dooh'},
+          {title: 'OOH Analytics', value: '/ooh-analytics'},
         ],
       },
       group: 'basic',

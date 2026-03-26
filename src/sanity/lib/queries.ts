@@ -170,6 +170,18 @@ export const landingPageBySlugQuery = `
     title,
     slug,
     isPublished,
+    "zohoForm": zohoForm->{
+      _id,
+      name,
+      formUrl,
+      formType,
+      renderMode,
+      "displayMode": embedSettings.displayMode,
+      "height": embedSettings.height,
+      "width": embedSettings.width,
+      isActive,
+      assignedPages
+    },
     "seo": seo {
       metaTitle,
       metaDescription,
@@ -292,6 +304,18 @@ export const landingPagePreviewBySlugQuery = `
     slug,
     isPublished,
     status,
+    "zohoForm": zohoForm->{
+      _id,
+      name,
+      formUrl,
+      formType,
+      renderMode,
+      "displayMode": embedSettings.displayMode,
+      "height": embedSettings.height,
+      "width": embedSettings.width,
+      isActive,
+      assignedPages
+    },
     "seo": seo {
       metaTitle,
       metaDescription,

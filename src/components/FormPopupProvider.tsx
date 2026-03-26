@@ -58,12 +58,20 @@ export function FormPopupProvider({ children, forms }: FormPopupProviderProps) {
   // Find forms assigned to the current page
   const matchedForms = forms.filter((form) => {
     if (!form.assignedPages || form.assignedPages.length === 0) return false
+    // Landing pages are accessible at both /slug and /lp/slug
+    const pathsToCheck = [pathname]
+    if (pathname.startsWith('/lp/')) {
+      pathsToCheck.push('/' + pathname.slice(4)) // /lp/foo → /foo
+    } else if (pathname !== '/') {
+      pathsToCheck.push('/lp' + pathname) // /foo → /lp/foo
+    }
     return form.assignedPages.some((page) => {
-      // Exact match or wildcard match (e.g., "/blog/*" matches "/blog/anything")
-      if (page === pathname) return true
-      if (page.endsWith('/*')) {
-        const prefix = page.slice(0, -2)
-        return pathname.startsWith(prefix)
+      for (const p of pathsToCheck) {
+        if (page === p) return true
+        if (page.endsWith('/*')) {
+          const prefix = page.slice(0, -2)
+          if (p.startsWith(prefix)) return true
+        }
       }
       return false
     })
