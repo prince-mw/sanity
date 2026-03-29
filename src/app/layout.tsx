@@ -13,6 +13,9 @@ import { FormPopupProvider } from "@/components/FormPopupProvider";
 import { getAllActiveZohoForms, getFooterContent, getAnalyticsConfig } from "@/sanity/lib/fetch";
 import "./globals.css";
 
+// Revalidate layout data (footer, forms, analytics) every hour
+export const revalidate = 3600;
+
 const poppins = Poppins({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
