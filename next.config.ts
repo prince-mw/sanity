@@ -4,6 +4,14 @@ const nextConfig: NextConfig = {
   // Allow middleware to handle trailing slash redirects for CMS redirect rules
   skipTrailingSlashRedirect: true,
 
+  // Pass server-side env vars to SSR/API runtime (required for AWS Amplify)
+  env: {
+    SANITY_WEBHOOK_SECRET: process.env.SANITY_WEBHOOK_SECRET,
+    SANITY_API_TOKEN: process.env.SANITY_API_TOKEN,
+    SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
+    SANITY_PREVIEW_SECRET: process.env.SANITY_PREVIEW_SECRET,
+  },
+
   /* Performance Optimizations */
   images: {
     remotePatterns: [
