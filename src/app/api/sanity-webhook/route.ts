@@ -38,6 +38,11 @@ const typeToPath: Record<string, string[]> = {
   testimonial: ['/'],
   companyPage: ['/about', '/our-story', '/our-journey', '/'],
   timelineEvent: ['/our-journey', '/'],
+  apiReferencePage: ['/api-reference', '/'],
+  communityPage: ['/community', '/'],
+  helpCenterFaq: ['/help-center', '/'],
+  legalPage: ['/privacy', '/terms', '/'],
+  platformConfig: ['/platform', '/'],
 }
 
 interface SanityWebhookPayload {
