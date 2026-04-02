@@ -7,6 +7,8 @@ frontend:
     build:
       commands:
         - env | grep -E '^(SANITY_|NEXT_PUBLIC_SANITY)' >> .env.production
+        - cat .env.production
+        - echo "SANITY_WEBHOOK_SECRET is set = $([ -n \"$SANITY_WEBHOOK_SECRET\" ] && echo YES || echo NO)"
         - npm run build
   artifacts:
     baseDirectory: .next
