@@ -2627,6 +2627,29 @@ export async function getAllIntegrations(): Promise<SanityIntegration[]> {
   return safeFetch(query)
 }
 
+// Partner Integrations Logo
+export interface SanityPartnerIntegrationLogo {
+  _id: string
+  name: string
+  logo: any
+  category: string
+  order?: number
+  isActive?: boolean
+}
+
+export async function getPartnerIntegrationLogos(): Promise<SanityPartnerIntegrationLogo[]> {
+  const query = `
+    *[_type == "partnerIntegrationLogo" && isActive != false] | order(order asc, name asc) {
+      _id,
+      name,
+      logo,
+      category,
+      order
+    }
+  `
+  return safeFetch(query)
+}
+
 export async function getIntegrationsByCategory(category: string): Promise<SanityIntegration[]> {
   const query = `
     *[_type == "integration" && category == $category] | order(order asc) {
@@ -3616,6 +3639,98 @@ export async function getClientPartnersContent(): Promise<ClientPartnersContent 
     return safeFetch(query)
   } catch (error) {
     console.error('Error fetching client partners content:', error)
+    return null
+  }
+}
+
+// ============================================
+// HELP CENTER FAQ TYPES AND QUERIES
+// ============================================
+
+export interface HelpCenterFaq {
+  _id: string
+  category: string
+  question: string
+  answer: string
+  order?: number
+}
+
+export async function getHelpCenterFaqs(): Promise<HelpCenterFaq[]> {
+  try {
+    const query = `
+      *[_type == "helpCenterFaq" && isPublished == true] | order(order asc) {
+        _id,
+        category,
+        question,
+        answer,
+        order
+      }
+    `
+    return safeFetch(query) ?? []
+  } catch (error) {
+    console.error('Error fetching help center FAQs:', error)
+    return []
+  }
+}
+
+export async function getHelpCenterFaqsByCategory(category: string): Promise<HelpCenterFaq[]> {
+  try {
+    const query = `
+      *[_type == "helpCenterFaq" && isPublished == true && category == $category] | order(order asc) {
+        _id,
+        category,
+        question,
+        answer,
+        order
+      }
+    `
+    return safeFetch(query, { category }) ?? []
+  } catch (error) {
+    console.error('Error fetching help center FAQs by category:', error)
+    return []
+  }
+}
+
+// ============================================
+// DOCUMENTATION PAGE TYPES AND QUERIES
+// ============================================
+
+export interface DocumentationEndpoint {
+  method: string
+  endpoint: string
+  description: string
+  params?: string[]
+}
+
+export interface DocumentationSdk {
+  name: string
+  language: string
+  installCommand: string
+  docsUrl?: string
+}
+
+export interface DocumentationPageContent {
+  title: string
+  subtitle?: string
+  endpoints?: DocumentationEndpoint[]
+  sdks?: DocumentationSdk[]
+  ctaTitle?: string
+}
+
+export async function getDocumentationPageContent(): Promise<DocumentationPageContent | null> {
+  try {
+    const query = `
+      *[_type == "apiReferencePage"][0] {
+        title,
+        subtitle,
+        endpoints[] { method, endpoint, description, params },
+        sdks[] { name, language, installCommand, docsUrl },
+        ctaTitle
+      }
+    `
+    return safeFetch(query)
+  } catch (error) {
+    console.error('Error fetching documentation page content:', error)
     return null
   }
 }

@@ -5,7 +5,7 @@ import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
-import { getDisplayIntegrations } from '@/data/default-integrations'
+import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from '@/sanity/lib/fetch'
 
 // Custom SVG icons for No-Code Platform
@@ -68,13 +68,14 @@ const ShieldCheckIcon = ({ className }: { className?: string }) => (
 interface MWStudioClientProps {
   caseStudies?: any[]
   product?: SanityProduct | null
+  partnerLogos?: DisplayIntegration[] | null
 }
 
-export default function MWStudio({ caseStudies = [], product }: MWStudioClientProps) {
+export default function MWStudio({ caseStudies = [], product, partnerLogos }: MWStudioClientProps) {
   const [activeMode, setActiveMode] = useState<'marketplace' | 'campaigns'>('marketplace')
-  const integrations = getDisplayIntegrations(product?.integrations)
+  const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
-  const marketplaceFeatures = [
+  const defaultMarketplaceFeatures = [
     {
       icon: GlobeIcon,
       title: "Instant Site Launch",
@@ -101,7 +102,17 @@ export default function MWStudio({ caseStudies = [], product }: MWStudioClientPr
     }
   ]
 
-  const campaignFeatures = [
+  // CMS-driven features with fallback
+  const marketplaceFeatures = product?.features?.length
+    ? product.features.slice(0, 4).map((f, i) => ({
+        icon: defaultMarketplaceFeatures[i]?.icon || GlobeIcon,
+        title: f.title,
+        description: f.description || '',
+        metric: f.metric || defaultMarketplaceFeatures[i]?.metric || '',
+      }))
+    : defaultMarketplaceFeatures
+
+  const defaultCampaignFeatures = [
     {
       icon: SquaresIcon,
       title: "Visual Campaign Builder",
@@ -128,12 +139,32 @@ export default function MWStudio({ caseStudies = [], product }: MWStudioClientPr
     }
   ]
 
-  const builderFeatures = [
+  // CMS-driven campaign features via detailPageSections with fallback
+  const campaignCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'campaign')
+  const campaignFeatures = campaignCmsSection?.items?.length
+    ? campaignCmsSection.items.map((f, i) => ({
+        icon: defaultCampaignFeatures[i]?.icon || SquaresIcon,
+        title: f.title,
+        description: f.description || '',
+        metric: defaultCampaignFeatures[i]?.metric || '',
+      }))
+    : defaultCampaignFeatures
+
+  const defaultBuilderFeatures = [
     { name: "Visual Canvas", desc: "Design in real-time with live preview", icon: SquaresIcon },
     { name: "Smart Layouts", desc: "Auto-adjust for any screen size", icon: WrenchIcon },
     { name: "Asset Manager", desc: "Organize media files effortlessly", icon: CubeIcon },
     { name: "Version Control", desc: "Track changes and rollback anytime", icon: CodeBracketIcon }
   ]
+
+  const builderCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'builder')
+  const builderFeatures = builderCmsSection?.items?.length
+    ? builderCmsSection.items.map((f, i) => ({
+        name: f.title,
+        desc: f.description || '',
+        icon: defaultBuilderFeatures[i]?.icon || SquaresIcon,
+      }))
+    : defaultBuilderFeatures
 
   const marketplaceTemplates = [
     { type: "Elegant", description: "Premium layout for high-value inventory", color: "from-blue-500 to-cyan-500", badge: "" },
@@ -614,7 +645,7 @@ export default function MWStudio({ caseStudies = [], product }: MWStudioClientPr
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.

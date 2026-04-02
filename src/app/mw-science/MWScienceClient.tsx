@@ -4,12 +4,13 @@ import { motion } from "framer-motion"
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
-import { getDisplayIntegrations } from '@/data/default-integrations'
+import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWScienceClientProps {
   caseStudies?: any[]
   product?: SanityProduct | null
+  partnerLogos?: DisplayIntegration[] | null
 }
 
 // Custom SVG icons
@@ -46,14 +47,14 @@ const CheckIcon = ({ className }: { className?: string }) => (
 
 
 
-export default function MWSciencePage({ caseStudies = [], product }: MWScienceClientProps) {
+export default function MWSciencePage({ caseStudies = [], product, partnerLogos }: MWScienceClientProps) {
   // CMS-driven hero content with fallbacks
   const heroTitle = product?.heroTitle || 'MW Science'
   const heroSubtitle = product?.heroSubtitle || 'AI-Powered Audience Intelligence'
   const heroDescription = product?.description || 'Transform data into strategic advantage with machine learning models that deliver'
-  const integrations = getDisplayIntegrations(product?.integrations)
+  const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
-  const features = [
+  const defaultFeatures = [
     {
       icon: BeakerIcon,
       title: "Research & Testing",
@@ -76,7 +77,19 @@ export default function MWSciencePage({ caseStudies = [], product }: MWScienceCl
     }
   ]
 
-  const researchCapabilities = [
+  const scienceIconMap: Record<string, React.FC<{ className?: string }>> = {
+    'beaker': BeakerIcon, 'cpu-chip': CpuChipIcon, 'brain': BrainIcon, 'chart-pie': ChartPieIcon, 'check': CheckIcon,
+  }
+
+  const features = product?.features?.length
+    ? product.features.map((f, i) => ({
+        title: f.title,
+        description: f.description || '',
+        icon: scienceIconMap[f.icon || ''] || defaultFeatures[i]?.icon || BeakerIcon,
+      }))
+    : defaultFeatures
+
+  const defaultResearchCapabilities = [
     {
       category: "Audience Research",
       capabilities: ["Behavioral Analysis", "Psychographic Profiling", "Journey Mapping", "Intent Prediction", "Lookalike Modeling", "Churn Analysis"]
@@ -95,7 +108,16 @@ export default function MWSciencePage({ caseStudies = [], product }: MWScienceCl
     }
   ]
 
-  const aiModels = [
+  // CMS-driven research capabilities via detailPageSections with fallback
+  const researchCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'research-capabilities')
+  const researchCapabilities = researchCmsSection?.items?.length
+    ? researchCmsSection.items.map((item, i) => ({
+        category: item.title,
+        capabilities: item.description ? item.description.split(',').map(s => s.trim()) : defaultResearchCapabilities[i]?.capabilities || [],
+      }))
+    : defaultResearchCapabilities
+
+  const defaultAiModels = [
     { name: "Audience Prediction", accuracy: "94.2%", description: "Predicts audience behavior and preferences" },
     { name: "Conversion Forecasting", accuracy: "89.7%", description: "Forecasts conversion probability and timing" },
     { name: "Churn Prevention", accuracy: "91.5%", description: "Identifies at-risk customers before they churn" },
@@ -103,6 +125,16 @@ export default function MWSciencePage({ caseStudies = [], product }: MWScienceCl
     { name: "Budget Allocation", accuracy: "92.8%", description: "Recommends optimal budget distribution" },
     { name: "Trend Detection", accuracy: "88.9%", description: "Identifies emerging market trends and opportunities" }
   ]
+
+  // CMS-driven AI models via detailPageSections with fallback
+  const aiModelsCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'ai-models')
+  const aiModels = aiModelsCmsSection?.items?.length
+    ? aiModelsCmsSection.items.map((item, i) => ({
+        name: item.title,
+        accuracy: defaultAiModels[i]?.accuracy || '90%',
+        description: item.description || '',
+      }))
+    : defaultAiModels
 
   return (
     <div className="min-h-screen bg-white">
@@ -547,7 +579,7 @@ export default function MWSciencePage({ caseStudies = [], product }: MWScienceCl
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.

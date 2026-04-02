@@ -6,12 +6,13 @@ import Link from "next/link"
 import Image from "next/image"
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
-import { getDisplayIntegrations } from '@/data/default-integrations'
+import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWInfluenceClientProps {
   caseStudies?: any[]
   product?: SanityProduct | null
+  partnerLogos?: DisplayIntegration[] | null
 }
 
 // Icons
@@ -169,7 +170,7 @@ function FAQItem({ question, answer, isOpen, onClick }: { question: string; answ
 
 
 
-export default function MWInfluencePage({ caseStudies = [], product }: MWInfluenceClientProps) {
+export default function MWInfluencePage({ caseStudies = [], product, partnerLogos }: MWInfluenceClientProps) {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
 
   // CMS-driven hero content with fallbacks
@@ -178,9 +179,10 @@ export default function MWInfluencePage({ caseStudies = [], product }: MWInfluen
   const heroDescription = product?.description || 'Stop settling for loop-based scheduling and estimated delivery. MW Influence is the intelligent control plane that unifies your inventory management, campaign execution, and yield optimization into one revenue-maximizing engine.'
   const ctaText = product?.ctaText || 'Request a Demo'
   const ctaLink = product?.ctaLink || '/contact'
-  const integrations = getDisplayIntegrations(product?.integrations)
+  const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
-  const problems = [
+  // CMS-driven pain points with hardcoded fallback
+  const defaultProblems = [
     {
       icon: <ClipboardIcon className="w-8 h-8" />,
       title: "Manual Inefficiency",
@@ -207,7 +209,17 @@ export default function MWInfluencePage({ caseStudies = [], product }: MWInfluen
     }
   ]
 
-  const features = [
+  const problems = product?.painPoints?.length
+    ? product.painPoints.map((p, i) => ({
+        icon: defaultProblems[i]?.icon || <ClipboardIcon className="w-8 h-8" />,
+        title: p.title,
+        problem: p.description || '',
+        solution: p.afterState || '',
+      }))
+    : defaultProblems
+
+  // CMS-driven features with hardcoded fallback
+  const defaultFeatures = [
     {
       icon: <MergeIcon className="w-8 h-8" />,
       title: "Unified Ad Serving",
@@ -250,7 +262,16 @@ export default function MWInfluencePage({ caseStudies = [], product }: MWInfluen
     }
   ]
 
-  const workflow = [
+  const features = product?.features?.length
+    ? product.features.map((f, i) => ({
+        icon: defaultFeatures[i]?.icon || <MergeIcon className="w-8 h-8" />,
+        title: f.title,
+        description: f.description || '',
+      }))
+    : defaultFeatures
+
+  // CMS-driven workflow with hardcoded fallback
+  const defaultWorkflow = [
     {
       step: 1,
       icon: <SearchIcon className="w-6 h-6" />,
@@ -283,7 +304,16 @@ export default function MWInfluencePage({ caseStudies = [], product }: MWInfluen
     }
   ]
 
-  const personas = [
+  const workflow = product?.howItWorksSteps?.length
+    ? product.howItWorksSteps.map((s, i) => ({
+        step: s.stepNumber || i + 1,
+        icon: defaultWorkflow[i]?.icon || <SearchIcon className="w-6 h-6" />,
+        title: s.title,
+        description: s.description || '',
+      }))
+    : defaultWorkflow
+
+  const defaultPersonas = [
     {
       icon: <HeadsetIcon className="w-10 h-10" />,
       title: "AdOps Specialists",
@@ -304,7 +334,18 @@ export default function MWInfluencePage({ caseStudies = [], product }: MWInfluen
     }
   ]
 
-  const faqs = [
+  // CMS-driven personas via detailPageSections with fallback
+  const personasCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'personas')
+  const personas = personasCmsSection?.items?.length
+    ? personasCmsSection.items.map((p, i) => ({
+        icon: defaultPersonas[i]?.icon || <HeadsetIcon className="w-10 h-10" />,
+        title: p.title,
+        role: defaultPersonas[i]?.role || '',
+        description: p.description || '',
+      }))
+    : defaultPersonas
+
+  const defaultFaqs = [
     {
       question: "What is a DOOH ad server?",
       answer: "A DOOH (Digital Out-of-Home) ad server is a technology platform that manages, delivers, and optimizes advertising campaigns across digital out-of-home screens such as billboards, transit displays, and retail networks. MW Influence goes beyond basic ad serving to provide unified yield optimization, composable architecture, and enterprise-grade inventory management."
@@ -330,6 +371,15 @@ export default function MWInfluencePage({ caseStudies = [], product }: MWInfluen
       answer: "MW Influence is built for enterprise scale, supporting networks from hundreds to thousands of screens across global markets. Our horizontal scaling architecture grows with your network size."
     }
   ]
+
+  // CMS-driven FAQs via detailPageSections with fallback
+  const faqsCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'faqs')
+  const faqs = faqsCmsSection?.items?.length
+    ? faqsCmsSection.items.map(item => ({
+        question: item.title,
+        answer: item.description || '',
+      }))
+    : defaultFaqs
 
   return (
     <div className="min-h-screen bg-white">
@@ -870,7 +920,7 @@ export default function MWInfluencePage({ caseStudies = [], product }: MWInfluen
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.

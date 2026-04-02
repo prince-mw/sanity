@@ -5,12 +5,13 @@ import { useState } from "react"
 import Image from "next/image"
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
-import { getDisplayIntegrations } from '@/data/default-integrations'
+import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWActivateClientProps {
   caseStudies?: any[]
   product?: SanityProduct | null
+  partnerLogos?: DisplayIntegration[] | null
 }
 
 // Custom SVG icons with sci-fi styling
@@ -52,7 +53,7 @@ const BoltIcon = ({ className }: { className?: string }) => (
 
 
 
-export default function MWActivate({ caseStudies = [], product }: MWActivateClientProps) {
+export default function MWActivate({ caseStudies = [], product, partnerLogos }: MWActivateClientProps) {
   const [activeMode, setActiveMode] = useState<'owners' | 'buyers'>('owners')
   const [systemStatus] = useState({
     online: true,
@@ -67,9 +68,9 @@ export default function MWActivate({ caseStudies = [], product }: MWActivateClie
   const heroDescription = product?.description || 'Launch and optimize campaigns instantly with AI-powered automation that delivers'
   const ctaText = product?.ctaText || 'Book Demo'
   const ctaLink = product?.ctaLink || '/contact'
-  const integrations = getDisplayIntegrations(product?.integrations)
+  const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
-  const ownersFeatures = [
+  const defaultOwnersFeatures = [
     {
       icon: ServerStackIcon,
       title: "Inventory Management System",
@@ -96,7 +97,7 @@ export default function MWActivate({ caseStudies = [], product }: MWActivateClie
     }
   ]
 
-  const buyersFeatures = [
+  const defaultBuyersFeatures = [
     {
       icon: RocketIcon,
       title: "Campaign Launch System",
@@ -122,6 +123,27 @@ export default function MWActivate({ caseStudies = [], product }: MWActivateClie
       metrics: { inventory: "8.4K", response: "<15ms", savings: "23%" }
     }
   ]
+
+  // CMS-driven features via detailPageSections with fallback
+  const ownersCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'owners')
+  const ownersFeatures = ownersCmsSection?.items?.length
+    ? ownersCmsSection.items.map((f, i) => ({
+        icon: defaultOwnersFeatures[i]?.icon || ServerStackIcon,
+        title: f.title,
+        description: f.description || '',
+        metrics: defaultOwnersFeatures[i]?.metrics || {},
+      }))
+    : defaultOwnersFeatures
+
+  const buyersCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'buyers')
+  const buyersFeatures = buyersCmsSection?.items?.length
+    ? buyersCmsSection.items.map((f, i) => ({
+        icon: defaultBuyersFeatures[i]?.icon || RocketIcon,
+        title: f.title,
+        description: f.description || '',
+        metrics: defaultBuyersFeatures[i]?.metrics || {},
+      }))
+    : defaultBuyersFeatures
 
   return (
     <div className="min-h-screen bg-white">
@@ -679,7 +701,7 @@ export default function MWActivate({ caseStudies = [], product }: MWActivateClie
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.

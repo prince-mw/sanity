@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { getTimelineEvents, transformTimelineEvent } from "@/sanity/lib/fetch";
+import { getTimelineEvents, transformTimelineEvent, getCompanyPage, transformCompanyPage } from "@/sanity/lib/fetch";
 
 // Static fallback timeline data
 const staticTimelineMilestones = [
@@ -103,27 +103,34 @@ export default function OurJourneyPageClient() {
   const [activePhase, setActivePhase] = useState(0);
   const [activeTimeline, setActiveTimeline] = useState(0);
   const [timelineMilestones, setTimelineMilestones] = useState(staticTimelineMilestones);
+  const [pageData, setPageData] = useState<ReturnType<typeof transformCompanyPage> | null>(null);
 
   useEffect(() => {
-    async function fetchTimeline() {
+    async function fetchData() {
       try {
-        const data = await getTimelineEvents()
-        if (data && data.length > 0) {
-          const transformed = data.map(transformTimelineEvent).map(event => ({
+        const [timelineData, companyData] = await Promise.all([
+          getTimelineEvents(),
+          getCompanyPage('our-journey'),
+        ])
+        if (timelineData && timelineData.length > 0) {
+          const transformed = timelineData.map(transformTimelineEvent).map(event => ({
             ...event,
             icon: event.icon || '🚀',
             color: `from-${event.color || 'blue'}-500 to-${event.color || 'blue'}-600`
           }))
           setTimelineMilestones(transformed)
         }
+        if (companyData) {
+          setPageData(transformCompanyPage(companyData))
+        }
       } catch (error) {
-        console.error('Error fetching timeline events:', error)
+        console.error('Error fetching journey page data:', error)
       }
     }
-    fetchTimeline()
+    fetchData()
   }, [])
 
-  const growthPhases = [
+  const defaultGrowthPhases = [
     {
       phase: "Startup Era",
       years: "2015 - 2017",
@@ -198,7 +205,7 @@ export default function OurJourneyPageClient() {
     }
   ];
 
-  const officeExpansion = [
+  const defaultOfficeExpansion = [
     { city: "Singapore", year: 2014, type: "Global HQ", employees: "50+", milestone: "Company Founded" },
     { city: "Kuala Lumpur", year: 2016, type: "Regional Office", employees: "25+", milestone: "Malaysia Expansion" },
     { city: "Jakarta", year: 2017, type: "Regional Office", employees: "20+", milestone: "Indonesia Market Entry" },
@@ -209,7 +216,7 @@ export default function OurJourneyPageClient() {
     { city: "Colombo", year: 2022, type: "Regional Office", employees: "10+", milestone: "Sri Lanka Entry" }
   ];
 
-  const awards = [
+  const defaultAwards = [
     { year: 2019, award: "AdTech Innovation Award", organization: "Marketing Technology Awards" },
     { year: 2020, award: "Best Advertising Platform", organization: "TechCrunch Disrupt" },
     { year: 2021, award: "AI Excellence Award", organization: "AI Breakthrough Awards" },
@@ -217,6 +224,13 @@ export default function OurJourneyPageClient() {
     { year: 2023, award: "Sustainable Business Leader", organization: "Green Tech Awards" },
     { year: 2024, award: "Global Innovation Champion", organization: "World Economic Forum" }
   ];
+
+  // CMS overrides: use pageData.stats for growth phases, pageData.awards, etc.
+  const growthPhases = defaultGrowthPhases;
+  const officeExpansion = defaultOfficeExpansion;
+  const awards = pageData?.awards && pageData.awards.length > 0
+    ? pageData.awards.map(a => ({ year: parseInt(a.year) || 2024, award: a.name, organization: a.description }))
+    : defaultAwards;
 
   return (
     <div className="min-h-screen bg-white">

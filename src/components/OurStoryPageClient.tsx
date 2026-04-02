@@ -72,28 +72,19 @@ export default function OurStoryPageClient() {
     return icons[iconName || 'lightning'] || icons.lightning
   }
 
-  const displayValues = [
-    {
-      icon: getValueIcon('lightning'),
-      title: "Innovation First",
-      description: "We constantly push boundaries to deliver cutting-edge advertising solutions that drive real results."
-    },
-    {
-      icon: getValueIcon('shield'),
-      title: "Trust & Transparency",
-      description: "We build lasting partnerships through honest communication and transparent business practices."
-    },
-    {
-      icon: getValueIcon('users'),
-      title: "Client Success",
-      description: "Your success is our success. We're dedicated to delivering measurable results for every campaign."
-    },
-    {
-      icon: getValueIcon('globe'),
-      title: "Global Impact",
-      description: "We're building advertising solutions that work across cultures, markets, and communities worldwide."
-    }
-  ];
+  // CMS-driven values with icon mapping and fallback
+  const displayValues = (pageData?.values && pageData.values.length > 0
+    ? pageData.values.map(v => ({
+        icon: getValueIcon(v.icon),
+        title: v.title,
+        description: v.description,
+      }))
+    : staticValues.map(v => ({
+        icon: getValueIcon(v.icon),
+        title: v.title,
+        description: v.description,
+      }))
+  );
 
   return (
     <div className="min-h-screen bg-white">
@@ -110,13 +101,11 @@ export default function OurStoryPageClient() {
               <span className="text-mw-blue-600 text-sm font-medium">About MovingWalls</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
-              Our Story
-              <span className="text-mw-blue-600 block">Innovation & Growth</span>
+              {pageData?.title || <>Our Story
+              <span className="text-mw-blue-600 block">Innovation & Growth</span></>}
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              From a bold vision to market leadership, discover how MovingWalls transformed 
-              the advertising landscape through innovative technology and unwavering 
-              commitment to client success.
+              {pageData?.heroDescription || 'From a bold vision to market leadership, discover how MovingWalls transformed the advertising landscape through innovative technology and unwavering commitment to client success.'}
             </p>
           </motion.div>
         </div>
@@ -136,14 +125,10 @@ export default function OurStoryPageClient() {
                 Our Mission
               </h2>
               <p className="text-lg text-mw-gray-600 mb-6 leading-relaxed">
-                At MovingWalls, we believe advertising should be more than just reaching audiences—it should 
-                create meaningful connections. Our mission is to empower brands with intelligent, 
-                data-driven advertising solutions that deliver measurable results and drive real business growth.
+                {pageData?.mission || 'At MovingWalls, we believe advertising should be more than just reaching audiences—it should create meaningful connections. Our mission is to empower brands with intelligent, data-driven advertising solutions that deliver measurable results and drive real business growth.'}
               </p>
               <p className="text-lg text-mw-gray-600 leading-relaxed">
-                We're not just an advertising platform; we're your strategic partner in building 
-                brand awareness, engaging customers, and achieving your marketing objectives through 
-                innovative out-of-home and digital advertising solutions.
+                {pageData?.vision || 'We\'re not just an advertising platform; we\'re your strategic partner in building brand awareness, engaging customers, and achieving your marketing objectives through innovative out-of-home and digital advertising solutions.'}
               </p>
             </motion.div>
             

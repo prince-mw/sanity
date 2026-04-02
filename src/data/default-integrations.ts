@@ -1,4 +1,4 @@
-import { getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getSanityImageUrl, getPartnerIntegrationLogos } from '@/sanity/lib/fetch'
 
 export const defaultIntegrations = [
   { name: 'VIOOH', category: 'SSP', logo: '/assets/images/integrations/viooh.svg' },
@@ -23,14 +23,35 @@ export interface DisplayIntegration {
 }
 
 export function getDisplayIntegrations(
-  cmsIntegrations?: Array<{ name: string; logo?: any; category?: string }> | null
+  cmsIntegrations?: Array<{ name: string; logo?: any; category?: string }> | null,
+  partnerLogos?: DisplayIntegration[] | null
 ): DisplayIntegration[] {
+  // Priority: partnerLogos (from Partner Integrations Logo in Sanity) > product-level CMS integrations > defaults
+  if (partnerLogos && partnerLogos.length > 0) {
+    return partnerLogos
+  }
   if (cmsIntegrations && cmsIntegrations.length > 0) {
     return cmsIntegrations.map(i => ({
       name: i.name,
       category: i.category || '',
       logo: getSanityImageUrl(i.logo, { width: 200 }) || '',
     })).filter(i => i.name && i.logo)
+  }
+  return defaultIntegrations
+}
+
+export async function getPartnerIntegrationLogosList(): Promise<DisplayIntegration[]> {
+  try {
+    const logos = await getPartnerIntegrationLogos()
+    if (logos && logos.length > 0) {
+      return logos.map(i => ({
+        name: i.name,
+        category: i.category || '',
+        logo: getSanityImageUrl(i.logo, { width: 200 }) || '',
+      })).filter(i => i.name && i.logo)
+    }
+  } catch (error) {
+    console.error('Error fetching partner integration logos:', error)
   }
   return defaultIntegrations
 }

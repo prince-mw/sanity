@@ -155,6 +155,7 @@ const structure = (S: any) =>
               S.documentTypeListItem('category').title('Categories'),
               S.documentTypeListItem('author').title('Authors'),
               S.documentTypeListItem('integration').title('Integrations'),
+              S.documentTypeListItem('partnerIntegrationLogo').title('Partner Integrations Logo'),
               S.documentTypeListItem('oohFormat').title('OOH Formats'),
             ])
         ),

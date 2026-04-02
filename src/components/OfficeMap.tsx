@@ -4,18 +4,59 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 
-export default function OfficeMap() {
-  const offices = [
+interface OfficeData {
+  city: string;
+  country: string;
+  type: string;
+  address: string;
+  phone: string;
+  timezone: string;
+  coordinates?: { lat: number; lng: number } | null;
+  image?: string;
+  isHeadquarters?: boolean;
+}
+
+interface OfficeMapProps {
+  offices?: OfficeData[] | null;
+}
+
+// Map positions for known cities (visual placement on the SVG map)
+const positionMap: Record<string, { top: string; left: string }> = {
+  'Singapore': { top: '56%', left: '73%' },
+  'Kuala Lumpur': { top: '58%', left: '72%' },
+  'Manila': { top: '54%', left: '78%' },
+  'Jakarta': { top: '62%', left: '74%' },
+  'Colombo': { top: '58%', left: '68%' },
+  'Bangalore': { top: '52%', left: '67%' },
+  'Mumbai': { top: '48%', left: '66%' },
+  'Chennai': { top: '54%', left: '68%' },
+};
+
+// Image fallback map
+const imageMap: Record<string, string> = {
+  'Singapore': '/assets/images/offices/singapore.svg',
+  'Kuala Lumpur': '/assets/images/offices/kuala-lumpur.svg',
+  'Manila': '/assets/images/offices/manila.svg',
+  'Jakarta': '/assets/images/offices/jakarta.svg',
+  'Colombo': '/assets/images/offices/colombo.svg',
+  'Bangalore': '/assets/images/offices/bangalore.svg',
+  'Mumbai': '/assets/images/offices/mumbai.svg',
+  'Chennai': '/assets/images/offices/chennai.svg',
+};
+
+export default function OfficeMap({ offices: cmsOffices }: OfficeMapProps) {
+  const defaultOffices: (OfficeData & { position: { top: string; left: string }; image: string })[] = [
     {
       city: "Singapore",
       country: "Singapore",
       type: "Global HQ",
       position: { top: "56%", left: "73%" },
       timezone: "SGT",
-      coords: { lat: 1.2840, lng: 103.8513 },
+      coordinates: { lat: 1.2840, lng: 103.8513 },
       image: "/assets/images/offices/singapore.svg",
       address: "Far East Finance Building, #8-02, 14 Robinson Road",
-      phone: "+65 8755 6364"
+      phone: "+65 8755 6364",
+      isHeadquarters: true,
     },
     {
       city: "Kuala Lumpur",
@@ -23,10 +64,10 @@ export default function OfficeMap() {
       type: "Regional Office",
       position: { top: "58%", left: "72%" },
       timezone: "MYT",
-      coords: { lat: 3.1390, lng: 101.6869 },
+      coordinates: { lat: 3.1390, lng: 101.6869 },
       image: "/assets/images/offices/kuala-lumpur.svg",
       address: "Level 8 (Zone B), Wisma Standard Chartered, Bukit Jalil",
-      phone: "+60 3 7610 2044"
+      phone: "+60 3 7610 2044",
     },
     {
       city: "Manila",
@@ -34,10 +75,10 @@ export default function OfficeMap() {
       type: "Regional Office",
       position: { top: "54%", left: "78%" },
       timezone: "PHT",
-      coords: { lat: 14.5176, lng: 121.0509 },
+      coordinates: { lat: 14.5176, lng: 121.0509 },
       image: "/assets/images/offices/manila.svg",
       address: "Unit 1207, Capital House, 9th Avenue, Taguig",
-      phone: "+63 7527 5672"
+      phone: "+63 7527 5672",
     },
     {
       city: "Jakarta",
@@ -45,10 +86,10 @@ export default function OfficeMap() {
       type: "Regional Office",
       position: { top: "62%", left: "74%" },
       timezone: "WIB",
-      coords: { lat: -6.2088, lng: 106.8456 },
+      coordinates: { lat: -6.2088, lng: 106.8456 },
       image: "/assets/images/offices/jakarta.svg",
       address: "Nobel House, 29th Floor, Mega Kuningan",
-      phone: "+62 21 3005 3540"
+      phone: "+62 21 3005 3540",
     },
     {
       city: "Colombo",
@@ -56,10 +97,10 @@ export default function OfficeMap() {
       type: "Regional Office",
       position: { top: "58%", left: "68%" },
       timezone: "IST",
-      coords: { lat: 6.9271, lng: 79.8612 },
+      coordinates: { lat: 6.9271, lng: 79.8612 },
       image: "/assets/images/offices/colombo.svg",
       address: "07 Turnour Rd, Colombo 8",
-      phone: ""
+      phone: "",
     },
     {
       city: "Bangalore",
@@ -67,10 +108,10 @@ export default function OfficeMap() {
       type: "Regional Office",
       position: { top: "52%", left: "67%" },
       timezone: "IST",
-      coords: { lat: 12.9716, lng: 77.5946 },
+      coordinates: { lat: 12.9716, lng: 77.5946 },
       image: "/assets/images/offices/bangalore.svg",
       address: "BHIVE Workspace, Indiranagar",
-      phone: ""
+      phone: "",
     },
     {
       city: "Mumbai",
@@ -78,10 +119,10 @@ export default function OfficeMap() {
       type: "Regional Office",
       position: { top: "48%", left: "66%" },
       timezone: "IST",
-      coords: { lat: 19.0760, lng: 72.8777 },
+      coordinates: { lat: 19.0760, lng: 72.8777 },
       image: "/assets/images/offices/mumbai.svg",
       address: "Dynasty Business Park, Andheri East",
-      phone: ""
+      phone: "",
     },
     {
       city: "Chennai",
@@ -89,18 +130,33 @@ export default function OfficeMap() {
       type: "Regional Office",
       position: { top: "54%", left: "68%" },
       timezone: "IST",
-      coords: { lat: 13.0827, lng: 80.2707 },
+      coordinates: { lat: 13.0827, lng: 80.2707 },
       image: "/assets/images/offices/chennai.svg",
       address: "Adwave Towers, T. Nagar",
-      phone: ""
+      phone: "",
     }
   ];
 
-  const stats = [
+  // If CMS offices available, map them with positions and images
+  const offices = cmsOffices?.length
+    ? cmsOffices.map(o => ({
+        ...o,
+        type: o.isHeadquarters ? 'Global HQ' : (o.type === 'headquarters' ? 'Global HQ' : 'Regional Office'),
+        position: positionMap[o.city] || { top: '50%', left: '50%' },
+        image: o.image || imageMap[o.city] || '/assets/images/offices/singapore.svg',
+      }))
+    : defaultOffices;
+
+  const defaultStats = [
     { number: "9", label: "Global Offices" },
     { number: "200+", label: "Team Members" },
     { number: "25+", label: "Countries Served" },
     { number: "24/7", label: "Global Support" }
+  ];
+
+  const stats = [
+    { number: String(offices.length), label: "Global Offices" },
+    ...defaultStats.slice(1),
   ];
 
   return (

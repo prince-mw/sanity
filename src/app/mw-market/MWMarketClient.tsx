@@ -5,12 +5,13 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
-import { getDisplayIntegrations } from '@/data/default-integrations'
+import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWMarketClientProps {
   caseStudies?: any[]
   product?: SanityProduct | null
+  partnerLogos?: DisplayIntegration[] | null
 }
 
 // Custom SVG icons
@@ -77,7 +78,7 @@ const ChartBarIcon = ({ className }: { className?: string }) => (
 
 
 
-export default function MWMarketPage({ caseStudies = [], product }: MWMarketClientProps) {
+export default function MWMarketPage({ caseStudies = [], product, partnerLogos }: MWMarketClientProps) {
   const [selectedContinent, setSelectedContinent] = useState<string | null>(null)
   const [hoveredLocation, setHoveredLocation] = useState<string | null>(null)
   const [currency, setCurrency] = useState('USD')
@@ -87,7 +88,7 @@ export default function MWMarketPage({ caseStudies = [], product }: MWMarketClie
   const heroTitle = product?.heroTitle || 'MW Market'
   const heroSubtitle = product?.heroSubtitle || 'Global OOH Billboard Market'
   const heroDescription = product?.description || 'Classic & Digital Billboards Available Worldwide'
-  const integrations = getDisplayIntegrations(product?.integrations)
+  const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
   const currencies = [
     { code: 'USD', symbol: '$', rate: 1, name: 'US Dollar' },
@@ -122,7 +123,7 @@ export default function MWMarketPage({ caseStudies = [], product }: MWMarketClie
     { code: 'TRY', symbol: '₺', rate: 28.95, name: 'Turkish Lira' }
   ]
 
-  const continents = [
+  const defaultContinents = [
     { 
       id: 'north-america', 
       name: 'North America', 
@@ -172,6 +173,19 @@ export default function MWMarketPage({ caseStudies = [], product }: MWMarketClie
       topCities: ['Sydney', 'Melbourne', 'Auckland', 'Brisbane']
     }
   ]
+
+  // CMS-driven continents via detailPageSections with fallback
+  const continentsCmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'continents')
+  const continents = continentsCmsSection?.items?.length
+    ? continentsCmsSection.items.map((c, i) => ({
+        id: defaultContinents[i]?.id || c.title.toLowerCase().replace(/\s+/g, '-'),
+        name: c.title,
+        color: defaultContinents[i]?.color || 'from-blue-500 to-cyan-500',
+        billboards: defaultContinents[i]?.billboards || 0,
+        avgPrice: defaultContinents[i]?.avgPrice || 0,
+        topCities: defaultContinents[i]?.topCities || [],
+      }))
+    : defaultContinents
 
   const globalLocations = [
     { id: 1, name: 'New York', continent: 'north-america', x: 25, y: 35, pulse: true, country: 'USA', flag: '🇺🇸', digital: 3200, classic: 4800 },
@@ -1015,7 +1029,7 @@ export default function MWMarketPage({ caseStudies = [], product }: MWMarketClie
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.

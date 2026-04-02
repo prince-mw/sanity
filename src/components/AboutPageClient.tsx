@@ -54,7 +54,7 @@ export default function AboutPageClient() {
     fetchData()
   }, [])
 
-  const capabilities = [
+  const defaultCapabilities = [
     {
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -94,6 +94,15 @@ export default function AboutPageClient() {
     }
   ];
 
+  // CMS-driven capabilities with fallback
+  const capabilities = pageData?.capabilities && pageData.capabilities.length > 0
+    ? pageData.capabilities.map((c, i) => ({
+        icon: defaultCapabilities[i]?.icon || defaultCapabilities[0].icon,
+        title: c.title,
+        description: c.description,
+      }))
+    : defaultCapabilities;
+
   const awards = [
     { name: "APAC CIO Outlook", description: "Innovation Recognition" },
     { name: "TiE50", description: "Top 50 Startup" },
@@ -130,11 +139,11 @@ export default function AboutPageClient() {
               <span className="text-mw-blue-600 text-sm font-medium">About Moving Walls</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
-              Transforming How Brands
-              <span className="text-mw-blue-600 block">Reach Real People</span>
+              {pageData?.title || <>Transforming How Brands
+              <span className="text-mw-blue-600 block">Reach Real People</span></>}
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
-              Moving Walls is a global connected media and programmatic out of home company powered by US patented measurement technology. We help brands reach real people in real places with precision, accountability, and confidence.
+              {pageData?.heroDescription || 'Moving Walls is a global connected media and programmatic out of home company powered by US patented measurement technology. We help brands reach real people in real places with precision, accountability, and confidence.'}
             </p>
             <p className="text-xl text-mw-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
               Across four continents and seven markets, we process more than 10 billion data points and measure over 100,000 OOH and retail media locations. Our scale is global. Our intelligence is local. Our focus is simple. Make outdoor media measurable, transparent, and performance driven.
@@ -495,9 +504,7 @@ export default function AboutPageClient() {
               Our Mission
             </h2>
             <p className="text-xl text-mw-blue-100 mb-8 max-w-4xl mx-auto leading-relaxed">
-              We are on a mission to reimagine out-of-home media and turn every screen into a connected opportunity. 
-              By combining global reach with local expertise, we're transforming how brands connect with 
-              audiences in the physical world.
+              {pageData?.mission || 'We are on a mission to reimagine out-of-home media and turn every screen into a connected opportunity. By combining global reach with local expertise, we\'re transforming how brands connect with audiences in the physical world.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <CTAButton

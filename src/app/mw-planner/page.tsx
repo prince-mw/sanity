@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import MWPlannerPageClient from '@/components/MWPlannerPageClient'
-import { getPageSeo, getSanityImageUrl, getAllBlogPosts, transformBlogPost, getProductBySlug } from '@/sanity/lib/fetch'
+import { getPageSeo, getSanityImageUrl, getAllBlogPosts, transformBlogPost, getProductBySlug, getPartnerIntegrationLogos } from '@/sanity/lib/fetch'
+import { getPartnerIntegrationLogosList } from '@/data/default-integrations'
 
 const defaultMeta = {
   title: 'MW Planner | Moving Walls',
@@ -31,9 +32,10 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 3600
 
 export default async function MWPlannerPage() {
-  const [blogPosts, product] = await Promise.all([
+  const [blogPosts, product, partnerLogos] = await Promise.all([
     getAllBlogPosts(),
     getProductBySlug('mw-planner'),
+    getPartnerIntegrationLogosList(),
   ]);
 
   // Transform latest 3 blog posts for the resources section
@@ -49,5 +51,5 @@ export default async function MWPlannerPage() {
     };
   });
 
-  return <MWPlannerPageClient latestBlogPosts={latestBlogPosts.length ? latestBlogPosts : undefined} product={product} />
+  return <MWPlannerPageClient latestBlogPosts={latestBlogPosts.length ? latestBlogPosts : undefined} product={product} partnerLogos={partnerLogos} />
 }

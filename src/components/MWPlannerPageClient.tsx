@@ -5,7 +5,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { SanityProduct } from '@/sanity/lib/fetch'
-import { getDisplayIntegrations } from '@/data/default-integrations'
+import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 
 // Icon Components
 const CheckCircleIcon = ({ className }: { className?: string }) => (
@@ -95,8 +95,8 @@ const PresentationChartIcon = ({ className }: { className?: string }) => (
 
 
 
-// Features data
-const features = [
+// Default features data (fallback when CMS is empty)
+const defaultFeatures = [
   {
     title: 'AI-Powered Forecasting',
     description: 'Predict campaign performance with 94% accuracy before spending a single dollar.',
@@ -129,6 +129,15 @@ const features = [
   },
 ]
 
+const plannerIconMap: Record<string, React.FC<{ className?: string }>> = {
+  'target': TargetIcon,
+  'chart-bar': ChartBarIcon,
+  'users': UsersIcon,
+  'trending-up': TrendingUpIcon,
+  'document-report': DocumentReportIcon,
+  'currency-dollar': CurrencyDollarIcon,
+}
+
 
 
 // Resources/Blog posts - minimal fallback for when CMS is empty
@@ -152,9 +161,10 @@ interface MWPlannerPageProps {
     slug: string;
   }>;
   product?: SanityProduct | null;
+  partnerLogos?: DisplayIntegration[] | null;
 }
 
-export default function MWPlannerPageClient({ latestBlogPosts, product }: MWPlannerPageProps) {
+export default function MWPlannerPageClient({ latestBlogPosts, product, partnerLogos }: MWPlannerPageProps) {
   // CMS-driven hero content with fallbacks
   const heroBadge = product?.heroBadge || 'AI-Powered Campaign Intelligence'
   const heroTitle = product?.heroTitle || 'Turn Data Into'
@@ -162,7 +172,16 @@ export default function MWPlannerPageClient({ latestBlogPosts, product }: MWPlan
   const heroDescription = product?.description || 'The AI command center that predicts performance, optimizes budgets, and delivers measurable ROI—before you spend a dollar.'
   const ctaText = product?.ctaText || 'Start Free Trial'
   const ctaLink = product?.ctaLink || '/contact'
-  const integrations = getDisplayIntegrations(product?.integrations)
+  const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
+
+  // CMS-driven features with fallback to defaults
+  const features = product?.features?.length
+    ? product.features.map((f, i) => ({
+        title: f.title,
+        description: f.description || '',
+        icon: plannerIconMap[f.icon || ''] || defaultFeatures[i]?.icon || TargetIcon,
+      }))
+    : defaultFeatures
 
   // Use latest blog posts from Sanity or fallback
   const resources = latestBlogPosts?.length ? latestBlogPosts : defaultResources;
@@ -569,7 +588,7 @@ export default function MWPlannerPageClient({ latestBlogPosts, product }: MWPlan
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don't Replace.

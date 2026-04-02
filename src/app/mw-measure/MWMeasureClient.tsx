@@ -5,12 +5,13 @@ import { useState } from "react"
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
-import { getDisplayIntegrations } from '@/data/default-integrations'
+import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
 
 interface MWMeasureClientProps {
   caseStudies?: any[]
   product?: SanityProduct | null
+  partnerLogos?: DisplayIntegration[] | null
 }
 
 // Custom SVG icons
@@ -78,7 +79,7 @@ const EyeIcon = ({ className }: { className?: string }) => (
 
 
 
-export default function MWMeasure({ caseStudies = [], product }: MWMeasureClientProps) {
+export default function MWMeasure({ caseStudies = [], product, partnerLogos }: MWMeasureClientProps) {
   const [selectedLocation, setSelectedLocation] = useState('downtown')
   const [hoveredFormat, setHoveredFormat] = useState<string | null>(null)
   const [animatedMetrics, setAnimatedMetrics] = useState<{[key: string]: number}>({})
@@ -87,7 +88,7 @@ export default function MWMeasure({ caseStudies = [], product }: MWMeasureClient
   const heroTitle = product?.heroTitle || 'MW Measure'
   const heroSubtitle = product?.heroSubtitle || 'OOH Analytics Dashboard'
   const heroDescription = product?.description || 'Transform Out-of-Home advertising with real-time location intelligence,'
-  const integrations = getDisplayIntegrations(product?.integrations)
+  const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
   const locations = [
     { 
@@ -131,7 +132,7 @@ export default function MWMeasure({ caseStudies = [], product }: MWMeasureClient
     }
   ]
 
-  const oohMetrics = [
+  const defaultOohMetrics = [
     {
       icon: MapIcon,
       title: "Location Intelligence",
@@ -153,6 +154,18 @@ export default function MWMeasure({ caseStudies = [], product }: MWMeasureClient
       description: "Store visit lift measurement, mobile attribution, and cross-channel impact analysis for complete ROI visibility."
     }
   ]
+
+  const measureIconMap: Record<string, React.FC<{ className?: string }>> = {
+    'map': MapIcon, 'users': UsersIcon, 'eye': EyeIcon, 'chart-bar': ChartBarIcon,
+  }
+
+  const oohMetrics = product?.features?.length
+    ? product.features.map((f, i) => ({
+        icon: measureIconMap[f.icon || ''] || defaultOohMetrics[i]?.icon || MapIcon,
+        title: f.title,
+        description: f.description || '',
+      }))
+    : defaultOohMetrics
 
   const formatTypes = [
     {
@@ -912,7 +925,7 @@ export default function MWMeasure({ caseStudies = [], product }: MWMeasureClient
               viewport={{ once: true }}
             >
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">13+ Integrations</span>
+                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don&apos;t Replace.

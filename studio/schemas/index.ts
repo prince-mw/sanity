@@ -59,6 +59,7 @@ import apiReferencePage from './apiReferencePage'
 import communityPage from './communityPage'
 import legalPage from './legalPage'
 import platformConfig from './platformConfig'
+import partnerIntegrationLogo from './partnerIntegrationLogo'
 
 export const schemaTypes = [
   // Document types
@@ -82,6 +83,7 @@ export const schemaTypes = [
   audiencePage,
   industryPage,
   integration,
+  partnerIntegrationLogo,
   oohFormat,
   analyticsConfig,
   pageSeo,
