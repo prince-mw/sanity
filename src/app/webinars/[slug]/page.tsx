@@ -51,9 +51,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           images: ogImage ? [ogImage] : [],
         },
         alternates: {
-      canonical: `https://www.movingwalls.com/webinars/${slug}`,
-    },
-    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+          canonical: `https://www.movingwalls.com/webinars/${slug}`,
+        },
+        robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       };
     }
   } catch (error) {
