@@ -145,6 +145,15 @@ const components: PortableTextComponents = {
       );
     },
     codeBlock: ({ value }) => {
+      // If the code block contains HTML, render it as actual HTML content
+      if ((value.language === 'html') && value.code) {
+        return (
+          <div
+            className="my-8 html-embed"
+            dangerouslySetInnerHTML={{ __html: value.code }}
+          />
+        );
+      }
       return (
         <pre className="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">
           <div className="flex justify-between items-center mb-4 pb-3 border-b border-mw-gray-700">

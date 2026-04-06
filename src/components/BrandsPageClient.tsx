@@ -145,7 +145,8 @@ export default function BrandsPageClient(props: BrandsPageProps) {
 
   // Trust bar logos - CMS or fallback
   const trustBarTitle = props.trustBarTitle || 'Trusted by leading brands worldwide';
-  const customerLogos = props.customerLogos?.length ? props.customerLogos : [
+  const cmsLogosWithImages = (props.customerLogos || []).filter(l => l.logo);
+  const customerLogos = cmsLogosWithImages.length ? cmsLogosWithImages : [
     { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
     { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
     { name: 'Samsung', logo: '/assets/images/our-customers-logos/samsung.png' },

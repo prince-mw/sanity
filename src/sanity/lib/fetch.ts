@@ -484,6 +484,10 @@ function portableTextToHtml(blocks: any[] | undefined): string {
     // Handle code blocks
     if (block._type === 'codeBlock') {
       const lang = block.language || 'code'
+      // If the code block contains HTML, render it as actual HTML content
+      if (lang === 'html' && block.code) {
+        return `<div class="my-8 html-embed">${block.code}</div>`
+      }
       const code = (block.code || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
       return `
         <pre class="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">

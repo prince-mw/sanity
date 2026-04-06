@@ -128,7 +128,8 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
 
   // Trust bar logos - CMS or fallback
   const trustBarTitle = props.trustBarTitle || 'TRUSTED BY LEADING MEDIA OWNERS WORLDWIDE';
-  const customerLogos = props.customerLogos?.length ? props.customerLogos : [
+  const cmsLogosWithImages = (props.customerLogos || []).filter(l => l.logo);
+  const customerLogos = cmsLogosWithImages.length ? cmsLogosWithImages : [
     { name: '3thirds Inc', logo: '/assets/images/media-owners/3thirds-inc.png' },
     { name: 'Act Media', logo: '/assets/images/media-owners/act-media.png' },
     { name: 'Aqua Corporation', logo: '/assets/images/media-owners/aqua-corporation.png' },

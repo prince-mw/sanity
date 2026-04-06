@@ -128,7 +128,8 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
 
   // Trust bar logos - CMS or fallback
   const trustBarTitle = props.trustBarTitle || 'TRUSTED BY LEADING AGENCIES WORLDWIDE';
-  const customerLogos = props.customerLogos?.length ? props.customerLogos : [
+  const cmsLogosWithImages = (props.customerLogos || []).filter(l => l.logo);
+  const customerLogos = cmsLogosWithImages.length ? cmsLogosWithImages : [
     { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
     { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
     { name: 'Samsung', logo: '/assets/images/our-customers-logos/samsung.png' },
