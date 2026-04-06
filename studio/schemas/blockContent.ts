@@ -159,6 +159,9 @@ export default defineType({
     }),
     // Custom block types for rich content
     defineArrayMember({
+      type: 'htmlEmbed',
+    }),
+    defineArrayMember({
       type: 'callout',
     }),
     defineArrayMember({

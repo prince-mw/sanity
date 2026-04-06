@@ -37,6 +37,7 @@ import ctaButton from './objects/ctaButton'
 import tableBlock from './objects/tableBlock'
 import testimonialBlock from './objects/testimonialBlock'
 import accordionBlock from './objects/accordionBlock'
+import htmlEmbed from './objects/htmlEmbed'
 // Workflow & i18n
 import workflow from './objects/workflow'
 import localeString from './objects/localeString'
@@ -103,6 +104,7 @@ export const schemaTypes = [
   tableBlock,
   testimonialBlock,
   accordionBlock,
+  htmlEmbed,
   // Workflow & i18n
   workflow,
   localeString,

@@ -449,6 +449,35 @@ function portableTextToHtml(blocks: any[] | undefined): string {
       return `<ul class="list-disc list-inside space-y-2 my-6 text-mw-gray-700 ml-4">${listItems}</ul>`
     }
     
+    // Handle code blocks
+    if (block._type === 'codeBlock') {
+      const lang = block.language || 'code'
+      const code = (block.code || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+      return `
+        <pre class="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">
+          <div class="flex justify-between items-center mb-4 pb-3 border-b border-mw-gray-700">
+            <span class="text-xs text-mw-gray-400 uppercase tracking-wider">${lang}</span>
+          </div>
+          <code class="text-sm font-mono">${code}</code>
+        </pre>
+      `
+    }
+
+    // Handle HTML embeds
+    if (block._type === 'htmlEmbed' && block.code) {
+      return `<div class="my-8 html-embed">${block.code}</div>`
+    }
+
+    // Handle code type (from @sanity/code-input plugin)
+    if (block._type === 'code' && block.code) {
+      const code = (block.code || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
+      return `
+        <pre class="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">
+          <code class="text-sm font-mono">${code}</code>
+        </pre>
+      `
+    }
+
     // Handle images
     if (block._type === 'image' && block.asset) {
       const imageUrl = getSanityImageUrl(block, { width: 1200 })

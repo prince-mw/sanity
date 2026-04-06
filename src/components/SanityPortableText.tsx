@@ -158,6 +158,15 @@ const components: PortableTextComponents = {
         </pre>
       );
     },
+    htmlEmbed: ({ value }) => {
+      if (!value?.code) return null;
+      return (
+        <div
+          className="my-8 html-embed"
+          dangerouslySetInnerHTML={{ __html: value.code }}
+        />
+      );
+    },
     // Video embed (YouTube/Vimeo URL or uploaded file)
     video: ({ value }) => {
       // Handle uploaded video file
