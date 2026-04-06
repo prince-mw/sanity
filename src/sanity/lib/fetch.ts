@@ -484,8 +484,8 @@ function portableTextToHtml(blocks: any[] | undefined): string {
     // Handle code blocks
     if (block._type === 'codeBlock') {
       const lang = block.language || 'code'
-      // If the code block contains HTML, render it as actual HTML content
-      if (lang === 'html' && block.code) {
+      // If the code block contains HTML (explicit language or auto-detected), render it as actual HTML content
+      if (block.code && (lang === 'html' || block.code.trim().startsWith('<'))) {
         return `<div class="my-8 html-embed">${block.code}</div>`
       }
       const code = (block.code || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
@@ -506,6 +506,11 @@ function portableTextToHtml(blocks: any[] | undefined): string {
 
     // Handle code type (from @sanity/code-input plugin)
     if (block._type === 'code' && block.code) {
+      const lang = block.language || ''
+      // If the code is HTML (explicit language or auto-detected), render as embedded HTML
+      if (lang === 'html' || block.code.trim().startsWith('<')) {
+        return `<div class="my-8 html-embed">${block.code}</div>`
+      }
       const code = (block.code || '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;')
       return `
         <pre class="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">
