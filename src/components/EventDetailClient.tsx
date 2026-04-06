@@ -94,8 +94,8 @@ const portableTextComponents = {
       if (value?.videoType === 'file' && value?.videoFileUrl) {
         return (
           <figure className="my-8">
-            <div className="aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
-              <video className="w-full h-full" controls preload="metadata" playsInline>
+            <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
+              <video className="absolute inset-0 w-full h-full object-cover" controls preload="metadata" playsInline>
                 <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
               </video>
             </div>
@@ -112,12 +112,14 @@ const portableTextComponents = {
         const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
         if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`
         if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`
-        return url
+        return null
       }
+      const embedUrl = getVideoEmbed(value.url)
+      if (!embedUrl) return null
       return (
         <figure className="my-8">
-          <div className="aspect-video rounded-xl overflow-hidden">
-            <iframe src={getVideoEmbed(value.url)} className="w-full h-full" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" />
+          <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
+            <iframe src={embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title={value.caption || 'Embedded video'} />
           </div>
           {value.caption && (
             <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
