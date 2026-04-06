@@ -670,7 +670,14 @@ export async function getEventBySlug(slug: string): Promise<SanityEvent | null> 
       endDate,
       location,
       excerpt,
-      content,
+      content[]{
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
       registrationLink,
       price,
       capacity,
@@ -819,7 +826,14 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
       source,
       externalLink,
       excerpt,
-      content,
+      content[]{
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
       category,
       readTime,
       isMediaFeature,
@@ -850,7 +864,14 @@ export async function getPressArticleBySlug(articleSlug: string): Promise<Sanity
       source,
       externalLink,
       excerpt,
-      content,
+      content[]{
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
       category,
       readTime,
       isMediaFeature,

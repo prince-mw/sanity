@@ -50,7 +50,83 @@ function formatDate(dateString: string): string {
 }
 
 // Portable Text components for rendering content
+// Helper to build Sanity image URL from asset reference
+function buildSanityImageUrl(image: any, width?: number): string {
+  if (!image?.asset?._ref) return ''
+  const ref = image.asset._ref
+  const [, id, dimensions, format] = ref.split('-')
+  if (!id || !dimensions || !format) return ''
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di'
+  const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+  let url = `https://cdn.sanity.io/images/${projectId}/${dataset}/${id}-${dimensions}.${format}`
+  if (width) url += `?w=${width}&q=85&auto=format`
+  return url
+}
+
 const portableTextComponents: PortableTextComponents = {
+  types: {
+    image: ({ value }: any) => {
+      if (!value?.asset) return null
+      const imageUrl = buildSanityImageUrl(value, 800)
+      if (!imageUrl) return null
+      return (
+        <figure className="my-8">
+          <img src={imageUrl} alt={value.alt || ''} className="rounded-xl w-full" />
+          {value.caption && (
+            <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
+          )}
+        </figure>
+      )
+    },
+    video: ({ value }: any) => {
+      if (value?.videoType === 'file' && value?.videoFileUrl) {
+        return (
+          <figure className="my-8">
+            <div className="aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
+              <video className="w-full h-full" controls preload="metadata" playsInline>
+                <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
+              </video>
+            </div>
+            {value.caption && (
+              <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
+            )}
+          </figure>
+        )
+      }
+      if (!value?.url) return null
+      const getVideoEmbed = (url: string) => {
+        const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&\s?]+)/)
+        const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
+        if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`
+        if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`
+        return url
+      }
+      return (
+        <figure className="my-8">
+          <div className="aspect-video rounded-xl overflow-hidden">
+            <iframe src={getVideoEmbed(value.url)} className="w-full h-full" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" />
+          </div>
+          {value.caption && (
+            <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
+          )}
+        </figure>
+      )
+    },
+    codeBlock: ({ value }: any) => {
+      if (value.language === 'html' && value.code) {
+        return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />
+      }
+      return (
+        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-xl overflow-x-auto text-sm">
+          <code>{value.code}</code>
+        </pre>
+      )
+    },
+    htmlEmbed: ({ value }: any) => {
+      if (!value?.code) return null
+      return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />
+    },
+  },
   block: {
     normal: ({ children }) => (
       <p className="text-mw-gray-700 mb-4">{children}</p>

@@ -89,6 +89,56 @@ const portableTextComponents = {
         </figure>
       )
     },
+    video: ({ value }: any) => {
+      // Handle uploaded video file
+      if (value?.videoType === 'file' && value?.videoFileUrl) {
+        return (
+          <figure className="my-8">
+            <div className="aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
+              <video className="w-full h-full" controls preload="metadata" playsInline>
+                <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
+              </video>
+            </div>
+            {value.caption && (
+              <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
+            )}
+          </figure>
+        )
+      }
+      // Handle YouTube/Vimeo URL
+      if (!value?.url) return null
+      const getVideoEmbed = (url: string) => {
+        const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&\s?]+)/)
+        const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
+        if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`
+        if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`
+        return url
+      }
+      return (
+        <figure className="my-8">
+          <div className="aspect-video rounded-xl overflow-hidden">
+            <iframe src={getVideoEmbed(value.url)} className="w-full h-full" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" />
+          </div>
+          {value.caption && (
+            <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
+          )}
+        </figure>
+      )
+    },
+    codeBlock: ({ value }: any) => {
+      if (value.language === 'html' && value.code) {
+        return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />
+      }
+      return (
+        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-xl overflow-x-auto text-sm">
+          <code>{value.code}</code>
+        </pre>
+      )
+    },
+    htmlEmbed: ({ value }: any) => {
+      if (!value?.code) return null
+      return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />
+    },
   },
   block: {
     h1: ({ children }: any) => (
