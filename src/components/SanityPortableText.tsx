@@ -136,6 +136,9 @@ const components: PortableTextComponents = {
       );
     },
     code: ({ value }) => {
+      if (value.code && (value.language === 'html' || value.code.trim().startsWith('<'))) {
+        return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />;
+      }
       return (
         <pre className="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">
           <code className="text-sm font-mono">
@@ -146,7 +149,7 @@ const components: PortableTextComponents = {
     },
     codeBlock: ({ value }) => {
       // If the code block contains HTML, render it as actual HTML content
-      if ((value.language === 'html') && value.code) {
+      if (value.code && (value.language === 'html' || value.code.trim().startsWith('<'))) {
         return (
           <div
             className="my-8 html-embed"

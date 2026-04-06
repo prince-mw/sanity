@@ -125,7 +125,7 @@ const portableTextComponents = {
       )
     },
     codeBlock: ({ value }: any) => {
-      if (value.language === 'html' && value.code) {
+      if (value.code && (value.language === 'html' || value.code.trim().startsWith('<'))) {
         return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />
       }
       return (
