@@ -101,6 +101,7 @@ export default function VideoModal({ isOpen, onClose, videoUrl, title }: VideoMo
                 controls
                 className="w-full h-full object-contain"
               >
+                <track kind="captions" default />
                 Your browser does not support the video tag.
               </video>
             ) : (

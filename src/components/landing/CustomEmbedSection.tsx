@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { getBackgroundClasses, getMaxWidthClasses, type BackgroundColor, type MaxWidth } from "./utils";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 interface CustomEmbedSectionProps {
   title?: string;
@@ -33,7 +34,7 @@ export function CustomEmbedSection({
         >
           <div 
             className="custom-embed"
-            dangerouslySetInnerHTML={{ __html: code }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(code) }}
           />
         </motion.div>
       </div>

@@ -1,4 +1,5 @@
 import { client, urlFor } from './client'
+import { sanitizeHtml } from '@/lib/sanitize'
 
 // Safe fetch wrapper - prevents page crashes on Sanity network errors
 async function safeFetch<T>(query: string, params?: Record<string, unknown>, fallback?: T): Promise<T> {
@@ -98,6 +99,8 @@ export interface SanityCaseStudy {
 
 // Helper for publishing filters - content must be published and not scheduled for future
 const publishedFilter = `isPublished == true && status == "published" && (scheduledPublishAt == null || scheduledPublishAt <= now())`
+// Safe filter for content types where existing data may not have status set (e.g. seeded/migrated without workflow fields)
+const safePublishedFilter = `isPublished != false && status != "archived" && (scheduledPublishAt == null || scheduledPublishAt <= now())`
 
 // Blog Post Queries
 export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
@@ -412,7 +415,7 @@ function formatDate(isoDate: string): string {
 function portableTextToHtml(blocks: any[] | undefined): string {
   if (!blocks || !Array.isArray(blocks)) return ''
   
-  return blocks.map(block => {
+  const rawHtml = blocks.map(block => {
     if (block._type === 'block') {
       // Process children with marks (bold, italic, links, etc.)
       const processChildren = (children: any[]): string => {
@@ -530,6 +533,7 @@ function portableTextToHtml(blocks: any[] | undefined): string {
             <div class="relative aspect-video rounded-xl overflow-hidden bg-gray-100">
               <video class="w-full h-full object-cover" controls preload="metadata" playsinline${poster ? ` poster="${poster}"` : ''}>
                 <source src="${block.videoFileUrl}" type="${block.videoFileMimeType || 'video/mp4'}" />
+                <track kind="captions" default />
               </video>
             </div>
             ${caption ? `<figcaption class="text-center text-sm text-mw-gray-500 mt-3">${caption}</figcaption>` : ''}
@@ -653,6 +657,8 @@ function portableTextToHtml(blocks: any[] | undefined): string {
     
     return ''
   }).join('\n')
+  
+  return sanitizeHtml(rawHtml)
 }
 
 // Event Types and Queries
@@ -857,7 +863,7 @@ export interface SanityPressRelease {
 
 export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
   const query = `
-    *[_type == "pressRelease"] | order(publishedAt desc) {
+    *[_type == "pressRelease" && ${safePublishedFilter}] | order(publishedAt desc) {
       _id,
       title,
       slug,
@@ -876,10 +882,10 @@ export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
 
 export async function getPressReleases(limit?: number): Promise<SanityPressRelease[]> {
   const query = limit 
-    ? `*[_type == "pressRelease" && !isMediaFeature] | order(publishedAt desc)[0...$limit] {
+    ? `*[_type == "pressRelease" && ${safePublishedFilter} && !isMediaFeature] | order(publishedAt desc)[0...$limit] {
         _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
       }`
-    : `*[_type == "pressRelease" && !isMediaFeature] | order(publishedAt desc) {
+    : `*[_type == "pressRelease" && ${safePublishedFilter} && !isMediaFeature] | order(publishedAt desc) {
         _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
       }`
   return safeFetch(query, { limit: limit ? limit - 1 : undefined })
@@ -887,10 +893,10 @@ export async function getPressReleases(limit?: number): Promise<SanityPressRelea
 
 export async function getMediaFeatures(limit?: number): Promise<SanityPressRelease[]> {
   const query = limit
-    ? `*[_type == "pressRelease" && isMediaFeature == true] | order(publishedAt desc)[0...$limit] {
+    ? `*[_type == "pressRelease" && ${safePublishedFilter} && isMediaFeature == true] | order(publishedAt desc)[0...$limit] {
         _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
       }`
-    : `*[_type == "pressRelease" && isMediaFeature == true] | order(publishedAt desc) {
+    : `*[_type == "pressRelease" && ${safePublishedFilter} && isMediaFeature == true] | order(publishedAt desc) {
         _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
       }`
   return safeFetch(query, { limit: limit ? limit - 1 : undefined })
@@ -966,7 +972,7 @@ export async function getPressArticleBySlug(articleSlug: string): Promise<Sanity
 // Get all press articles that have full article pages
 export async function getAllPressArticles(): Promise<SanityPressRelease[]> {
   const query = `
-    *[_type == "pressRelease" && hasFullArticle == true] | order(publishedAt desc) {
+    *[_type == "pressRelease" && ${safePublishedFilter} && hasFullArticle == true] | order(publishedAt desc) {
       _id,
       title,
       slug,
@@ -1013,7 +1019,7 @@ export function transformMediaFeature(pr: SanityPressRelease) {
 // Get related press releases (excluding current one, same category preferred)
 export async function getRelatedPressReleases(currentSlug: string, category?: string, limit: number = 3): Promise<SanityPressRelease[]> {
   const query = `
-    *[_type == "pressRelease" && slug.current != $currentSlug && !isMediaFeature] | order(publishedAt desc)[0...$limit] {
+    *[_type == "pressRelease" && ${safePublishedFilter} && slug.current != $currentSlug && !isMediaFeature] | order(publishedAt desc)[0...$limit] {
       _id,
       title,
       slug,
@@ -1215,7 +1221,7 @@ export interface SanityWebinar {
 
 export async function getAllWebinars(): Promise<SanityWebinar[]> {
   const query = `
-    *[_type == "webinar"] | order(date desc) {
+    *[_type == "webinar" && ${safePublishedFilter}] | order(date desc) {
       _id,
       title,
       slug,
@@ -1246,7 +1252,7 @@ export async function getAllWebinars(): Promise<SanityWebinar[]> {
 
 export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
   const query = `
-    *[_type == "webinar" && webinarType == "upcoming"] | order(date asc) {
+    *[_type == "webinar" && ${safePublishedFilter} && webinarType == "upcoming"] | order(date asc) {
       _id,
       title,
       slug,
@@ -1276,7 +1282,7 @@ export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
 
 export async function getPastWebinars(): Promise<SanityWebinar[]> {
   const query = `
-    *[_type == "webinar" && webinarType == "past"] | order(date desc) {
+    *[_type == "webinar" && ${safePublishedFilter} && webinarType == "past"] | order(date desc) {
       _id,
       title,
       slug,
@@ -1373,7 +1379,7 @@ export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | nu
 
 export async function getRelatedWebinars(currentSlug: string, limit: number = 3): Promise<SanityWebinar[]> {
   const query = `
-    *[_type == "webinar" && slug.current != $currentSlug] | order(date desc)[0...$limit] {
+    *[_type == "webinar" && ${safePublishedFilter} && slug.current != $currentSlug] | order(date desc)[0...$limit] {
       _id,
       title,
       slug,
@@ -1587,7 +1593,7 @@ export interface SanityEbook {
 
 export async function getAllEbooks(): Promise<SanityEbook[]> {
   const query = `
-    *[_type == "ebook"] | order(order asc, year desc) {
+    *[_type == "ebook" && ${safePublishedFilter}] | order(order asc, year desc) {
       _id,
       title,
       slug,
@@ -1662,7 +1668,7 @@ export async function getEbookBySlug(slug: string): Promise<SanityEbook | null> 
 
 export async function getFeaturedEbook(): Promise<SanityEbook | null> {
   const query = `
-    *[_type == "ebook" && featured == true][0] {
+    *[_type == "ebook" && ${safePublishedFilter} && featured == true][0] {
       _id,
       title,
       slug,
@@ -1684,7 +1690,7 @@ export async function getFeaturedEbook(): Promise<SanityEbook | null> {
 
 export async function getEbooksByCategory(category: string): Promise<SanityEbook[]> {
   const query = `
-    *[_type == "ebook" && category == $category] | order(order asc) {
+    *[_type == "ebook" && ${safePublishedFilter} && category == $category] | order(order asc) {
       _id,
       title,
       slug,

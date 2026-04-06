@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
+import { sanitizeHtml } from '@/lib/sanitize'
 
 // Helper to build Sanity image URL from asset reference
 function buildSanityImageUrl(image: any, width?: number): string {
@@ -97,6 +98,7 @@ const portableTextComponents = {
             <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
               <video className="absolute inset-0 w-full h-full object-cover" controls preload="metadata" playsInline>
                 <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
+                <track kind="captions" default />
               </video>
             </div>
             {value.caption && (
@@ -108,8 +110,8 @@ const portableTextComponents = {
       // Handle YouTube/Vimeo URL
       if (!value?.url) return null
       const getVideoEmbed = (url: string) => {
-        const ytMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&\s?]+)/)
-        const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/)
+        const ytMatch = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&\s?]+)/.exec(url)
+        const vimeoMatch = /vimeo\.com\/(?:video\/)?(\d+)/.exec(url)
         if (ytMatch) return `https://www.youtube.com/embed/${ytMatch[1]}`
         if (vimeoMatch) return `https://player.vimeo.com/video/${vimeoMatch[1]}`
         return null
@@ -129,7 +131,7 @@ const portableTextComponents = {
     },
     codeBlock: ({ value }: any) => {
       if (value.code && (value.language === 'html' || value.code.trim().startsWith('<'))) {
-        return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />
+        return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }} />
       }
       return (
         <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-xl overflow-x-auto text-sm">
@@ -139,7 +141,7 @@ const portableTextComponents = {
     },
     htmlEmbed: ({ value }: any) => {
       if (!value?.code) return null
-      return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />
+      return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }} />
     },
     callout: ({ value }: any) => {
       const typeStyles: Record<string, { bg: string; border: string; icon: string }> = {
@@ -174,7 +176,7 @@ const portableTextComponents = {
         <div className={`my-8 p-6 ${style.bg} rounded-xl`}>
           <div className={value.layout === 'row' ? 'flex flex-wrap justify-center gap-8' : 'grid grid-cols-2 gap-4'}>
             {value.stats?.map((stat: any, i: number) => (
-              <div key={i} className="text-center">
+              <div key={stat._key || `stat-${i}`} className="text-center">
                 <div className={`text-3xl md:text-4xl font-bold ${style.text} mb-2`}>{stat.value}</div>
                 <div className={`text-sm font-medium ${style.label}`}>{stat.label}</div>
                 {stat.description && <div className={`text-xs mt-1 ${style.label} opacity-80`}>{stat.description}</div>}
@@ -192,8 +194,10 @@ const portableTextComponents = {
         link: 'text-mw-blue-600 hover:text-mw-blue-700 font-semibold transition-colors',
       }
       const isExternal = value.url?.startsWith('http')
+      const alignmentMap: Record<string, string> = { center: 'justify-center', right: 'justify-end' }
+      const alignmentClass = alignmentMap[value.alignment] || 'justify-start'
       return (
-        <div className={`my-6 flex ${value.alignment === 'center' ? 'justify-center' : value.alignment === 'right' ? 'justify-end' : 'justify-start'}`}>
+        <div className={`my-6 flex ${alignmentClass}`}>
           <a href={value.url || '#'} className={styleClasses[value.style] || styleClasses.primary} {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{value.text}</a>
         </div>
       )
@@ -202,8 +206,8 @@ const portableTextComponents = {
       <div className="my-8 overflow-x-auto">
         {value.caption && <div className="text-sm text-mw-gray-600 mb-2 font-medium">{value.caption}</div>}
         <table className={`w-full ${value.bordered ? 'border border-mw-gray-200' : ''}`}>
-          <thead><tr className="bg-mw-gray-100">{value.headers?.map((h: string, i: number) => (<th key={i} className={`px-4 py-3 text-left text-sm font-semibold text-mw-gray-900 ${value.bordered ? 'border border-mw-gray-200' : ''}`}>{h}</th>))}</tr></thead>
-          <tbody>{value.rows?.map((row: any, ri: number) => (<tr key={ri} className={value.striped && ri % 2 === 1 ? 'bg-mw-gray-50' : ''}>{row.cells?.map((cell: string, ci: number) => (<td key={ci} className={`px-4 py-3 text-sm text-mw-gray-700 ${value.bordered ? 'border border-mw-gray-200' : ''}`}>{cell}</td>))}</tr>))}</tbody>
+          <thead><tr className="bg-mw-gray-100">{value.headers?.map((h: string, i: number) => (<th key={`header-${i}`} className={`px-4 py-3 text-left text-sm font-semibold text-mw-gray-900 ${value.bordered ? 'border border-mw-gray-200' : ''}`}>{h}</th>))}</tr></thead>
+          <tbody>{value.rows?.map((row: any, ri: number) => (<tr key={row._key || `row-${ri}`} className={value.striped && ri % 2 === 1 ? 'bg-mw-gray-50' : ''}>{row.cells?.map((cell: string, ci: number) => (<td key={`cell-${ri}-${ci}`} className={`px-4 py-3 text-sm text-mw-gray-700 ${value.bordered ? 'border border-mw-gray-200' : ''}`}>{cell}</td>))}</tr>))}</tbody>
         </table>
       </div>
     ),
@@ -214,7 +218,7 @@ const portableTextComponents = {
           <div className="flex flex-col md:flex-row gap-6">
             {avatarUrl && <img src={avatarUrl} alt={value.author} width={80} height={80} className="rounded-full flex-shrink-0" />}
             <div className="flex-1">
-              {value.rating && <div className="flex gap-1 mb-3">{[...Array(5)].map((_, i) => (<span key={i} className={`text-lg ${i < value.rating ? 'text-yellow-400' : 'text-mw-gray-300'}`}>★</span>))}</div>}
+              {value.rating && <div className="flex gap-1 mb-3">{Array.from({ length: 5 }, (_, i) => (<span key={`star-${i}`} className={`text-lg ${i < value.rating ? 'text-yellow-400' : 'text-mw-gray-300'}`}>★</span>))}</div>}
               <blockquote className="text-lg text-mw-gray-700 italic mb-4">&ldquo;{value.quote}&rdquo;</blockquote>
               <div>
                 <div className="font-semibold text-mw-gray-900">{value.author}</div>
@@ -230,7 +234,7 @@ const portableTextComponents = {
         {value.title && <h3 className="text-xl font-bold text-mw-gray-900 mb-4">{value.title}</h3>}
         <div className="space-y-3">
           {value.items?.map((item: any, i: number) => (
-            <details key={i} className="group bg-white border border-mw-gray-200 rounded-lg overflow-hidden">
+            <details key={item._key || `faq-${i}`} className="group bg-white border border-mw-gray-200 rounded-lg overflow-hidden">
               <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-mw-gray-50 transition-colors">
                 <span className="font-medium text-mw-gray-900">{item.question}</span>
                 <svg className="w-5 h-5 text-mw-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
@@ -296,21 +300,21 @@ const portableTextComponents = {
   },
 }
 
-export default function EventDetailClient({ event, relatedEvents }: EventDetailClientProps) {
+export default function EventDetailClient({ event, relatedEvents }: Readonly<EventDetailClientProps>) {
   const isPast = (() => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     const eventDate = new Date(event.date)
-    if (isNaN(eventDate.getTime())) {
-      const match = event.date.match(/(\w+)\s+(\d+)(?:-\d+)?,?\s*(\d{4})?/)
+    if (Number.isNaN(eventDate.getTime())) {
+      const match = /(\w+)\s+(\d+)(?:-\d+)?,?\s*(\d{4})?/.exec(event.date)
       if (match) {
         const months: Record<string, number> = {
           'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
           'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
         }
         const month = months[match[1]] ?? 0
-        const day = parseInt(match[2])
-        const year = match[3] ? parseInt(match[3]) : today.getFullYear()
+        const day = Number.parseInt(match[2])
+        const year = match[3] ? Number.parseInt(match[3]) : today.getFullYear()
         const parsedDate = new Date(year, month, day)
         return parsedDate < today
       }
@@ -350,11 +354,7 @@ export default function EventDetailClient({ event, relatedEvents }: EventDetailC
                   {isPast ? 'Completed' : 'Upcoming'}
                 </span>
                 <span className={`px-4 py-1.5 text-sm font-medium rounded-full ${
-                  event.type === 'Webinar' ? 'bg-green-100 text-green-700' :
-                  event.type === 'Workshop' ? 'bg-purple-100 text-purple-700' :
-                  event.type === 'Conference' ? 'bg-orange-100 text-orange-700' :
-                  event.type === 'Summit' ? 'bg-red-100 text-red-700' :
-                  'bg-blue-100 text-blue-700'
+                  ({ Webinar: 'bg-green-100 text-green-700', Workshop: 'bg-purple-100 text-purple-700', Conference: 'bg-orange-100 text-orange-700', Summit: 'bg-red-100 text-red-700' } as Record<string, string>)[event.type] || 'bg-blue-100 text-blue-700'
                 }`}>
                   {event.type}
                 </span>
@@ -522,7 +522,7 @@ export default function EventDetailClient({ event, relatedEvents }: EventDetailC
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {event.speakers.map((speaker, index) => (
                   <motion.div
-                    key={index}
+                    key={speaker.name || `speaker-${index}`}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -602,7 +602,7 @@ export default function EventDetailClient({ event, relatedEvents }: EventDetailC
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {relatedEvents.map((relEvent, index) => (
                   <motion.div
-                    key={index}
+                    key={relEvent.slug || `event-${index}`}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -625,10 +625,7 @@ export default function EventDetailClient({ event, relatedEvents }: EventDetailC
                             </div>
                           )}
                           <span className={`absolute top-3 right-3 px-3 py-1 text-xs font-medium rounded-full ${
-                            relEvent.type === 'Webinar' ? 'bg-green-100 text-green-700' :
-                            relEvent.type === 'Workshop' ? 'bg-purple-100 text-purple-700' :
-                            relEvent.type === 'Conference' ? 'bg-orange-100 text-orange-700' :
-                            'bg-blue-100 text-blue-700'
+                            ({ Webinar: 'bg-green-100 text-green-700', Workshop: 'bg-purple-100 text-purple-700', Conference: 'bg-orange-100 text-orange-700' } as Record<string, string>)[relEvent.type] || 'bg-blue-100 text-blue-700'
                           }`}>
                             {relEvent.type}
                           </span>

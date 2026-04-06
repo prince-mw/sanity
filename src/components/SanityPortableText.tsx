@@ -4,6 +4,7 @@ import { PortableText, PortableTextComponents, PortableTextBlock } from "@portab
 import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/client";
+import { sanitizeHtml } from "@/lib/sanitize";
 
 // Custom components for Portable Text rendering
 const components: PortableTextComponents = {
@@ -137,7 +138,7 @@ const components: PortableTextComponents = {
     },
     code: ({ value }) => {
       if (value.code && (value.language === 'html' || value.code.trim().startsWith('<'))) {
-        return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />;
+        return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }} />;
       }
       return (
         <pre className="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">
@@ -153,7 +154,7 @@ const components: PortableTextComponents = {
         return (
           <div
             className="my-8 html-embed"
-            dangerouslySetInnerHTML={{ __html: value.code }}
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }}
           />
         );
       }
@@ -175,7 +176,7 @@ const components: PortableTextComponents = {
       return (
         <div
           className="my-8 html-embed"
-          dangerouslySetInnerHTML={{ __html: value.code }}
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }}
         />
       );
     },
@@ -196,6 +197,7 @@ const components: PortableTextComponents = {
                 {...(posterUrl ? { poster: posterUrl } : {})}
               >
                 <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
+                <track kind="captions" default />
                 Your browser does not support the video tag.
               </video>
             </div>
@@ -213,8 +215,8 @@ const components: PortableTextComponents = {
       
       // Extract video ID for YouTube/Vimeo
       const getVideoEmbed = (url: string) => {
-        const youtubeMatch = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&\s?]+)/);
-        const vimeoMatch = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+        const youtubeMatch = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&\s?]+)/.exec(url);
+        const vimeoMatch = /vimeo\.com\/(?:video\/)?(\d+)/.exec(url);
         
         if (youtubeMatch) {
           return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
@@ -226,7 +228,6 @@ const components: PortableTextComponents = {
       };
 
       const embedUrl = getVideoEmbed(value.url);
-      const posterUrl = value.thumbnail?.asset ? urlFor(value.thumbnail).width(1200).quality(80).url() : undefined;
       
       if (!embedUrl) return null;
 
@@ -290,8 +291,8 @@ const components: PortableTextComponents = {
       return (
         <div className={`my-8 p-6 ${style.bg} rounded-xl`}>
           <div className={layoutClass}>
-            {value.stats?.map((stat: { value: string; label: string; description?: string }, index: number) => (
-              <div key={index} className={value.layout === 'cards' ? 'bg-white/10 rounded-lg p-4 text-center' : 'text-center'}>
+            {value.stats?.map((stat: { _key?: string; value: string; label: string; description?: string }, index: number) => (
+              <div key={stat._key || `stat-${index}`} className={value.layout === 'cards' ? 'bg-white/10 rounded-lg p-4 text-center' : 'text-center'}>
                 <div className={`text-3xl md:text-4xl font-bold ${style.text} mb-2`}>{stat.value}</div>
                 <div className={`text-sm font-medium ${style.label}`}>{stat.label}</div>
                 {stat.description && (
@@ -365,7 +366,7 @@ const components: PortableTextComponents = {
               <tr className="bg-mw-gray-100">
                 {value.headers?.map((header: string, index: number) => (
                   <th
-                    key={index}
+                    key={`header-${index}`}
                     className={`px-4 py-3 text-left text-sm font-semibold text-mw-gray-900 ${
                       value.bordered ? 'border border-mw-gray-200' : ''
                     }`}
@@ -376,14 +377,14 @@ const components: PortableTextComponents = {
               </tr>
             </thead>
             <tbody>
-              {value.rows?.map((row: { cells: string[] }, rowIndex: number) => (
+              {value.rows?.map((row: { _key?: string; cells: string[] }, rowIndex: number) => (
                 <tr
-                  key={rowIndex}
+                  key={row._key || `row-${rowIndex}`}
                   className={value.striped && rowIndex % 2 === 1 ? 'bg-mw-gray-50' : ''}
                 >
                   {row.cells?.map((cell: string, cellIndex: number) => (
                     <td
-                      key={cellIndex}
+                      key={`cell-${rowIndex}-${cellIndex}`}
                       className={`px-4 py-3 text-sm text-mw-gray-700 ${
                         value.bordered ? 'border border-mw-gray-200' : ''
                       }`}
@@ -417,9 +418,9 @@ const components: PortableTextComponents = {
             <div className="flex-1">
               {value.rating && (
                 <div className="flex gap-1 mb-3">
-                  {[...Array(5)].map((_, i) => (
+                  {Array.from({ length: 5 }, (_, i) => (
                     <svg
-                      key={i}
+                      key={`star-${i}`}
                       className={`w-5 h-5 ${i < value.rating ? 'text-yellow-400' : 'text-mw-gray-300'}`}
                       fill="currentColor"
                       viewBox="0 0 20 20"
@@ -464,9 +465,9 @@ const components: PortableTextComponents = {
             <h3 className="text-xl font-bold text-mw-gray-900 mb-4">{value.title}</h3>
           )}
           <div className="space-y-3">
-            {value.items?.map((item: { question: string; answer: string }, index: number) => (
+            {value.items?.map((item: { _key?: string; question: string; answer: string }, index: number) => (
               <details
-                key={index}
+                key={item._key || `faq-${index}`}
                 className="group bg-white border border-mw-gray-200 rounded-lg overflow-hidden"
               >
                 <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-mw-gray-50 transition-colors">
@@ -499,7 +500,7 @@ interface SanityPortableTextProps {
 }
 
 // Main component export
-export default function SanityPortableText({ value, className = "" }: SanityPortableTextProps) {
+export default function SanityPortableText({ value, className = "" }: Readonly<SanityPortableTextProps>) {
   if (!value || !Array.isArray(value) || value.length === 0) {
     return null;
   }

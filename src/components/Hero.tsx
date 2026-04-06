@@ -422,6 +422,7 @@ export default function Hero() {
           onError={() => setVideoError(true)}
         >
           <source src="/assets/videos/SequenceBG.mp4" type="video/mp4" />
+          <track kind="captions" default />
         </video>
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-slate-900" />
