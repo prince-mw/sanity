@@ -284,10 +284,38 @@ export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy 
       industry,
       location,
       excerpt,
-      content,
-      challenge,
-      solution,
-      results,
+      content[] {
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
+      challenge[] {
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
+      solution[] {
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
+      results[] {
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
       metrics,
       testimonial,
       gallery,
@@ -333,7 +361,7 @@ export function transformCaseStudy(study: SanityCaseStudy) {
   const hasFormattedContent = (html: string) => {
     if (!html) return false;
     // Check if content has actual HTML tags beyond just text
-    return /<(h[1-6]|ul|ol|li|strong|em|a|blockquote|figure|img)[^>]*>/i.test(html);
+    return /<(h[1-6]|ul|ol|li|strong|em|a|blockquote|figure|img|video|iframe|div)[^>]*>/i.test(html);
   };
   
   const content = portableTextToHtml(study.content) || '';
@@ -350,6 +378,10 @@ export function transformCaseStudy(study: SanityCaseStudy) {
     industry: study.industry || 'Other',
     excerpt: study.excerpt || '',
     content: content,
+    rawContent: study.content || null,
+    rawChallenge: study.challenge || null,
+    rawSolution: study.solution || null,
+    rawResults: study.results || null,
     // Only include challenge/solution/results if they have real formatted content
     challenge: hasFormattedContent(challenge) ? challenge : '',
     solution: hasFormattedContent(solution) ? solution : '',
@@ -476,6 +508,46 @@ function portableTextToHtml(blocks: any[] | undefined): string {
           <code class="text-sm font-mono">${code}</code>
         </pre>
       `
+    }
+
+    // Handle videos
+    if (block._type === 'video') {
+      // Uploaded video file
+      if (block.videoType === 'file' && block.videoFileUrl) {
+        const poster = block.thumbnail?.asset ? getSanityImageUrl(block.thumbnail, { width: 1200 }) : ''
+        const caption = block.caption || ''
+        return `
+          <figure class="my-8">
+            <div class="relative aspect-video rounded-xl overflow-hidden bg-gray-100">
+              <video class="w-full h-full object-cover" controls preload="metadata" playsinline${poster ? ` poster="${poster}"` : ''}>
+                <source src="${block.videoFileUrl}" type="${block.videoFileMimeType || 'video/mp4'}" />
+              </video>
+            </div>
+            ${caption ? `<figcaption class="text-center text-sm text-mw-gray-500 mt-3">${caption}</figcaption>` : ''}
+          </figure>
+        `
+      }
+      // YouTube/Vimeo URL
+      if (block.url) {
+        const url = block.url
+        const caption = block.caption || ''
+        const youtubeMatch = /(?:youtube\.com\/(?:watch\?v=|embed\/|shorts\/)|youtu\.be\/)([^&\s?]+)/.exec(url)
+        const vimeoMatch = /vimeo\.com\/(?:video\/)?(\d+)/.exec(url)
+        let embedUrl = ''
+        if (youtubeMatch) embedUrl = `https://www.youtube.com/embed/${youtubeMatch[1]}`
+        else if (vimeoMatch) embedUrl = `https://player.vimeo.com/video/${vimeoMatch[1]}`
+        if (embedUrl) {
+          return `
+            <figure class="my-8">
+              <div class="relative aspect-video rounded-xl overflow-hidden bg-gray-100">
+                <iframe src="${embedUrl}" class="w-full h-full" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen title="${caption || 'Embedded video'}"></iframe>
+              </div>
+              ${caption ? `<figcaption class="text-center text-sm text-mw-gray-500 mt-3">${caption}</figcaption>` : ''}
+            </figure>
+          `
+        }
+      }
+      return ''
     }
 
     // Handle images

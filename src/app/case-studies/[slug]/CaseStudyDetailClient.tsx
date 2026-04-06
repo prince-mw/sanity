@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import SanityPortableText from "@/components/SanityPortableText";
 
 interface CaseStudy {
   slug: string;
@@ -12,6 +13,10 @@ interface CaseStudy {
   country: string;
   industry: string;
   content: string;
+  rawContent?: any[] | null;
+  rawChallenge?: any[] | null;
+  rawSolution?: any[] | null;
+  rawResults?: any[] | null;
   challenge?: string;
   solution?: string;
   results?: string;
@@ -125,7 +130,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Challenge Section */}
-          {caseStudy.challenge && (
+          {(caseStudy.challenge || (caseStudy.rawChallenge && caseStudy.rawChallenge.length > 0)) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -140,15 +145,19 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                 </span>
                 The Challenge
               </h2>
-              <div 
-                className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: caseStudy.challenge }}
-              />
+              {caseStudy.rawChallenge && caseStudy.rawChallenge.length > 0 ? (
+                <SanityPortableText value={caseStudy.rawChallenge} />
+              ) : (
+                <div 
+                  className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: caseStudy.challenge || '' }}
+                />
+              )}
             </motion.div>
           )}
 
           {/* Solution Section */}
-          {caseStudy.solution && (
+          {(caseStudy.solution || (caseStudy.rawSolution && caseStudy.rawSolution.length > 0)) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -163,15 +172,19 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                 </span>
                 The Solution
               </h2>
-              <div 
-                className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: caseStudy.solution }}
-              />
+              {caseStudy.rawSolution && caseStudy.rawSolution.length > 0 ? (
+                <SanityPortableText value={caseStudy.rawSolution} />
+              ) : (
+                <div 
+                  className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: caseStudy.solution || '' }}
+                />
+              )}
             </motion.div>
           )}
 
           {/* Results Section */}
-          {caseStudy.results && (
+          {(caseStudy.results || (caseStudy.rawResults && caseStudy.rawResults.length > 0)) && (
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -186,10 +199,14 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                 </span>
                 The Results
               </h2>
-              <div 
-                className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
-                dangerouslySetInnerHTML={{ __html: caseStudy.results }}
-              />
+              {caseStudy.rawResults && caseStudy.rawResults.length > 0 ? (
+                <SanityPortableText value={caseStudy.rawResults} />
+              ) : (
+                <div 
+                  className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: caseStudy.results || '' }}
+                />
+              )}
             </motion.div>
           )}
 
@@ -249,7 +266,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
           )}
 
           {/* Main Content - Always show if content exists */}
-          {caseStudy.content && (
+          {(caseStudy.content || (caseStudy.rawContent && caseStudy.rawContent.length > 0)) && (
             <motion.article
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -267,8 +284,13 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                 prose-li:text-mw-gray-700 prose-li:mb-2
                 prose-blockquote:border-l-4 prose-blockquote:border-mw-blue-500 prose-blockquote:pl-6 prose-blockquote:italic prose-blockquote:text-mw-gray-600
                 prose-img:rounded-xl prose-img:shadow-lg prose-img:my-8"
-              dangerouslySetInnerHTML={{ __html: caseStudy.content }}
-            />
+            >
+              {caseStudy.rawContent && caseStudy.rawContent.length > 0 ? (
+                <SanityPortableText value={caseStudy.rawContent} />
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: caseStudy.content }} />
+              )}
+            </motion.article>
           )}
         </div>
       </section>
