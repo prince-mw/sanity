@@ -139,6 +139,106 @@ const portableTextComponents = {
       if (!value?.code) return null
       return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: value.code }} />
     },
+    callout: ({ value }: any) => {
+      const typeStyles: Record<string, { bg: string; border: string; icon: string }> = {
+        info: { bg: 'bg-blue-50', border: 'border-blue-400', icon: '💡' },
+        warning: { bg: 'bg-amber-50', border: 'border-amber-400', icon: '⚠️' },
+        success: { bg: 'bg-green-50', border: 'border-green-400', icon: '✅' },
+        error: { bg: 'bg-red-50', border: 'border-red-400', icon: '❌' },
+        tip: { bg: 'bg-purple-50', border: 'border-purple-400', icon: '💬' },
+        note: { bg: 'bg-gray-50', border: 'border-gray-400', icon: '📝' },
+      }
+      const style = typeStyles[value.type] || typeStyles.info
+      return (
+        <div className={`my-6 p-4 ${style.bg} border-l-4 ${style.border} rounded-r-lg`}>
+          <div className="flex items-start gap-3">
+            <span className="text-xl flex-shrink-0">{style.icon}</span>
+            <div className="flex-1">
+              {value.title && <h4 className="font-semibold text-mw-gray-900 mb-2">{value.title}</h4>}
+              <p className="text-mw-gray-700 leading-relaxed">{value.content}</p>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    statBlock: ({ value }: any) => {
+      const themeStyles: Record<string, { bg: string; text: string; label: string }> = {
+        light: { bg: 'bg-white border border-mw-gray-200', text: 'text-mw-blue-600', label: 'text-mw-gray-600' },
+        dark: { bg: 'bg-mw-gray-900', text: 'text-white', label: 'text-mw-gray-300' },
+        blue: { bg: 'bg-mw-blue-600', text: 'text-white', label: 'text-mw-blue-100' },
+      }
+      const style = themeStyles[value.theme] || themeStyles.light
+      return (
+        <div className={`my-8 p-6 ${style.bg} rounded-xl`}>
+          <div className={value.layout === 'row' ? 'flex flex-wrap justify-center gap-8' : 'grid grid-cols-2 gap-4'}>
+            {value.stats?.map((stat: any, i: number) => (
+              <div key={i} className="text-center">
+                <div className={`text-3xl md:text-4xl font-bold ${style.text} mb-2`}>{stat.value}</div>
+                <div className={`text-sm font-medium ${style.label}`}>{stat.label}</div>
+                {stat.description && <div className={`text-xs mt-1 ${style.label} opacity-80`}>{stat.description}</div>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    },
+    ctaButton: ({ value }: any) => {
+      const styleClasses: Record<string, string> = {
+        primary: 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors',
+        secondary: 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50 px-6 py-3 rounded-lg font-semibold transition-colors',
+        dark: 'bg-mw-gray-900 hover:bg-mw-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors',
+        link: 'text-mw-blue-600 hover:text-mw-blue-700 font-semibold transition-colors',
+      }
+      const isExternal = value.url?.startsWith('http')
+      return (
+        <div className={`my-6 flex ${value.alignment === 'center' ? 'justify-center' : value.alignment === 'right' ? 'justify-end' : 'justify-start'}`}>
+          <a href={value.url || '#'} className={styleClasses[value.style] || styleClasses.primary} {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{value.text}</a>
+        </div>
+      )
+    },
+    tableBlock: ({ value }: any) => (
+      <div className="my-8 overflow-x-auto">
+        {value.caption && <div className="text-sm text-mw-gray-600 mb-2 font-medium">{value.caption}</div>}
+        <table className={`w-full ${value.bordered ? 'border border-mw-gray-200' : ''}`}>
+          <thead><tr className="bg-mw-gray-100">{value.headers?.map((h: string, i: number) => (<th key={i} className={`px-4 py-3 text-left text-sm font-semibold text-mw-gray-900 ${value.bordered ? 'border border-mw-gray-200' : ''}`}>{h}</th>))}</tr></thead>
+          <tbody>{value.rows?.map((row: any, ri: number) => (<tr key={ri} className={value.striped && ri % 2 === 1 ? 'bg-mw-gray-50' : ''}>{row.cells?.map((cell: string, ci: number) => (<td key={ci} className={`px-4 py-3 text-sm text-mw-gray-700 ${value.bordered ? 'border border-mw-gray-200' : ''}`}>{cell}</td>))}</tr>))}</tbody>
+        </table>
+      </div>
+    ),
+    testimonialBlock: ({ value }: any) => {
+      const avatarUrl = value.avatar?.asset ? buildSanityImageUrl(value.avatar, 80) : ''
+      return (
+        <div className="my-8 bg-mw-gray-50 rounded-xl p-6 md:p-8">
+          <div className="flex flex-col md:flex-row gap-6">
+            {avatarUrl && <img src={avatarUrl} alt={value.author} width={80} height={80} className="rounded-full flex-shrink-0" />}
+            <div className="flex-1">
+              {value.rating && <div className="flex gap-1 mb-3">{[...Array(5)].map((_, i) => (<span key={i} className={`text-lg ${i < value.rating ? 'text-yellow-400' : 'text-mw-gray-300'}`}>★</span>))}</div>}
+              <blockquote className="text-lg text-mw-gray-700 italic mb-4">&ldquo;{value.quote}&rdquo;</blockquote>
+              <div>
+                <div className="font-semibold text-mw-gray-900">{value.author}</div>
+                {(value.role || value.company) && <div className="text-sm text-mw-gray-600">{value.role}{value.role && value.company && ' at '}{value.company}</div>}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    accordionBlock: ({ value }: any) => (
+      <div className="my-8">
+        {value.title && <h3 className="text-xl font-bold text-mw-gray-900 mb-4">{value.title}</h3>}
+        <div className="space-y-3">
+          {value.items?.map((item: any, i: number) => (
+            <details key={i} className="group bg-white border border-mw-gray-200 rounded-lg overflow-hidden">
+              <summary className="flex justify-between items-center p-4 cursor-pointer hover:bg-mw-gray-50 transition-colors">
+                <span className="font-medium text-mw-gray-900">{item.question}</span>
+                <svg className="w-5 h-5 text-mw-gray-500 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+              </summary>
+              <div className="px-4 pb-4 text-mw-gray-700"><p>{item.answer}</p></div>
+            </details>
+          ))}
+        </div>
+      </div>
+    ),
   },
   block: {
     h1: ({ children }: any) => (

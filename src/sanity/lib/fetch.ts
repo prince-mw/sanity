@@ -569,6 +569,82 @@ function portableTextToHtml(blocks: any[] | undefined): string {
         `
       }
     }
+
+    // Handle callout blocks
+    if (block._type === 'callout') {
+      const typeMap: Record<string, { bg: string; border: string; icon: string }> = {
+        info: { bg: 'bg-blue-50', border: 'border-blue-400', icon: '💡' },
+        warning: { bg: 'bg-amber-50', border: 'border-amber-400', icon: '⚠️' },
+        success: { bg: 'bg-green-50', border: 'border-green-400', icon: '✅' },
+        error: { bg: 'bg-red-50', border: 'border-red-400', icon: '❌' },
+        tip: { bg: 'bg-purple-50', border: 'border-purple-400', icon: '💬' },
+        note: { bg: 'bg-gray-50', border: 'border-gray-400', icon: '📝' },
+      }
+      const s = typeMap[block.type] || typeMap.info
+      const title = block.title ? `<h4 class="font-semibold text-mw-gray-900 mb-2">${block.title}</h4>` : ''
+      return `<div class="my-6 p-4 ${s.bg} border-l-4 ${s.border} rounded-r-lg"><div class="flex items-start gap-3"><span class="text-xl flex-shrink-0">${s.icon}</span><div class="flex-1">${title}<p class="text-mw-gray-700 leading-relaxed">${block.content || ''}</p></div></div></div>`
+    }
+
+    // Handle stat blocks
+    if (block._type === 'statBlock') {
+      const themeMap: Record<string, { bg: string; text: string; label: string }> = {
+        light: { bg: 'bg-white border border-mw-gray-200', text: 'text-mw-blue-600', label: 'text-mw-gray-600' },
+        dark: { bg: 'bg-mw-gray-900', text: 'text-white', label: 'text-mw-gray-300' },
+        blue: { bg: 'bg-mw-blue-600', text: 'text-white', label: 'text-mw-blue-100' },
+      }
+      const s = themeMap[block.theme] || themeMap.light
+      const stats = (block.stats || []).map((stat: any) =>
+        `<div class="text-center"><div class="text-3xl font-bold ${s.text} mb-2">${stat.value || ''}</div><div class="text-sm font-medium ${s.label}">${stat.label || ''}</div>${stat.description ? `<div class="text-xs mt-1 ${s.label} opacity-80">${stat.description}</div>` : ''}</div>`
+      ).join('')
+      return `<div class="my-8 p-6 ${s.bg} rounded-xl"><div class="${block.layout === 'row' ? 'flex flex-wrap justify-center gap-8' : 'grid grid-cols-2 gap-4'}">${stats}</div></div>`
+    }
+
+    // Handle CTA buttons
+    if (block._type === 'ctaButton') {
+      const styleMap: Record<string, string> = {
+        primary: 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white px-6 py-3 rounded-lg font-semibold',
+        secondary: 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50 px-6 py-3 rounded-lg font-semibold',
+        dark: 'bg-mw-gray-900 hover:bg-mw-gray-800 text-white px-6 py-3 rounded-lg font-semibold',
+        link: 'text-mw-blue-600 hover:text-mw-blue-700 font-semibold',
+      }
+      const btnClass = styleMap[block.style] || styleMap.primary
+      const align = block.alignment === 'center' ? 'justify-center' : block.alignment === 'right' ? 'justify-end' : 'justify-start'
+      const isExternal = (block.url || '').startsWith('http')
+      return `<div class="my-6 flex ${align}"><a href="${block.url || '#'}" class="${btnClass}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ''}>${block.text || ''}</a></div>`
+    }
+
+    // Handle table blocks
+    if (block._type === 'tableBlock') {
+      const headers = (block.headers || []).map((h: string) =>
+        `<th class="px-4 py-3 text-left text-sm font-semibold text-mw-gray-900${block.bordered ? ' border border-mw-gray-200' : ''}">${h}</th>`
+      ).join('')
+      const rows = (block.rows || []).map((row: any, ri: number) => {
+        const cells = (row.cells || []).map((cell: string) =>
+          `<td class="px-4 py-3 text-sm text-mw-gray-700${block.bordered ? ' border border-mw-gray-200' : ''}">${cell}</td>`
+        ).join('')
+        return `<tr class="${block.striped && ri % 2 === 1 ? 'bg-mw-gray-50' : ''}">${cells}</tr>`
+      }).join('')
+      const caption = block.caption ? `<div class="text-sm text-mw-gray-600 mb-2 font-medium">${block.caption}</div>` : ''
+      return `<div class="my-8 overflow-x-auto">${caption}<table class="w-full${block.bordered ? ' border border-mw-gray-200' : ''}"><thead><tr class="bg-mw-gray-100">${headers}</tr></thead><tbody>${rows}</tbody></table></div>`
+    }
+
+    // Handle testimonial blocks
+    if (block._type === 'testimonialBlock') {
+      const avatarUrl = block.avatar?.asset ? getSanityImageUrl(block.avatar, { width: 80 }) : ''
+      const avatar = avatarUrl ? `<img src="${avatarUrl}" alt="${block.author || ''}" width="80" height="80" class="rounded-full flex-shrink-0" />` : ''
+      const rating = block.rating ? `<div class="flex gap-1 mb-3">${[...Array(5)].map((_, i) => `<span class="text-lg ${i < block.rating ? 'text-yellow-400' : 'text-mw-gray-300'}">★</span>`).join('')}</div>` : ''
+      const role = (block.role || block.company) ? `<div class="text-sm text-mw-gray-600">${block.role || ''}${block.role && block.company ? ' at ' : ''}${block.company || ''}</div>` : ''
+      return `<div class="my-8 bg-mw-gray-50 rounded-xl p-6"><div class="flex flex-col md:flex-row gap-6">${avatar}<div class="flex-1">${rating}<blockquote class="text-lg text-mw-gray-700 italic mb-4">"${block.quote || ''}"</blockquote><div><div class="font-semibold text-mw-gray-900">${block.author || ''}</div>${role}</div></div></div></div>`
+    }
+
+    // Handle accordion blocks
+    if (block._type === 'accordionBlock') {
+      const title = block.title ? `<h3 class="text-xl font-bold text-mw-gray-900 mb-4">${block.title}</h3>` : ''
+      const items = (block.items || []).map((item: any) =>
+        `<details class="group bg-white border border-mw-gray-200 rounded-lg overflow-hidden"><summary class="flex justify-between items-center p-4 cursor-pointer hover:bg-mw-gray-50"><span class="font-medium text-mw-gray-900">${item.question || ''}</span></summary><div class="px-4 pb-4 text-mw-gray-700"><p>${item.answer || ''}</p></div></details>`
+      ).join('')
+      return `<div class="my-8">${title}<div class="space-y-3">${items}</div></div>`
+    }
     
     return ''
   }).join('\n')
@@ -1052,7 +1128,14 @@ export async function getTeamMemberBySlug(slug: string): Promise<SanityTeamMembe
       department,
       image,
       bio,
-      fullBio,
+      fullBio[]{
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
       linkedin,
       twitter,
       email,
@@ -1268,7 +1351,14 @@ export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | nu
       },
       registrationLink,
       watchLink,
-      content,
+      content[]{
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
       htmlContent,
       seo
     }
@@ -1540,7 +1630,14 @@ export async function getEbookBySlug(slug: string): Promise<SanityEbook | null> 
       pages,
       downloads,
       topics,
-      body,
+      body[]{
+        ...,
+        _type == "video" => {
+          ...,
+          "videoFileUrl": videoFile.asset->url,
+          "videoFileMimeType": videoFile.asset->mimeType
+        }
+      },
       order,
       seo,
       zohoForm->{

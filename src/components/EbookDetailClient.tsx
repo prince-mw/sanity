@@ -4,6 +4,7 @@ import Link from 'next/link'
 import React, { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PortableText } from '@portabletext/react'
+import SanityPortableText from '@/components/SanityPortableText'
 
 interface ZohoFormConfig {
   formUrl?: string
@@ -346,7 +347,7 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
         <section className="py-16 bg-white">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-mw-blue-600 prose-strong:text-gray-900">
-              <PortableText value={ebook.body} />
+              <SanityPortableText value={ebook.body} />
             </div>
           </div>
         </section>

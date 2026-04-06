@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { getBackgroundClasses, getAlignmentClasses, getMaxWidthClasses, getTextColorClasses, type BackgroundColor, type Alignment, type MaxWidth } from "./utils";
-import { PortableText } from "@portabletext/react";
+import SanityPortableText from "@/components/SanityPortableText";
 
 interface TextBlockSectionProps {
   heading?: string;
@@ -42,7 +42,7 @@ export function TextBlockSection({
           
           {content && (
             <div className={`prose prose-lg max-w-none ${backgroundColor === 'dark' || backgroundColor === 'blue' ? 'prose-invert' : ''}`}>
-              <PortableText value={content} />
+              <SanityPortableText value={content} />
             </div>
           )}
         </motion.div>
