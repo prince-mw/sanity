@@ -91,6 +91,22 @@ html {
   @apply bg-mw-blue-50 rounded-r-lg not-italic py-4;
 }
 
+/* Custom embed typography for CMS HTML content */
+.custom-embed h1 { @apply text-4xl font-bold text-mw-gray-900 mt-8 mb-4; }
+.custom-embed h2 { @apply text-3xl font-bold text-mw-gray-900 mt-6 mb-3; }
+.custom-embed h3 { @apply text-2xl font-bold text-mw-gray-900 mt-5 mb-2; }
+.custom-embed h4 { @apply text-xl font-semibold text-mw-gray-900 mt-4 mb-2; }
+.custom-embed p { @apply text-mw-gray-700 leading-relaxed mb-4; }
+.custom-embed a { @apply text-mw-blue-600 hover:text-mw-blue-700 underline transition-colors; }
+.custom-embed ul { @apply list-disc list-inside space-y-2 my-4 ml-4 text-mw-gray-700; }
+.custom-embed ol { @apply list-decimal list-inside space-y-2 my-4 ml-4 text-mw-gray-700; }
+.custom-embed li { @apply leading-relaxed; }
+.custom-embed blockquote { @apply border-l-4 border-mw-blue-500 bg-mw-blue-50 py-4 px-6 rounded-r-lg my-6 italic; }
+.custom-embed strong { @apply font-semibold text-mw-gray-900; }
+.custom-embed table { @apply w-full border-collapse my-6; }
+.custom-embed th { @apply bg-mw-gray-50 font-semibold text-left p-3 border border-mw-gray-200; }
+.custom-embed td { @apply p-3 border border-mw-gray-200; }
+
 /* Skeleton loading shimmer animation */
 @keyframes shimmer {
   0% {

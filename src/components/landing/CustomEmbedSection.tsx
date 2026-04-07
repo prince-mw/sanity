@@ -33,7 +33,7 @@ export function CustomEmbedSection({
           className={`${widthClasses} mx-auto`}
         >
           <div 
-            className="custom-embed"
+            className="custom-embed prose prose-lg max-w-none"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(code) }}
           />
         </motion.div>

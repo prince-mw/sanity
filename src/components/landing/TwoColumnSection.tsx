@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { CTAButton } from "../CTAButton";
 import { getBackgroundClasses, getButtonClasses, type BackgroundColor } from "./utils";
-import { PortableText } from "@portabletext/react";
+import SanityPortableText from "@/components/SanityPortableText";
 
 interface TwoColumnSectionProps {
   heading?: string;
@@ -48,7 +48,7 @@ export function TwoColumnSection({
             
             {content && (
               <div className={`prose prose-lg max-w-none mb-8 ${isDark ? 'prose-invert' : ''}`}>
-                <PortableText value={content} />
+                <SanityPortableText value={content} />
               </div>
             )}
 
