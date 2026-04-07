@@ -340,19 +340,13 @@ export function SanityBackgroundImage({
     return () => observer.disconnect()
   }, [priority, isInView])
 
-  if (!image?.asset) {
-    return (
-      <div className={`bg-mw-gray-200 ${className}`}>
-        {children}
-      </div>
-    )
-  }
-
-  const imageUrl = isInView 
+  const imageUrl = image?.asset && isInView 
     ? urlFor(image).width(1920).quality(80).auto('format').url()
     : ''
   
-  const blurUrl = urlFor(image).width(50).quality(30).blur(20).auto('format').url()
+  const blurUrl = image?.asset
+    ? urlFor(image).width(50).quality(30).blur(20).auto('format').url()
+    : ''
 
   // Preload image
   useEffect(() => {
@@ -362,6 +356,14 @@ export function SanityBackgroundImage({
     img.onload = () => setIsLoaded(true)
     img.src = imageUrl
   }, [isInView, imageUrl])
+
+  if (!image?.asset) {
+    return (
+      <div className={`bg-mw-gray-200 ${className}`}>
+        {children}
+      </div>
+    )
+  }
 
   return (
     <div 

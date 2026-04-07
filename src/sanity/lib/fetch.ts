@@ -1290,6 +1290,8 @@ export async function getPastWebinars(): Promise<SanityWebinar[]> {
       featuredImage,
       speakerImage,
       webinarType,
+      date,
+      time,
       duration,
       speaker,
       speakerRole,
@@ -1338,7 +1340,7 @@ export function transformWebinar(webinar: SanityWebinar) {
 
 export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | null> {
   const query = `
-    *[_type == "webinar" && slug.current == $slug][0] {
+    *[_type == "webinar" && ${safePublishedFilter} && slug.current == $slug][0] {
       _id,
       title,
       slug,
