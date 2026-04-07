@@ -14,26 +14,27 @@ interface CustomEmbedSectionProps {
 export function CustomEmbedSection({
   title,
   code,
-  maxWidth = 'medium',
+  maxWidth = 'full',
   backgroundColor = 'transparent',
 }: CustomEmbedSectionProps) {
   const bgClasses = getBackgroundClasses(backgroundColor);
+  const isFull = maxWidth === 'full';
   const widthClasses = getMaxWidthClasses(maxWidth);
 
   if (!code) return null;
 
   return (
-    <section className={`py-8 md:py-12 ${bgClasses}`}>
-      <div className="container mx-auto px-4">
+    <section className={`${isFull ? '' : 'py-8 md:py-12'} ${bgClasses}`}>
+      <div className={isFull ? '' : 'container mx-auto px-4'}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className={`${widthClasses} mx-auto`}
+          className={isFull ? '' : `${widthClasses} mx-auto`}
         >
           <div 
-            className="custom-embed prose prose-lg max-w-none"
+            className="custom-embed"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(code) }}
           />
         </motion.div>
