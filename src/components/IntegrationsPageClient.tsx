@@ -178,7 +178,15 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
               </div>
 
               <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredIntegrations.map((integration, index) => (
+                {filteredIntegrations.length === 0 ? (
+                  <div className="md:col-span-2 xl:col-span-3 text-center py-16">
+                    <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" />
+                    </svg>
+                    <h3 className="text-xl font-semibold text-gray-700 mb-2">No Integrations Found</h3>
+                    <p className="text-gray-500 max-w-md mx-auto">No integrations match your current filters. Try adjusting your search criteria.</p>
+                  </div>
+                ) : filteredIntegrations.map((integration, index) => (
                   <motion.div
                     key={integration.id}
                     initial={{ opacity: 0, y: 20 }}

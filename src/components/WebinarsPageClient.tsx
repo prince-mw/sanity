@@ -124,7 +124,15 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
             </div>
 
             <div className="space-y-6">
-              {upcomingWebinars.map((webinar, index) => (
+              {upcomingWebinars.length === 0 ? (
+                <div className="text-center py-16">
+                  <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Upcoming Webinars</h3>
+                  <p className="text-mw-gray-500 max-w-md mx-auto">There are no upcoming webinars scheduled at the moment. Check back soon or browse our past webinars for on-demand content.</p>
+                </div>
+              ) : upcomingWebinars.map((webinar, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 30 }}
@@ -215,7 +223,15 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
             </div>
 
             <div className="space-y-6">
-              {pastWebinars.map((webinar, index) => (
+              {pastWebinars.length === 0 ? (
+                <div className="text-center py-16">
+                  <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Past Webinars</h3>
+                  <p className="text-mw-gray-500 max-w-md mx-auto">There are no past webinars available at the moment. Check back after our upcoming sessions.</p>
+                </div>
+              ) : pastWebinars.map((webinar, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 30 }}

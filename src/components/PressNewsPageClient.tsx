@@ -72,7 +72,15 @@ export default function PressNewsPageClient({ pressReleases, mediaFeatures }: Pr
           </motion.div>
 
           <div className="grid lg:grid-cols-2 gap-8">
-            {pressReleases.map((release, index) => (
+            {pressReleases.length === 0 ? (
+              <div className="lg:col-span-2 text-center py-16">
+                <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Press Releases</h3>
+                <p className="text-mw-gray-500 max-w-md mx-auto">There are no press releases available at the moment. Check back soon for the latest announcements.</p>
+              </div>
+            ) : pressReleases.map((release, index) => (
               <motion.article
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -184,7 +192,15 @@ export default function PressNewsPageClient({ pressReleases, mediaFeatures }: Pr
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6">
-            {mediaFeatures.map((feature, index) => (
+            {mediaFeatures.length === 0 ? (
+              <div className="md:col-span-2 text-center py-16">
+                <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Media Coverage</h3>
+                <p className="text-mw-gray-500 max-w-md mx-auto">There is no media coverage available at the moment. Check back soon for the latest features.</p>
+              </div>
+            ) : mediaFeatures.map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

@@ -93,7 +93,15 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
           </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {leadership.map((member, index) => (
+            {leadership.length === 0 ? (
+              <div className="md:col-span-2 lg:col-span-4 text-center py-16">
+                <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Leadership Information</h3>
+                <p className="text-mw-gray-500 max-w-md mx-auto">Leadership team information is not available at the moment. Check back soon.</p>
+              </div>
+            ) : leadership.map((member, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

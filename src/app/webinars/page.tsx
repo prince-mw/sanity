@@ -125,6 +125,8 @@ export default async function WebinarsPage() {
           speakerImage: transformed.speakerImage || ''
         }
       })
+    } else if (upcoming) {
+      upcomingWebinars = []
     }
     
     if (past && past.length > 0) {
@@ -143,6 +145,8 @@ export default async function WebinarsPage() {
           speakerImage: transformed.speakerImage || ''
         }
       })
+    } else if (past) {
+      pastWebinars = []
     }
   } catch (error) {
     console.error('Error fetching webinars from Sanity:', error)
