@@ -14,7 +14,7 @@ const typeToPath: Record<string, string[]> = {
   ebook: ['/ebooks', '/'],
   whitepaper: ['/whitepapers', '/'],
   product: ['/products', '/platform', '/mw-planner', '/mw-market', '/mw-activate', '/mw-measure', '/mw-influence', '/mw-science', '/mw-studio', '/'],
-  landingPage: ['/'],
+  landingPage: ['/lp', '/'],
   teamMember: ['/leadership', '/about', '/'],
   jobPosition: ['/careers', '/'],
   careersPage: ['/careers'],
@@ -87,12 +87,17 @@ export async function POST(request: NextRequest) {
     
     // Revalidate specific content page if slug exists
     if (slug?.current) {
-      const basePath = pathsToRevalidate[0]
-      if (basePath && basePath !== '/') {
-        pathsToRevalidate.push(`${basePath}/${slug.current}`)
-      } else {
-        // For landing pages, revalidate at root
+      if (_type === 'landingPage') {
+        // Landing pages serve from both /{slug} (catch-all) and /lp/{slug}
         pathsToRevalidate.push(`/${slug.current}`)
+        pathsToRevalidate.push(`/lp/${slug.current}`)
+      } else {
+        const basePath = pathsToRevalidate[0]
+        if (basePath && basePath !== '/') {
+          pathsToRevalidate.push(`${basePath}/${slug.current}`)
+        } else {
+          pathsToRevalidate.push(`/${slug.current}`)
+        }
       }
     }
 
