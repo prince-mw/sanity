@@ -22,8 +22,8 @@ const typeToPath: Record<string, string> = {
   webinar: '/webinars',
   ebook: '/ebooks',
   whitepaper: '/whitepapers',
-  product: '/products',
-  landingPage: '',
+  product: '',
+  landingPage: '/lp',
   location: '/locations',
 }
 

@@ -33,8 +33,8 @@ export async function GET(request: NextRequest) {
     webinar: '/webinars',
     ebook: '/ebooks',
     whitepaper: '/whitepapers',
-    product: '/products',
-    landingPage: '',
+    product: '',
+    landingPage: '/lp',
     location: '/locations',
   }
 
