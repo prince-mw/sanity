@@ -2100,6 +2100,52 @@ export interface SanityProduct {
       iconName?: string
     }>
   }>
+  // Detail page section-specific fields
+  measurementSuiteTitle?: string
+  measurementSuiteSubtitle?: string
+  dashboardTitle?: string
+  dashboardSubtitle?: string
+  sampleLocations?: Array<{
+    name: string
+    type: string
+    impressions: string
+    reach: string
+    frequency: number
+    cost: string
+    cpm: string
+    traffic: string
+    demographics: string
+    peakHours: string
+  }>
+  formatTypesTitle?: string
+  formatTypesSubtitle?: string
+  formatTypes?: Array<{
+    category: string
+    icon?: string
+    formats: string[]
+    activeLocations: number
+    dailyImpressions: string
+    avgCPM: string
+    performance: string
+  }>
+  audienceInsightsTitle?: string
+  audienceInsightsSubtitle?: string
+  audienceMetrics?: Array<{
+    title: string
+    value: string
+    icon?: string
+  }>
+  demographics?: Array<{
+    label: string
+    percentage: number
+  }>
+  audienceInterests?: string[]
+  attributionTitle?: string
+  attributionSubtitle?: string
+  attributionCards?: Array<{
+    title: string
+    metrics: Array<{ label: string; value: string }>
+  }>
   finalCtaTitle?: string
   finalCtaSubtitle?: string
   ctaText?: string
@@ -2165,6 +2211,22 @@ export async function getProductBySlug(slug: string): Promise<SanityProduct | nu
         sectionSubtitle,
         items[] { title, description, detail, metric, metricLabel, iconName }
       },
+      measurementSuiteTitle,
+      measurementSuiteSubtitle,
+      dashboardTitle,
+      dashboardSubtitle,
+      sampleLocations[] { name, type, impressions, reach, frequency, cost, cpm, traffic, demographics, peakHours },
+      formatTypesTitle,
+      formatTypesSubtitle,
+      formatTypes[] { category, icon, formats, activeLocations, dailyImpressions, avgCPM, performance },
+      audienceInsightsTitle,
+      audienceInsightsSubtitle,
+      audienceMetrics[] { title, value, icon },
+      demographics[] { label, percentage },
+      audienceInterests,
+      attributionTitle,
+      attributionSubtitle,
+      attributionCards[] { title, metrics[] { label, value } },
       finalCtaTitle,
       finalCtaSubtitle,
       ctaText,

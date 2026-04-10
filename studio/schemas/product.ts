@@ -511,6 +511,214 @@ export default defineType({
       group: 'resources',
     }),
     // ============== DETAIL PAGE SECTIONS ==============
+    // Section-specific headings
+    defineField({
+      name: 'measurementSuiteTitle',
+      title: 'Measurement Suite Section Title',
+      type: 'string',
+      description: 'Heading for the features/measurement section',
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'measurementSuiteSubtitle',
+      title: 'Measurement Suite Section Subtitle',
+      type: 'text',
+      rows: 2,
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'dashboardTitle',
+      title: 'Dashboard Section Title',
+      type: 'string',
+      description: 'Heading for the live dashboard / locations section',
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'dashboardSubtitle',
+      title: 'Dashboard Section Subtitle',
+      type: 'text',
+      rows: 2,
+      group: 'detailPage',
+    }),
+    // Sample locations for the interactive dashboard
+    defineField({
+      name: 'sampleLocations',
+      title: 'Sample Locations',
+      type: 'array',
+      description: 'Interactive location cards shown in the performance dashboard',
+      group: 'detailPage',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'name', type: 'string', title: 'Location Name' },
+            { name: 'type', type: 'string', title: 'Location Type', description: 'e.g., Billboard, Transit, Digital' },
+            { name: 'impressions', type: 'string', title: 'Impressions', description: 'e.g., 2.4M' },
+            { name: 'reach', type: 'string', title: 'Reach', description: 'e.g., 847K' },
+            { name: 'frequency', type: 'number', title: 'Frequency' },
+            { name: 'cost', type: 'string', title: 'Monthly Cost', description: 'e.g., $12,500' },
+            { name: 'cpm', type: 'string', title: 'CPM', description: 'e.g., $5.21' },
+            { name: 'traffic', type: 'string', title: 'Traffic Level', description: 'e.g., High, Very High' },
+            { name: 'demographics', type: 'string', title: 'Demographics', description: 'e.g., 25-44, Urban Professionals' },
+            { name: 'peakHours', type: 'string', title: 'Peak Hours', description: 'e.g., 7-9 AM, 5-7 PM' },
+          ],
+          preview: {
+            select: { title: 'name', subtitle: 'type' },
+          },
+        },
+      ],
+    }),
+    // OOH Format Types
+    defineField({
+      name: 'formatTypesTitle',
+      title: 'Format Types Section Title',
+      type: 'string',
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'formatTypesSubtitle',
+      title: 'Format Types Section Subtitle',
+      type: 'text',
+      rows: 2,
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'formatTypes',
+      title: 'OOH Format Types',
+      type: 'array',
+      description: 'Format type cards (e.g., Billboards, Transit, Street Furniture)',
+      group: 'detailPage',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'category', type: 'string', title: 'Category Name' },
+            { name: 'icon', type: 'string', title: 'Icon Name', description: 'building, truck, location, device-phone' },
+            { name: 'formats', type: 'array', title: 'Format List', of: [{ type: 'string' }], description: 'List of specific formats' },
+            { name: 'activeLocations', type: 'number', title: 'Active Locations' },
+            { name: 'dailyImpressions', type: 'string', title: 'Daily Impressions' },
+            { name: 'avgCPM', type: 'string', title: 'Avg CPM' },
+            { name: 'performance', type: 'string', title: 'Performance Change', description: 'e.g., +18%' },
+          ],
+          preview: {
+            select: { title: 'category', subtitle: 'dailyImpressions' },
+          },
+        },
+      ],
+    }),
+    // Audience Insights
+    defineField({
+      name: 'audienceInsightsTitle',
+      title: 'Audience Insights Section Title',
+      type: 'string',
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'audienceInsightsSubtitle',
+      title: 'Audience Insights Section Subtitle',
+      type: 'text',
+      rows: 2,
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'audienceMetrics',
+      title: 'Audience Metrics',
+      type: 'array',
+      description: 'Key audience measurement stats (e.g., Foot Traffic, Dwell Time)',
+      group: 'detailPage',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', type: 'string', title: 'Metric Title' },
+            { name: 'value', type: 'string', title: 'Metric Value' },
+            { name: 'icon', type: 'string', title: 'Icon Name', description: 'users, clock, device-phone, location' },
+          ],
+          preview: {
+            select: { title: 'title', subtitle: 'value' },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'demographics',
+      title: 'Demographics Breakdown',
+      type: 'array',
+      description: 'Age group distribution (percentages)',
+      group: 'detailPage',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'label', type: 'string', title: 'Label', description: 'e.g., Age 18-24' },
+            { name: 'percentage', type: 'number', title: 'Percentage', validation: (Rule) => Rule.min(0).max(100) },
+          ],
+          preview: {
+            select: { title: 'label', subtitle: 'percentage' },
+            prepare({ title, subtitle }) {
+              return { title, subtitle: `${subtitle}%` }
+            },
+          },
+        },
+      ],
+    }),
+    defineField({
+      name: 'audienceInterests',
+      title: 'Audience Interests',
+      type: 'array',
+      description: 'Tag-style interest labels (e.g., Technology, Fashion)',
+      group: 'detailPage',
+      of: [{ type: 'string' }],
+    }),
+    // Attribution & ROI
+    defineField({
+      name: 'attributionTitle',
+      title: 'Attribution Section Title',
+      type: 'string',
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'attributionSubtitle',
+      title: 'Attribution Section Subtitle',
+      type: 'text',
+      rows: 2,
+      group: 'detailPage',
+    }),
+    defineField({
+      name: 'attributionCards',
+      title: 'Attribution & ROI Cards',
+      type: 'array',
+      description: 'ROI metric cards (e.g., Store Visit Attribution, Digital Cross-Channel)',
+      group: 'detailPage',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            { name: 'title', type: 'string', title: 'Card Title' },
+            {
+              name: 'metrics',
+              type: 'array',
+              title: 'Metrics',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    { name: 'label', type: 'string', title: 'Label' },
+                    { name: 'value', type: 'string', title: 'Value' },
+                  ],
+                  preview: {
+                    select: { title: 'label', subtitle: 'value' },
+                  },
+                },
+              ],
+            },
+          ],
+          preview: {
+            select: { title: 'title' },
+          },
+        },
+      ],
+    }),
     defineField({
       name: 'detailPageSections',
       title: 'Detail Page Content Sections',

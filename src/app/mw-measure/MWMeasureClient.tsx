@@ -80,7 +80,7 @@ const EyeIcon = ({ className }: { className?: string }) => (
 
 
 export default function MWMeasure({ caseStudies = [], product, partnerLogos }: MWMeasureClientProps) {
-  const [selectedLocation, setSelectedLocation] = useState('downtown')
+  const [selectedLocation, setSelectedLocation] = useState('downtown-billboard-0')
   const [hoveredFormat, setHoveredFormat] = useState<string | null>(null)
   const [animatedMetrics, setAnimatedMetrics] = useState<{[key: string]: number}>({})
 
@@ -90,9 +90,27 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
   const heroDescription = product?.description || 'Transform Out-of-Home advertising with real-time location intelligence,'
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
-  const locations = [
+  const defaultHeroStats = [
+    { value: '12.4M', label: 'Daily Impressions' },
+    { value: '3.2M', label: 'Unique Reach' },
+    { value: '847', label: 'Active Locations' },
+    { value: '+23%', label: 'Store Visit Lift' }
+  ]
+  const heroStats = product?.heroStats?.length ? product.heroStats : defaultHeroStats
+
+  const defaultBenefits = [
+    'Live Performance Maps',
+    'Real-Time Foot Traffic Analytics',
+    'Geographic Audience Insights',
+    'Store Visit Attribution'
+  ]
+  const benefits = product?.benefits?.length ? product.benefits : defaultBenefits
+
+  const heroStatColors = ['text-yellow-300', 'text-green-300', 'text-purple-300', 'text-pink-300']
+  const benefitIcons = [MapIcon, UsersIcon, LocationIcon, ChartBarIcon]
+
+  const defaultLocations = [
     { 
-      id: 'downtown',
       name: 'Downtown Billboard', 
       type: 'Billboard',
       impressions: '2.4M',
@@ -105,7 +123,6 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
       peakHours: '7-9 AM, 5-7 PM'
     },
     { 
-      id: 'transit',
       name: 'Metro Transit', 
       type: 'Transit',
       impressions: '3.1M',
@@ -118,7 +135,6 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
       peakHours: '6-10 AM, 4-8 PM'
     },
     { 
-      id: 'mall',
       name: 'Shopping District', 
       type: 'Digital',
       impressions: '1.8M',
@@ -131,6 +147,10 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
       peakHours: '11 AM-8 PM'
     }
   ]
+  const locations = (product?.sampleLocations?.length ? product.sampleLocations : defaultLocations).map((loc, i) => ({
+    ...loc,
+    id: loc.name.toLowerCase().replace(/\s+/g, '-') + '-' + i,
+  }))
 
   const defaultOohMetrics = [
     {
@@ -167,56 +187,119 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
       }))
     : defaultOohMetrics
 
-  const formatTypes = [
+  const formatIconMap: Record<string, React.FC<{ className?: string }>> = {
+    'building': BuildingIcon, 'truck': TruckIcon, 'location': LocationIcon, 'device-phone': DevicePhoneMobileIcon,
+  }
+  const formatColorCycle = ['from-blue-500 to-indigo-600', 'from-indigo-500 to-blue-600', 'from-blue-600 to-indigo-500', 'from-indigo-600 to-blue-500']
+
+  const defaultFormatTypes = [
     {
       category: "Billboards",
-      icon: BuildingIcon,
-      metrics: ["Static Large Format", "Digital Billboards", "Spectacular Displays", "Highway Billboards", "Urban Posters", "Wallscapes"],
-      liveStats: {
-        activeLocations: 1247,
-        dailyImpressions: "8.4M",
-        avgCPM: "$4.20",
-        performance: "+18%"
-      },
-      color: "from-blue-500 to-indigo-600"
+      icon: "building",
+      formats: ["Static Large Format", "Digital Billboards", "Spectacular Displays", "Highway Billboards", "Urban Posters", "Wallscapes"],
+      activeLocations: 1247,
+      dailyImpressions: "8.4M",
+      avgCPM: "$4.20",
+      performance: "+18%"
     },
     {
       category: "Transit",
-      icon: TruckIcon,
-      metrics: ["Bus Shelters", "Metro/Subway Ads", "Bus Wraps", "Train Station Displays", "Airport Advertising", "Taxi/Rideshare Wraps"],
-      liveStats: {
-        activeLocations: 3421,
-        dailyImpressions: "12.7M",
-        avgCPM: "$5.80",
-        performance: "+24%"
-      },
-      color: "from-indigo-500 to-blue-600"
+      icon: "truck",
+      formats: ["Bus Shelters", "Metro/Subway Ads", "Bus Wraps", "Train Station Displays", "Airport Advertising", "Taxi/Rideshare Wraps"],
+      activeLocations: 3421,
+      dailyImpressions: "12.7M",
+      avgCPM: "$5.80",
+      performance: "+24%"
     },
     {
       category: "Street Furniture",
-      icon: LocationIcon,
-      metrics: ["Kiosks", "Benches", "Newsstand Displays", "Phone Booth Ads", "Bike Share Stations", "Smart City Displays"],
-      liveStats: {
-        activeLocations: 892,
-        dailyImpressions: "3.2M",
-        avgCPM: "$3.90",
-        performance: "+12%"
-      },
-      color: "from-blue-600 to-indigo-500"
+      icon: "location",
+      formats: ["Kiosks", "Benches", "Newsstand Displays", "Phone Booth Ads", "Bike Share Stations", "Smart City Displays"],
+      activeLocations: 892,
+      dailyImpressions: "3.2M",
+      avgCPM: "$3.90",
+      performance: "+12%"
     },
     {
       category: "Place-Based",
-      icon: BuildingIcon,
-      metrics: ["Retail Screens", "Cinema Advertising", "Sports Venues", "Shopping Malls", "Gyms & Wellness", "Office Buildings"],
-      liveStats: {
-        activeLocations: 2156,
-        dailyImpressions: "6.9M",
-        avgCPM: "$6.50",
-        performance: "+31%"
-      },
-      color: "from-indigo-600 to-blue-500"
+      icon: "building",
+      formats: ["Retail Screens", "Cinema Advertising", "Sports Venues", "Shopping Malls", "Gyms & Wellness", "Office Buildings"],
+      activeLocations: 2156,
+      dailyImpressions: "6.9M",
+      avgCPM: "$6.50",
+      performance: "+31%"
     }
   ]
+
+  const formatTypes = (product?.formatTypes?.length ? product.formatTypes : defaultFormatTypes).map((ft, i) => ({
+    ...ft,
+    iconComponent: formatIconMap[ft.icon || ''] || BuildingIcon,
+    color: formatColorCycle[i % formatColorCycle.length],
+    metrics: ft.formats,
+    liveStats: {
+      activeLocations: ft.activeLocations,
+      dailyImpressions: ft.dailyImpressions,
+      avgCPM: ft.avgCPM,
+      performance: ft.performance,
+    },
+  }))
+
+  // Audience insights icon and color mapping
+  const audienceIconMap: Record<string, React.FC<{ className?: string }>> = {
+    'users': UsersIcon, 'clock': ClockIcon, 'device-phone': DevicePhoneMobileIcon, 'location': LocationIcon,
+  }
+  const audienceColorCycle = ['from-purple-500 to-pink-500', 'from-blue-500 to-indigo-500', 'from-pink-500 to-rose-500', 'from-indigo-500 to-purple-500']
+
+  const defaultAudienceMetrics = [
+    { title: 'Foot Traffic Analysis', value: '847K daily', icon: 'users' },
+    { title: 'Average Dwell Time', value: '4.2 minutes', icon: 'clock' },
+    { title: 'Mobile Attribution', value: '92% match rate', icon: 'device-phone' },
+    { title: 'Store Visit Lift', value: '+23% increase', icon: 'location' },
+  ]
+  const audienceMetrics = (product?.audienceMetrics?.length ? product.audienceMetrics : defaultAudienceMetrics).map((m, i) => ({
+    ...m,
+    iconComponent: audienceIconMap[m.icon || ''] || UsersIcon,
+    color: audienceColorCycle[i % audienceColorCycle.length],
+  }))
+
+  const defaultDemographics = [
+    { label: 'Age 18-24', percentage: 18 },
+    { label: 'Age 25-34', percentage: 32 },
+    { label: 'Age 35-44', percentage: 27 },
+    { label: 'Age 45+', percentage: 23 },
+  ]
+  const demographics = product?.demographics?.length ? product.demographics : defaultDemographics
+
+  const defaultInterests = ['Technology', 'Fashion', 'Travel', 'Food & Dining', 'Fitness', 'Entertainment']
+  const interests = product?.audienceInterests?.length ? product.audienceInterests : defaultInterests
+
+  const defaultAttributionCards = [
+    {
+      title: 'Store Visit Attribution',
+      metrics: [
+        { label: 'Store Visits', value: '124.7K' },
+        { label: 'Visit Lift', value: '+23%' },
+        { label: 'Attributed Revenue', value: '$2.4M' }
+      ]
+    },
+    {
+      title: 'Digital Cross-Channel',
+      metrics: [
+        { label: 'Search Lift', value: '+156%' },
+        { label: 'Website Visits', value: '89.2K' },
+        { label: 'Social Engagement', value: '+47%' }
+      ]
+    },
+    {
+      title: 'Brand Impact',
+      metrics: [
+        { label: 'Brand Awareness', value: '+38%' },
+        { label: 'Ad Recall', value: '67%' },
+        { label: 'Purchase Intent', value: '+29%' }
+      ]
+    }
+  ]
+  const attributionCards = product?.attributionCards?.length ? product.attributionCards : defaultAttributionCards
 
   const liveData = [
     { location: 'Times Square', impressions: 125847, change: '+12%', status: 'Peak' },
@@ -259,35 +342,21 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
 
               {/* Key Features List */}
               <div className="space-y-4 mb-8">
-                {[
-                  { 
-                    icon: <MapIcon className="w-6 h-6" />, 
-                    text: 'Live Performance Maps' 
-                  },
-                  { 
-                    icon: <UsersIcon className="w-6 h-6" />, 
-                    text: 'Real-Time Foot Traffic Analytics' 
-                  },
-                  { 
-                    icon: <LocationIcon className="w-6 h-6" />, 
-                    text: 'Geographic Audience Insights' 
-                  },
-                  { 
-                    icon: <ChartBarIcon className="w-6 h-6" />, 
-                    text: 'Store Visit Attribution' 
-                  }
-                ].map((item, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                    className="flex items-center gap-3 text-lg"
-                  >
-                    <div className="text-yellow-300">{item.icon}</div>
-                    <span className="text-white/90">{item.text}</span>
-                  </motion.div>
-                ))}
+                {benefits.map((text, index) => {
+                  const IconComp = benefitIcons[index % benefitIcons.length]
+                  return (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                      className="flex items-center gap-3 text-lg"
+                    >
+                      <div className="text-yellow-300"><IconComp className="w-6 h-6" /></div>
+                      <span className="text-white/90">{text}</span>
+                    </motion.div>
+                  )
+                })}
               </div>
 
               {/* CTA Button */}
@@ -316,12 +385,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
               <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
                 <h3 className="text-xl font-semibold mb-6 text-white/90">Live OOH Performance</h3>
                 <div className="grid grid-cols-2 gap-6">
-                  {[
-                    { value: '12.4M', label: 'Daily Impressions', color: 'text-yellow-300' },
-                    { value: '3.2M', label: 'Unique Reach', color: 'text-green-300' },
-                    { value: '847', label: 'Active Locations', color: 'text-purple-300' },
-                    { value: '+23%', label: 'Store Visit Lift', color: 'text-pink-300' }
-                  ].map((stat, index) => (
+                  {heroStats.map((stat, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -329,7 +393,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
                       transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
                       className="text-center p-4 bg-white/5 rounded-xl border border-white/10"
                     >
-                      <div className={`text-3xl md:text-4xl font-bold ${stat.color} mb-1`}>
+                      <div className={`text-3xl md:text-4xl font-bold ${heroStatColors[index % heroStatColors.length]} mb-1`}>
                         {stat.value}
                       </div>
                       <div className="text-sm text-blue-200">{stat.label}</div>
@@ -355,11 +419,10 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Complete OOH Measurement Suite
+              {product?.measurementSuiteTitle || 'Complete OOH Measurement Suite'}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              From location intelligence to audience insights, get comprehensive analytics 
-              that transform Out-of-Home campaigns into measurable, optimizable channels.
+              {product?.measurementSuiteSubtitle || 'From location intelligence to audience insights, get comprehensive analytics that transform Out-of-Home campaigns into measurable, optimizable channels.'}
             </p>
           </motion.div>
 
@@ -397,11 +460,10 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
             className="text-center mb-12"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Live Performance Dashboard
+              {product?.dashboardTitle || 'Live Performance Dashboard'}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Monitor real-time OOH campaign performance across all locations with interactive 
-              analytics, audience insights, and environmental context data.
+              {product?.dashboardSubtitle || 'Monitor real-time OOH campaign performance across all locations with interactive analytics, audience insights, and environmental context data.'}
             </p>
           </motion.div>
 
@@ -517,11 +579,10 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Measure Every OOH Format
+              {product?.formatTypesTitle || 'Measure Every OOH Format'}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Comprehensive analytics across all Out-of-Home advertising formats - from traditional 
-              billboards to digital displays and everything in between.
+              {product?.formatTypesSubtitle || 'Comprehensive analytics across all Out-of-Home advertising formats - from traditional billboards to digital displays and everything in between.'}
             </p>
           </motion.div>
 
@@ -558,7 +619,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
                       }}
                       transition={{ duration: 0.6 }}
                     >
-                      <type.icon className="w-7 h-7 text-white" />
+                      <type.iconComponent className="w-7 h-7 text-white" />
                     </motion.div>
                     <div>
                       <h3 className="text-xl font-semibold text-gray-900">
@@ -723,39 +784,13 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
               viewport={{ once: true }}
             >
               <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Real-Time Audience Insights
+                {product?.audienceInsightsTitle || 'Real-Time Audience Insights'}
               </h2>
               <p className="text-xl text-gray-600 mb-8">
-                Leverage mobile location data, traffic patterns, and demographic intelligence 
-                to understand who's seeing your OOH campaigns in real-time.
+                {product?.audienceInsightsSubtitle || 'Leverage mobile location data, traffic patterns, and demographic intelligence to understand who\'s seeing your OOH campaigns in real-time.'}
               </p>
               <div className="space-y-6">
-                {[
-                  { 
-                    icon: <UsersIcon className="w-6 h-6" />,
-                    title: "Foot Traffic Analysis", 
-                    value: "847K daily",
-                    color: "from-purple-500 to-pink-500"
-                  },
-                  { 
-                    icon: <ClockIcon className="w-6 h-6" />,
-                    title: "Average Dwell Time", 
-                    value: "4.2 minutes",
-                    color: "from-blue-500 to-indigo-500"
-                  },
-                  { 
-                    icon: <DevicePhoneMobileIcon className="w-6 h-6" />,
-                    title: "Mobile Attribution", 
-                    value: "92% match rate",
-                    color: "from-pink-500 to-rose-500"
-                  },
-                  { 
-                    icon: <LocationIcon className="w-6 h-6" />,
-                    title: "Store Visit Lift", 
-                    value: "+23% increase",
-                    color: "from-indigo-500 to-purple-500"
-                  }
-                ].map((stat, index) => (
+                {audienceMetrics.map((stat, index) => (
                   <motion.div
                     key={stat.title}
                     initial={{ opacity: 0, x: -20 }}
@@ -766,7 +801,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
                   >
                       <div className="flex items-center gap-4">
                       <div className={`w-12 h-12 bg-gradient-to-br ${stat.color} rounded-lg flex items-center justify-center text-white`}>
-                        {stat.icon}
+                        <stat.iconComponent className="w-6 h-6" />
                       </div>
                       <span className="text-gray-700 font-medium">{stat.title}</span>
                     </div>
@@ -786,51 +821,23 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
               <div className="bg-white p-6 rounded-xl shadow-lg">
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Demographics Breakdown</h3>
                 <div className="space-y-6">
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-600">Age 18-24</span>
-                      <span className="text-lg font-semibold text-gray-900">18%</span>
+                  {demographics.map((demo) => (
+                    <div key={demo.label}>
+                      <div className="flex justify-between items-center mb-2">
+                        <span className="text-gray-600">{demo.label}</span>
+                        <span className="text-lg font-semibold text-gray-900">{demo.percentage}%</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-3">
+                        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-3 rounded-full" style={{ width: `${demo.percentage}%` }}></div>
+                      </div>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-3 rounded-full" style={{ width: '18%' }}></div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-600">Age 25-34</span>
-                      <span className="text-lg font-semibold text-gray-900">32%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-3 rounded-full" style={{ width: '32%' }}></div>
-                    </div>
-                  </div>
-                  
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-600">Age 35-44</span>
-                      <span className="text-lg font-semibold text-gray-900">27%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-3 rounded-full" style={{ width: '27%' }}></div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-600">Age 45+</span>
-                      <span className="text-lg font-semibold text-gray-900">23%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 h-3 rounded-full" style={{ width: '23%' }}></div>
-                    </div>
-                  </div>
+                  ))}
                 </div>
 
                 <div className="mt-8 pt-6 border-t border-gray-200">
                   <h4 className="font-semibold text-gray-900 mb-4">Top Audience Interests</h4>
                   <div className="flex flex-wrap gap-2">
-                    {['Technology', 'Fashion', 'Travel', 'Food & Dining', 'Fitness', 'Entertainment'].map((interest) => (
+                    {interests.map((interest) => (
                       <span key={interest} className="px-3 py-1 bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-700 rounded-full text-sm font-medium">
                         {interest}
                       </span>
@@ -854,41 +861,15 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Complete Attribution & ROI Tracking
+              {product?.attributionTitle || 'Complete Attribution & ROI Tracking'}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Connect OOH exposure to real business outcomes with advanced attribution 
-              models that prove the value of your outdoor advertising investments.
+              {product?.attributionSubtitle || 'Connect OOH exposure to real business outcomes with advanced attribution models that prove the value of your outdoor advertising investments.'}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-12">
-            {[
-              {
-                title: "Store Visit Attribution",
-                metrics: [
-                  { label: "Store Visits", value: "124.7K" },
-                  { label: "Visit Lift", value: "+23%" },
-                  { label: "Attributed Revenue", value: "$2.4M" }
-                ]
-              },
-              {
-                title: "Digital Cross-Channel",
-                metrics: [
-                  { label: "Search Lift", value: "+156%" },
-                  { label: "Website Visits", value: "89.2K" },
-                  { label: "Social Engagement", value: "+47%" }
-                ]
-              },
-              {
-                title: "Brand Impact",
-                metrics: [
-                  { label: "Brand Awareness", value: "+38%" },
-                  { label: "Ad Recall", value: "67%" },
-                  { label: "Purchase Intent", value: "+29%" }
-                ]
-              }
-            ].map((section, index) => (
+            {attributionCards.map((section, index) => (
               <motion.div
                 key={section.title}
                 initial={{ opacity: 0, y: 20 }}
@@ -984,25 +965,24 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold mb-6">
-              Transform OOH Into Measurable Performance
+              {product?.finalCtaTitle || 'Transform OOH Into Measurable Performance'}
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Join leading brands leveraging real-time location intelligence, audience analytics, 
-              and attribution modeling to maximize their Out-of-Home advertising ROI.
+              {product?.finalCtaSubtitle || 'Join leading brands leveraging real-time location intelligence, audience analytics, and attribution modeling to maximize their Out-of-Home advertising ROI.'}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <CTAButton
-                href="/contact"
+                href={product?.ctaLink || '/contact'}
                 className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
               >
-                View Live Demo
+                {product?.ctaText || 'View Live Demo'}
                 <EyeIcon className="w-5 h-5" />
               </CTAButton>
               <CTAButton
-                href="/contact"
+                href={product?.secondaryCta?.link || '/contact'}
                 className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center gap-2"
               >
-                Book a Free Demo
+                {product?.secondaryCta?.text || 'Book a Free Demo'}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
