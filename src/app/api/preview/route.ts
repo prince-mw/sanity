@@ -35,6 +35,7 @@ export async function GET(request: NextRequest) {
     whitepaper: '/whitepapers',
     product: '/products',
     landingPage: '',
+    location: '/locations',
   }
 
   const basePath = typeToPath[type] || ''

@@ -8,7 +8,7 @@ import {seoDashboardTool} from './components/seo-dashboard'
 
 // Preview configuration
 const PREVIEW_SECRET = process.env.SANITY_STUDIO_PREVIEW_SECRET || 'preview-secret-key'
-const PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'http://localhost:3000'
+const PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'https://www.movingwalls.com'
 
 // Content types that support preview
 const previewTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper', 'product', 'landingPage', 'location']
