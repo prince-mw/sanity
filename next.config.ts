@@ -143,6 +143,10 @@ const nextConfig: NextConfig = {
             value: 'SAMEORIGIN',
           },
           {
+            key: 'Content-Security-Policy',
+            value: "frame-ancestors 'self' https://movingwalls-cms.sanity.studio",
+          },
+          {
             key: 'Permissions-Policy',
             value: 'camera=(), microphone=(), geolocation=(self)',
           },
