@@ -3052,6 +3052,7 @@ export function transformOohFormat(format: SanityOohFormat) {
 
 // Analytics Configuration Interface
 export interface AnalyticsConfig {
+  googleSiteVerification?: string
   googleAnalytics?: {
     enabled: boolean
     measurementId?: string
@@ -3083,6 +3084,7 @@ export async function getAnalyticsConfig(): Promise<AnalyticsConfig | null> {
   try {
     const query = `
       *[_type == "analyticsConfig"][0] {
+        googleSiteVerification,
         googleAnalytics,
         googleTagManager,
         metaPixel,

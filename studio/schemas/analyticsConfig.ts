@@ -117,6 +117,13 @@ export default defineType({
         },
       ],
     }),
+    // Google Site Verification Section
+    defineField({
+      name: 'googleSiteVerification',
+      title: 'Google Site Verification',
+      type: 'string',
+      description: 'Your Google Search Console verification code (the content value from the meta tag). e.g., QR2GNEiQbiAG-cWusvnAGSNJ7CZshOqsWDO5xpzpj64',
+    }),
     // TikTok Pixel Section
     defineField({
       name: 'tiktokPixel',

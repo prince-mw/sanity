@@ -97,9 +97,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Add your verification codes here
-    // google: "your-google-verification-code",
-    // yandex: "your-yandex-verification-code",
+    google: 'QR2GNEiQbiAG-cWusvnAGSNJ7CZshOqsWDO5xpzpj64',
   },
 };
 
@@ -150,6 +148,10 @@ export default async function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        {/* Google Site Verification - CMS override if available */}
+        {analyticsConfig?.googleSiteVerification && (
+          <meta name="google-site-verification" content={analyticsConfig.googleSiteVerification} />
+        )}
         <link rel="preload" href="/assets/videos/SequenceBG.mp4" as="video" type="video/mp4" />
         <link rel="preconnect" href="https://cdn.sanity.io" />
         <link rel="preconnect" href="https://u10im6di.api.sanity.io" />
