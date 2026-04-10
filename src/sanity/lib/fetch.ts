@@ -3077,6 +3077,10 @@ export interface AnalyticsConfig {
     enabled: boolean
     pixelId?: string
   }
+  zohoLeadTracking?: {
+    enabled: boolean
+    cookieExpiryDays?: number
+  }
 }
 
 // Fetch Analytics Configuration
@@ -3090,7 +3094,8 @@ export async function getAnalyticsConfig(): Promise<AnalyticsConfig | null> {
         metaPixel,
         linkedinInsight,
         twitterPixel,
-        tiktokPixel
+        tiktokPixel,
+        zohoLeadTracking
       }
     `
     return await client.fetch(query)

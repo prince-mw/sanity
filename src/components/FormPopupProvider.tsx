@@ -5,6 +5,7 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
 import { ZohoFormEmbed } from './ZohoFormEmbed'
+import { getUTMCookies } from './ZohoUTMTracker'
 
 interface FormPopupContextType {
   /** Whether a popup form is available for the current page */
@@ -47,11 +48,12 @@ export function FormPopupProvider({ children, forms }: FormPopupProviderProps) {
   const searchParams = useSearchParams()
   const [isOpen, setIsOpen] = useState(false)
 
-  // Extract UTM parameters
+  // Extract UTM parameters — URL takes priority, fall back to cookies
   const utmParams: Record<string, string> = {}
-  const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
+  const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content', 'gclid', 'fbclid']
+  const cookieUtms = getUTMCookies()
   for (const key of utmKeys) {
-    const val = searchParams.get(key)
+    const val = searchParams.get(key) || cookieUtms[key]
     if (val) utmParams[key] = val
   }
 

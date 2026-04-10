@@ -4,6 +4,21 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DynamicZohoForm } from './DynamicZohoForm'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
+import { getUTMCookies } from './ZohoUTMTracker'
+
+// Append UTM cookie values to a Zoho iframe URL
+function appendUTMsToUrl(url: string): string {
+  if (!url.includes('formperma')) return url
+  const cookies = getUTMCookies()
+  let result = url
+  for (const [key, val] of Object.entries(cookies)) {
+    const regex = new RegExp('[?&]' + key + '=')
+    if (!regex.test(result)) {
+      result += (result.includes('?') ? '&' : '?') + key + '=' + encodeURIComponent(val)
+    }
+  }
+  return result
+}
 
 interface ZohoFormEmbedProps {
   /** Pass the full ZohoFormData from Sanity for automatic mode detection */
@@ -121,11 +136,14 @@ export function ZohoFormEmbed({
 
   if (!formUrl) return null
 
+  // Resolve iframe URL with UTMs
+  const iframeUrl = appendUTMsToUrl(formUrl)
+
   // New tab mode
   if (displayMode === 'newtab') {
     return (
       <a
-        href={formUrl}
+        href={iframeUrl}
         target="_blank"
         rel="noopener noreferrer"
         className={buttonClassName || 'inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors'}
@@ -181,7 +199,7 @@ export function ZohoFormEmbed({
                 {/* Iframe */}
                 <div className="p-4">
                   <iframe
-                    src={formUrl}
+                    src={iframeUrl}
                     width="100%"
                     height={height}
                     style={{ border: 'none' }}
@@ -201,7 +219,7 @@ export function ZohoFormEmbed({
   return (
     <div className={className || 'w-full'}>
       <iframe
-        src={formUrl}
+        src={iframeUrl}
         width={width}
         height={height}
         style={{ border: 'none' }}

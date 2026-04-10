@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import GlobalCTA from "@/components/GlobalCTA";
 import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
+import ZohoUTMTracker from "@/components/ZohoUTMTracker";
 import PreviewBanner from "@/components/PreviewBanner";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
@@ -162,6 +163,14 @@ export default async function RootLayout({
         {/* Analytics & Tracking - Managed via Sanity CMS */}
         <Suspense fallback={null}>
           <Analytics config={analyticsConfig} />
+        </Suspense>
+
+        {/* Zoho Lead Attribution Tracking - UTM capture & cookie persistence */}
+        <Suspense fallback={null}>
+          <ZohoUTMTracker
+            enabled={analyticsConfig?.zohoLeadTracking?.enabled !== false}
+            cookieExpiryDays={analyticsConfig?.zohoLeadTracking?.cookieExpiryDays || 7}
+          />
         </Suspense>
         
         {/* Structured Data - Organization */}

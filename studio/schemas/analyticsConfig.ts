@@ -145,6 +145,31 @@ export default defineType({
         },
       ],
     }),
+    // Zoho Lead Attribution Tracking Section
+    defineField({
+      name: 'zohoLeadTracking',
+      title: 'Zoho Lead Attribution Tracking',
+      type: 'object',
+      description: 'UTM parameter capture and cookie persistence for Zoho Forms lead attribution',
+      fields: [
+        {
+          name: 'enabled',
+          title: 'Enable Zoho Lead Tracking',
+          type: 'boolean',
+          description: 'Captures UTM parameters, gclid, fbclid and auto-detects traffic source. Persists data in cookies and injects into Zoho form submissions.',
+          initialValue: true,
+        },
+        {
+          name: 'cookieExpiryDays',
+          title: 'Cookie Expiry (Days)',
+          type: 'number',
+          description: 'Number of days UTM cookies are stored (default: 7)',
+          initialValue: 7,
+          hidden: ({ parent }) => !parent?.enabled,
+          validation: (Rule) => Rule.min(1).max(365),
+        },
+      ],
+    }),
   ],
   preview: {
     select: {
