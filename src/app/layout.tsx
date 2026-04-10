@@ -8,6 +8,7 @@ import GlobalCTA from "@/components/GlobalCTA";
 import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
 import ZohoUTMTracker from "@/components/ZohoUTMTracker";
+import ZohoLeadScript from "@/components/ZohoLeadScript";
 import PreviewBanner from "@/components/PreviewBanner";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
@@ -172,6 +173,12 @@ export default async function RootLayout({
             cookieExpiryDays={analyticsConfig?.zohoLeadTracking?.cookieExpiryDays || 7}
           />
         </Suspense>
+
+        {/* Zoho Lead Tracking Script - CMS-managed */}
+        <ZohoLeadScript
+          enabled={analyticsConfig?.zohoLeadTracking?.enabled !== false}
+          script={analyticsConfig?.zohoLeadTracking?.script}
+        />
         
         {/* Structured Data - Organization */}
         <script

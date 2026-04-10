@@ -3142,6 +3142,7 @@ export interface AnalyticsConfig {
   zohoLeadTracking?: {
     enabled: boolean
     cookieExpiryDays?: number
+    script?: string
   }
 }
 
