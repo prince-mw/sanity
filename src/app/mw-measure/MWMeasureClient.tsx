@@ -7,6 +7,7 @@ import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
 import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
+import { getSanityImageUrl } from "@/sanity/lib/fetch"
 
 interface MWMeasureClientProps {
   caseStudies?: any[]
@@ -419,10 +420,10 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              {product?.measurementSuiteTitle || 'Complete OOH Measurement Suite'}
+              {product?.measurementSuiteTitle || product?.featuresTitle || 'Complete OOH Measurement Suite'}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              {product?.measurementSuiteSubtitle || 'From location intelligence to audience insights, get comprehensive analytics that transform Out-of-Home campaigns into measurable, optimizable channels.'}
+              {product?.measurementSuiteSubtitle || product?.featuresSubtitle || 'From location intelligence to audience insights, get comprehensive analytics that transform Out-of-Home campaigns into measurable, optimizable channels.'}
             </p>
           </motion.div>
 
@@ -448,6 +449,80 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
           </div>
         </div>
       </section>
+
+      {/* How It Works Section - from CMS */}
+      {product?.howItWorksSteps && product.howItWorksSteps.length > 0 && (
+        <section className="py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+              className="text-center mb-16"
+            >
+              <h2 className="text-4xl font-bold text-gray-900 mb-4">
+                {product?.howItWorksTitle || 'How It Works'}
+              </h2>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+                {product?.howItWorksSubtitle || ''}
+              </p>
+            </motion.div>
+
+            <div className="space-y-12">
+              {product.howItWorksSteps.map((step, index) => {
+                const imageUrl = step.image ? getSanityImageUrl(step.image, { width: 800 }) : null
+                const isEven = index % 2 === 0
+                
+                return (
+                  <motion.div
+                    key={step.stepNumber || index}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                    className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 items-center`}
+                  >
+                    {/* Image Side */}
+                    {imageUrl && (
+                      <div className="lg:w-1/2">
+                        <div className="relative rounded-2xl overflow-hidden shadow-xl">
+                          <Image
+                            src={imageUrl}
+                            alt={step.title}
+                            width={800}
+                            height={500}
+                            className="w-full h-auto object-cover"
+                          />
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Content Side */}
+                    <div className={`lg:w-1/2 ${!imageUrl ? 'lg:w-full' : ''}`}>
+                      <div className="flex items-start gap-4">
+                        <div className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
+                          {step.stepNumber || index + 1}
+                        </div>
+                        <div>
+                          <h3 className="text-2xl font-bold text-gray-900 mb-3">
+                            {step.title}
+                          </h3>
+                          {step.description && (
+                            <p className="text-lg text-gray-600">
+                              {step.description}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Interactive Location Performance Map */}
       <section className="py-20 bg-white">
@@ -909,11 +984,22 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
                 <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Don&apos;t Replace.
-                <span className="block text-blue-600">Integrate.</span>
+                {(() => {
+                  const title = product?.integrationsTitle || "Don't Replace. Integrate."
+                  const parts = title.split('.')
+                  if (parts.length >= 2) {
+                    return (
+                      <>
+                        {parts[0]}.
+                        <span className="block text-blue-600">{parts.slice(1).join('.').trim()}</span>
+                      </>
+                    )
+                  }
+                  return title
+                })()}
               </h2>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                MW Measure connects seamlessly with your existing OOH ecosystem. No rip-and-replace—just instant measurement value from day one.
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed whitespace-pre-line">
+                {product?.integrationsSubtitle || "MW Measure connects seamlessly with your existing OOH ecosystem. No rip-and-replace—just instant measurement value from day one."}
               </p>
 
               <div className="grid grid-cols-2 gap-4">

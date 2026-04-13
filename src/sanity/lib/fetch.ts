@@ -2086,7 +2086,7 @@ export interface SanityProduct {
   useCases?: Array<{ title: string; description: string; industry?: string }>
   howItWorksTitle?: string
   howItWorksSubtitle?: string
-  howItWorksSteps?: Array<{ stepNumber?: number; title: string; description: string; icon?: string }>
+  howItWorksSteps?: Array<{ stepNumber?: number; title: string; description?: string; icon?: string; image?: any }>
   detailPageSections?: Array<{
     sectionKey: string
     sectionTitle?: string
@@ -2204,7 +2204,7 @@ export async function getProductBySlug(slug: string): Promise<SanityProduct | nu
       useCases,
       howItWorksTitle,
       howItWorksSubtitle,
-      howItWorksSteps[] { stepNumber, title, description, icon },
+      howItWorksSteps[] { stepNumber, title, description, icon, image },
       detailPageSections[] {
         sectionKey,
         sectionTitle,
