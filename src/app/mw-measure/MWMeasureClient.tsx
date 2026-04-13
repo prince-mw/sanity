@@ -48,27 +48,26 @@ const EyeIcon = ({ className }: { className?: string }) => (
 )
 
 export default function MWMeasure({ caseStudies = [], product, partnerLogos }: MWMeasureClientProps) {
-  // CMS-driven hero content with fallbacks
-  const heroTitle = product?.heroTitle || 'MW Measure'
-  const heroSubtitle = product?.heroSubtitle || 'OOH Analytics Dashboard'
-  const heroDescription = product?.description || 'Transform Out-of-Home advertising with real-time location intelligence,'
+  // CMS-driven hero content (no static fallbacks)
+  const heroTitle = product?.heroTitle || ''
+  const heroSubtitle = product?.heroSubtitle || ''
+  const heroDescription = product?.description || ''
+  const tagline = product?.tagline || ''
+  const heroImageUrl = product?.heroImage ? getSanityImageUrl(product.heroImage, { width: 800 }) : null
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
+  
+  // Hero gradient from CMS
+  const gradientMap: Record<string, string> = {
+    'blue-indigo': 'from-blue-900 via-blue-800 to-indigo-900',
+    'teal-blue': 'from-teal-900 via-teal-800 to-blue-900',
+    'purple-pink': 'from-purple-900 via-purple-800 to-pink-900',
+    'indigo-purple': 'from-indigo-900 via-indigo-800 to-purple-900',
+  }
+  const heroGradient = gradientMap[product?.heroGradient || ''] || 'from-blue-900 via-blue-800 to-indigo-900'
 
-  const defaultHeroStats = [
-    { value: '12.4M', label: 'Daily Impressions' },
-    { value: '3.2M', label: 'Unique Reach' },
-    { value: '847', label: 'Active Locations' },
-    { value: '+23%', label: 'Store Visit Lift' }
-  ]
-  const heroStats = product?.heroStats?.length ? product.heroStats : defaultHeroStats
-
-  const defaultBenefits = [
-    'Live Performance Maps',
-    'Real-Time Foot Traffic Analytics',
-    'Geographic Audience Insights',
-    'Store Visit Attribution'
-  ]
-  const benefits = product?.benefits?.length ? product.benefits : defaultBenefits
+  // CMS data only - no static fallbacks
+  const heroStats = product?.heroStats || []
+  const benefits = product?.benefits || []
 
   const heroStatColors = ['text-yellow-300', 'text-green-300', 'text-purple-300', 'text-pink-300']
   const benefitIcons = [MapIcon, UsersIcon, LocationIcon, ChartBarIcon]
@@ -112,7 +111,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-16 md:py-20 lg:py-24 overflow-hidden">
+      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-16 md:py-20 lg:py-24 overflow-hidden`}>
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-pulse"></div>
@@ -128,83 +127,111 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                {heroTitle}
-                <span className="block text-3xl md:text-4xl font-light mt-3 text-blue-200">
-                  {heroSubtitle}
-                </span>
-              </h1>
+              {tagline && (
+                <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full mb-4">
+                  <span className="text-yellow-300 font-medium text-sm">{tagline}</span>
+                </div>
+              )}
+              {heroTitle && (
+                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                  {heroTitle}
+                  {heroSubtitle && (
+                    <span className="block text-3xl md:text-4xl font-light mt-3 text-blue-200">
+                      {heroSubtitle}
+                    </span>
+                  )}
+                </h1>
+              )}
               
-              <p className="text-xl md:text-2xl mb-8 leading-relaxed text-blue-100">
-                {heroDescription}
-                <span className="text-yellow-300 font-semibold"> audience measurement</span>, and 
-                <span className="text-blue-300 font-semibold"> attribution analytics</span>.
-              </p>
+              {heroDescription && (
+                <p className="text-xl md:text-2xl mb-8 leading-relaxed text-blue-100">
+                  {heroDescription}
+                </p>
+              )}
 
               {/* Key Features List */}
-              <div className="space-y-4 mb-8">
-                {benefits.map((text, index) => {
-                  const IconComp = benefitIcons[index % benefitIcons.length]
-                  return (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, x: -20 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                      className="flex items-center gap-3 text-lg"
-                    >
-                      <div className="text-yellow-300"><IconComp className="w-6 h-6" /></div>
-                      <span className="text-white/90">{text}</span>
-                    </motion.div>
-                  )
-                })}
-              </div>
+              {benefits.length > 0 && (
+                <div className="space-y-4 mb-8">
+                  {benefits.map((text, index) => {
+                    const IconComp = benefitIcons[index % benefitIcons.length]
+                    return (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                        className="flex items-center gap-3 text-lg"
+                      >
+                        <div className="text-yellow-300"><IconComp className="w-6 h-6" /></div>
+                        <span className="text-white/90">{text}</span>
+                      </motion.div>
+                    )
+                  })}
+                </div>
+              )}
 
               {/* CTA Button */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              >
-                <CTAButton
-                  href={product?.ctaLink || '/contact'}
-                  className="bg-gradient-to-r from-yellow-400 to-orange-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg hover:from-yellow-300 hover:to-orange-400 transition-all shadow-2xl hover:shadow-yellow-500/50 inline-flex items-center gap-2"
+              {product?.ctaText && (
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.6 }}
                 >
-                  {product?.ctaText || 'View Live Dashboard'}
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </CTAButton>
-              </motion.div>
+                  <CTAButton
+                    href={product?.ctaLink || ''}
+                    className="bg-gradient-to-r from-yellow-400 to-orange-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg hover:from-yellow-300 hover:to-orange-400 transition-all shadow-2xl hover:shadow-yellow-500/50 inline-flex items-center gap-2"
+                  >
+                    {product.ctaText}
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </CTAButton>
+                </motion.div>
+              )}
             </motion.div>
 
-            {/* Right Side - Live OOH Stats */}
+            {/* Right Side - Hero Image or Stats */}
             <motion.div
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="space-y-6"
             >
-              {/* Main Stats Card */}
-              <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
-                <h3 className="text-xl font-semibold mb-6 text-white/90">Live OOH Performance</h3>
-                <div className="grid grid-cols-2 gap-6">
-                  {heroStats.map((stat, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                      className="text-center p-4 bg-white/5 rounded-xl border border-white/10"
-                    >
-                      <div className={`text-3xl md:text-4xl font-bold ${heroStatColors[index % heroStatColors.length]} mb-1`}>
-                        {stat.value}
-                      </div>
-                      <div className="text-sm text-blue-200">{stat.label}</div>
-                    </motion.div>
-                  ))}
+              {/* Hero Image from CMS */}
+              {heroImageUrl && (
+                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
+                  <Image
+                    src={heroImageUrl}
+                    alt={heroTitle}
+                    width={800}
+                    height={500}
+                    className="w-full h-auto object-cover"
+                    priority
+                  />
                 </div>
-              </div>
+              )}
+              
+              {/* Stats Card */}
+              {heroStats.length > 0 && (
+                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
+                  <div className="grid grid-cols-2 gap-6">
+                    {heroStats.map((stat, index) => (
+                      <motion.div
+                        key={index}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                        className="text-center p-4 bg-white/5 rounded-xl border border-white/10"
+                      >
+                        <div className={`text-3xl md:text-4xl font-bold ${heroStatColors[index % heroStatColors.length]} mb-1`}>
+                          {stat.value}
+                        </div>
+                        <div className="text-sm text-blue-200">{stat.label}</div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </motion.div>
           </div>
         </div>
@@ -356,17 +383,6 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
               <p className="text-xl text-gray-600 mb-8 leading-relaxed whitespace-pre-line">
                 {product?.integrationsSubtitle || "MW Measure connects seamlessly with your existing OOH ecosystem. No rip-and-replace—just instant measurement value from day one."}
               </p>
-
-              <div className="grid grid-cols-2 gap-4">
-                {['SSP Partners', 'DSP Partners', 'Programmatic', 'Real-Time Bidding'].map((category) => (
-                  <div key={category} className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <span className="text-gray-700">{category}</span>
-                  </div>
-                ))}
-              </div>
             </motion.div>
 
             <motion.div
