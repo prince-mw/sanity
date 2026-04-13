@@ -111,129 +111,134 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-16 md:py-20 lg:py-24 overflow-hidden`}>
-        <div className="absolute inset-0 bg-black/20"></div>
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-1/3 right-1/3 w-96 h-96 bg-indigo-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
-          <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-blue-400/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        </div>
+      {/* Bento Grid Hero Section */}
+      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-10 sm:py-12 md:py-16 lg:py-20 overflow-hidden`}>
+        <div className="absolute inset-0 bg-black/10"></div>
         
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Main Content Grid - Left Content, Right Image */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center mb-6 sm:mb-8">
+            
             {/* Left Side - Content */}
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="order-2 lg:order-1"
             >
               {tagline && (
-                <div className="inline-flex items-center gap-2 bg-white/10 px-4 py-2 rounded-full mb-4">
-                  <span className="text-yellow-300 font-medium text-sm">{tagline}</span>
+                <div className="inline-flex items-center gap-2 bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md mb-4 sm:mb-6 w-fit">
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-white/90 font-medium text-xs sm:text-sm">{tagline}</span>
                 </div>
               )}
+              
               {heroTitle && (
-                <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 leading-tight">
                   {heroTitle}
-                  {heroSubtitle && (
-                    <span className="block text-3xl md:text-4xl font-light mt-3 text-blue-200">
-                      {heroSubtitle}
-                    </span>
-                  )}
                 </h1>
               )}
               
+              {heroSubtitle && (
+                <p className="text-lg sm:text-xl md:text-2xl font-light text-blue-200 mb-4 sm:mb-6">
+                  {heroSubtitle}
+                </p>
+              )}
+              
               {heroDescription && (
-                <p className="text-xl md:text-2xl mb-8 leading-relaxed text-blue-100">
+                <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8 leading-relaxed max-w-xl">
                   {heroDescription}
                 </p>
               )}
 
-              {/* Key Features List */}
-              {benefits.length > 0 && (
-                <div className="space-y-4 mb-8">
-                  {benefits.map((text, index) => {
-                    const IconComp = benefitIcons[index % benefitIcons.length]
-                    return (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                        className="flex items-center gap-3 text-lg"
-                      >
-                        <div className="text-yellow-300"><IconComp className="w-6 h-6" /></div>
-                        <span className="text-white/90">{text}</span>
-                      </motion.div>
-                    )
-                  })}
-                </div>
-              )}
-
-              {/* CTA Button */}
+              {/* CTA Buttons */}
               {product?.ctaText && (
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                >
+                <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
                   <CTAButton
                     href={product?.ctaLink || ''}
-                    className="bg-gradient-to-r from-yellow-400 to-orange-500 text-blue-900 px-8 py-4 rounded-xl font-bold text-lg hover:from-yellow-300 hover:to-orange-400 transition-all shadow-2xl hover:shadow-yellow-500/50 inline-flex items-center gap-2"
+                    className="bg-white text-blue-900 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2"
                   >
                     {product.ctaText}
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </CTAButton>
-                </motion.div>
+                  {product?.secondaryCta?.text && (
+                    <CTAButton
+                      href={product.secondaryCta.link || ''}
+                      className="bg-white/10 text-white border border-white/30 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
+                    >
+                      {product.secondaryCta.text}
+                    </CTAButton>
+                  )}
+                </div>
               )}
             </motion.div>
 
-            {/* Right Side - Hero Image or Stats */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="space-y-6"
-            >
-              {/* Hero Image from CMS */}
-              {heroImageUrl && (
-                <div className="relative rounded-2xl overflow-hidden shadow-2xl">
-                  <Image
-                    src={heroImageUrl}
-                    alt={heroTitle}
-                    width={800}
-                    height={500}
-                    className="w-full h-auto object-cover"
-                    priority
-                  />
-                </div>
-              )}
-              
-              {/* Stats Card */}
-              {heroStats.length > 0 && (
-                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
-                  <div className="grid grid-cols-2 gap-6">
-                    {heroStats.map((stat, index) => (
-                      <motion.div
-                        key={index}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                        className="text-center p-4 bg-white/5 rounded-xl border border-white/10"
-                      >
-                        <div className={`text-3xl md:text-4xl font-bold ${heroStatColors[index % heroStatColors.length]} mb-1`}>
-                          {stat.value}
-                        </div>
-                        <div className="text-sm text-blue-200">{stat.label}</div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </motion.div>
+            {/* Right Side - Hero Image */}
+            {heroImageUrl && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                className="bg-white/5 backdrop-blur-md border border-white/20 rounded-md overflow-hidden order-1 lg:order-2"
+              >
+                <Image
+                  src={heroImageUrl}
+                  alt={heroTitle}
+                  width={800}
+                  height={500}
+                  className="w-full h-auto object-cover"
+                  priority
+                />
+              </motion.div>
+            )}
           </div>
+
+          {/* Bottom KPI Cards Row */}
+          {heroStats.length > 0 && (
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
+              {heroStats.map((stat, index) => (
+                <motion.div
+                  key={`stat-${stat.label}-${index}`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
+                  className="bg-white/10 backdrop-blur-md border border-white/20 rounded-md p-4 sm:p-5 text-center"
+                >
+                  <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${heroStatColors[index % heroStatColors.length]} mb-1`}>
+                    {stat.value}
+                  </div>
+                  <div className="text-xs sm:text-sm text-blue-200 font-medium">{stat.label}</div>
+                </motion.div>
+              ))}
+            </div>
+          )}
+
+          {/* Benefits Row */}
+          {benefits.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="mt-6 bg-white/5 backdrop-blur-md border border-white/20 rounded-md p-4 sm:p-5"
+            >
+              {/* Mobile: 2 columns, Tablet: 3 columns, Desktop: all in one row */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
+                {benefits.map((text, index) => {
+                  const IconComp = benefitIcons[index % benefitIcons.length]
+                  return (
+                    <div key={`benefit-${index}`} className="flex items-center gap-2">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 bg-white/10 rounded-md flex items-center justify-center text-yellow-300 flex-shrink-0">
+                        <IconComp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+                      <span className="text-white/90 font-medium text-xs sm:text-sm leading-tight">{text}</span>
+                    </div>
+                  )
+                })}
+              </div>
+            </motion.div>
+          )}
         </div>
       </section>
 
