@@ -1,6 +1,7 @@
 'use client'
 
-import { motion } from "framer-motion"
+import { motion, useMotionValue, useSpring } from "framer-motion"
+import { useRef, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
@@ -47,6 +48,331 @@ const EyeIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
+// Audience Icon (Users group)
+const AudienceIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+  </svg>
+)
+
+// Verified Insights Icon (Badge with checkmark)
+const VerifiedIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" />
+  </svg>
+)
+
+// Timeline Section with Scroll-Based Animation
+interface TimelineStep {
+  stepNumber?: number
+  title: string
+  description?: string
+  image?: { asset: { _ref: string } }
+}
+
+function TimelineSection({ 
+  steps, 
+  title, 
+  subtitle 
+}: { 
+  steps: TimelineStep[]
+  title?: string
+  subtitle?: string 
+}) {
+  const timelineRef = useRef<HTMLDivElement>(null)
+  const progress = useMotionValue(0)
+  
+  // Use spring for smooth animation
+  const smoothProgress = useSpring(progress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  })
+  
+  // Calculate scroll progress manually for reliability
+  const updateProgress = useCallback(() => {
+    if (!timelineRef.current) return
+    
+    const element = timelineRef.current
+    const rect = element.getBoundingClientRect()
+    const windowHeight = window.innerHeight
+    
+    // Calculate how much of the element has been scrolled through
+    // Start when top of element reaches 80% of viewport
+    // End when bottom of element reaches 20% of viewport
+    const start = windowHeight * 0.8
+    const end = windowHeight * 0.2
+    
+    // Element's position relative to viewport
+    const elementTop = rect.top
+    const elementBottom = rect.bottom
+    const elementHeight = rect.height
+    
+    // Calculate progress (0 to 1)
+    let scrollProgress = 0
+    
+    if (elementTop <= start && elementBottom >= end) {
+      // Element is in the tracking zone
+      const totalScrollDistance = (start - end) + elementHeight
+      const scrolled = start - elementTop
+      scrollProgress = Math.min(Math.max(scrolled / totalScrollDistance, 0), 1)
+    } else if (elementBottom < end) {
+      // Element has fully passed
+      scrollProgress = 1
+    }
+    // If elementTop > start, scrollProgress stays 0 (element hasn't entered yet)
+    
+    progress.set(scrollProgress)
+  }, [progress])
+  
+  useEffect(() => {
+    // Initial calculation
+    updateProgress()
+    
+    // Add scroll listener
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    window.addEventListener('resize', updateProgress, { passive: true })
+    
+    return () => {
+      window.removeEventListener('scroll', updateProgress)
+      window.removeEventListener('resize', updateProgress)
+    }
+  }, [updateProgress])
+  
+  return (
+    <section className="overflow-hidden">
+      {/* Section Header */}
+      <div className="py-16 sm:py-20 lg:py-24 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center"
+          >
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
+              {title || 'How It Works'}
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              {subtitle || ''}
+            </p>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Timeline Container - This is what we track for scroll */}
+      <div ref={timelineRef} className="relative">
+          {/* Vertical Timeline Line - Desktop (Scroll-based) */}
+          <div className="hidden lg:block absolute left-1/2 top-0 bottom-0 w-1 -translate-x-1/2 z-0">
+            {/* Background track */}
+            <div className="absolute inset-0 bg-gray-200 rounded-full" />
+            {/* Animated progress - uses scaleY for bidirectional scroll */}
+            <motion.div
+              style={{ scaleY: smoothProgress, transformOrigin: 'top' }}
+              className="absolute top-0 left-0 right-0 h-full bg-gradient-to-b from-blue-600 via-blue-500 to-indigo-600 rounded-full shadow-lg shadow-blue-500/30"
+            />
+          </div>
+
+          {/* Vertical Timeline Line - Mobile/Tablet (Scroll-based) */}
+          <div className="lg:hidden absolute left-6 sm:left-8 top-0 bottom-0 w-1 z-0">
+            {/* Background track */}
+            <div className="absolute inset-0 bg-gray-200 rounded-full" />
+            {/* Animated progress - uses scaleY for bidirectional scroll */}
+            <motion.div
+              style={{ scaleY: smoothProgress, transformOrigin: 'top' }}
+              className="absolute top-0 left-0 right-0 h-full bg-gradient-to-b from-blue-600 via-blue-500 to-indigo-600 rounded-full shadow-lg shadow-blue-500/30"
+            />
+          </div>
+
+          {/* Timeline Steps */}
+          <div className="space-y-0">
+            {steps.map((step, index) => {
+              const imageUrl = step.image ? getSanityImageUrl(step.image, { width: 800 }) : null
+              const isImageLeft = index % 2 !== 0 // Odd: image left, Even (1st, 3rd): image right
+              const stepNumber = step.stepNumber || index + 1
+              // Cool Pastels color palette - alternating
+              const sectionColors = ['#F8FAFC', '#EFF6FF', '#F8FAFC', '#EEF2FF'] // slate-50, blue-50, slate-50, indigo-50
+              const bgColor = sectionColors[index % sectionColors.length]
+              
+              return (
+                <motion.div 
+                  key={`timeline-step-${stepNumber}-${step.title.slice(0, 20)}`} 
+                  className="relative"
+                  initial={{ backgroundColor: 'rgba(255,255,255,0)' }}
+                  whileInView={{ backgroundColor: bgColor }}
+                  transition={{ duration: 0.8, ease: 'easeOut' }}
+                  viewport={{ once: true, amount: 0.3 }}
+                >
+                  <div className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8">
+                  {/* Desktop Layout */}
+                  <div className="hidden lg:grid lg:grid-cols-2 lg:gap-20 items-center max-w-7xl mx-auto">
+                    {/* Left Side */}
+                    <motion.div
+                      initial={{ opacity: 0, x: -60 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.7, delay: 0.1 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                    >
+                      {isImageLeft && imageUrl ? (
+                        <div className="relative group">
+                          <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="relative rounded-xl overflow-hidden shadow-2xl border border-gray-100">
+                            <Image
+                              src={imageUrl}
+                              alt={step.title}
+                              width={800}
+                              height={500}
+                              className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-4 pr-8">
+                          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
+                            {step.title}
+                          </h3>
+                          {step.description && (
+                            <p className="text-lg text-gray-600 leading-relaxed">
+                              {step.description}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </motion.div>
+
+                    {/* Center - Floating Number Badge */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, delay: 0.2, type: "spring", stiffness: 200 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                      className="absolute left-1/2 -translate-x-1/2 z-10"
+                    >
+                      <div className="relative">
+                        {/* Pulse Ring */}
+                        <motion.div
+                          animate={{ scale: [1, 1.5, 1], opacity: [0.6, 0, 0.6] }}
+                          transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
+                          className="absolute inset-0 bg-blue-500 rounded-full"
+                        />
+                        {/* Number Badge */}
+                        <div className="relative w-16 h-16 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center shadow-xl border-4 border-white">
+                          <span className="text-white text-2xl font-bold">
+                            {String(stepNumber).padStart(2, '0')}
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Right Side */}
+                    <motion.div
+                      initial={{ opacity: 0, x: 60 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.7, delay: 0.2 }}
+                      viewport={{ once: true, margin: "-100px" }}
+                    >
+                      {isImageLeft && (
+                        <div className="space-y-4 pl-8">
+                          <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 leading-tight">
+                            {step.title}
+                          </h3>
+                          {step.description && (
+                            <p className="text-lg text-gray-600 leading-relaxed">
+                              {step.description}
+                            </p>
+                          )}
+                        </div>
+                      )}
+                      {!isImageLeft && imageUrl && (
+                        <div className="relative group">
+                          <div className="absolute -inset-4 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                          <div className="relative rounded-xl overflow-hidden shadow-2xl border border-gray-100">
+                            <Image
+                              src={imageUrl}
+                              alt={step.title}
+                              width={800}
+                              height={500}
+                              className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500"
+                            />
+                          </div>
+                        </div>
+                      )}
+                    </motion.div>
+                  </div>
+
+                  {/* Mobile/Tablet Layout */}
+                  <div className="lg:hidden flex gap-4 sm:gap-6 max-w-7xl mx-auto">
+                    {/* Floating Number Badge - Mobile */}
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.5, type: "spring", stiffness: 200 }}
+                      viewport={{ once: true }}
+                      className="flex-shrink-0 relative z-10"
+                    >
+                      <div className="relative">
+                        <motion.div
+                          animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0, 0.4] }}
+                          transition={{ duration: 2, repeat: Infinity, ease: "easeOut" }}
+                          className="absolute inset-0 bg-blue-500 rounded-full"
+                        />
+                        <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
+                          <span className="text-white text-lg sm:text-xl font-bold">
+                            {String(stepNumber).padStart(2, '0')}
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+
+                    {/* Content */}
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: 0.2 }}
+                      viewport={{ once: true }}
+                      className="flex-1 space-y-4"
+                    >
+                      <h3 className="text-xl sm:text-2xl font-bold text-gray-900 leading-tight">
+                        {step.title}
+                      </h3>
+                      {step.description && (
+                        <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
+                          {step.description}
+                        </p>
+                      )}
+                      {imageUrl && (
+                        <div className="relative rounded-xl overflow-hidden shadow-xl border border-gray-100 mt-4">
+                          <Image
+                            src={imageUrl}
+                            alt={step.title}
+                            width={800}
+                            height={500}
+                            className="w-full h-auto object-cover"
+                          />
+                        </div>
+                      )}
+                    </motion.div>
+                  </div>
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* Timeline End Dot */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="hidden lg:flex absolute left-1/2 -translate-x-1/2 -bottom-6 w-5 h-5 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-full border-4 border-white shadow-lg"
+          />
+        </div>
+    </section>
+  )
+}
+
 export default function MWMeasure({ caseStudies = [], product, partnerLogos }: MWMeasureClientProps) {
   // CMS-driven hero content (no static fallbacks)
   const heroTitle = product?.heroTitle || ''
@@ -70,7 +396,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
   const benefits = product?.benefits || []
 
   const heroStatColors = ['text-yellow-300', 'text-green-300', 'text-purple-300', 'text-pink-300']
-  const benefitIcons = [MapIcon, UsersIcon, LocationIcon, ChartBarIcon]
+  const benefitIcons = [MapIcon, AudienceIcon, VerifiedIcon, LocationIcon, ChartBarIcon]
 
   // Features from CMS
   const defaultOohMetrics = [
@@ -80,7 +406,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
       description: "Advanced geospatial analytics with traffic patterns, demographic profiling, and competitor proximity mapping."
     },
     {
-      icon: UsersIcon,
+      icon: AudienceIcon,
       title: "Audience Measurement",
       description: "Real-time foot traffic analysis, dwell time tracking, and audience demographics powered by mobile location data."
     },
@@ -97,7 +423,15 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
   ]
 
   const measureIconMap: Record<string, React.FC<{ className?: string }>> = {
-    'map': MapIcon, 'users': UsersIcon, 'eye': EyeIcon, 'chart-bar': ChartBarIcon,
+    'map': MapIcon, 
+    'users': UsersIcon, 
+    'audience': AudienceIcon, 
+    'verified': VerifiedIcon, 
+    'insight': VerifiedIcon,  // CMS uses 'insight' for verified insights
+    'eye': EyeIcon, 
+    'chart-bar': ChartBarIcon, 
+    'chart': ChartBarIcon,    // CMS uses 'chart' for reporting
+    'location': LocationIcon,
   }
 
   const oohMetrics = product?.features?.length
@@ -127,8 +461,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
               className="order-2 lg:order-1"
             >
               {tagline && (
-                <div className="inline-flex items-center gap-2 bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md mb-4 sm:mb-6 w-fit">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <div className="inline-flex items-center bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md mb-4 sm:mb-6 w-fit">
                   <span className="text-white/90 font-medium text-xs sm:text-sm">{tagline}</span>
                 </div>
               )}
@@ -243,24 +576,24 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
       </section>
 
       {/* OOH Analytics Features */}
-      <section className="py-20 bg-gray-50">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-8 sm:mb-12 lg:mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3 sm:mb-4">
               {product?.measurementSuiteTitle || product?.featuresTitle || 'Complete OOH Measurement Suite'}
             </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-3xl mx-auto">
               {product?.measurementSuiteSubtitle || product?.featuresSubtitle || 'From location intelligence to audience insights, get comprehensive analytics that transform Out-of-Home campaigns into measurable, optimizable channels.'}
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8">
             {oohMetrics.map((feature, index) => (
               <motion.div
                 key={feature.title}
@@ -268,10 +601,10 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-white p-4 sm:p-5 lg:p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
               >
-                <feature.icon className="w-12 h-12 text-blue-600 mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                <feature.icon className="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 text-blue-600 mb-3 sm:mb-4" />
+                <h3 className="text-lg sm:text-xl font-semibold text-gray-900 mb-2">
                   {feature.title}
                 </h3>
                 <p className="text-gray-600">
@@ -283,94 +616,25 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
         </div>
       </section>
 
-      {/* How It Works Section - from CMS */}
+      {/* How It Works Section - Timeline Vertical Connector with Floating Numbers */}
       {product?.howItWorksSteps && product.howItWorksSteps.length > 0 && (
-        <section className="py-20 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="text-center mb-16"
-            >
-              <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                {product?.howItWorksTitle || 'How It Works'}
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                {product?.howItWorksSubtitle || ''}
-              </p>
-            </motion.div>
-
-            <div className="space-y-12">
-              {product.howItWorksSteps.map((step, index) => {
-                const imageUrl = step.image ? getSanityImageUrl(step.image, { width: 800 }) : null
-                const isEven = index % 2 === 0
-                
-                return (
-                  <motion.div
-                    key={step.stepNumber || index}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                    viewport={{ once: true }}
-                    className={`flex flex-col ${isEven ? 'lg:flex-row' : 'lg:flex-row-reverse'} gap-8 items-center`}
-                  >
-                    {/* Image Side */}
-                    {imageUrl && (
-                      <div className="lg:w-1/2">
-                        <div className="relative rounded-2xl overflow-hidden shadow-xl">
-                          <Image
-                            src={imageUrl}
-                            alt={step.title}
-                            width={800}
-                            height={500}
-                            className="w-full h-auto object-cover"
-                          />
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Content Side */}
-                    <div className={`lg:w-1/2 ${!imageUrl ? 'lg:w-full' : ''}`}>
-                      <div className="flex items-start gap-4">
-                        <div className="flex-shrink-0 w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center text-xl font-bold">
-                          {step.stepNumber || index + 1}
-                        </div>
-                        <div>
-                          <h3 className="text-2xl font-bold text-gray-900 mb-3">
-                            {step.title}
-                          </h3>
-                          {step.description && (
-                            <p className="text-lg text-gray-600">
-                              {step.description}
-                            </p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
+        <TimelineSection steps={product.howItWorksSteps} title={product?.howItWorksTitle} subtitle={product?.howItWorksSubtitle} />
       )}
 
       {/* Integrations Section */}
-      <section className="py-24 bg-white">
+      <section className="py-12 sm:py-16 lg:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
+              <div className="inline-flex items-center gap-2 bg-blue-100 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full mb-4 sm:mb-6">
+                <span className="text-blue-600 font-medium text-xs sm:text-sm">{integrations.length}+ Integrations</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
                 {(() => {
                   const title = product?.integrationsTitle || "Don't Replace. Integrate."
                   const parts = title.split('.')
@@ -385,7 +649,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
                   return title
                 })()}
               </h2>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed whitespace-pre-line">
+              <p className="text-base sm:text-lg lg:text-xl text-gray-600 mb-6 sm:mb-8 leading-relaxed whitespace-pre-line">
                 {product?.integrationsSubtitle || "MW Measure connects seamlessly with your existing OOH ecosystem. No rip-and-replace—just instant measurement value from day one."}
               </p>
             </motion.div>
@@ -396,7 +660,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
                 {integrations.map((integration, index) => (
                   <motion.div
                     key={integration.name}
@@ -406,7 +670,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
                     viewport={{ once: true }}
                     className="flex items-center justify-center group cursor-pointer"
                   >
-                    <div className="w-36 h-28 flex items-center justify-center grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
+                    <div className="w-24 h-20 sm:w-28 sm:h-22 lg:w-36 lg:h-28 flex items-center justify-center grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300">
                       <Image src={integration.logo} alt={integration.name} width={180} height={72} className="object-contain w-full h-full" />
                     </div>
                   </motion.div>
@@ -418,7 +682,7 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -426,26 +690,26 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl font-bold mb-6">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
               {product?.finalCtaTitle || 'Transform OOH Into Measurable Performance'}
             </h2>
-            <p className="text-xl mb-8 max-w-2xl mx-auto">
+            <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto">
               {product?.finalCtaSubtitle || 'Join leading brands leveraging real-time location intelligence, audience analytics, and attribution modeling to maximize their Out-of-Home advertising ROI.'}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
               <CTAButton
                 href={product?.ctaLink || '/contact'}
-                className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
+                className="bg-white text-blue-600 px-5 sm:px-6 lg:px-8 py-3 sm:py-3.5 lg:py-4 rounded-lg font-semibold text-sm sm:text-base lg:text-lg hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
               >
                 {product?.ctaText || 'View Live Demo'}
-                <EyeIcon className="w-5 h-5" />
+                <EyeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
               </CTAButton>
               <CTAButton
                 href={product?.secondaryCta?.link || '/contact'}
-                className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center gap-2"
+                className="border-2 border-white text-white px-5 sm:px-6 lg:px-8 py-3 sm:py-3.5 lg:py-4 rounded-lg font-semibold text-sm sm:text-base lg:text-lg hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center gap-2"
               >
                 {product?.secondaryCta?.text || 'Book a Free Demo'}
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
               </CTAButton>
