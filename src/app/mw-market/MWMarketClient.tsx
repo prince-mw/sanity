@@ -900,10 +900,10 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
               </p>
               
               <CTAButton
-                href="/contact"
+                href={product?.ctaLink || '/contact'}
                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-blue-700 hover:to-indigo-700 transition-all shadow-xl hover:shadow-2xl text-center block"
               >
-                Schedule My Demo
+                {product?.ctaText || 'Schedule My Demo'}
               </CTAButton>
               
               <p className="text-xs text-gray-500 text-center mt-4">

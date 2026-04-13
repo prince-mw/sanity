@@ -222,8 +222,8 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                <CTAButton href="/contact" className="bg-gradient-to-r from-yellow-400 to-orange-500 text-violet-900 px-8 py-4 rounded-xl font-bold text-lg hover:from-yellow-300 hover:to-orange-400 transition-all shadow-2xl hover:shadow-yellow-500/50 inline-flex items-center gap-2">
-                  Book Demo
+                <CTAButton href={product?.ctaLink || '/contact'} className="bg-gradient-to-r from-yellow-400 to-orange-500 text-violet-900 px-8 py-4 rounded-xl font-bold text-lg hover:from-yellow-300 hover:to-orange-400 transition-all shadow-2xl hover:shadow-yellow-500/50 inline-flex items-center gap-2">
+                  {product?.ctaText || 'Book Demo'}
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>

@@ -259,14 +259,14 @@ export default function MWStudio({ caseStudies = [], product, partnerLogos }: MW
               </div>
 
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-                MW Studio
+                {product?.heroTitle || 'MW Studio'}
                 <span className="block text-3xl md:text-4xl font-light mt-3 text-blue-200">
-                  Build Marketplaces & Create Campaigns
+                  {product?.heroSubtitle || 'Build Marketplaces & Create Campaigns'}
                 </span>
               </h1>
               
               <p className="text-xl md:text-2xl mb-8 leading-relaxed text-blue-100">
-                Launch your OOH marketplace website and design stunning campaigns - all in one platform.
+                {product?.description || 'Launch your OOH marketplace website and design stunning campaigns - all in one platform.'}
                 <span className="text-cyan-300 font-semibold"> No code, no delays, no limits</span>.
               </p>
 
@@ -301,8 +301,8 @@ export default function MWStudio({ caseStudies = [], product, partnerLogos }: MW
                 transition={{ duration: 0.8, delay: 0.6 }}
                 className="flex gap-4"
               >
-                <Link href="/contact" className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-cyan-400 hover:to-blue-400 transition-all shadow-2xl hover:shadow-cyan-500/50 inline-flex items-center gap-2">
-                  Get Started Free
+                <Link href={product?.ctaLink || '/contact'} className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-cyan-400 hover:to-blue-400 transition-all shadow-2xl hover:shadow-cyan-500/50 inline-flex items-center gap-2">
+                  {product?.ctaText || 'Get Started Free'}
                   <BoltIcon className="w-5 h-5" />
                 </Link>
               </motion.div>
