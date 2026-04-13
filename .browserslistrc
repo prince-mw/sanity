@@ -1,0 +1,18 @@
+# Browsers that we support
+# https://browsersl.ist
+
+# Modern browsers - last 2 versions
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Safari versions
+last 2 Edge versions
+
+# Mobile browsers
+last 2 ChromeAndroid versions
+last 2 FirefoxAndroid versions
+iOS >= 14
+last 2 Samsung versions
+
+# Exclude dead browsers
+not dead
+not op_mini all

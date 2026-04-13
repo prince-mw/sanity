@@ -122,3 +122,132 @@ html {
   from { stroke-dashoffset: 1; }
   to { stroke-dashoffset: 0; }
 }
+
+/* ============================================
+   CROSS-BROWSER COMPATIBILITY FIXES
+   ============================================ */
+
+/* Safari smooth scrolling support (JS polyfill recommended) */
+@supports not (scroll-behavior: smooth) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Backdrop filter with vendor prefixes */
+.backdrop-blur-sm,
+.backdrop-blur,
+.backdrop-blur-md,
+.backdrop-blur-lg,
+.backdrop-blur-xl {
+  -webkit-backdrop-filter: blur(var(--tw-backdrop-blur));
+  backdrop-filter: blur(var(--tw-backdrop-blur));
+}
+
+/* Flexbox gap fallback for older Safari (pre-14.1) */
+@supports not (gap: 1rem) {
+  .flex > * + * {
+    margin-left: 1rem;
+  }
+  .flex-col > * + * {
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+}
+
+/* Transform vendor prefixes for older browsers */
+.transform {
+  -webkit-transform: var(--tw-transform);
+  -moz-transform: var(--tw-transform);
+  -ms-transform: var(--tw-transform);
+  transform: var(--tw-transform);
+}
+
+/* Transition vendor prefixes */
+.transition,
+.transition-all,
+.transition-colors,
+.transition-transform,
+.transition-opacity {
+  -webkit-transition-property: var(--tw-transition-property, all);
+  -moz-transition-property: var(--tw-transition-property, all);
+  transition-property: var(--tw-transition-property, all);
+}
+
+/* Animation vendor prefixes for keyframes */
+@-webkit-keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+@-webkit-keyframes drawPath {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+/* Sticky positioning fallback */
+.sticky {
+  position: -webkit-sticky;
+  position: sticky;
+}
+
+/* Object-fit for older browsers */
+.object-cover {
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.object-contain {
+  -o-object-fit: contain;
+  object-fit: contain;
+}
+
+/* Appearance reset for form elements (cross-browser) */
+input,
+button,
+textarea,
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
+/* Focus-visible polyfill support */
+.focus-visible:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Prevent text selection on interactive elements (cross-browser) */
+.select-none {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Touch action for better mobile performance */
+.touch-manipulation {
+  -ms-touch-action: manipulation;
+  touch-action: manipulation;
+}
+
+/* Will-change optimization hints */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+}

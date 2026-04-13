@@ -10,6 +10,7 @@ import Analytics from "@/components/Analytics";
 import ZohoUTMTracker from "@/components/ZohoUTMTracker";
 import ZohoLeadScript from "@/components/ZohoLeadScript";
 import PreviewBanner from "@/components/PreviewBanner";
+import PolyfillLoader from "@/components/PolyfillLoader";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
 import { getAllActiveZohoForms, getFooterContent, getAnalyticsConfig } from "@/sanity/lib/fetch";
@@ -161,6 +162,9 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://u10im6di.api.sanity.io" />
       </head>
       <body className={`${poppins.variable} font-sans antialiased bg-white text-mw-gray-900`}>
+        {/* Cross-Browser Polyfills */}
+        <PolyfillLoader />
+        
         {/* Analytics & Tracking - Managed via Sanity CMS */}
         <Suspense fallback={null}>
           <Analytics config={analyticsConfig} />
