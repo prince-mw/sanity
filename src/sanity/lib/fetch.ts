@@ -780,10 +780,14 @@ export async function getEventBySlug(slug: string): Promise<SanityEvent | null> 
 export function transformEvent(event: SanityEvent) {
   const startDate = event.startDate ? new Date(event.startDate) : new Date()
   const endDate = event.endDate ? new Date(event.endDate) : startDate
+  const isSameCalendarDay =
+    startDate.getFullYear() === endDate.getFullYear() &&
+    startDate.getMonth() === endDate.getMonth() &&
+    startDate.getDate() === endDate.getDate()
   
   // Format date range
   let dateStr = startDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-  if (event.endDate && endDate.getTime() !== startDate.getTime()) {
+  if (event.endDate && !isSameCalendarDay) {
     const endStr = endDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
     // Same month
     if (startDate.getMonth() === endDate.getMonth()) {

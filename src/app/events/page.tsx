@@ -30,29 +30,47 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 300
 
+function parseEventStartDate(dateString: string): Date | null {
+  const rangeMatch = /^(\w+)\s+(\d+)(?:-\d+)?,?\s*(\d{4})?$/.exec(dateString.trim())
+  if (rangeMatch) {
+    const months: Record<string, number> = {
+      January: 0,
+      February: 1,
+      March: 2,
+      April: 3,
+      May: 4,
+      June: 5,
+      July: 6,
+      August: 7,
+      September: 8,
+      October: 9,
+      November: 10,
+      December: 11,
+    }
+
+    const month = months[rangeMatch[1]]
+    if (month !== undefined) {
+      const day = Number.parseInt(rangeMatch[2], 10)
+      const year = rangeMatch[3]
+        ? Number.parseInt(rangeMatch[3], 10)
+        : new Date().getFullYear()
+      return new Date(year, month, day)
+    }
+  }
+
+  const parsed = new Date(dateString)
+  return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
 // Helper function to check if event date is in the past
 function isEventPast(dateString: string): boolean {
   const today = new Date()
   today.setHours(0, 0, 0, 0)
-  
-  // Try to parse the date string
-  const eventDate = new Date(dateString)
-  if (isNaN(eventDate.getTime())) {
-    // If parsing fails, try extracting just numbers for year/month/day
-    const match = dateString.match(/(\w+)\s+(\d+)(?:-\d+)?,?\s*(\d{4})?/)
-    if (match) {
-      const months: Record<string, number> = {
-        'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
-        'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
-      }
-      const month = months[match[1]] ?? 0
-      const day = parseInt(match[2])
-      const year = match[3] ? parseInt(match[3]) : today.getFullYear()
-      const parsedDate = new Date(year, month, day)
-      return parsedDate < today
-    }
-    return false
-  }
+
+  const eventDate = parseEventStartDate(dateString)
+  if (!eventDate) return false
+
+  eventDate.setHours(0, 0, 0, 0)
   return eventDate < today
 }
 

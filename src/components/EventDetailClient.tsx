@@ -69,6 +69,38 @@ interface EventDetailClientProps {
   relatedEvents: RelatedEvent[]
 }
 
+function parseEventStartDate(dateString: string): Date | null {
+  const rangeMatch = /^(\w+)\s+(\d+)(?:-\d+)?,?\s*(\d{4})?$/.exec(dateString.trim())
+  if (rangeMatch) {
+    const months: Record<string, number> = {
+      January: 0,
+      February: 1,
+      March: 2,
+      April: 3,
+      May: 4,
+      June: 5,
+      July: 6,
+      August: 7,
+      September: 8,
+      October: 9,
+      November: 10,
+      December: 11,
+    }
+
+    const month = months[rangeMatch[1]]
+    if (month !== undefined) {
+      const day = Number.parseInt(rangeMatch[2], 10)
+      const year = rangeMatch[3]
+        ? Number.parseInt(rangeMatch[3], 10)
+        : new Date().getFullYear()
+      return new Date(year, month, day)
+    }
+  }
+
+  const parsed = new Date(dateString)
+  return Number.isNaN(parsed.getTime()) ? null : parsed
+}
+
 const portableTextComponents = {
   types: {
     image: ({ value }: any) => {
@@ -304,22 +336,11 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
   const isPast = (() => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-    const eventDate = new Date(event.date)
-    if (Number.isNaN(eventDate.getTime())) {
-      const match = /(\w+)\s+(\d+)(?:-\d+)?,?\s*(\d{4})?/.exec(event.date)
-      if (match) {
-        const months: Record<string, number> = {
-          'January': 0, 'February': 1, 'March': 2, 'April': 3, 'May': 4, 'June': 5,
-          'July': 6, 'August': 7, 'September': 8, 'October': 9, 'November': 10, 'December': 11
-        }
-        const month = months[match[1]] ?? 0
-        const day = Number.parseInt(match[2])
-        const year = match[3] ? Number.parseInt(match[3]) : today.getFullYear()
-        const parsedDate = new Date(year, month, day)
-        return parsedDate < today
-      }
-      return false
-    }
+
+    const eventDate = parseEventStartDate(event.date)
+    if (!eventDate) return false
+
+    eventDate.setHours(0, 0, 0, 0)
     return eventDate < today
   })()
 
