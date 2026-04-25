@@ -73,6 +73,7 @@ interface MWStudioClientProps {
 
 export default function MWStudio({ caseStudies = [], product, partnerLogos }: MWStudioClientProps) {
   const [activeMode, setActiveMode] = useState<'marketplace' | 'campaigns'>('marketplace')
+  const heroStats = product?.heroStats?.length ? product.heroStats : null
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
   const defaultMarketplaceFeatures = [
@@ -319,12 +320,20 @@ export default function MWStudio({ caseStudies = [], product, partnerLogos }: MW
               <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
                 <h3 className="text-lg font-semibold text-white mb-6">Platform Capabilities</h3>
                 <div className="grid grid-cols-2 gap-4">
-                  {[
-                    { value: '6', label: 'Templates', color: 'text-cyan-300', icon: PuzzleIcon },
-                    { value: '5 min', label: 'Setup Time', color: 'text-green-300', icon: BoltIcon },
-                    { value: 'Live', label: 'Inventory Sync', color: 'text-purple-300', icon: CubeIcon },
-                    { value: '200+', label: 'Components', color: 'text-blue-300', icon: SquaresIcon }
-                  ].map((stat, index) => (
+                  {(heroStats
+                    ? heroStats.map((s, i) => ({
+                        value: s.value,
+                        label: s.label,
+                        color: ['text-cyan-300', 'text-green-300', 'text-purple-300', 'text-blue-300'][i % 4],
+                        icon: [PuzzleIcon, BoltIcon, CubeIcon, SquaresIcon][i % 4]
+                      }))
+                    : [
+                        { value: '6', label: 'Templates', color: 'text-cyan-300', icon: PuzzleIcon },
+                        { value: '5 min', label: 'Setup Time', color: 'text-green-300', icon: BoltIcon },
+                        { value: 'Live', label: 'Inventory Sync', color: 'text-purple-300', icon: CubeIcon },
+                        { value: '200+', label: 'Components', color: 'text-blue-300', icon: SquaresIcon }
+                      ]
+                  ).map((stat, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, scale: 0.8 }}
@@ -704,11 +713,10 @@ export default function MWStudio({ caseStudies = [], product, partnerLogos }: MW
             viewport={{ once: true }}
           >
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Start Building OOH Campaigns Today
+              {product?.finalCtaTitle || 'Start Building OOH Campaigns Today'}
             </h2>
             <p className="text-xl mb-8 max-w-2xl mx-auto">
-              Join 1,200+ media owners using MW Studio to create professional 
-              OOH campaigns without designers or developers.
+              {product?.finalCtaSubtitle || 'Join 1,200+ media owners using MW Studio to create professional OOH campaigns without designers or developers.'}
             </p>
             <p className="text-sm text-cyan-100 mt-6">✓ 500+ templates  ✓ Drag & drop builder  ✓ One-click deploy</p>
           </motion.div>

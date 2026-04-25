@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 60
 
 export default function AboutPage() {
   return <AboutPageClient />

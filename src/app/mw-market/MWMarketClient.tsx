@@ -88,6 +88,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
   const heroTitle = product?.heroTitle || 'MW Market'
   const heroSubtitle = product?.heroSubtitle || 'Global OOH Billboard Market'
   const heroDescription = product?.description || 'Classic & Digital Billboards Available Worldwide'
+  const heroStats = product?.heroStats?.length ? product.heroStats : null
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
   const currencies = [
@@ -310,6 +311,22 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
             >
               {heroDescription}
             </motion.p>
+
+            {heroStats && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="flex justify-center flex-wrap gap-10 mb-8"
+              >
+                {heroStats.map((stat, i) => (
+                  <div key={i} className="text-center">
+                    <div className="text-3xl font-bold text-white">{stat.value}</div>
+                    <div className="text-sm text-gray-300 mt-1">{stat.label}</div>
+                  </div>
+                ))}
+              </motion.div>
+            )}
           </div>
 
           {/* Interactive World Map */}
@@ -893,10 +910,10 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
               className="bg-white rounded-3xl shadow-2xl p-10"
             >
               <h2 className="text-4xl font-bold text-gray-900 mb-4">
-                Book Your Free Demo
+                {product?.finalCtaTitle || 'Book Your Free Demo'}
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                See how MW Market can transform your OOH advertising strategy in just 15 minutes
+                {product?.finalCtaSubtitle || 'See how MW Market can transform your OOH advertising strategy in just 15 minutes'}
               </p>
               
               <CTAButton

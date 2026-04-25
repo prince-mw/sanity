@@ -1,8 +1,52 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { revalidatePath, revalidateTag } from 'next/cache'
+import crypto from 'crypto'
 
 // Webhook secret for verification
 const WEBHOOK_SECRET = process.env.SANITY_WEBHOOK_SECRET
+
+/**
+ * Verify a Sanity HMAC-SHA256 webhook signature.
+ * Sanity sends the signature header as: t=<unix_timestamp>,v1=<hex_hmac_sha256>
+ * The HMAC is computed over: "<timestamp>.<rawBody>"
+ * Falls back to plain-string comparison for legacy simple-secret configs.
+ */
+function isValidWebhookSignature(
+  signatureHeader: string,
+  rawBody: string,
+  secret: string
+): boolean {
+  // Attempt HMAC format: t=<ts>,v1=<hex>
+  const tsMatch = signatureHeader.match(/t=(\d+)/)
+  const v1Match = signatureHeader.match(/v1=([a-f0-9]+)/)
+
+  if (tsMatch && v1Match) {
+    const timestamp = tsMatch[1]
+    const receivedHex = v1Match[1]
+
+    // Reject timestamps older than 5 minutes (replay-attack prevention)
+    const ts = parseInt(timestamp, 10)
+    const nowSec = Math.floor(Date.now() / 1000)
+    if (Math.abs(nowSec - ts) > 300) return false
+
+    const expected = crypto
+      .createHmac('sha256', secret)
+      .update(`${timestamp}.${rawBody}`)
+      .digest('hex')
+
+    try {
+      return crypto.timingSafeEqual(
+        Buffer.from(receivedHex, 'hex'),
+        Buffer.from(expected, 'hex')
+      )
+    } catch {
+      return false
+    }
+  }
+
+  // Legacy: plain-string secret sent via x-webhook-secret or query param
+  return signatureHeader === secret
+}
 
 // Type to path mapping for revalidation
 const typeToPath: Record<string, string[]> = {
@@ -69,7 +113,18 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!signature || signature !== WEBHOOK_SECRET) {
+    if (!signature) {
+      console.error('[Sanity Webhook] No signature received')
+      return NextResponse.json(
+        { error: 'Missing webhook signature' },
+        { status: 401 }
+      )
+    }
+
+    // Read raw body for HMAC verification before parsing as JSON
+    const rawBody = await request.text()
+
+    if (!isValidWebhookSignature(signature, rawBody, WEBHOOK_SECRET)) {
       console.error('[Sanity Webhook] Invalid signature received')
       return NextResponse.json(
         { error: 'Invalid webhook signature' },
@@ -77,7 +132,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const body: SanityWebhookPayload = await request.json()
+    const body: SanityWebhookPayload = JSON.parse(rawBody)
     const { _type, slug } = body
 
     console.log(`[Sanity Webhook] Received: ${_type} - ${slug?.current || body._id}`)

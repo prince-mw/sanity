@@ -179,6 +179,7 @@ export default function MWInfluencePage({ caseStudies = [], product, partnerLogo
   const heroDescription = product?.description || 'Stop settling for loop-based scheduling and estimated delivery. MW Influence is the intelligent control plane that unifies your inventory management, campaign execution, and yield optimization into one revenue-maximizing engine.'
   const ctaText = product?.ctaText || 'Request a Demo'
   const ctaLink = product?.ctaLink || '/contact'
+  const heroStats = product?.heroStats?.length ? product.heroStats : null
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
   // CMS-driven pain points with hardcoded fallback
@@ -413,6 +414,17 @@ export default function MWInfluencePage({ caseStudies = [], product, partnerLogo
                   {ctaText}
                 </CTAButton>
               </div>
+
+              {heroStats && (
+                <div className="flex flex-wrap gap-8 mt-8">
+                  {heroStats.map((stat, i) => (
+                    <div key={i} className="text-center">
+                      <div className="text-2xl font-bold text-white">{stat.value}</div>
+                      <div className="text-xs text-blue-200 mt-1">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
             </motion.div>
 
             {/* Right Column - Architecture Diagram Placeholder */}
@@ -978,10 +990,10 @@ export default function MWInfluencePage({ caseStudies = [], product, partnerLogo
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Ready to Transform Your Network?
+              {product?.finalCtaTitle || 'Ready to Transform Your Network?'}
             </h2>
             <p className="text-lg text-gray-300 mb-6 leading-relaxed">
-              Join the leading DOOH media owners who have moved beyond legacy loop-based systems to intelligent, revenue-optimizing ad serving.
+              {product?.finalCtaSubtitle || 'Join the leading DOOH media owners who have moved beyond legacy loop-based systems to intelligent, revenue-optimizing ad serving.'}
             </p>
             <p className="text-gray-300 mb-8">
               Schedule a demo to see how MW Influence can unify your direct and programmatic demand, automate operations, and maximize yield across your entire network.

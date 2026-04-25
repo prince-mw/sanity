@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { getIndustryPage, getPageSeo } from '@/sanity/lib/fetch';
 import FinancePageClient from '@/components/FinancePageClient';
 
-export const revalidate = 3600; // Revalidate every hour
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('finance');

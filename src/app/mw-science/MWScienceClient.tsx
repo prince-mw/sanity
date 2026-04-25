@@ -52,6 +52,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
   const heroTitle = product?.heroTitle || 'MW Science'
   const heroSubtitle = product?.heroSubtitle || 'AI-Powered Audience Intelligence'
   const heroDescription = product?.description || 'Transform data into strategic advantage with machine learning models that deliver'
+  const heroStats = product?.heroStats?.length ? product.heroStats : null
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
   const defaultFeatures = [
@@ -242,12 +243,19 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
               <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-8">
                 <h3 className="text-xl font-semibold mb-6 text-white/90">AI Model Performance</h3>
                 <div className="grid grid-cols-2 gap-6">
-                  {[
-                    { value: '94.2%', label: 'Prediction Accuracy', color: 'text-yellow-300' },
-                    { value: '1M+', label: 'Data Points/sec', color: 'text-green-300' },
-                    { value: '250+', label: 'AI Models', color: 'text-purple-300' },
-                    { value: '15K+', label: 'Tests Run', color: 'text-blue-300' }
-                  ].map((stat, index) => (
+                  {(heroStats
+                    ? heroStats.map((s, i) => ({
+                        value: s.value,
+                        label: s.label,
+                        color: ['text-yellow-300', 'text-green-300', 'text-purple-300', 'text-blue-300'][i % 4]
+                      }))
+                    : [
+                        { value: '94.2%', label: 'Prediction Accuracy', color: 'text-yellow-300' },
+                        { value: '1M+', label: 'Data Points/sec', color: 'text-green-300' },
+                        { value: '250+', label: 'AI Models', color: 'text-purple-300' },
+                        { value: '15K+', label: 'Tests Run', color: 'text-blue-300' }
+                      ]
+                  ).map((stat, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, scale: 0.8 }}

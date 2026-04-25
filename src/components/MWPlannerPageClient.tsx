@@ -172,6 +172,7 @@ export default function MWPlannerPageClient({ latestBlogPosts, product, partnerL
   const heroDescription = product?.description || 'The AI command center that predicts performance, optimizes budgets, and delivers measurable ROI—before you spend a dollar.'
   const ctaText = product?.ctaText || 'Start Free Trial'
   const ctaLink = product?.ctaLink || '/contact'
+  const heroStats = product?.heroStats?.length ? product.heroStats : null
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
   // CMS-driven features with fallback to defaults
@@ -287,15 +288,18 @@ export default function MWPlannerPageClient({ latestBlogPosts, product, partnerL
 
                   {/* Stats Row */}
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {[
-                      { label: 'ROAS', value: '4.2x', change: '+18%' },
-                      { label: 'CPA', value: '$12.40', change: '-24%' },
-                      { label: 'CTR', value: '3.8%', change: '+12%' },
-                    ].map((stat) => (
+                    {(heroStats
+                      ? heroStats.map(s => ({ label: s.label, value: s.value, change: '' }))
+                      : [
+                          { label: 'ROAS', value: '4.2x', change: '+18%' },
+                          { label: 'CPA', value: '$12.40', change: '-24%' },
+                          { label: 'CTR', value: '3.8%', change: '+12%' },
+                        ]
+                    ).map((stat) => (
                       <div key={stat.label} className="bg-white/5 rounded-lg p-3">
                         <div className="text-white/50 text-xs mb-1">{stat.label}</div>
                         <div className="text-white font-bold">{stat.value}</div>
-                        <div className="text-green-400 text-xs">{stat.change}</div>
+                        {stat.change && <div className="text-green-400 text-xs">{stat.change}</div>}
                       </div>
                     ))}
                   </div>
