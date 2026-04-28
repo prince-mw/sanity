@@ -236,7 +236,7 @@ const products = [
         description: 'Visualize inventory on maps with traffic and audience data.',
       },
     ],
-    ctaText: 'Explore Marketplace',
+    ctaText: 'Get Started',
     ctaLink: '/contact',
   },
   {
