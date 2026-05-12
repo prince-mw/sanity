@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 300
+export const revalidate = 60
 
 const fallbackWhitepapers: Whitepaper[] = [
   {

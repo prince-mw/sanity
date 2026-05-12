@@ -17,7 +17,7 @@ import { getAllActiveZohoForms, getFooterContent, getAnalyticsConfig } from "@/s
 import "./globals.css";
 
 // Revalidate layout data (footer, forms, analytics) every hour
-export const revalidate = 3600;
+export const revalidate = 60;
 
 const poppins = Poppins({
   subsets: ["latin"],

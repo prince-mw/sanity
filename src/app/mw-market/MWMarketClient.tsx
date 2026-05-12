@@ -3,8 +3,11 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
+import { useFormPopup } from "@/components/FormPopupProvider"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
+import TestimonialSectionClient from "@/components/TestimonialSectionClient"
 import type { DisplayIntegration } from '@/data/default-integrations'
+import { getDisplayIntegrations } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
 import { getSanityImageUrl } from "@/sanity/lib/fetch"
 
@@ -12,6 +15,7 @@ interface MWMarketClientProps {
   readonly caseStudies?: any[]
   readonly product?: SanityProduct | null
   readonly partnerLogos?: DisplayIntegration[] | null
+  readonly testimonials?: any[]
 }
 
 // Icons
@@ -101,14 +105,15 @@ const ArticleIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-export default function MWMarketPage({ caseStudies = [], product, partnerLogos }: MWMarketClientProps) {
+export default function MWMarketPage({ caseStudies = [], product, partnerLogos, testimonials }: MWMarketClientProps) {
+  const { openFormPopup } = useFormPopup()
   const heroTitle = product?.heroTitle || 'Turn OOH Buying Into a Self-Serve Experience'
   const heroSubtitle = product?.heroSubtitle || 'Discover, plan, and launch billboard campaigns globally \u2014 faster, simpler, and with full transparency.'
   const heroDescription = product?.description || 'MW Market is a self-serve OOH marketplace that lets advertisers access inventory, book campaigns, and track performance \u2014 all in one place.'
   const tagline = product?.tagline || product?.heroBadge || 'Global OOH Marketplace'
   const heroImageUrl = product?.heroImage ? getSanityImageUrl(product.heroImage, { width: 800 }) : null
   const heroStats = product?.heroStats || []
-  const ctaLabel = 'Get Started'
+  const ctaLabel = product?.ctaText || 'Get Started'
   const heroStatColors = ['text-yellow-300', 'text-green-300', 'text-purple-300', 'text-pink-300']
 
   const gradientMap: Record<string, string> = {
@@ -139,8 +144,8 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
   }
 
   // COMPARISON — from painPoints CMS field
-  const comparisonTitle = product?.painPointsTitle || 'Stop Manual Buying. Start Campaigns in Minutes.'
-  const comparisonSubtitle = product?.painPointsSubtitle || 'Traditional OOH buying is slow, fragmented, and hard to scale. MW Market simplifies the process so you can launch campaigns with speed and confidence.'
+  const comparisonTitle = product?.painPointsTitle || product?.featuresTitle || 'Stop Manual Buying. Start Campaigns in Minutes.'
+  const comparisonSubtitle = product?.painPointsSubtitle || product?.featuresSubtitle || 'Traditional OOH buying is slow, fragmented, and hard to scale. MW Market simplifies the process so you can launch campaigns with speed and confidence.'
   const defaultComparisonRows = [
     { oldWay: 'Long contracts cause unnecessary advertising costs.', newWay: 'Remove the cost barrier with short-term contracts of a minimum of 7 days. Only advertise when you need to.' },
     { oldWay: 'Advertise big with deep impression, but no store visits.', newWay: 'Hyperlocal targeting allows you to buy billboards close to your outlet.' },
@@ -152,8 +157,8 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
     : defaultComparisonRows
 
   // FEATURES — from features CMS field
-  const featuresTitle = product?.featuresTitle || 'Everything You Need to Launch OOH Campaigns'
-  const featuresSubtitle = product?.featuresSubtitle || 'Powerful tools designed to help you discover, book, and scale campaigns effortlessly.'
+  const featuresTitle = product?.howItWorksTitle || 'Everything You Need to Launch OOH Campaigns'
+  const featuresSubtitle = product?.howItWorksSubtitle || 'Powerful tools designed to help you discover, book, and scale campaigns effortlessly.'
   const defaultFeatures = [
     { icon: GlobeIcon, title: 'Global Inventory Access', description: 'Explore billboard inventory across cities, highways, and locations worldwide.' },
     { icon: BookmarkIcon, title: 'Self-Serve Booking', description: 'Plan and book campaigns fast with flexible durations and transparent pricing.' },
@@ -162,85 +167,48 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
     { icon: ChartBarIcon, title: 'Real-Time Campaign Tracking', description: 'Monitor campaign performance, impressions, and delivery through unified dashboards.' },
     { icon: BoltIcon, title: 'ROI Optimisation', description: 'Use performance insights to optimise campaigns and maximise return on investment.' },
   ]
-  const features = product?.features?.length
-    ? product.features.map(f => ({ icon: iconMap[f.icon || ''] || GlobeIcon, title: f.title, description: f.description || '' }))
-    : defaultFeatures
+  let features: Array<{ icon: React.FC<{ className?: string }>; title: string; description: string }> = defaultFeatures
+  if (product?.features?.length) {
+    features = product.features.map(f => ({ icon: iconMap[f.icon || ''] || GlobeIcon, title: f.title, description: f.description || '' }))
+  } else if (product?.howItWorksSteps?.length) {
+    features = product.howItWorksSteps.map((s, i) => ({ icon: defaultFeatures[i]?.icon || GlobeIcon, title: s.title, description: s.description || '' }))
+  }
 
   // ACCESS THE MARKET — benefits & stats from CMS
-  const accessTitle = product?.howItWorksTitle || "Don't Replace. Access the Market."
-  const accessSubtitle = product?.howItWorksSubtitle || 'MW Market connects you to a global OOH ecosystem, without the complexity of traditional buying.'
+  const accessTitle = product?.integrationsTitle || "Don't Replace. Access the Market."
+  const _intSubLines = (product?.integrationsSubtitle || '').split('\n').map(l => l.trim()).filter(Boolean)
+  const _intSubtitleText = _intSubLines.find(l => !l.startsWith('✔')) || ''
+  const _intBullets = _intSubLines.filter(l => l.startsWith('✔')).map(l => l.replace(/^✔\s*/, ''))
+  const accessSubtitle = _intSubtitleText || 'MW Market connects you to a global OOH ecosystem, without the complexity of traditional buying.'
   const defaultAccessBullets = [
     'Works across multiple markets and formats',
     'Supports digital, static, and transit inventory',
     'Enables fast campaign activation with minimal effort',
     'Brings planning, buying, and measurement into one flow',
   ]
-  const accessBullets = (product?.benefits && product.benefits.length > 0) ? product.benefits : defaultAccessBullets
-  const defaultAccessStats = [
-    { value: '100K+', label: 'Verified Media Sites' },
-    { value: '10B+', label: 'Audience Data Points' },
-    { value: '147+', label: 'Countries Covered' },
-    { value: '30+', label: 'Currencies Supported' },
-  ]
-  const accessStats = product?.stats?.length
-    ? product.stats.map(s => ({ value: s.value, label: s.label }))
-    : defaultAccessStats
+  let accessBullets = defaultAccessBullets
+  if (product?.benefits?.length) { accessBullets = product.benefits }
+  else if (_intBullets.length) { accessBullets = _intBullets }
 
   // TESTIMONIALS — from CMS
-  const defaultTestimonials = [
-    { quote: 'MW Market transformed how we buy OOH. What used to take weeks of negotiation now takes minutes. The transparency and real-time tracking are game-changers.', author: 'Sarah Chen', title: 'Head of Media, Retail Brand', company: 'Asia Pacific', rating: 5 },
-    { quote: 'We launched a hyperlocal campaign across 12 cities in one afternoon. The self-serve platform is intuitive and the results were immediately measurable.', author: 'James Okafor', title: 'Digital Marketing Director', company: 'FMCG Company', rating: 5 },
-    { quote: 'The packaged deals saved us hours of planning. We got premium inventory at transparent pricing and saw a 40% uplift in store footfall within the first week.', author: 'Priya Sharma', title: 'Campaign Manager', company: 'QSR Chain', rating: 5 },
-  ]
-  const testimonials = product?.testimonials?.length
-    ? product.testimonials.map(t => ({ quote: t.quote, author: t.author, title: t.role, company: t.company, rating: 5 }))
-    : defaultTestimonials
-
-  // PACKAGE DEALS — from detailPageSections where sectionKey === 'packages'
-  const packageSection = product?.detailPageSections?.find(s => s.sectionKey === 'packages')
-  const packageDealsTitle = packageSection?.sectionTitle || 'Ready-to-Launch Campaign Packages'
-  const packageDealsSubtitle = packageSection?.sectionSubtitle || 'Pre-built packages for faster activation with proven inventory combinations.'
-  const defaultPackageDeals = [
-    { name: 'Hyperlocal Starter', tagline: 'Perfect for store launches', screens: '10\u201320 screens', duration: '7\u201314 days', highlight: 'Near your outlet' },
-    { name: 'City Domination', tagline: 'Own the conversation citywide', screens: '50\u2013100 screens', duration: '14\u201330 days', highlight: 'High-traffic zones' },
-    { name: 'Regional Blitz', tagline: 'Multi-market reach at scale', screens: '100\u2013250 screens', duration: '30 days', highlight: 'Across 3\u20135 cities' },
-    { name: 'Brand Awareness Bundle', tagline: 'Maximum visibility, minimum effort', screens: '250+ screens', duration: 'Flexible', highlight: 'Prime locations' },
-  ]
-  const packageDeals = packageSection?.items?.length
-    ? packageSection.items.map(item => ({ name: item.title, tagline: item.description || '', screens: item.detail || '', duration: item.metric || '', highlight: item.metricLabel || '' }))
-    : defaultPackageDeals
-
-  // FEATURED INVENTORY — from sampleLocations CMS field
-  const inventoryTitle = product?.detailPageSections?.find(s => s.sectionKey === 'inventory')?.sectionTitle || 'High-Impact Locations, Ready to Book'
-  const inventorySubtitle = product?.detailPageSections?.find(s => s.sectionKey === 'inventory')?.sectionSubtitle || 'Curated premium billboard locations across key markets.'
-  const defaultFeaturedInventory = [
-    { city: 'New York', location: 'Times Square', format: 'Digital LED', size: '48x14 ft', impressions: '1.2M/week', country: 'USA' },
-    { city: 'London', location: 'Piccadilly Circus', format: 'Digital Screen', size: '60x20 ft', impressions: '900K/week', country: 'UK' },
-    { city: 'Singapore', location: 'Orchard Road', format: 'Digital Billboard', size: '40x12 ft', impressions: '650K/week', country: 'Singapore' },
-    { city: 'Dubai', location: 'Sheikh Zayed Road', format: 'LED Billboard', size: '50x16 ft', impressions: '800K/week', country: 'UAE' },
-    { city: 'Mumbai', location: 'Bandra-Kurla Complex', format: 'Digital Screen', size: '36x12 ft', impressions: '700K/week', country: 'India' },
-    { city: 'Sydney', location: 'Harbour Bridge Precinct', format: 'Static Billboard', size: '48x16 ft', impressions: '500K/week', country: 'Australia' },
-    { city: 'Los Angeles', location: 'Sunset Boulevard', format: 'Digital LED', size: '42x14 ft', impressions: '750K/week', country: 'USA' },
-    { city: 'Tokyo', location: 'Shibuya Crossing', format: 'Large Format Digital', size: '80x30 ft', impressions: '2.1M/week', country: 'Japan' },
-  ]
-  const featuredInventory = product?.sampleLocations?.length
-    ? product.sampleLocations.map(loc => ({
-        city: loc.traffic || loc.name,
-        location: loc.name,
-        format: loc.type,
-        size: loc.reach || '',
-        impressions: loc.impressions,
-        country: loc.demographics || 'Global',
-      }))
-    : defaultFeaturedInventory
-
-  // FINAL CTA FEATURES — static (no direct CMS field mapping)
-  const finalCtaFeatures = [
+  const finalCtaSection = product?.detailPageSections?.find(s => s.sectionKey === 'finalCTA')
+  const finalCtaTitle = product?.finalCtaTitle || finalCtaSection?.sectionTitle || 'Launch Your Campaign in Minutes'
+  const finalCtaSubtitle = product?.finalCtaSubtitle || finalCtaSection?.sectionSubtitle || 'From discovery to live campaign \u2014 everything you need in one platform.'
+  const _finalCtaIconByTitle: Record<string, React.FC<{ className?: string }>> = {
+    'Global Coverage': GlobeIcon,
+    'Multi-Currency': CurrencyDollarIcon,
+    'Instant Booking': BoltIcon,
+    'Live Analytics': ChartBarIcon,
+  }
+  const defaultFinalCtaFeatures = [
     { icon: GlobeIcon, title: 'Global Coverage', description: 'Access 100,000+ verified media sites across global markets, powered by 10B+ audience data points.' },
     { icon: CurrencyDollarIcon, title: 'Multi-Currency', description: 'Pay in multiple currencies with secure transactions.' },
     { icon: BoltIcon, title: 'Instant Booking', description: 'Book billboards in seconds with real-time availability across global inventory.' },
     { icon: ChartBarIcon, title: 'Live Analytics', description: 'Track impressions, movement, and ROI with real-time audience measurement.' },
   ]
+  const finalCtaFeatures = finalCtaSection?.items?.length
+    ? finalCtaSection.items.map(item => ({ icon: _finalCtaIconByTitle[item.title] || iconMap[item.iconName || ''] || GlobeIcon, title: item.title, description: item.description || '' }))
+    : defaultFinalCtaFeatures
 
   return (
     <div className="min-h-screen bg-white">
@@ -262,15 +230,23 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
               {heroSubtitle && <p className="text-lg sm:text-xl md:text-2xl font-light text-blue-200 mb-4 sm:mb-6">{heroSubtitle}</p>}
               {heroDescription && <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8 leading-relaxed max-w-xl">{heroDescription}</p>}
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-                <CTAButton href={product?.ctaLink || '/contact'} className="bg-white text-blue-900 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2">
-                  {ctaLabel}
+                <button
+                  type="button"
+                  onClick={openFormPopup}
+                  className="bg-white text-blue-900 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2"
+                >
+                  Get Started
                   <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-                </CTAButton>
-                {product?.secondaryCta?.text && (
-                  <CTAButton href={product.secondaryCta.link || ''} className="bg-white/10 text-white border border-white/30 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2">
-                    {product.secondaryCta.text}
-                  </CTAButton>
-                )}
+                </button>
+                <a
+                  href="https://market.movingwalls.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white/10 text-white border border-white/30 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
+                >
+                  Explore Marketplace
+                  <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
+                </a>
               </div>
             </motion.div>
 
@@ -368,157 +344,40 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
                 ))}
               </ul>
             </motion.div>
-            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }} className="grid grid-cols-2 gap-4">
-              {accessStats.map((stat, index) => (
-                <div key={stat.value} className="bg-white/10 border border-white/20 rounded-xl p-6 text-center">
-                  <div className="text-3xl sm:text-4xl font-bold text-white mb-1">{stat.value}</div>
-                  <div className="text-sm text-blue-200 font-medium">{stat.label}</div>
-                </div>
-              ))}
+            <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
+              <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                {getDisplayIntegrations(product?.integrations, partnerLogos).map((integration) => (
+                  <div key={integration.name} className="bg-white rounded-md p-3 flex items-center justify-center h-14">
+                    {integration.logo ? (
+                      <Image
+                        src={integration.logo}
+                        alt={integration.name}
+                        width={100}
+                        height={40}
+                        className="max-h-8 w-auto object-contain"
+                        unoptimized={integration.logo.startsWith('/')}
+                      />
+                    ) : (
+                      <span className="text-gray-600 text-xs font-medium text-center leading-tight">{integration.name}</span>
+                    )}
+                  </div>
+                ))}
+              </div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* PACKAGE DEALS */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4">
-              <PackageIcon className="w-4 h-4 text-blue-600" />
-              <span className="text-blue-600 font-medium text-sm">Package Deals</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">{packageDealsTitle}</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">{packageDealsSubtitle}</p>
-          </motion.div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {packageDeals.map((pkg, index) => (
-              <motion.div key={pkg.name} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg hover:border-blue-200 transition-all">
-                <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center mb-4">
-                  <PackageIcon className="w-5 h-5 text-white" />
-                </div>
-                <h3 className="text-lg font-bold text-gray-900 mb-1">{pkg.name}</h3>
-                <p className="text-sm text-blue-600 font-medium mb-4">{pkg.tagline}</p>
-                <ul className="space-y-2 text-sm text-gray-600 mb-6">
-                  <li className="flex items-center gap-2"><EyeIcon className="w-4 h-4 text-gray-400" />{pkg.screens}</li>
-                  <li className="flex items-center gap-2"><BoltIcon className="w-4 h-4 text-gray-400" />{pkg.duration}</li>
-                  <li className="flex items-center gap-2"><MapPinIcon className="w-4 h-4 text-gray-400" />{pkg.highlight}</li>
-                </ul>
-                <CTAButton href={product?.ctaLink || '/contact'} className="w-full text-center block bg-blue-50 text-blue-700 font-semibold py-2.5 rounded-md text-sm hover:bg-blue-600 hover:text-white transition-colors">Get This Package</CTAButton>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURED INVENTORY */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4">
-              <MapPinIcon className="w-4 h-4 text-blue-600" />
-              <span className="text-blue-600 font-medium text-sm">Featured Inventory</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">{inventoryTitle}</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">{inventorySubtitle}</p>
-          </motion.div>
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
-            {['All Markets', 'USA', 'UK', 'Singapore', 'UAE', 'India', 'Australia'].map((country, i) => (
-              <button key={country} className={`px-4 py-2 rounded-full text-sm font-medium border transition-colors ${i === 0 ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400 hover:text-blue-600'}`}>{country}</button>
-            ))}
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredInventory.map((item, index) => (
-              <motion.div key={`${item.city}-${item.location}`} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: index * 0.07 }} viewport={{ once: true }} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg hover:border-blue-200 transition-all">
-                <div className="h-40 bg-blue-50 flex items-center justify-center relative">
-                  <MapPinIcon className="w-10 h-10 text-blue-300" />
-                  <span className="absolute top-3 right-3 bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-medium">{item.country}</span>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-bold text-gray-900 mb-0.5">{item.location}</h3>
-                  <p className="text-sm text-gray-500 mb-3">{item.city}</p>
-                  <div className="space-y-1 text-xs text-gray-600 mb-4">
-                    <div className="flex items-center justify-between"><span>Format</span><span className="font-medium text-gray-800">{item.format}</span></div>
-                    <div className="flex items-center justify-between"><span>Size</span><span className="font-medium text-gray-800">{item.size}</span></div>
-                    <div className="flex items-center justify-between"><span>Impressions</span><span className="font-medium text-blue-600">{item.impressions}</span></div>
-                  </div>
-                  <CTAButton href={product?.ctaLink || '/contact'} className="w-full text-center block border border-blue-600 text-blue-600 font-semibold py-2 rounded-md text-sm hover:bg-blue-600 hover:text-white transition-colors">Book Now</CTAButton>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* TESTIMONIALS */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">Trusted by Advertisers Worldwide</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">See what marketers say about launching OOH campaigns on MW Market.</p>
-          </motion.div>
-          <div className="grid md:grid-cols-3 gap-6 sm:gap-8">
-            {testimonials.map((testimonial, index) => (
-              <motion.div key={testimonial.author} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="bg-white rounded-xl border border-gray-200 p-6 sm:p-8 flex flex-col">
-                <QuoteIcon className="w-8 h-8 text-blue-200 mb-4" />
-                <p className="text-gray-700 text-sm sm:text-base leading-relaxed flex-1 mb-6">&ldquo;{testimonial.quote}&rdquo;</p>
-                <div className="flex items-center gap-1 mb-4">
-                  {Array.from({ length: testimonial.rating }, (_, i) => (<StarIcon key={`star-${testimonial.author}-${i}`} className="w-4 h-4 text-yellow-400" />))}
-                </div>
-                <div>
-                  <p className="font-bold text-gray-900 text-sm">{testimonial.author}</p>
-                  <p className="text-gray-500 text-xs">{testimonial.title}</p>
-                  <p className="text-blue-600 text-xs font-medium mt-0.5">{testimonial.company}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CASE STUDIES */}
-      <CaseStudiesSection initialCaseStudies={caseStudies} />
-
-      {/* MW MARKET ARTICLE */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-4">
-              <ArticleIcon className="w-4 h-4 text-blue-600" />
-              <span className="text-blue-600 font-medium text-sm">Resource</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">The Moving Walls Market</h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">Learn how MW Market is redefining how brands discover, buy, and measure out-of-home advertising.</p>
-          </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }} className="max-w-4xl mx-auto">
-            <div className="rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
-              <div className="h-56 sm:h-72 bg-blue-50 flex items-center justify-center">
-                <ArticleIcon className="w-16 h-16 text-blue-300" />
-              </div>
-              <div className="p-6 sm:p-8">
-                <div className="flex items-center gap-2 mb-3">
-                  <span className="bg-blue-100 text-blue-700 text-xs font-semibold px-3 py-1 rounded-full">Market Intelligence</span>
-                  <span className="text-gray-400 text-xs">&bull;</span>
-                  <span className="text-gray-500 text-xs">Moving Walls Team</span>
-                </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3">How MW Market Is Making OOH Advertising as Easy as Digital</h3>
-                <p className="text-gray-600 leading-relaxed mb-6">The out-of-home advertising space has traditionally been opaque, slow, and fragmented. MW Market changes that with a self-serve platform that gives advertisers direct access to global billboard inventory, transparent pricing, and real-time performance data.</p>
-                <CTAButton href="/blog" className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition-colors">
-                  Read the Article <ArrowRightIcon className="w-4 h-4" />
-                </CTAButton>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      <TestimonialSectionClient testimonials={testimonials} hideViewAll />
 
       {/* FINAL CTA */}
       <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-16 sm:py-20 overflow-hidden`}>
         <div className="absolute inset-0 bg-black/10" />
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{product?.finalCtaTitle || 'Launch Your Campaign in Minutes'}</h2>
-            <p className="text-lg sm:text-xl text-blue-200 mb-8 max-w-2xl mx-auto">{product?.finalCtaSubtitle || 'From discovery to live campaign \u2014 everything you need in one platform.'}</p>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{finalCtaTitle}</h2>
+            <p className="text-lg sm:text-xl text-blue-200 mb-8 max-w-2xl mx-auto">{finalCtaSubtitle}</p>
             <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-white text-blue-900 px-8 py-4 rounded-md font-bold text-base sm:text-lg hover:bg-blue-50 transition-colors shadow-xl">
               {ctaLabel} <ArrowRightIcon className="w-5 h-5" />
             </CTAButton>
@@ -534,6 +393,9 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos }
           </div>
         </div>
       </section>
+
+      {/* CASE STUDIES */}
+      <CaseStudiesSection initialCaseStudies={caseStudies} />
 
     </div>
   )

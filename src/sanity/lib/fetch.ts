@@ -2150,6 +2150,7 @@ export interface SanityProduct {
     title: string
     metrics: Array<{ label: string; value: string }>
   }>
+  relatedCaseStudies?: SanityCaseStudy[]
   finalCtaTitle?: string
   finalCtaSubtitle?: string
   ctaText?: string
@@ -2231,6 +2232,18 @@ export async function getProductBySlug(slug: string): Promise<SanityProduct | nu
       attributionTitle,
       attributionSubtitle,
       attributionCards[] { title, metrics[] { label, value } },
+      "relatedCaseStudies": relatedCaseStudies[]->{
+        _id,
+        title,
+        slug,
+        client,
+        clientLogo,
+        featuredImage,
+        industry,
+        location,
+        excerpt,
+        publishedAt
+      },
       finalCtaTitle,
       finalCtaSubtitle,
       ctaText,

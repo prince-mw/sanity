@@ -575,7 +575,7 @@ export async function getMegaMenu() {
 }
 
 // Testimonials Filter
-const testimonialPublishedFilter = `isPublished == true && status == "published"`
+const testimonialPublishedFilter = `isPublished == true && (status == "published" || !defined(status))`
 
 // Testimonials Queries
 export const testimonialsQuery = `

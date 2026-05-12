@@ -29,6 +29,7 @@ interface Testimonial {
 
 interface TestimonialSectionProps {
   testimonials?: Testimonial[];
+  hideViewAll?: boolean;
 }
 
 // Fallback testimonials data when Sanity data is not available
@@ -82,7 +83,7 @@ function useResponsiveItemsPerView() {
   return itemsPerView;
 }
 
-export default function TestimonialSection({ testimonials: sanityTestimonials }: TestimonialSectionProps) {
+export default function TestimonialSection({ testimonials: sanityTestimonials, hideViewAll }: TestimonialSectionProps) {
   const { t } = useLocale();
   
   // Use Sanity testimonials if provided, otherwise fall back to hardcoded data
@@ -315,15 +316,17 @@ export default function TestimonialSection({ testimonials: sanityTestimonials }:
           transition={{ duration: 0.6, delay: 0.4 }}
           className="text-center mt-12"
         >
-          <a 
-            href="/case-studies"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white font-semibold rounded-lg hover:bg-mw-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
-          >
-            View All Success Stories
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+          {!hideViewAll && (
+            <a 
+              href="/case-studies"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white font-semibold rounded-lg hover:bg-mw-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+            >
+              View All Success Stories
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+          )}
         </motion.div>
       </div>
     </section>
