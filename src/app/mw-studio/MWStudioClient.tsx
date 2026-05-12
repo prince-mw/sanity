@@ -179,14 +179,13 @@ interface MWStudioClientProps {
   partnerLogos?: any[] | null
 }
 
-export default function MWStudioClient({ caseStudies = [], product }: MWStudioClientProps) {
+export default function MWStudioClient({ caseStudies = [], product, partnerLogos }: MWStudioClientProps) {
   const [activeTab, setActiveTab] = useState<TabId>('ims')
 
   // ── Hero ───────────────────────────────────────────────────────────────────
   const heroTitle = product?.heroTitle || 'The Complete OOH Operating System for Media Owners'
   const heroSubtitle = product?.heroSubtitle || 'Organise your inventory. Deliver content across every screen. Launch a self-serve OOH storefront for your advertisers — all in one platform.'
   const heroDescription = product?.description || 'Moving Walls Studio gives you the tools to structure, deliver, and sell at scale.'
-  const tagline = product?.tagline || product?.heroBadge || 'OOH Operating System'
   const heroStats = product?.heroStats || []
   const heroImageUrl = product?.heroImage ? getSanityImageUrl(product.heroImage, { width: 800 }) : null
   const gradientMap: Record<string, string> = {
@@ -339,8 +338,6 @@ export default function MWStudioClient({ caseStudies = [], product }: MWStudioCl
 
   // ── Section 4 ──────────────────────────────────────────────────────────────
   const section4Title = product?.howItWorksTitle || "You're Operational in Days — Not Months"
-  const finalCtaTitle = product?.finalCtaTitle || 'Launch Your OOH Operations Platform'
-  const finalCtaSubtitle = product?.finalCtaSubtitle || 'Structure, deliver, and monetise your inventory — all from one unified platform built for media owners.'
 
   const tabs: { id: TabId; label: string }[] = [
     { id: 'ims', label: 'Inventory Management System' },
@@ -352,56 +349,32 @@ export default function MWStudioClient({ caseStudies = [], product }: MWStudioCl
     <div className="min-h-screen bg-white">
 
       {/* ─── HERO ────────────────────────────────────────────────────────────── */}
-      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-12 sm:py-16 md:py-20 lg:py-24 overflow-hidden`}>
+      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden`}>
         <div className="absolute inset-0 bg-black/10" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`grid grid-cols-1 ${heroImageUrl ? 'lg:grid-cols-2' : ''} gap-8 lg:gap-12 items-center`}>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-              {tagline && (
-                <div className="inline-flex items-center bg-white/10 px-4 py-2 rounded-md mb-5 w-fit">
-                  <BoltIcon className="w-4 h-4 text-yellow-300 mr-2" />
-                  <span className="text-white/90 font-medium text-sm">{tagline}</span>
-                </div>
-              )}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">{heroTitle}</h1>
-              <p className="text-lg sm:text-xl text-blue-200 mb-3 leading-relaxed max-w-2xl">{heroSubtitle}</p>
-              {heroDescription && heroDescription !== heroSubtitle && (
-                <p className="text-base text-white/70 mb-8 leading-relaxed max-w-xl">{heroDescription}</p>
-              )}
-              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                <CTAButton
-                  href={product?.ctaLink || '/contact'}
-                  className="bg-white text-blue-900 px-6 py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2"
-                >
-                  Get Started <ArrowRightIcon className="w-4 h-4" />
-                </CTAButton>
-                {product?.secondaryCta?.text && (
-                  <CTAButton
-                    href={product.secondaryCta.link || ''}
-                    className="bg-white/10 text-white border border-white/30 px-6 py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
-                  >
-                    {product.secondaryCta.text}
-                  </CTAButton>
-                )}
-              </div>
-            </motion.div>
-            {heroImageUrl && (
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.2 }}
-                className="bg-white/5 backdrop-blur-md border border-white/20 rounded-xl overflow-hidden">
-                <Image src={heroImageUrl} alt={heroTitle} width={800} height={500} className="w-full h-auto" />
-              </motion.div>
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight">{heroTitle}</h1>
+            <p className="text-lg sm:text-xl text-blue-200 mb-4 leading-relaxed">{heroSubtitle}</p>
+            {heroDescription && heroDescription !== heroSubtitle && (
+              <p className="text-base text-white/70 mb-8 leading-relaxed">{heroDescription}</p>
             )}
-          </div>
-          {heroStats.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10 sm:mt-12 pt-8 border-t border-white/20">
-              {heroStats.map((stat, index) => (
-                <motion.div key={stat.label} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.4 + index * 0.1 }} className="text-center">
-                  <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${heroStatColors[index % heroStatColors.length]} mb-1`}>{stat.value}</div>
-                  <div className="text-xs sm:text-sm text-blue-200 font-medium">{stat.label}</div>
-                </motion.div>
-              ))}
+            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+              <CTAButton
+                href={product?.ctaLink || '/contact'}
+                className="bg-white text-blue-900 px-6 py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2"
+              >
+                Get Started <ArrowRightIcon className="w-4 h-4" />
+              </CTAButton>
+              {product?.secondaryCta?.text && (
+                <CTAButton
+                  href={product.secondaryCta.link || ''}
+                  className="bg-white/10 text-white border border-white/30 px-6 py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
+                >
+                  {product.secondaryCta.text}
+                </CTAButton>
+              )}
             </div>
-          )}
+          </motion.div>
         </div>
       </section>
 
@@ -477,38 +450,118 @@ export default function MWStudioClient({ caseStudies = [], product }: MWStudioCl
                   </CTAButton>
                 </div>
 
-                {/* 1B: Features icon grid */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 mb-8">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Everything You Need to Manage and Monetise Inventory</h3>
-                  <p className="text-gray-600 mb-8">Powerful tools designed to help you control operations and unlock revenue at scale.</p>
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {imsFeatures.map((feat, i) => (
-                      <motion.div key={feat.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.08 }} viewport={{ once: true }}
-                        className="flex gap-4 p-5 rounded-xl border border-gray-200 hover:border-blue-200 hover:shadow-sm transition-all">
-                        <div className="flex-shrink-0 w-11 h-11 bg-blue-50 rounded-lg flex items-center justify-center">
-                          <feat.icon className="w-6 h-6 text-blue-600" />
-                        </div>
-                        <div>
-                          <h4 className="font-bold text-gray-900 text-sm mb-1">{feat.title}</h4>
-                          <p className="text-gray-600 text-xs leading-relaxed">{feat.description}</p>
-                        </div>
-                      </motion.div>
-                    ))}
+                {/* 1B: Features grid */}
+                <div className="bg-gray-50 rounded-md border border-gray-200 p-8 sm:p-10 mb-8">
+                  {/* Section heading */}
+                  <div className="text-center mb-10">
+                    <span className="inline-block bg-blue-50 text-blue-700 text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
+                      Platform Capabilities
+                    </span>
+                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
+                      Everything You Need to Manage and Monetise Inventory
+                    </h3>
+                    <p className="text-gray-500 text-base sm:text-lg max-w-2xl mx-auto">
+                      Powerful tools designed to help you control operations and unlock revenue at scale.
+                    </p>
+                  </div>
+
+                  {/* 6-card grid — exactly 2 rows × 3 cols on desktop */}
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {(() => {
+                      const tagMap = [
+                        { label: 'Onboarding',    color: 'text-blue-600   bg-blue-50'   },
+                        { label: 'Data Import',   color: 'text-violet-600 bg-violet-50' },
+                        { label: 'Organisation',  color: 'text-teal-600   bg-teal-50'   },
+                        { label: 'Availability',  color: 'text-green-600  bg-green-50'  },
+                        { label: 'Revenue',       color: 'text-orange-600 bg-orange-50' },
+                        { label: 'Discovery',     color: 'text-sky-600    bg-sky-50'    },
+                      ]
+                      const displayFeatures = imsFeatures.length >= 6
+                        ? imsFeatures.slice(0, 6)
+                        : [
+                            ...imsFeatures,
+                            ...defaultImsFeatures.slice(imsFeatures.length, 6),
+                          ]
+                      return displayFeatures.map((feat, i) => {
+                        const tag = tagMap[i]
+                        return (
+                          <motion.div
+                            key={feat.title}
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4, delay: i * 0.07 }}
+                            viewport={{ once: true }}
+                            className="group bg-white rounded-md border border-gray-200 p-6 hover:border-blue-300 hover:shadow-md transition-all duration-200 flex flex-col"
+                          >
+                            {/* Icon + number row */}
+                            <div className="flex items-start justify-between mb-5">
+                              <div className="w-12 h-12 bg-blue-600 rounded-md flex items-center justify-center group-hover:bg-blue-700 transition-colors duration-200 flex-shrink-0">
+                                <feat.icon className="w-6 h-6 text-white" />
+                              </div>
+                              <span className="text-2xl font-black text-gray-100 tabular-nums select-none leading-none">
+                                {String(i + 1).padStart(2, '0')}
+                              </span>
+                            </div>
+
+                            {/* Title */}
+                            <h4 className="font-bold text-gray-900 text-base leading-snug mb-2">
+                              {feat.title}
+                            </h4>
+
+                            {/* Description — grows to fill card height */}
+                            <p className="text-gray-500 text-sm leading-relaxed flex-1">
+                              {feat.description}
+                            </p>
+
+                            {/* Category tag */}
+                            <div className="mt-5 pt-4 border-t border-gray-100">
+                              <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${tag.color}`}>
+                                <span className="w-1.5 h-1.5 rounded-full bg-current inline-block" />
+                                {tag.label}
+                              </span>
+                            </div>
+                          </motion.div>
+                        )
+                      })
+                    })()}
                   </div>
                 </div>
 
-                {/* 1C: Ecosystem section */}
-                <div className="bg-blue-900 text-white rounded-xl p-8 sm:p-10 mb-8">
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-3">{"Don't Just List Inventory. Build an Ecosystem Built for Growth."}</h3>
-                  <p className="text-blue-200 mb-6 max-w-2xl">IMS integrates into your operations while transforming how inventory is managed, organised, and activated.</p>
-                  <ul className="grid sm:grid-cols-2 gap-3">
-                    {imsBenefits.map((b, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-white/90 text-sm sm:text-base">{b}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* 1C: Build an Ecosystem */}
+                <div className="bg-blue-900 text-white rounded-md p-8 sm:p-10 mb-8">
+                  <div className="grid lg:grid-cols-2 gap-10 items-center">
+                    <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-4">{"Don't Just List Inventory. Build an Ecosystem Built for Growth."}</h3>
+                      <p className="text-blue-200 mb-6 leading-relaxed">IMS integrates into your operations while transforming how inventory is managed, organised, and activated.</p>
+                      <ul className="space-y-3">
+                        {imsBenefits.map((b, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                            <span className="text-white/90 text-sm sm:text-base">{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                    {partnerLogos && partnerLogos.length > 0 && (
+                      <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                          {partnerLogos.slice(0, 12).map((integration: { name: string; logo?: string }) => (
+                            <div key={integration.name} className="bg-white rounded-md p-3 flex items-center justify-center h-14">
+                              {integration.logo ? (
+                                <img
+                                  src={integration.logo}
+                                  alt={integration.name}
+                                  className="max-h-8 w-auto object-contain"
+                                />
+                              ) : (
+                                <span className="text-gray-600 text-xs font-medium text-center leading-tight">{integration.name}</span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
                 </div>
 
                 {/* 1D: Final CTA */}
@@ -592,18 +645,37 @@ export default function MWStudioClient({ caseStudies = [], product }: MWStudioCl
                   </div>
                 </div>
 
-                {/* 2C: Revenue section */}
-                <div className="bg-blue-900 text-white rounded-xl p-8 sm:p-10 mb-8">
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-3">Your Screens Are Your Revenue. Keep Every One of Them Working.</h3>
-                  <p className="text-blue-200 mb-6 max-w-2xl">CMS is built to ensure your entire screen network stays active, compliant, and performing — at any scale.</p>
-                  <ul className="grid sm:grid-cols-2 gap-3">
-                    {cmsBenefits.map((b, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-white/90 text-sm sm:text-base">{b}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* 2C: CMS ecosystem */}
+                <div className="bg-blue-900 text-white rounded-md p-8 sm:p-10 mb-8">
+                  <div className="grid lg:grid-cols-2 gap-10 items-center">
+                    <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-4">Your Screens Are Your Revenue. Keep Every One of Them Working.</h3>
+                      <p className="text-blue-200 mb-6 leading-relaxed">CMS is built to ensure your entire screen network stays active, compliant, and performing — at any scale.</p>
+                      <ul className="space-y-3">
+                        {cmsBenefits.map((b, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                            <span className="text-white/90 text-sm sm:text-base">{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                    {partnerLogos && partnerLogos.length > 0 && (
+                      <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                          {partnerLogos.slice(0, 12).map((integration: { name: string; logo?: string }) => (
+                            <div key={integration.name} className="bg-white rounded-md p-3 flex items-center justify-center h-14">
+                              {integration.logo ? (
+                                <img src={integration.logo} alt={integration.name} className="max-h-8 w-auto object-contain" />
+                              ) : (
+                                <span className="text-gray-600 text-xs font-medium text-center leading-tight">{integration.name}</span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
                 </div>
 
                 {/* 2D: Final CTA */}
@@ -728,18 +800,37 @@ export default function MWStudioClient({ caseStudies = [], product }: MWStudioCl
                   </div>
                 </div>
 
-                {/* 3D: Front door */}
-                <div className="bg-blue-900 text-white rounded-xl p-8 sm:p-10 mb-8">
-                  <h3 className="text-2xl sm:text-3xl font-bold mb-3">Your Backend Is Built. Now Give It a Front Door.</h3>
-                  <p className="text-blue-200 mb-6 max-w-2xl">Sitebuilder adds a structured, advertiser-facing commercial layer on top of your existing infrastructure — without requiring any replacements.</p>
-                  <ul className="grid sm:grid-cols-2 gap-3">
-                    {sbBenefits.map((b, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
-                        <span className="text-white/90 text-sm sm:text-base">{b}</span>
-                      </li>
-                    ))}
-                  </ul>
+                {/* 3D: Sitebuilder ecosystem */}
+                <div className="bg-blue-900 text-white rounded-md p-8 sm:p-10 mb-8">
+                  <div className="grid lg:grid-cols-2 gap-10 items-center">
+                    <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
+                      <h3 className="text-2xl sm:text-3xl font-bold mb-4">Your Backend Is Built. Now Give It a Front Door.</h3>
+                      <p className="text-blue-200 mb-6 leading-relaxed">Sitebuilder adds a structured, advertiser-facing commercial layer on top of your existing infrastructure — without requiring any replacements.</p>
+                      <ul className="space-y-3">
+                        {sbBenefits.map((b, i) => (
+                          <li key={i} className="flex items-start gap-3">
+                            <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
+                            <span className="text-white/90 text-sm sm:text-base">{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                    {partnerLogos && partnerLogos.length > 0 && (
+                      <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
+                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                          {partnerLogos.slice(0, 12).map((integration: { name: string; logo?: string }) => (
+                            <div key={integration.name} className="bg-white rounded-md p-3 flex items-center justify-center h-14">
+                              {integration.logo ? (
+                                <img src={integration.logo} alt={integration.name} className="max-h-8 w-auto object-contain" />
+                              ) : (
+                                <span className="text-gray-600 text-xs font-medium text-center leading-tight">{integration.name}</span>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </div>
                 </div>
 
                 {/* 3E: Final CTA */}
@@ -781,25 +872,6 @@ export default function MWStudioClient({ caseStudies = [], product }: MWStudioCl
             <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-md font-bold text-base hover:bg-blue-700 transition-colors shadow-lg">
               Get Started <ArrowRightIcon className="w-5 h-5" />
             </CTAButton>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ─── FINAL CTA ───────────────────────────────────────────────────────── */}
-      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-16 sm:py-20 overflow-hidden`}>
-        <div className="absolute inset-0 bg-black/10" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{finalCtaTitle}</h2>
-            <p className="text-lg sm:text-xl text-blue-200 mb-8 max-w-2xl mx-auto">{finalCtaSubtitle}</p>
-            <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-white text-blue-900 px-8 py-4 rounded-md font-bold text-base hover:bg-blue-50 transition-colors shadow-xl">
-                Get Started <ArrowRightIcon className="w-5 h-5" />
-              </CTAButton>
-              <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/30 px-8 py-4 rounded-md font-semibold text-base hover:bg-white/20 transition-colors">
-                Request a Demo
-              </CTAButton>
-            </div>
           </motion.div>
         </div>
       </section>
