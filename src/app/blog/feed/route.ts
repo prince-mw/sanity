@@ -60,7 +60,18 @@ function buildFeed(items: Array<{ title: string; slug: string; excerpt: string; 
 }
 
 export async function GET() {
-  let posts = staticBlogPosts;
+  // 1. Define the minimal shape your feed builder actually needs
+  type FeedItem = {
+    title: string;
+    slug: string;
+    excerpt: string;
+    date: string;
+    author?: string;
+    featuredImage?: string;
+  };
+
+  // 2. Explicitly type the variable so it accepts static posts OR mapped Sanity posts
+  let posts: FeedItem[] = staticBlogPosts;
 
   try {
     const sanityPosts = await getAllBlogPosts();
