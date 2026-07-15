@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { getEventBySlug, getAllEvents, transformEvent, getSanityImageUrl } from "@/sanity/lib/fetch";
 import EventDetailClient from "../../../components/EventDetailClient";
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 interface PageProps {
   params: Promise<{ slug: string }>;

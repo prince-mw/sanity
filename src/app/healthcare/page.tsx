@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import { getIndustryPage, getPageSeo } from '@/sanity/lib/fetch';
 import HealthcarePageClient from '@/components/HealthcarePageClient';
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export async function generateMetadata(): Promise<Metadata> {
   const seo = await getPageSeo('healthcare');

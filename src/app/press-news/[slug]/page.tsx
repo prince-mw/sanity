@@ -10,7 +10,7 @@ import {
 } from "@/sanity/lib/fetch";
 import NewsDetailClient from "@/components/NewsDetailClient";
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 interface PageProps {
   params: Promise<{ slug: string }>;

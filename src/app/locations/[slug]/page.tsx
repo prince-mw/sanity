@@ -56,7 +56,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export const revalidate = 60
+export const revalidate = 30
 
 // Generate static params for known locations
 export async function generateStaticParams() {

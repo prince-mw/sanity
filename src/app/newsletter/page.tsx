@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export const revalidate = 60
+export const revalidate = 30
 
 export default async function NewsletterPage() {
   // Fetch the newsletter Zoho Campaigns embed URL from Sanity (formType: 'newsletter')

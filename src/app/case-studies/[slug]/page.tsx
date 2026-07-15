@@ -4,7 +4,7 @@ import { getCaseStudyBySlug, getAllCaseStudies, transformCaseStudy, getSanityIma
 import { caseStudies as staticCaseStudies } from "@/data/case-studies";
 import CaseStudyDetailClient from "./CaseStudyDetailClient";
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;

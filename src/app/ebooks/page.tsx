@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 // Revalidate every 5 minutes
-export const revalidate = 60
+export const revalidate = 30
 
 // Static fallback data
 const fallbackEbooks: Ebook[] = [

@@ -31,7 +31,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 60; // Revalidate every hour
+export const revalidate = 30; // Revalidate every hour
 
 export default async function BrandsPage() {
   const [pageData, testimonials, sanityCaseStudies] = await Promise.all([

@@ -2,7 +2,7 @@ import { getAllCaseStudies, SanityCaseStudy, getProductBySlug } from "@/sanity/l
 import MWInfluencePage from "./MWInfluenceClient";
 import { getPartnerIntegrationLogosList } from '@/data/default-integrations'
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export default async function MWInfluenceServerPage() {
   let caseStudies: SanityCaseStudy[] = [];

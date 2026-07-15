@@ -4,7 +4,7 @@ import { getBlogPostBySlug, getRelatedBlogPosts, transformBlogPost, getAllBlogPo
 import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
 import BlogDetailClient from "@/components/BlogDetailClient";
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 interface PageProps {
   params: Promise<{ slug: string }>;

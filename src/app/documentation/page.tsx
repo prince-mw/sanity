@@ -1,7 +1,7 @@
 import { getDocumentationPageContent } from '@/sanity/lib/fetch';
 import DocumentationClient from '@/components/DocumentationClient';
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export default async function DocumentationPage() {
   const content = await getDocumentationPageContent();

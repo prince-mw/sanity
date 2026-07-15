@@ -1,7 +1,7 @@
 import { getAllCaseStudies, SanityCaseStudy } from "@/sanity/lib/fetch"
 import MWActivate from "./ProductsMWActivateClient"
 
-export const revalidate = 60
+export const revalidate = 30
 
 export default async function ProductsMWActivatePage() {
   let caseStudies: SanityCaseStudy[] = []

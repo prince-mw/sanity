@@ -2,7 +2,7 @@ import { getAllCaseStudies, SanityCaseStudy, getProductBySlug } from "@/sanity/l
 import MWStudio from "./MWStudioClient"
 import { getPartnerIntegrationLogosList } from '@/data/default-integrations'
 
-export const revalidate = 60
+export const revalidate = 30
 
 export default async function MWStudioPage() {
   let caseStudies: SanityCaseStudy[] = []

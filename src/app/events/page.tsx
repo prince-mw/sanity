@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 60
+export const revalidate = 30
 
 function parseEventStartDate(dateString: string): Date | null {
   const rangeMatch = /^(\w+)\s+(\d+)(?:-\d+)?,?\s*(\d{4})?$/.exec(dateString.trim())

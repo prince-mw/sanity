@@ -85,20 +85,18 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // HTML pages - Short cache with revalidation (SEO-friendly)
+      // HTML pages — always revalidate; browser never serves stale HTML to users.
+      // `no-cache` = browser sends conditional GET every time (efficient: 304 if unchanged).
+      // Removes stale-while-revalidate=3600 which was serving 1-hour-old pages.
       {
         source: '/:path*',
-        has: [
-          {
-            type: 'header',
-            key: 'accept',
-            value: '(.*text/html.*)',
-          },
+        missing: [
+          { type: 'header', key: 'accept', value: '(.*text/css.*|.*javascript.*|.*image/.*|.*font/.*|.*video/.*|.*audio/.*)' },
         ],
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=0, s-maxage=60, stale-while-revalidate=3600',
+            value: 'no-cache, must-revalidate',
           },
         ],
       },

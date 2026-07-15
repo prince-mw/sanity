@@ -3,7 +3,7 @@ import MWMarketPage from "./MWMarketClient";
 import { getPartnerIntegrationLogosList } from '@/data/default-integrations'
 import { getFeaturedTestimonials } from '@/sanity/lib/queries'
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export default async function MWMarketServerPage() {
   const [product, partnerLogos, testimonials] = await Promise.all([

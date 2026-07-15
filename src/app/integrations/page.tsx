@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 60
+export const revalidate = 30
 
 // Static fallback data for when Sanity is unavailable
 const fallbackIntegrations: Integration[] = [

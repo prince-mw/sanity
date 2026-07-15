@@ -1,7 +1,7 @@
 import { getHelpCenterFaqs } from '@/sanity/lib/fetch';
 import HelpCenterClient from '@/components/HelpCenterClient';
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 export default async function HelpCenterPage() {
   const faqs = await getHelpCenterFaqs();

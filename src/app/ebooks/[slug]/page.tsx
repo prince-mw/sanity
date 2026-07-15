@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { getEbookBySlug, getAllEbooks, transformEbook, getSanityImageUrl } from "@/sanity/lib/fetch";
 import EbookDetailClient from "../../../components/EbookDetailClient";
 
-export const revalidate = 60;
+export const revalidate = 30;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
