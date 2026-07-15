@@ -273,16 +273,21 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 rounded-2xl p-8 lg:p-12"
+            className="bg-white border border-mw-gray-200 rounded-2xl p-8 lg:p-12"
           >
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div className="text-center lg:text-left">
-                <h2 className="text-3xl font-bold text-white mb-4">Enjoyed this article?</h2>
-                <p className="text-gray-300">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-mw-blue-100 rounded-xl mb-5">
+                  <svg className="w-6 h-6 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                </div>
+                <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">Enjoyed this article?</h2>
+                <p className="text-mw-gray-500 leading-relaxed">
                   Subscribe to get the latest insights, tips, and industry news delivered straight to your inbox.
                 </p>
               </div>
-              <ZohoCampaignsEmbed height={300} className="lg:mt-0" />
+              <ZohoCampaignsEmbed height={300} />
             </div>
           </motion.div>
         </div>

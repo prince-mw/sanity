@@ -26,7 +26,7 @@ export default function ZohoCampaignsEmbed({
   return (
     <div
       className={`w-full overflow-hidden bg-white ${className}`}
-      style={{ height, borderRadius: '6px', border: '1px solid #e2e8f0' }}
+      style={{ height, borderRadius: '6px' }}
     >
       <iframe
         src={embedUrl}
