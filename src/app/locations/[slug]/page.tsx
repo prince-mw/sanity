@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
-import { getLocationBySlug, transformLocationFull, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transformCityForList, getSanityImageUrl } from '@/sanity/lib/fetch'
 import { getStaticLocationData, STATIC_LOCATION_SLUGS, LocationData } from '@/data/staticLocationData'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -71,7 +71,8 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
   
   if (sanityLocation) {
     const locationData = transformLocationFull(sanityLocation)
-    return <LocationDetailClient initialData={locationData} />
+    const cities = (await getCitiesByCountry(slug)).map(transformCityForList)
+    return <LocationDetailClient initialData={locationData} cities={cities} />
   }
   
   // Fall back to static data

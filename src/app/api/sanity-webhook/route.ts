@@ -69,6 +69,7 @@ const typeToPath: Record<string, string[]> = {
   zohoForm: ['/', '/newsletter', '/contact'],
   office: ['/locations', '/'],
   location: ['/locations', '/'],
+  locationCity: ['/locations', '/'],
   redirectSettings: ['/'],
   megaMenu: ['/'],
   analyticsConfig: ['/'],
@@ -93,6 +94,7 @@ interface SanityWebhookPayload {
   _id: string
   _type: string
   slug?: { current: string }
+  countrySlug?: string
   _rev?: string
   operation?: 'create' | 'update' | 'delete'
 }
@@ -133,19 +135,25 @@ export async function POST(request: NextRequest) {
     }
 
     const body: SanityWebhookPayload = JSON.parse(rawBody)
-    const { _type, slug } = body
+    const { _type, slug, countrySlug } = body
 
     console.log(`[Sanity Webhook] Received: ${_type} - ${slug?.current || body._id}`)
 
     // Get paths to revalidate
     const pathsToRevalidate = typeToPath[_type] || ['/']
-    
+
     // Revalidate specific content page if slug exists
     if (slug?.current) {
       if (_type === 'landingPage') {
         // Landing pages serve from both /{slug} (catch-all) and /lp/{slug}
         pathsToRevalidate.push(`/${slug.current}`)
         pathsToRevalidate.push(`/lp/${slug.current}`)
+      } else if (_type === 'locationCity') {
+        // City pages live under their parent country's slug: /locations/{country}/{city}
+        // Requires the webhook's GROQ projection to include "countrySlug": country->slug.current
+        if (countrySlug) {
+          pathsToRevalidate.push(`/locations/${countrySlug}/${slug.current}`)
+        }
       } else {
         const basePath = pathsToRevalidate[0]
         if (basePath && basePath !== '/') {

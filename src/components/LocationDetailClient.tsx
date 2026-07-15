@@ -105,11 +105,22 @@ const FAQItem = ({ question, answer, isOpen, onClick }: { question: string; answ
   </motion.div>
 )
 
-interface LocationDetailClientProps {
-  initialData: LocationData
+interface LocationCityCard {
+  city: string
+  href: string
+  description: string
+  billboards: string
+  image: string
 }
 
-export default function LocationDetailClient({ initialData }: LocationDetailClientProps) {
+interface LocationDetailClientProps {
+  initialData: LocationData
+  backHref?: string
+  backLabel?: string
+  cities?: LocationCityCard[]
+}
+
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [] }: LocationDetailClientProps) {
   const location = initialData
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)
   const [selectedMarket, setSelectedMarket] = useState(0)
@@ -196,8 +207,8 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
                     </svg>
                   </CTAButton>
                 )}
-                <Link href="/locations" className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">
-                  All Locations
+                <Link href={backHref} className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">
+                  {backLabel}
                 </Link>
               </div>
             </motion.div>
@@ -226,6 +237,54 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
 
       {/* CMS Sections - After Hero */}
       {sectionsPosition === 'after-hero' && cmsSections}
+
+      {/* Cities */}
+      {cities.length > 0 && (
+        <section className="py-16 md:py-20 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="text-center mb-12"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Explore by City</h2>
+              <p className="text-lg text-gray-600">OOH advertising opportunities in {location.name}&apos;s key cities</p>
+            </motion.div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {cities.map((city, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Link
+                    href={city.href}
+                    className="block bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow"
+                  >
+                    {city.image && (
+                      <div className="h-40 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 relative">
+                        <img src={city.image} alt={city.city} className="w-full h-full object-cover" />
+                      </div>
+                    )}
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 mb-2">{city.city}</h3>
+                      {city.description && <p className="text-gray-600 text-sm mb-4">{city.description}</p>}
+                      {city.billboards && city.billboards !== '0' && (
+                        <div className="text-sm font-semibold text-mw-blue-600">{city.billboards} billboards</div>
+                      )}
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Stats Section - Mobile */}
       {location.stats && location.stats.length > 0 && (
@@ -319,26 +378,32 @@ export default function LocationDetailClient({ initialData }: LocationDetailClie
               variants={fadeUp}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Key Markets</h2>
-              <p className="text-lg text-gray-600">Explore OOH opportunities across major cities</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                {location.keyMarkets.length > 1 ? 'Key Markets' : 'Market Overview'}
+              </h2>
+              <p className="text-lg text-gray-600">
+                {location.keyMarkets.length > 1 ? 'Explore OOH opportunities across major cities' : `OOH advertising opportunities in ${location.name}`}
+              </p>
             </motion.div>
 
             {/* Market Tabs */}
-            <div className="flex flex-wrap justify-center gap-3 mb-8">
-              {location.keyMarkets.map((market, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedMarket(index)}
-                  className={`px-5 py-2.5 rounded-full font-medium transition-all ${
-                    selectedMarket === index
-                      ? 'bg-mw-blue-600 text-white shadow-lg'
-                      : 'bg-white text-gray-700 hover:bg-mw-blue-50'
-                  }`}
-                >
-                  {market.city}
-                </button>
-              ))}
-            </div>
+            {location.keyMarkets.length > 1 && (
+              <div className="flex flex-wrap justify-center gap-3 mb-8">
+                {location.keyMarkets.map((market, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedMarket(index)}
+                    className={`px-5 py-2.5 rounded-full font-medium transition-all ${
+                      selectedMarket === index
+                        ? 'bg-mw-blue-600 text-white shadow-lg'
+                        : 'bg-white text-gray-700 hover:bg-mw-blue-50'
+                    }`}
+                  >
+                    {market.city}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Market Details */}
             <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">

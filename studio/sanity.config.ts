@@ -130,6 +130,35 @@ const structure = (S: any) =>
                       S.orderingMenuItem({ title: 'Display Order', by: [{ field: 'order', direction: 'asc' }] }),
                       S.orderingMenuItem({ title: 'Country (A-Z)', by: [{ field: 'country', direction: 'asc' }] }),
                     ])
+                    .child((countryId: string) =>
+                      S.list()
+                        .title('Country')
+                        .items([
+                          S.listItem()
+                            .title('Edit Country')
+                            .child(
+                              S.document()
+                                .schemaType('location')
+                                .documentId(countryId)
+                            ),
+                          S.listItem()
+                            .title('Cities')
+                            .child(
+                              S.documentTypeList('locationCity')
+                                .title('Cities')
+                                .defaultOrdering([{ field: 'order', direction: 'asc' }])
+                                .filter('_type == "locationCity" && country._ref == $countryId')
+                                .params({ countryId })
+                                .menuItems([
+                                  S.orderingMenuItem({ title: 'Display Order', by: [{ field: 'order', direction: 'asc' }] }),
+                                  S.orderingMenuItem({ title: 'City (A-Z)', by: [{ field: 'city', direction: 'asc' }] }),
+                                ])
+                                .initialValueTemplates([
+                                  S.initialValueTemplateItem('locationCity-for-country', { countryId }),
+                                ])
+                            ),
+                        ])
+                    )
                 ),
             ])
         ),
@@ -289,5 +318,17 @@ export default defineConfig({
 
   schema: {
     types: schemaTypes,
+    templates: (prev) => [
+      ...prev,
+      {
+        id: 'locationCity-for-country',
+        title: 'City (for this country)',
+        schemaType: 'locationCity',
+        parameters: [{ name: 'countryId', type: 'string' }],
+        value: (params: { countryId: string }) => ({
+          country: { _type: 'reference', _ref: params.countryId },
+        }),
+      },
+    ],
   },
 })

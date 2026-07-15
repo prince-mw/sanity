@@ -1,6 +1,7 @@
 import { cache } from 'react'
 import { client, urlFor } from './client'
 import { sanitizeHtml } from '@/lib/sanitize'
+import type { LocationData } from '@/data/staticLocationData'
 
 // Per-request deduplication: identical query+params won't fire twice within the same render tree
 // (e.g. generateMetadata + page body both calling getBlogPostBySlug for the same slug)
@@ -2040,6 +2041,207 @@ export function transformLocationFull(location: SanityLocation) {
     partners: location.partners || [],
     sections: location.sections || [],
     sectionsPosition: location.sectionsPosition || 'after-faqs',
+  }
+}
+
+export interface SanityLocationCity {
+  _id: string
+  country: { country: string; slug: { current: string } }
+  city: string
+  slug: { current: string }
+  heroImage?: any
+  description?: string
+  fullDescription?: string
+  whyInvest?: string[]
+  faqs?: Array<{ question: string; answer: string }>
+  code?: string
+  billboards?: string
+  population?: string
+  screens?: number
+  screensGrowth?: number
+  dailyReach?: string
+  dailyReachGrowth?: number
+  monthlyImpressions?: string
+  monthlyImpressionsGrowth?: number
+  yoyGrowth?: number
+  avgDwell?: string
+  peakHours?: string
+  topCategory?: string
+  viewability?: number
+  stats?: Array<{ label: string; value: string }>
+  mediaTypes?: Array<{ name: string; icon: string; description: string }>
+  locations?: Array<{ name: string; desc: string; traffic: number; screens: number; score: number }>
+  audience?: Array<{ name: string; percentage: number; color: string }>
+  mediaFormats?: Array<{ name: string; percentage: number }>
+  hourlyData?: number[]
+  caseStudies?: Array<{ title: string; client: string; results: string }>
+  partners?: string[]
+  highVisibilityBillboards?: Array<{
+    name: string
+    location: string
+    reach: string
+    impressions: string
+    description: string
+    image?: any
+  }>
+  contactFormUrl?: string
+  order?: number
+  isActive?: boolean
+  seo?: SanitySEO
+  sections?: any[]
+  sectionsPosition?: string
+}
+
+const locationCityProjection = `
+  _id,
+  country->{ country, slug },
+  city,
+  slug,
+  heroImage,
+  description,
+  fullDescription,
+  whyInvest,
+  faqs,
+  code,
+  billboards,
+  population,
+  screens,
+  screensGrowth,
+  dailyReach,
+  dailyReachGrowth,
+  monthlyImpressions,
+  monthlyImpressionsGrowth,
+  yoyGrowth,
+  avgDwell,
+  peakHours,
+  topCategory,
+  viewability,
+  stats,
+  mediaTypes,
+  locations,
+  audience,
+  mediaFormats,
+  hourlyData,
+  caseStudies,
+  partners,
+  highVisibilityBillboards[] {
+    name,
+    location,
+    reach,
+    impressions,
+    description,
+    image
+  },
+  contactFormUrl,
+  order,
+  isActive,
+  sections,
+  sectionsPosition,
+  seo {
+    metaTitle,
+    metaDescription,
+    ogImage,
+    keywords,
+    enableKeywords,
+    noIndex
+  }
+`
+
+export async function getCitiesByCountry(countrySlug: string): Promise<SanityLocationCity[]> {
+  const query = `
+    *[_type == "locationCity" && isActive == true && country->slug.current == $countrySlug] | order(order asc) {
+      _id,
+      country->{ country, slug },
+      city,
+      slug,
+      heroImage,
+      description,
+      billboards,
+      order
+    }
+  `
+  return safeFetch(query, { countrySlug })
+}
+
+export async function getCityBySlug(countrySlug: string, citySlug: string): Promise<SanityLocationCity | null> {
+  const query = `
+    *[_type == "locationCity" && slug.current == $citySlug && country->slug.current == $countrySlug][0] {
+      ${locationCityProjection}
+    }
+  `
+  return safeFetch(query, { countrySlug, citySlug })
+}
+
+export async function getAllCitySlugPairs(): Promise<Array<{ countrySlug: string; citySlug: string }>> {
+  const query = `
+    *[_type == "locationCity" && isActive == true && defined(country->slug.current) && defined(slug.current)] {
+      "countrySlug": country->slug.current,
+      "citySlug": slug.current
+    }
+  `
+  return safeFetch(query)
+}
+
+export function transformCityForList(city: SanityLocationCity) {
+  return {
+    country: city.country?.country || '',
+    city: city.city || '',
+    href: `/locations/${city.country?.slug?.current || ''}/${city.slug?.current || ''}`,
+    description: city.description || '',
+    billboards: city.billboards || '0',
+    image: getSanityImageUrl(city.heroImage, { width: 800 }) || '',
+  }
+}
+
+export function transformCityFull(city: SanityLocationCity): LocationData {
+  const cityMarket = {
+    city: city.city || '',
+    code: city.code || '',
+    population: city.population || '',
+    screens: city.screens || 0,
+    screensGrowth: city.screensGrowth || 0,
+    dailyReach: city.dailyReach || '',
+    dailyReachGrowth: city.dailyReachGrowth || 0,
+    monthlyImpressions: city.monthlyImpressions || '',
+    monthlyImpressionsGrowth: city.monthlyImpressionsGrowth || 0,
+    yoyGrowth: city.yoyGrowth || 0,
+    avgDwell: city.avgDwell || '',
+    peakHours: city.peakHours || '',
+    topCategory: city.topCategory || '',
+    viewability: city.viewability || 0,
+    description: city.fullDescription || city.description || '',
+    hourlyData: city.hourlyData || [],
+    locations: city.locations || [],
+    audience: city.audience || [],
+    mediaFormats: city.mediaFormats || [],
+  }
+
+  return {
+    name: city.city || '',
+    slug: city.slug?.current || '',
+    city: city.country?.country || '',
+    flag: '',
+    description: city.fullDescription || city.description || '',
+    heroImage: getSanityImageUrl(city.heroImage, { width: 1200 }) || '',
+    contactFormUrl: city.contactFormUrl || '',
+    whyInvest: city.whyInvest || [],
+    highVisibilityBillboards: (city.highVisibilityBillboards || []).map(billboard => ({
+      name: billboard.name || '',
+      location: billboard.location || '',
+      reach: billboard.reach || '',
+      impressions: billboard.impressions || '',
+      description: billboard.description || '',
+      image: getSanityImageUrl(billboard.image, { width: 800 }) || '',
+    })),
+    stats: city.stats || [],
+    majorCities: [],
+    mediaTypes: city.mediaTypes || [],
+    keyMarkets: [cityMarket],
+    faqs: city.faqs || [],
+    caseStudies: city.caseStudies || [],
+    partners: city.partners || [],
+    sections: city.sections || [],
+    sectionsPosition: city.sectionsPosition || 'after-faqs',
   }
 }
 

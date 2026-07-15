@@ -49,6 +49,11 @@ async function getSitemapData() {
     "teamMembers": *[_type == "teamMember" && ${publishedFilter}] {
       "slug": slug.current,
       "lastModified": _updatedAt
+    },
+    "locationCities": *[_type == "locationCity" && isActive == true && defined(country->slug.current) && defined(slug.current)] {
+      "countrySlug": country->slug.current,
+      "citySlug": slug.current,
+      "lastModified": _updatedAt
     }
   }`
   
@@ -139,6 +144,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     landingPages: [] as Array<{ slug: string; lastModified: string }>,
     products: [] as Array<{ slug: string; lastModified: string }>,
     teamMembers: [] as Array<{ slug: string; lastModified: string }>,
+    locationCities: [] as Array<{ countrySlug: string; citySlug: string; lastModified: string }>,
   }
 
   try {
@@ -245,6 +251,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.5,
     }))
 
+  // Location city entries
+  const locationCityEntries: MetadataRoute.Sitemap = sanityData.locationCities
+    .filter(city => city.countrySlug && city.citySlug)
+    .map(city => ({
+      url: `${baseUrl}/locations/${city.countrySlug}/${city.citySlug}`,
+      lastModified: city.lastModified || currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.55,
+    }))
+
   return [
     ...staticEntries,
     ...blogEntries,
@@ -256,5 +272,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...whitepaperEntries,
     ...landingPageEntries,
     ...leadershipEntries,
+    ...locationCityEntries,
   ]
 }

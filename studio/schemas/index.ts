@@ -12,6 +12,7 @@ import ebook from './ebook'
 import whitepaper from './whitepaper'
 import blockContent from './blockContent'
 import location from './location'
+import locationCity from './locationCity'
 import product from './product'
 import companyPage from './companyPage'
 import timelineEvent from './timelineEvent'
@@ -77,6 +78,7 @@ export const schemaTypes = [
   ebook,
   whitepaper,
   location,
+  locationCity,
   product,
   companyPage,
   timelineEvent,
