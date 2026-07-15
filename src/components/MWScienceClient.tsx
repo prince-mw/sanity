@@ -435,15 +435,6 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
                   Explore Capabilities
                 </a>
               </div>
-
-              <div className="grid grid-cols-3 gap-6 pt-4 border-t border-white/10">
-                {heroStats.map(s => (
-                  <div key={s.l}>
-                    <div className="text-2xl font-black text-white">{s.v}</div>
-                    <div className="text-xs text-mw-gray-500 mt-0.5">{s.l}</div>
-                  </div>
-                ))}
-              </div>
             </motion.div>
 
             {/* Right: living journey map — open, no card frame */}
