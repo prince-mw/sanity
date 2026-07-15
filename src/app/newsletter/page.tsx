@@ -30,7 +30,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export const revalidate = 30
+export const dynamic = 'force-dynamic' // always fetch fresh — form URL must never be stale
 
 export default async function NewsletterPage() {
   // Fetch the newsletter Zoho Campaigns embed URL from Sanity (formType: 'newsletter')
