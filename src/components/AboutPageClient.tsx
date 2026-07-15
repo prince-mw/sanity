@@ -1,12 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import ContactForm from "./ContactForm";
 import { CTAButton } from "./CTAButton";
-import { getCompanyPage, transformCompanyPage } from "@/sanity/lib/fetch";
+import { transformCompanyPage } from "@/sanity/lib/fetch";
 
 const staticAssociations = [
   { name: "World Out of Home Organisation", logo: "/assets/images/proudly-associated-logos/world-out-of-home-organisation-member-2024.png" },
@@ -20,39 +20,17 @@ const staticAssociations = [
   { name: "Outdoor Advertising Association of Nigeria", logo: "/assets/images/proudly-associated-logos/outdoor-advertising-association-of-nigeria.png" },
 ];
 
-interface CompanyPageData {
-  title: string
-  subtitle: string
-  heroDescription: string
-  mission: string
-  vision: string
-  values: Array<{ icon?: string; title: string; description: string }>
-  capabilities: Array<{ icon?: string; title: string; description: string }>
-  associations: Array<{ name: string; logo: string; url: string }>
-  awards: Array<{ name: string; year: string; description: string }>
+interface AboutPageClientProps {
+  initialData: ReturnType<typeof transformCompanyPage> | null
 }
 
-export default function AboutPageClient() {
-  const [pageData, setPageData] = useState<CompanyPageData | null>(null)
-  const [associations, setAssociations] = useState(staticAssociations)
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getCompanyPage('about')
-        if (data) {
-          const transformed = transformCompanyPage(data)
-          setPageData(transformed)
-          if (transformed.associations && transformed.associations.length > 0) {
-            setAssociations(transformed.associations)
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching about page data:', error)
-      }
-    }
-    fetchData()
-  }, [])
+export default function AboutPageClient({ initialData }: AboutPageClientProps) {
+  const [pageData] = useState<ReturnType<typeof transformCompanyPage> | null>(initialData)
+  const [associations] = useState(
+    initialData?.associations && initialData.associations.length > 0
+      ? initialData.associations
+      : staticAssociations
+  )
 
   const defaultCapabilities = [
     {

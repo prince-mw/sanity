@@ -45,13 +45,13 @@ export default async function BlogPage() {
       categories = ["All", ...sanityCategories.map(c => c.title)];
     } else {
       // Fallback to static data if Sanity is empty
-      posts = staticBlogPosts;
+      posts = [...staticBlogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       categories = ["All", ...getAllCategories()];
     }
   } catch (error) {
     // Fallback to static data on error
     console.error("Error fetching from Sanity, using static data:", error);
-    posts = staticBlogPosts;
+    posts = [...staticBlogPosts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     categories = ["All", ...getAllCategories()];
   }
 

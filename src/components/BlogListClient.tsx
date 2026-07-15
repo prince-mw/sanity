@@ -13,6 +13,7 @@ interface BlogPost {
   author: string;
   authorRole?: string;
   date: string;
+  publishedAt?: string;
   readTime: string;
   featuredImage: string;
   tags: string[];
@@ -51,10 +52,10 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
 
     switch (sortBy) {
       case "newest":
-        articles.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+        articles.sort((a, b) => new Date(b.publishedAt || b.date).getTime() - new Date(a.publishedAt || a.date).getTime());
         break;
       case "oldest":
-        articles.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+        articles.sort((a, b) => new Date(a.publishedAt || a.date).getTime() - new Date(b.publishedAt || b.date).getTime());
         break;
       case "title-asc":
         articles.sort((a, b) => a.title.localeCompare(b.title));

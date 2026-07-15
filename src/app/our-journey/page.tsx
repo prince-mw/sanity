@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import OurJourneyPageClient from '@/components/OurJourneyPageClient'
-import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getPageSeo, getSanityImageUrl, getCompanyPage, transformCompanyPage, getTimelineEvents, transformTimelineEvent } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
   title: 'Our Journey | Moving Walls',
@@ -30,6 +30,21 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 60
 
-export default function OurJourneyPage() {
-  return <OurJourneyPageClient />
+export default async function OurJourneyPage() {
+  const [timelineData, companyData] = await Promise.all([
+    getTimelineEvents().catch(() => null),
+    getCompanyPage('our-journey').catch(() => null),
+  ])
+
+  const initialTimeline = timelineData && timelineData.length > 0
+    ? timelineData.map(e => ({
+        ...transformTimelineEvent(e),
+        icon: transformTimelineEvent(e).icon || '🚀',
+        color: `from-${transformTimelineEvent(e).color || 'blue'}-500 to-${transformTimelineEvent(e).color || 'blue'}-600`,
+      }))
+    : null
+
+  const initialPageData = companyData ? transformCompanyPage(companyData) : null
+
+  return <OurJourneyPageClient initialTimeline={initialTimeline} initialPageData={initialPageData} />
 }

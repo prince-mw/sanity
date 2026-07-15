@@ -5,7 +5,7 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di',
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2025-01-01',
-  useCdn: false,
+  useCdn: true, // Use CDN for public reads — faster, globally cached
 })
 
 // For preview/draft content (no CDN, uses stega if configured)

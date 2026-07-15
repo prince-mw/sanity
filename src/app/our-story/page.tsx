@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import OurStoryPageClient from '@/components/OurStoryPageClient'
-import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getPageSeo, getSanityImageUrl, getCompanyPage, transformCompanyPage } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
   title: 'Our Story | Moving Walls',
@@ -30,6 +30,13 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 60
 
-export default function OurStoryPage() {
-  return <OurStoryPageClient />
+export default async function OurStoryPage() {
+  let initialData = null
+  try {
+    const raw = await getCompanyPage('our-story')
+    if (raw) initialData = transformCompanyPage(raw)
+  } catch {
+    // fall through to static data
+  }
+  return <OurStoryPageClient initialData={initialData} />
 }

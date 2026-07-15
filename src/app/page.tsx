@@ -45,20 +45,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  // Fetch case studies server-side
-  let caseStudies: SanityCaseStudy[] = [];
-  try {
-    const data = await getAllCaseStudies();
-    caseStudies = data?.slice(0, 4) || [];
-  } catch (error) {
-    console.error("Error fetching case studies:", error);
-  }
+  const [caseStudiesData, trustBarContent, contactForm] = await Promise.all([
+    getAllCaseStudies().catch(() => null),
+    getTrustBarContent(),
+    getContactZohoForm(),
+  ]);
 
-  // Fetch trust bar stats
-  const trustBarContent = await getTrustBarContent();
-
-  // Fetch contact form from CMS
-  const contactForm = await getContactZohoForm();
+  const caseStudies: SanityCaseStudy[] = caseStudiesData?.slice(0, 4) || [];
 
   return (
     <>

@@ -2,8 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { getTimelineEvents, transformTimelineEvent, getCompanyPage, transformCompanyPage } from "@/sanity/lib/fetch";
+import { useState } from "react";
+import { transformTimelineEvent, transformCompanyPage } from "@/sanity/lib/fetch";
 
 // Static fallback timeline data
 const staticTimelineMilestones = [
@@ -99,36 +99,16 @@ const staticTimelineMilestones = [
   }
 ];
 
-export default function OurJourneyPageClient() {
+interface OurJourneyPageClientProps {
+  initialTimeline: ReturnType<typeof transformTimelineEvent>[] | null
+  initialPageData: ReturnType<typeof transformCompanyPage> | null
+}
+
+export default function OurJourneyPageClient({ initialTimeline, initialPageData }: OurJourneyPageClientProps) {
   const [activePhase, setActivePhase] = useState(0);
   const [activeTimeline, setActiveTimeline] = useState(0);
-  const [timelineMilestones, setTimelineMilestones] = useState(staticTimelineMilestones);
-  const [pageData, setPageData] = useState<ReturnType<typeof transformCompanyPage> | null>(null);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const [timelineData, companyData] = await Promise.all([
-          getTimelineEvents(),
-          getCompanyPage('our-journey'),
-        ])
-        if (timelineData && timelineData.length > 0) {
-          const transformed = timelineData.map(transformTimelineEvent).map(event => ({
-            ...event,
-            icon: event.icon || '🚀',
-            color: `from-${event.color || 'blue'}-500 to-${event.color || 'blue'}-600`
-          }))
-          setTimelineMilestones(transformed)
-        }
-        if (companyData) {
-          setPageData(transformCompanyPage(companyData))
-        }
-      } catch (error) {
-        console.error('Error fetching journey page data:', error)
-      }
-    }
-    fetchData()
-  }, [])
+  const [timelineMilestones] = useState(initialTimeline ?? staticTimelineMilestones);
+  const [pageData] = useState<ReturnType<typeof transformCompanyPage> | null>(initialPageData);
 
   const defaultGrowthPhases = [
     {

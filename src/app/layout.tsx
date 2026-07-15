@@ -144,9 +144,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { isEnabled: isPreview } = await draftMode();
-  const allForms = await getAllActiveZohoForms();
-  const footerContent = await getFooterContent();
-  const analyticsConfig = await getAnalyticsConfig();
+  const [allForms, footerContent, analyticsConfig] = await Promise.all([
+    getAllActiveZohoForms(),
+    getFooterContent(),
+    getAnalyticsConfig(),
+  ]);
 
   return (
     <html lang="en" className="scroll-smooth">

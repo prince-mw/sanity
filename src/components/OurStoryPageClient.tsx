@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import ContactForm from "./ContactForm";
-import { getCompanyPage, transformCompanyPage } from "@/sanity/lib/fetch";
+import { transformCompanyPage } from "@/sanity/lib/fetch";
 
 // Static fallback values
 const staticValues = [
@@ -30,30 +30,12 @@ const staticValues = [
   }
 ];
 
-interface PageData {
-  title: string
-  heroDescription: string
-  mission: string
-  vision: string
-  values: Array<{ icon?: string; title: string; description: string }>
+interface OurStoryPageClientProps {
+  initialData: ReturnType<typeof transformCompanyPage> | null
 }
 
-export default function OurStoryPageClient() {
-  const [pageData, setPageData] = useState<PageData | null>(null)
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getCompanyPage('our-story')
-        if (data) {
-          setPageData(transformCompanyPage(data))
-        }
-      } catch (error) {
-        console.error('Error fetching our-story page data:', error)
-      }
-    }
-    fetchData()
-  }, [])
+export default function OurStoryPageClient({ initialData }: OurStoryPageClientProps) {
+  const [pageData] = useState<ReturnType<typeof transformCompanyPage> | null>(initialData)
 
   const values = pageData?.values && pageData.values.length > 0 ? pageData.values : staticValues.map(v => ({
     icon: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,

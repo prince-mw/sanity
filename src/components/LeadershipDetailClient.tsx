@@ -2,9 +2,8 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
-import { getTeamMemberBySlug, getLeadershipTeam, transformTeamMember, SanityTeamMember } from "@/sanity/lib/fetch";
+import { useState } from "react";
+import { transformTeamMember } from "@/sanity/lib/fetch";
 
 // Team member type
 interface TeamMember {
@@ -21,59 +20,15 @@ interface TeamMember {
 }
 
 
-export default function LeadershipDetailClient() {
-  const params = useParams();
-  const slug = params?.slug as string;
-  
-  const [member, setMember] = useState<TeamMember | null>(null);
-  const [otherMembers, setOtherMembers] = useState<TeamMember[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [notFound, setNotFound] = useState(false);
+interface LeadershipDetailClientProps {
+  initialMember: ReturnType<typeof transformTeamMember> | null
+  initialOtherMembers: ReturnType<typeof transformTeamMember>[]
+}
 
-  useEffect(() => {
-    async function fetchTeamMember() {
-      if (!slug) return;
-      
-      try {
-        // Try to fetch from Sanity first
-        const sanityMember = await getTeamMemberBySlug(slug);
-        
-        if (sanityMember) {
-          setMember(transformTeamMember(sanityMember));
-          
-          // Fetch other team members
-          const allMembers = await getLeadershipTeam();
-          if (allMembers && allMembers.length > 0) {
-            const others = allMembers
-              .filter((m: SanityTeamMember) => m.slug?.current !== slug)
-              .slice(0, 3)
-              .map(transformTeamMember);
-            setOtherMembers(others);
-          }
-        } else {
-          setNotFound(true);
-        }
-      } catch (error) {
-        console.error('Error fetching team member from Sanity:', error);
-        setNotFound(true);
-      } finally {
-        setIsLoading(false);
-      }
-    }
-    
-    fetchTeamMember();
-  }, [slug]);
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-mw-blue-200 border-t-mw-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-mw-gray-600">Loading...</p>
-        </div>
-      </div>
-    );
-  }
+export default function LeadershipDetailClient({ initialMember, initialOtherMembers }: LeadershipDetailClientProps) {
+  const [member] = useState(initialMember);
+  const [otherMembers] = useState(initialOtherMembers);
+  const notFound = !member;
 
   if (notFound || !member) {
     return (

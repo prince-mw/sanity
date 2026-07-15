@@ -1,10 +1,20 @@
+import { cache } from 'react'
 import { client, urlFor } from './client'
 import { sanitizeHtml } from '@/lib/sanitize'
+
+// Per-request deduplication: identical query+params won't fire twice within the same render tree
+// (e.g. generateMetadata + page body both calling getBlogPostBySlug for the same slug)
+const dedupedClientFetch = cache(
+  (query: string, paramsJson: string) =>
+    client.fetch(query, paramsJson ? JSON.parse(paramsJson) : undefined, {
+      next: { tags: ['sanity'] },
+    })
+)
 
 // Safe fetch wrapper - prevents page crashes on Sanity network errors
 async function safeFetch<T>(query: string, params?: Record<string, unknown>, fallback?: T): Promise<T> {
   try {
-    return await client.fetch(query, params, { next: { tags: ['sanity'] } })
+    return await dedupedClientFetch(query, params ? JSON.stringify(params) : '') as T
   } catch (error) {
     console.error('[Sanity Fetch Error]', error)
     return (fallback !== undefined ? fallback : null) as T
@@ -351,6 +361,7 @@ export function transformBlogPost(post: SanityBlogPost) {
     authorBio: post.author?.bio ? portableTextToHtml(post.author.bio) : '',
     authorLinkedin: post.author?.linkedin || '',
     date: post.publishedAt ? formatDate(post.publishedAt) : '',
+    publishedAt: post.publishedAt || '',
     readTime: post.readTime || '5 min read',
     featuredImage: getSanityImageUrl(post.featuredImage, { width: 1200 }) || '/assets/images/blog-placeholder.svg',
     tags: post.categories?.map(c => c.title) || [],
