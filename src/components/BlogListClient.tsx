@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useMemo } from "react";
 import Image from "next/image";
+import ZohoCampaignsEmbed from "./ZohoCampaignsEmbed";
 
 interface BlogPost {
   slug: string;
@@ -364,22 +365,18 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
 
       {/* Newsletter CTA */}
       <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">
-            Subscribe to Our Newsletter
-          </h2>
-          <p className="text-mw-gray-600 mb-8 max-w-2xl mx-auto">
-            Get the latest insights, trends, and updates delivered directly to your inbox.
-          </p>
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white rounded-xl hover:bg-mw-blue-700 transition-colors font-medium"
-          >
-            Subscribe Now
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8 items-center">
+            <div className="text-center lg:text-left">
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">
+                Subscribe to Our Newsletter
+              </h2>
+              <p className="text-mw-gray-600 max-w-2xl">
+                Get the latest insights, trends, and updates delivered directly to your inbox.
+              </p>
+            </div>
+            <ZohoCampaignsEmbed height={320} />
+          </div>
         </div>
       </section>
     </div>
