@@ -1,7 +1,7 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import type { SanityProduct } from '@/sanity/lib/fetch'
@@ -164,15 +164,362 @@ interface MWPlannerPageProps {
   partnerLogos?: DisplayIntegration[] | null;
 }
 
+// ─── THE MAP THAT PLANS ITSELF ─────────────────────────────────────────────────
+// Stylised city map: street grid draws in, AI drops pins on premium sites,
+// reach ripples expand, counter ticks up, then the plan optimises itself.
+
+interface MapPin {
+  x: number
+  y: number
+  /** wave 1 = initial plan, wave 2 = optimised additions */
+  wave: 1 | 2
+  /** pins removed during optimisation */
+  removedOnOptimise?: boolean
+}
+
+const MAP_PINS: MapPin[] = [
+  { x: 100, y: 90,  wave: 1 },
+  { x: 240, y: 60,  wave: 1 },
+  { x: 330, y: 130, wave: 1 },
+  { x: 170, y: 160, wave: 1, removedOnOptimise: true },
+  { x: 70,  y: 210, wave: 1 },
+  { x: 280, y: 220, wave: 1 },
+  { x: 380, y: 250, wave: 1, removedOnOptimise: true },
+  { x: 150, y: 260, wave: 1 },
+  // optimised placements — land during wave 2
+  { x: 215, y: 130, wave: 2 },
+  { x: 320, y: 190, wave: 2 },
+  { x: 110, y: 150, wave: 2 },
+]
+
+// Featured billboard analytics shown in the rotating callout card
+const PIN_ANALYTICS = [
+  {
+    // wave-1 pin at (240, 60)
+    x: 240, y: 60, green: false,
+    name: 'Digital Billboard · City Centre',
+    impressions: '250K daily impressions',
+    cpm: 'CPM $4.20',
+    score: 92,
+  },
+  {
+    // wave-1 pin at (280, 220)
+    x: 280, y: 220, green: false,
+    name: 'Transit Screen · Interchange',
+    impressions: '180K daily impressions',
+    cpm: 'CPM $3.10',
+    score: 88,
+  },
+  {
+    // wave-2 optimised pin at (215, 130)
+    x: 215, y: 130, green: true,
+    name: 'Premium DOOH · Retail Hub',
+    impressions: '310K daily impressions',
+    cpm: 'CPM $3.80',
+    score: 96,
+  },
+]
+
+function MapPlanCard() {
+  const [pinCount, setPinCount] = useState(0)          // wave-1 pins landed
+  const [optimising, setOptimising] = useState(false)  // AI reshuffle in progress
+  const [optimised, setOptimised] = useState(false)    // wave-2 pins landed
+  const [callout, setCallout] = useState<number | null>(null) // active analytics card
+
+  const wave1 = MAP_PINS.filter(p => p.wave === 1)
+  const wave2 = MAP_PINS.filter(p => p.wave === 2)
+
+  // Live counters
+  const activePins = optimised
+    ? wave1.filter(p => !p.removedOnOptimise).length + wave2.length
+    : Math.min(pinCount, wave1.length)
+  const sites = activePins * 4
+  const reach = optimised ? '2.9M' : `${(activePins * 0.3).toFixed(1)}M`
+
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout>
+    const timers: ReturnType<typeof setTimeout>[] = []
+
+    const run = () => {
+      setPinCount(0)
+      setOptimising(false)
+      setOptimised(false)
+      setCallout(null)
+
+      // Wave 1: pins land one at a time (starting after grid draws ~1.2s)
+      wave1.forEach((_, i) => {
+        t = setTimeout(() => setPinCount(c => c + 1), 1400 + i * 450)
+        timers.push(t)
+      })
+
+      const wave1End = 1400 + wave1.length * 450
+
+      // Analytics callouts: rotate through featured pins
+      t = setTimeout(() => setCallout(0), 2800)
+      timers.push(t)
+      t = setTimeout(() => setCallout(1), 5200)
+      timers.push(t)
+      t = setTimeout(() => setCallout(null), wave1End + 700)
+      timers.push(t)
+
+      // Optimisation phase
+      t = setTimeout(() => setOptimising(true), wave1End + 800)
+      timers.push(t)
+      t = setTimeout(() => { setOptimised(true); setOptimising(false) }, wave1End + 2600)
+      timers.push(t)
+
+      // Green optimised-pin callout after reshuffle
+      t = setTimeout(() => setCallout(2), wave1End + 3400)
+      timers.push(t)
+      t = setTimeout(() => setCallout(null), wave1End + 6600)
+      timers.push(t)
+
+      // Hold, then loop
+      t = setTimeout(run, wave1End + 8000)
+      timers.push(t)
+    }
+
+    run()
+    return () => timers.forEach(clearTimeout)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // Street grid lines (drawn with pathLength animation)
+  const streets = [
+    // horizontal
+    'M 20 90 L 420 90', 'M 20 160 L 420 160', 'M 20 230 L 420 230',
+    // vertical
+    'M 100 20 L 100 300', 'M 190 20 L 190 300', 'M 280 20 L 280 300', 'M 360 20 L 360 300',
+    // diagonal avenue
+    'M 20 280 L 420 40',
+  ]
+
+  return (
+    <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/10 p-5 shadow-2xl overflow-hidden">
+      {/* Window chrome */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-1.5">
+          <div className="w-3 h-3 bg-red-500/70 rounded-full" />
+          <div className="w-3 h-3 bg-yellow-500/70 rounded-full" />
+          <div className="w-3 h-3 bg-green-500/70 rounded-full" />
+        </div>
+        <span className="text-[11px] text-white/30 font-mono">MW Planner — Site Selection</span>
+      </div>
+
+      {/* The map */}
+      <div className="relative rounded-xl bg-slate-950/60 border border-white/5 overflow-hidden">
+        <svg viewBox="0 0 440 320" className="w-full" aria-hidden="true">
+          <defs>
+            <radialGradient id="reachGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.25" />
+              <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          {/* Street grid draws itself */}
+          {streets.map((d, i) => (
+            <motion.path
+              key={d}
+              d={d}
+              fill="none"
+              stroke="#334155"
+              strokeWidth={i === streets.length - 1 ? 2.5 : 1.5}
+              initial={{ pathLength: 0, opacity: 0 }}
+              animate={{ pathLength: 1, opacity: 1 }}
+              transition={{ duration: 0.9, delay: i * 0.12, ease: 'easeInOut' }}
+            />
+          ))}
+
+          {/* City blocks (subtle fills) */}
+          <motion.g
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1 }}
+            fill="#1e293b" fillOpacity="0.4"
+          >
+            <rect x="110" y="100" width="70" height="50" rx="3" />
+            <rect x="290" y="100" width="60" height="50" rx="3" />
+            <rect x="110" y="170" width="70" height="50" rx="3" />
+            <rect x="200" y="240" width="70" height="40" rx="3" />
+            <rect x="290" y="30" width="60" height="50" rx="3" />
+          </motion.g>
+
+          {/* Traffic flow particles — audience moving through the city */}
+          <g>
+            {[
+              { path: 'M 20 90 L 420 90', dur: '7s', begin: '1.5s' },
+              { path: 'M 420 160 L 20 160', dur: '9s', begin: '2.2s' },
+              { path: 'M 20 230 L 420 230', dur: '8s', begin: '3s' },
+              { path: 'M 100 20 L 100 300', dur: '7.5s', begin: '1.8s' },
+              { path: 'M 280 300 L 280 20', dur: '8.5s', begin: '2.6s' },
+              { path: 'M 360 20 L 360 300', dur: '9.5s', begin: '3.4s' },
+              { path: 'M 20 280 L 420 40', dur: '10s', begin: '2s' },
+              { path: 'M 420 40 L 20 280', dur: '11s', begin: '5s' },
+            ].map(p => (
+              <circle key={`${p.path}-${p.begin}`} r="1.8" fill="#7dd3fc" opacity="0.55">
+                <animateMotion dur={p.dur} begin={p.begin} repeatCount="indefinite" path={p.path} />
+              </circle>
+            ))}
+          </g>
+
+          {/* Wave 1 pins */}
+          {wave1.map((pin, i) => {
+            const landed = pinCount > i
+            const isRemoved = optimised && pin.removedOnOptimise
+            return (
+              <g key={`w1-${pin.x}-${pin.y}`}>
+                {/* reach ripple */}
+                {landed && !isRemoved && (
+                  <motion.circle
+                    cx={pin.x} cy={pin.y} r="14"
+                    fill="none" stroke="#22d3ee" strokeWidth="1"
+                    initial={{ scale: 0.5, opacity: 0.6 }}
+                    animate={{ scale: [0.5, 2.2], opacity: [0.5, 0] }}
+                    transition={{ duration: 2.8, repeat: Infinity, ease: 'easeOut', delay: i * 0.3 }}
+                    style={{ transformOrigin: `${pin.x}px ${pin.y}px` }}
+                  />
+                )}
+                {/* coverage glow */}
+                {landed && !isRemoved && (
+                  <circle cx={pin.x} cy={pin.y} r="34" fill="url(#reachGlow)" />
+                )}
+                {/* pin */}
+                <motion.g
+                  initial={{ opacity: 0, y: -18, scale: 0 }}
+                  animate={
+                    landed
+                      ? isRemoved
+                        ? { opacity: 0.15, y: 0, scale: 0.7 }
+                        : { opacity: 1, y: 0, scale: 1 }
+                      : { opacity: 0, y: -18, scale: 0 }
+                  }
+                  transition={{ type: 'spring', stiffness: 300, damping: 18 }}
+                  style={{ transformOrigin: `${pin.x}px ${pin.y}px` }}
+                >
+                  <circle cx={pin.x} cy={pin.y} r="6" fill={isRemoved ? '#64748b' : '#06b6d4'} stroke="#e0f2fe" strokeWidth="1.5" />
+                  <circle cx={pin.x} cy={pin.y} r="2" fill="#ffffff" />
+                </motion.g>
+              </g>
+            )
+          })}
+
+          {/* Wave 2 pins (optimised placements) */}
+          {wave2.map((pin, i) => (
+            <g key={`w2-${pin.x}-${pin.y}`}>
+              {optimised && (
+                <motion.circle
+                  cx={pin.x} cy={pin.y} r="14"
+                  fill="none" stroke="#4ade80" strokeWidth="1"
+                  initial={{ scale: 0.5, opacity: 0.6 }}
+                  animate={{ scale: [0.5, 2.2], opacity: [0.5, 0] }}
+                  transition={{ duration: 2.8, repeat: Infinity, ease: 'easeOut', delay: i * 0.4 }}
+                  style={{ transformOrigin: `${pin.x}px ${pin.y}px` }}
+                />
+              )}
+              {optimised && <circle cx={pin.x} cy={pin.y} r="34" fill="url(#reachGlow)" />}
+              <motion.g
+                initial={{ opacity: 0, y: -18, scale: 0 }}
+                animate={optimised ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: -18, scale: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 18, delay: i * 0.2 }}
+                style={{ transformOrigin: `${pin.x}px ${pin.y}px` }}
+              >
+                <circle cx={pin.x} cy={pin.y} r="6" fill="#22c55e" stroke="#dcfce7" strokeWidth="1.5" />
+                <circle cx={pin.x} cy={pin.y} r="2" fill="#ffffff" />
+              </motion.g>
+            </g>
+          ))}
+        </svg>
+
+        {/* Scanning line during optimisation */}
+        <AnimatePresence>
+          {optimising && (
+            <motion.div
+              className="absolute inset-y-0 w-16 bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent pointer-events-none"
+              initial={{ left: '-10%' }}
+              animate={{ left: '110%' }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.6, ease: 'easeInOut' }}
+            />
+          )}
+        </AnimatePresence>
+
+        {/* Billboard analytics callout card */}
+        <AnimatePresence>
+          {callout !== null && (() => {
+            const a = PIN_ANALYTICS[callout]
+            // Position card relative to pin, flipping side to stay inside the map
+            const leftPct = (a.x / 440) * 100
+            const topPct = (a.y / 320) * 100
+            const flipX = a.x > 250
+            const flipY = a.y > 180
+            return (
+              <motion.div
+                key={callout}
+                initial={{ opacity: 0, scale: 0.9, y: 6 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.3 }}
+                className="absolute z-10 pointer-events-none"
+                style={{
+                  left: `${leftPct}%`,
+                  top: `${topPct}%`,
+                  transform: `translate(${flipX ? 'calc(-100% - 14px)' : '14px'}, ${flipY ? 'calc(-100% - 8px)' : '8px'})`,
+                }}
+              >
+                <div className={`rounded-lg border px-3 py-2.5 shadow-xl backdrop-blur-md min-w-[168px] ${
+                  a.green
+                    ? 'bg-green-950/90 border-green-400/30'
+                    : 'bg-slate-900/95 border-cyan-400/25'
+                }`}>
+                  <div className={`text-[10px] font-semibold mb-1.5 ${a.green ? 'text-green-300' : 'text-cyan-300'}`}>
+                    {a.name}
+                  </div>
+                  <div className="space-y-0.5 text-[10px] text-white/70 font-mono">
+                    <div>{a.impressions}</div>
+                    <div>{a.cpm}</div>
+                  </div>
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    <span className="text-[9px] text-white/40">Site score</span>
+                    <div className="flex-1 h-1 bg-white/10 rounded-full overflow-hidden">
+                      <motion.div
+                        className={`h-full rounded-full ${a.green ? 'bg-green-400' : 'bg-cyan-400'}`}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${a.score}%` }}
+                        transition={{ duration: 0.7, delay: 0.25 }}
+                      />
+                    </div>
+                    <span className={`text-[10px] font-bold font-mono ${a.green ? 'text-green-300' : 'text-cyan-300'}`}>{a.score}</span>
+                  </div>
+                </div>
+              </motion.div>
+            )
+          })()}
+        </AnimatePresence>
+      </div>
+
+      {/* Status bar */}
+      <div className="flex items-center justify-between mt-4 px-1">
+        <div className="flex items-center gap-2">
+          <span className={`w-2 h-2 rounded-full ${optimised ? 'bg-green-400' : 'bg-cyan-400 animate-pulse'}`} />
+          <span className="text-xs text-white/60">
+            {optimised ? 'Plan optimised' : optimising ? 'AI optimising placement…' : pinCount === 0 ? 'Mapping city…' : 'Selecting premium sites…'}
+          </span>
+        </div>
+        <div className="flex items-center gap-4 font-mono text-xs">
+          <span className="text-white/80"><span className="text-cyan-300 font-bold">{sites}</span> sites</span>
+          <span className="text-white/80"><span className={`font-bold ${optimised ? 'text-green-400' : 'text-cyan-300'}`}>{reach}</span> reach</span>
+        </div>
+      </div>
+    </div>
+  )
+}
 export default function MWPlannerPageClient({ latestBlogPosts, product, partnerLogos }: MWPlannerPageProps) {
   // CMS-driven hero content with fallbacks
-  const heroBadge = product?.heroBadge || 'AI-Powered Campaign Intelligence'
   const heroTitle = product?.heroTitle || 'Turn Data Into'
   const heroSubtitle = product?.heroSubtitle || 'Campaign Success'
   const heroDescription = product?.description || 'The AI command center that predicts performance, optimizes budgets, and delivers measurable ROI—before you spend a dollar.'
   const ctaText = product?.ctaText || 'Start Free Trial'
   const ctaLink = product?.ctaLink || '/contact'
-  const heroStats = product?.heroStats?.length ? product.heroStats : null
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
 
   // CMS-driven features with fallback to defaults
@@ -210,16 +557,6 @@ export default function MWPlannerPageClient({ latestBlogPosts, product, partnerL
               transition={{ duration: 0.8 }}
             >
               {/* Badge */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: 0.2 }}
-                className="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 px-4 py-2 rounded-full mb-6"
-              >
-                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                <span className="text-blue-200 text-sm font-medium">{heroBadge}</span>
-              </motion.div>
-
               {/* Main Headline */}
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
                 {heroTitle}
@@ -247,75 +584,14 @@ export default function MWPlannerPageClient({ latestBlogPosts, product, partnerL
 
             </motion.div>
 
-            {/* Right Content - Dashboard Preview */}
+            {/* Right Content - Live Plan Animation */}
             <motion.div
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
               className="relative"
             >
-              <div className="relative bg-gradient-to-br from-slate-800/80 to-slate-900/80 backdrop-blur-xl rounded-2xl border border-white/10 p-6 shadow-2xl">
-                {/* Dashboard Header */}
-                <div className="flex items-center justify-between mb-6">
-                  <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                  </div>
-                  <div className="text-xs text-white/40">MW Planner Dashboard</div>
-                </div>
-
-                {/* Mock Dashboard Content */}
-                <div className="space-y-4">
-                  {/* Performance Chart */}
-                  <div className="bg-white/5 rounded-xl p-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-white/60 text-sm">Campaign Performance</span>
-                      <span className="text-green-400 text-sm font-medium">+23.4%</span>
-                    </div>
-                    <div className="flex items-end gap-1 h-20">
-                      {[40, 55, 45, 60, 75, 65, 80, 90, 85, 95, 88, 100].map((h, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ height: 0 }}
-                          animate={{ height: `${h}%` }}
-                          transition={{ duration: 0.5, delay: i * 0.05 + 0.5 }}
-                          className="flex-1 bg-gradient-to-t from-blue-500 to-cyan-400 rounded-sm"
-                        />
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Stats Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                    {(heroStats
-                      ? heroStats.map(s => ({ label: s.label, value: s.value, change: '' }))
-                      : [
-                          { label: 'ROAS', value: '4.2x', change: '+18%' },
-                          { label: 'CPA', value: '$12.40', change: '-24%' },
-                          { label: 'CTR', value: '3.8%', change: '+12%' },
-                        ]
-                    ).map((stat) => (
-                      <div key={stat.label} className="bg-white/5 rounded-lg p-3">
-                        <div className="text-white/50 text-xs mb-1">{stat.label}</div>
-                        <div className="text-white font-bold">{stat.value}</div>
-                        {stat.change && <div className="text-green-400 text-xs">{stat.change}</div>}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* AI Recommendation */}
-                  <div className="bg-gradient-to-r from-blue-500/20 to-cyan-500/20 border border-blue-400/30 rounded-xl p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CpuChipIcon className="w-5 h-5 text-blue-400" />
-                      <span className="text-blue-300 text-sm font-medium">AI Insight</span>
-                    </div>
-                    <p className="text-white/80 text-sm">
-                      Shift 15% budget from Display to Social for projected +$24K revenue uplift this week.
-                    </p>
-                  </div>
-                </div>
-              </div>
+              <MapPlanCard />
             </motion.div>
           </div>
         </div>
@@ -591,9 +867,6 @@ export default function MWPlannerPageClient({ latestBlogPosts, product, partnerL
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
-                <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
-              </div>
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Don't Replace.
                 <span className="block text-blue-600">Integrate.</span>
@@ -692,11 +965,6 @@ export default function MWPlannerPageClient({ latestBlogPosts, product, partnerL
                   </div>
 
                   <div className="p-6">
-                    <div className="flex items-center gap-2 mb-3">
-                      <span className="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-xs font-medium">
-                        {resource.category}
-                      </span>
-                    </div>
                     <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
                       {resource.title}
                     </h3>
