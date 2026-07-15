@@ -267,13 +267,13 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   />
                 </div>
               ) : (
-              <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px]">
+              <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px]" style={{ perspective: '1000px' }}>
                 {/* 3D Billboard Network Container */}
                 <motion.div
                   className="absolute inset-0"
                   style={{ transformStyle: 'preserve-3d' }}
-                  animate={{ rotateY: 360 }}
-                  transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
+                  animate={{ rotateY: [-10, 10, -10] }}
+                  transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
                 >
                   {/* Network Connection Lines */}
                   <svg className="absolute inset-0 w-full h-full" style={{ transform: 'translateZ(0px)' }}>
@@ -315,8 +315,8 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
 
                   {/* Central Hub Node */}
                   <motion.div
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-20 h-20"
-                    style={{ transform: 'translateZ(30px)' }}
+                    className="absolute left-1/2 top-1/2 w-20 h-20"
+                    style={{ x: '-50%', y: '-50%', z: 30 }}
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ duration: 3, repeat: Infinity }}
                   >
@@ -348,7 +348,11 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                       style={{
                         left: billboard.x,
                         top: billboard.y,
-                        transform: `translate(-50%, -50%) translateZ(${billboard.z}px) rotateX(${billboard.rotateX}deg) rotateY(${billboard.rotateY}deg)`,
+                        x: '-50%',
+                        y: '-50%',
+                        z: billboard.z,
+                        rotateX: billboard.rotateX,
+                        rotateY: billboard.rotateY,
                         transformStyle: 'preserve-3d',
                       }}
                       initial={{ opacity: 0, scale: 0 }}

@@ -681,43 +681,6 @@ export default function MWMeasure({ caseStudies = [], product, partnerLogos }: M
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6">
-              {product?.finalCtaTitle || 'Transform OOH Into Measurable Performance'}
-            </h2>
-            <p className="text-base sm:text-lg lg:text-xl mb-6 sm:mb-8 max-w-2xl mx-auto">
-              {product?.finalCtaSubtitle || 'Join leading brands leveraging real-time location intelligence, audience analytics, and attribution modeling to maximize their Out-of-Home advertising ROI.'}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-              <CTAButton
-                href={product?.ctaLink || '/contact'}
-                className="bg-white text-blue-600 px-5 sm:px-6 lg:px-8 py-3 sm:py-3.5 lg:py-4 rounded-lg font-semibold text-sm sm:text-base lg:text-lg hover:bg-gray-100 transition-colors inline-flex items-center justify-center gap-2"
-              >
-                {product?.ctaText || 'View Live Demo'}
-                <EyeIcon className="w-4 h-4 sm:w-5 sm:h-5" />
-              </CTAButton>
-              <CTAButton
-                href={product?.secondaryCta?.link || '/contact'}
-                className="border-2 border-white text-white px-5 sm:px-6 lg:px-8 py-3 sm:py-3.5 lg:py-4 rounded-lg font-semibold text-sm sm:text-base lg:text-lg hover:bg-white hover:text-blue-600 transition-colors inline-flex items-center justify-center gap-2"
-              >
-                {product?.secondaryCta?.text || 'Book a Free Demo'}
-                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-              </CTAButton>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
       {/* Case Studies */}
       <CaseStudiesSection initialCaseStudies={caseStudies} />
     </div>

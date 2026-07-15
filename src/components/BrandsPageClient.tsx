@@ -297,12 +297,13 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 {/* Orbital Ring 1 */}
                 <motion.div
                   className="absolute inset-4 rounded-full border border-cyan-300/20"
-                  style={{ transform: 'rotateX(60deg)' }}
+                  style={{ rotateX: 60 }}
                   animate={{ rotate: 360 }}
                   transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
                 >
                   <motion.div 
                     className="absolute -top-2 left-1/2 w-4 h-4 bg-cyan-400 rounded-full shadow-lg shadow-cyan-400/50"
+                    style={{ x: '-50%' }}
                     animate={{ scale: [1, 1.2, 1] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   />
@@ -311,7 +312,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 {/* Orbital Ring 2 */}
                 <motion.div
                   className="absolute inset-8 rounded-full border border-blue-300/20"
-                  style={{ transform: 'rotateX(75deg) rotateY(20deg)' }}
+                  style={{ rotateX: 75, rotateY: 20 }}
                   animate={{ rotate: -360 }}
                   transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
                 >

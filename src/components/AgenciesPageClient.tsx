@@ -264,7 +264,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                   />
                 </div>
               ) : (
-              <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px]">
+              <div className="relative w-[280px] h-[280px] sm:w-[350px] sm:h-[350px] md:w-[450px] md:h-[450px]" style={{ perspective: '1200px' }}>
                 {/* Isometric City Container */}
                 <motion.div
                   className="absolute inset-0"
@@ -275,12 +275,12 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                 >
                   {/* City Base/Ground */}
                   <div 
-                    className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72 bg-gradient-to-br from-blue-800/50 to-indigo-900/50 rounded-lg"
-                    style={{ transform: 'translateZ(-20px)' }}
+                    className="absolute left-1/2 top-1/2 w-72 h-72 bg-gradient-to-br from-blue-800/50 to-indigo-900/50 rounded-lg"
+                    style={{ transform: 'translate(-50%, -50%) translateZ(-20px)' }}
                   />
                   
                   {/* Grid Lines on Ground */}
-                  <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-72 h-72" style={{ transform: 'translateZ(-19px)' }}>
+                  <div className="absolute left-1/2 top-1/2 w-72 h-72" style={{ transform: 'translate(-50%, -50%) translateZ(-19px)' }}>
                     {[0, 1, 2, 3, 4, 5].map((i) => (
                       <div key={`h-${i}`} className="absolute w-full h-px bg-blue-400/20" style={{ top: `${i * 20}%` }} />
                     ))}
@@ -305,14 +305,30 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                       style={{
                         left: `calc(50% + ${building.x}px)`,
                         top: `calc(50% + ${building.y}px)`,
-                        transform: 'translate(-50%, -50%)',
                         transformStyle: 'preserve-3d',
                       }}
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
                     >
-                      {/* Building Base */}
+                      {/* Building Side Face (right) */}
+                      <div
+                        className={`absolute ${
+                          building.color === 'blue' ? 'bg-blue-800' :
+                          building.color === 'indigo' ? 'bg-indigo-800' :
+                          'bg-purple-800'
+                        }`}
+                        style={{
+                          width: `${building.height}px`,
+                          height: `${building.width * 0.6}px`,
+                          left: `${building.width / 2}px`,
+                          top: `${-building.width * 0.3}px`,
+                          transform: 'rotateY(-90deg)',
+                          transformOrigin: 'left',
+                        }}
+                      />
+
+                      {/* Building Front Face */}
                       <div
                         className={`absolute bg-gradient-to-t ${
                           building.color === 'blue' ? 'from-blue-700 to-blue-500' :
@@ -322,7 +338,10 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                         style={{
                           width: `${building.width}px`,
                           height: `${building.height}px`,
-                          transform: `translateZ(${building.height / 2}px)`,
+                          left: `${-building.width / 2}px`,
+                          top: `${building.width * 0.3 - building.height}px`,
+                          transform: 'rotateX(-90deg)',
+                          transformOrigin: 'bottom',
                           boxShadow: '0 0 20px rgba(0,0,0,0.3)',
                         }}
                       >
@@ -368,7 +387,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                         )}
                       </div>
                       
-                      {/* Building Roof */}
+                      {/* Building Roof (top face) */}
                       <div
                         className={`absolute ${
                           building.color === 'blue' ? 'bg-blue-400' :
@@ -378,8 +397,9 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                         style={{
                           width: `${building.width}px`,
                           height: `${building.width * 0.6}px`,
-                          transform: `rotateX(-90deg) translateZ(${-building.height}px)`,
-                          transformOrigin: 'bottom',
+                          left: `${-building.width / 2}px`,
+                          top: `${-building.width * 0.3}px`,
+                          transform: `translateZ(${building.height}px)`,
                         }}
                       />
                     </motion.div>
@@ -397,7 +417,10 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                       style={{
                         left: `calc(50% + ${screen.x}px)`,
                         top: `calc(50% + ${screen.y}px)`,
-                        transform: 'translate(-50%, -50%) translateZ(15px)',
+                        x: '-50%',
+                        y: '-100%',
+                        rotateX: -90,
+                        transformOrigin: 'bottom',
                       }}
                       initial={{ opacity: 0, scale: 0 }}
                       animate={{ opacity: 1, scale: 1 }}
@@ -440,7 +463,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                         boxShadow: '0 0 10px rgba(6, 182, 212, 0.8)',
                       }}
                       animate={{
-                        y: [0, -100],
+                        z: [0, 100],
                         opacity: [0, 1, 0],
                         scale: [0.5, 1, 0.5],
                       }}
