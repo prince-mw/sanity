@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion"
 import Link from 'next/link'
+import ZohoCampaignsEmbed from "./ZohoCampaignsEmbed"
 
 // Static fallback content
 const STATIC_FORM_URL = 'https://xjwif-zgpm.maillist-manage.com/ua/Optin?od=11287ecbeb72cd&zx=13089112c&tD=1d17ccf5180e2411&sD=1d17ccf51ad46835'
@@ -65,18 +66,7 @@ export default function NewsletterPageClient({
 
           {/* Right Column: Newsletter Form Embed */}
           <div className="lg:col-span-6 flex justify-center lg:justify-end items-center w-full">
-            <div className="bg-white border border-slate-200/80 w-full max-w-[410px] overflow-hidden" style={{ borderRadius: '6px' }}>
-              <div className="w-full h-[340px]">
-                <iframe
-                  id="newsletter-signup-iframe"
-                  width="100%"
-                  height="100%"
-                  className="w-full h-full border-0"
-                  src={embedUrl}
-                  title="Newsletter Signup Form"
-                />
-              </div>
-            </div>
+            <ZohoCampaignsEmbed src={embedUrl} height={340} className="w-full max-w-[410px]" />
           </div>
 
         </div>

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import SanityPortableText from "./SanityPortableText";
+import ZohoCampaignsEmbed from "./ZohoCampaignsEmbed";
 
 interface BlogPost {
   slug: string;
@@ -272,23 +273,17 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 rounded-2xl p-8 lg:p-12 text-center"
+            className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 rounded-2xl p-8 lg:p-12"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">Enjoyed this article?</h2>
-            <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              Subscribe to get the latest insights, tips, and industry news delivered straight to your inbox.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-6 py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-mw-blue-500"
-              />
-              <button className="px-8 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors whitespace-nowrap">
-                Subscribe
-              </button>
+            <div className="grid lg:grid-cols-2 gap-8 items-center">
+              <div className="text-center lg:text-left">
+                <h2 className="text-3xl font-bold text-white mb-4">Enjoyed this article?</h2>
+                <p className="text-gray-300">
+                  Subscribe to get the latest insights, tips, and industry news delivered straight to your inbox.
+                </p>
+              </div>
+              <ZohoCampaignsEmbed height={300} className="lg:mt-0" />
             </div>
-            <p className="text-sm text-gray-400 mt-4">No spam. Unsubscribe anytime.</p>
           </motion.div>
         </div>
       </section>
