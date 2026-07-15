@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DynamicZohoForm } from './DynamicZohoForm'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
@@ -56,6 +56,13 @@ export function ZohoFormEmbed({
   // Resolve props — prefer `form` object, fall back to legacy individual props
   const renderMode = form?.renderMode || 'iframe'
   const formUrl = form?.formUrl || legacyFormUrl || ''
+
+  // Append UTM params only after mount — cookies aren't available during SSR,
+  // so computing this during render causes a hydration mismatch on the iframe src
+  const [iframeUrl, setIframeUrl] = useState(formUrl)
+  useEffect(() => {
+    setIframeUrl(appendUTMsToUrl(formUrl))
+  }, [formUrl])
   const name = form?.name || legacyName
   const displayMode = form?.displayMode || legacyDisplayMode
   const height = form?.height || legacyHeight
@@ -136,9 +143,6 @@ export function ZohoFormEmbed({
 
   if (!formUrl) return null
 
-  // Resolve iframe URL with UTMs
-  const iframeUrl = appendUTMsToUrl(formUrl)
-
   // New tab mode
   if (displayMode === 'newtab') {
     return (
@@ -218,6 +222,7 @@ export function ZohoFormEmbed({
   // Default: Embedded iframe
   return (
     <div className={className || 'w-full'}>
+      {/* suppressHydrationWarning: ZohoUTMTracker may append UTM params to the src in the DOM */}
       <iframe
         src={iframeUrl}
         width={width}
@@ -226,6 +231,7 @@ export function ZohoFormEmbed({
         title={name || 'Zoho Form'}
         loading="lazy"
         className="rounded-lg"
+        suppressHydrationWarning
       />
     </div>
   )
