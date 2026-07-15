@@ -65,16 +65,13 @@ export default function NewsletterPageClient({
 
           {/* Right Column: Newsletter Form Embed */}
           <div className="lg:col-span-6 flex justify-center lg:justify-end items-center w-full">
-            <div className="bg-white border border-slate-200/80 rounded-3xl shadow-xl w-full max-w-[410px] relative overflow-hidden pt-10 pb-4 px-2 transition-all">
-              {/* Top accent line */}
-              <div className="absolute top-0 left-0 w-full h-1 bg-blue-600" />
-
-              <div className="w-full h-[340px] bg-white rounded-2xl overflow-hidden">
+            <div className="bg-white border border-slate-200/80 w-full max-w-[410px] overflow-hidden" style={{ borderRadius: '6px' }}>
+              <div className="w-full h-[340px]">
                 <iframe
                   id="newsletter-signup-iframe"
                   width="100%"
                   height="100%"
-                  className="w-full h-full border-0 overflow-hidden"
+                  className="w-full h-full border-0"
                   src={embedUrl}
                   title="Newsletter Signup Form"
                 />
