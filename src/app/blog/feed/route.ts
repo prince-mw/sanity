@@ -1,7 +1,7 @@
 import { getAllBlogPosts, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { blogPosts as staticBlogPosts } from "@/data/blog-posts";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://movingwalls.com";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://www.movingwalls.com";
 const BLOG_URL = `${SITE_URL}/blog`;
 
 function escapeXml(value: string): string {
