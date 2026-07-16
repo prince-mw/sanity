@@ -120,7 +120,7 @@ export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
       _id,
       title,
       slug,
-      excerpt,
+      "excerpt": seo.metaDescription,
       publishedAt,
       readTime,
       featuredImage,
@@ -137,7 +137,7 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
       _id,
       title,
       slug,
-      excerpt,
+      "excerpt": seo.metaDescription,
       content[] {
         ...,
         _type == "video" => {
@@ -180,7 +180,7 @@ export async function getFeaturedBlogPost(): Promise<SanityBlogPost | null> {
       _id,
       title,
       slug,
-      excerpt,
+      "excerpt": seo.metaDescription,
       publishedAt,
       readTime,
       featuredImage,
@@ -204,7 +204,7 @@ export async function getRelatedBlogPosts(
       _id,
       title,
       slug,
-      excerpt,
+      "excerpt": seo.metaDescription,
       publishedAt,
       readTime,
       featuredImage,
@@ -247,7 +247,7 @@ export async function getRelatedBlogPosts(
         _id,
         title,
         slug,
-        excerpt,
+        "excerpt": seo.metaDescription,
         publishedAt,
         readTime,
         featuredImage,
@@ -3604,7 +3604,7 @@ export async function getEnhancedProductBySlug(slug: string): Promise<SanityEnha
         title,
         slug,
         featuredImage,
-        excerpt,
+        "excerpt": seo.metaDescription,
         publishedAt
       },
       "relatedWhitepapers": relatedWhitepapers[]->{

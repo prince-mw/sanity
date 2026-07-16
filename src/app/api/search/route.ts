@@ -45,7 +45,7 @@ export async function GET(request: NextRequest) {
         _type,
         title,
         "slug": slug.current,
-        "excerpt": coalesce(excerpt, description, ""),
+        "excerpt": coalesce(excerpt, description, seo.metaDescription, ""),
         "image": featuredImage,
         "date": coalesce(publishedAt, date, startDate, _createdAt),
         "category": select(

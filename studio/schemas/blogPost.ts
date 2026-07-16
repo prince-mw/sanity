@@ -7,7 +7,6 @@ export default defineType({
   groups: [
     {name: 'content', title: 'Content', default: true},
     {name: 'publishing', title: 'Publishing'},
-    {name: 'workflow', title: 'Workflow'},
     {name: 'seo', title: 'SEO'},
   ],
   fields: [
@@ -90,38 +89,6 @@ export default defineType({
       type: 'datetime',
       description: 'Set a future date to automatically publish this post. Leave empty to publish immediately when status is "Published".',
       group: 'publishing',
-    }),
-    // Workflow fields
-    defineField({
-      name: 'assignedTo',
-      title: 'Assigned To',
-      type: 'reference',
-      to: [{type: 'teamMember'}],
-      description: 'Team member responsible for this content',
-      group: 'workflow',
-    }),
-    defineField({
-      name: 'reviewNotes',
-      title: 'Review Notes',
-      type: 'text',
-      rows: 3,
-      description: 'Notes for reviewers or collaborators',
-      group: 'workflow',
-    }),
-    defineField({
-      name: 'lastReviewedAt',
-      title: 'Last Reviewed',
-      type: 'datetime',
-      readOnly: true,
-      group: 'workflow',
-    }),
-    defineField({
-      name: 'reviewedBy',
-      title: 'Reviewed By',
-      type: 'reference',
-      to: [{type: 'teamMember'}],
-      readOnly: true,
-      group: 'workflow',
     }),
     defineField({
       name: 'content',

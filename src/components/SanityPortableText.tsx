@@ -6,6 +6,15 @@ import Link from "next/link";
 import { urlFor } from "@/sanity/lib/client";
 import { sanitizeHtml } from "@/lib/sanitize";
 
+// Sanity asset refs encode their original dimensions, e.g. "image-abc123-1600x900-jpg"
+function getImageDimensions(ref?: string): { width: number; height: number } {
+  const match = ref ? /-(\d+)x(\d+)-/.exec(ref) : null;
+  if (match) {
+    return { width: parseInt(match[1], 10), height: parseInt(match[2], 10) };
+  }
+  return { width: 1200, height: 675 };
+}
+
 // Custom components for Portable Text rendering
 const components: PortableTextComponents = {
   // Block styles (headings, paragraphs, etc.)
@@ -113,21 +122,21 @@ const components: PortableTextComponents = {
   types: {
     image: ({ value }) => {
       if (!value?.asset) return null;
-      
+
       const imageUrl = urlFor(value).width(1200).quality(90).url();
       const alt = value.alt || "Blog image";
-      
+      const { width, height } = getImageDimensions(value.asset._ref || value.asset._id);
+
       return (
         <figure className="my-8">
-          <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
-            <Image
-              src={imageUrl}
-              alt={alt}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
-            />
-          </div>
+          <Image
+            src={imageUrl}
+            alt={alt}
+            width={width}
+            height={height}
+            className="w-full h-auto rounded-xl"
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+          />
           {value.caption && (
             <figcaption className="text-center text-sm text-mw-gray-500 mt-3">
               {value.caption}

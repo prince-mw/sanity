@@ -25,8 +25,12 @@ export default function ZohoCampaignsEmbed({
 
   return (
     <div
-      className={`w-full overflow-hidden bg-white ${className}`}
-      style={{ height, borderRadius: '6px' }}
+      // On narrow screens the Zoho form's fields stack vertically and need more
+      // room than the desktop layout — a single fixed height clips it and the
+      // iframe grows its own internal scrollbar. Give mobile/tablet more height
+      // and only use the caller-provided height once there's room for it (lg+).
+      className={`w-full overflow-hidden bg-white rounded-md h-[460px] sm:h-[400px] lg:h-[var(--zoho-embed-height)] ${className}`}
+      style={{ '--zoho-embed-height': `${height}px` } as React.CSSProperties}
     >
       <iframe
         src={embedUrl}
