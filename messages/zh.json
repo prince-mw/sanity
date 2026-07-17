@@ -866,5 +866,178 @@
       "quote": "This is how outdoor evolves from static space into a responsive global network.",
       "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
     }
+  },
+  "agenciesPage": {
+    "hero": {
+      "title": "白标户外广告平台",
+      "titleHighlight": "为代理商打造",
+      "subtitle": "以您自己的品牌为客户提供完整的户外广告解决方案。Moving Walls为您提供全球广告资源、智能广告活动规划和实时分析，帮助您的代理商更快行动、更明智地规划，并交付可衡量的成果。",
+      "primaryCta": "成为合作伙伴"
+    },
+    "platformSection": {
+      "title": "您的一站式户外广告平台",
+      "subtitle": "在一个集成平台中规划、购买、执行和衡量客户广告活动所需的一切",
+      "tabs": {
+        "planning": "规划",
+        "reach": "拓展触达",
+        "support": "支持"
+      },
+      "planning": {
+        "title": "可定制规划",
+        "description": "我们的规划工具旨在通过提供自定义受众、点位评分和谈判功能，与您现有的工作流程无缝集成，满足您的特定需求。",
+        "linkText": "了解更多"
+      },
+      "reach": {
+        "title": "整合规划",
+        "description": "我们的规划系统提供整合方案，可将户外广告规划延伸至移动平台。此外，我们的平台还支持提取受众列表，用于未来的再营销。",
+        "linkText": "了解更多"
+      },
+      "support": {
+        "title": "实时支持",
+        "description": "我们的平台提供来自户外广告专家的实时支持，随时协助您解决任何疑问或额外的规划需求。",
+        "linkText": "联系我们"
+      }
+    },
+    "trustBar": {
+      "title": "深受全球领先代理商的信赖"
+    },
+    "journey": {
+      "title": "化繁为简",
+      "subtitle": "了解Moving Walls如何变革您代理商的户外广告能力",
+      "old": {
+        "stepLabel": "旧方式",
+        "stepName": "挑战",
+        "items": [
+          "人工RFP耗时数周，拖慢增长",
+          "广告资源获取受限，制约规模扩张",
+          "缺乏实时效果数据",
+          "账单结算流程复杂",
+          "业务扩展困难"
+        ]
+      },
+      "transformation": {
+        "stepLabel": "变革",
+        "stepName": "Moving Walls带来的变革",
+        "description": "为您代理商打造的完整解决方案",
+        "items": [
+          "白标平台",
+          "全球广告资源获取",
+          "实时分析",
+          "自动化工作流程",
+          "可扩展的基础设施"
+        ],
+        "cta": "开启您的变革之旅"
+      },
+      "new": {
+        "stepLabel": "新方式",
+        "stepName": "成果",
+        "items": [
+          "5分钟内即可上线",
+          "50万+屏幕可供使用",
+          "实时追踪",
+          "自动结算与开票",
+          "收入提升3倍"
+        ]
+      }
+    },
+    "featureGrid": {
+      "title": "为渴望增长的代理商打造",
+      "subtitle": "专为代理商设计的强大工具，助力赢得更多客户并交付卓越的户外广告活动",
+      "items": [
+        {
+          "title": "白标平台",
+          "description": "在提供完整户外广告解决方案的同时，让您的品牌始终居于前台"
+        },
+        {
+          "title": "多客户管理",
+          "description": "在一个仪表盘中管理所有广告活动、预算和团队"
+        },
+        {
+          "title": "客户报告",
+          "description": "提供包含实时指标和归因数据的品牌化报告"
+        },
+        {
+          "title": "审批工作流程",
+          "description": "简化通知与审批流程，每周节省数小时"
+        },
+        {
+          "title": "全球广告资源获取",
+          "description": "为客户连接50多个国家的优质屏幕资源"
+        },
+        {
+          "title": "利润控制",
+          "description": "在保持透明度的同时设置客户专属定价"
+        },
+        {
+          "title": "团队协作",
+          "description": "支持基于角色的访问权限、任务管理和共享仪表盘"
+        },
+        {
+          "title": "API集成",
+          "description": "与CRM、DSP及内部系统无缝对接"
+        }
+      ]
+    },
+    "platformSuite": {
+      "title": "完整的MW平台套件",
+      "subtitle": "所需的一切工具，无缝集成",
+      "learnMore": "了解更多",
+      "cards": {
+        "planner": {
+          "title": "MW Planner",
+          "description": "AI驱动的广告活动规划与受众洞察。精准发现受众所在，精确制定计划。"
+        },
+        "marketplace": {
+          "title": "MW Marketplace",
+          "description": "接入全球25万多个优质广告牌点位"
+        },
+        "studio": {
+          "title": "MW Studio",
+          "description": "适用于各种格式的创意设计与优化工具"
+        },
+        "activate": {
+          "title": "MW Activate",
+          "description": "大规模广告活动激活与自动化"
+        },
+        "measure": {
+          "title": "MW Measure",
+          "description": "实时分析与归因追踪"
+        },
+        "science": {
+          "title": "MW Science",
+          "description": "数据科学与预测分析引擎"
+        },
+        "influence": {
+          "title": "MW Influence",
+          "description": "智能DOOH广告投放与收益优化"
+        }
+      }
+    },
+    "faq": {
+      "title": "常见问题",
+      "subtitle": "关于与Moving Walls合作您需要了解的一切",
+      "items": [
+        {
+          "question": "白标平台是如何运作的？",
+          "answer": "我们的白标解决方案允许您在自己的代理商域名下部署完全品牌化的户外广告购买平台。客户在整个体验过程中看到的都是您的品牌、色彩和标志。您完全掌控定价、利润和客户访问权限，而技术和媒体业主关系则由我们负责。"
+        },
+        {
+          "question": "平台提供哪些广告资源？",
+          "answer": "可接入覆盖50多个国家、超过50万块户外广告屏幕，包括广告牌、数字显示屏、交通广告、街道设施和场所媒体。我们的资源涵盖主要城市的优质点位，并延伸至全球区域市场。"
+        },
+        {
+          "question": "代理商的定价如何运作？",
+          "answer": "我们提供灵活的定价模式，包括媒体支出百分比、固定月费或混合方案。没有最低消费要求，让各种规模的代理商都能使用我们的平台。请联系我们获取定制报价。"
+        },
+        {
+          "question": "我们可以与现有工具集成吗？",
+          "answer": "可以，我们的平台提供与DSP、DMP、项目管理系统和财务软件等热门代理商工具的API和集成。我们还支持SSO，实现团队访问的无缝管理。"
+        },
+        {
+          "question": "你们提供哪些培训和支持？",
+          "answer": "每位代理商合作伙伴都将获得专属入职培训、平台培训和持续支持。我们提供销售支持材料、宣传方案模板，并可加入客户通话以协助促成合作。企业合作伙伴将获得专属客户经理。"
+        }
+      ]
+    }
   }
 }

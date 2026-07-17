@@ -871,5 +871,178 @@
       "quote": "This is how outdoor evolves from static space into a responsive global network.",
       "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
     }
+  },
+  "agenciesPage": {
+    "hero": {
+      "title": "Platform OOH White Label",
+      "titleHighlight": "Dibangun untuk Agensi",
+      "subtitle": "Tawarkan solusi out of home yang lengkap kepada klien Anda di bawah brand Anda sendiri. Moving Walls memberi Anda akses inventaris global, perencanaan kampanye cerdas, dan analitik real-time yang membantu agensi Anda bergerak lebih cepat, merencanakan lebih cerdas, dan memberikan hasil yang terukur.",
+      "primaryCta": "Jadi Mitra"
+    },
+    "platformSection": {
+      "title": "Platform OOH Lengkap Anda",
+      "subtitle": "Semua yang Anda butuhkan untuk merencanakan, membeli, mengaktifkan, dan mengukur kampanye untuk klien Anda dalam satu platform terintegrasi",
+      "tabs": {
+        "planning": "Perencanaan",
+        "reach": "Jangkauan Diperluas",
+        "support": "Dukungan"
+      },
+      "planning": {
+        "title": "Perencanaan yang Dapat Disesuaikan",
+        "description": "Alat perencanaan kami dirancang untuk terintegrasi secara mulus dengan alur kerja Anda saat ini dengan menyediakan audiens kustom, skor lokasi, dan fitur negosiasi yang dapat disesuaikan dengan kebutuhan spesifik Anda.",
+        "linkText": "Pelajari lebih lanjut"
+      },
+      "reach": {
+        "title": "Perencanaan Terintegrasi",
+        "description": "Sistem perencanaan kami menawarkan pendekatan terintegrasi yang memungkinkan perluasan perencanaan OOH ke platform seluler. Selain itu, platform kami memungkinkan ekstraksi daftar audiens yang dapat digunakan untuk upaya retargeting di masa depan.",
+        "linkText": "Pelajari lebih lanjut"
+      },
+      "support": {
+        "title": "Dukungan Langsung",
+        "description": "Platform kami menyediakan dukungan langsung dari para ahli OOH yang siap membantu Anda dengan pertanyaan atau permintaan perencanaan tambahan.",
+        "linkText": "Hubungi kami"
+      }
+    },
+    "trustBar": {
+      "title": "DIPERCAYA OLEH AGENSI TERKEMUKA DI SELURUH DUNIA"
+    },
+    "journey": {
+      "title": "Dari Kerumitan Menuju Kejelasan",
+      "subtitle": "Lihat bagaimana Moving Walls mentransformasi kapabilitas OOH agensi Anda",
+      "old": {
+        "stepLabel": "Cara Lama",
+        "stepName": "Tantangan",
+        "items": [
+          "RFP manual yang memakan waktu berminggu-minggu memperlambat pertumbuhan",
+          "Akses inventaris terbatas membatasi skala",
+          "Tidak ada data performa real-time",
+          "Hambatan penagihan yang rumit",
+          "Sulit untuk menskalakan operasi"
+        ]
+      },
+      "transformation": {
+        "stepLabel": "Transformasi",
+        "stepName": "Transformasi Moving Walls",
+        "description": "Solusi lengkap untuk agensi Anda",
+        "items": [
+          "Platform White-Label",
+          "Akses Inventaris Global",
+          "Analitik Real-Time",
+          "Alur Kerja Otomatis",
+          "Infrastruktur yang Dapat Diskalakan"
+        ],
+        "cta": "Mulai Transformasi Anda"
+      },
+      "new": {
+        "stepLabel": "Cara Baru",
+        "stepName": "Hasil",
+        "items": [
+          "Diluncurkan dalam waktu kurang dari 5 menit",
+          "500K+ layar tersedia",
+          "Pelacakan real-time",
+          "Penagihan & faktur otomatis",
+          "Peningkatan pendapatan 3x lipat"
+        ]
+      }
+    },
+    "featureGrid": {
+      "title": "Dibangun untuk Agensi yang Ingin Berkembang",
+      "subtitle": "Alat canggih yang dirancang khusus untuk agensi guna memenangkan lebih banyak klien dan menghadirkan kampanye OOH yang luar biasa",
+      "items": [
+        {
+          "title": "Platform White-Label",
+          "description": "Menjaga brand Anda tetap menjadi sorotan sambil menawarkan solusi OOH yang lengkap"
+        },
+        {
+          "title": "Manajemen Multi-Klien",
+          "description": "Memungkinkan pengelolaan semua kampanye, anggaran, dan tim dalam satu dasbor"
+        },
+        {
+          "title": "Pelaporan Klien",
+          "description": "Menghadirkan laporan bermerek dengan metrik real-time dan data atribusi"
+        },
+        {
+          "title": "Alur Kerja Persetujuan",
+          "description": "Menyederhanakan notifikasi dan persetujuan, menghemat berjam-jam setiap minggu"
+        },
+        {
+          "title": "Akses Inventaris Global",
+          "description": "Menghubungkan klien Anda ke layar premium di lebih dari 50 negara"
+        },
+        {
+          "title": "Kontrol Margin",
+          "description": "Menetapkan harga khusus klien sambil menjaga transparansi"
+        },
+        {
+          "title": "Kolaborasi Tim",
+          "description": "Memungkinkan akses berbasis peran, manajemen tugas, dan dasbor bersama"
+        },
+        {
+          "title": "Integrasi API",
+          "description": "Terhubung secara mulus dengan CRM, DSP, dan sistem internal"
+        }
+      ]
+    },
+    "platformSuite": {
+      "title": "Rangkaian Lengkap Platform MW",
+      "subtitle": "Semua alat yang Anda butuhkan, terintegrasi dengan mulus",
+      "learnMore": "Pelajari Lebih Lanjut",
+      "cards": {
+        "planner": {
+          "title": "MW Planner",
+          "description": "Perencanaan kampanye bertenaga AI dan wawasan audiens. Temukan di mana audiens Anda berada dan rencanakan dengan presisi."
+        },
+        "marketplace": {
+          "title": "MW Marketplace",
+          "description": "Akses 250.000+ lokasi billboard premium di seluruh dunia"
+        },
+        "studio": {
+          "title": "MW Studio",
+          "description": "Alat desain kreatif dan optimalisasi untuk setiap format"
+        },
+        "activate": {
+          "title": "MW Activate",
+          "description": "Aktivasi dan otomatisasi kampanye dalam skala besar"
+        },
+        "measure": {
+          "title": "MW Measure",
+          "description": "Analitik real-time dan pelacakan atribusi"
+        },
+        "science": {
+          "title": "MW Science",
+          "description": "Mesin ilmu data dan analitik prediktif"
+        },
+        "influence": {
+          "title": "MW Influence",
+          "description": "Penayangan iklan DOOH cerdas dan optimalisasi yield"
+        }
+      }
+    },
+    "faq": {
+      "title": "Pertanyaan yang Sering Diajukan",
+      "subtitle": "Semua yang perlu Anda ketahui tentang bermitra dengan Moving Walls",
+      "items": [
+        {
+          "question": "Bagaimana cara kerja platform white-label?",
+          "answer": "Solusi white-label kami memungkinkan Anda menerapkan platform pembelian OOH yang sepenuhnya bermerek di bawah domain agensi Anda. Klien akan melihat branding, warna, dan logo Anda di seluruh pengalaman. Anda mempertahankan kendali penuh atas harga, margin, dan akses klien, sementara kami menangani teknologi dan hubungan dengan pemilik media."
+        },
+        {
+          "question": "Inventaris apa saja yang tersedia melalui platform ini?",
+          "answer": "Akses lebih dari 500.000 layar OOH di 50+ negara termasuk billboard, tampilan digital, iklan transit, perabot jalan, dan media berbasis lokasi. Inventaris kami mencakup lokasi premium di kota-kota besar hingga pasar regional di seluruh dunia."
+        },
+        {
+          "question": "Bagaimana cara kerja harga untuk agensi?",
+          "answer": "Kami menawarkan model harga yang fleksibel termasuk persentase dari belanja media, biaya bulanan tetap, atau pengaturan hybrid. Tidak ada persyaratan belanja minimum, sehingga platform kami dapat diakses oleh agensi dari semua ukuran. Hubungi kami untuk penawaran khusus."
+        },
+        {
+          "question": "Bisakah kami berintegrasi dengan alat yang sudah ada?",
+          "answer": "Ya, platform kami menawarkan API dan integrasi dengan alat agensi populer termasuk DSP, DMP, sistem manajemen proyek, dan perangkat lunak keuangan. Kami juga mendukung SSO untuk manajemen akses tim yang mulus."
+        },
+        {
+          "question": "Pelatihan dan dukungan apa yang Anda sediakan?",
+          "answer": "Setiap mitra agensi menerima onboarding khusus, pelatihan platform, dan dukungan berkelanjutan. Kami menyediakan materi pendukung penjualan, template pitch deck, dan dapat bergabung dalam panggilan klien untuk membantu menutup kesepakatan. Mitra enterprise mendapatkan manajer akun khusus."
+        }
+      ]
+    }
   }
 }

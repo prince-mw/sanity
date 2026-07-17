@@ -866,5 +866,178 @@
         "phone": "+1 (888) MW-WALLS"
       }
     }
+  },
+  "agenciesPage": {
+    "hero": {
+      "title": "White Label OOH Platform",
+      "titleHighlight": "Built for Agencies",
+      "subtitle": "Offer your clients a complete out of home solution under your own brand. Moving Walls gives you global inventory, intelligent campaign planning, and real-time analytics that help your agency act faster, plan smarter, and deliver measurable results.",
+      "primaryCta": "Become a Partner"
+    },
+    "platformSection": {
+      "title": "Your Complete OOH Platform",
+      "subtitle": "Everything you need to plan, buy, activate, and measure campaigns for your clients in one integrated platform",
+      "tabs": {
+        "planning": "Planning",
+        "reach": "Extended Reach",
+        "support": "Support"
+      },
+      "planning": {
+        "title": "Customisable Planning",
+        "description": "Our planning tool is designed to seamlessly integrate with your current workflows by providing custom audiences, site scores, and negotiation features that can be tailored to your specific needs.",
+        "linkText": "Learn more"
+      },
+      "reach": {
+        "title": "Integrated Planning",
+        "description": "Our planning system offers an integrated approach that allows for the extension of OOH planning to mobile platforms. Additionally, our platform allows for the extraction of audience lists, which can be used for future retargeting efforts.",
+        "linkText": "Learn more"
+      },
+      "support": {
+        "title": "Live Support",
+        "description": "Our platform provides live support from OOH experts who are readily available to assist you with any inquiries or additional planning requests you may have.",
+        "linkText": "Contact us"
+      }
+    },
+    "trustBar": {
+      "title": "TRUSTED BY LEADING AGENCIES WORLDWIDE"
+    },
+    "journey": {
+      "title": "From Complexity to Clarity",
+      "subtitle": "See how Moving Walls transforms your agency's OOH capabilities",
+      "old": {
+        "stepLabel": "The Old Way",
+        "stepName": "Challenges",
+        "items": [
+          "Manual RFPs taking weeks slows growth",
+          "Limited inventory access restricts scale",
+          "No real-time performance data",
+          "Complex billing bottlenecks",
+          "Scaling operations difficult"
+        ]
+      },
+      "transformation": {
+        "stepLabel": "Transformation",
+        "stepName": "The Moving Walls Transformation",
+        "description": "Your complete agency solution",
+        "items": [
+          "White-Label Platform",
+          "Global Inventory Access",
+          "Real-Time Analytics",
+          "Automated Workflows",
+          "Scalable Infrastructure"
+        ],
+        "cta": "Start Your Transformation"
+      },
+      "new": {
+        "stepLabel": "The New Way",
+        "stepName": "Results",
+        "items": [
+          "Launch in under 5 minutes",
+          "500K+ screens available",
+          "Real-time tracking",
+          "Automated billing & invoicing",
+          "3x revenue scaling"
+        ]
+      }
+    },
+    "featureGrid": {
+      "title": "Built for Agencies That Want to Grow",
+      "subtitle": "Powerful tools designed specifically for agencies to win more clients and deliver exceptional OOH campaigns",
+      "items": [
+        {
+          "title": "White-Label Platform",
+          "description": "Keeps your brand front and center while offering a full OOH solution"
+        },
+        {
+          "title": "Multi-Client Management",
+          "description": "Allows management of all campaigns, budgets, and teams in one dashboard"
+        },
+        {
+          "title": "Client Reporting",
+          "description": "Delivers branded reports with real-time metrics and attribution data"
+        },
+        {
+          "title": "Approval Workflows",
+          "description": "Streamlines notifications and approvals, saving hours each week"
+        },
+        {
+          "title": "Global Inventory Access",
+          "description": "Connects your clients to premium screens across 50+ countries"
+        },
+        {
+          "title": "Margin Control",
+          "description": "Sets client-specific pricing while maintaining transparency"
+        },
+        {
+          "title": "Team Collaboration",
+          "description": "Enables role-based access, task management, and shared dashboards"
+        },
+        {
+          "title": "API Integration",
+          "description": "Connects seamlessly with CRMs, DSPs, and internal systems"
+        }
+      ]
+    },
+    "platformSuite": {
+      "title": "Complete MW Platform Suite",
+      "subtitle": "All the tools you need, integrated seamlessly",
+      "learnMore": "Learn More",
+      "cards": {
+        "planner": {
+          "title": "MW Planner",
+          "description": "AI-powered campaign planning and audience insights. Discover where your audiences are and plan with precision."
+        },
+        "marketplace": {
+          "title": "MW Marketplace",
+          "description": "Access 250,000+ premium billboard locations worldwide"
+        },
+        "studio": {
+          "title": "MW Studio",
+          "description": "Creative design and optimization tools for every format"
+        },
+        "activate": {
+          "title": "MW Activate",
+          "description": "Campaign activation and automation at scale"
+        },
+        "measure": {
+          "title": "MW Measure",
+          "description": "Real-time analytics and attribution tracking"
+        },
+        "science": {
+          "title": "MW Science",
+          "description": "Data science and predictive analytics engine"
+        },
+        "influence": {
+          "title": "MW Influence",
+          "description": "Intelligent DOOH ad serving and yield optimization"
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about partnering with Moving Walls",
+      "items": [
+        {
+          "question": "How does the white-label platform work?",
+          "answer": "Our white-label solution allows you to deploy a fully branded OOH buying platform under your agency's domain. Clients see your branding, colors, and logo throughout the experience. You maintain full control over pricing, margins, and client access while we handle the technology and media owner relationships."
+        },
+        {
+          "question": "What inventory is available through the platform?",
+          "answer": "Access over 500,000 OOH screens across 50+ countries including billboards, digital displays, transit advertising, street furniture, and place-based media. Our inventory spans premium locations in major cities and extends to regional markets worldwide."
+        },
+        {
+          "question": "How does pricing work for agencies?",
+          "answer": "We offer flexible pricing models including percentage of media spend, flat monthly fees, or hybrid arrangements. There are no minimum spend requirements, making our platform accessible to agencies of all sizes. Contact us for a customized quote."
+        },
+        {
+          "question": "Can we integrate with our existing tools?",
+          "answer": "Yes, our platform offers APIs and integrations with popular agency tools including DSPs, DMPs, project management systems, and financial software. We also support SSO for seamless team access management."
+        },
+        {
+          "question": "What training and support do you provide?",
+          "answer": "Every agency partner receives dedicated onboarding, platform training, and ongoing support. We provide sales enablement materials, pitch deck templates, and can join client calls to help close deals. Enterprise partners get dedicated account managers."
+        }
+      ]
+    }
   }
 }

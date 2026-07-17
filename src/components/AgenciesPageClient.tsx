@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import TestimonialSectionClient from '@/components/TestimonialSectionClient'
+import { useLocale } from '@/i18n/LocaleContext'
 
 // Types for CMS-managed content
 interface AgenciesPageProps {
@@ -51,7 +52,8 @@ interface AgenciesPageProps {
   }>;
 }
 
-// Default values for fallback
+// Default values for fallback (English literals kept here for the dead/unused fields below;
+// title/subtitle/primaryCTA are overridden with translated values inside the component)
 const defaultContent = {
   title: "White Label OOH Platform",
   titleHighlight: "Built for Agencies",
@@ -113,12 +115,14 @@ const defaultContent = {
 };
 
 export default function AgenciesPageClient(props: AgenciesPageProps) {
+  const { t } = useLocale();
+
   // Merge props with defaults
   const content = {
-    title: props.title || defaultContent.title,
-    titleHighlight: props.titleHighlight || defaultContent.titleHighlight,
-    subtitle: props.subtitle || defaultContent.subtitle,
-    primaryCTA: props.primaryCTA || defaultContent.primaryCTA,
+    title: props.title || t('agenciesPage.hero.title'),
+    titleHighlight: props.titleHighlight || t('agenciesPage.hero.titleHighlight'),
+    subtitle: props.subtitle || t('agenciesPage.hero.subtitle'),
+    primaryCTA: props.primaryCTA || { text: t('agenciesPage.hero.primaryCta'), href: defaultContent.primaryCTA.href },
     secondaryCTA: props.secondaryCTA || defaultContent.secondaryCTA,
     stats: props.stats?.length ? props.stats : defaultContent.stats,
     benefits: props.benefits?.length ? props.benefits : defaultContent.benefits,
@@ -127,7 +131,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
   };
 
   // Trust bar logos - CMS or fallback
-  const trustBarTitle = props.trustBarTitle || 'TRUSTED BY LEADING AGENCIES WORLDWIDE';
+  const trustBarTitle = props.trustBarTitle || t('agenciesPage.trustBar.title');
   const cmsLogosWithImages = (props.customerLogos || []).filter(l => l.logo);
   const customerLogos = cmsLogosWithImages.length ? cmsLogosWithImages : [
     { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
@@ -151,27 +155,18 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
   ];
 
   // Journey section - CMS or fallback
-  const journeyTitle = props.journeyTitle || 'From Complexity to Clarity';
-  const journeySubtitle = props.journeySubtitle || "See how Moving Walls transforms your agency's OOH capabilities";
+  const journeyTitle = props.journeyTitle || t('agenciesPage.journey.title');
+  const journeySubtitle = props.journeySubtitle || t('agenciesPage.journey.subtitle');
   const journeySteps = props.journeySteps?.length ? props.journeySteps : [
-    { stepLabel: 'The Old Way', stepName: 'Challenges', description: '', items: ['Manual RFPs taking weeks slows growth', 'Limited inventory access restricts scale', 'No real-time performance data', 'Complex billing bottlenecks', 'Scaling operations difficult'] },
-    { stepLabel: 'Transformation', stepName: 'The Moving Walls Transformation', description: 'Your complete agency solution', items: ['White-Label Platform', 'Global Inventory Access', 'Real-Time Analytics', 'Automated Workflows', 'Scalable Infrastructure'] },
-    { stepLabel: 'The New Way', stepName: 'Results', description: '', items: ['Launch in under 5 minutes', '500K+ screens available', 'Real-time tracking', 'Automated billing & invoicing', '3x revenue scaling'] },
+    { stepLabel: t('agenciesPage.journey.old.stepLabel'), stepName: t('agenciesPage.journey.old.stepName'), description: '', items: t('agenciesPage.journey.old.items') },
+    { stepLabel: t('agenciesPage.journey.transformation.stepLabel'), stepName: t('agenciesPage.journey.transformation.stepName'), description: t('agenciesPage.journey.transformation.description'), items: t('agenciesPage.journey.transformation.items') },
+    { stepLabel: t('agenciesPage.journey.new.stepLabel'), stepName: t('agenciesPage.journey.new.stepName'), description: '', items: t('agenciesPage.journey.new.items') },
   ];
 
   // Feature grid section - CMS or fallback
-  const featureGridTitle = props.featureGridTitle || 'Built for Agencies That Want to Grow';
-  const featureGridSubtitle = props.featureGridSubtitle || 'Powerful tools designed specifically for agencies to win more clients and deliver exceptional OOH campaigns';
-  const featureGrid = props.featureGrid?.length ? props.featureGrid : [
-    { title: 'White-Label Platform', description: 'Keeps your brand front and center while offering a full OOH solution' },
-    { title: 'Multi-Client Management', description: 'Allows management of all campaigns, budgets, and teams in one dashboard' },
-    { title: 'Client Reporting', description: 'Delivers branded reports with real-time metrics and attribution data' },
-    { title: 'Approval Workflows', description: 'Streamlines notifications and approvals, saving hours each week' },
-    { title: 'Global Inventory Access', description: 'Connects your clients to premium screens across 50+ countries' },
-    { title: 'Margin Control', description: 'Sets client-specific pricing while maintaining transparency' },
-    { title: 'Team Collaboration', description: 'Enables role-based access, task management, and shared dashboards' },
-    { title: 'API Integration', description: 'Connects seamlessly with CRMs, DSPs, and internal systems' },
-  ];
+  const featureGridTitle = props.featureGridTitle || t('agenciesPage.featureGrid.title');
+  const featureGridSubtitle = props.featureGridSubtitle || t('agenciesPage.featureGrid.subtitle');
+  const featureGrid = props.featureGrid?.length ? props.featureGrid : t('agenciesPage.featureGrid.items');
 
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [activePlatform, setActivePlatform] = useState('planning')
@@ -495,10 +490,10 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-Your Complete OOH Platform
+              {t('agenciesPage.platformSection.title')}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Everything you need to plan, buy, activate, and measure campaigns for your clients in one integrated platform
+              {t('agenciesPage.platformSection.subtitle')}
             </p>
           </motion.div>
 
@@ -506,9 +501,9 @@ Your Complete OOH Platform
           <div className="flex justify-center mb-16">
             <div className="inline-flex border border-gray-200 p-1.5 rounded-xl gap-1 flex-wrap justify-center">
               {[
-                { id: 'planning', name: 'Planning' },
-                { id: 'reach', name: 'Extended Reach' },
-                { id: 'support', name: 'Support' },
+                { id: 'planning', name: t('agenciesPage.platformSection.tabs.planning') },
+                { id: 'reach', name: t('agenciesPage.platformSection.tabs.reach') },
+                { id: 'support', name: t('agenciesPage.platformSection.tabs.support') },
               ].map((tab) => (
                 <button
                   key={tab.id}
@@ -536,13 +531,13 @@ Your Complete OOH Platform
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Customisable Planning
+                    {t('agenciesPage.platformSection.planning.title')}
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    Our planning tool is designed to seamlessly integrate with your current workflows by providing custom audiences, site scores, and negotiation features that can be tailored to your specific needs.
+                    {t('agenciesPage.platformSection.planning.description')}
                   </p>
                   <Link href="/mw-planner" className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:gap-3 transition-all text-sm">
-                    Learn more
+                    {t('agenciesPage.platformSection.planning.linkText')}
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -575,13 +570,13 @@ Your Complete OOH Platform
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Integrated Planning
+                    {t('agenciesPage.platformSection.reach.title')}
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    Our planning system offers an integrated approach that allows for the extension of OOH planning to mobile platforms. Additionally, our platform allows for the extraction of audience lists, which can be used for future retargeting efforts.
+                    {t('agenciesPage.platformSection.reach.description')}
                   </p>
                   <Link href="/mw-reach" className="inline-flex items-center gap-2 text-green-600 font-semibold hover:gap-3 transition-all text-sm">
-                    Learn more
+                    {t('agenciesPage.platformSection.reach.linkText')}
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -607,13 +602,13 @@ Your Complete OOH Platform
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-4">
-                    Live Support
+                    {t('agenciesPage.platformSection.support.title')}
                   </h3>
                   <p className="text-gray-600 mb-6 leading-relaxed">
-                    Our platform provides live support from OOH experts who are readily available to assist you with any inquiries or additional planning requests you may have.
+                    {t('agenciesPage.platformSection.support.description')}
                   </p>
                   <Link href="/contact" className="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all text-sm">
-                    Contact us
+                    {t('agenciesPage.platformSection.support.linkText')}
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -890,12 +885,12 @@ Your Complete OOH Platform
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-red-500 uppercase tracking-wider">{journeySteps[0]?.stepLabel || 'The Old Way'}</span>
-                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || 'Challenges'}</h3>
+                      <span className="text-xs font-bold text-red-500 uppercase tracking-wider">{journeySteps[0]?.stepLabel || t('agenciesPage.journey.old.stepLabel')}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || t('agenciesPage.journey.old.stepName')}</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {(journeySteps[0]?.items || ['Manual RFPs taking weeks slows growth', 'Limited inventory access restricts scale', 'No real-time performance data', 'Complex billing bottlenecks', 'Scaling operations difficult']).map((item, index) => (
+                    {(journeySteps[0]?.items || t('agenciesPage.journey.old.items')).map((item: string, index: number) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -10 }}
@@ -932,7 +927,7 @@ Your Complete OOH Platform
                 <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 shadow-2xl h-full transform lg:-translate-y-4">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">
-                      {journeySteps[1]?.stepLabel || 'Transformation'}
+                      {journeySteps[1]?.stepLabel || t('agenciesPage.journey.transformation.stepLabel')}
                     </span>
                   </div>
                   <div className="text-center mb-6 pt-4">
@@ -941,17 +936,11 @@ Your Complete OOH Platform
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">{journeySteps[1]?.stepName || 'The Moving Walls Transformation'}</h3>
-                    <p className="text-blue-200 text-sm">{journeySteps[1]?.description || 'Your complete agency solution'}</p>
+                    <h3 className="text-2xl font-bold text-white mb-2">{journeySteps[1]?.stepName || t('agenciesPage.journey.transformation.stepName')}</h3>
+                    <p className="text-blue-200 text-sm">{journeySteps[1]?.description || t('agenciesPage.journey.transformation.description')}</p>
                   </div>
                   <div className="space-y-3">
-                    {(journeySteps[1]?.items || [
-                      'White-Label Platform',
-                      'Global Inventory Access',
-                      'Real-Time Analytics',
-                      'Automated Workflows',
-                      'Scalable Infrastructure',
-                    ]).map((feature, index) => (
+                    {(journeySteps[1]?.items || t('agenciesPage.journey.transformation.items')).map((feature: string, index: number) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -971,7 +960,7 @@ Your Complete OOH Platform
                   </div>
                   <div className="mt-6 text-center">
                     <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all text-sm">
-                      Start Your Transformation
+                      {t('agenciesPage.journey.transformation.cta')}
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
@@ -1003,12 +992,12 @@ Your Complete OOH Platform
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || 'The New Way'}</span>
-                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || 'Results'}</h3>
+                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || t('agenciesPage.journey.new.stepLabel')}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || t('agenciesPage.journey.new.stepName')}</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {(journeySteps[2]?.items || ['Launch in under 5 minutes', '500K+ screens available', 'Real-time tracking', 'Automated billing & invoicing', '3x revenue scaling']).map((item, index) => (
+                    {(journeySteps[2]?.items || t('agenciesPage.journey.new.items')).map((item: string, index: number) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 10 }}
@@ -1065,7 +1054,7 @@ Your Complete OOH Platform
                 { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>, color: 'from-cyan-500 to-cyan-600' },
                 { icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" /></svg>, color: 'from-teal-500 to-teal-600' },
               ];
-              return featureGrid.map((feature, index) => {
+              return featureGrid.map((feature: { title: string; description: string }, index: number) => {
                 const visual = featureIcons[index % featureIcons.length];
                 return (
                   <motion.div
@@ -1099,10 +1088,10 @@ Your Complete OOH Platform
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Complete MW Platform Suite
+              {t('agenciesPage.platformSuite.title')}
             </h2>
             <p className="text-xl text-mw-gray-600">
-              All the tools you need, integrated seamlessly
+              {t('agenciesPage.platformSuite.subtitle')}
             </p>
           </motion.div>
 
@@ -1124,10 +1113,10 @@ Your Complete OOH Platform
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
                   </svg>
                 </div>
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">MW Planner</h3>
-                <p className="text-blue-100 text-lg mb-6 max-w-md">AI-powered campaign planning and audience insights. Discover where your audiences are and plan with precision.</p>
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">{t('agenciesPage.platformSuite.cards.planner.title')}</h3>
+                <p className="text-blue-100 text-lg mb-6 max-w-md">{t('agenciesPage.platformSuite.cards.planner.description')}</p>
                 <Link href="/mw-planner" className="inline-flex items-center gap-2 text-white font-semibold text-sm bg-white/20 hover:bg-white/30 backdrop-blur-sm px-5 py-2.5 rounded-lg transition-all">
-                  Learn More
+                  {t('agenciesPage.platformSuite.learnMore')}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -1149,10 +1138,10 @@ Your Complete OOH Platform
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.349m-18 0a2.999 2.999 0 01.79-1.89l1.72-1.72A.75.75 0 016.04 5.5h11.92a.75.75 0 01.53.22l1.72 1.72a3 3 0 01.79 1.89" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Marketplace</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Access 250,000+ premium billboard locations worldwide</p>
+              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">{t('agenciesPage.platformSuite.cards.marketplace.title')}</h3>
+              <p className="text-mw-gray-600 text-sm mb-4">{t('agenciesPage.platformSuite.cards.marketplace.description')}</p>
               <Link href="/mw-market" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('agenciesPage.platformSuite.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1173,10 +1162,10 @@ Your Complete OOH Platform
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Studio</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Creative design and optimization tools for every format</p>
+              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">{t('agenciesPage.platformSuite.cards.studio.title')}</h3>
+              <p className="text-mw-gray-600 text-sm mb-4">{t('agenciesPage.platformSuite.cards.studio.description')}</p>
               <Link href="/mw-studio" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('agenciesPage.platformSuite.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1197,10 +1186,10 @@ Your Complete OOH Platform
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Activate</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Campaign activation and automation at scale</p>
+              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">{t('agenciesPage.platformSuite.cards.activate.title')}</h3>
+              <p className="text-mw-gray-600 text-sm mb-4">{t('agenciesPage.platformSuite.cards.activate.description')}</p>
               <Link href="/mw-activate" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('agenciesPage.platformSuite.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1220,10 +1209,10 @@ Your Complete OOH Platform
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Measure</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Real-time analytics and attribution tracking</p>
+              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">{t('agenciesPage.platformSuite.cards.measure.title')}</h3>
+              <p className="text-mw-gray-600 text-sm mb-4">{t('agenciesPage.platformSuite.cards.measure.description')}</p>
               <Link href="/mw-measure" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('agenciesPage.platformSuite.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1243,10 +1232,10 @@ Your Complete OOH Platform
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Science</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Data science and predictive analytics engine</p>
+              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">{t('agenciesPage.platformSuite.cards.science.title')}</h3>
+              <p className="text-mw-gray-600 text-sm mb-4">{t('agenciesPage.platformSuite.cards.science.description')}</p>
               <Link href="/mw-science" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('agenciesPage.platformSuite.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1266,10 +1255,10 @@ Your Complete OOH Platform
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Influence</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Intelligent DOOH ad serving and yield optimization</p>
+              <h3 className="text-xl font-bold text-mw-gray-900 mb-2">{t('agenciesPage.platformSuite.cards.influence.title')}</h3>
+              <p className="text-mw-gray-600 text-sm mb-4">{t('agenciesPage.platformSuite.cards.influence.description')}</p>
               <Link href="/mw-influence" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('agenciesPage.platformSuite.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1292,36 +1281,15 @@ Your Complete OOH Platform
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
+              {t('agenciesPage.faq.title')}
             </h2>
             <p className="text-xl text-gray-600">
-              Everything you need to know about partnering with Moving Walls
+              {t('agenciesPage.faq.subtitle')}
             </p>
           </motion.div>
 
           <div className="space-y-4">
-            {[
-              {
-                question: "How does the white-label platform work?",
-                answer: "Our white-label solution allows you to deploy a fully branded OOH buying platform under your agency's domain. Clients see your branding, colors, and logo throughout the experience. You maintain full control over pricing, margins, and client access while we handle the technology and media owner relationships."
-              },
-              {
-                question: "What inventory is available through the platform?",
-                answer: "Access over 500,000 OOH screens across 50+ countries including billboards, digital displays, transit advertising, street furniture, and place-based media. Our inventory spans premium locations in major cities and extends to regional markets worldwide."
-              },
-              {
-                question: "How does pricing work for agencies?",
-                answer: "We offer flexible pricing models including percentage of media spend, flat monthly fees, or hybrid arrangements. There are no minimum spend requirements, making our platform accessible to agencies of all sizes. Contact us for a customized quote."
-              },
-              {
-                question: "Can we integrate with our existing tools?",
-                answer: "Yes, our platform offers APIs and integrations with popular agency tools including DSPs, DMPs, project management systems, and financial software. We also support SSO for seamless team access management."
-              },
-              {
-                question: "What training and support do you provide?",
-                answer: "Every agency partner receives dedicated onboarding, platform training, and ongoing support. We provide sales enablement materials, pitch deck templates, and can join client calls to help close deals. Enterprise partners get dedicated account managers."
-              }
-            ].map((faq, index) => (
+            {(t('agenciesPage.faq.items') as Array<{ question: string; answer: string }>).map((faq, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

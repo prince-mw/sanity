@@ -866,5 +866,178 @@
       "quote": "This is how outdoor evolves from static space into a responsive global network.",
       "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
     }
+  },
+  "agenciesPage": {
+    "hero": {
+      "title": "화이트 라벨 OOH 플랫폼",
+      "titleHighlight": "에이전시를 위해 구축",
+      "subtitle": "귀사만의 브랜드로 클라이언트에게 완전한 아웃오브홈 솔루션을 제공하세요. Moving Walls는 글로벌 인벤토리, 지능형 캠페인 플래닝, 실시간 분석을 제공하여 귀사가 더 빠르게 움직이고, 더 스마트하게 계획하며, 측정 가능한 성과를 전달할 수 있도록 돕습니다.",
+      "primaryCta": "파트너 되기"
+    },
+    "platformSection": {
+      "title": "올인원 OOH 플랫폼",
+      "subtitle": "클라이언트를 위한 캠페인을 계획, 구매, 실행, 측정하는 데 필요한 모든 것을 하나의 통합 플랫폼에서.",
+      "tabs": {
+        "planning": "플래닝",
+        "reach": "확장된 도달",
+        "support": "지원"
+      },
+      "planning": {
+        "title": "맞춤형 플래닝",
+        "description": "저희 플래닝 도구는 맞춤형 오디언스, 사이트 점수, 협상 기능을 제공하여 귀사의 기존 워크플로우와 원활하게 통합되도록 설계되었습니다.",
+        "linkText": "자세히 보기"
+      },
+      "reach": {
+        "title": "통합 플래닝",
+        "description": "저희 플래닝 시스템은 OOH 플래닝을 모바일 플랫폼으로 확장하는 통합적 접근 방식을 제공합니다. 또한 향후 리타겟팅에 활용할 수 있는 오디언스 리스트 추출도 가능합니다.",
+        "linkText": "자세히 보기"
+      },
+      "support": {
+        "title": "실시간 지원",
+        "description": "저희 플랫폼은 OOH 전문가의 실시간 지원을 제공하여 어떤 문의나 추가 플래닝 요청에도 신속하게 대응합니다.",
+        "linkText": "문의하기"
+      }
+    },
+    "trustBar": {
+      "title": "전 세계 선도적인 에이전시들이 신뢰합니다"
+    },
+    "journey": {
+      "title": "복잡함에서 명확함으로",
+      "subtitle": "Moving Walls가 귀사의 OOH 역량을 어떻게 변화시키는지 확인하세요",
+      "old": {
+        "stepLabel": "기존 방식",
+        "stepName": "과제",
+        "items": [
+          "수작업 RFP에 수 주가 소요되어 성장이 지연됨",
+          "제한적인 인벤토리 접근으로 확장이 제한됨",
+          "실시간 성과 데이터 부재",
+          "복잡한 청구 병목 현상",
+          "운영 확장의 어려움"
+        ]
+      },
+      "transformation": {
+        "stepLabel": "트랜스포메이션",
+        "stepName": "Moving Walls의 변화",
+        "description": "귀사를 위한 완전한 솔루션",
+        "items": [
+          "화이트 라벨 플랫폼",
+          "글로벌 인벤토리 접근",
+          "실시간 분석",
+          "자동화된 워크플로우",
+          "확장 가능한 인프라"
+        ],
+        "cta": "변화를 시작하세요"
+      },
+      "new": {
+        "stepLabel": "새로운 방식",
+        "stepName": "결과",
+        "items": [
+          "5분 이내 론칭",
+          "50만+ 스크린 이용 가능",
+          "실시간 추적",
+          "자동 청구 및 인보이싱",
+          "3배 매출 확장"
+        ]
+      }
+    },
+    "featureGrid": {
+      "title": "성장을 원하는 에이전시를 위해 구축",
+      "subtitle": "에이전시가 더 많은 클라이언트를 확보하고 탁월한 OOH 캠페인을 제공할 수 있도록 특별히 설계된 강력한 도구",
+      "items": [
+        {
+          "title": "화이트 라벨 플랫폼",
+          "description": "완전한 OOH 솔루션을 제공하면서도 귀사의 브랜드를 전면에 유지"
+        },
+        {
+          "title": "멀티 클라이언트 관리",
+          "description": "모든 캠페인, 예산, 팀을 하나의 대시보드에서 관리"
+        },
+        {
+          "title": "클라이언트 리포팅",
+          "description": "실시간 지표와 어트리뷰션 데이터를 포함한 브랜드화된 보고서 제공"
+        },
+        {
+          "title": "승인 워크플로우",
+          "description": "알림과 승인을 간소화하여 매주 여러 시간을 절약"
+        },
+        {
+          "title": "글로벌 인벤토리 접근",
+          "description": "50개국 이상의 프리미엄 스크린에 클라이언트를 연결"
+        },
+        {
+          "title": "마진 컨트롤",
+          "description": "투명성을 유지하면서 클라이언트별 가격 설정 가능"
+        },
+        {
+          "title": "팀 협업",
+          "description": "역할 기반 접근, 작업 관리, 공유 대시보드 지원"
+        },
+        {
+          "title": "API 연동",
+          "description": "CRM, DSP, 내부 시스템과 원활하게 연결"
+        }
+      ]
+    },
+    "platformSuite": {
+      "title": "완전한 MW 플랫폼 스위트",
+      "subtitle": "필요한 모든 도구가 원활하게 통합되어 있습니다",
+      "learnMore": "자세히 보기",
+      "cards": {
+        "planner": {
+          "title": "MW Planner",
+          "description": "AI 기반 캠페인 플래닝과 오디언스 인사이트. 오디언스의 위치를 파악하고 정밀하게 계획하세요."
+        },
+        "marketplace": {
+          "title": "MW Marketplace",
+          "description": "전 세계 25만+ 프리미엄 빌보드 로케이션에 액세스"
+        },
+        "studio": {
+          "title": "MW Studio",
+          "description": "모든 포맷을 위한 크리에이티브 디자인 및 최적화 도구"
+        },
+        "activate": {
+          "title": "MW Activate",
+          "description": "대규모 캠페인 활성화 및 자동화"
+        },
+        "measure": {
+          "title": "MW Measure",
+          "description": "실시간 분석 및 어트리뷰션 추적"
+        },
+        "science": {
+          "title": "MW Science",
+          "description": "데이터 사이언스 및 예측 분석 엔진"
+        },
+        "influence": {
+          "title": "MW Influence",
+          "description": "지능형 DOOH 광고 서빙 및 수익 최적화"
+        }
+      }
+    },
+    "faq": {
+      "title": "자주 묻는 질문",
+      "subtitle": "Moving Walls와의 파트너십에 대해 알아야 할 모든 것",
+      "items": [
+        {
+          "question": "화이트 라벨 플랫폼은 어떻게 작동하나요?",
+          "answer": "당사의 화이트 라벨 솔루션을 통해 귀사의 도메인 아래 완전히 브랜드화된 OOH 구매 플랫폼을 배포할 수 있습니다. 클라이언트는 전 과정에서 귀사의 브랜딩, 색상, 로고를 보게 됩니다. 귀사는 가격, 마진, 클라이언트 접근을 완전히 통제하며, 당사는 기술과 미디어 오너와의 관계를 담당합니다."
+        },
+        {
+          "question": "플랫폼을 통해 어떤 인벤토리를 이용할 수 있나요?",
+          "answer": "빌보드, 디지털 디스플레이, 대중교통 광고, 스트리트 퍼니처, 장소 기반 미디어를 포함하여 50개 이상 국가의 50만 개 이상의 OOH 스크린에 액세스할 수 있습니다. 당사의 인벤토리는 주요 도시의 프리미엄 위치부터 전 세계 지역 시장까지 아우릅니다."
+        },
+        {
+          "question": "에이전시를 위한 가격 정책은 어떻게 되나요?",
+          "answer": "미디어 지출 비율제, 정액 월 요금, 또는 하이브리드 방식 등 유연한 가격 모델을 제공합니다. 최소 지출 요건이 없어 모든 규모의 에이전시가 이용할 수 있습니다. 맞춤 견적은 문의해 주세요."
+        },
+        {
+          "question": "기존 도구와 연동할 수 있나요?",
+          "answer": "네, 저희 플랫폼은 DSP, DMP, 프로젝트 관리 시스템, 재무 소프트웨어 등 널리 사용되는 에이전시 도구와의 API 및 연동을 제공합니다. 또한 원활한 팀 접근 관리를 위해 SSO도 지원합니다."
+        },
+        {
+          "question": "어떤 교육과 지원을 제공하나요?",
+          "answer": "모든 에이전시 파트너는 전담 온보딩, 플랫폼 교육, 지속적인 지원을 받습니다. 영업 지원 자료와 피치덱 템플릿을 제공하며, 거래 성사를 돕기 위해 클라이언트 통화에 함께할 수도 있습니다. 엔터프라이즈 파트너에게는 전담 계정 관리자가 배정됩니다."
+        }
+      ]
+    }
   }
 }
