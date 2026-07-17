@@ -50,49 +50,45 @@ function getNestedValue(obj: Record<string, unknown>, path: string): any {
   return current !== undefined ? current : path;
 }
 
-export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(defaultLocale);
-  const [mounted, setMounted] = useState(false);
+const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
-  // Initialize on client side only
+function setLocaleCookie(newLocale: Locale) {
+  document.cookie = `locale=${newLocale}; path=/; max-age=${LOCALE_COOKIE_MAX_AGE}; SameSite=Lax`;
+}
+
+export function LocaleProvider({ children, initialLocale }: { children: ReactNode; initialLocale?: Locale }) {
+  // The server already resolved the visitor's locale from the cookie (see RootLayout), so the
+  // very first client render matches SSR exactly — no post-mount flash, no hydration mismatch.
+  const [locale, setLocaleState] = useState<Locale>(initialLocale || defaultLocale);
+
+  // Only runs for a first-ever visit with no locale cookie yet: detect the browser's language
+  // and persist it as the cookie so the next request (even a full server navigation) renders it directly.
   useEffect(() => {
-    // Get saved locale from localStorage
-    const savedLocale = localStorage.getItem('locale') as Locale | null;
-    if (savedLocale && locales.includes(savedLocale)) {
-      setLocaleState(savedLocale);
-      document.documentElement.lang = savedLocale;
-      document.documentElement.dir = 'ltr';
-    } else {
-      // Try to detect from browser
-      const browserLocale = navigator.language.split('-')[0] as Locale;
-      if (locales.includes(browserLocale)) {
-        setLocaleState(browserLocale);
-        document.documentElement.lang = browserLocale;
-        document.documentElement.dir = 'ltr';
-      }
+    if (initialLocale) return;
+    const browserLocale = navigator.language.split('-')[0] as Locale;
+    if (locales.includes(browserLocale) && browserLocale !== defaultLocale) {
+      setLocaleState(browserLocale);
+      setLocaleCookie(browserLocale);
+      document.documentElement.lang = browserLocale;
     }
-    setMounted(true);
-  }, []);
+  }, [initialLocale]);
 
   const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('locale', newLocale);
+      setLocaleCookie(newLocale);
       document.documentElement.lang = newLocale;
       document.documentElement.dir = 'ltr';
     }
   }, []);
 
-  // Use the current locale for translation, but default for SSR
-  const currentLocale = mounted ? locale : defaultLocale;
-  
   const t = useCallback((key: string): string => {
-    const messages = messagesMap[currentLocale] || messagesMap[defaultLocale];
+    const messages = messagesMap[locale] || messagesMap[defaultLocale];
     return getNestedValue(messages as Record<string, unknown>, key);
-  }, [currentLocale]);
+  }, [locale]);
 
   const contextValue: LocaleContextType = {
-    locale: currentLocale,
+    locale,
     setLocale,
     t,
     locales,
