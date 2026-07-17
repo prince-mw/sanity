@@ -1,0 +1,17 @@
+customRules:
+  # Redirect apex domain (movingwalls.com) to www.movingwalls.com
+  - source: https://movingwalls.com/<*>
+    target: https://www.movingwalls.com/<*>
+    status: '301'
+    condition: null
+  
+  # Redirect http to https
+  - source: http://movingwalls.com/<*>
+    target: https://www.movingwalls.com/<*>
+    status: '301'
+    condition: null
+  
+  - source: http://www.movingwalls.com/<*>
+    target: https://www.movingwalls.com/<*>
+    status: '301'
+    condition: null

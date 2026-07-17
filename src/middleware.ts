@@ -54,6 +54,10 @@ function buildRedirectUrl(request: NextRequest, pathname: string): string {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // Get the actual host - prefer x-forwarded-host for proxied requests (AWS Amplify/CloudFront)
+  const forwardedHost = request.headers.get('x-forwarded-host')
+  const host = forwardedHost || request.headers.get('host') || ''
+  
   // Skip middleware for static assets, API routes, and Next.js internals
   if (
     pathname.startsWith('/_next') ||
@@ -65,15 +69,25 @@ export async function middleware(request: NextRequest) {
   }
 
   // Canonical www redirect: non-www → www (SEO best practice)
-  // Skip for localhost, staging (stg.), and preview deployments
-  const host = request.headers.get('host') || ''
+  // Skip for localhost, staging (stg.), preview deployments, and Amplify domains
+  const isLocalhost = host.includes('localhost') || host.includes('127.0.0.1')
+  const isAmplifyDomain = host.includes('amplifyapp.com')
+  const isStaging = host.startsWith('stg.')
+  const isWww = host.startsWith('www.')
+  
+  // Redirect apex domain (movingwalls.com) to www.movingwalls.com
   if (
-    host === 'movingwalls.com' ||
-    (host.endsWith('.movingwalls.com') && !host.startsWith('www.') && !host.startsWith('stg.'))
+    !isLocalhost && 
+    !isAmplifyDomain && 
+    !isStaging && 
+    !isWww &&
+    (host === 'movingwalls.com' || host.endsWith('.movingwalls.com'))
   ) {
-    const url = new URL(request.url)
-    url.host = host === 'movingwalls.com' ? 'www.movingwalls.com' : `www.${host}`
-    return NextResponse.redirect(url.toString(), 301)
+    // Construct the redirect URL explicitly to ensure correct protocol and host
+    const protocol = request.headers.get('x-forwarded-proto') || 'https'
+    const newHost = host === 'movingwalls.com' ? 'www.movingwalls.com' : `www.${host}`
+    const redirectUrl = `${protocol}://${newHost}${pathname}${request.nextUrl.search}`
+    return NextResponse.redirect(redirectUrl, 301)
   }
 
   // Normalize: strip trailing slash for consistent matching
