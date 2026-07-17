@@ -64,6 +64,18 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next()
   }
 
+  // Canonical www redirect: non-www → www (SEO best practice)
+  // Skip for localhost, staging (stg.), and preview deployments
+  const host = request.headers.get('host') || ''
+  if (
+    host === 'movingwalls.com' ||
+    (host.endsWith('.movingwalls.com') && !host.startsWith('www.') && !host.startsWith('stg.'))
+  ) {
+    const url = new URL(request.url)
+    url.host = host === 'movingwalls.com' ? 'www.movingwalls.com' : `www.${host}`
+    return NextResponse.redirect(url.toString(), 301)
+  }
+
   // Normalize: strip trailing slash for consistent matching
   const normalizedPath = pathname.endsWith('/') && pathname !== '/'
     ? pathname.slice(0, -1)
