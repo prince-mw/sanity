@@ -38,8 +38,8 @@ export default defineType({
         defineField({
           name: 'text',
           title: 'Button Text',
-          type: 'string',
-          initialValue: 'Contact Us',
+          type: 'localeString',
+          initialValue: {en: 'Contact Us'},
         }),
         defineField({
           name: 'linkType',

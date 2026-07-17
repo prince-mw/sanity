@@ -17,13 +17,13 @@ export default defineType({
     defineField({
       name: 'title',
       title: 'Title',
-      type: 'string',
+      type: 'localeString',
       validation: (Rule) => Rule.required(),
     }),
     defineField({
       name: 'description',
       title: 'Description',
-      type: 'string',
+      type: 'localeString',
       description: 'Optional short description shown below the title',
     }),
     defineField({
@@ -142,7 +142,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      title: 'title',
+      title: 'title.en',
       linkType: 'linkType',
       url: 'url',
       internalPage: 'internalPage',

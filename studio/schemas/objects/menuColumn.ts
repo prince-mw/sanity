@@ -10,7 +10,7 @@ export default defineType({
     defineField({
       name: 'heading',
       title: 'Column Heading',
-      type: 'string',
+      type: 'localeString',
       description: 'Optional heading for this column',
     }),
     defineField({
@@ -23,7 +23,7 @@ export default defineType({
   ],
   preview: {
     select: {
-      heading: 'heading',
+      heading: 'heading.en',
       links: 'links',
     },
     prepare({heading, links}) {

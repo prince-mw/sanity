@@ -40,3 +40,6 @@ studio/dist/
 
 # studio dependencies
 studio/node_modules
+
+# migration script backups
+scripts/*-backup-*.json
