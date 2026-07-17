@@ -1442,6 +1442,15 @@ export interface SanityJobPosition {
   applicationFormUrl?: string
   isActive?: boolean
   publishedAt?: string
+  fullDescription?: any[]
+  seo?: {
+    metaTitle?: string
+    metaDescription?: string
+    keywords?: string[]
+    ogImage?: any
+    noIndex?: boolean
+    enableKeywords?: boolean
+  }
 }
 
 export async function getActiveJobPositions(): Promise<SanityJobPosition[]> {
@@ -1502,10 +1511,69 @@ export async function getJobPositionBySlug(slug: string): Promise<SanityJobPosit
       applyLink,
       applicationFormUrl,
       isActive,
-      publishedAt
+      publishedAt,
+      fullDescription,
+      seo {
+        metaTitle,
+        metaDescription,
+        keywords,
+        ogImage,
+        noIndex,
+        enableKeywords
+      }
     }
   `
   return safeFetch(query, { slug })
+}
+
+export async function getJobPositionSlugs(): Promise<{ slug: string }[]> {
+  const query = `
+    *[_type == "jobPosition" && isActive == true] {
+      "slug": slug.current
+    }
+  `
+  return safeFetch(query)
+}
+
+export async function getRelatedJobs(currentSlug: string, department: string | undefined, limit: number = 3): Promise<SanityJobPosition[]> {
+  const query = `
+    *[_type == "jobPosition" && isActive == true && slug.current != $currentSlug && department == $department][0...$limit] {
+      _id,
+      title,
+      slug,
+      department,
+      location,
+      type,
+      level,
+      description
+    }
+  `
+  const jobs: SanityJobPosition[] = await safeFetch(query, { currentSlug, department, limit }) || []
+  
+  // If not enough related jobs in same department, fetch from other departments
+  if (jobs.length < limit) {
+    const moreQuery = `
+      *[_type == "jobPosition" && isActive == true && slug.current != $currentSlug && slug.current !in $existingSlugs][0...$remaining] {
+        _id,
+        title,
+        slug,
+        department,
+        location,
+        type,
+        level,
+        description
+      }
+    `
+    const existingSlugs = jobs.map((j) => j.slug?.current)
+    const moreJobs: SanityJobPosition[] = await safeFetch(moreQuery, { 
+      currentSlug, 
+      existingSlugs, 
+      remaining: limit - jobs.length 
+    }) || []
+    return [...jobs, ...moreJobs]
+  }
+  
+  return jobs
 }
 
 export function transformJobPosition(job: SanityJobPosition) {

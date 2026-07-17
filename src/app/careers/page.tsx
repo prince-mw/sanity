@@ -33,6 +33,7 @@ export const revalidate = 30
 const fallbackJobs: JobPosition[] = [
   {
     title: "Senior Software Engineer",
+    slug: "senior-software-engineer",
     department: "Engineering",
     location: "San Francisco, CA / Remote",
     type: "Full-time",
@@ -42,6 +43,7 @@ const fallbackJobs: JobPosition[] = [
   },
   {
     title: "Product Marketing Manager",
+    slug: "product-marketing-manager",
     department: "Marketing",
     location: "New York, NY / Hybrid",
     type: "Full-time",
@@ -51,6 +53,7 @@ const fallbackJobs: JobPosition[] = [
   },
   {
     title: "Data Scientist",
+    slug: "data-scientist",
     department: "Data & Analytics",
     location: "Austin, TX / Remote",
     type: "Full-time",
@@ -60,6 +63,7 @@ const fallbackJobs: JobPosition[] = [
   },
   {
     title: "Account Executive",
+    slug: "account-executive",
     department: "Sales",
     location: "Chicago, IL / Hybrid",
     type: "Full-time",
@@ -69,6 +73,7 @@ const fallbackJobs: JobPosition[] = [
   },
   {
     title: "UX/UI Designer",
+    slug: "ux-ui-designer",
     department: "Design",
     location: "Los Angeles, CA / Remote",
     type: "Full-time",
@@ -78,6 +83,7 @@ const fallbackJobs: JobPosition[] = [
   },
   {
     title: "DevOps Engineer",
+    slug: "devops-engineer",
     department: "Engineering",
     location: "Seattle, WA / Remote",
     type: "Full-time",
@@ -98,6 +104,7 @@ export default async function CareersPage() {
         const transformed = transformJobPosition(job)
         return {
           title: transformed.title,
+          slug: transformed.slug,
           department: transformed.department || 'General',
           location: transformed.location || 'Remote',
           type: transformed.type || 'Full-time',
@@ -123,5 +130,5 @@ export default async function CareersPage() {
     console.error('Error fetching careers page content:', error)
   }
   
-  return <CareersPageClient jobs={jobs} pageContent={pageContent} />
+  return <CareersPageClient jobs={jobs} pageContent={pageContent} totalOpenings={jobs.length} />
 }

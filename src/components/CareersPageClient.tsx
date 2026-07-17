@@ -8,6 +8,7 @@ import { CareersPageContent } from '@/sanity/lib/fetch'
 
 export interface JobPosition {
   title: string
+  slug?: string
   department: string
   location: string
   type: string
@@ -24,6 +25,7 @@ export interface JobPosition {
 interface CareersPageClientProps {
   jobs: JobPosition[]
   pageContent: CareersPageContent | null
+  totalOpenings?: number
 }
 
 const iconMap: Record<string, JSX.Element> = {
@@ -60,7 +62,7 @@ const defaultStats = [
   { number: '4.9/5', label: 'Glassdoor Rating' },
 ]
 
-export default function CareersPageClient({ jobs, pageContent }: CareersPageClientProps) {
+export default function CareersPageClient({ jobs, pageContent, totalOpenings }: CareersPageClientProps) {
   const [applicationModal, setApplicationModal] = useState<{ isOpen: boolean; formUrl: string; jobTitle: string }>({ isOpen: false, formUrl: '', jobTitle: '' })
 
   const heroBadge = pageContent?.heroBadge || 'Join Our Team'
@@ -68,7 +70,15 @@ export default function CareersPageClient({ jobs, pageContent }: CareersPageClie
   const heroTitleHighlight = pageContent?.heroTitleHighlight || 'Shape the Future'
   const heroDescription = pageContent?.heroDescription || "Join Moving Walls and help revolutionize the advertising industry. We're looking for passionate innovators who want to make a real impact while growing their careers in a dynamic, supportive environment."
   const heroCtaText = pageContent?.heroCtaText || 'View Open Roles'
-  const statsData = pageContent?.stats?.length ? pageContent.stats : defaultStats
+  
+  // Create dynamic stats with actual open positions count
+  const dynamicStats = (pageContent?.stats?.length ? pageContent.stats : defaultStats).map(stat => {
+    if (stat.label === 'Open Positions') {
+      return { ...stat, number: totalOpenings !== undefined ? `${totalOpenings}` : stat.number }
+    }
+    return stat
+  })
+  const statsData = dynamicStats
   const benefitsTitle = pageContent?.benefitsTitle || 'Why Choose Moving Walls?'
   const benefitsDescription = pageContent?.benefitsDescription || 'We believe in empowering our people to do their best work while building the future of advertising technology.'
   const benefitsData = pageContent?.benefits?.length ? pageContent.benefits : defaultBenefits
@@ -283,6 +293,14 @@ export default function CareersPageClient({ jobs, pageContent }: CareersPageClie
                     }`}>
                       {role.level}
                     </span>
+                    {role.slug && (
+                      <Link
+                        href={`/careers/${role.slug}`}
+                        className="px-4 py-2 border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 font-medium rounded-lg transition-colors"
+                      >
+                        View Details
+                      </Link>
+                    )}
                     {role.applicationFormUrl ? (
                       <button
                         onClick={() => setApplicationModal({ isOpen: true, formUrl: role.applicationFormUrl!, jobTitle: role.title })}
