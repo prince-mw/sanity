@@ -59,20 +59,25 @@ const defaultStats = [
   { number: '200+', label: 'Team Members' },
   { number: '25+', label: 'Open Positions' },
   { number: '9', label: 'Global Offices' },
-  { number: '4.9/5', label: 'Glassdoor Rating' },
 ]
 
 export default function CareersPageClient({ jobs, pageContent, totalOpenings }: CareersPageClientProps) {
   const [applicationModal, setApplicationModal] = useState<{ isOpen: boolean; formUrl: string; jobTitle: string }>({ isOpen: false, formUrl: '', jobTitle: '' })
+  const [expandedJob, setExpandedJob] = useState<number | null>(null)
 
-  const heroBadge = pageContent?.heroBadge || 'Join Our Team'
+  const toggleJob = (index: number) => {
+    setExpandedJob(expandedJob === index ? null : index)
+  }
+
   const heroTitle = pageContent?.heroTitle || 'Build Your Career'
   const heroTitleHighlight = pageContent?.heroTitleHighlight || 'Shape the Future'
   const heroDescription = pageContent?.heroDescription || "Join Moving Walls and help revolutionize the advertising industry. We're looking for passionate innovators who want to make a real impact while growing their careers in a dynamic, supportive environment."
   const heroCtaText = pageContent?.heroCtaText || 'View Open Roles'
   
-  // Create dynamic stats with actual open positions count
-  const dynamicStats = (pageContent?.stats?.length ? pageContent.stats : defaultStats).map(stat => {
+  // Create dynamic stats with actual open positions count, and filter out Glassdoor Rating
+  const dynamicStats = (pageContent?.stats?.length ? pageContent.stats : defaultStats)
+    .filter(stat => stat.label !== 'Glassdoor Rating')
+    .map(stat => {
     if (stat.label === 'Open Positions') {
       return { ...stat, number: totalOpenings !== undefined ? `${totalOpenings}` : stat.number }
     }
@@ -91,8 +96,6 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
   const ctaDescription = pageContent?.ctaDescription || "We're always looking for exceptional talent. Send us your resume and let us know how you'd like to contribute to our mission of transforming advertising."
   const ctaPrimaryButtonText = pageContent?.ctaPrimaryButtonText || 'Send Your Resume'
   const ctaPrimaryButtonLink = pageContent?.ctaPrimaryButtonLink || '#contact'
-  const ctaSecondaryButtonText = pageContent?.ctaSecondaryButtonText || 'Meet Our Leaders'
-  const ctaSecondaryButtonLink = pageContent?.ctaSecondaryButtonLink || '/leadership'
 
   return (
     <div className="min-h-screen bg-white">
@@ -105,9 +108,6 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
             transition={{ duration: 0.8 }}
             className="text-center"
           >
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-mw-blue-100 rounded-full mb-8">
-              <span className="text-mw-blue-600 text-sm font-medium">{heroBadge}</span>
-            </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
               {heroTitle}
               <span className="text-mw-blue-600 block">{heroTitleHighlight}</span>
@@ -117,7 +117,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
             </p>
             
             {/* Company Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mb-8">
+            <div className="flex flex-wrap justify-center gap-8 md:gap-16 max-w-4xl mx-auto mb-8">
               {statsData.map((stat, index) => (
                 <motion.div
                   key={index}
@@ -286,21 +286,20 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                     </div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      role.level === 'Senior' ? 'bg-purple-100 text-purple-600' : 
-                      role.level === 'Mid-Level' ? 'bg-blue-100 text-blue-600' : 
-                      'bg-green-100 text-green-600'
-                    }`}>
-                      {role.level}
-                    </span>
-                    {role.slug && (
-                      <Link
-                        href={`/careers/${role.slug}`}
-                        className="px-4 py-2 border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 font-medium rounded-lg transition-colors"
+                    <button
+                      onClick={() => toggleJob(index)}
+                      className="px-4 py-2 border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 font-medium rounded-lg transition-colors flex items-center gap-2"
+                    >
+                      {expandedJob === index ? 'Hide Details' : 'View Details'}
+                      <svg 
+                        className={`w-4 h-4 transition-transform ${expandedJob === index ? 'rotate-180' : ''}`} 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
                       >
-                        View Details
-                      </Link>
-                    )}
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
                     {role.applicationFormUrl ? (
                       <button
                         onClick={() => setApplicationModal({ isOpen: true, formUrl: role.applicationFormUrl!, jobTitle: role.title })}
@@ -322,56 +321,69 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
 
                 <p className="text-mw-gray-600 mb-4 leading-relaxed">{role.description}</p>
 
-                {role.salaryRange && (
-                  <p className="text-mw-blue-600 font-medium mb-4">{role.salaryRange}</p>
-                )}
+                {/* Accordion Content */}
+                <motion.div
+                  initial={false}
+                  animate={{
+                    height: expandedJob === index ? 'auto' : 0,
+                    opacity: expandedJob === index ? 1 : 0
+                  }}
+                  transition={{ duration: 0.3, ease: 'easeInOut' }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-4 border-t border-mw-gray-200">
+                    {role.salaryRange && (
+                      <p className="text-mw-blue-600 font-medium mb-4">{role.salaryRange}</p>
+                    )}
 
-                <div className="grid md:grid-cols-2 gap-6 mb-4">
-                  <div>
-                    <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Key Requirements:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {role.requirements.map((req, reqIndex) => (
-                        <span
-                          key={reqIndex}
-                          className="px-3 py-1 bg-mw-gray-100 text-mw-gray-700 text-sm rounded-full"
-                        >
-                          {req}
-                        </span>
-                      ))}
+                    <div className="grid md:grid-cols-2 gap-6 mb-4">
+                      <div>
+                        <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Key Requirements:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {role.requirements.map((req, reqIndex) => (
+                            <span
+                              key={reqIndex}
+                              className="px-3 py-1 bg-mw-gray-100 text-mw-gray-700 text-sm rounded-full"
+                            >
+                              {req}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                      {role.responsibilities && role.responsibilities.length > 0 && (
+                        <div>
+                          <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Responsibilities:</h4>
+                          <ul className="text-sm text-mw-gray-600 space-y-1">
+                            {role.responsibilities.map((resp, respIndex) => (
+                              <li key={respIndex} className="flex items-start gap-2">
+                                <svg className="w-4 h-4 text-mw-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                </svg>
+                                {resp}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
-                  </div>
-                  {role.responsibilities && role.responsibilities.length > 0 && (
-                    <div>
-                      <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Responsibilities:</h4>
-                      <ul className="text-sm text-mw-gray-600 space-y-1">
-                        {role.responsibilities.slice(0, 4).map((resp, respIndex) => (
-                          <li key={respIndex} className="flex items-start gap-2">
-                            <svg className="w-4 h-4 text-mw-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                            </svg>
-                            {resp}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
 
-                {role.benefits && role.benefits.length > 0 && (
-                  <div className="mb-4">
-                    <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Benefits:</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {role.benefits.map((benefit, benefitIndex) => (
-                        <span
-                          key={benefitIndex}
-                          className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full"
-                        >
-                          {benefit}
-                        </span>
-                      ))}
-                    </div>
+                    {role.benefits && role.benefits.length > 0 && (
+                      <div className="mb-4">
+                        <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Benefits:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {role.benefits.map((benefit, benefitIndex) => (
+                            <span
+                              key={benefitIndex}
+                              className="px-3 py-1 bg-green-100 text-green-700 text-sm rounded-full"
+                            >
+                              {benefit}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
-                )}
+                </motion.div>
               </motion.div>
             ))}
           </div>
@@ -403,12 +415,6 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                 </svg>
-              </Link>
-              <Link
-                href={ctaSecondaryButtonLink}
-                className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"
-              >
-                {ctaSecondaryButtonText}
               </Link>
             </div>
           </motion.div>
