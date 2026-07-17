@@ -287,7 +287,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                   Subscribe to get the latest insights, tips, and industry news delivered straight to your inbox.
                 </p>
               </div>
-              <ZohoCampaignsEmbed height={300} />
+              <ZohoCampaignsEmbed height={320} />
             </div>
           </motion.div>
         </div>
