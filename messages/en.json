@@ -9,12 +9,25 @@
     "about": "About",
     "resources": "Resources",
     "contact": "Contact",
-    "getStarted": "Get Started"
+    "getStarted": "Get Started",
+    "selectLanguage": "Select language",
+    "openSearch": "Open search",
+    "openMenu": "Open navigation menu",
+    "closeMenu": "Close navigation menu",
+    "language": "Language",
+    "viewAllLanguages": "View all languages"
   },
   "hero": {
     "badge": "AI-Powered OOH Advertising",
     "title": "The World's Leading",
     "titleHighlight": "Connected Media Platform",
+    "wordMorphWords": [
+      "OOH",
+      "Digital",
+      "Programmatic",
+      "Connected"
+    ],
+    "mediaPlatformLabel": "Media Platform",
     "description": "Outdoor media was built for visibility. We built it for connection. Moving Walls transforms physical spaces into measurable advertising environments across cities, borders, and cultures. We bring together screens, billboards, mobility data, audience insights, and programmatic buying into one connected ecosystem so brands can move with confidence wherever their audiences go. Trusted by over 500 global brands navigating more than 40 markets.",
     "bullets": [
       "Built for connection, not just visibility.",
@@ -119,7 +132,56 @@
     "copyright": "© 2024 Moving Walls. All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms of Service",
-    "cookies": "Cookie Settings"
+    "cookies": "Cookie Settings",
+    "cookiePolicy": "Cookie Policy",
+    "links": {
+      "company": {
+        "ourStory": "Our Story",
+        "leadership": "Leadership",
+        "officeLocations": "Office Locations",
+        "careers": "Careers",
+        "contactUs": "Contact Us"
+      },
+      "solutions": {
+        "brands": "Brands",
+        "mediaOwners": "Media Owners",
+        "agencies": "Agencies"
+      },
+      "products": {
+        "planner": "MW Planner",
+        "measure": "MW Measure",
+        "influence": "MW Influence",
+        "activate": "MW Activate",
+        "science": "MW Science",
+        "studio": "MW Studio",
+        "market": "MW Market"
+      },
+      "resources": {
+        "oohFormats": "OOH Formats",
+        "ebooks": "E-Books",
+        "blog": "Blog",
+        "caseStudies": "Case Studies",
+        "pressNews": "Press & News",
+        "events": "Events"
+      },
+      "countries": {
+        "malaysia": "Malaysia",
+        "singapore": "Singapore",
+        "indonesia": "Indonesia",
+        "india": "India",
+        "philippines": "Philippines",
+        "japan": "Japan",
+        "australia": "Australia",
+        "sriLanka": "Sri Lanka",
+        "thailand": "Thailand"
+      }
+    },
+    "movingHearts": {
+      "title": "Moving Hearts",
+      "statsLabel": "Hearts Touched",
+      "tagline": "Responsible OOH Media Worldwide",
+      "ctaText": "Learn More"
+    }
   },
   "contact": {
     "badge": "Contact Us",
@@ -266,6 +328,10 @@
       "featured": {
         "title": "Case Study: Finance",
         "description": "Fintech Startup Generates 5,000+ Quality Leads"
+      },
+      "aboutUs": {
+        "name": "About Us",
+        "description": "Learn about Moving Walls"
       }
     },
     "resources": {
@@ -327,6 +393,11 @@
       "googlePartner": "Google Premier Partner",
       "iabMember": "IAB Member",
       "gdprCompliant": "GDPR Compliant"
+    },
+    "trustBarStats": {
+      "oohSites": "OOH Sites",
+      "markets": "Markets",
+      "clients": "Clients"
     },
     "asianBornGlobal": {
       "badge": "Asian-Born, Global Vision",
@@ -465,11 +536,21 @@
           "badge": "The Old Way",
           "title": "Challenges",
           "items": [
-            { "text": "Fragmented buying across vendors" },
-            { "text": "No real-time performance data" },
-            { "text": "Difficult audience targeting" },
-            { "text": "Weeks to launch campaigns" },
-            { "text": "Limited creative flexibility" }
+            {
+              "text": "Fragmented buying across vendors"
+            },
+            {
+              "text": "No real-time performance data"
+            },
+            {
+              "text": "Difficult audience targeting"
+            },
+            {
+              "text": "Weeks to launch campaigns"
+            },
+            {
+              "text": "Limited creative flexibility"
+            }
           ]
         },
         "transformation": {
@@ -488,11 +569,26 @@
           "badge": "The New Way",
           "title": "Results",
           "items": [
-            { "text": "Unified platform, all inventory", "metric": "250K+ screens" },
-            { "text": "Real-time performance tracking", "metric": "Live data" },
-            { "text": "AI-powered audience targeting", "metric": "99% accuracy" },
-            { "text": "Launch in minutes, not weeks", "metric": "< 5 mins" },
-            { "text": "Dynamic creative optimization", "metric": "+40% engagement" }
+            {
+              "text": "Unified platform, all inventory",
+              "metric": "250K+ screens"
+            },
+            {
+              "text": "Real-time performance tracking",
+              "metric": "Live data"
+            },
+            {
+              "text": "AI-powered audience targeting",
+              "metric": "99% accuracy"
+            },
+            {
+              "text": "Launch in minutes, not weeks",
+              "metric": "< 5 mins"
+            },
+            {
+              "text": "Dynamic creative optimization",
+              "metric": "+40% engagement"
+            }
           ]
         }
       },
@@ -649,7 +745,26 @@
       "badge": "Client Success",
       "title": "What Our Clients",
       "titleHighlight": "Say About Us",
-      "description": "Hear from the brands and agencies transforming their advertising with Moving Walls."
+      "description": "Hear from the brands and agencies transforming their advertising with Moving Walls.",
+      "swipeHint": "Swipe to navigate",
+      "viewAllCta": "View All Success Stories",
+      "ariaPrev": "Previous testimonials",
+      "ariaNext": "Next testimonials",
+      "ariaGoToSlide": "Go to slide",
+      "fallback": [
+        {
+          "quote": "By customising Moving Walls' platform, Jeki adds new services using its transport advertising expertise. We aim to build one of Japan's largest marketplaces with nationwide, diverse OOH inventory.",
+          "role": "President and Representative Director"
+        },
+        {
+          "quote": "This partnership provides us with cutting-edge audience measurement solutions that bring unprecedented insights to our advertising campaigns.",
+          "role": "Director of Data and Digital Transformation"
+        },
+        {
+          "quote": "Brand investments grow when advertisers have clarity on ad placements and performance. This partnership strengthens our DOOH planning and expands measurement capabilities for our clients.",
+          "role": "Chief Investment Officer"
+        }
+      ]
     },
     "about": {
       "title": "Redefining Out-of-Home Advertising",
@@ -692,10 +807,21 @@
       "readFullCaseStudy": "Read Full Case Study",
       "viewAllCaseStudies": "View All Case Studies"
     },
+    "caseStudiesSection": {
+      "title": "Explore Our Case Studies",
+      "description": "Discover how leading brands across industries have achieved remarkable results with Moving Walls' connected media platform.",
+      "loading": "Loading case studies...",
+      "empty": "No case studies found.",
+      "readMore": "Read More",
+      "readMoreAria": "Read more about",
+      "viewAll": "View All Case Studies"
+    },
     "contactForm": {
       "badge": "Let's Discuss Your Vision",
       "title": "Your Success Story Starts Here",
       "description": "Share your advertising challenges and goals. Our experts will craft a tailored strategy that transforms your vision into measurable business results.",
+      "directLine": "Direct Line",
+      "emailLabel": "Email",
       "form": {
         "name": "Full Name",
         "email": "Email Address",

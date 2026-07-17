@@ -11,69 +11,12 @@ interface FooterProps {
   content?: FooterContent | null
 }
 
-const defaultFooterLinks = {
-  company: [
-    { name: "Our Story", href: "/our-story" },
-    { name: "Leadership", href: "/leadership" },
-    { name: "Office Locations", href: "/locations" },
-    { name: "Careers", href: "/careers" },
-    { name: "Contact Us", href: "/contact" },
-  ],
-  solutions: [
-    { name: "Brands", href: "/brands" },
-    { name: "Media Owners", href: "/media-owners" },
-    { name: "Agencies", href: "/agencies" },
-  ],
-  products: [
-    { name: "MW Planner", href: "/mw-planner" },
-    { name: "MW Measure", href: "/mw-measure" },
-    { name: "MW Influence", href: "/mw-influence" },
-    { name: "MW Activate", href: "/mw-activate" },
-    { name: "MW Science", href: "/mw-science" },
-    { name: "MW Studio", href: "/mw-studio" },
-    { name: "MW Market", href: "/mw-market" },
-  ],
-  resources: [
-    { name: "OOH Formats", href: "/ooh-formats" },
-    { name: "E-Books", href: "/ebooks" },
-    { name: "Blog", href: "/blog" },
-    { name: "Case Studies", href: "/case-studies" },
-    { name: "Press & News", href: "/press-news" },
-    { name: "Events", href: "/events" },
-  ],
-  billboardLocations: [
-    { name: "Malaysia", href: "/locations/malaysia" },
-    { name: "Singapore", href: "/locations/singapore" },
-    { name: "Indonesia", href: "/locations/indonesia" },
-    { name: "India", href: "/locations/india" },
-    { name: "Philippines", href: "/locations/philippines" },
-    { name: "Japan", href: "/locations/japan" },
-    { name: "Australia", href: "/locations/australia" },
-    { name: "Sri Lanka", href: "/locations/sri-lanka" },
-    { name: "Thailand", href: "/locations/thailand" },
-  ],
-};
-
-const defaultNavCategories = [
-  { title: 'Company', showLocationIcon: false, links: defaultFooterLinks.company },
-  { title: 'Solutions', showLocationIcon: false, links: defaultFooterLinks.solutions },
-  { title: 'Products', showLocationIcon: false, links: defaultFooterLinks.products },
-  { title: 'Resources', showLocationIcon: false, links: defaultFooterLinks.resources },
-  { title: 'Billboard Locations', showLocationIcon: true, links: defaultFooterLinks.billboardLocations },
-];
-
 const defaultSocialLinks = [
   { platform: "linkedin", url: "https://www.linkedin.com/company/moving-walls/" },
   { platform: "x", url: "https://x.com/movingwalls" },
   { platform: "youtube", url: "https://www.youtube.com/@MovingWallsMy" },
   { platform: "instagram", url: "https://www.instagram.com/mymovingwalls/" },
   { platform: "facebook", url: "https://www.facebook.com/movingwalls/" },
-];
-
-const defaultLegalLinks = [
-  { label: "Privacy Policy", href: "/privacy" },
-  { label: "Terms of Service", href: "/terms" },
-  { label: "Cookie Policy", href: "/cookies" },
 ];
 
 const socialIconMap: Record<string, JSX.Element> = {
@@ -112,15 +55,72 @@ const socialIconMap: Record<string, JSX.Element> = {
 export default function Footer({ content }: FooterProps) {
   const { t } = useLocale();
 
-  const companyDescription = content?.companyDescription || "Moving Walls connects the global Out of Home ecosystem into one unified cloud platform. From audience discovery to booking, activation, measurement, and optimisation, we simplify complexity so brands can grow confidently across markets.";
+  const defaultFooterLinks = {
+    company: [
+      { name: t('footer.links.company.ourStory'), href: "/our-story" },
+      { name: t('footer.links.company.leadership'), href: "/leadership" },
+      { name: t('footer.links.company.officeLocations'), href: "/locations" },
+      { name: t('footer.links.company.careers'), href: "/careers" },
+      { name: t('footer.links.company.contactUs'), href: "/contact" },
+    ],
+    solutions: [
+      { name: t('footer.links.solutions.brands'), href: "/brands" },
+      { name: t('footer.links.solutions.mediaOwners'), href: "/media-owners" },
+      { name: t('footer.links.solutions.agencies'), href: "/agencies" },
+    ],
+    products: [
+      { name: t('footer.links.products.planner'), href: "/mw-planner" },
+      { name: t('footer.links.products.measure'), href: "/mw-measure" },
+      { name: t('footer.links.products.influence'), href: "/mw-influence" },
+      { name: t('footer.links.products.activate'), href: "/mw-activate" },
+      { name: t('footer.links.products.science'), href: "/mw-science" },
+      { name: t('footer.links.products.studio'), href: "/mw-studio" },
+      { name: t('footer.links.products.market'), href: "/mw-market" },
+    ],
+    resources: [
+      { name: t('footer.links.resources.oohFormats'), href: "/ooh-formats" },
+      { name: t('footer.links.resources.ebooks'), href: "/ebooks" },
+      { name: t('footer.links.resources.blog'), href: "/blog" },
+      { name: t('footer.links.resources.caseStudies'), href: "/case-studies" },
+      { name: t('footer.links.resources.pressNews'), href: "/press-news" },
+      { name: t('footer.links.resources.events'), href: "/events" },
+    ],
+    billboardLocations: [
+      { name: t('footer.links.countries.malaysia'), href: "/locations/malaysia" },
+      { name: t('footer.links.countries.singapore'), href: "/locations/singapore" },
+      { name: t('footer.links.countries.indonesia'), href: "/locations/indonesia" },
+      { name: t('footer.links.countries.india'), href: "/locations/india" },
+      { name: t('footer.links.countries.philippines'), href: "/locations/philippines" },
+      { name: t('footer.links.countries.japan'), href: "/locations/japan" },
+      { name: t('footer.links.countries.australia'), href: "/locations/australia" },
+      { name: t('footer.links.countries.sriLanka'), href: "/locations/sri-lanka" },
+      { name: t('footer.links.countries.thailand'), href: "/locations/thailand" },
+    ],
+  };
+
+  const defaultNavCategories = [
+    { title: t('footer.company'), showLocationIcon: false, links: defaultFooterLinks.company },
+    { title: t('footer.solutions'), showLocationIcon: false, links: defaultFooterLinks.solutions },
+    { title: t('footer.products'), showLocationIcon: false, links: defaultFooterLinks.products },
+    { title: t('footer.resources'), showLocationIcon: false, links: defaultFooterLinks.resources },
+    { title: t('footer.billboardLocations'), showLocationIcon: true, links: defaultFooterLinks.billboardLocations },
+  ];
+
+  const defaultLegalLinks = [
+    { label: t('footer.privacy'), href: "/privacy" },
+    { label: t('footer.terms'), href: "/terms" },
+    { label: t('footer.cookiePolicy'), href: "/cookies" },
+  ];
+
+  const companyDescription = content?.companyDescription || t('footer.description');
   const navCategories = content?.navCategories?.length ? content.navCategories : defaultNavCategories;
   const socials = content?.socialLinks?.length ? content.socialLinks : defaultSocialLinks;
-  const movingHeartsTitle = content?.movingHeartsTitle || 'Moving Hearts';
+  const movingHeartsTitle = content?.movingHeartsTitle || t('footer.movingHearts.title');
   const movingHeartsStatsValue = content?.movingHeartsStatsValue || '3M+';
-  const movingHeartsStatsLabel = content?.movingHeartsStatsLabel || 'Hearts Touched';
-  const movingHeartsTagline = content?.movingHeartsTagline || 'Responsible OOH Media Worldwide';
+  const movingHeartsStatsLabel = content?.movingHeartsStatsLabel || t('footer.movingHearts.statsLabel');
+  const movingHeartsTagline = content?.movingHeartsTagline || t('footer.movingHearts.tagline');
   const movingHeartsUrl = content?.movingHeartsUrl || 'https://movinghearts.media/';
-  const movingHeartsCtaText = content?.movingHeartsCtaText || 'Learn More';
+  const movingHeartsCtaText = content?.movingHeartsCtaText || t('footer.movingHearts.ctaText');
   const legalLinks = content?.legalLinks?.length ? content.legalLinks : defaultLegalLinks;
   const copyrightText = content?.copyrightText
     ? content.copyrightText.replace('{year}', new Date().getFullYear().toString())
@@ -416,7 +416,7 @@ export default function Footer({ content }: FooterProps) {
                     onClick={openCookieSettings}
                     className="text-mw-gray-400 hover:text-white transition-colors"
                   >
-                    Cookie Settings
+                    {t('footer.cookies')}
                   </button>
                 </div>
               </div>

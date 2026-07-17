@@ -32,32 +32,11 @@ interface TestimonialSectionProps {
   hideViewAll?: boolean;
 }
 
-// Fallback testimonials data when Sanity data is not available
-const fallbackTestimonials: Testimonial[] = [
-  {
-    quote: "By customising Moving Walls' platform, Jeki adds new services using its transport advertising expertise. We aim to build one of Japan's largest marketplaces with nationwide, diverse OOH inventory.",
-    author: "Ryoji Akaishi",
-    role: "President and Representative Director",
-    company: "jeki",
-    metric: "Japan's Largest OOH Marketplace",
-    industry: "Transport Advertising"
-  },
-  {
-    quote: "This partnership provides us with cutting-edge audience measurement solutions that bring unprecedented insights to our advertising campaigns.",
-    author: "Saad Bencharef",
-    role: "Director of Data and Digital Transformation",
-    company: "FC Media",
-    metric: "Cutting-edge Measurement",
-    industry: "Media"
-  },
-  {
-    quote: "Brand investments grow when advertisers have clarity on ad placements and performance. This partnership strengthens our DOOH planning and expands measurement capabilities for our clients.",
-    author: "Yasmin Mallari",
-    role: "Chief Investment Officer",
-    company: "GroupM, Philippines",
-    metric: "Enhanced DOOH Planning",
-    industry: "Agency"
-  }
+// Static, non-localizable parts of the fallback testimonials (names/companies are proper nouns)
+const fallbackTestimonialMeta = [
+  { author: "Ryoji Akaishi", company: "jeki", metric: "Japan's Largest OOH Marketplace", industry: "Transport Advertising" },
+  { author: "Saad Bencharef", company: "FC Media", metric: "Cutting-edge Measurement", industry: "Media" },
+  { author: "Yasmin Mallari", company: "GroupM, Philippines", metric: "Enhanced DOOH Planning", industry: "Agency" },
 ];
 
 // Custom hook to detect screen size
@@ -85,10 +64,16 @@ function useResponsiveItemsPerView() {
 
 export default function TestimonialSection({ testimonials: sanityTestimonials, hideViewAll }: TestimonialSectionProps) {
   const { t } = useLocale();
-  
-  // Use Sanity testimonials if provided, otherwise fall back to hardcoded data
-  const testimonials: Testimonial[] = sanityTestimonials && sanityTestimonials.length > 0 
-    ? sanityTestimonials 
+
+  // Use Sanity testimonials if provided, otherwise fall back to translated placeholder data
+  const fallbackTestimonials: Testimonial[] = t('landingPage.testimonials.fallback').map(
+    (entry: { quote: string; role: string }, index: number) => ({
+      ...entry,
+      ...fallbackTestimonialMeta[index],
+    })
+  );
+  const testimonials: Testimonial[] = sanityTestimonials && sanityTestimonials.length > 0
+    ? sanityTestimonials
     : fallbackTestimonials;
 
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -185,7 +170,7 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
           <button
             onClick={prevSlide}
             className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
-            aria-label="Previous testimonials"
+            aria-label={t('landingPage.testimonials.ariaPrev')}
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -195,7 +180,7 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
           <button
             onClick={nextSlide}
             className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
-            aria-label="Next testimonials"
+            aria-label={t('landingPage.testimonials.ariaNext')}
           >
             <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -267,7 +252,7 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
             <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
             </svg>
-            <span>Swipe to navigate</span>
+            <span>{t('landingPage.testimonials.swipeHint')}</span>
           </div>
 
           {/* Pagination Dots */}
@@ -277,7 +262,7 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
                 key={index}
                 onClick={() => goToSlide(index)}
                 className="p-3 -m-3 flex items-center justify-center"
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={`${t('landingPage.testimonials.ariaGoToSlide')} ${index + 1}`}
               >
                 <span
                   className={`block transition-all duration-300 rounded-full ${
@@ -321,7 +306,7 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
               href="/case-studies"
               className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white font-semibold rounded-lg hover:bg-mw-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
-              View All Success Stories
+              {t('landingPage.testimonials.viewAllCta')}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

@@ -2,18 +2,21 @@
 
 import { motion } from "framer-motion";
 import type { TrustBarStat } from "@/sanity/lib/fetch";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface TrustBarProps {
   stats?: TrustBarStat[] | null
 }
 
-const defaultStats: TrustBarStat[] = [
-  { value: "1M+", label: "OOH Sites" },
-  { value: "50+", label: "Markets" },
-  { value: "500+", label: "Clients" },
-];
-
 export default function TrustBar({ stats }: TrustBarProps) {
+  const { t } = useLocale();
+
+  const defaultStats: TrustBarStat[] = [
+    { value: "1M+", label: t('landingPage.trustBarStats.oohSites') },
+    { value: "50+", label: t('landingPage.trustBarStats.markets') },
+    { value: "500+", label: t('landingPage.trustBarStats.clients') },
+  ];
+
   const displayStats = stats && stats.length > 0 ? stats : defaultStats;
 
   return (

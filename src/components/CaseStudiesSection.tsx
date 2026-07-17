@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { getSanityImageUrl } from "@/sanity/lib/fetch";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface CaseStudy {
   _id: string;
@@ -25,6 +26,7 @@ interface CaseStudiesSectionProps {
 export default function CaseStudiesSection({ initialCaseStudies = [] }: CaseStudiesSectionProps) {
   const caseStudies = initialCaseStudies;
   const loading = false;
+  const { t } = useLocale();
 
   return (
     <section className="py-20 bg-white">
@@ -38,20 +40,19 @@ export default function CaseStudiesSection({ initialCaseStudies = [] }: CaseStud
           className="text-center mb-14"
         >
           <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-            Explore Our Case Studies
+            {t('landingPage.caseStudiesSection.title')}
           </h2>
           <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
-            Discover how leading brands across industries have achieved remarkable results 
-            with Moving Walls' connected media platform.
+            {t('landingPage.caseStudiesSection.description')}
           </p>
         </motion.div>
 
         {/* Case Studies Grid - 4 in a row */}
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {loading ? (
-            <div className="col-span-4 text-center py-16 text-mw-gray-500">Loading case studies...</div>
+            <div className="col-span-4 text-center py-16 text-mw-gray-500">{t('landingPage.caseStudiesSection.loading')}</div>
           ) : caseStudies.length === 0 ? (
-            <div className="col-span-4 text-center py-16 text-mw-gray-500">No case studies found.</div>
+            <div className="col-span-4 text-center py-16 text-mw-gray-500">{t('landingPage.caseStudiesSection.empty')}</div>
           ) : (
             caseStudies.map((study, index) => (
               <motion.div
@@ -101,9 +102,9 @@ export default function CaseStudiesSection({ initialCaseStudies = [] }: CaseStud
                   <Link 
                     href={`/case-studies/${study.slug.current}`}
                     className="inline-flex items-center gap-2 text-mw-blue-600 font-semibold text-sm group-hover:gap-3 transition-all duration-300"
-                    aria-label={`Read more about ${study.title}`}
+                    aria-label={`${t('landingPage.caseStudiesSection.readMoreAria')} ${study.title}`}
                   >
-                    Read More
+                    {t('landingPage.caseStudiesSection.readMore')}
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -126,7 +127,7 @@ export default function CaseStudiesSection({ initialCaseStudies = [] }: CaseStud
             href="/case-studies"
             className="inline-flex items-center gap-2 px-8 py-4 bg-mw-gray-900 text-white font-semibold rounded-full hover:bg-mw-gray-800 transition-colors duration-300"
           >
-            View All Case Studies
+            {t('landingPage.caseStudiesSection.viewAll')}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>

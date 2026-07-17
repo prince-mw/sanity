@@ -9,12 +9,25 @@
     "about": "Tentang Kami",
     "resources": "Sumber Daya",
     "contact": "Hubungi Kami",
-    "getStarted": "Mulai"
+    "getStarted": "Mulai",
+    "selectLanguage": "Pilih bahasa",
+    "openSearch": "Buka pencarian",
+    "openMenu": "Buka menu navigasi",
+    "closeMenu": "Tutup menu navigasi",
+    "language": "Bahasa",
+    "viewAllLanguages": "Lihat semua bahasa"
   },
   "hero": {
     "badge": "Iklan OOH Bertenaga AI",
     "title": "Transformasi",
     "titleHighlight": "Strategi Iklan Anda",
+    "wordMorphWords": [
+      "OOH",
+      "Digital",
+      "Programatik",
+      "Terhubung"
+    ],
+    "mediaPlatformLabel": "Platform Media",
     "description": "Moving Walls menyatukan seluruh ekosistem periklanan luar ruang melalui satu platform cloud cerdas. Dari penemuan audiens hingga pemesanan, aktivasi, pengukuran, dan optimalisasi.",
     "bullets": [
       "Dibangun untuk koneksi, bukan hanya visibilitas.",
@@ -119,7 +132,56 @@
     "copyright": "© 2024 Moving Walls. Hak cipta dilindungi.",
     "privacy": "Kebijakan Privasi",
     "terms": "Ketentuan Layanan",
-    "cookies": "Pengaturan Cookie"
+    "cookies": "Pengaturan Cookie",
+    "cookiePolicy": "Kebijakan Cookie",
+    "links": {
+      "company": {
+        "ourStory": "Kisah Kami",
+        "leadership": "Kepemimpinan",
+        "officeLocations": "Lokasi Kantor",
+        "careers": "Karier",
+        "contactUs": "Hubungi Kami"
+      },
+      "solutions": {
+        "brands": "Brand",
+        "mediaOwners": "Pemilik Media",
+        "agencies": "Agensi"
+      },
+      "products": {
+        "planner": "MW Planner",
+        "measure": "MW Measure",
+        "influence": "MW Influence",
+        "activate": "MW Activate",
+        "science": "MW Science",
+        "studio": "MW Studio",
+        "market": "MW Market"
+      },
+      "resources": {
+        "oohFormats": "Format OOH",
+        "ebooks": "E-Book",
+        "blog": "Blog",
+        "caseStudies": "Studi Kasus",
+        "pressNews": "Pers & Berita",
+        "events": "Acara"
+      },
+      "countries": {
+        "malaysia": "Malaysia",
+        "singapore": "Singapura",
+        "indonesia": "Indonesia",
+        "india": "India",
+        "philippines": "Filipina",
+        "japan": "Jepang",
+        "australia": "Australia",
+        "sriLanka": "Sri Lanka",
+        "thailand": "Thailand"
+      }
+    },
+    "movingHearts": {
+      "title": "Moving Hearts",
+      "statsLabel": "Hati yang Tersentuh",
+      "tagline": "Media OOH yang Bertanggung Jawab di Seluruh Dunia",
+      "ctaText": "Pelajari Lebih Lanjut"
+    }
   },
   "contact": {
     "badge": "Hubungi Kami",
@@ -266,6 +328,10 @@
       "featured": {
         "title": "Studi Kasus: Keuangan",
         "description": "Startup Fintech Menghasilkan 5.000+ Lead Berkualitas"
+      },
+      "aboutUs": {
+        "name": "Tentang Kami",
+        "description": "Pelajari tentang Moving Walls"
       }
     },
     "resources": {
@@ -327,6 +393,11 @@
       "googlePartner": "Mitra Premier Google",
       "iabMember": "Anggota IAB",
       "gdprCompliant": "Sesuai GDPR"
+    },
+    "trustBarStats": {
+      "oohSites": "Lokasi OOH",
+      "markets": "Pasar",
+      "clients": "Klien"
     },
     "asianBornGlobal": {
       "badge": "Lahir di Asia, Visi Global",
@@ -654,7 +725,26 @@
       "badge": "Kesuksesan Pelanggan",
       "title": "Apa Kata",
       "titleHighlight": "Klien Kami",
-      "description": "Dengarkan dari brand dan agensi yang mentransformasi periklanan mereka dengan Moving Walls."
+      "description": "Dengarkan dari brand dan agensi yang mentransformasi periklanan mereka dengan Moving Walls.",
+      "swipeHint": "Geser untuk menavigasi",
+      "viewAllCta": "Lihat Semua Kisah Sukses",
+      "ariaPrev": "Testimoni sebelumnya",
+      "ariaNext": "Testimoni berikutnya",
+      "ariaGoToSlide": "Slide",
+      "fallback": [
+        {
+          "quote": "Dengan menyesuaikan platform Moving Walls, Jeki menambahkan layanan baru menggunakan keahlian periklanan transportasinya. Kami bertujuan membangun salah satu marketplace terbesar di Jepang dengan inventaris OOH yang beragam secara nasional.",
+          "role": "Presiden dan Direktur Utama"
+        },
+        {
+          "quote": "Kemitraan ini memberi kami solusi pengukuran audiens mutakhir yang membawa wawasan yang belum pernah ada sebelumnya ke kampanye iklan kami.",
+          "role": "Direktur Data dan Transformasi Digital"
+        },
+        {
+          "quote": "Investasi merek tumbuh ketika pengiklan memiliki kejelasan tentang penempatan dan kinerja iklan. Kemitraan ini memperkuat perencanaan DOOH kami dan memperluas kemampuan pengukuran untuk klien kami.",
+          "role": "Chief Investment Officer"
+        }
+      ]
     },
     "about": {
       "title": "Mendefinisikan Ulang Periklanan Luar Ruang",
@@ -697,10 +787,21 @@
       "readFullCaseStudy": "Baca Studi Kasus Lengkap",
       "viewAllCaseStudies": "Lihat Semua Studi Kasus"
     },
+    "caseStudiesSection": {
+      "title": "Jelajahi Studi Kasus Kami",
+      "description": "Temukan bagaimana merek-merek terkemuka di berbagai industri telah mencapai hasil luar biasa dengan platform media terhubung dari Moving Walls.",
+      "loading": "Memuat studi kasus...",
+      "empty": "Studi kasus tidak ditemukan.",
+      "readMore": "Baca Selengkapnya",
+      "readMoreAria": "Baca selengkapnya tentang",
+      "viewAll": "Lihat Semua Studi Kasus"
+    },
     "contactForm": {
       "badge": "Mari Diskusikan Visi Anda",
       "title": "Cerita Sukses Anda Dimulai di Sini",
       "description": "Bagikan tantangan dan tujuan periklanan Anda. Para ahli kami akan merancang strategi kustom yang mentransformasi visi Anda menjadi hasil bisnis yang terukur.",
+      "directLine": "Saluran Langsung",
+      "emailLabel": "Email",
       "form": {
         "name": "Nama Lengkap",
         "email": "Alamat Email",

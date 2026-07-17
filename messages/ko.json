@@ -9,12 +9,25 @@
     "about": "회사 소개",
     "resources": "리소스",
     "contact": "문의하기",
-    "getStarted": "시작하기"
+    "getStarted": "시작하기",
+    "selectLanguage": "언어 선택",
+    "openSearch": "검색 열기",
+    "openMenu": "탐색 메뉴 열기",
+    "closeMenu": "탐색 메뉴 닫기",
+    "language": "언어",
+    "viewAllLanguages": "모든 언어 보기"
   },
   "hero": {
     "badge": "AI 기반 OOH 광고",
     "title": "광고 전략을",
     "titleHighlight": "혁신하세요",
+    "wordMorphWords": [
+      "OOH",
+      "디지털",
+      "프로그래매틱",
+      "커넥티드"
+    ],
+    "mediaPlatformLabel": "미디어 플랫폼",
     "description": "Moving Walls는 단일 지능형 클라우드 플랫폼을 통해 전체 OOH 생태계를 통합합니다. 오디언스 발견부터 예약, 활성화, 측정 및 최적화까지.",
     "bullets": [
       "시각적 효과가 아닌 연결을 위해 구축.",
@@ -119,7 +132,56 @@
     "copyright": "© 2024 Moving Walls. All rights reserved.",
     "privacy": "개인정보처리방침",
     "terms": "이용약관",
-    "cookies": "쿠키 설정"
+    "cookies": "쿠키 설정",
+    "cookiePolicy": "쿠키 정책",
+    "links": {
+      "company": {
+        "ourStory": "우리의 이야기",
+        "leadership": "리더십",
+        "officeLocations": "사무소 위치",
+        "careers": "채용정보",
+        "contactUs": "문의하기"
+      },
+      "solutions": {
+        "brands": "브랜드",
+        "mediaOwners": "미디어 오너",
+        "agencies": "에이전시"
+      },
+      "products": {
+        "planner": "MW Planner",
+        "measure": "MW Measure",
+        "influence": "MW Influence",
+        "activate": "MW Activate",
+        "science": "MW Science",
+        "studio": "MW Studio",
+        "market": "MW Market"
+      },
+      "resources": {
+        "oohFormats": "OOH 광고 포맷",
+        "ebooks": "전자책",
+        "blog": "블로그",
+        "caseStudies": "고객 사례",
+        "pressNews": "보도자료 및 뉴스",
+        "events": "이벤트"
+      },
+      "countries": {
+        "malaysia": "말레이시아",
+        "singapore": "싱가포르",
+        "indonesia": "인도네시아",
+        "india": "인도",
+        "philippines": "필리핀",
+        "japan": "일본",
+        "australia": "호주",
+        "sriLanka": "스리랑카",
+        "thailand": "태국"
+      }
+    },
+    "movingHearts": {
+      "title": "Moving Hearts",
+      "statsLabel": "전달된 마음",
+      "tagline": "전 세계 책임감 있는 OOH 미디어",
+      "ctaText": "자세히 보기"
+    }
   },
   "contact": {
     "badge": "문의하기",
@@ -266,6 +328,10 @@
       "featured": {
         "title": "사례 연구: 금융",
         "description": "핀테크 스타트업 5,000+ 우수 리드 생성"
+      },
+      "aboutUs": {
+        "name": "회사 소개",
+        "description": "Moving Walls에 대해 알아보기"
       }
     },
     "resources": {
@@ -327,6 +393,11 @@
       "googlePartner": "Google 프리미어 파트너",
       "iabMember": "IAB 회원",
       "gdprCompliant": "GDPR 준수"
+    },
+    "trustBarStats": {
+      "oohSites": "OOH 사이트",
+      "markets": "시장",
+      "clients": "고객"
     },
     "asianBornGlobal": {
       "badge": "아시아에서 태어나 글로벌 비전으로",
@@ -649,7 +720,26 @@
       "badge": "고객 성공",
       "title": "고객들이",
       "titleHighlight": "말하는 것",
-      "description": "Moving Walls로 광고를 혁신하고 있는 브랜드와 에이전시의 이야기를 들어보세요."
+      "description": "Moving Walls로 광고를 혁신하고 있는 브랜드와 에이전시의 이야기를 들어보세요.",
+      "swipeHint": "스와이프하여 이동",
+      "viewAllCta": "모든 성공 사례 보기",
+      "ariaPrev": "이전 후기",
+      "ariaNext": "다음 후기",
+      "ariaGoToSlide": "슬라이드",
+      "fallback": [
+        {
+          "quote": "Moving Walls의 플랫폼을 커스터마이징하여 Jeki는 교통 광고 전문성을 활용한 새로운 서비스를 추가하고 있습니다. 전국적으로 다양한 OOH 인벤토리를 갖춘 일본 최대 규모의 마켓플레이스 중 하나를 구축하는 것이 목표입니다.",
+          "role": "대표이사 사장"
+        },
+        {
+          "quote": "이 파트너십은 광고 캠페인에 전례 없는 인사이트를 제공하는 최첨단 오디언스 측정 솔루션을 제공합니다.",
+          "role": "데이터 및 디지털 트랜스포메이션 담당 이사"
+        },
+        {
+          "quote": "광고주가 광고 배치와 성과를 명확히 파악할 수 있을 때 브랜드 투자가 성장합니다. 이 파트너십은 당사의 DOOH 플래닝을 강화하고 고객을 위한 측정 역량을 확장합니다.",
+          "role": "최고투자책임자"
+        }
+      ]
     },
     "about": {
       "title": "옥외 광고 재정의",
@@ -692,10 +782,21 @@
       "readFullCaseStudy": "전체 사례 연구 읽기",
       "viewAllCaseStudies": "모든 사례 연구 보기"
     },
+    "caseStudiesSection": {
+      "title": "고객 사례 살펴보기",
+      "description": "Moving Walls의 커넥티드 미디어 플랫폼을 통해 업계를 선도하는 브랜드들이 어떻게 놀라운 성과를 달성했는지 알아보세요.",
+      "loading": "고객 사례를 불러오는 중...",
+      "empty": "고객 사례를 찾을 수 없습니다.",
+      "readMore": "자세히 보기",
+      "readMoreAria": "자세히 보기:",
+      "viewAll": "모든 고객 사례 보기"
+    },
     "contactForm": {
       "badge": "비전에 대해 논의합시다",
       "title": "성공 스토리가 여기서 시작됩니다",
       "description": "광고 과제와 목표를 공유해 주세요. 전문가들이 비전을 측정 가능한 비즈니스 결과로 전환하는 맞춤형 전략을 수립해 드립니다.",
+      "directLine": "직통 전화",
+      "emailLabel": "이메일",
       "form": {
         "name": "이름",
         "email": "이메일 주소",

@@ -9,12 +9,25 @@
     "about": "关于我们",
     "resources": "资源",
     "contact": "联系我们",
-    "getStarted": "开始使用"
+    "getStarted": "开始使用",
+    "selectLanguage": "选择语言",
+    "openSearch": "打开搜索",
+    "openMenu": "打开导航菜单",
+    "closeMenu": "关闭导航菜单",
+    "language": "语言",
+    "viewAllLanguages": "查看所有语言"
   },
   "hero": {
     "badge": "AI驱动的户外广告",
     "title": "全球领先的",
     "titleHighlight": "互联媒体平台",
+    "wordMorphWords": [
+      "OOH",
+      "数字",
+      "程序化",
+      "互联"
+    ],
+    "mediaPlatformLabel": "媒体平台",
     "description": "通过500多个品牌信赖的数据驱动DOOH解决方案转变您的广告。更智能地规划，更好地购买，全面衡量。",
     "bullets": [
       "为连接而建，不仅仅是可见性。",
@@ -119,7 +132,56 @@
     "copyright": "© 2024 Moving Walls. 保留所有权利。",
     "privacy": "隐私政策",
     "terms": "服务条款",
-    "cookies": "Cookie设置"
+    "cookies": "Cookie设置",
+    "cookiePolicy": "Cookie政策",
+    "links": {
+      "company": {
+        "ourStory": "我们的故事",
+        "leadership": "领导团队",
+        "officeLocations": "办公地点",
+        "careers": "招聘信息",
+        "contactUs": "联系我们"
+      },
+      "solutions": {
+        "brands": "品牌",
+        "mediaOwners": "媒体业主",
+        "agencies": "代理商"
+      },
+      "products": {
+        "planner": "MW Planner",
+        "measure": "MW Measure",
+        "influence": "MW Influence",
+        "activate": "MW Activate",
+        "science": "MW Science",
+        "studio": "MW Studio",
+        "market": "MW Market"
+      },
+      "resources": {
+        "oohFormats": "户外广告格式",
+        "ebooks": "电子书",
+        "blog": "博客",
+        "caseStudies": "案例研究",
+        "pressNews": "新闻与公告",
+        "events": "活动"
+      },
+      "countries": {
+        "malaysia": "马来西亚",
+        "singapore": "新加坡",
+        "indonesia": "印度尼西亚",
+        "india": "印度",
+        "philippines": "菲律宾",
+        "japan": "日本",
+        "australia": "澳大利亚",
+        "sriLanka": "斯里兰卡",
+        "thailand": "泰国"
+      }
+    },
+    "movingHearts": {
+      "title": "Moving Hearts",
+      "statsLabel": "传递的心意",
+      "tagline": "全球负责任的户外媒体",
+      "ctaText": "了解更多"
+    }
   },
   "contact": {
     "badge": "联系我们",
@@ -266,6 +328,10 @@
       "featured": {
         "title": "案例研究：金融",
         "description": "金融科技初创公司产生5000+优质线索"
+      },
+      "aboutUs": {
+        "name": "关于我们",
+        "description": "了解Moving Walls"
       }
     },
     "resources": {
@@ -327,6 +393,11 @@
       "googlePartner": "Google 首席合作伙伴",
       "iabMember": "IAB 会员",
       "gdprCompliant": "GDPR 合规"
+    },
+    "trustBarStats": {
+      "oohSites": "户外广告点位",
+      "markets": "市场",
+      "clients": "客户"
     },
     "asianBornGlobal": {
       "badge": "亚洲诞生，全球视野",
@@ -649,7 +720,26 @@
       "badge": "客户成功",
       "title": "我们的客户",
       "titleHighlight": "如是说",
-      "description": "听听正在使用Moving Walls转型其广告的品牌和代理商的声音。"
+      "description": "听听正在使用Moving Walls转型其广告的品牌和代理商的声音。",
+      "swipeHint": "滑动以浏览",
+      "viewAllCta": "查看所有成功案例",
+      "ariaPrev": "上一个客户评价",
+      "ariaNext": "下一个客户评价",
+      "ariaGoToSlide": "幻灯片",
+      "fallback": [
+        {
+          "quote": "通过定制Moving Walls的平台，jeki利用其交通广告专业知识增加了新服务。我们致力于打造日本最大的市场之一，拥有覆盖全国的多样化户外广告库存。",
+          "role": "总裁兼代表董事"
+        },
+        {
+          "quote": "这一合作伙伴关系为我们提供了尖端的受众测量解决方案，为我们的广告活动带来前所未有的洞察。",
+          "role": "数据与数字化转型总监"
+        },
+        {
+          "quote": "当广告主清楚了解广告投放位置和效果时，品牌投资就会增长。这一合作伙伴关系加强了我们的DOOH规划，并扩展了为客户提供的测量能力。",
+          "role": "首席投资官"
+        }
+      ]
     },
     "about": {
       "title": "重新定义户外广告",
@@ -692,10 +782,21 @@
       "readFullCaseStudy": "阅读完整案例研究",
       "viewAllCaseStudies": "查看所有案例研究"
     },
+    "caseStudiesSection": {
+      "title": "探索我们的案例研究",
+      "description": "了解各行业领先品牌如何通过Moving Walls的互联媒体平台取得卓越成果。",
+      "loading": "正在加载案例研究...",
+      "empty": "未找到案例研究。",
+      "readMore": "阅读更多",
+      "readMoreAria": "阅读更多关于",
+      "viewAll": "查看所有案例研究"
+    },
     "contactForm": {
       "badge": "让我们讨论您的愿景",
       "title": "您的成功故事从这里开始",
       "description": "分享您的广告挑战和目标。我们的专家将制定量身定制的策略，将您的愿景转化为可衡量的业务成果。",
+      "directLine": "直线电话",
+      "emailLabel": "电子邮件",
       "form": {
         "name": "全名",
         "email": "电子邮件地址",

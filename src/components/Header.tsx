@@ -8,12 +8,20 @@ import { useLocale, Locale } from "@/i18n/LocaleContext";
 import GlobalSearch from "./GlobalSearch";
 import { CTAButton } from "./CTAButton";
 
+// A field translated per-locale in Sanity (see studio's `localeString` schema) — English is the
+// only guaranteed value, other locales are filled in progressively by content editors.
+export type LocaleValue = { en: string; ja?: string; ko?: string; id?: string; zh?: string };
+
+function resolveLocaleValue(value: LocaleValue | undefined, locale: Locale): string {
+  return value?.[locale] || value?.en || '';
+}
+
 // Types for Sanity mega menu data
 export interface SanityMenuLink {
   _key: string;
   isEnabled?: boolean;
-  title: string;
-  description?: string;
+  title: LocaleValue;
+  description?: LocaleValue;
   linkType: string;
   url?: string;
   internalPage?: string;
@@ -26,14 +34,14 @@ export interface SanityMenuLink {
 
 export interface SanityMenuColumn {
   _key: string;
-  heading?: string;
+  heading?: LocaleValue;
   links: SanityMenuLink[];
 }
 
 export interface SanityMenuItem {
   _key: string;
   isEnabled?: boolean;
-  title: string;
+  title: LocaleValue;
   menuType: 'link' | 'megaMenu';
   linkType?: string;
   url?: string;
@@ -61,7 +69,7 @@ export interface SanityMegaMenuData {
   mainNavItems: SanityMenuItem[];
   ctaButton?: {
     enabled: boolean;
-    text: string;
+    text: LocaleValue;
     linkType: string;
     url?: string;
     internalPage?: string;
@@ -104,7 +112,7 @@ function resolveMenuItemHref(item: SanityMenuItem): string {
 }
 
 // Transform Sanity menu data to the format used by the component
-function transformSanityMenu(sanityData: SanityMegaMenuData | null, t: (key: string) => string) {
+function transformSanityMenu(sanityData: SanityMegaMenuData | null, locale: Locale, t: (key: string) => string) {
   if (!sanityData?.mainNavItems) return null;
 
   const megaMenuData: Record<string, { sections: Array<{ title: string; items: Array<{ name: string; description: string; href: string }> }> }> = {};
@@ -114,26 +122,27 @@ function transformSanityMenu(sanityData: SanityMegaMenuData | null, t: (key: str
   const enabledItems = sanityData.mainNavItems.filter(item => item.isEnabled !== false);
 
   enabledItems.forEach((item) => {
+    const title = resolveLocaleValue(item.title, locale);
     const navLink = {
       key: item._key,
-      name: item.title,
-      translatedName: item.title,
-      href: item.menuType === 'megaMenu' ? `#${item.title.toLowerCase()}` : resolveMenuItemHref(item),
+      name: title,
+      translatedName: title,
+      href: item.menuType === 'megaMenu' ? `#${title.toLowerCase()}` : resolveMenuItemHref(item),
       hasMegaMenu: item.menuType === 'megaMenu',
       openInNewTab: item.openInNewTab,
     };
     navLinks.push(navLink);
 
     if (item.menuType === 'megaMenu' && item.columns) {
-      megaMenuData[item.title] = {
+      megaMenuData[title] = {
         sections: item.columns.map((column) => ({
-          title: column.heading || '',
+          title: resolveLocaleValue(column.heading, locale),
           // Filter to only enabled links within each column
           items: column.links
             .filter(link => link.isEnabled !== false)
             .map((link) => ({
-              name: link.title,
-              description: link.description || '',
+              name: resolveLocaleValue(link.title, locale),
+              description: resolveLocaleValue(link.description, locale),
               href: resolveHref(link),
             })),
         })),
@@ -184,7 +193,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
       {
         title: t('megaMenu.about.company'),
         items: [
-          { name: "About Us", description: "Learn about Moving Walls", href: "/about" },
+          { name: t('megaMenu.about.aboutUs.name'), description: t('megaMenu.about.aboutUs.description'), href: "/about" },
           { name: t('megaMenu.about.ourStory.name'), description: t('megaMenu.about.ourStory.description'), href: "/our-story" },
           // Leadership link hidden from mega menu
           // { name: t('megaMenu.about.leadership.name'), description: t('megaMenu.about.leadership.description'), href: "/leadership" },
@@ -235,7 +244,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
   const { locale, setLocale, localeNames, localeCodes, locales, t } = useLocale();
   
   // Transform Sanity data or fall back to local data
-  const transformedSanityData = useMemo(() => transformSanityMenu(sanityMenuData || null, t), [sanityMenuData, t]);
+  const transformedSanityData = useMemo(() => transformSanityMenu(sanityMenuData || null, locale, t), [sanityMenuData, locale, t]);
   
   // Create translated mega menu data (fallback)
   const fallbackMegaMenuData = useMemo(() => createMegaMenuData(t), [t]);
@@ -341,12 +350,13 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                 onClick={() => setIsLanguageOpen(!isLanguageOpen)}
                 onBlur={() => setTimeout(() => setIsLanguageOpen(false), 150)}
                 className="flex items-center gap-2 px-3 py-2 text-mw-gray-600 hover:text-mw-blue-600 transition-colors duration-200 text-sm font-medium rounded-lg hover:bg-mw-gray-50"
-                aria-label="Select language"
+                aria-label={t('nav.selectLanguage')}
+                suppressHydrationWarning
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
-                <span>{localeCodes[locale]}</span>
+                <span suppressHydrationWarning>{localeCodes[locale]}</span>
                 <svg
                   className={`w-4 h-4 transition-transform duration-200 ${isLanguageOpen ? 'rotate-180' : ''}`}
                   fill="none"
@@ -398,7 +408,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.45 }}
               className="p-2 text-mw-gray-600 hover:text-mw-blue-600 hover:bg-mw-gray-50 rounded-lg transition-colors duration-200"
-              aria-label="Open search"
+              aria-label={t('nav.openSearch')}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -422,7 +432,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                         : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
                   }`}
                 >
-                  {ctaButton?.text || 'Get Started'}
+                  {resolveLocaleValue(ctaButton?.text, locale) || t('nav.getStarted')}
                 </CTAButton>
               </motion.div>
             )}
@@ -434,7 +444,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
             <button
               onClick={() => setIsSearchOpen(true)}
               className="p-2 text-mw-gray-600 hover:text-mw-blue-600"
-              aria-label="Open search"
+              aria-label={t('nav.openSearch')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -445,7 +455,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
             <button
               className="p-2 text-mw-gray-600 hover:text-mw-blue-600"
               onClick={() => setIsOpen(!isOpen)}
-              aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+              aria-label={isOpen ? t('nav.closeMenu') : t('nav.openMenu')}
             >
               <svg
                 className="w-6 h-6"
@@ -607,7 +617,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                 
                 {/* Mobile Language Selector */}
                 <div className="pt-4 border-t border-mw-gray-200">
-                  <p className="text-xs font-semibold text-mw-gray-400 uppercase tracking-wider mb-3">Language</p>
+                  <p className="text-xs font-semibold text-mw-gray-400 uppercase tracking-wider mb-3">{t('nav.language')}</p>
                   <div className="grid grid-cols-2 gap-2">
                     {languages.slice(0, 8).map((lang) => (
                       <button
@@ -632,7 +642,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                       // Could open a full language modal
                     }}
                   >
-                    View all languages →
+                    {t('nav.viewAllLanguages')} →
                   </button>
                 </div>
 
@@ -648,7 +658,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                           : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
                     }`}
                   >
-                    {ctaButton?.text || 'Get Started'}
+                    {resolveLocaleValue(ctaButton?.text, locale) || t('nav.getStarted')}
                   </CTAButton>
                 )}
               </div>

@@ -9,12 +9,25 @@
     "about": "会社概要",
     "resources": "リソース",
     "contact": "お問い合わせ",
-    "getStarted": "始める"
+    "getStarted": "始める",
+    "selectLanguage": "言語を選択",
+    "openSearch": "検索を開く",
+    "openMenu": "ナビゲーションメニューを開く",
+    "closeMenu": "ナビゲーションメニューを閉じる",
+    "language": "言語",
+    "viewAllLanguages": "すべての言語を見る"
   },
   "hero": {
     "badge": "AI駆動のOOH広告",
     "title": "世界をリードする",
     "titleHighlight": "コネクテッドメディアプラットフォーム",
+    "wordMorphWords": [
+      "OOH",
+      "デジタル",
+      "プログラマティック",
+      "コネクテッド"
+    ],
+    "mediaPlatformLabel": "メディアプラットフォーム",
     "description": "500以上のブランドに信頼されているデータドリブンなDOOHソリューションで広告を変革。よりスマートに計画、より良く購入、すべてを測定。",
     "bullets": [
       "視認性だけでなく、つながりのために構築。",
@@ -119,7 +132,56 @@
     "copyright": "© 2024 Moving Walls. All rights reserved.",
     "privacy": "プライバシーポリシー",
     "terms": "利用規約",
-    "cookies": "Cookie設定"
+    "cookies": "Cookie設定",
+    "cookiePolicy": "クッキーポリシー",
+    "links": {
+      "company": {
+        "ourStory": "私たちのストーリー",
+        "leadership": "リーダーシップ",
+        "officeLocations": "オフィスの所在地",
+        "careers": "採用情報",
+        "contactUs": "お問い合わせ"
+      },
+      "solutions": {
+        "brands": "ブランド",
+        "mediaOwners": "メディアオーナー",
+        "agencies": "代理店"
+      },
+      "products": {
+        "planner": "MW Planner",
+        "measure": "MW Measure",
+        "influence": "MW Influence",
+        "activate": "MW Activate",
+        "science": "MW Science",
+        "studio": "MW Studio",
+        "market": "MW Market"
+      },
+      "resources": {
+        "oohFormats": "OOH広告フォーマット",
+        "ebooks": "電子書籍",
+        "blog": "ブログ",
+        "caseStudies": "導入事例",
+        "pressNews": "プレス&ニュース",
+        "events": "イベント"
+      },
+      "countries": {
+        "malaysia": "マレーシア",
+        "singapore": "シンガポール",
+        "indonesia": "インドネシア",
+        "india": "インド",
+        "philippines": "フィリピン",
+        "japan": "日本",
+        "australia": "オーストラリア",
+        "sriLanka": "スリランカ",
+        "thailand": "タイ"
+      }
+    },
+    "movingHearts": {
+      "title": "Moving Hearts",
+      "statsLabel": "届けた想い",
+      "tagline": "世界中で責任あるOOHメディアを",
+      "ctaText": "詳しく見る"
+    }
   },
   "contact": {
     "badge": "お問い合わせ",
@@ -266,6 +328,10 @@
       "featured": {
         "title": "ケーススタディ：金融",
         "description": "フィンテックスタートアップが5,000件以上の質の高いリードを獲得"
+      },
+      "aboutUs": {
+        "name": "会社概要",
+        "description": "Moving Wallsについて詳しく見る"
       }
     },
     "resources": {
@@ -328,11 +394,16 @@
       "iabMember": "IAB メンバー",
       "gdprCompliant": "GDPR 準拠"
     },
+    "trustBarStats": {
+      "oohSites": "OOH拠点",
+      "markets": "市場",
+      "clients": "クライアント"
+    },
     "asianBornGlobal": {
       "badge": "アジア生まれ、グローバルビジョン",
       "title": "アジア生まれ。",
       "titleHighlight": "世界のために構築。",
-      "description": "世界で最もダイナミックな地域の複雑さをすることで、私たちは静的なメディアを超えて考えることを余儀なくされました。今日、私たちは注目とつながりのギャップを埋めています。",
+      "description": "世界で最もダイナミックな地域の複雑さを乗りこなす中で、私たちは静的なメディアを超えて考えることを迫られました。今日、私たちは「注目」と「つながり」の間のギャップを埋めています。",
       "paragraph1": "{{highlight}}タイムズスクエアからオーチャードロード{{/highlight}}まで、私たちは断片化されたOOHを統一された、測定可能な、グローバルなメディアランドスケープに変えます。私たちはグローバルに運営するだけでなく、都市がどのように動くかを理解しています。",
       "stats": {
         "countries": "30+",
@@ -349,8 +420,8 @@
       "description": "ブランド、メディアオーナー、代理店のいずれであっても、DOOHエコシステムで成功するために必要なツールとテクノロジーを提供します。",
       "brand": {
         "title": "ブランド",
-        "subtitle": "Turn Attention Into Real World Growth",
-        "description": "プレミアムな屋外広告在庫でブランドメッセージを拡大。データドリブンなキャンペーンでターゲットオーディエンスに大規模にリーチし、認知度とエンゲージメントを向上させます。",
+        "subtitle": "注目を、現実世界の成長へ",
+        "description": "複数の市場に展開するブランドには、共通の課題があります。戦略の一貫性、計測の明確さ、そして現地の特性への適応力です。\n\n私たちは、店舗来訪やエンゲージメント、パフォーマンスシグナルといった現実世界の成果と、広告露出を複数の都市・国にわたって結びつけます。屋外広告は単なる認知獲得を超え、ブランドとともに広がり続ける成長チャネルになります。\n\nなぜ重要なのか。コントロールと可視性を失うことなく、地域を越えてキャンペーンを拡大できる自信が得られます。",
         "features": {
           "0": "マルチチャネルキャンペーン管理",
           "1": "高度なオーディエンスターゲティング",
@@ -361,8 +432,8 @@
       },
       "mediaOwners": {
         "title": "メディアオーナー",
-        "subtitle": "Unlock the Global Value of Your Inventory",
-        "description": "高度なプログラマティックプラットフォームで在庫価値を最大化。プレミアム広告主と接続し、すべてのデジタルおよび従来のOOH資産の収益を最適化します。",
+        "subtitle": "在庫のグローバルな価値を解き放つ",
+        "description": "メディアオーナーは、それぞれの都市の中心に位置しています。しかし、その価値の多くはローカル市場の中に留まったままです。\n\n私たちは、あなたの在庫を地域および世界の需要と結びつけ、現地との関連性を保ちながら収益を最適化します。\n\nなぜ重要なのか。あなたのスクリーンはもはや地理に縛られません。グローバルなマーケットプレイスの一部になるのです。",
         "features": {
           "0": "プログラマティックマーケットプレイスアクセス",
           "1": "在庫管理システム",
@@ -373,8 +444,8 @@
       },
       "agencies": {
         "title": "代理店",
-        "subtitle": "Navigate Complexity With Clarity",
-        "description": "エンタープライズグレードのツールでDOOH運用を効率化。複数のクライアントキャンペーンを管理し、プレミアム在庫にアクセスし、代理店プラットフォームで優れた結果を提供します。",
+        "subtitle": "複雑さを、明確さで乗りこなす",
+        "description": "代理店は、タイムゾーン、通貨、フォーマット、レポート体系にまたがるキャンペーンを管理しています。成長は、しばしば運用上の摩擦を生み出します。\n\n私たちは、プランニング、バイイング、レポーティングを一つの統合された環境にまとめ、複雑さを増やすことなく代理店が国際的に事業を拡大できるようにします。\n\nなぜ重要なのか。サイロは少なく、コントロールはより強く。世界中のどこにいるクライアントにも、より強力な成果を届けます。",
         "features": {
           "0": "マルチクライアントキャンペーン管理",
           "1": "ホワイトラベルレポート",
@@ -649,7 +720,26 @@
       "badge": "クライアントの成功",
       "title": "お客様の",
       "titleHighlight": "声",
-      "description": "Moving Wallsで広告を変革しているブランドや代理店の声をお聞きください。"
+      "description": "Moving Wallsで広告を変革しているブランドや代理店の声をお聞きください。",
+      "swipeHint": "スワイプして操作",
+      "viewAllCta": "すべての成功事例を見る",
+      "ariaPrev": "前の推薦文",
+      "ariaNext": "次の推薦文",
+      "ariaGoToSlide": "スライド",
+      "fallback": [
+        {
+          "quote": "Moving Wallsのプラットフォームをカスタマイズすることで、jekiは交通広告における専門知識を活かして新たなサービスを追加しています。全国各地の多様なOOH在庫を活用し、日本最大級のマーケットプレイスの一つを構築することを目指しています。",
+          "role": "代表取締役社長"
+        },
+        {
+          "quote": "このパートナーシップにより、最先端のオーディエンス計測ソリューションが提供され、広告キャンペーンにこれまでにないインサイトをもたらしています。",
+          "role": "データ・デジタルトランスフォーメーション担当ディレクター"
+        },
+        {
+          "quote": "広告主が広告掲載とパフォーマンスを明確に把握できれば、ブランドへの投資は拡大します。このパートナーシップにより、当社のDOOHプランニングが強化され、クライアント向けの計測機能が拡充されます。",
+          "role": "最高投資責任者(CIO)"
+        }
+      ]
     },
     "about": {
       "title": "屋外広告を再定義",
@@ -692,10 +782,21 @@
       "readFullCaseStudy": "完全なケーススタディを読む",
       "viewAllCaseStudies": "すべてのケーススタディを見る"
     },
+    "caseStudiesSection": {
+      "title": "導入事例を見る",
+      "description": "Moving Wallsのコネクテッドメディアプラットフォームで、業界をリードするブランドがどのように優れた成果を達成したかをご覧ください。",
+      "loading": "導入事例を読み込み中...",
+      "empty": "該当する導入事例が見つかりませんでした。",
+      "readMore": "続きを読む",
+      "readMoreAria": "続きを読む:",
+      "viewAll": "すべての導入事例を見る"
+    },
     "contactForm": {
       "badge": "ビジョンについて話し合いましょう",
       "title": "あなたの成功物語はここから始まります",
       "description": "広告の課題と目標を共有してください。私たちの専門家が、あなたのビジョンを測定可能なビジネス成果に変えるカスタマイズされた戦略を作成します。",
+      "directLine": "直通電話",
+      "emailLabel": "メール",
       "form": {
         "name": "氏名",
         "email": "メールアドレス",
@@ -741,29 +842,29 @@
       }
     },
     "platformEcosystem": {
-      "badge": "MW Platform Ecosystem",
-      "title": "Where Movement Meets Media",
-      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "badge": "MWプラットフォーム・エコシステム",
+      "title": "動きとメディアが交わる場所",
+      "intro": "Moving Wallsの中核には、市場を越えてデータ、プランニング、実行、計測を一つにつなぐ統合システムがあります。",
       "cards": {
         "data": {
-          "label": "Data Inputs",
-          "description": "Audience signals, location and mobility patterns, traffic flows, weather triggers, demographics, points of interest, event calendars, and first party and third party data."
+          "label": "データ入力",
+          "description": "オーディエンスシグナル、位置情報と移動パターン、交通量、天候トリガー、人口統計、POI(施設情報)、イベントカレンダー、ファーストパーティおよびサードパーティデータ。"
         },
         "execute": {
-          "label": "Execute Locally",
-          "description": "Campaigns are planned centrally and executed locally, measured consistently across regions, and refined continuously."
+          "label": "各地域での実行",
+          "description": "キャンペーンは一元的に計画され、各地域で実行されます。地域を横断して一貫した計測を行い、継続的に改善します。"
         },
         "measure": {
-          "label": "Measure & Refine",
-          "description": "Track performance across markets with unified analytics, optimise in real time, and build learnings into every future campaign."
+          "label": "計測と改善",
+          "description": "統合分析により市場全体のパフォーマンスを追跡し、リアルタイムで最適化を行い、得られた知見を次のキャンペーンに活かします。"
         }
       },
       "scenario": {
-        "label": "Imagine This",
-        "description": "A retail brand expanding into a new city. Screens activate within defined trade areas when footfall rises and contextual conditions align with demand. Creative adapts to local moments while maintaining global brand consistency. Spend follows opportunity in real time."
+        "label": "こんなシーンを想像してください",
+        "description": "新しい都市に進出する小売ブランド。人流が増加し、状況が需要と合致すると、指定された商圏内のスクリーンが起動します。クリエイティブはグローバルなブランドの一貫性を保ちながら、その土地ならではの瞬間に合わせて最適化されます。予算はリアルタイムで機会を捉えて配分されます。"
       },
-      "quote": "This is how outdoor evolves from static space into a responsive global network.",
-      "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
+      "quote": "これこそが、屋外広告が静的な空間からレスポンシブなグローバルネットワークへと進化する姿です。",
+      "productsLine": "プランニング、アクティベーション、計測、最適化が一つの連続したジャーニーの中で機能します。"
     }
   }
 }

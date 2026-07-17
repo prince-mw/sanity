@@ -455,25 +455,18 @@ export default function Hero() {
           className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6"
           style={{ textShadow: '0 2px 10px rgba(0,0,0,0.3)', lineHeight: '1.3' }}
         >
-          The World&apos;s Leading
+          {t('hero.title')}
           <br />
-          <WordMorph 
-            words={['OOH', 'Digital', 'Programmatic', 'Connected']} 
+          <WordMorph
+            words={t('hero.wordMorphWords')}
             interval={2000}
           />
           <br />
-          <span className="text-white">Media Platform</span>
+          <span className="text-white">{t('hero.mediaPlatformLabel')}</span>
         </motion.h1>
 
         {/* Typewriter Animated Bullet Points - One Row */}
-        <TypewriterBullets 
-          bullets={[
-            'Built for connection, not just visibility.',
-            'Turns physical spaces into measurable media.',
-            'Brings together screens, data, and buying.',
-            'Reaches audiences across markets.'
-          ]} 
-        />
+        <TypewriterBullets bullets={t('hero.bullets')} />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}
