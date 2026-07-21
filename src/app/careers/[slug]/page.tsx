@@ -214,31 +214,38 @@ export default async function JobDetailPage({ params }: PageProps) {
       // Get related jobs from fallback data (same department)
       const relatedFallbackJobs = Object.values(fallbackJobs)
         .filter(j => j.slug !== slug && j.department === fallbackJob.department)
-        .slice(0, 3);
-      
+        .slice(0, 3)
+        .map(j => ({ ...j, id: j.slug }));
+
       return (
-        <JobDetailClient 
+        <JobDetailClient
           job={{
             ...fallbackJob,
-            fullDescription: null,
+            id: fallbackJob.slug,
+            salaryRange: '',
+            applyLink: '',
+            applicationFormUrl: '',
           }}
           relatedJobs={relatedFallbackJobs}
         />
       );
     }
-    
+
     notFound();
   } catch (error) {
     console.error("Error fetching job:", error);
-    
+
     // Try fallback on error
     const fallbackJob = fallbackJobs[slug];
     if (fallbackJob) {
       return (
-        <JobDetailClient 
+        <JobDetailClient
           job={{
             ...fallbackJob,
-            fullDescription: null,
+            id: fallbackJob.slug,
+            salaryRange: '',
+            applyLink: '',
+            applicationFormUrl: '',
           }}
           relatedJobs={[]}
         />
