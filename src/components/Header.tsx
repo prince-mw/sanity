@@ -12,7 +12,11 @@ import { CTAButton } from "./CTAButton";
 // only guaranteed value, other locales are filled in progressively by content editors.
 export type LocaleValue = { en: string; ja?: string; ko?: string; id?: string; zh?: string };
 
-function resolveLocaleValue(value: LocaleValue | undefined, locale: Locale): string {
+// Sanity content may still hold the pre-migration plain-string shape (e.g. right after a content
+// rollback) even though this code expects LocaleValue objects — tolerate both so a content/code
+// version mismatch degrades to "shows English" instead of crashing/rendering blank.
+function resolveLocaleValue(value: LocaleValue | string | undefined, locale: Locale): string {
+  if (typeof value === 'string') return value;
   return value?.[locale] || value?.en || '';
 }
 
@@ -20,8 +24,8 @@ function resolveLocaleValue(value: LocaleValue | undefined, locale: Locale): str
 export interface SanityMenuLink {
   _key: string;
   isEnabled?: boolean;
-  title: LocaleValue;
-  description?: LocaleValue;
+  title: LocaleValue | string;
+  description?: LocaleValue | string;
   linkType: string;
   url?: string;
   internalPage?: string;
@@ -34,14 +38,14 @@ export interface SanityMenuLink {
 
 export interface SanityMenuColumn {
   _key: string;
-  heading?: LocaleValue;
+  heading?: LocaleValue | string;
   links: SanityMenuLink[];
 }
 
 export interface SanityMenuItem {
   _key: string;
   isEnabled?: boolean;
-  title: LocaleValue;
+  title: LocaleValue | string;
   menuType: 'link' | 'megaMenu';
   linkType?: string;
   url?: string;
@@ -69,7 +73,7 @@ export interface SanityMegaMenuData {
   mainNavItems: SanityMenuItem[];
   ctaButton?: {
     enabled: boolean;
-    text: LocaleValue;
+    text: LocaleValue | string;
     linkType: string;
     url?: string;
     internalPage?: string;
