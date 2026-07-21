@@ -49,12 +49,20 @@ export default defineType({
         const countryRef = (document as any)?.country?._ref
         if (!countryRef) return true
 
+        // Documents in Studio are edited as drafts (_id: "drafts.<id>") until published, so both
+        // the draft and published IDs of the current document must be excluded — otherwise the
+        // in-progress draft matches itself as a "duplicate" on every save.
+        const rawId = document?._id || ''
+        const publishedId = rawId.replace(/^drafts\./, '')
+        const draftId = `drafts.${publishedId}`
+
         const duplicates = await client.fetch(
-          `count(*[_type == "locationCity" && country._ref == $countryRef && slug.current == $slug && _id != $id])`,
+          `count(*[_type == "locationCity" && country._ref == $countryRef && slug.current == $slug && !(_id in [$draftId, $publishedId])])`,
           {
             countryRef,
             slug: slug.current,
-            id: document?._id?.replace('drafts.', '') || '',
+            draftId,
+            publishedId,
           }
         )
         return duplicates > 0 ? 'This slug is already used by another city in the same country' : true
