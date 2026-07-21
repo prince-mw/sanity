@@ -69,6 +69,13 @@ export default defineType({
       }),
     }),
     defineField({
+      name: 'heroTitle',
+      title: 'Hero Title',
+      type: 'string',
+      group: 'basic',
+      description: 'Custom H1 heading for the hero section. Leave empty to use the default "OOH Advertising in {City}" template.',
+    }),
+    defineField({
       name: 'heroImage',
       title: 'Hero Image',
       type: 'image',
@@ -94,14 +101,6 @@ export default defineType({
       description: 'Detailed description for the city page hero',
     }),
     defineField({
-      name: 'whyInvest',
-      title: 'Why Invest List',
-      type: 'array',
-      group: 'content',
-      description: 'List of reasons to invest in OOH in this city',
-      of: [{ type: 'string' }],
-    }),
-    defineField({
       name: 'faqs',
       title: 'FAQs',
       type: 'array',
@@ -120,111 +119,7 @@ export default defineType({
       ],
     }),
 
-    // Market Stats Group (mirrors location.keyMarkets entry shape)
-    defineField({
-      name: 'code',
-      title: 'City Code',
-      type: 'string',
-      group: 'market',
-      description: 'e.g., "BLR"',
-    }),
-    defineField({
-      name: 'billboards',
-      title: 'Billboard Count',
-      type: 'string',
-      group: 'market',
-      description: 'e.g., "5,000+"',
-    }),
-    defineField({
-      name: 'population',
-      title: 'Population',
-      type: 'string',
-      group: 'market',
-    }),
-    defineField({
-      name: 'screens',
-      title: 'Screens Count',
-      type: 'number',
-      group: 'market',
-    }),
-    defineField({
-      name: 'screensGrowth',
-      title: 'Screens Growth %',
-      type: 'number',
-      group: 'market',
-    }),
-    defineField({
-      name: 'dailyReach',
-      title: 'Daily Reach',
-      type: 'string',
-      group: 'market',
-    }),
-    defineField({
-      name: 'dailyReachGrowth',
-      title: 'Daily Reach Growth %',
-      type: 'number',
-      group: 'market',
-    }),
-    defineField({
-      name: 'monthlyImpressions',
-      title: 'Monthly Impressions',
-      type: 'string',
-      group: 'market',
-    }),
-    defineField({
-      name: 'monthlyImpressionsGrowth',
-      title: 'Monthly Impressions Growth %',
-      type: 'number',
-      group: 'market',
-    }),
-    defineField({
-      name: 'yoyGrowth',
-      title: 'Year-over-Year Growth %',
-      type: 'number',
-      group: 'market',
-    }),
-    defineField({
-      name: 'avgDwell',
-      title: 'Average Dwell Time',
-      type: 'string',
-      group: 'market',
-    }),
-    defineField({
-      name: 'peakHours',
-      title: 'Peak Hours',
-      type: 'string',
-      group: 'market',
-    }),
-    defineField({
-      name: 'topCategory',
-      title: 'Top Category',
-      type: 'string',
-      group: 'market',
-    }),
-    defineField({
-      name: 'viewability',
-      title: 'Viewability %',
-      type: 'number',
-      group: 'market',
-    }),
-    defineField({
-      name: 'stats',
-      title: 'Statistics',
-      type: 'array',
-      group: 'market',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'label', title: 'Label', type: 'string' },
-            { name: 'value', title: 'Value', type: 'string' },
-          ],
-          preview: {
-            select: { title: 'label', subtitle: 'value' },
-          },
-        },
-      ],
-    }),
+    // Market Stats Group
     defineField({
       name: 'mediaTypes',
       title: 'Media Types',
@@ -243,103 +138,6 @@ export default defineType({
           },
         },
       ],
-    }),
-    defineField({
-      name: 'locations',
-      title: 'Notable Locations',
-      type: 'array',
-      group: 'market',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'name', title: 'Name', type: 'string' },
-            { name: 'desc', title: 'Description', type: 'string' },
-            { name: 'traffic', title: 'Traffic', type: 'number' },
-            { name: 'screens', title: 'Screens', type: 'number' },
-            { name: 'score', title: 'Score', type: 'number' },
-          ],
-          preview: {
-            select: { title: 'name', subtitle: 'desc' },
-          },
-        },
-      ],
-    }),
-    defineField({
-      name: 'audience',
-      title: 'Audience',
-      type: 'array',
-      group: 'market',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'name', title: 'Name', type: 'string' },
-            { name: 'percentage', title: 'Percentage', type: 'number' },
-            { name: 'color', title: 'Color Class', type: 'string' },
-          ],
-          preview: {
-            select: { title: 'name', subtitle: 'percentage' },
-            prepare({ title, subtitle }) {
-              return { title, subtitle: subtitle ? `${subtitle}%` : '' }
-            },
-          },
-        },
-      ],
-    }),
-    defineField({
-      name: 'mediaFormats',
-      title: 'Media Formats',
-      type: 'array',
-      group: 'market',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'name', title: 'Name', type: 'string' },
-            { name: 'percentage', title: 'Percentage', type: 'number' },
-          ],
-          preview: {
-            select: { title: 'name', subtitle: 'percentage' },
-            prepare({ title, subtitle }) {
-              return { title, subtitle: subtitle ? `${subtitle}%` : '' }
-            },
-          },
-        },
-      ],
-    }),
-    defineField({
-      name: 'hourlyData',
-      title: 'Hourly Data (24 values)',
-      type: 'array',
-      group: 'market',
-      of: [{ type: 'number' }],
-    }),
-    defineField({
-      name: 'caseStudies',
-      title: 'Featured Case Studies',
-      type: 'array',
-      group: 'market',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'title', title: 'Title', type: 'string' },
-            { name: 'client', title: 'Client', type: 'string' },
-            { name: 'results', title: 'Results', type: 'string' },
-          ],
-          preview: {
-            select: { title: 'title', subtitle: 'client' },
-          },
-        },
-      ],
-    }),
-    defineField({
-      name: 'partners',
-      title: 'Partners',
-      type: 'array',
-      group: 'market',
-      of: [{ type: 'string' }],
     }),
 
     // Billboards Group
@@ -399,7 +197,7 @@ export default defineType({
       title: 'Contact Form URL',
       type: 'url',
       group: 'meta',
-      description: 'City-specific Zoho contact form URL (falls back to the country form if empty)',
+      description: 'City-specific Zoho contact form URL. Used by the hero "Get Started" button and the navbar CTA while a visitor is on this city\'s page.',
     }),
     defineField({
       name: 'order',

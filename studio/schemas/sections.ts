@@ -315,10 +315,32 @@ export const pageSections: any[] = [
       {name: 'heading', type: 'string', title: 'Heading'},
       {name: 'subheading', type: 'text', title: 'Subheading', rows: 2},
       {name: 'ctaText', type: 'string', title: 'Primary Button Text'},
-      {name: 'ctaLink', type: 'string', title: 'Primary Button Link'},
-      {name: 'secondaryCtaText', type: 'string', title: 'Secondary Button Text'},
-      {name: 'secondaryCtaLink', type: 'string', title: 'Secondary Button Link'},
-      {name: 'backgroundImage', type: 'image', title: 'Background Image', options: {hotspot: true}},
+      {
+        name: 'ctaLink',
+        type: 'string',
+        title: 'Primary Button Link',
+        description: 'A Zoho form URL here opens as a popup instead of navigating.',
+      },
+      // Hidden on country (location) and city (locationCity) pages — kept for landing pages.
+      {
+        name: 'secondaryCtaText',
+        type: 'string',
+        title: 'Secondary Button Text',
+        hidden: ({document}: any) => document?._type === 'location' || document?._type === 'locationCity',
+      },
+      {
+        name: 'secondaryCtaLink',
+        type: 'string',
+        title: 'Secondary Button Link',
+        hidden: ({document}: any) => document?._type === 'location' || document?._type === 'locationCity',
+      },
+      {
+        name: 'backgroundImage',
+        type: 'image',
+        title: 'Background Image',
+        options: {hotspot: true},
+        hidden: ({document}: any) => document?._type === 'location' || document?._type === 'locationCity',
+      },
       {name: 'backgroundColor', type: 'string', title: 'Background Color', options: {list: ['white', 'gray', 'blue', 'dark', 'gradient']}, initialValue: 'blue'},
     ],
     preview: {

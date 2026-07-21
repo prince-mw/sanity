@@ -61,6 +61,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       initialData={cityData}
       backHref={`/locations/${slug}`}
       backLabel={`Back to ${city.country?.country || 'Country'}`}
+      pageType="city"
     />
   )
 }

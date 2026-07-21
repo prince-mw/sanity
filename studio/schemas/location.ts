@@ -48,6 +48,13 @@ export default defineType({
       description: 'Country flag emoji (e.g., 🇸🇬)',
     }),
     defineField({
+      name: 'heroTitle',
+      title: 'Hero Title',
+      type: 'string',
+      group: 'basic',
+      description: 'Custom H1 heading for the hero section. Leave empty to use the default "OOH Advertising in {Country}" template.',
+    }),
+    defineField({
       name: 'heroImage',
       title: 'Hero Image',
       type: 'image',

@@ -2,10 +2,12 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 import { LocationData } from '@/data/staticLocationData'
 import { CTAButton } from './CTAButton'
 import { LandingPageRenderer } from './landing'
+import { useZohoPopup } from './ZohoPopupProvider'
 
 // Animation variants
 const fadeUp = {
@@ -118,14 +120,16 @@ interface LocationDetailClientProps {
   backHref?: string
   backLabel?: string
   cities?: LocationCityCard[]
+  /** Distinguishes a country page from an individual city page — both render through this same component. */
+  pageType?: 'country' | 'city'
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [] }: LocationDetailClientProps) {
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country' }: LocationDetailClientProps) {
   const location = initialData
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)
   const [selectedMarket, setSelectedMarket] = useState(0)
   const [currentTime, setCurrentTime] = useState(new Date())
-  const [isContactFormOpen, setIsContactFormOpen] = useState(false)
+  const { openZohoPopup, setCurrentPageFormUrl } = useZohoPopup()
 
   // Update current time every minute for the chart indicator
   useEffect(() => {
@@ -134,6 +138,13 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
     }, 60000)
     return () => clearInterval(timer)
   }, [])
+
+  // Tell the navbar CTA (and anything else listening) which form belongs to this page, so
+  // "Get Started" opens this location/city's form instead of the site default while it's mounted.
+  useEffect(() => {
+    setCurrentPageFormUrl(location.contactFormUrl || null)
+    return () => setCurrentPageFormUrl(null)
+  }, [location.contactFormUrl, setCurrentPageFormUrl])
 
   // Calculate current time position
   const currentTimePosition = ((currentTime.getHours() * 60 + currentTime.getMinutes()) / 1440) * 100
@@ -178,10 +189,14 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
             {/* Left Content */}
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-                OOH Advertising in{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
-                  {location.name}
-                </span>
+                {location.heroTitle ? location.heroTitle : (
+                  <>
+                    OOH Advertising in{' '}
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
+                      {location.name}
+                    </span>
+                  </>
+                )}
               </h1>
               
               <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed">
@@ -190,8 +205,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               
               <div className="flex flex-wrap gap-4">
                 {location.contactFormUrl ? (
-                  <button 
-                    onClick={() => setIsContactFormOpen(true)}
+                  <button
+                    onClick={() => openZohoPopup(location.contactFormUrl!, `Contact Our ${location.name} Team`)}
                     className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105"
                   >
                     Get Started
@@ -213,22 +228,34 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               </div>
             </motion.div>
 
-            {/* Right Side - Stats Grid */}
+            {/* Right Side - Hero Image (city pages) or Stats Grid (country pages) */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
               className="hidden lg:block"
             >
-              {location.stats && location.stats.length > 0 && (
-                <div className="grid grid-cols-2 gap-4">
-                  {location.stats.slice(0, 4).map((stat, index) => (
-                    <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
-                      <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                      <div className="text-mw-blue-200 text-sm">{stat.label}</div>
-                    </div>
-                  ))}
+              {pageType === 'city' && location.heroImage ? (
+                <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+                  <Image
+                    src={location.heroImage}
+                    alt={location.heroTitle || location.name}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
                 </div>
+              ) : (
+                location.stats && location.stats.length > 0 && (
+                  <div className="grid grid-cols-2 gap-4">
+                    {location.stats.slice(0, 4).map((stat, index) => (
+                      <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                        <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+                        <div className="text-mw-blue-200 text-sm">{stat.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                )
               )}
             </motion.div>
           </div>
@@ -368,7 +395,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
       )}
 
       {/* Key Markets Section */}
-      {location.keyMarkets && location.keyMarkets.length > 0 && currentMarket && (
+      {pageType !== 'city' && location.keyMarkets && location.keyMarkets.length > 0 && currentMarket && (
         <section className="py-16 md:py-20 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
@@ -599,52 +626,6 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* CMS Sections - After FAQs */}
       {sectionsPosition === 'after-faqs' && cmsSections}
-
-      {/* Contact Form Modal */}
-      {isContactFormOpen && location.contactFormUrl && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          {/* Backdrop */}
-          <div 
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
-            onClick={() => setIsContactFormOpen(false)}
-          />
-          
-          {/* Modal */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden z-10"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
-              <h3 className="text-lg font-semibold text-white">Contact Our {location.name} Team</h3>
-              <button
-                onClick={() => setIsContactFormOpen(false)}
-                className="p-2 hover:bg-white/20 rounded-full transition-colors"
-              >
-                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            
-            {/* Form iframe */}
-            <div className="h-[70vh]">
-              <iframe
-                src={location.contactFormUrl}
-                width="100%"
-                height="100%"
-                frameBorder={0}
-                style={{ border: 'none' }}
-                title={`${location.name} Contact Form`}
-                allow="geolocation"
-              />
-            </div>
-          </motion.div>
-        </div>
-      )}
-
     </main>
   )
 }

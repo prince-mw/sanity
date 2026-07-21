@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { CTAButton } from "../CTAButton";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
+import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
 interface PricingPlan {
   _key: string;
@@ -34,6 +35,7 @@ export function PricingSection({
   const textColor = getTextColorClasses(backgroundColor);
   const subtextColor = getSubtextColorClasses(backgroundColor);
   const isDark = backgroundColor === 'dark' || backgroundColor === 'blue' || backgroundColor === 'gradient';
+  const { openZohoPopup } = useZohoPopup();
 
   if (!plans || plans.length === 0) return null;
 
@@ -152,16 +154,29 @@ export function PricingSection({
 
               {/* CTA Button */}
               {plan.ctaText && plan.ctaLink && (
-                <CTAButton
-                  href={plan.ctaLink}
-                  className={`block w-full text-center py-3 px-6 rounded-lg font-semibold transition-colors ${
-                    plan.highlighted
-                      ? 'bg-white text-mw-blue-600 hover:bg-gray-100'
-                      : 'bg-mw-blue-600 text-white hover:bg-mw-blue-700'
-                  }`}
-                >
-                  {plan.ctaText}
-                </CTAButton>
+                isZohoFormUrl(plan.ctaLink) ? (
+                  <button
+                    onClick={() => openZohoPopup(plan.ctaLink!, plan.ctaText)}
+                    className={`block w-full text-center py-3 px-6 rounded-lg font-semibold transition-colors ${
+                      plan.highlighted
+                        ? 'bg-white text-mw-blue-600 hover:bg-gray-100'
+                        : 'bg-mw-blue-600 text-white hover:bg-mw-blue-700'
+                    }`}
+                  >
+                    {plan.ctaText}
+                  </button>
+                ) : (
+                  <CTAButton
+                    href={plan.ctaLink}
+                    className={`block w-full text-center py-3 px-6 rounded-lg font-semibold transition-colors ${
+                      plan.highlighted
+                        ? 'bg-white text-mw-blue-600 hover:bg-gray-100'
+                        : 'bg-mw-blue-600 text-white hover:bg-mw-blue-700'
+                    }`}
+                  >
+                    {plan.ctaText}
+                  </CTAButton>
+                )
               )}
             </motion.div>
           ))}

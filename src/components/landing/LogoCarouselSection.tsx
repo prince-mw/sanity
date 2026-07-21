@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
+import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
 interface Logo {
   _key: string;
@@ -29,6 +30,7 @@ export function LogoCarouselSection({
   const bgClasses = getBackgroundClasses(backgroundColor);
   const textColor = getTextColorClasses(backgroundColor);
   const subtextColor = getSubtextColorClasses(backgroundColor);
+  const { openZohoPopup } = useZohoPopup();
 
   return (
     <section className={`py-16 md:py-20 ${bgClasses}`}>
@@ -55,39 +57,48 @@ export function LogoCarouselSection({
           </motion.div>
         )}
 
-        {/* Logos */}
+        {/* Logos — infinite-scroll marquee */}
         {logos && logos.length > 0 && (
-          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-12">
-            {logos.map((logo, index) => (
-              <motion.div
-                key={logo._key}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.05 }}
-                className={`relative h-12 w-32 ${grayscale ? 'grayscale hover:grayscale-0' : ''} transition-all duration-300 opacity-60 hover:opacity-100`}
-              >
-                {logo.logo && (
-                  logo.link ? (
-                    <a href={logo.link} target="_blank" rel="noopener noreferrer">
+          <div className="relative overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_10%,black_90%,transparent_100%)]">
+            <div className="flex gap-8 md:gap-12 w-max animate-marquee hover:[animation-play-state:paused]">
+              {[...logos, ...logos].map((logo, index) => (
+                <div
+                  key={`${logo._key}-${index}`}
+                  className={`relative flex-shrink-0 h-12 w-32 ${grayscale ? 'grayscale hover:grayscale-0' : ''} transition-all duration-300 opacity-60 hover:opacity-100`}
+                >
+                  {logo.logo && (
+                    logo.link ? (
+                      isZohoFormUrl(logo.link) ? (
+                        <button onClick={() => openZohoPopup(logo.link!, logo.name)} className="relative block w-full h-full">
+                          <Image
+                            src={logo.logo}
+                            alt={logo.name || 'Partner logo'}
+                            fill
+                            className="object-contain"
+                          />
+                        </button>
+                      ) : (
+                        <a href={logo.link} target="_blank" rel="noopener noreferrer" className="relative block w-full h-full">
+                          <Image
+                            src={logo.logo}
+                            alt={logo.name || 'Partner logo'}
+                            fill
+                            className="object-contain"
+                          />
+                        </a>
+                      )
+                    ) : (
                       <Image
                         src={logo.logo}
                         alt={logo.name || 'Partner logo'}
                         fill
                         className="object-contain"
                       />
-                    </a>
-                  ) : (
-                    <Image
-                      src={logo.logo}
-                      alt={logo.name || 'Partner logo'}
-                      fill
-                      className="object-contain"
-                    />
-                  )
-                )}
-              </motion.div>
-            ))}
+                    )
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>

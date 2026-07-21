@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
+import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
 interface Feature {
   _key: string;
@@ -31,6 +32,7 @@ export function FeatureGridSection({
   const bgClasses = getBackgroundClasses(backgroundColor);
   const textColor = getTextColorClasses(backgroundColor);
   const subtextColor = getSubtextColorClasses(backgroundColor);
+  const { openZohoPopup } = useZohoPopup();
 
   const gridCols = {
     2: 'md:grid-cols-2',
@@ -89,9 +91,15 @@ export function FeatureGridSection({
                 {feature.title && (
                   <h3 className={`text-xl font-semibold mb-3 ${textColor}`}>
                     {feature.link ? (
-                      <Link href={feature.link} className="hover:underline">
-                        {feature.title}
-                      </Link>
+                      isZohoFormUrl(feature.link) ? (
+                        <button onClick={() => openZohoPopup(feature.link!, feature.title)} className="hover:underline text-left">
+                          {feature.title}
+                        </button>
+                      ) : (
+                        <Link href={feature.link} className="hover:underline">
+                          {feature.title}
+                        </Link>
+                      )
                     ) : (
                       feature.title
                     )}

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { getBackgroundClasses, getButtonClasses, type BackgroundColor } from "./utils";
 import { CTAButton } from "../CTAButton";
+import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
 interface CTABannerSectionProps {
   heading?: string;
@@ -28,6 +29,7 @@ export function CTABannerSection({
 }: CTABannerSectionProps) {
   const bgClasses = getBackgroundClasses(backgroundColor);
   const isDark = ['blue', 'dark', 'gradient'].includes(backgroundColor);
+  const { openZohoPopup } = useZohoPopup();
 
   return (
     <section className={`relative py-16 md:py-24 overflow-hidden ${!backgroundImage ? bgClasses : ''}`}>
@@ -68,21 +70,39 @@ export function CTABannerSection({
           {(ctaText || secondaryCtaText) && (
             <div className="flex flex-wrap gap-4 justify-center">
               {ctaText && ctaLink && (
-                <CTAButton 
-                  href={ctaLink}
-                  className={getButtonClasses('primary', isDark || !!backgroundImage)}
-                >
-                  {ctaText}
-                </CTAButton>
+                isZohoFormUrl(ctaLink) ? (
+                  <button
+                    onClick={() => openZohoPopup(ctaLink, ctaText)}
+                    className={getButtonClasses('primary', isDark || !!backgroundImage)}
+                  >
+                    {ctaText}
+                  </button>
+                ) : (
+                  <CTAButton
+                    href={ctaLink}
+                    className={getButtonClasses('primary', isDark || !!backgroundImage)}
+                  >
+                    {ctaText}
+                  </CTAButton>
+                )
               )}
               {secondaryCtaText && secondaryCtaLink && (
-                <CTAButton 
-                  href={secondaryCtaLink}
-                  forceNavigate
-                  className={getButtonClasses('secondary', isDark || !!backgroundImage)}
-                >
-                  {secondaryCtaText}
-                </CTAButton>
+                isZohoFormUrl(secondaryCtaLink) ? (
+                  <button
+                    onClick={() => openZohoPopup(secondaryCtaLink, secondaryCtaText)}
+                    className={getButtonClasses('secondary', isDark || !!backgroundImage)}
+                  >
+                    {secondaryCtaText}
+                  </button>
+                ) : (
+                  <CTAButton
+                    href={secondaryCtaLink}
+                    forceNavigate
+                    className={getButtonClasses('secondary', isDark || !!backgroundImage)}
+                  >
+                    {secondaryCtaText}
+                  </CTAButton>
+                )
               )}
             </div>
           )}

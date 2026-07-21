@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { CTAButton } from "../CTAButton";
 import { getHeightClasses, getAlignmentClasses, getButtonClasses, parseVideoUrl } from "./utils";
+import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
 interface HeroSectionProps {
   heading: string;
@@ -34,6 +35,7 @@ export function HeroSection({
 }: HeroSectionProps) {
   const heightClasses = getHeightClasses(height);
   const alignClasses = getAlignmentClasses(alignment);
+  const { openZohoPopup } = useZohoPopup();
   
   const containerAlign = alignment === 'left' 
     ? 'items-start' 
@@ -95,20 +97,38 @@ export function HeroSection({
           {(ctaText || secondaryCtaText) && (
             <div className={`flex flex-wrap gap-4 ${alignment === 'center' ? 'justify-center' : alignment === 'right' ? 'justify-end' : ''}`}>
               {ctaText && ctaLink && (
-                <CTAButton 
-                  href={ctaLink}
-                  className={getButtonClasses('primary', true)}
-                >
-                  {ctaText}
-                </CTAButton>
+                isZohoFormUrl(ctaLink) ? (
+                  <button
+                    onClick={() => openZohoPopup(ctaLink, ctaText)}
+                    className={getButtonClasses('primary', true)}
+                  >
+                    {ctaText}
+                  </button>
+                ) : (
+                  <CTAButton
+                    href={ctaLink}
+                    className={getButtonClasses('primary', true)}
+                  >
+                    {ctaText}
+                  </CTAButton>
+                )
               )}
               {secondaryCtaText && secondaryCtaLink && (
-                <CTAButton 
-                  href={secondaryCtaLink}
-                  className={getButtonClasses('secondary', true)}
-                >
-                  {secondaryCtaText}
-                </CTAButton>
+                isZohoFormUrl(secondaryCtaLink) ? (
+                  <button
+                    onClick={() => openZohoPopup(secondaryCtaLink, secondaryCtaText)}
+                    className={getButtonClasses('secondary', true)}
+                  >
+                    {secondaryCtaText}
+                  </button>
+                ) : (
+                  <CTAButton
+                    href={secondaryCtaLink}
+                    className={getButtonClasses('secondary', true)}
+                  >
+                    {secondaryCtaText}
+                  </CTAButton>
+                )
               )}
             </div>
           )}

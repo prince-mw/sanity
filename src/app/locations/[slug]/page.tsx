@@ -72,14 +72,14 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
   if (sanityLocation) {
     const locationData = transformLocationFull(sanityLocation)
     const cities = (await getCitiesByCountry(slug)).map(transformCityForList)
-    return <LocationDetailClient initialData={locationData} cities={cities} />
+    return <LocationDetailClient initialData={locationData} cities={cities} pageType="country" />
   }
   
   // Fall back to static data
   const staticData = getStaticLocationData(slug)
   
   if (staticData) {
-    return <LocationDetailClient initialData={staticData} />
+    return <LocationDetailClient initialData={staticData} pageType="country" />
   }
   
   // No data found - 404

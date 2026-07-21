@@ -14,6 +14,7 @@ import PolyfillLoader from "@/components/PolyfillLoader";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import { locales, defaultLocale, type Locale } from "@/i18n/config";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
+import { ZohoPopupProvider } from "@/components/ZohoPopupProvider";
 import { getAllActiveZohoForms, getFooterContent, getAnalyticsConfig } from "@/sanity/lib/fetch";
 import "./globals.css";
 
@@ -198,12 +199,14 @@ export default async function RootLayout({
         <LocaleProvider initialLocale={initialLocale}>
           <Suspense fallback={null}>
             <FormPopupProvider forms={allForms}>
-              <HeaderWrapper />
-              <main className={isPreview ? 'pb-16' : ''}>
-                {children}
-              </main>
-              <GlobalCTA />
-              <Footer content={footerContent} />
+              <ZohoPopupProvider>
+                <HeaderWrapper />
+                <main className={isPreview ? 'pb-16' : ''}>
+                  {children}
+                </main>
+                <GlobalCTA />
+                <Footer content={footerContent} />
+              </ZohoPopupProvider>
             </FormPopupProvider>
           </Suspense>
           <CookieConsent />

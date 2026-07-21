@@ -5,6 +5,7 @@ import Image from "next/image";
 import { CTAButton } from "../CTAButton";
 import { getBackgroundClasses, getButtonClasses, type BackgroundColor } from "./utils";
 import SanityPortableText from "@/components/SanityPortableText";
+import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
 interface TwoColumnSectionProps {
   heading?: string;
@@ -27,6 +28,7 @@ export function TwoColumnSection({
 }: TwoColumnSectionProps) {
   const bgClasses = getBackgroundClasses(backgroundColor);
   const isDark = backgroundColor === 'dark' || backgroundColor === 'blue' || backgroundColor === 'gradient';
+  const { openZohoPopup } = useZohoPopup();
 
   return (
     <section className={`py-16 md:py-24 ${bgClasses}`}>
@@ -53,9 +55,15 @@ export function TwoColumnSection({
             )}
 
             {ctaText && ctaLink && (
-              <CTAButton href={ctaLink} className={getButtonClasses('primary', isDark)}>
-                {ctaText}
-              </CTAButton>
+              isZohoFormUrl(ctaLink) ? (
+                <button onClick={() => openZohoPopup(ctaLink, ctaText)} className={getButtonClasses('primary', isDark)}>
+                  {ctaText}
+                </button>
+              ) : (
+                <CTAButton href={ctaLink} className={getButtonClasses('primary', isDark)}>
+                  {ctaText}
+                </CTAButton>
+              )
             )}
           </motion.div>
 

@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useLocale, Locale } from "@/i18n/LocaleContext";
 import GlobalSearch from "./GlobalSearch";
 import { CTAButton } from "./CTAButton";
+import { useZohoPopup } from "./ZohoPopupProvider";
 
 // A field translated per-locale in Sanity (see studio's `localeString` schema) — English is the
 // only guaranteed value, other locales are filled in progressively by content editors.
@@ -246,6 +247,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
   
   // Use the locale context
   const { locale, setLocale, localeNames, localeCodes, locales, t } = useLocale();
+  const { openZohoPopup, currentPageFormUrl } = useZohoPopup();
   
   // Transform Sanity data or fall back to local data
   const transformedSanityData = useMemo(() => transformSanityMenu(sanityMenuData || null, locale, t), [sanityMenuData, locale, t]);
@@ -426,18 +428,27 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.5 }}
               >
-                <CTAButton
-                  href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')}
-                  className={`px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-block ${
-                    ctaButton?.style === 'secondary' 
-                      ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-                      : ctaButton?.style === 'outline'
-                        ? 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50'
-                        : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
-                  }`}
-                >
-                  {resolveLocaleValue(ctaButton?.text, locale) || t('nav.getStarted')}
-                </CTAButton>
+                {currentPageFormUrl ? (
+                  <button
+                    onClick={() => openZohoPopup(currentPageFormUrl)}
+                    className="px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-block bg-mw-blue-600 hover:bg-mw-blue-700 text-white"
+                  >
+                    {resolveLocaleValue(ctaButton?.text, locale) || t('nav.getStarted')}
+                  </button>
+                ) : (
+                  <CTAButton
+                    href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')}
+                    className={`px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-block ${
+                      ctaButton?.style === 'secondary'
+                        ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                        : ctaButton?.style === 'outline'
+                          ? 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50'
+                          : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
+                    }`}
+                  >
+                    {resolveLocaleValue(ctaButton?.text, locale) || t('nav.getStarted')}
+                  </CTAButton>
+                )}
               </motion.div>
             )}
           </div>
@@ -652,18 +663,27 @@ export default function Header({ sanityMenuData }: HeaderProps) {
 
                 {/* Mobile CTA Button */}
                 {(ctaButton?.enabled !== false) && (
-                  <CTAButton 
-                    href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')} 
-                    className={`block w-full px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 mt-4 text-center ${
-                      ctaButton?.style === 'secondary' 
-                        ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
-                        : ctaButton?.style === 'outline'
-                          ? 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50'
-                          : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
-                    }`}
-                  >
-                    {resolveLocaleValue(ctaButton?.text, locale) || t('nav.getStarted')}
-                  </CTAButton>
+                  currentPageFormUrl ? (
+                    <button
+                      onClick={() => openZohoPopup(currentPageFormUrl)}
+                      className="block w-full px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 mt-4 text-center bg-mw-blue-600 hover:bg-mw-blue-700 text-white"
+                    >
+                      {resolveLocaleValue(ctaButton?.text, locale) || t('nav.getStarted')}
+                    </button>
+                  ) : (
+                    <CTAButton
+                      href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')}
+                      className={`block w-full px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 mt-4 text-center ${
+                        ctaButton?.style === 'secondary'
+                          ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
+                          : ctaButton?.style === 'outline'
+                            ? 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50'
+                            : 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white'
+                      }`}
+                    >
+                      {resolveLocaleValue(ctaButton?.text, locale) || t('nav.getStarted')}
+                    </CTAButton>
+                  )
                 )}
               </div>
             </motion.div>

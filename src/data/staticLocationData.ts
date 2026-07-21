@@ -7,6 +7,7 @@ export interface LocationData {
   city: string
   flag: string
   description: string
+  heroTitle?: string
   heroImage: string
   heroTagline?: string
   billboards?: string

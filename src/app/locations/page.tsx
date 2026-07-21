@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import LocationsPageClient from '@/components/LocationsPageClient'
-import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getAllLocations, transformLocationForList, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
   title: 'Global Locations | Moving Walls',
@@ -30,6 +30,9 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 30
 
-export default function LocationsPage() {
-  return <LocationsPageClient />
+export default async function LocationsPage() {
+  const locations = await getAllLocations()
+  const initialLocations = locations?.length ? locations.map(transformLocationForList) : undefined
+
+  return <LocationsPageClient initialLocations={initialLocations} />
 }

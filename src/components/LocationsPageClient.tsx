@@ -1,9 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-import { getAllLocations, transformLocationForList } from '@/sanity/lib/fetch'
 
 // Animation variants
 const fadeUp = {
@@ -123,27 +121,12 @@ interface LocationItem {
   image: string
 }
 
-export default function LocationsPageClient() {
-  const [locations, setLocations] = useState<LocationItem[]>(staticLocations)
-  const [isLoading, setIsLoading] = useState(true)
+interface LocationsPageClientProps {
+  initialLocations?: LocationItem[]
+}
 
-  useEffect(() => {
-    async function fetchLocations() {
-      try {
-        const data = await getAllLocations()
-        if (data && data.length > 0) {
-          const transformed = data.map(transformLocationForList)
-          setLocations(transformed)
-        }
-      } catch (error) {
-        console.error('Error fetching locations:', error)
-        // Keep static data on error
-      } finally {
-        setIsLoading(false)
-      }
-    }
-    fetchLocations()
-  }, [])
+export default function LocationsPageClient({ initialLocations }: LocationsPageClientProps) {
+  const locations = initialLocations && initialLocations.length > 0 ? initialLocations : staticLocations
 
   return (
     <main className="min-h-screen bg-white">
@@ -254,13 +237,7 @@ export default function LocationsPageClient() {
                     {/* Content */}
                     <div className="p-6">
                       <p className="text-gray-600 mb-4">{location.description}</p>
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                          </svg>
-                          <span className="text-sm font-semibold text-gray-900">{location.billboards} Billboards</span>
-                        </div>
+                      <div className="flex items-center justify-end">
                         <span className="text-mw-blue-600 group-hover:translate-x-1 transition-transform">
                           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -272,42 +249,6 @@ export default function LocationsPageClient() {
                 </Link>
               </motion.div>
             ))}
-          </motion.div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-          >
-            <motion.h2 variants={fadeUp} className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">
-              Ready to Launch Your Campaign?
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-lg text-gray-600 mb-8">
-              Get in touch with our local teams to discover the best advertising opportunities in your target market.
-            </motion.p>
-            <motion.div variants={fadeUp} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/contact"
-                className="inline-flex items-center justify-center px-8 py-3 bg-mw-blue-600 text-white font-semibold rounded-lg hover:bg-mw-blue-700 transition-colors"
-              >
-                Contact Us
-                <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-              <Link
-                href="/mw-planner"
-                className="inline-flex items-center justify-center px-8 py-3 border-2 border-mw-blue-600 text-mw-blue-600 font-semibold rounded-lg hover:bg-mw-blue-50 transition-colors"
-              >
-                Explore MW Planner
-              </Link>
-            </motion.div>
           </motion.div>
         </div>
       </section>
