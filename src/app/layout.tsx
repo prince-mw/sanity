@@ -197,18 +197,23 @@ export default async function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
         />
         <LocaleProvider initialLocale={initialLocale}>
-          <Suspense fallback={null}>
-            <FormPopupProvider forms={allForms}>
-              <ZohoPopupProvider>
+          <FormPopupProvider forms={allForms}>
+            <ZohoPopupProvider>
+              {/* HeaderWrapper is an async Server Component (fetches the mega menu from Sanity).
+                  It gets its own Suspense boundary, isolated from {children}, so that a page
+                  segment's notFound()/redirect() can still set the correct response status —
+                  wrapping both under one Suspense would let the shell start streaming (and the
+                  200 status commit) before the page's own render/notFound() resolves. */}
+              <Suspense fallback={null}>
                 <HeaderWrapper />
-                <main className={isPreview ? 'pb-16' : ''}>
-                  {children}
-                </main>
-                <GlobalCTA />
-                <Footer content={footerContent} />
-              </ZohoPopupProvider>
-            </FormPopupProvider>
-          </Suspense>
+              </Suspense>
+              <main className={isPreview ? 'pb-16' : ''}>
+                {children}
+              </main>
+              <GlobalCTA />
+              <Footer content={footerContent} />
+            </ZohoPopupProvider>
+          </FormPopupProvider>
           <CookieConsent />
           <PreviewBanner isPreview={isPreview} />
         </LocaleProvider>
