@@ -15,6 +15,7 @@ import { PricingSection } from './PricingSection';
 import { ContactFormSection } from './ContactFormSection';
 import { SpacerSection } from './SpacerSection';
 import { CustomEmbedSection } from './CustomEmbedSection';
+import { SuccessStoriesSection } from './SuccessStoriesSection';
 
 const SANITY_PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di';
 const SANITY_DATASET = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
@@ -99,6 +100,7 @@ const sectionComponents: Record<string, React.ComponentType<any>> = {
   contactForm: ContactFormSection,
   spacer: SpacerSection,
   customEmbed: CustomEmbedSection,
+  successStories: SuccessStoriesSection,
 };
 
 interface Section {
@@ -150,4 +152,5 @@ export {
   ContactFormSection,
   SpacerSection,
   CustomEmbedSection,
+  SuccessStoriesSection,
 };

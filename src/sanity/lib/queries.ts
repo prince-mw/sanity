@@ -291,7 +291,27 @@ export const landingPageBySlugQuery = `
       showDivider,
       // Custom Embed specific
       title,
-      code
+      code,
+      // Success Stories specific
+      sectionHeading,
+      sectionSubheading,
+      stories[] {
+        _key,
+        contentType,
+        description,
+        buttonText,
+        "caseStudy": caseStudyRef-> {
+          title,
+          "slug": slug.current,
+          "excerpt": seo.metaDescription
+        },
+        "ebook": ebookRef-> {
+          title,
+          "slug": slug.current,
+          category,
+          "excerpt": seo.metaDescription
+        }
+      }
     }
   }
 `
@@ -409,7 +429,26 @@ export const landingPagePreviewBySlugQuery = `
       successMessage,
       showDivider,
       title,
-      code
+      code,
+      sectionHeading,
+      sectionSubheading,
+      stories[] {
+        _key,
+        contentType,
+        description,
+        buttonText,
+        "caseStudy": caseStudyRef-> {
+          title,
+          "slug": slug.current,
+          "excerpt": seo.metaDescription
+        },
+        "ebook": ebookRef-> {
+          title,
+          "slug": slug.current,
+          category,
+          "excerpt": seo.metaDescription
+        }
+      }
     }
   }
 `

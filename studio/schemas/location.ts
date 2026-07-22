@@ -41,13 +41,6 @@ export default defineType({
       description: 'Primary city for this location',
     }),
     defineField({
-      name: 'flag',
-      title: 'Flag Emoji',
-      type: 'string',
-      group: 'basic',
-      description: 'Country flag emoji (e.g., 🇸🇬)',
-    }),
-    defineField({
       name: 'heroTitle',
       title: 'Hero Title',
       type: 'string',
@@ -80,14 +73,6 @@ export default defineType({
       description: 'Detailed description for the location page hero',
     }),
     defineField({
-      name: 'whyInvest',
-      title: 'Why Invest List',
-      type: 'array',
-      group: 'content',
-      description: 'List of reasons to invest in OOH in this country',
-      of: [{ type: 'string' }],
-    }),
-    defineField({
       name: 'faqs',
       title: 'FAQs',
       type: 'array',
@@ -108,13 +93,6 @@ export default defineType({
     
     // Markets & Stats Group
     defineField({
-      name: 'billboards',
-      title: 'Billboard Count',
-      type: 'string',
-      group: 'markets',
-      description: 'e.g., "50,000+"',
-    }),
-    defineField({
       name: 'stats',
       title: 'Statistics',
       type: 'array',
@@ -131,13 +109,6 @@ export default defineType({
           },
         },
       ],
-    }),
-    defineField({
-      name: 'majorCities',
-      title: 'Major Cities',
-      type: 'array',
-      group: 'markets',
-      of: [{ type: 'string' }],
     }),
     defineField({
       name: 'mediaTypes',
@@ -158,137 +129,7 @@ export default defineType({
         },
       ],
     }),
-    defineField({
-      name: 'keyMarkets',
-      title: 'Key Markets',
-      type: 'array',
-      group: 'markets',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'city', title: 'City', type: 'string' },
-            { name: 'code', title: 'Code', type: 'string' },
-            { name: 'population', title: 'Population', type: 'string' },
-            { name: 'screens', title: 'Screens Count', type: 'number' },
-            { name: 'screensGrowth', title: 'Screens Growth %', type: 'number' },
-            { name: 'dailyReach', title: 'Daily Reach', type: 'string' },
-            { name: 'dailyReachGrowth', title: 'Daily Reach Growth %', type: 'number' },
-            { name: 'monthlyImpressions', title: 'Monthly Impressions', type: 'string' },
-            { name: 'monthlyImpressionsGrowth', title: 'Monthly Impressions Growth %', type: 'number' },
-            { name: 'yoyGrowth', title: 'Year-over-Year Growth %', type: 'number' },
-            { name: 'avgDwell', title: 'Average Dwell Time', type: 'string' },
-            { name: 'peakHours', title: 'Peak Hours', type: 'string' },
-            { name: 'topCategory', title: 'Top Category', type: 'string' },
-            { name: 'viewability', title: 'Viewability %', type: 'number' },
-            { name: 'description', title: 'Description', type: 'text' },
-            {
-              name: 'locations',
-              title: 'Locations',
-              type: 'array',
-              of: [
-                {
-                  type: 'object',
-                  fields: [
-                    { name: 'name', title: 'Name', type: 'string' },
-                    { name: 'desc', title: 'Description', type: 'string' },
-                    { name: 'traffic', title: 'Traffic', type: 'number' },
-                    { name: 'screens', title: 'Screens', type: 'number' },
-                    { name: 'score', title: 'Score', type: 'number' },
-                  ],
-                  preview: {
-                    select: { title: 'name', subtitle: 'desc' },
-                  },
-                },
-              ],
-            },
-            {
-              name: 'audience',
-              title: 'Audience',
-              type: 'array',
-              of: [
-                {
-                  type: 'object',
-                  fields: [
-                    { name: 'name', title: 'Name', type: 'string' },
-                    { name: 'percentage', title: 'Percentage', type: 'number' },
-                    { name: 'color', title: 'Color Class', type: 'string' },
-                  ],
-                  preview: {
-                    select: { title: 'name', subtitle: 'percentage' },
-                    prepare({ title, subtitle }) {
-                      return { title, subtitle: subtitle ? `${subtitle}%` : '' }
-                    },
-                  },
-                },
-              ],
-            },
-            {
-              name: 'mediaFormats',
-              title: 'Media Formats',
-              type: 'array',
-              of: [
-                {
-                  type: 'object',
-                  fields: [
-                    { name: 'name', title: 'Name', type: 'string' },
-                    { name: 'percentage', title: 'Percentage', type: 'number' },
-                  ],
-                  preview: {
-                    select: { title: 'name', subtitle: 'percentage' },
-                    prepare({ title, subtitle }) {
-                      return { title, subtitle: subtitle ? `${subtitle}%` : '' }
-                    },
-                  },
-                },
-              ],
-            },
-            {
-              name: 'hourlyData',
-              title: 'Hourly Data (24 values)',
-              type: 'array',
-              of: [{ type: 'number' }],
-            },
-          ],
-          preview: {
-            select: { title: 'city', code: 'code', screens: 'screens' },
-            prepare({ title, code, screens }) {
-              return {
-                title: `${title} ${code ? `(${code})` : ''}`,
-                subtitle: screens ? `${screens.toLocaleString()} screens` : '',
-              }
-            },
-          },
-        },
-      ],
-    }),
-    defineField({
-      name: 'caseStudies',
-      title: 'Featured Case Studies',
-      type: 'array',
-      group: 'markets',
-      of: [
-        {
-          type: 'object',
-          fields: [
-            { name: 'title', title: 'Title', type: 'string' },
-            { name: 'client', title: 'Client', type: 'string' },
-            { name: 'results', title: 'Results', type: 'string' },
-          ],
-          preview: {
-            select: { title: 'title', subtitle: 'client' },
-          },
-        },
-      ],
-    }),
-    defineField({
-      name: 'partners',
-      title: 'Partners',
-      type: 'array',
-      group: 'markets',
-      of: [{ type: 'string' }],
-    }),
-    
+
     // Billboards Group
     defineField({
       name: 'highVisibilityBillboards',
@@ -375,14 +216,13 @@ export default defineType({
     select: {
       title: 'country',
       subtitle: 'city',
-      flag: 'flag',
       media: 'heroImage',
       isActive: 'isActive',
       order: 'order',
     },
-    prepare({ title, subtitle, flag, media, isActive, order }) {
+    prepare({ title, subtitle, media, isActive, order }) {
       return {
-        title: `${flag || ''} ${title || 'Untitled'}`.trim(),
+        title: title || 'Untitled',
         subtitle: `${subtitle || ''} ${!isActive ? '(Draft)' : ''} ${order ? `#${order}` : ''}`.trim(),
         media,
       }

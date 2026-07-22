@@ -24,82 +24,64 @@ const staticLocations = [
   {
     country: "Malaysia",
     city: "Kuala Lumpur",
-    flag: "🇲🇾",
     href: "/locations/malaysia",
     description: "Our headquarters and APAC hub",
-    billboards: "50,000+",
     image: "https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=800&q=80"
   },
   {
     country: "Singapore",
     city: "Singapore",
-    flag: "🇸🇬",
     href: "/locations/singapore",
     description: "Strategic Southeast Asia operations",
-    billboards: "15,000+",
     image: "https://images.unsplash.com/photo-1525625293386-3f8f99389edd?w=800&q=80"
   },
   {
     country: "Indonesia",
     city: "Jakarta",
-    flag: "🇮🇩",
     href: "/locations/indonesia",
     description: "Largest market in Southeast Asia",
-    billboards: "100,000+",
     image: "https://images.unsplash.com/photo-1555899434-94d1368aa7af?w=800&q=80"
   },
   {
     country: "India",
     city: "Mumbai",
-    flag: "🇮🇳",
     href: "/locations/india",
     description: "Rapidly growing OOH market",
-    billboards: "200,000+",
     image: "https://images.unsplash.com/photo-1529253355930-ddbe423a2ac7?w=800&q=80"
   },
   {
     country: "Philippines",
     city: "Manila",
-    flag: "🇵🇭",
     href: "/locations/philippines",
     description: "Dynamic advertising landscape",
-    billboards: "30,000+",
     image: "https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?w=800&q=80"
   },
   {
     country: "Japan",
     city: "Tokyo",
-    flag: "🇯🇵",
     href: "/locations/japan",
     description: "Premium digital OOH market",
-    billboards: "80,000+",
     image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80"
   },
   {
     country: "Australia",
     city: "Sydney",
-    flag: "🇦🇺",
     href: "/locations/australia",
     description: "Leading Oceania operations",
-    billboards: "25,000+",
     image: "https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80"
   },
   {
     country: "Sri Lanka",
     city: "Colombo",
-    flag: "🇱🇰",
     href: "/locations/sri-lanka",
     description: "Emerging South Asian market",
-    billboards: "10,000+",
     image: "https://images.unsplash.com/photo-1580481072645-022f9a6dbf27?w=800&q=80"
   },
   {
     country: "Thailand",
     city: "Bangkok",
-    flag: "🇹🇭",
     href: "/locations/thailand",
     description: "Vibrant advertising ecosystem",
-    billboards: "45,000+",
     image: "https://images.unsplash.com/photo-1508009603885-50cf7c579365?w=800&q=80"
   },
 ]
@@ -114,10 +96,8 @@ const stats = [
 interface LocationItem {
   country: string
   city: string
-  flag: string
   href: string
   description: string
-  billboards: string
   image: string
 }
 

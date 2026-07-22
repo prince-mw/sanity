@@ -127,17 +127,7 @@ interface LocationDetailClientProps {
 export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country' }: LocationDetailClientProps) {
   const location = initialData
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)
-  const [selectedMarket, setSelectedMarket] = useState(0)
-  const [currentTime, setCurrentTime] = useState(new Date())
   const { openZohoPopup, setCurrentPageFormUrl } = useZohoPopup()
-
-  // Update current time every minute for the chart indicator
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentTime(new Date())
-    }, 60000)
-    return () => clearInterval(timer)
-  }, [])
 
   // Tell the navbar CTA (and anything else listening) which form belongs to this page, so
   // "Get Started" opens this location/city's form instead of the site default while it's mounted.
@@ -145,13 +135,6 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
     setCurrentPageFormUrl(location.contactFormUrl || null)
     return () => setCurrentPageFormUrl(null)
   }, [location.contactFormUrl, setCurrentPageFormUrl])
-
-  // Calculate current time position
-  const currentTimePosition = ((currentTime.getHours() * 60 + currentTime.getMinutes()) / 1440) * 100
-  const currentHour = currentTime.getHours()
-  const currentTimeLabel = currentHour === 0 ? '12:00 AM' : currentHour < 12 ? `${currentHour}:${currentTime.getMinutes().toString().padStart(2, '0')} AM` : currentHour === 12 ? `12:${currentTime.getMinutes().toString().padStart(2, '0')} PM` : `${currentHour - 12}:${currentTime.getMinutes().toString().padStart(2, '0')} PM`
-
-  const currentMarket = location.keyMarkets?.[selectedMarket]
 
   const hasCmsSections = location.sections && location.sections.length > 0
   const sectionsPosition = location.sectionsPosition || 'after-faqs'
@@ -389,180 +372,6 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                   </div>
                 </motion.div>
               ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Key Markets Section */}
-      {pageType !== 'city' && location.keyMarkets && location.keyMarkets.length > 0 && currentMarket && (
-        <section className="py-16 md:py-20 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div 
-              initial="hidden" 
-              whileInView="visible" 
-              viewport={{ once: true }} 
-              variants={fadeUp}
-              className="text-center mb-12"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                {location.keyMarkets.length > 1 ? 'Key Markets' : 'Market Overview'}
-              </h2>
-              <p className="text-lg text-gray-600">
-                {location.keyMarkets.length > 1 ? 'Explore OOH opportunities across major cities' : `OOH advertising opportunities in ${location.name}`}
-              </p>
-            </motion.div>
-
-            {/* Market Tabs */}
-            {location.keyMarkets.length > 1 && (
-              <div className="flex flex-wrap justify-center gap-3 mb-8">
-                {location.keyMarkets.map((market, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedMarket(index)}
-                    className={`px-5 py-2.5 rounded-full font-medium transition-all ${
-                      selectedMarket === index
-                        ? 'bg-mw-blue-600 text-white shadow-lg'
-                        : 'bg-white text-gray-700 hover:bg-mw-blue-50'
-                    }`}
-                  >
-                    {market.city}
-                  </button>
-                ))}
-              </div>
-            )}
-
-            {/* Market Details */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 md:p-8">
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div className="text-center p-4 bg-mw-blue-50 rounded-xl">
-                  <div className="text-2xl font-bold text-mw-blue-600">{currentMarket.screens?.toLocaleString()}</div>
-                  <div className="text-sm text-gray-600">Screens</div>
-                  {currentMarket.screensGrowth && (
-                    <div className="text-xs text-green-600 mt-1">+{currentMarket.screensGrowth}% YoY</div>
-                  )}
-                </div>
-                <div className="text-center p-4 bg-mw-blue-50 rounded-xl">
-                  <div className="text-2xl font-bold text-mw-blue-600">{currentMarket.dailyReach}</div>
-                  <div className="text-sm text-gray-600">Daily Reach</div>
-                  {currentMarket.dailyReachGrowth && (
-                    <div className="text-xs text-green-600 mt-1">+{currentMarket.dailyReachGrowth}% YoY</div>
-                  )}
-                </div>
-                <div className="text-center p-4 bg-mw-blue-50 rounded-xl">
-                  <div className="text-2xl font-bold text-mw-blue-600">{currentMarket.monthlyImpressions}</div>
-                  <div className="text-sm text-gray-600">Monthly Impressions</div>
-                </div>
-                <div className="text-center p-4 bg-mw-blue-50 rounded-xl">
-                  <div className="text-2xl font-bold text-mw-blue-600">{currentMarket.viewability}%</div>
-                  <div className="text-sm text-gray-600">Viewability</div>
-                </div>
-              </div>
-
-              <p className="text-gray-600 mb-6">{currentMarket.description}</p>
-
-              {/* Hourly Traffic Chart */}
-              {currentMarket.hourlyData && (
-                <div className="mb-8">
-                  <h4 className="font-semibold text-gray-900 mb-4">24-Hour Traffic Pattern</h4>
-                  <div className="relative h-32 bg-gray-50 rounded-lg p-4">
-                    <div className="flex items-end justify-between h-full gap-1">
-                      {currentMarket.hourlyData.map((value: number, index: number) => (
-                        <div
-                          key={index}
-                          className="flex-1 bg-mw-blue-600 rounded-t transition-all hover:bg-mw-blue-500"
-                          style={{ height: `${value}%` }}
-                          title={`${index}:00 - ${value}%`}
-                        />
-                      ))}
-                    </div>
-                    {/* Current time indicator */}
-                    <div 
-                      className="absolute top-0 bottom-0 w-0.5 bg-red-500"
-                      style={{ left: `${currentTimePosition}%` }}
-                    >
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs text-red-500 whitespace-nowrap">
-                        {currentTimeLabel}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between text-xs text-gray-500 mt-2">
-                    <span>12AM</span>
-                    <span>6AM</span>
-                    <span>12PM</span>
-                    <span>6PM</span>
-                    <span>12AM</span>
-                  </div>
-                </div>
-              )}
-
-              {/* Top Locations */}
-              {currentMarket.locations && currentMarket.locations.length > 0 && (
-                <div className="mb-8">
-                  <h4 className="font-semibold text-gray-900 mb-4">Top Locations</h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {currentMarket.locations.map((loc: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                        <div>
-                          <div className="font-medium text-gray-900">{loc.name}</div>
-                          <div className="text-sm text-gray-500">{loc.desc}</div>
-                        </div>
-                        <div className="text-right">
-                          <div className="font-semibold text-mw-blue-600">{loc.screens} screens</div>
-                          <div className="text-xs text-gray-500">{loc.traffic?.toLocaleString()} daily traffic</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Audience & Media Formats */}
-              <div className="grid md:grid-cols-2 gap-8">
-                {currentMarket.audience && currentMarket.audience.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-4">Audience Breakdown</h4>
-                    <div className="space-y-3">
-                      {currentMarket.audience.map((segment: any, index: number) => (
-                        <div key={index}>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span className="text-gray-700">{segment.name}</span>
-                            <span className="font-medium">{segment.percentage}%</span>
-                          </div>
-                          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div 
-                              className={`h-full ${segment.color} rounded-full`}
-                              style={{ width: `${segment.percentage}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {currentMarket.mediaFormats && currentMarket.mediaFormats.length > 0 && (
-                  <div>
-                    <h4 className="font-semibold text-gray-900 mb-4">Media Formats</h4>
-                    <div className="space-y-3">
-                      {currentMarket.mediaFormats.map((format: any, index: number) => (
-                        <div key={index}>
-                          <div className="flex justify-between text-sm mb-1">
-                            <span className="text-gray-700">{format.name}</span>
-                            <span className="font-medium">{format.percentage}%</span>
-                          </div>
-                          <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div 
-                              className="h-full bg-mw-blue-600 rounded-full"
-                              style={{ width: `${format.percentage}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
             </div>
           </div>
         </section>

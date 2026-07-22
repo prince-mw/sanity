@@ -448,6 +448,111 @@ export const pageSections: any[] = [
       }),
     },
   },
+  // Success Stories (Case Study + Ebook Showcase)
+  {
+    type: 'object',
+    name: 'successStories',
+    title: 'Success Stories (Case Studies + Ebooks)',
+    fields: [
+      {
+        name: 'sectionHeading',
+        type: 'string',
+        title: 'Section Heading',
+        description: 'e.g., "Success Stories: DOOH Advertising in Japan"',
+      },
+      {name: 'sectionSubheading', type: 'text', title: 'Section Subheading', rows: 2},
+      {
+        name: 'stories',
+        type: 'array',
+        title: 'Stories',
+        description: 'Showcase existing case studies and ebooks/guides. Add as many as you like, in any mix.',
+        of: [
+          {
+            type: 'object',
+            name: 'successStoryItem',
+            fields: [
+              {
+                name: 'contentType',
+                title: 'Content Type',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'Case Study', value: 'caseStudy'},
+                    {title: 'Guide / Ebook', value: 'ebook'},
+                  ],
+                  layout: 'radio',
+                },
+                initialValue: 'caseStudy',
+                validation: (Rule: any) => Rule.required(),
+              },
+              {
+                name: 'caseStudyRef',
+                title: 'Case Study',
+                type: 'reference',
+                to: [{type: 'caseStudy'}],
+                hidden: ({parent}: any) => parent?.contentType !== 'caseStudy',
+                validation: (Rule: any) =>
+                  Rule.custom((value: any, context: any) => {
+                    if (context.parent?.contentType === 'caseStudy' && !value) {
+                      return 'Select a case study'
+                    }
+                    return true
+                  }),
+              },
+              {
+                name: 'ebookRef',
+                title: 'Ebook',
+                type: 'reference',
+                to: [{type: 'ebook'}],
+                hidden: ({parent}: any) => parent?.contentType !== 'ebook',
+                validation: (Rule: any) =>
+                  Rule.custom((value: any, context: any) => {
+                    if (context.parent?.contentType === 'ebook' && !value) {
+                      return 'Select an ebook'
+                    }
+                    return true
+                  }),
+              },
+              {
+                name: 'description',
+                title: 'Card Description',
+                type: 'text',
+                rows: 3,
+                description: "Optional. Leave empty to use the referenced item's SEO Meta Description.",
+              },
+              {
+                name: 'buttonText',
+                title: 'Button Text',
+                type: 'string',
+                description: 'Leave empty to use "View Case Study" / "Download Ebook" depending on the content type.',
+              },
+            ],
+            preview: {
+              select: {
+                contentType: 'contentType',
+                csTitle: 'caseStudyRef.title',
+                ebTitle: 'ebookRef.title',
+              },
+              prepare({contentType, csTitle, ebTitle}: any) {
+                return {
+                  title: (contentType === 'ebook' ? ebTitle : csTitle) || 'Untitled',
+                  subtitle: contentType === 'ebook' ? 'Guide / Ebook' : 'Case Study',
+                }
+              },
+            },
+          },
+        ],
+      },
+      {name: 'backgroundColor', type: 'string', title: 'Background Color', options: {list: ['white', 'gray', 'blue', 'dark']}, initialValue: 'gray'},
+    ],
+    preview: {
+      select: {title: 'sectionHeading', stories: 'stories'},
+      prepare: ({title, stories}: any) => ({
+        title: title || 'Success Stories',
+        subtitle: `${stories?.length || 0} stories`,
+      }),
+    },
+  },
   // Custom HTML/Embed
   {
     type: 'object',

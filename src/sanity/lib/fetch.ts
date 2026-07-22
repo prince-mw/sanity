@@ -1927,54 +1927,16 @@ function formatWhitepaperCategory(category: string | undefined): string {
 }
 
 // Location Types and Queries
-export interface SanityLocationMarket {
-  city: string
-  code: string
-  population: string
-  screens: number
-  screensGrowth: number
-  dailyReach: string
-  dailyReachGrowth: number
-  monthlyImpressions: string
-  monthlyImpressionsGrowth: number
-  yoyGrowth: number
-  avgDwell: string
-  peakHours: string
-  topCategory: string
-  viewability: number
-  description: string
-  hourlyData?: number[]
-  locations?: Array<{
-    name: string
-    desc: string
-    traffic: number
-    screens: number
-    score: number
-  }>
-  audience?: Array<{
-    name: string
-    percentage: number
-    color: string
-  }>
-  mediaFormats?: Array<{
-    name: string
-    percentage: number
-  }>
-}
-
 export interface SanityLocation {
   _id: string
   country: string
   slug: { current: string }
   city?: string
-  flag?: string
   heroTitle?: string
   heroImage?: any
   description?: string
   fullDescription?: string
-  billboards?: string
   contactFormUrl?: string
-  whyInvest?: string[]
   highVisibilityBillboards?: Array<{
     name: string
     location: string
@@ -1984,23 +1946,15 @@ export interface SanityLocation {
     image?: any
   }>
   stats?: Array<{ label: string; value: string }>
-  majorCities?: string[]
   mediaTypes?: Array<{
     name: string
     icon: string
     description: string
   }>
-  keyMarkets?: SanityLocationMarket[]
   faqs?: Array<{
     question: string
     answer: string
   }>
-  caseStudies?: Array<{
-    title: string
-    client: string
-    results: string
-  }>
-  partners?: string[]
   order?: number
   isActive?: boolean
   seo?: SanitySEO
@@ -2015,10 +1969,8 @@ export async function getAllLocations(): Promise<SanityLocation[]> {
       country,
       slug,
       city,
-      flag,
       heroImage,
       description,
-      billboards,
       order
     }
   `
@@ -2032,14 +1984,11 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
       country,
       slug,
       city,
-      flag,
       heroTitle,
       heroImage,
       description,
       fullDescription,
-      billboards,
       contactFormUrl,
-      whyInvest,
       highVisibilityBillboards[] {
         name,
         location,
@@ -2049,15 +1998,30 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
         image
       },
       stats,
-      majorCities,
       mediaTypes,
-      keyMarkets,
       faqs,
-      caseStudies,
-      partners,
       order,
       isActive,
-      sections,
+      sections[] {
+        ...,
+        _type == "successStories" => {
+          ...,
+          stories[] {
+            ...,
+            "caseStudy": caseStudyRef-> {
+              title,
+              "slug": slug.current,
+              "excerpt": seo.metaDescription
+            },
+            "ebook": ebookRef-> {
+              title,
+              "slug": slug.current,
+              category,
+              "excerpt": seo.metaDescription
+            }
+          }
+        }
+      },
       sectionsPosition,
       seo {
         metaTitle,
@@ -2076,10 +2040,8 @@ export function transformLocationForList(location: SanityLocation) {
   return {
     country: location.country || '',
     city: location.city || '',
-    flag: location.flag || '',
     href: `/locations/${location.slug?.current || ''}`,
     description: location.description || '',
-    billboards: location.billboards || '0',
     image: getSanityImageUrl(location.heroImage, { width: 800 }) || '',
   }
 }
@@ -2089,12 +2051,10 @@ export function transformLocationFull(location: SanityLocation) {
     name: location.country || '',
     slug: location.slug?.current || '',
     city: location.city || '',
-    flag: location.flag || '',
     description: location.fullDescription || location.description || '',
     heroTitle: location.heroTitle || '',
     heroImage: getSanityImageUrl(location.heroImage, { width: 1200 }) || '',
     contactFormUrl: location.contactFormUrl || '',
-    whyInvest: location.whyInvest || [],
     highVisibilityBillboards: (location.highVisibilityBillboards || []).map(billboard => ({
       name: billboard.name || '',
       location: billboard.location || '',
@@ -2104,12 +2064,8 @@ export function transformLocationFull(location: SanityLocation) {
       image: getSanityImageUrl(billboard.image, { width: 800 }) || '',
     })),
     stats: location.stats || [],
-    majorCities: location.majorCities || [],
     mediaTypes: location.mediaTypes || [],
-    keyMarkets: location.keyMarkets || [],
     faqs: location.faqs || [],
-    caseStudies: location.caseStudies || [],
-    partners: location.partners || [],
     sections: location.sections || [],
     sectionsPosition: location.sectionsPosition || 'after-faqs',
   }
@@ -2165,7 +2121,26 @@ const locationCityProjection = `
   contactFormUrl,
   order,
   isActive,
-  sections,
+  sections[] {
+    ...,
+    _type == "successStories" => {
+      ...,
+      stories[] {
+        ...,
+        "caseStudy": caseStudyRef-> {
+          title,
+          "slug": slug.current,
+          "excerpt": seo.metaDescription
+        },
+        "ebook": ebookRef-> {
+          title,
+          "slug": slug.current,
+          category,
+          "excerpt": seo.metaDescription
+        }
+      }
+    }
+  },
   sectionsPosition,
   seo {
     metaTitle,
@@ -2224,19 +2199,10 @@ export function transformCityForList(city: SanityLocationCity) {
 }
 
 export function transformCityFull(city: SanityLocationCity): LocationData {
-  // Market stat fields (population, screens, dailyReach, etc.) were removed from the city schema —
-  // keyMarkets entries only carry city/description now; the corresponding stat blocks on
-  // LocationDetailClient are all conditionally rendered, so they simply don't show for cities.
-  const cityMarket = {
-    city: city.city || '',
-    description: city.fullDescription || city.description || '',
-  }
-
   return {
     name: city.city || '',
     slug: city.slug?.current || '',
     city: city.country?.country || '',
-    flag: '',
     description: city.fullDescription || city.description || '',
     heroTitle: city.heroTitle || '',
     heroImage: getSanityImageUrl(city.heroImage, { width: 1200 }) || '',
@@ -2250,12 +2216,8 @@ export function transformCityFull(city: SanityLocationCity): LocationData {
       image: getSanityImageUrl(billboard.image, { width: 800 }) || '',
     })),
     stats: [],
-    majorCities: [],
     mediaTypes: city.mediaTypes || [],
-    keyMarkets: [cityMarket],
     faqs: city.faqs || [],
-    caseStudies: [],
-    partners: [],
     sections: city.sections || [],
     sectionsPosition: city.sectionsPosition || 'after-faqs',
   }
