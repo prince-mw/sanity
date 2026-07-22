@@ -34,10 +34,6 @@ async function getSitemapData() {
       "slug": slug.current,
       "lastModified": _updatedAt
     },
-    "whitepapers": *[_type == "whitepaper" && ${publishedFilter}] {
-      "slug": slug.current,
-      "lastModified": _updatedAt
-    },
     "landingPages": *[_type == "landingPage" && ${publishedFilter}] {
       "slug": slug.current,
       "lastModified": _updatedAt
@@ -50,13 +46,21 @@ async function getSitemapData() {
       "slug": slug.current,
       "lastModified": _updatedAt
     },
+    "locations": *[_type == "location" && isActive == true] {
+      "slug": slug.current,
+      "lastModified": _updatedAt
+    },
     "locationCities": *[_type == "locationCity" && isActive == true && defined(country->slug.current) && defined(slug.current)] {
       "countrySlug": country->slug.current,
       "citySlug": slug.current,
       "lastModified": _updatedAt
+    },
+    "pageSeoDocs": *[_type == "pageSeo" && defined(pageId)] {
+      pageId,
+      "lastModified": _updatedAt
     }
   }`
-  
+
   return client.fetch(query)
 }
 
@@ -64,48 +68,47 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.movingwalls.com'
   const currentDate = new Date().toISOString()
 
-  // Static pages with priorities
+  // Static pages with priorities. changeFreq reflects how often each page's content
+  // actually changes — avoid 'daily' unless content genuinely updates that often.
   const staticPages = [
-    { route: '', priority: 1, changeFreq: 'daily' as const },
+    { route: '', priority: 1, changeFreq: 'monthly' as const },
     { route: '/about', priority: 0.9, changeFreq: 'monthly' as const },
     { route: '/contact', priority: 0.9, changeFreq: 'monthly' as const },
     { route: '/platform', priority: 0.9, changeFreq: 'weekly' as const },
     // Products
-    { route: '/mw-planner', priority: 0.9, changeFreq: 'weekly' as const },
-    { route: '/mw-market', priority: 0.9, changeFreq: 'weekly' as const },
-    { route: '/mw-activate', priority: 0.9, changeFreq: 'weekly' as const },
-    { route: '/mw-measure', priority: 0.9, changeFreq: 'weekly' as const },
-    { route: '/mw-influence', priority: 0.9, changeFreq: 'weekly' as const },
-    { route: '/mw-science', priority: 0.9, changeFreq: 'weekly' as const },
-    { route: '/mw-studio', priority: 0.9, changeFreq: 'weekly' as const },
+    { route: '/mw-planner', priority: 0.9, changeFreq: 'monthly' as const },
+    { route: '/mw-market', priority: 0.9, changeFreq: 'monthly' as const },
+    { route: '/mw-activate', priority: 0.9, changeFreq: 'monthly' as const },
+    { route: '/mw-measure', priority: 0.9, changeFreq: 'monthly' as const },
+    { route: '/mw-influence', priority: 0.9, changeFreq: 'monthly' as const },
+    { route: '/mw-science', priority: 0.9, changeFreq: 'monthly' as const },
+    { route: '/mw-studio', priority: 0.9, changeFreq: 'monthly' as const },
     // Solutions
-    { route: '/brands', priority: 0.85, changeFreq: 'weekly' as const },
-    { route: '/agencies', priority: 0.85, changeFreq: 'weekly' as const },
-    { route: '/media-owners', priority: 0.85, changeFreq: 'weekly' as const },
-    { route: '/retail', priority: 0.8, changeFreq: 'monthly' as const },
-    { route: '/healthcare', priority: 0.8, changeFreq: 'monthly' as const },
-    { route: '/finance', priority: 0.8, changeFreq: 'monthly' as const },
+    { route: '/brands', priority: 0.85, changeFreq: 'monthly' as const },
+    { route: '/agencies', priority: 0.85, changeFreq: 'monthly' as const },
+    { route: '/media-owners', priority: 0.85, changeFreq: 'monthly' as const },
+    // Retail/Healthcare/Finance industry pages temporarily hidden — templated content, not final. Re-add once published.
     // Resources
-    { route: '/blog', priority: 0.9, changeFreq: 'daily' as const },
+    { route: '/blog', priority: 0.9, changeFreq: 'weekly' as const },
     { route: '/case-studies', priority: 0.85, changeFreq: 'weekly' as const },
-    { route: '/events', priority: 0.8, changeFreq: 'weekly' as const },
-    { route: '/webinars', priority: 0.8, changeFreq: 'weekly' as const },
+    { route: '/events', priority: 0.8, changeFreq: 'monthly' as const },
+    { route: '/webinars', priority: 0.8, changeFreq: 'monthly' as const },
     { route: '/ebooks', priority: 0.75, changeFreq: 'monthly' as const },
-    { route: '/whitepapers', priority: 0.75, changeFreq: 'monthly' as const },
+    // Whitepapers page temporarily hidden — being reworked. Re-add once published.
     { route: '/press-news', priority: 0.8, changeFreq: 'weekly' as const },
     // About
     { route: '/our-story', priority: 0.7, changeFreq: 'monthly' as const },
     { route: '/our-journey', priority: 0.7, changeFreq: 'monthly' as const },
-    { route: '/leadership', priority: 0.7, changeFreq: 'monthly' as const },
+    // Leadership page temporarily hidden — under construction. Re-add once published.
     { route: '/careers', priority: 0.8, changeFreq: 'weekly' as const },
     // Other
-    { route: '/integrations', priority: 0.7, changeFreq: 'monthly' as const },
-    { route: '/locations', priority: 0.7, changeFreq: 'monthly' as const },
+    // Integrations page temporarily hidden — being updated. Re-add once published.
+    { route: '/locations', priority: 0.7, changeFreq: 'weekly' as const },
     { route: '/ooh-formats', priority: 0.7, changeFreq: 'monthly' as const },
-    { route: '/api-reference', priority: 0.6, changeFreq: 'monthly' as const },
-    { route: '/documentation', priority: 0.6, changeFreq: 'monthly' as const },
+    // API Reference page temporarily hidden — being reworked. Re-add once published.
+    // Documentation page temporarily hidden — being reworked. Re-add once published.
     { route: '/community', priority: 0.6, changeFreq: 'monthly' as const },
-    { route: '/help-center', priority: 0.6, changeFreq: 'monthly' as const },
+    // Help Center page temporarily hidden — being updated. Re-add once published.
     { route: '/products', priority: 0.85, changeFreq: 'monthly' as const },
     { route: '/movinghearts', priority: 0.4, changeFreq: 'yearly' as const },
     { route: '/search', priority: 0.5, changeFreq: 'weekly' as const },
@@ -113,24 +116,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/privacy', priority: 0.3, changeFreq: 'yearly' as const },
     { route: '/cookies', priority: 0.3, changeFreq: 'yearly' as const },
     { route: '/terms', priority: 0.3, changeFreq: 'yearly' as const },
-    // Press releases (static)
-    { route: '/series-c-funding', priority: 0.6, changeFreq: 'yearly' as const },
-    { route: '/london-headquarters', priority: 0.6, changeFreq: 'yearly' as const },
-    { route: '/ai-powered-audience-targeting', priority: 0.6, changeFreq: 'yearly' as const },
-    { route: '/privacy-first-measurement', priority: 0.6, changeFreq: 'yearly' as const },
-    { route: '/transit-partnership', priority: 0.6, changeFreq: 'yearly' as const },
-    { route: '/adtech-company-of-year', priority: 0.6, changeFreq: 'yearly' as const },
+    // Press releases (series-c-funding, london-headquarters, ai-powered-audience-targeting,
+    // privacy-first-measurement, transit-partnership, adtech-company-of-year) temporarily
+    // hidden — being reworked. Re-add once published.
   ]
-
-  // Location pages
-  const locationPages = [
-    'australia', 'india', 'indonesia', 'japan', 'malaysia',
-    'philippines', 'singapore', 'sri-lanka', 'thailand', 'usa'
-  ].map(loc => ({
-    route: `/locations/${loc}`,
-    priority: 0.6,
-    changeFreq: 'monthly' as const
-  }))
 
   // Fetch dynamic content from Sanity
   let sanityData = {
@@ -140,11 +129,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     events: [] as Array<{ slug: string; lastModified: string }>,
     webinars: [] as Array<{ slug: string; lastModified: string }>,
     ebooks: [] as Array<{ slug: string; lastModified: string }>,
-    whitepapers: [] as Array<{ slug: string; lastModified: string }>,
     landingPages: [] as Array<{ slug: string; lastModified: string }>,
     products: [] as Array<{ slug: string; lastModified: string }>,
     teamMembers: [] as Array<{ slug: string; lastModified: string }>,
+    locations: [] as Array<{ slug: string; lastModified: string }>,
     locationCities: [] as Array<{ countrySlug: string; citySlug: string; lastModified: string }>,
+    pageSeoDocs: [] as Array<{ pageId: string; lastModified: string }>,
   }
 
   try {
@@ -153,13 +143,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     console.error('Error fetching Sanity data for sitemap:', error)
   }
 
+  // Map each static route to its pageSeo document's real last-updated time (pageId matches the
+  // route slug without a leading "/"; the homepage uses pageId "home"). Falls back to the current
+  // build/request time for routes that have no pageSeo document (e.g. /products, /search).
+  const pageSeoLastModified = new Map(sanityData.pageSeoDocs.map((doc) => [doc.pageId, doc.lastModified]))
+  const lastModifiedForRoute = (route: string) => pageSeoLastModified.get(route === '' ? 'home' : route.slice(1)) || currentDate
+
   // Static pages entries
-  const staticEntries: MetadataRoute.Sitemap = [...staticPages, ...locationPages].map(({ route, priority, changeFreq }) => ({
+  const staticEntries: MetadataRoute.Sitemap = staticPages.map(({ route, priority, changeFreq }) => ({
     url: `${baseUrl}${route}`,
-    lastModified: currentDate,
+    lastModified: lastModifiedForRoute(route),
     changeFrequency: changeFreq,
     priority,
   }))
+
+  // Location pages entries (sourced from Sanity so new/removed countries stay in sync)
+  const locationEntries: MetadataRoute.Sitemap = sanityData.locations
+    .filter((loc) => loc.slug)
+    .map((loc) => ({
+      url: `${baseUrl}/locations/${loc.slug}`,
+      lastModified: loc.lastModified || currentDate,
+      changeFrequency: 'weekly' as const,
+      priority: 0.6,
+    }))
 
   // Blog posts entries
   const blogEntries: MetadataRoute.Sitemap = sanityData.blogPosts
@@ -197,7 +203,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map(event => ({
       url: `${baseUrl}/events/${event.slug}`,
       lastModified: event.lastModified || currentDate,
-      changeFrequency: 'weekly' as const,
+      changeFrequency: 'monthly' as const,
       priority: 0.6,
     }))
 
@@ -217,16 +223,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map(ebook => ({
       url: `${baseUrl}/ebooks/${ebook.slug}`,
       lastModified: ebook.lastModified || currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }))
-
-  // Whitepapers entries
-  const whitepaperEntries: MetadataRoute.Sitemap = sanityData.whitepapers
-    .filter(wp => wp.slug)
-    .map(wp => ({
-      url: `${baseUrl}/whitepapers/${wp.slug}`,
-      lastModified: wp.lastModified || currentDate,
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     }))
@@ -257,19 +253,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .map(city => ({
       url: `${baseUrl}/locations/${city.countrySlug}/${city.citySlug}`,
       lastModified: city.lastModified || currentDate,
-      changeFrequency: 'monthly' as const,
+      changeFrequency: 'weekly' as const,
       priority: 0.55,
     }))
 
   return [
     ...staticEntries,
+    ...locationEntries,
     ...blogEntries,
     ...caseStudyEntries,
     ...pressEntries,
     ...eventEntries,
     ...webinarEntries,
     ...ebookEntries,
-    ...whitepaperEntries,
     ...landingPageEntries,
     ...leadershipEntries,
     ...locationCityEntries,

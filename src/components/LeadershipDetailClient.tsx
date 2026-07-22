@@ -36,14 +36,14 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
         <div className="text-center">
           <h1 className="text-4xl font-bold text-mw-gray-900 mb-4">Team Member Not Found</h1>
           <p className="text-mw-gray-600 mb-8">The team member you're looking for doesn't exist.</p>
-          <Link 
-            href="/leadership"
+          <Link
+            href="/about"
             className="inline-flex items-center gap-2 px-6 py-3 bg-mw-blue-600 text-white font-medium rounded-lg hover:bg-mw-blue-700 transition-colors"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to Leadership
+            Back to About
           </Link>
         </div>
       </div>
@@ -76,14 +76,14 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
             transition={{ duration: 0.5 }}
             className="mb-8"
           >
-            <Link 
-              href="/leadership"
+            <Link
+              href="/about"
               className="inline-flex items-center gap-2 text-mw-blue-200 hover:text-white transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to Leadership
+              Back to About
             </Link>
           </motion.div>
 
@@ -264,10 +264,10 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
 
             <div className="text-center mt-12">
               <Link
-                href="/leadership"
+                href="/about"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-mw-blue-600 text-white font-medium rounded-lg hover:bg-mw-blue-700 transition-colors"
               >
-                View All Team Members
+                Back to About
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>

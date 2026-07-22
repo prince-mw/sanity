@@ -58,7 +58,6 @@ export default function Footer({ content }: FooterProps) {
   const defaultFooterLinks = {
     company: [
       { name: t('footer.links.company.ourStory'), href: "/our-story" },
-      { name: t('footer.links.company.leadership'), href: "/leadership" },
       { name: t('footer.links.company.officeLocations'), href: "/locations" },
       { name: t('footer.links.company.careers'), href: "/careers" },
       { name: t('footer.links.company.contactUs'), href: "/contact" },

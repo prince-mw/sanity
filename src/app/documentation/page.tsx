@@ -1,18 +1,6 @@
-import { getDocumentationPageContent } from '@/sanity/lib/fetch';
-import DocumentationClient from '@/components/DocumentationClient';
+import { notFound } from 'next/navigation'
 
-export const revalidate = 30;
-
-export default async function DocumentationPage() {
-  const content = await getDocumentationPageContent();
-
-  const clientContent = content ? {
-    title: content.title,
-    subtitle: content.subtitle,
-    endpoints: content.endpoints,
-    sdks: content.sdks,
-    ctaTitle: content.ctaTitle,
-  } : undefined;
-
-  return <DocumentationClient content={clientContent} />;
+// Temporarily hidden — being reworked. Will be republished once finalized.
+export default function DocumentationPage() {
+  notFound()
 }

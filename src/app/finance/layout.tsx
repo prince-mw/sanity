@@ -22,7 +22,8 @@ export async function generateMetadata(): Promise<Metadata> {
     alternates: {
       canonical: "https://www.movingwalls.com/finance",
     },
-    robots: seo?.noIndex ? { index: false, follow: false } : undefined,
+    // Temporarily hidden — templated content, not final. Page itself calls notFound(); force noindex here too since this layout still wraps the 404 boundary.
+    robots: { index: false, follow: false },
   };
 }
 

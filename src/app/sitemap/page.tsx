@@ -52,7 +52,6 @@ export default function SitemapPage() {
       pages: [
         { name: "Our Story", href: "/our-story" },
         { name: "Our Journey", href: "/our-journey" },
-        { name: "Leadership", href: "/leadership" },
         { name: "Careers", href: "/careers" },
         { name: "Press & News", href: "/press-news" },
       ]
@@ -77,34 +76,16 @@ export default function SitemapPage() {
         { name: "For Brands", href: "/brands" },
         { name: "For Agencies", href: "/agencies" },
         { name: "For Media Owners", href: "/media-owners" },
-        { name: "Healthcare", href: "/healthcare" },
-        { name: "Retail", href: "/retail" },
-        { name: "Finance", href: "/finance" },
       ]
     },
     {
       name: "Resources",
       href: "/resources",
       pages: [
-        { name: "API Reference", href: "/api-reference" },
         { name: "Blog", href: "/blog" },
         { name: "Case Studies", href: "/case-studies" },
         { name: "Community", href: "/community" },
-        { name: "Documentation", href: "/documentation" },
         { name: "Webinars", href: "/webinars" },
-        { name: "Whitepapers", href: "/whitepapers" },
-      ]
-    },
-    {
-      name: "Press Releases",
-      href: null,
-      pages: [
-        { name: "Series C Funding", href: "/series-c-funding" },
-        { name: "AdTech Company of the Year", href: "/adtech-company-of-year" },
-        { name: "AI-Powered Audience Targeting", href: "/ai-powered-audience-targeting" },
-        { name: "London Headquarters", href: "/london-headquarters" },
-        { name: "Privacy-First Measurement", href: "/privacy-first-measurement" },
-        { name: "Transit Partnership", href: "/transit-partnership" },
       ]
     },
     {
@@ -114,7 +95,6 @@ export default function SitemapPage() {
         { name: "Events", href: "/events" },
         { name: "Locations", href: "/locations" },
         { name: "Contact", href: "/contact" },
-        { name: "Integrations", href: "/integrations" },
         { name: "Ebooks", href: "/ebooks" },
         { name: "OOH Formats", href: "/ooh-formats" },
       ]
