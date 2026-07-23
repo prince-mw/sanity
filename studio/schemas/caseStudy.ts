@@ -8,7 +8,6 @@ export default defineType({
     {name: 'content', title: 'Content', default: true},
     {name: 'details', title: 'Details'},
     {name: 'publishing', title: 'Publishing'},
-    {name: 'workflow', title: 'Workflow'},
     {name: 'seo', title: 'SEO'},
   ],
   fields: [
@@ -44,23 +43,6 @@ export default defineType({
       type: 'datetime',
       description: 'Set a future date to automatically publish',
       group: 'publishing',
-    }),
-    // Workflow fields
-    defineField({
-      name: 'assignedTo',
-      title: 'Assigned To',
-      type: 'reference',
-      to: [{type: 'teamMember'}],
-      description: 'Team member responsible for this content',
-      group: 'workflow',
-    }),
-    defineField({
-      name: 'reviewNotes',
-      title: 'Review Notes',
-      type: 'text',
-      rows: 3,
-      description: 'Notes for reviewers or collaborators',
-      group: 'workflow',
     }),
     defineField({
       name: 'title',
@@ -144,24 +126,6 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      name: 'challenge',
-      title: 'The Challenge',
-      type: 'blockContent',
-      group: 'content',
-    }),
-    defineField({
-      name: 'solution',
-      title: 'The Solution',
-      type: 'blockContent',
-      group: 'content',
-    }),
-    defineField({
-      name: 'results',
-      title: 'The Results',
-      type: 'blockContent',
-      group: 'content',
-    }),
-    defineField({
       name: 'metrics',
       title: 'Key Metrics',
       type: 'array',
@@ -175,24 +139,6 @@ export default defineType({
         },
       ],
       group: 'details',
-    }),
-    defineField({
-      name: 'testimonial',
-      title: 'Client Testimonial',
-      type: 'object',
-      fields: [
-        {name: 'quote', type: 'text', title: 'Quote'},
-        {name: 'name', type: 'string', title: 'Name'},
-        {name: 'role', type: 'string', title: 'Role'},
-      ],
-      group: 'content',
-    }),
-    defineField({
-      name: 'gallery',
-      title: 'Image Gallery',
-      type: 'array',
-      of: [{type: 'image', options: {hotspot: true}}],
-      group: 'content',
     }),
     defineField({
       name: 'seo',

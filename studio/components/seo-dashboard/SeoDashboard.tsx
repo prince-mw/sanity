@@ -49,7 +49,6 @@ const CONTENT_TYPES = [
   {value: 'event', title: 'Events'},
   {value: 'webinar', title: 'Webinars'},
   {value: 'ebook', title: 'E-books'},
-  {value: 'whitepaper', title: 'Whitepapers'},
 ]
 
 function calculateSeoScore(item: SeoData): SeoScore {
@@ -236,7 +235,7 @@ export default function SeoDashboard() {
     setLoading(true)
     try {
       const query = `*[
-        _type in ["blogPost", "caseStudy", "pressRelease", "product", "landingPage", "pageSeo", "event", "webinar", "ebook", "whitepaper"]
+        _type in ["blogPost", "caseStudy", "pressRelease", "product", "landingPage", "pageSeo", "event", "webinar", "ebook"]
         && !(_id in path("drafts.**"))
       ]{
         _id,

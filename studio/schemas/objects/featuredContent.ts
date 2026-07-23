@@ -47,7 +47,6 @@ export default defineType({
           {title: 'Event', value: 'event'},
           {title: 'Webinar', value: 'webinar'},
           {title: 'Ebook', value: 'ebook'},
-          {title: 'Whitepaper', value: 'whitepaper'},
         ],
         layout: 'dropdown',
       },
@@ -101,13 +100,6 @@ export default defineType({
       type: 'reference',
       to: [{type: 'ebook'}],
       hidden: ({parent}) => parent?.linkType !== 'ebook',
-    }),
-    defineField({
-      name: 'whitepaperRef',
-      title: 'Whitepaper',
-      type: 'reference',
-      to: [{type: 'whitepaper'}],
-      hidden: ({parent}) => parent?.linkType !== 'whitepaper',
     }),
     defineField({
       name: 'ctaText',

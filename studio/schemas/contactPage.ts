@@ -136,12 +136,6 @@ export default defineType({
       group: 'formSection',
     }),
     defineField({
-      name: 'companyPhone',
-      title: 'Phone Number',
-      type: 'string',
-      group: 'formSection',
-    }),
-    defineField({
       name: 'companyEmail',
       title: 'Email',
       type: 'string',
@@ -153,13 +147,6 @@ export default defineType({
       type: 'url',
       group: 'formSection',
       description: 'The Zoho form iframe src URL',
-    }),
-    defineField({
-      name: 'zohoFormHeight',
-      title: 'Zoho Form Height (px)',
-      type: 'number',
-      group: 'formSection',
-      initialValue: 800,
     }),
 
     // Offices section headings

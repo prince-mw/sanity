@@ -44,14 +44,13 @@ async function main() {
   // 1. Check all document type counts
   const typeCounts = [
     'blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar',
-    'ebook', 'whitepaper', 'product', 'teamMember', 'jobPosition',
+    'ebook', 'product', 'teamMember', 'jobPosition',
     'landingPage', 'location', 'audiencePage', 'industryPage',
     'integration', 'oohFormat', 'companyPage', 'legalPage',
     'testimonial', 'trustBar', 'clientPartners', 'footerConfig',
     'megaMenu', 'office', 'timelineEvent', 'zohoForm', 'contactPage',
     'careersPage', 'helpCenterFaq', 'apiReferencePage', 'communityPage',
     'platformConfig', 'analyticsConfig', 'pageSeo', 'redirectSettings',
-    'reusableTestimonial', 'reusableStatBlock', 'reusableCTA',
     'category', 'author'
   ];
 

@@ -467,14 +467,6 @@ export default defineType({
       group: 'resources',
     }),
     defineField({
-      name: 'relatedWhitepapers',
-      title: 'Related Whitepapers',
-      type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'whitepaper' }] }],
-      description: 'Select related whitepapers/ebooks to display',
-      group: 'resources',
-    }),
-    defineField({
       name: 'externalResources',
       title: 'External Resources',
       type: 'array',

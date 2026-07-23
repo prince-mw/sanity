@@ -120,14 +120,6 @@ export default defineType({
       group: 'details',
     }),
     defineField({
-      name: 'isMediaFeature',
-      title: 'Media Feature',
-      type: 'boolean',
-      description: 'Mark as a media feature rather than press release',
-      initialValue: false,
-      group: 'details',
-    }),
-    defineField({
       name: 'hasFullArticle',
       title: 'Has Full Article',
       type: 'boolean',

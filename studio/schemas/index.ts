@@ -9,7 +9,6 @@ import teamMember from './teamMember'
 import webinar from './webinar'
 import jobPosition from './jobPosition'
 import ebook from './ebook'
-import whitepaper from './whitepaper'
 import blockContent from './blockContent'
 import location from './location'
 import locationCity from './locationCity'
@@ -44,10 +43,6 @@ import workflow from './objects/workflow'
 import localeString from './objects/localeString'
 import localeText from './objects/localeText'
 import localeBlockContent from './objects/localeBlockContent'
-// Reusable Content Blocks
-import reusableTestimonial from './reusableTestimonial'
-import reusableStatBlock from './reusableStatBlock'
-import reusableCTA from './reusableCTA'
 import zohoForm from './zohoForm'
 import formField from './objects/formField'
 import redirectSettings from './redirectSettings'
@@ -76,7 +71,6 @@ export const schemaTypes = [
   webinar,
   jobPosition,
   ebook,
-  whitepaper,
   location,
   locationCity,
   product,
@@ -112,10 +106,6 @@ export const schemaTypes = [
   localeString,
   localeText,
   localeBlockContent,
-  // Reusable Content Blocks
-  reusableTestimonial,
-  reusableStatBlock,
-  reusableCTA,
   // Forms
   zohoForm,
   formField,

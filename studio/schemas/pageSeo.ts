@@ -40,7 +40,6 @@ export default defineType({
           {title: 'Case Studies', value: 'case-studies'},
           {title: 'Webinars', value: 'webinars'},
           {title: 'Ebooks', value: 'ebooks'},
-          {title: 'Whitepapers', value: 'whitepapers'},
           {title: 'Events', value: 'events'},
           {title: 'Press & News', value: 'press-news'},
           

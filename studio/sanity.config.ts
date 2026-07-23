@@ -11,7 +11,7 @@ const PREVIEW_SECRET = process.env.SANITY_STUDIO_PREVIEW_SECRET || 'preview-secr
 const PREVIEW_URL = process.env.SANITY_STUDIO_PREVIEW_URL || 'https://www.movingwalls.com'
 
 // Content types that support preview
-const previewTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper', 'product', 'landingPage', 'location']
+const previewTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'product', 'landingPage', 'location']
 
 // Type to URL path mapping
 const typeToPath: Record<string, string> = {
@@ -21,7 +21,6 @@ const typeToPath: Record<string, string> = {
   event: '/events',
   webinar: '/webinars',
   ebook: '/ebooks',
-  whitepaper: '/whitepapers',
   product: '',
   landingPage: '/lp',
   location: '/locations',
@@ -51,7 +50,7 @@ const supportedLanguages = [
 ]
 
 // Content types that support workflow
-const workflowTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook', 'whitepaper']
+const workflowTypes = ['blogPost', 'caseStudy', 'pressRelease', 'event', 'webinar', 'ebook']
 
 // Default document node with preview pane
 const defaultDocumentNode = (S: any, {schemaType}: {schemaType: string}) => {
@@ -91,7 +90,6 @@ const structure = (S: any) =>
               S.documentTypeListItem('event').title('Events'),
               S.documentTypeListItem('webinar').title('Webinars'),
               S.documentTypeListItem('ebook').title('E-books'),
-              S.documentTypeListItem('whitepaper').title('Whitepapers'),
             ])
         ),
       // Products & Pages
@@ -118,6 +116,7 @@ const structure = (S: any) =>
               S.documentTypeListItem('teamMember').title('Team Members'),
               S.documentTypeListItem('jobPosition').title('Job Positions'),
               S.documentTypeListItem('office').title('Offices'),
+              S.documentTypeListItem('testimonial').title('Testimonials'),
               S.listItem()
                 .title('Locations')
                 .schemaType('location')
@@ -160,18 +159,6 @@ const structure = (S: any) =>
                         ])
                     )
                 ),
-            ])
-        ),
-      // Reusable Blocks
-      S.listItem()
-        .title('Reusable Blocks')
-        .child(
-          S.list()
-            .title('Reusable Blocks')
-            .items([
-              S.documentTypeListItem('reusableTestimonial').title('Testimonials'),
-              S.documentTypeListItem('reusableStatBlock').title('Statistics Blocks'),
-              S.documentTypeListItem('reusableCTA').title('Call-to-Action Blocks'),
             ])
         ),
       // Taxonomies

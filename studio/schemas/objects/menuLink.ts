@@ -90,7 +90,6 @@ export default defineType({
           {title: 'Healthcare', value: '/healthcare'},
           {title: 'OOH Formats', value: '/ooh-formats'},
           {title: 'Ebooks', value: '/ebooks'},
-          {title: 'Whitepapers', value: '/whitepapers'},
           {title: 'Help Center', value: '/help-center'},
           {title: 'Documentation', value: '/documentation'},
           {title: 'API Reference', value: '/api-reference'},

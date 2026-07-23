@@ -75,7 +75,6 @@ export default defineType({
           {title: 'Blog', value: '/blog'},
           {title: 'Case Studies', value: '/case-studies'},
           {title: 'E-books', value: '/ebooks'},
-          {title: 'Whitepapers', value: '/whitepapers'},
           {title: 'Events', value: '/events'},
           {title: 'Webinars', value: '/webinars'},
           {title: 'Press & News', value: '/press-news'},
