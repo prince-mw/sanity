@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import TestimonialSectionClient from '@/components/TestimonialSectionClient'
+import { CTAButton } from '@/components/CTAButton'
 
 // Types for CMS-managed content
 interface MediaOwnersPageProps {
@@ -236,7 +237,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
+                <CTAButton
                   href={content.primaryCTA.href}
                   className="inline-flex items-center justify-center gap-2 bg-white text-mw-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-mw-gray-50 transition-all hover:scale-105 shadow-lg"
                 >
@@ -244,7 +245,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
-                </Link>
+                </CTAButton>
               </div>
             </motion.div>
 
@@ -933,12 +934,12 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                     ))}
                   </div>
                   <div className="mt-6 text-center">
-                    <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all text-sm">
+                    <CTAButton href="/contact" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all text-sm">
                       Start Your Transformation
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
-                    </Link>
+                    </CTAButton>
                   </div>
                 </div>
                 <div className="hidden lg:flex absolute -right-4 top-1/2 transform -translate-y-1/2 z-20">

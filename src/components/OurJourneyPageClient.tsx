@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { CTAButton } from "@/components/CTAButton";
 import { useState } from "react";
 import { transformTimelineEvent, transformCompanyPage } from "@/sanity/lib/fetch";
 
@@ -607,7 +608,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
+              <CTAButton
                 href="/contact"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-mw-gray-50 text-mw-blue-600 font-semibold rounded-lg transition-colors shadow-lg"
               >
@@ -615,7 +616,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-              </Link>
+              </CTAButton>
               <Link
                 href="/careers"
                 className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"

@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { CTAButton } from '@/components/CTAButton'
 import Image from 'next/image'
 import { useState } from 'react'
 import TestimonialSectionClient from '@/components/TestimonialSectionClient'
@@ -228,7 +229,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4">
-                <Link
+                <CTAButton
                   href={content.primaryCTA.href}
                   className="inline-flex items-center justify-center gap-2 bg-white text-blue-600 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-50 transition-all hover:scale-105 shadow-lg"
                 >
@@ -236,7 +237,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
-                </Link>
+                </CTAButton>
               </div>
             </motion.div>
 
@@ -607,12 +608,12 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                   <p className="text-gray-600 mb-6 leading-relaxed">
                     {t('agenciesPage.platformSection.support.description')}
                   </p>
-                  <Link href="/contact" className="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all text-sm">
+                  <CTAButton href="/contact" className="inline-flex items-center gap-2 text-indigo-600 font-semibold hover:gap-3 transition-all text-sm">
                     {t('agenciesPage.platformSection.support.linkText')}
                     <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
-                  </Link>
+                  </CTAButton>
                 </div>
                 <div className="bg-gradient-to-br from-indigo-50 to-purple-100 rounded-2xl p-8 aspect-[4/3] flex items-center justify-center">
                   <div className="w-full h-full flex flex-col gap-4">
@@ -959,12 +960,12 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                     ))}
                   </div>
                   <div className="mt-6 text-center">
-                    <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all text-sm">
+                    <CTAButton href="/contact" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all text-sm">
                       {t('agenciesPage.journey.transformation.cta')}
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
-                    </Link>
+                    </CTAButton>
                   </div>
                 </div>
                 <div className="hidden lg:flex absolute -right-4 top-1/2 transform -translate-y-1/2 z-20">

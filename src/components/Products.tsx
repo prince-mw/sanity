@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import Link from "next/link";
+import { CTAButton } from "@/components/CTAButton";
 import { useLocale } from "@/i18n/LocaleContext";
 
 export default function Products() {
@@ -329,7 +330,7 @@ export default function Products() {
             }
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
+            <CTAButton
               href="/contact"
               className="px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-all shadow-mw-md hover:shadow-mw-lg inline-flex items-center justify-center gap-2"
             >
@@ -337,7 +338,7 @@ export default function Products() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </Link>
+            </CTAButton>
             <button className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-lg hover:bg-white/20 transition-all border-2 border-white/30">
               {t('landingPage.products.cta.scheduleDemo')}
             </button>

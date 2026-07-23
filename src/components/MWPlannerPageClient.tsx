@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { CTAButton } from '@/components/CTAButton'
 import Image from 'next/image'
 import type { SanityProduct } from '@/sanity/lib/fetch'
 import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
@@ -572,13 +573,13 @@ export default function MWPlannerPageClient({ latestBlogPosts, product, partnerL
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
-                <Link
+                <CTAButton
                   href={ctaLink}
                   className="group bg-gradient-to-r from-blue-500 to-cyan-500 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-2xl hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   {ctaText}
                   <ArrowRightIcon className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                </CTAButton>
               </div>
 
 
@@ -637,13 +638,13 @@ export default function MWPlannerPageClient({ latestBlogPosts, product, partnerL
               </div>
 
               <div className="mt-10">
-                <Link
+                <CTAButton
                   href="/contact"
                   className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                 >
                   See How It Works
                   <ArrowRightIcon className="w-4 h-4" />
-                </Link>
+                </CTAButton>
               </div>
             </motion.div>
 

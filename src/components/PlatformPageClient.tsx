@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { CTAButton } from "@/components/CTAButton";
 
 // Flowing Dot Component for animated connections
 const FlowingDots = ({ pathId, duration = 3, delay = 0 }: { pathId: string; duration?: number; delay?: number }) => {
@@ -655,12 +656,12 @@ export default function PlatformPageClient() {
             See how MW Platform can transform your OOH advertising strategy
           </p>
           <div className="flex justify-center gap-4">
-            <a
+            <CTAButton
               href="/contact"
               className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg"
             >
               Request Demo
-            </a>
+            </CTAButton>
             <a
               href="/mw-planner"
               className="px-8 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"

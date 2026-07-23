@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Image from 'next/image'
+import { CTAButton } from '@/components/CTAButton'
 
 export interface Integration {
   name: string
@@ -108,7 +109,7 @@ export default function ProductIntegrationsSection({
           <p className="text-gray-600 mb-4">
             Don&apos;t see your platform? We&apos;re constantly adding new integrations.
           </p>
-          <a
+          <CTAButton
             href="/contact"
             className="inline-flex items-center gap-2 text-blue-600 font-semibold hover:text-blue-700 transition-colors"
           >
@@ -116,7 +117,7 @@ export default function ProductIntegrationsSection({
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </a>
+          </CTAButton>
         </motion.div>
       </div>
     </section>

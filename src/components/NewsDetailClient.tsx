@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { CTAButton } from "@/components/CTAButton";
 import Image from "next/image";
 
 interface NewsRelease {
@@ -276,7 +277,7 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               For media inquiries, interview requests, or additional information, please contact our press team.
             </p>
-            <Link
+            <CTAButton
               href="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-mw-blue-600 rounded-lg font-semibold hover:bg-mw-gray-100 transition-colors"
             >
@@ -284,7 +285,7 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </Link>
+            </CTAButton>
           </motion.div>
         </div>
       </section>

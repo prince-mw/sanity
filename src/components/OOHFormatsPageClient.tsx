@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { CTAButton } from '@/components/CTAButton'
 import Image from 'next/image'
 import React from 'react'
 import { motion } from 'framer-motion'
@@ -109,10 +110,10 @@ export default function OOHFormatsPageClient({ oohFormats }: OOHFormatsPageClien
               Unlock the basics of outdoor advertising with our comprehensive guide. Discover the most effective OOH formats to reach your target audience.
             </motion.p>
             <motion.div initial="hidden" animate="visible" variants={fadeUp} className="flex flex-wrap gap-4 justify-center">
-              <Link href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-colors">
+              <CTAButton href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-colors">
                 Plan Your Campaign
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-              </Link>
+              </CTAButton>
               <Link href="/locations" className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
                 View Locations
               </Link>
@@ -259,7 +260,7 @@ export default function OOHFormatsPageClient({ oohFormats }: OOHFormatsPageClien
                     </div>
                   </div>
 
-                  <Link
+                  <CTAButton
                     href="/contact"
                     className="inline-flex items-center gap-2 bg-mw-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-700 transition-colors"
                   >
@@ -267,7 +268,7 @@ export default function OOHFormatsPageClient({ oohFormats }: OOHFormatsPageClien
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
-                  </Link>
+                  </CTAButton>
                 </motion.div>
 
                 {/* Image/Video Side */}
