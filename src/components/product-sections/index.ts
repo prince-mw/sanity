@@ -20,7 +20,7 @@ export { default as ProductTestimonialsSection } from './ProductTestimonialsSect
 export type { ProductTestimonialsSectionProps, Testimonial } from './ProductTestimonialsSection'
 
 export { default as ProductResourcesSection } from './ProductResourcesSection'
-export type { ProductResourcesSectionProps, CaseStudy, BlogPost, Whitepaper, ExternalResource } from './ProductResourcesSection'
+export type { ProductResourcesSectionProps, CaseStudy, BlogPost, ExternalResource } from './ProductResourcesSection'
 
 export { default as ProductFinalCTASection } from './ProductFinalCTASection'
 export type { ProductFinalCTASectionProps } from './ProductFinalCTASection'

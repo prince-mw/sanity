@@ -98,12 +98,7 @@ export interface SanityCaseStudy {
   location: string
   excerpt: string
   content?: any[]
-  challenge?: any[]
-  solution?: any[]
-  results?: any[]
   metrics?: any[]
-  testimonial?: any
-  gallery?: any[]
   publishedAt: string
   seo?: SanitySEO
 }
@@ -306,33 +301,7 @@ export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy 
           "videoFileMimeType": videoFile.asset->mimeType
         }
       },
-      challenge[] {
-        ...,
-        _type == "video" => {
-          ...,
-          "videoFileUrl": videoFile.asset->url,
-          "videoFileMimeType": videoFile.asset->mimeType
-        }
-      },
-      solution[] {
-        ...,
-        _type == "video" => {
-          ...,
-          "videoFileUrl": videoFile.asset->url,
-          "videoFileMimeType": videoFile.asset->mimeType
-        }
-      },
-      results[] {
-        ...,
-        _type == "video" => {
-          ...,
-          "videoFileUrl": videoFile.asset->url,
-          "videoFileMimeType": videoFile.asset->mimeType
-        }
-      },
       metrics,
-      testimonial,
-      gallery,
       publishedAt,
       seo {
         metaTitle,
@@ -370,40 +339,35 @@ export function transformBlogPost(post: SanityBlogPost) {
   }
 }
 
+// Matches the `industry` options list in studio/schemas/caseStudy.ts (value -> display title)
+const caseStudyIndustryLabels: Record<string, string> = {
+  retail: 'Retail',
+  finance: 'Finance',
+  healthcare: 'Healthcare',
+  technology: 'Technology',
+  fmcg: 'FMCG',
+  automotive: 'Automotive',
+  entertainment: 'Entertainment',
+  travel: 'Travel',
+  'real-estate': 'Real Estate',
+  other: 'Other',
+};
+
 // Helper to convert Sanity case study to format compatible with existing UI
 export function transformCaseStudy(study: SanityCaseStudy) {
-  // Helper to check if HTML has actual formatting (not just stripped text)
-  const hasFormattedContent = (html: string) => {
-    if (!html) return false;
-    // Check if content has actual HTML tags beyond just text
-    return /<(h[1-6]|ul|ol|li|strong|em|a|blockquote|figure|img|video|iframe|div)[^>]*>/i.test(html);
-  };
-  
   const content = portableTextToHtml(study.content) || '';
-  const challenge = portableTextToHtml(study.challenge) || '';
-  const solution = portableTextToHtml(study.solution) || '';
-  const results = portableTextToHtml(study.results) || '';
-  
+
   return {
     slug: study.slug?.current || '',
     title: study.title || '',
     brand: study.client || '',
     clientLogo: getSanityImageUrl(study.clientLogo, { width: 200 }) || '',
-    country: study.location || '',
-    industry: study.industry || 'Other',
+    country: study.location?.trim() || '',
+    industry: (study.industry && caseStudyIndustryLabels[study.industry]) || study.industry || 'Other',
     excerpt: study.excerpt || '',
     content: content,
     rawContent: study.content || null,
-    rawChallenge: study.challenge || null,
-    rawSolution: study.solution || null,
-    rawResults: study.results || null,
-    // Only include challenge/solution/results if they have real formatted content
-    challenge: hasFormattedContent(challenge) ? challenge : '',
-    solution: hasFormattedContent(solution) ? solution : '',
-    results: hasFormattedContent(results) ? results : '',
     metrics: study.metrics || [],
-    testimonial: study.testimonial || null,
-    gallery: (study.gallery || []).map((img: any) => getSanityImageUrl(img, { width: 800 })).filter(Boolean),
     featuredImage: getSanityImageUrl(study.featuredImage, { width: 1200 }) || '/assets/images/case-study-placeholder.svg',
     date: study.publishedAt ? formatDate(study.publishedAt) : '',
   }
@@ -871,7 +835,6 @@ export interface SanityPressRelease {
   content?: any[]
   category?: string
   readTime?: string
-  isMediaFeature?: boolean
   hasFullArticle?: boolean
   articleSlug?: { current: string }
   seo?: SanitySEO
@@ -889,31 +852,19 @@ export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
       externalLink,
       excerpt,
       category,
-      readTime,
-      isMediaFeature
+      readTime
     }
   `
   return safeFetch(query)
 }
 
 export async function getPressReleases(limit?: number): Promise<SanityPressRelease[]> {
-  const query = limit 
-    ? `*[_type == "pressRelease" && ${safePublishedFilter} && !isMediaFeature] | order(publishedAt desc)[0...$limit] {
-        _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
-      }`
-    : `*[_type == "pressRelease" && ${safePublishedFilter} && !isMediaFeature] | order(publishedAt desc) {
-        _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
-      }`
-  return safeFetch(query, { limit: limit ? limit - 1 : undefined })
-}
-
-export async function getMediaFeatures(limit?: number): Promise<SanityPressRelease[]> {
   const query = limit
-    ? `*[_type == "pressRelease" && ${safePublishedFilter} && isMediaFeature == true] | order(publishedAt desc)[0...$limit] {
-        _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
+    ? `*[_type == "pressRelease" && ${safePublishedFilter}] | order(publishedAt desc)[0...$limit] {
+        _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime
       }`
-    : `*[_type == "pressRelease" && ${safePublishedFilter} && isMediaFeature == true] | order(publishedAt desc) {
-        _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime, isMediaFeature
+    : `*[_type == "pressRelease" && ${safePublishedFilter}] | order(publishedAt desc) {
+        _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime
       }`
   return safeFetch(query, { limit: limit ? limit - 1 : undefined })
 }
@@ -939,7 +890,6 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
       },
       category,
       readTime,
-      isMediaFeature,
       hasFullArticle,
       articleSlug,
       seo {
@@ -977,7 +927,6 @@ export async function getPressArticleBySlug(articleSlug: string): Promise<Sanity
       },
       category,
       readTime,
-      isMediaFeature,
       hasFullArticle,
       articleSlug
     }
@@ -1019,23 +968,10 @@ export function transformPressRelease(pr: SanityPressRelease) {
   }
 }
 
-export function transformMediaFeature(pr: SanityPressRelease) {
-  const imageUrl = getSanityImageUrl(pr.featuredImage, { width: 800 })
-  return {
-    outlet: pr.source || '',
-    title: pr.title || '',
-    date: pr.publishedAt ? formatDate(pr.publishedAt) : '',
-    type: formatPressCategory(pr.category),
-    slug: pr.slug?.current || '',
-    externalLink: pr.externalLink,
-    thumbnail: imageUrl || '', // Empty string lets component show category icons
-  }
-}
-
 // Get related press releases (excluding current one, same category preferred)
 export async function getRelatedPressReleases(currentSlug: string, category?: string, limit: number = 3): Promise<SanityPressRelease[]> {
   const query = `
-    *[_type == "pressRelease" && ${safePublishedFilter} && slug.current != $currentSlug && !isMediaFeature] | order(publishedAt desc)[0...$limit] {
+    *[_type == "pressRelease" && ${safePublishedFilter} && slug.current != $currentSlug] | order(publishedAt desc)[0...$limit] {
       _id,
       title,
       slug,
@@ -1045,8 +981,7 @@ export async function getRelatedPressReleases(currentSlug: string, category?: st
       externalLink,
       excerpt,
       category,
-      readTime,
-      isMediaFeature
+      readTime
     }
   `
   return safeFetch(query, { currentSlug, limit: limit - 1 })
@@ -1837,95 +1772,6 @@ function formatEbookCategory(category: string | undefined): string {
   return categories[category || ''] || category || 'Guide'
 }
 
-// Whitepaper Types and Queries
-export interface SanityWhitepaper {
-  _id: string
-  title: string
-  slug: { current: string }
-  description?: string
-  category?: string
-  image?: any
-  pages?: number
-  downloads?: string
-  publishDate?: string
-  topics?: string[]
-  featured?: boolean
-  downloadUrl?: string
-  pdfFile?: any
-  order?: number
-}
-
-export async function getAllWhitepapers(): Promise<SanityWhitepaper[]> {
-  const query = `
-    *[_type == "whitepaper"] | order(order asc) {
-      _id,
-      title,
-      slug,
-      description,
-      category,
-      image,
-      pages,
-      downloads,
-      publishDate,
-      topics,
-      featured,
-      downloadUrl,
-      order
-    }
-  `
-  return safeFetch(query)
-}
-
-export async function getFeaturedWhitepaper(): Promise<SanityWhitepaper | null> {
-  const query = `
-    *[_type == "whitepaper" && featured == true][0] {
-      _id,
-      title,
-      slug,
-      description,
-      category,
-      image,
-      pages,
-      downloads,
-      publishDate,
-      topics,
-      featured,
-      downloadUrl,
-      order
-    }
-  `
-  return safeFetch(query)
-}
-
-export function transformWhitepaper(paper: SanityWhitepaper) {
-  return {
-    id: paper._id,
-    title: paper.title || '',
-    slug: paper.slug?.current || '',
-    description: paper.description || '',
-    category: formatWhitepaperCategory(paper.category),
-    image: getSanityImageUrl(paper.image, { width: 600 }) || '/assets/images/ebook-placeholder.svg',
-    pages: paper.pages || 0,
-    downloads: paper.downloads || '0',
-    publishDate: paper.publishDate || '',
-    topics: paper.topics || [],
-    featured: paper.featured || false,
-    downloadUrl: paper.downloadUrl,
-  }
-}
-
-function formatWhitepaperCategory(category: string | undefined): string {
-  const categories: Record<string, string> = {
-    'industry-report': 'Industry Report',
-    'technology': 'Technology',
-    'best-practices': 'Best Practices',
-    'compliance': 'Compliance',
-    'industry-guide': 'Industry Guide',
-    'analytics': 'Analytics',
-  }
-  return categories[category || ''] || category || 'Report'
-}
-
 // Location Types and Queries
 export interface SanityLocation {
   _id: string
@@ -2550,7 +2396,7 @@ export function transformCompanyPage(page: SanityCompanyPage) {
     stats: page.stats || [],
     associations: (page.associations || []).map((a) => ({
       name: a.name,
-      logo: getSanityImageUrl(a.logo, { width: 200 }) || '',
+      logo: getSanityImageUrl(a.logo, { width: 200 }) || undefined,
       url: a.url || '',
     })),
     awards: (page.awards || []).map((a) => ({
@@ -2899,76 +2745,6 @@ export function transformAudiencePage(page: SanityAudiencePage) {
     faqs: page.faqs || [],
     seoTitle: page.seoTitle || '',
     seoDescription: page.seoDescription || '',
-  }
-}
-
-// ============================================
-// TESTIMONIALS BY CATEGORY
-// ============================================
-
-export interface SanityTestimonial {
-  _id: string
-  internalName: string
-  quote: { en?: string; [key: string]: string | undefined }
-  author: string
-  role?: string
-  company?: string
-  avatar?: any
-  companyLogo?: any
-  rating?: number
-  featured?: boolean
-  categories?: string[]
-}
-
-export async function getTestimonialsByCategory(category: string): Promise<SanityTestimonial[]> {
-  const query = `
-    *[_type == "reusableTestimonial" && $category in categories] | order(featured desc) {
-      _id,
-      internalName,
-      quote,
-      author,
-      role,
-      company,
-      avatar,
-      companyLogo,
-      rating,
-      featured,
-      categories
-    }
-  `
-  return safeFetch(query, { category })
-}
-
-export async function getAllTestimonials(): Promise<SanityTestimonial[]> {
-  const query = `
-    *[_type == "reusableTestimonial"] | order(featured desc) {
-      _id,
-      internalName,
-      quote,
-      author,
-      role,
-      company,
-      avatar,
-      companyLogo,
-      rating,
-      featured,
-      categories
-    }
-  `
-  return safeFetch(query)
-}
-
-export function transformTestimonial(testimonial: SanityTestimonial, locale: string = 'en') {
-  return {
-    _id: testimonial._id,
-    quote: testimonial.quote?.[locale] || testimonial.quote?.en || '',
-    author: testimonial.author || '',
-    role: testimonial.role || '',
-    company: testimonial.company || '',
-    image: testimonial.avatar ? { asset: { _ref: testimonial.avatar.asset?._ref } } : undefined,
-    companyLogo: testimonial.companyLogo ? { asset: { _ref: testimonial.companyLogo.asset?._ref } } : undefined,
-    metric: '',
-    industry: '',
   }
 }
 
@@ -3477,7 +3253,6 @@ export interface SanityEnhancedProduct extends SanityProduct {
   resourcesTitle?: string
   relatedCaseStudies?: SanityCaseStudy[]
   relatedBlogPosts?: SanityBlogPost[]
-  relatedWhitepapers?: SanityWhitepaper[]
   externalResources?: SanityProductExternalResource[]
   
   // Final CTA
@@ -3584,13 +3359,6 @@ export async function getEnhancedProductBySlug(slug: string): Promise<SanityEnha
         featuredImage,
         "excerpt": seo.metaDescription,
         publishedAt
-      },
-      "relatedWhitepapers": relatedWhitepapers[]->{
-        _id,
-        title,
-        slug,
-        image,
-        description
       },
       externalResources[] {
         _key,
@@ -3724,13 +3492,6 @@ export function transformEnhancedProduct(product: SanityEnhancedProduct) {
         featuredImage: getSanityImageUrl(bp.featuredImage, { width: 600 }) || '',
         excerpt: bp.excerpt || '',
         publishedAt: bp.publishedAt,
-      })),
-      whitepapers: (product.relatedWhitepapers || []).map(wp => ({
-        _id: wp._id,
-        title: wp.title,
-        slug: wp.slug,
-        coverImage: getSanityImageUrl(wp.image, { width: 400 }) || '',
-        description: wp.description || '',
       })),
       externalResources: product.externalResources || [],
     },
@@ -4062,10 +3823,8 @@ export interface ContactPageContent {
   formSectionDescription: string
   companyName: string
   companyAddress: string
-  companyPhone: string
   companyEmail: string
   zohoFormUrl: string
-  zohoFormHeight: number
 }
 
 export async function getContactPageContent(): Promise<ContactPageContent | null> {
@@ -4085,10 +3844,8 @@ export async function getContactPageContent(): Promise<ContactPageContent | null
         formSectionDescription,
         companyName,
         companyAddress,
-        companyPhone,
         companyEmail,
-        zohoFormUrl,
-        zohoFormHeight
+        zohoFormUrl
       }
     `
     return safeFetch(query)

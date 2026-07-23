@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
-// Temporarily hidden — being reworked. Will be republished once finalized.
+// Page and Sanity content type removed.
 export async function generateMetadata(): Promise<Metadata> {
   return {
     robots: { index: false, follow: false },

@@ -22,14 +22,6 @@ export interface BlogPost {
   publishedAt?: string
 }
 
-export interface Whitepaper {
-  _id: string
-  title: string
-  slug?: { current?: string }
-  coverImage?: string
-  description?: string
-}
-
 export interface ExternalResource {
   title: string
   description?: string
@@ -41,7 +33,6 @@ export interface ProductResourcesSectionProps {
   title?: string
   caseStudies?: CaseStudy[]
   blogPosts?: BlogPost[]
-  whitepapers?: Whitepaper[]
   externalResources?: ExternalResource[]
 }
 
@@ -77,15 +68,13 @@ export default function ProductResourcesSection({
   title = 'Resources',
   caseStudies,
   blogPosts,
-  whitepapers,
   externalResources,
 }: ProductResourcesSectionProps) {
   const hasCaseStudies = caseStudies && caseStudies.length > 0
   const hasBlogPosts = blogPosts && blogPosts.length > 0
-  const hasWhitepapers = whitepapers && whitepapers.length > 0
   const hasExternalResources = externalResources && externalResources.length > 0
 
-  if (!hasCaseStudies && !hasBlogPosts && !hasWhitepapers && !hasExternalResources) {
+  if (!hasCaseStudies && !hasBlogPosts && !hasExternalResources) {
     return null
   }
 
@@ -214,50 +203,6 @@ export default function ProductResourcesSection({
                       </h4>
                       {post.excerpt && (
                         <p className="text-gray-600 text-sm mt-2 line-clamp-2">{post.excerpt}</p>
-                      )}
-                    </div>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Whitepapers */}
-        {hasWhitepapers && (
-          <div className="mb-16">
-            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-green-100 flex items-center justify-center">
-                <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </span>
-              Whitepapers &amp; Guides
-            </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {whitepapers.slice(0, 3).map((whitepaper, index) => (
-                <motion.div
-                  key={whitepaper._id}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Link
-                    href={`/whitepapers/${whitepaper.slug?.current || whitepaper._id}`}
-                    className="group flex items-start gap-4 bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
-                  >
-                    <div className="flex-shrink-0 w-16 h-20 rounded-lg bg-gradient-to-br from-green-500 to-teal-600 flex items-center justify-center">
-                      <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                      </svg>
-                    </div>
-                    <div className="flex-grow">
-                      <h4 className="text-lg font-semibold text-gray-900 group-hover:text-green-600 transition-colors">
-                        {whitepaper.title}
-                      </h4>
-                      {whitepaper.description && (
-                        <p className="text-gray-600 text-sm mt-2 line-clamp-2">{whitepaper.description}</p>
                       )}
                     </div>
                   </Link>

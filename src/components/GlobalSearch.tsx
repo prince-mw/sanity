@@ -29,7 +29,6 @@ const typeToPath: Record<string, string> = {
   event: "/events",
   webinar: "/webinars",
   ebook: "/ebooks",
-  whitepaper: "/whitepapers",
 };
 
 const typeLabels: Record<string, string> = {
@@ -39,7 +38,6 @@ const typeLabels: Record<string, string> = {
   event: "Event",
   webinar: "Webinar",
   ebook: "E-Book",
-  whitepaper: "Whitepaper",
 };
 
 export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
@@ -298,7 +296,6 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                         { label: "Events", href: "/events", icon: "📅" },
                         { label: "Webinars", href: "/webinars", icon: "🎥" },
                         { label: "E-Books", href: "/ebooks", icon: "📚" },
-                        { label: "Whitepapers", href: "/whitepapers", icon: "📄" },
                       ].map((link) => (
                         <Link
                           key={link.href}

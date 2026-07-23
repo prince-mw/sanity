@@ -56,7 +56,6 @@ const typeToPath: Record<string, string[]> = {
   event: ['/events', '/'],
   webinar: ['/webinars', '/'],
   ebook: ['/ebooks', '/'],
-  whitepaper: ['/whitepapers', '/'],
   product: ['/products', '/platform', '/mw-planner', '/mw-market', '/mw-activate', '/mw-measure', '/mw-influence', '/mw-science', '/mw-studio', '/'],
   landingPage: ['/lp', '/'],
   teamMember: ['/leadership', '/about', '/'],

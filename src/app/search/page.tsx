@@ -24,7 +24,6 @@ const typeToPath: Record<string, string> = {
   event: "/events",
   webinar: "/webinars",
   ebook: "/ebooks",
-  whitepaper: "/whitepapers",
 };
 
 const typeLabels: Record<string, string> = {
@@ -34,7 +33,6 @@ const typeLabels: Record<string, string> = {
   event: "Event",
   webinar: "Webinar",
   ebook: "E-Book",
-  whitepaper: "Whitepaper",
 };
 
 const contentTypes = [
@@ -45,7 +43,6 @@ const contentTypes = [
   { value: "event", label: "Events" },
   { value: "webinar", label: "Webinars" },
   { value: "ebook", label: "E-Books" },
-  { value: "whitepaper", label: "Whitepapers" },
 ];
 
 function SearchContent() {

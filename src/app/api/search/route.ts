@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
     const searchQuery = `
       *[
         (
-          _type in ["blogPost", "caseStudy", "pressRelease", "event", "webinar", "ebook", "whitepaper"]
+          _type in ["blogPost", "caseStudy", "pressRelease", "event", "webinar", "ebook"]
         ) && (
           isPublished == true && status == "published" && (scheduledPublishAt == null || scheduledPublishAt <= now())
         ) && (
@@ -55,7 +55,6 @@ export async function GET(request: NextRequest) {
           _type == "event" => eventType,
           _type == "webinar" => webinarType,
           _type == "ebook" => category,
-          _type == "whitepaper" => category,
           null
         )
       }
@@ -80,7 +79,7 @@ export async function GET(request: NextRequest) {
     const countQuery = `
       count(*[
         (
-          _type in ["blogPost", "caseStudy", "pressRelease", "event", "webinar", "ebook", "whitepaper"]
+          _type in ["blogPost", "caseStudy", "pressRelease", "event", "webinar", "ebook"]
         ) && (
           isPublished == true && status == "published"
         ) && (
@@ -138,7 +137,6 @@ function formatCategory(category: string | null, type: string): string {
     event: 'Event',
     webinar: 'Webinar',
     ebook: 'E-Book',
-    whitepaper: 'Whitepaper',
   }
   
   return typeLabels[type] || 'Content'

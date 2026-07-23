@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
-import { getAudiencePage, getPageSeo, getTestimonialsByCategory, transformTestimonial, getSanityImageUrl, getAllCaseStudies, transformCaseStudy } from '@/sanity/lib/fetch';
+import { getAudiencePage, getPageSeo, getSanityImageUrl, getAllCaseStudies, transformCaseStudy } from '@/sanity/lib/fetch';
+import { getFeaturedTestimonials } from '@/sanity/lib/queries';
 import BrandsPageClient from '@/components/BrandsPageClient';
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -36,12 +37,9 @@ export const revalidate = 30; // Revalidate every hour
 export default async function BrandsPage() {
   const [pageData, testimonials, sanityCaseStudies] = await Promise.all([
     getAudiencePage('brands'),
-    getTestimonialsByCategory('brands'),
+    getFeaturedTestimonials(),
     getAllCaseStudies()
   ]);
-
-  // Transform testimonials for client component
-  const transformedTestimonials = testimonials.map(t => transformTestimonial(t));
 
   // Transform real case studies from Sanity as fallback (limit to 6)
   const latestCaseStudies = sanityCaseStudies.slice(0, 6).map(cs => {
@@ -107,9 +105,9 @@ export default async function BrandsPage() {
       metrics: cs.metrics,
     })) : latestCaseStudies.length ? latestCaseStudies : undefined,
     faqs: pageData.faqs?.map(f => ({ question: f.question, answer: f.answer })),
-    testimonials: transformedTestimonials,
-  } : { 
-    testimonials: transformedTestimonials,
+    testimonials,
+  } : {
+    testimonials,
     caseStudies: latestCaseStudies.length ? latestCaseStudies : undefined,
   };
 

@@ -32,7 +32,6 @@ export async function GET(request: NextRequest) {
     event: '/events',
     webinar: '/webinars',
     ebook: '/ebooks',
-    whitepaper: '/whitepapers',
     product: '',
     landingPage: '/lp',
     location: '/locations',

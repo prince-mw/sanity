@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { CTAButton } from "@/components/CTAButton";
 import Image from "next/image";
 import SanityPortableText from "@/components/SanityPortableText";
 
@@ -14,15 +15,7 @@ interface CaseStudy {
   industry: string;
   content: string;
   rawContent?: any[] | null;
-  rawChallenge?: any[] | null;
-  rawSolution?: any[] | null;
-  rawResults?: any[] | null;
-  challenge?: string;
-  solution?: string;
-  results?: string;
   metrics?: Array<{ label: string; value: string }>;
-  testimonial?: { quote: string; name: string; role: string } | null;
-  gallery?: string[];
   featuredImage: string;
   date: string;
 }
@@ -129,87 +122,6 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
       {/* Content */}
       <section className="py-12">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Challenge Section */}
-          {(caseStudy.challenge || (caseStudy.rawChallenge && caseStudy.rawChallenge.length > 0)) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="mb-12"
-            >
-              <h2 className="text-2xl font-bold text-mw-gray-900 mb-4 flex items-center gap-3">
-                <span className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                  </svg>
-                </span>
-                The Challenge
-              </h2>
-              {caseStudy.rawChallenge && caseStudy.rawChallenge.length > 0 ? (
-                <SanityPortableText value={caseStudy.rawChallenge} />
-              ) : (
-                <div 
-                  className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: caseStudy.challenge || '' }}
-                />
-              )}
-            </motion.div>
-          )}
-
-          {/* Solution Section */}
-          {(caseStudy.solution || (caseStudy.rawSolution && caseStudy.rawSolution.length > 0)) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="mb-12"
-            >
-              <h2 className="text-2xl font-bold text-mw-gray-900 mb-4 flex items-center gap-3">
-                <span className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                  </svg>
-                </span>
-                The Solution
-              </h2>
-              {caseStudy.rawSolution && caseStudy.rawSolution.length > 0 ? (
-                <SanityPortableText value={caseStudy.rawSolution} />
-              ) : (
-                <div 
-                  className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: caseStudy.solution || '' }}
-                />
-              )}
-            </motion.div>
-          )}
-
-          {/* Results Section */}
-          {(caseStudy.results || (caseStudy.rawResults && caseStudy.rawResults.length > 0)) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.5 }}
-              className="mb-12"
-            >
-              <h2 className="text-2xl font-bold text-mw-gray-900 mb-4 flex items-center gap-3">
-                <span className="w-10 h-10 bg-mw-blue-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                  </svg>
-                </span>
-                The Results
-              </h2>
-              {caseStudy.rawResults && caseStudy.rawResults.length > 0 ? (
-                <SanityPortableText value={caseStudy.rawResults} />
-              ) : (
-                <div 
-                  className="prose prose-lg max-w-none prose-p:text-mw-gray-700 prose-p:leading-relaxed"
-                  dangerouslySetInnerHTML={{ __html: caseStudy.results || '' }}
-                />
-              )}
-            </motion.div>
-          )}
-
           {/* Key Metrics */}
           {caseStudy.metrics && caseStudy.metrics.length > 0 && (
             <motion.div
@@ -224,44 +136,6 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                   <div className="text-sm text-mw-gray-600">{metric.label}</div>
                 </div>
               ))}
-            </motion.div>
-          )}
-
-          {/* Testimonial */}
-          {caseStudy.testimonial && caseStudy.testimonial.quote && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.7 }}
-              className="mb-12 bg-mw-gray-50 rounded-2xl p-8"
-            >
-              <svg className="w-10 h-10 text-mw-blue-300 mb-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
-              </svg>
-              <p className="text-xl text-mw-gray-700 italic mb-6">&ldquo;{caseStudy.testimonial.quote}&rdquo;</p>
-              <div>
-                <p className="font-semibold text-mw-gray-900">{caseStudy.testimonial.name}</p>
-                <p className="text-sm text-mw-gray-500">{caseStudy.testimonial.role}</p>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Gallery */}
-          {caseStudy.gallery && caseStudy.gallery.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="mb-12"
-            >
-              <h2 className="text-2xl font-bold text-mw-gray-900 mb-6">Gallery</h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                {caseStudy.gallery.map((img, idx) => (
-                  <div key={idx} className="aspect-video rounded-lg overflow-hidden bg-mw-gray-100">
-                    <Image src={img} alt={`Gallery image ${idx + 1}`} width={400} height={225} className="w-full h-full object-cover" />
-                  </div>
-                ))}
-              </div>
             </motion.div>
           )}
 
@@ -391,7 +265,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               Let&apos;s discuss how MovingWalls can help you transform your advertising strategy and drive measurable results.
             </p>
-            <Link
+            <CTAButton
               href="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors"
             >
@@ -399,7 +273,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
-            </Link>
+            </CTAButton>
           </motion.div>
         </div>
       </section>

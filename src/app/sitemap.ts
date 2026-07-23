@@ -94,7 +94,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/events', priority: 0.8, changeFreq: 'monthly' as const },
     { route: '/webinars', priority: 0.8, changeFreq: 'monthly' as const },
     { route: '/ebooks', priority: 0.75, changeFreq: 'monthly' as const },
-    // Whitepapers page temporarily hidden — being reworked. Re-add once published.
+    // Whitepapers page and content type removed.
     { route: '/press-news', priority: 0.8, changeFreq: 'weekly' as const },
     // About
     { route: '/our-story', priority: 0.7, changeFreq: 'monthly' as const },

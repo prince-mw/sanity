@@ -1,6 +1,6 @@
 import { Metadata } from "next";
 import { getAllCaseStudies, transformCaseStudy, getPageSeo, getSanityImageUrl } from "@/sanity/lib/fetch";
-import { caseStudies as staticCaseStudies, caseStudyCountries, caseStudyIndustries } from "@/data/case-studies";
+import { caseStudies as staticCaseStudies } from "@/data/case-studies";
 import CaseStudiesListClient from "@/components/CaseStudiesListClient";
 
 const defaultMeta = {
@@ -47,11 +47,14 @@ export default async function CaseStudiesPage() {
     caseStudies = staticCaseStudies;
   }
 
+  const countries = ["All", ...Array.from(new Set(caseStudies.map((cs) => cs.country).filter(Boolean))).sort()];
+  const industries = ["All", ...Array.from(new Set(caseStudies.map((cs) => cs.industry).filter(Boolean))).sort()];
+
   return (
-    <CaseStudiesListClient 
-      caseStudies={caseStudies} 
-      countries={caseStudyCountries}
-      industries={caseStudyIndustries}
+    <CaseStudiesListClient
+      caseStudies={caseStudies}
+      countries={countries}
+      industries={industries}
     />
   );
 }

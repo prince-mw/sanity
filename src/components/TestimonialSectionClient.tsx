@@ -62,6 +62,51 @@ function useResponsiveItemsPerView() {
   return itemsPerView;
 }
 
+// Get author initials
+function getInitials(name: string) {
+  return name.split(' ').map((n: string) => n[0]).join('');
+}
+
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+  return (
+    <div className="bg-gradient-to-br from-mw-gray-50 to-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-mw-gray-200 hover:border-mw-blue-300 flex flex-col group">
+      {/* Quote Icon */}
+      <svg className="w-10 h-10 text-mw-blue-600 mb-4 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+      </svg>
+
+      {/* Quote */}
+      <p className="text-mw-gray-700 mb-6 flex-grow leading-relaxed">
+        &ldquo;{testimonial.quote}&rdquo;
+      </p>
+
+      {/* Author */}
+      <div className="flex items-center gap-4 pt-6 border-t border-mw-gray-200">
+        {testimonial.image?.asset ? (
+          <div className="w-12 h-12 rounded-full overflow-hidden shadow-md">
+            <Image
+              src={urlFor(testimonial.image).width(96).height(96).url()}
+              alt={testimonial.author}
+              width={48}
+              height={48}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        ) : (
+          <div className="w-12 h-12 bg-gradient-to-br from-mw-blue-600 to-mw-blue-700 rounded-full flex items-center justify-center text-white font-bold shadow-md">
+            {getInitials(testimonial.author)}
+          </div>
+        )}
+        <div>
+          <div className="font-semibold text-mw-gray-900">{testimonial.author}</div>
+          <div className="text-sm text-mw-gray-600">{testimonial.role}</div>
+          <div className="text-xs text-mw-blue-600 font-medium">{testimonial.company}</div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function TestimonialSection({ testimonials: sanityTestimonials, hideViewAll }: TestimonialSectionProps) {
   const { t } = useLocale();
 
@@ -80,6 +125,8 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const itemsPerView = useResponsiveItemsPerView();
   const totalSlides = Math.ceil(testimonials.length / itemsPerView);
+  // Fallback testimonials (3 entries) also render as a static grid, matching real-data behavior at the same count.
+  const isGridView = testimonials.length <= 3;
 
   // Reset currentIndex when itemsPerView changes to prevent out-of-bounds
   useEffect(() => {
@@ -112,24 +159,19 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying) return;
-    
+    if (!isAutoPlaying || isGridView) return;
+
     const interval = setInterval(() => {
       nextSlide();
     }, 5000);
 
     return () => clearInterval(interval);
-  }, [isAutoPlaying, nextSlide]);
+  }, [isAutoPlaying, isGridView, nextSlide]);
 
   // Get visible testimonials for current slide
   const getVisibleTestimonials = () => {
     const start = currentIndex * itemsPerView;
     return testimonials.slice(start, start + itemsPerView);
-  };
-
-  // Get author initials
-  const getInitials = (name: string) => {
-    return name.split(' ').map((n: string) => n[0]).join('');
   };
 
   // Dynamic grid columns based on items per view
@@ -160,138 +202,122 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
           </p>
         </motion.div>
 
-        {/* Carousel Container */}
-        <div 
-          className="relative"
-          onMouseEnter={() => setIsAutoPlaying(false)}
-          onMouseLeave={() => setIsAutoPlaying(true)}
-        >
-          {/* Navigation Arrows - hidden on mobile, visible on md+ */}
-          <button
-            onClick={prevSlide}
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
-            aria-label={t('landingPage.testimonials.ariaPrev')}
-          >
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          
-          <button
-            onClick={nextSlide}
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
-            aria-label={t('landingPage.testimonials.ariaNext')}
-          >
-            <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-
-          {/* Cards Container with Swipe Support */}
-          <div className="overflow-hidden px-1">
-            <motion.div
-              key={`${currentIndex}-${itemsPerView}`}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -50 }}
-              transition={{ duration: 0.5, ease: "easeInOut" }}
-              drag={itemsPerView === 1 ? "x" : false}
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.2}
-              onDragEnd={handleDragEnd}
-              className={`grid ${getGridCols()} gap-6 md:gap-8 cursor-grab active:cursor-grabbing md:cursor-default`}
-            >
-              {getVisibleTestimonials().map((testimonial, index) => (
-                <motion.div
-                  key={testimonial._id || `${currentIndex}-${testimonial.author}`}
-                  initial={{ opacity: 0, y: 30 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-gradient-to-br from-mw-gray-50 to-white rounded-2xl p-8 hover:shadow-xl transition-all duration-300 border border-mw-gray-200 hover:border-mw-blue-300 flex flex-col group"
-                >
-                  {/* Quote Icon */}
-                  <svg className="w-10 h-10 text-mw-blue-600 mb-4 group-hover:scale-110 transition-transform duration-300" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                  </svg>
-
-                  {/* Quote */}
-                  <p className="text-mw-gray-700 mb-6 flex-grow leading-relaxed">
-                    &ldquo;{testimonial.quote}&rdquo;
-                  </p>
-
-                  {/* Author */}
-                  <div className="flex items-center gap-4 pt-6 border-t border-mw-gray-200">
-                    {testimonial.image?.asset ? (
-                      <div className="w-12 h-12 rounded-full overflow-hidden shadow-md">
-                        <Image
-                          src={urlFor(testimonial.image).width(96).height(96).url()}
-                          alt={testimonial.author}
-                          width={48}
-                          height={48}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ) : (
-                      <div className="w-12 h-12 bg-gradient-to-br from-mw-blue-600 to-mw-blue-700 rounded-full flex items-center justify-center text-white font-bold shadow-md">
-                        {getInitials(testimonial.author)}
-                      </div>
-                    )}
-                    <div>
-                      <div className="font-semibold text-mw-gray-900">{testimonial.author}</div>
-                      <div className="text-sm text-mw-gray-600">{testimonial.role}</div>
-                      <div className="text-xs text-mw-blue-600 font-medium">{testimonial.company}</div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Mobile Swipe Hint */}
-          <div className="flex md:hidden justify-center items-center gap-2 mt-6 text-mw-gray-500 text-sm">
-            <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-            </svg>
-            <span>{t('landingPage.testimonials.swipeHint')}</span>
-          </div>
-
-          {/* Pagination Dots */}
-          <div className="flex justify-center items-center gap-2 mt-6 md:mt-10">
-            {Array.from({ length: totalSlides }).map((_, index) => (
-              <button
-                key={index}
-                onClick={() => goToSlide(index)}
-                className="p-3 -m-3 flex items-center justify-center"
-                aria-label={`${t('landingPage.testimonials.ariaGoToSlide')} ${index + 1}`}
+        {isGridView ? (
+          /* Static grid — used when there are few enough testimonials that they all fit without paging */
+          <div className={`grid ${getGridCols()} gap-6 md:gap-8`}>
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={testimonial._id || testimonial.author}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
               >
-                <span
-                  className={`block transition-all duration-300 rounded-full ${
-                    currentIndex === index
-                      ? "w-8 h-3 bg-mw-blue-600"
-                      : "w-3 h-3 bg-mw-gray-300 hover:bg-mw-blue-400"
-                  }`}
-                />
-              </button>
+                <TestimonialCard testimonial={testimonial} />
+              </motion.div>
             ))}
           </div>
+        ) : (
+          /* Carousel Container */
+          <div
+            className="relative"
+            onMouseEnter={() => setIsAutoPlaying(false)}
+            onMouseLeave={() => setIsAutoPlaying(true)}
+          >
+            {/* Navigation Arrows - hidden on mobile, visible on md+ */}
+            <button
+              onClick={prevSlide}
+              className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 sm:-translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
+              aria-label={t('landingPage.testimonials.ariaPrev')}
+            >
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-          {/* Progress Bar */}
-          <div className="mt-4 max-w-xs mx-auto">
-            <div className="h-1 bg-mw-gray-200 rounded-full overflow-hidden">
+            <button
+              onClick={nextSlide}
+              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 sm:translate-x-4 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center text-mw-gray-600 hover:text-mw-blue-600 hover:shadow-xl transition-all duration-300"
+              aria-label={t('landingPage.testimonials.ariaNext')}
+            >
+              <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+
+            {/* Cards Container with Swipe Support */}
+            <div className="overflow-hidden px-1">
               <motion.div
-                className="h-full bg-mw-blue-600"
-                initial={{ width: "0%" }}
-                animate={{ width: "100%" }}
-                transition={{
-                  duration: 5,
-                  ease: "linear",
-                  repeat: Infinity,
-                }}
-                key={`progress-${currentIndex}-${itemsPerView}`}
-              />
+                key={`${currentIndex}-${itemsPerView}`}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+                drag={itemsPerView === 1 ? "x" : false}
+                dragConstraints={{ left: 0, right: 0 }}
+                dragElastic={0.2}
+                onDragEnd={handleDragEnd}
+                className={`grid ${getGridCols()} gap-6 md:gap-8 cursor-grab active:cursor-grabbing md:cursor-default`}
+              >
+                {getVisibleTestimonials().map((testimonial, index) => (
+                  <motion.div
+                    key={testimonial._id || `${currentIndex}-${testimonial.author}`}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <TestimonialCard testimonial={testimonial} />
+                  </motion.div>
+                ))}
+              </motion.div>
+            </div>
+
+            {/* Mobile Swipe Hint */}
+            <div className="flex md:hidden justify-center items-center gap-2 mt-6 text-mw-gray-500 text-sm">
+              <svg className="w-5 h-5 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
+              </svg>
+              <span>{t('landingPage.testimonials.swipeHint')}</span>
+            </div>
+
+            {/* Pagination Dots */}
+            <div className="flex justify-center items-center gap-2 mt-6 md:mt-10">
+              {Array.from({ length: totalSlides }).map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className="p-3 -m-3 flex items-center justify-center"
+                  aria-label={`${t('landingPage.testimonials.ariaGoToSlide')} ${index + 1}`}
+                >
+                  <span
+                    className={`block transition-all duration-300 rounded-full ${
+                      currentIndex === index
+                        ? "w-8 h-3 bg-mw-blue-600"
+                        : "w-3 h-3 bg-mw-gray-300 hover:bg-mw-blue-400"
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+
+            {/* Progress Bar */}
+            <div className="mt-4 max-w-xs mx-auto">
+              <div className="h-1 bg-mw-gray-200 rounded-full overflow-hidden">
+                <motion.div
+                  className="h-full bg-mw-blue-600"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{
+                    duration: 5,
+                    ease: "linear",
+                    repeat: Infinity,
+                  }}
+                  key={`progress-${currentIndex}-${itemsPerView}`}
+                />
+              </div>
             </div>
           </div>
-        </div>
+        )}
 
         {/* CTA */}
         <motion.div

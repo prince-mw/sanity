@@ -112,13 +112,6 @@ export interface ProductPageData {
       excerpt?: string
       publishedAt?: string
     }>
-    whitepapers: Array<{
-      _id: string
-      title: string
-      slug?: { current?: string }
-      coverImage?: string
-      description?: string
-    }>
     externalResources: Array<{
       title: string
       description?: string
@@ -165,7 +158,6 @@ export default function ProductPageTemplate({ product }: ProductPageTemplateProp
   const hasResources = (
     (product.resources.caseStudies && product.resources.caseStudies.length > 0) ||
     (product.resources.blogPosts && product.resources.blogPosts.length > 0) ||
-    (product.resources.whitepapers && product.resources.whitepapers.length > 0) ||
     (product.resources.externalResources && product.resources.externalResources.length > 0)
   )
 
@@ -241,7 +233,6 @@ export default function ProductPageTemplate({ product }: ProductPageTemplateProp
             title={product.resources.title}
             caseStudies={product.resources.caseStudies}
             blogPosts={product.resources.blogPosts}
-            whitepapers={product.resources.whitepapers}
             externalResources={product.resources.externalResources}
           />
         )}

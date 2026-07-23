@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
-import { getPressReleases, getMediaFeatures, transformPressRelease, transformMediaFeature, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
-import PressNewsPageClient, { PressRelease, MediaFeature } from '@/components/PressNewsPageClient'
+import { getPressReleases, transformPressRelease, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
+import PressNewsPageClient, { PressRelease } from '@/components/PressNewsPageClient'
 
 const defaultMeta = {
   title: 'Press & News | Moving Walls',
@@ -81,47 +81,12 @@ const fallbackPressReleases: PressRelease[] = [
   }
 ]
 
-const fallbackMediaFeatures: MediaFeature[] = [
-  {
-    outlet: "AdWeek",
-    title: "How MovingWalls is Revolutionizing Out-of-Home Advertising",
-    date: "November 8, 2024",
-    type: "Feature Article",
-    thumbnail: "/assets/images/press/adweek-feature.svg"
-  },
-  {
-    outlet: "TechCrunch",
-    title: "The Future of Programmatic Advertising Technology",
-    date: "October 15, 2024",
-    type: "Industry Analysis",
-    thumbnail: "/assets/images/press/techcrunch-analysis.svg"
-  },
-  {
-    outlet: "Marketing Land",
-    title: "CEO Interview: Building the Next Generation Ad Platform",
-    date: "September 30, 2024",
-    type: "Executive Interview",
-    thumbnail: "/assets/images/press/ceo-interview.svg"
-  },
-  {
-    outlet: "Forbes",
-    title: "MovingWalls Among Top 50 Most Innovative Companies",
-    date: "September 1, 2024",
-    type: "Recognition",
-    thumbnail: "/assets/images/press/forbes-recognition.svg"
-  }
-]
-
 export default async function PressNewsPage() {
   let pressReleases: PressRelease[] = fallbackPressReleases
-  let mediaFeatures: MediaFeature[] = fallbackMediaFeatures
-  
+
   try {
-    const [sanityPressReleases, sanityMediaFeatures] = await Promise.all([
-      getPressReleases(),
-      getMediaFeatures()
-    ])
-    
+    const sanityPressReleases = await getPressReleases()
+
     if (sanityPressReleases && sanityPressReleases.length > 0) {
       pressReleases = sanityPressReleases.map(pr => {
         const transformed = transformPressRelease(pr)
@@ -136,22 +101,9 @@ export default async function PressNewsPage() {
         }
       })
     }
-    
-    if (sanityMediaFeatures && sanityMediaFeatures.length > 0) {
-      mediaFeatures = sanityMediaFeatures.map(mf => {
-        const transformed = transformMediaFeature(mf)
-        return {
-          outlet: transformed.outlet || 'Media',
-          title: transformed.title,
-          date: transformed.date || 'Recent',
-          type: transformed.type || 'Article',
-          thumbnail: transformed.thumbnail
-        }
-      })
-    }
   } catch (error) {
     console.error('Error fetching press data from Sanity:', error)
   }
-  
-  return <PressNewsPageClient pressReleases={pressReleases} mediaFeatures={mediaFeatures} />
+
+  return <PressNewsPageClient pressReleases={pressReleases} />
 }
