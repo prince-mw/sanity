@@ -168,7 +168,9 @@ export default async function RootLayout({
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <link rel="dns-prefetch" href="https://u10im6di.api.sanity.io" />
       </head>
-      <body className={`${poppins.variable} font-sans antialiased bg-white text-mw-gray-900`}>
+      {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject data-gr-* attributes onto <body>
+          before React hydrates, which would otherwise falsely report as a hydration mismatch */}
+      <body className={`${poppins.variable} font-sans antialiased bg-white text-mw-gray-900`} suppressHydrationWarning>
         {/* Cross-Browser Polyfills */}
         <PolyfillLoader />
         

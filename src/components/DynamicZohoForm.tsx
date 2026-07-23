@@ -18,6 +18,9 @@ interface DynamicZohoFormProps {
   pageSource?: string
   /** UTM parameters to pass through */
   utmParams?: Record<string, string>
+  /** Short page tag (e.g. "homepage", "blog") for attribution — only reaches Zoho if the
+   * form itself has a matching field configured to receive it */
+  referrername?: string
 }
 
 function validateField(field: ZohoFormFieldData, value: string): string | undefined {
@@ -66,6 +69,7 @@ export function DynamicZohoForm({
   className,
   pageSource,
   utmParams,
+  referrername,
 }: DynamicZohoFormProps) {
   // Initialize form data with default values
   const [formData, setFormData] = useState<Record<string, string>>(() => {
@@ -76,6 +80,7 @@ export function DynamicZohoForm({
     // Auto-inject tracking fields
     if (pageSource) initial['Page_Source'] = pageSource
     if (typeof window !== 'undefined') initial['Page_URL'] = window.location.href
+    if (referrername) initial['referrername'] = referrername
     if (utmParams) {
       for (const [key, value] of Object.entries(utmParams)) {
         initial[key] = value

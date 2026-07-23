@@ -2,9 +2,11 @@
 
 import Link from 'next/link'
 import React, { useState } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { PortableText } from '@portabletext/react'
 import SanityPortableText from '@/components/SanityPortableText'
+import { appendReferrerName } from '@/lib/referrerName'
 
 interface ZohoFormConfig {
   formUrl?: string
@@ -51,6 +53,7 @@ const DownloadModal = ({
   const [name, setName] = useState('')
   const [company, setCompany] = useState('')
   const [submitted, setSubmitted] = useState(false)
+  const pathname = usePathname()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
@@ -99,7 +102,7 @@ const DownloadModal = ({
               </div>
               <div className="overflow-hidden rounded-lg">
                 <iframe
-                  src={ebook.zohoForm!.formUrl}
+                  src={appendReferrerName(ebook.zohoForm!.formUrl!, pathname)}
                   width={ebook.zohoForm!.width || '100%'}
                   height={ebook.zohoForm!.height || 600}
                   style={{ border: 'none' }}

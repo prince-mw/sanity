@@ -445,8 +445,8 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
                 }}
                 className="flex gap-8 pr-8"
               >
-                {/* Double the associations for seamless loop */}
-                {[...associations, ...associations].map((association, index) => (
+                {/* Double the associations for seamless loop; skip any without a logo image */}
+                {[...associations, ...associations].filter((association): association is typeof association & { logo: string } => Boolean(association.logo)).map((association, index) => (
                   <div
                     key={index}
                     className="flex-shrink-0 w-40 h-20 bg-white rounded-xl border-2 border-mw-gray-200 flex items-center justify-center group hover:border-mw-blue-400 hover:shadow-mw-lg transition-all duration-300 px-4"

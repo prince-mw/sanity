@@ -1,10 +1,12 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DynamicZohoForm } from './DynamicZohoForm'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
 import { getUTMCookies } from './ZohoUTMTracker'
+import { appendReferrerName, getReferrerName } from '@/lib/referrerName'
 
 // Append UTM cookie values to a Zoho iframe URL
 function appendUTMsToUrl(url: string): string {
@@ -52,17 +54,19 @@ export function ZohoFormEmbed({
   utmParams,
 }: ZohoFormEmbedProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const pathname = usePathname()
 
   // Resolve props — prefer `form` object, fall back to legacy individual props
   const renderMode = form?.renderMode || 'iframe'
   const formUrl = form?.formUrl || legacyFormUrl || ''
 
-  // Append UTM params only after mount — cookies aren't available during SSR,
-  // so computing this during render causes a hydration mismatch on the iframe src
-  const [iframeUrl, setIframeUrl] = useState(formUrl)
+  // referrername is derived from the route, so it's SSR-safe and applied immediately.
+  // UTM params come from cookies (not available during SSR) and are appended after mount —
+  // computing those during render would cause a hydration mismatch on the iframe src.
+  const [iframeUrl, setIframeUrl] = useState(() => appendReferrerName(formUrl, pathname))
   useEffect(() => {
-    setIframeUrl(appendUTMsToUrl(formUrl))
-  }, [formUrl])
+    setIframeUrl(appendUTMsToUrl(appendReferrerName(formUrl, pathname)))
+  }, [formUrl, pathname])
   const name = form?.name || legacyName
   const displayMode = form?.displayMode || legacyDisplayMode
   const height = form?.height || legacyHeight
@@ -82,6 +86,7 @@ export function ZohoFormEmbed({
         className={className}
         pageSource={pageSource}
         utmParams={utmParams}
+        referrername={getReferrerName(pathname)}
       />
     )
 

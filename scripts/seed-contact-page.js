@@ -28,14 +28,6 @@ const contactPageData = {
   // Contact Methods
   contactMethods: [
     {
-      _key: 'phone',
-      _type: 'contactMethod',
-      iconType: 'phone',
-      title: 'Phone',
-      details: '+65 6714 6699',
-      description: 'Available Mon-Fri, 9AM-6PM SGT',
-    },
-    {
       _key: 'email',
       _type: 'contactMethod',
       iconType: 'email',
@@ -131,11 +123,9 @@ const contactPageData = {
     "Tell us about your campaign goals, and we'll craft a customized advertising strategy that delivers real, measurable impact.",
   companyName: 'Moving Walls Pte Ltd',
   companyAddress: '14, Robinson Road #8-02\nFar East Financial Building\nSingapore 048545',
-  companyPhone: '+65 6714 6699',
   companyEmail: 'info@movingwalls.com',
   zohoFormUrl:
     'https://forms.zohopublic.com/movingwallsholdingpteltd/form/MWContactUs/formperma/U0Rmmz1KaZyfpwtqHbfK6sbw19RecVMg6aMmZ3G0vuw',
-  zohoFormHeight: 800,
 }
 
 async function seedContactPage() {

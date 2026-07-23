@@ -1,7 +1,9 @@
 'use client'
 
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react'
+import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
+import { appendReferrerName } from '@/lib/referrerName'
 
 interface ZohoPopupContextType {
   /** Opens a popup iframe for an arbitrary Zoho form URL, independent of the current page. */
@@ -23,6 +25,7 @@ export function ZohoPopupProvider({ children }: { children: ReactNode }) {
   const [activeUrl, setActiveUrl] = useState<string | null>(null)
   const [activeTitle, setActiveTitle] = useState('Contact Us')
   const [currentPageFormUrl, setCurrentPageFormUrl] = useState<string | null>(null)
+  const pathname = usePathname()
 
   const openZohoPopup = useCallback((url: string, title?: string) => {
     if (!url) return
@@ -57,7 +60,7 @@ export function ZohoPopupProvider({ children }: { children: ReactNode }) {
               </div>
               <div className="h-[70vh]">
                 <iframe
-                  src={activeUrl}
+                  src={appendReferrerName(activeUrl, pathname)}
                   width="100%"
                   height="100%"
                   frameBorder={0}

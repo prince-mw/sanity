@@ -68,7 +68,6 @@ export default async function Home() {
       <CaseStudiesSection initialCaseStudies={caseStudies} />
       <ContactForm
         zohoFormUrl={contactForm?.formUrl}
-        zohoFormHeight={contactForm?.height}
       />
     </>
   );
