@@ -77,7 +77,7 @@ export const pageSections: any[] = [
           {
             type: 'object',
             fields: [
-              {name: 'icon', type: 'image', title: 'Icon', options: {hotspot: true}},
+              {name: 'icon', type: 'image', title: 'Background Image', options: {hotspot: true}},
               {name: 'title', type: 'string', title: 'Title'},
               {name: 'description', type: 'text', title: 'Description', rows: 3},
               {name: 'link', type: 'string', title: 'Link (optional)'},

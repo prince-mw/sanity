@@ -68,51 +68,63 @@ export function FeatureGridSection({
         {/* Features Grid */}
         {features && features.length > 0 && (
           <div className={`grid ${gridCols[columns]} gap-8`}>
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature._key}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className={`p-6 rounded-xl ${backgroundColor === 'white' ? 'bg-gray-50 hover:bg-gray-100' : backgroundColor === 'gray' ? 'bg-white hover:shadow-lg' : 'bg-white/10 hover:bg-white/20'} transition-all`}
-              >
-                {feature.icon && (
-                  <div className="w-14 h-14 relative mb-4">
-                    <Image
-                      src={feature.icon}
-                      alt={feature.title || 'Feature icon'}
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                )}
-                
-                {feature.title && (
-                  <h3 className={`text-xl font-semibold mb-3 ${textColor}`}>
-                    {feature.link ? (
-                      isZohoFormUrl(feature.link) ? (
-                        <button onClick={() => openZohoPopup(feature.link!, feature.title)} className="hover:underline text-left">
-                          {feature.title}
-                        </button>
-                      ) : (
-                        <Link href={feature.link} className="hover:underline">
-                          {feature.title}
-                        </Link>
-                      )
+            {features.map((feature, index) => {
+              const renderTitle = (titleClass: string) => (
+                <h3 className={`text-xl font-semibold mb-2 ${titleClass}`}>
+                  {feature.link ? (
+                    isZohoFormUrl(feature.link) ? (
+                      <button onClick={() => openZohoPopup(feature.link!, feature.title)} className="hover:underline text-left">
+                        {feature.title}
+                      </button>
                     ) : (
-                      feature.title
-                    )}
-                  </h3>
-                )}
-                
-                {feature.description && (
-                  <p className={subtextColor}>
-                    {feature.description}
-                  </p>
-                )}
-              </motion.div>
-            ))}
+                      <Link href={feature.link} className="hover:underline">
+                        {feature.title}
+                      </Link>
+                    )
+                  ) : (
+                    feature.title
+                  )}
+                </h3>
+              );
+
+              return (
+                <motion.div
+                  key={feature._key}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="rounded-xl overflow-hidden"
+                >
+                  {feature.icon ? (
+                    <div className="group relative h-72 sm:h-80">
+                      <Image
+                        src={feature.icon}
+                        alt={feature.title || 'Feature image'}
+                        fill
+                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+                      <div className="absolute inset-0 flex flex-col justify-end p-6">
+                        {feature.title && renderTitle('text-white')}
+                        {feature.description && (
+                          <p className="text-white/90">{feature.description}</p>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      className={`h-72 sm:h-80 flex flex-col justify-center p-6 ${backgroundColor === 'white' ? 'bg-gray-50 hover:bg-gray-100' : backgroundColor === 'gray' ? 'bg-white hover:shadow-lg' : 'bg-white/10 hover:bg-white/20'} transition-all`}
+                    >
+                      {feature.title && renderTitle(textColor)}
+                      {feature.description && (
+                        <p className={subtextColor}>{feature.description}</p>
+                      )}
+                    </div>
+                  )}
+                </motion.div>
+              );
+            })}
           </div>
         )}
       </div>

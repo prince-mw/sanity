@@ -29,6 +29,12 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       },
       alternates: {
         canonical: `https://www.movingwalls.com/locations/${slug}`,
+        languages:
+          slug === 'americas'
+            ? { en: 'https://www.movingwalls.com/locations/americas', es: 'https://www.movingwalls.com/locations/americas-es' }
+            : slug === 'americas-es'
+            ? { en: 'https://www.movingwalls.com/locations/americas', es: 'https://www.movingwalls.com/locations/americas-es' }
+            : undefined,
       },
       robots: seo?.noIndex ? { index: false, follow: false } : undefined,
     }

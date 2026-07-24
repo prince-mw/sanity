@@ -136,6 +136,14 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
     return () => setCurrentPageFormUrl(null)
   }, [location.contactFormUrl, setCurrentPageFormUrl])
 
+  // The root <html lang> is hardcoded to "en"; correct it for Spanish location pages so
+  // browsers don't think an English page needs auto-translating (which was corrupting hydration).
+  useEffect(() => {
+    const isSpanish = location.slug?.endsWith('-es')
+    if (isSpanish) document.documentElement.lang = 'es'
+    return () => { document.documentElement.lang = 'en' }
+  }, [location.slug])
+
   const hasCmsSections = location.sections && location.sections.length > 0
   const sectionsPosition = location.sectionsPosition || 'after-faqs'
 
