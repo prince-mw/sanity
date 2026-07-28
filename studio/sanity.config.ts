@@ -211,6 +211,7 @@ const structure = (S: any) =>
                     .title('URL Redirects')
                 ),
               S.documentTypeListItem('pageSeo').title('Page SEO Settings'),
+              S.documentTypeListItem('pageFaq').title('Page FAQs'),
               S.documentTypeListItem('zohoForm').title('Zoho Forms'),
               S.listItem()
                 .title('Careers Page')

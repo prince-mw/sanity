@@ -82,20 +82,14 @@ export default async function PressNewsDetailPage({ params }: PageProps) {
     excerpt: string;
     category: string;
     date: string;
-    readTime: string;
     thumbnail: string;
   }> = [];
 
   try {
     // Fetch from Sanity
     const sanityRelease = await getPressReleaseBySlug(slug);
-    
+
     if (sanityRelease) {
-      // If has external link only (no content), redirect to external
-      if (sanityRelease.externalLink && !sanityRelease.content) {
-        // We'll handle this in the client component
-      }
-      
       release = transformPressReleaseDetail(sanityRelease);
       
       // Get related press releases

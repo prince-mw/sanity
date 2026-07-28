@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
-import { getAllOohFormats, transformOohFormat, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
-import OOHFormatsPageClient, { OOHFormat } from '@/components/OOHFormatsPageClient'
+import { getAllOohFormats, transformOohFormat, getPageSeo, getPageFaqs, getSanityImageUrl } from '@/sanity/lib/fetch'
+import OOHFormatsPageClient, { OOHFormat, OOHFaq } from '@/components/OOHFormatsPageClient'
 
 const defaultMeta = {
   title: 'OOH Formats | Moving Walls',
@@ -127,7 +127,7 @@ const fallbackOohFormats: OOHFormat[] = [
 async function getOohFormats(): Promise<OOHFormat[]> {
   try {
     const sanityFormats = await getAllOohFormats()
-    
+
     if (sanityFormats && sanityFormats.length > 0) {
       return sanityFormats.map(format => {
         const transformed = transformOohFormat(format)
@@ -135,16 +135,16 @@ async function getOohFormats(): Promise<OOHFormat[]> {
           name: transformed.name,
           category: transformed.category,
           icon: transformed.icon,
-          description: transformed.description,
           longDescription: transformed.longDescription,
           specs: transformed.specs,
           benefits: transformed.benefits,
           image: transformed.image || fallbackOohFormats.find(f => f.name === transformed.name)?.image || 'https://images.unsplash.com/photo-1611162616475-46b635cb6868?w=800&q=80',
-          video: transformed.video,
+          learnMoreEnabled: transformed.learnMoreEnabled,
+          learnMoreUrl: transformed.learnMoreUrl,
         }
       })
     }
-    
+
     return fallbackOohFormats
   } catch (error) {
     console.error('Error fetching OOH formats from Sanity:', error)
@@ -152,8 +152,70 @@ async function getOohFormats(): Promise<OOHFormat[]> {
   }
 }
 
+// Static fallback FAQs for when Sanity is unavailable or has no entries yet
+const fallbackFaqs: OOHFaq[] = [
+  {
+    question: "What is OOH advertising?",
+    answer: "OOH (Out-of-Home) advertising refers to any visual advertising media found outside of the home. This includes billboards, transit ads, street furniture, place-based media, and digital signage that reaches consumers while they are on the go.",
+  },
+  {
+    question: "What is the difference between OOH and DOOH?",
+    answer: "OOH encompasses all out-of-home advertising formats, while DOOH (Digital Out-of-Home) specifically refers to digital screens and displays. DOOH offers advantages like dynamic content, real-time updates, programmatic buying, and audience targeting capabilities.",
+  },
+  {
+    question: "Which OOH format is best for my campaign?",
+    answer: "The best format depends on your campaign objectives, target audience, budget, and geographic requirements. Billboards are great for broad awareness, transit ads reach commuters, place-based media targets specific contexts, and digital formats offer flexibility and targeting.",
+  },
+  {
+    question: "How is OOH advertising effectiveness measured?",
+    answer: "OOH effectiveness is measured through impressions, reach, frequency, and engagement metrics. Modern measurement includes mobile device tracking, eye-tracking studies, foot traffic attribution, and brand lift studies to quantify campaign impact.",
+  },
+  {
+    question: "Can OOH advertising be targeted?",
+    answer: "Yes, especially with DOOH. Targeting options include geographic targeting, dayparting (time-based), demographic targeting based on location data, contextual targeting (weather, events), and programmatic buying based on audience data.",
+  },
+  {
+    question: "What is programmatic DOOH?",
+    answer: "Programmatic DOOH allows advertisers to buy digital out-of-home inventory through automated, data-driven processes similar to online advertising. It enables real-time bidding, audience targeting, and dynamic content delivery across digital screens.",
+  },
+]
+
+async function getFaqs(): Promise<OOHFaq[]> {
+  try {
+    const sanityFaqs = await getPageFaqs('ooh-formats')
+    if (sanityFaqs && sanityFaqs.length > 0) {
+      return sanityFaqs
+    }
+    return fallbackFaqs
+  } catch (error) {
+    console.error('Error fetching OOH FAQs from Sanity:', error)
+    return fallbackFaqs
+  }
+}
+
 export default async function OOHFormatsPage() {
-  const oohFormats = await getOohFormats()
-  
-  return <OOHFormatsPageClient oohFormats={oohFormats} />
+  const [oohFormats, faqs] = await Promise.all([getOohFormats(), getFaqs()])
+
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  }
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <OOHFormatsPageClient oohFormats={oohFormats} faqs={faqs} />
+    </>
+  )
 }

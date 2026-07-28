@@ -48,47 +48,25 @@ export interface OOHFormat {
   name: string
   category: string
   icon: string
-  description: string
   longDescription: string
   specs: string[]
   benefits: string[]
   image: string
-  video?: string
+  learnMoreEnabled?: boolean
+  learnMoreUrl?: string
+}
+
+export interface OOHFaq {
+  question: string
+  answer: string
 }
 
 interface OOHFormatsPageClientProps {
   oohFormats: OOHFormat[]
+  faqs: OOHFaq[]
 }
 
-// Static FAQs
-const faqs = [
-  {
-    question: "What is OOH advertising?",
-    answer: "OOH (Out-of-Home) advertising refers to any visual advertising media found outside of the home. This includes billboards, transit ads, street furniture, place-based media, and digital signage that reaches consumers while they are on the go.",
-  },
-  {
-    question: "What is the difference between OOH and DOOH?",
-    answer: "OOH encompasses all out-of-home advertising formats, while DOOH (Digital Out-of-Home) specifically refers to digital screens and displays. DOOH offers advantages like dynamic content, real-time updates, programmatic buying, and audience targeting capabilities.",
-  },
-  {
-    question: "Which OOH format is best for my campaign?",
-    answer: "The best format depends on your campaign objectives, target audience, budget, and geographic requirements. Billboards are great for broad awareness, transit ads reach commuters, place-based media targets specific contexts, and digital formats offer flexibility and targeting.",
-  },
-  {
-    question: "How is OOH advertising effectiveness measured?",
-    answer: "OOH effectiveness is measured through impressions, reach, frequency, and engagement metrics. Modern measurement includes mobile device tracking, eye-tracking studies, foot traffic attribution, and brand lift studies to quantify campaign impact.",
-  },
-  {
-    question: "Can OOH advertising be targeted?",
-    answer: "Yes, especially with DOOH. Targeting options include geographic targeting, dayparting (time-based), demographic targeting based on location data, contextual targeting (weather, events), and programmatic buying based on audience data.",
-  },
-  {
-    question: "What is programmatic DOOH?",
-    answer: "Programmatic DOOH allows advertisers to buy digital out-of-home inventory through automated, data-driven processes similar to online advertising. It enables real-time bidding, audience targeting, and dynamic content delivery across digital screens.",
-  },
-]
-
-export default function OOHFormatsPageClient({ oohFormats }: OOHFormatsPageClientProps) {
+export default function OOHFormatsPageClient({ oohFormats, faqs }: OOHFormatsPageClientProps) {
   const [openFAQ, setOpenFAQ] = React.useState<number | null>(0)
 
   return (
@@ -260,15 +238,18 @@ export default function OOHFormatsPageClient({ oohFormats }: OOHFormatsPageClien
                     </div>
                   </div>
 
-                  <CTAButton
-                    href="/contact"
-                    className="inline-flex items-center gap-2 bg-mw-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-700 transition-colors"
-                  >
-                    Learn more
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </CTAButton>
+                  {format.learnMoreEnabled !== false && (
+                    <CTAButton
+                      href={format.learnMoreUrl || '/contact'}
+                      forceNavigate={!!format.learnMoreUrl}
+                      className="inline-flex items-center gap-2 bg-mw-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-700 transition-colors"
+                    >
+                      Learn more
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </CTAButton>
+                  )}
                 </motion.div>
 
                 {/* Image/Video Side */}
@@ -287,16 +268,6 @@ export default function OOHFormatsPageClient({ oohFormats }: OOHFormatsPageClien
                       <p className="text-white font-semibold text-lg">{format.name}</p>
                       <p className="text-white/80 text-sm">{format.category}</p>
                     </div>
-                    {/* Play button for video formats */}
-                    {format.video && (
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center cursor-pointer hover:bg-white hover:scale-110 transition-all shadow-lg">
-                          <svg className="w-7 h-7 text-mw-blue-600 ml-1" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z" />
-                          </svg>
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </motion.div>
               </motion.div>

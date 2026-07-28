@@ -83,8 +83,6 @@ const fallbackUpcomingEvents: Event[] = [
     location: "Moscone Center, San Francisco",
     description: "Meet our team at booth #245 and see live demos of our latest advertising technology innovations.",
     speakers: ["Maria Rodriguez, CMO", "Product Demo Team"],
-    price: "Conference Pass Required",
-    capacity: "Meet at Booth #245",
     category: "Conference",
     featured: true
   },
@@ -96,8 +94,6 @@ const fallbackUpcomingEvents: Event[] = [
     location: "New York Office",
     description: "Interactive workshop covering privacy-first advertising strategies and compliance with global data regulations.",
     speakers: ["Dr. Lisa Park, CDO", "Legal & Compliance Team"],
-    price: "$299",
-    capacity: "30 attendees",
     category: "Compliance",
     featured: false
   },
@@ -109,8 +105,6 @@ const fallbackUpcomingEvents: Event[] = [
     location: "London Office",
     description: "Annual European summit featuring keynotes, networking, and deep-dive sessions on advertising innovation.",
     speakers: ["Full Leadership Team", "Industry Guest Speakers"],
-    price: "Invitation Only",
-    capacity: "150 attendees",
     category: "Summit",
     featured: true
   }
@@ -125,8 +119,6 @@ const fallbackPastEvents: Event[] = [
     location: "Virtual Event",
     description: "Our experts explored emerging trends in programmatic advertising and discussed how AI is reshaping the industry.",
     speakers: ["Sarah Mitchell, CEO", "David Chen, CTO"],
-    price: "Free",
-    capacity: "500 attendees",
     category: "Technology",
     featured: false
   },
@@ -138,8 +130,6 @@ const fallbackPastEvents: Event[] = [
     location: "Virtual Event",
     description: "Learning from successful campaigns and best practices from leading brands using Moving Walls platforms.",
     speakers: ["Michael Brown, CRO", "Customer Success Team"],
-    price: "Free",
-    capacity: "1000 attendees",
     category: "Case Studies",
     featured: false
   },
@@ -151,16 +141,22 @@ const fallbackPastEvents: Event[] = [
     location: "San Francisco Office",
     description: "Hands-on training session focused on mobile advertising strategies and campaign optimization techniques.",
     speakers: ["Product Training Team", "Mobile Strategy Experts"],
-    price: "$199",
-    capacity: "25 attendees",
     category: "Training",
     featured: false
   }
 ]
 
+function sortPastEventsByLatest(events: Event[]): Event[] {
+  return [...events].sort((a, b) => {
+    const dateA = parseEventStartDate(a.date)?.getTime() ?? 0
+    const dateB = parseEventStartDate(b.date)?.getTime() ?? 0
+    return dateB - dateA
+  })
+}
+
 export default async function EventsPage() {
   let upcomingEvents: Event[] = fallbackUpcomingEvents
-  let pastEvents: Event[] = fallbackPastEvents
+  let pastEvents: Event[] = sortPastEventsByLatest(fallbackPastEvents)
   
   try {
     const sanityEvents = await getAllEvents()
@@ -178,8 +174,6 @@ export default async function EventsPage() {
           description: transformed.description,
           speakers: transformed.speakersList || [],
           speakersList: transformed.speakers || [],
-          price: transformed.price || 'Free',
-          capacity: transformed.capacity || 'Unlimited',
           category: transformed.category || 'General',
           featured: transformed.featured || false,
           featuredImage: transformed.featuredImage,
@@ -189,7 +183,7 @@ export default async function EventsPage() {
       
       // Separate into upcoming and past events
       upcomingEvents = allEvents.filter(event => !isEventPast(event.date))
-      pastEvents = allEvents.filter(event => isEventPast(event.date))
+      pastEvents = sortPastEventsByLatest(allEvents.filter(event => isEventPast(event.date)))
     }
   } catch (error) {
     console.error('Error fetching events from Sanity:', error)

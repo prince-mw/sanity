@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 
 export interface Event {
@@ -14,8 +15,6 @@ export interface Event {
   description: string
   speakers: string[]
   speakersList?: { name: string; role?: string; company?: string; image?: string }[]
-  price: string
-  capacity: string
   category: string
   featured: boolean
   featuredImage?: string
@@ -117,12 +116,14 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
             </div>
 
             {upcomingEvents.length === 0 ? (
-              <div className="text-center py-16 bg-mw-gray-50 rounded-xl">
-                <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Upcoming Events</h3>
-                <p className="text-mw-gray-500">Check back soon for new events or browse our past events.</p>
+              <div className="flex justify-center py-16 bg-mw-gray-50 rounded-xl">
+                <Image
+                  src="https://cdn.sanity.io/images/u10im6di/production/6f8f151d73788605ee99c1ce38efaa1ecf7e4b12-534x300.png"
+                  alt="Stay Tuned for Updates"
+                  width={534}
+                  height={300}
+                  className="w-full max-w-md h-auto"
+                />
               </div>
             ) : (
               <div className="space-y-6">
@@ -200,12 +201,6 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                             </svg>
                             <span>{event.location}</span>
                           </div>
-                          <div className="flex items-center gap-2 text-sm text-mw-gray-600">
-                            <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            <span className="font-semibold text-mw-blue-600">{event.price}</span>
-                          </div>
                         </div>
 
                         {/* Speakers */}
@@ -236,9 +231,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                           href={event.slug ? `/events/${event.slug}` : '#'}
                           className="inline-block px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
                         >
-                          {event.price === 'Free' ? 'Register Free' : 
-                           event.price === 'Conference Pass Required' ? 'Learn More' :
-                           event.price === 'Invitation Only' ? 'Request Invite' : 'Register Now'}
+                          Register Now
                         </Link>
                       </div>
                     </div>

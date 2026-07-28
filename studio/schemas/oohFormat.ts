@@ -53,13 +53,6 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'shortDescription',
-      title: 'Short Description',
-      type: 'text',
-      rows: 3,
-      description: 'Brief description for listing view',
-    }),
-    defineField({
       name: 'longDescription',
       title: 'Long Description',
       type: 'text',
@@ -86,58 +79,18 @@ export default defineType({
       options: { hotspot: true },
     }),
     defineField({
-      name: 'imageUrl',
-      title: 'Image URL (fallback)',
-      type: 'string',
-      description: 'External image URL if not using Sanity image',
-    }),
-    defineField({
-      name: 'videoUrl',
-      title: 'Video URL',
-      type: 'string',
-      description: 'Optional video showcasing the format',
-    }),
-    defineField({
-      name: 'averageCpm',
-      title: 'Average CPM Range',
-      type: 'string',
-      description: 'e.g., "$5-15"',
-    }),
-    defineField({
-      name: 'typicalReach',
-      title: 'Typical Daily Reach',
-      type: 'string',
-      description: 'e.g., "50,000-200,000"',
-    }),
-    defineField({
-      name: 'bestFor',
-      title: 'Best For',
-      type: 'array',
-      of: [{ type: 'string' }],
-      description: 'Use cases this format excels at',
-    }),
-    defineField({
-      name: 'order',
-      title: 'Display Order',
-      type: 'number',
-    }),
-    defineField({
-      name: 'isFeatured',
-      title: 'Is Featured',
+      name: 'learnMoreEnabled',
+      title: 'Show "Learn More" Button',
       type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'isActive',
-      title: 'Is Active',
-      type: 'boolean',
+      description: 'Toggle the Learn More button on/off for this format',
       initialValue: true,
     }),
     defineField({
-      name: 'seo',
-      title: 'SEO',
-      type: 'seo',
-      description: 'Search engine optimization settings',
+      name: 'learnMoreUrl',
+      title: 'Learn More Link',
+      type: 'string',
+      description: 'Where the Learn More button should go (e.g. /blog/unipole-guide). Leave blank to default to /contact.',
+      hidden: ({ parent }) => parent?.learnMoreEnabled === false,
     }),
   ],
   preview: {
@@ -162,11 +115,6 @@ export default defineType({
     },
   },
   orderings: [
-    {
-      title: 'Display Order',
-      name: 'orderAsc',
-      by: [{ field: 'order', direction: 'asc' }],
-    },
     {
       title: 'Name A-Z',
       name: 'nameAsc',

@@ -79,22 +79,6 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      name: 'eventType',
-      title: 'Event Type',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Conference', value: 'conference'},
-          {title: 'Webinar', value: 'webinar'},
-          {title: 'Workshop', value: 'workshop'},
-          {title: 'Meetup', value: 'meetup'},
-          {title: 'Trade Show', value: 'trade-show'},
-          {title: 'Launch Event', value: 'launch-event'},
-        ],
-      },
-      group: 'details',
-    }),
-    defineField({
       name: 'startDate',
       title: 'Start Date',
       type: 'datetime',
@@ -115,8 +99,6 @@ export default defineType({
         {name: 'address', type: 'string', title: 'Address'},
         {name: 'city', type: 'string', title: 'City'},
         {name: 'country', type: 'string', title: 'Country'},
-        {name: 'isVirtual', type: 'boolean', title: 'Virtual Event'},
-        {name: 'virtualLink', type: 'url', title: 'Virtual Event Link'},
       ],
       group: 'details',
     }),
@@ -125,26 +107,6 @@ export default defineType({
       title: 'Content',
       type: 'blockContent',
       group: 'content',
-    }),
-    defineField({
-      name: 'registrationLink',
-      title: 'Registration Link',
-      type: 'url',
-      group: 'details',
-    }),
-    defineField({
-      name: 'price',
-      title: 'Price',
-      type: 'string',
-      description: 'e.g., "Free", "$199", "Starting at $99"',
-      group: 'details',
-    }),
-    defineField({
-      name: 'capacity',
-      title: 'Capacity',
-      type: 'string',
-      description: 'e.g., "500 attendees", "Unlimited"',
-      group: 'details',
     }),
     defineField({
       name: 'category',
@@ -184,14 +146,6 @@ export default defineType({
         },
       ],
       group: 'speakers',
-    }),
-    defineField({
-      name: 'zohoForm',
-      title: 'Registration Form',
-      type: 'reference',
-      to: [{type: 'zohoForm'}],
-      description: 'Attach a Zoho form for event registration',
-      group: 'content',
     }),
     defineField({
       name: 'seo',

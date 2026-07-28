@@ -8,7 +8,6 @@ export default defineType({
     {name: 'content', title: 'Content', default: true},
     {name: 'details', title: 'Details'},
     {name: 'publishing', title: 'Publishing'},
-    {name: 'workflow', title: 'Workflow'},
     {name: 'seo', title: 'SEO'},
   ],
   fields: [
@@ -79,19 +78,6 @@ export default defineType({
       group: 'publishing',
     }),
     defineField({
-      name: 'source',
-      title: 'Source/Publication',
-      type: 'string',
-      group: 'details',
-    }),
-    defineField({
-      name: 'externalLink',
-      title: 'External Link',
-      type: 'url',
-      description: 'Link to the original article if published elsewhere',
-      group: 'details',
-    }),
-    defineField({
       name: 'category',
       title: 'Category',
       type: 'string',
@@ -111,49 +97,6 @@ export default defineType({
         ],
       },
       group: 'details',
-    }),
-    defineField({
-      name: 'readTime',
-      title: 'Read Time',
-      type: 'string',
-      description: 'e.g., "3 min read"',
-      group: 'details',
-    }),
-    defineField({
-      name: 'hasFullArticle',
-      title: 'Has Full Article',
-      type: 'boolean',
-      description: 'If true, this press item has a dedicated full article page. If false, it links externally.',
-      initialValue: false,
-      group: 'details',
-    }),
-    defineField({
-      name: 'articleSlug',
-      title: 'Article Slug',
-      type: 'slug',
-      description: 'Custom slug for the full article page (e.g., "series-c-funding")',
-      options: {
-        source: 'title',
-        maxLength: 96,
-      },
-      group: 'content',
-    }),
-    // Workflow fields
-    defineField({
-      name: 'assignedTo',
-      title: 'Assigned To',
-      type: 'reference',
-      to: [{type: 'teamMember'}],
-      description: 'Team member responsible for this content',
-      group: 'workflow',
-    }),
-    defineField({
-      name: 'reviewNotes',
-      title: 'Review Notes',
-      type: 'text',
-      rows: 3,
-      description: 'Notes for reviewers or collaborators',
-      group: 'workflow',
     }),
     defineField({
       name: 'content',

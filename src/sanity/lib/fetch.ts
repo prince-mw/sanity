@@ -101,6 +101,7 @@ export interface SanityCaseStudy {
   metrics?: any[]
   publishedAt: string
   seo?: SanitySEO
+  metaDescription?: string
 }
 
 // Helper for publishing filters - content must be published and not scheduled for future
@@ -275,7 +276,8 @@ export async function getAllCaseStudies(): Promise<SanityCaseStudy[]> {
       industry,
       location,
       excerpt,
-      publishedAt
+      publishedAt,
+      "metaDescription": seo.metaDescription
     }
   `
   return safeFetch(query)
@@ -643,7 +645,6 @@ export interface SanityEvent {
   title: string
   slug: { current: string }
   featuredImage?: any
-  eventType: string
   startDate: string
   endDate?: string
   location: {
@@ -651,14 +652,9 @@ export interface SanityEvent {
     address?: string
     city?: string
     country?: string
-    isVirtual?: boolean
-    virtualLink?: string
   }
   excerpt?: string
   content?: any[]
-  registrationLink?: string
-  price?: string
-  capacity?: string
   category?: string
   featured?: boolean
   speakers?: Array<{
@@ -677,15 +673,11 @@ export async function getAllEvents(): Promise<SanityEvent[]> {
       title,
       slug,
       featuredImage,
-      eventType,
       startDate,
       endDate,
       location,
       excerpt,
       content,
-      registrationLink,
-      price,
-      capacity,
       category,
       featured,
       speakers,
@@ -703,15 +695,11 @@ export async function getUpcomingEvents(limit: number = 10): Promise<SanityEvent
       title,
       slug,
       featuredImage,
-      eventType,
       startDate,
       endDate,
       location,
       excerpt,
       content,
-      registrationLink,
-      price,
-      capacity,
       category,
       featured,
       speakers,
@@ -728,7 +716,6 @@ export async function getEventBySlug(slug: string): Promise<SanityEvent | null> 
       title,
       slug,
       featuredImage,
-      eventType,
       startDate,
       endDate,
       location,
@@ -741,9 +728,6 @@ export async function getEventBySlug(slug: string): Promise<SanityEvent | null> 
           "videoFileMimeType": videoFile.asset->mimeType
         }
       },
-      registrationLink,
-      price,
-      capacity,
       category,
       featured,
       speakers,
@@ -778,14 +762,12 @@ export function transformEvent(event: SanityEvent) {
     (event.endDate ? ' - ' + endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : '')
 
   // Format location
-  const locationStr = event.location?.isVirtual 
-    ? 'Virtual Event' 
-    : [event.location?.venue, event.location?.city].filter(Boolean).join(', ')
+  const locationStr = [event.location?.venue, event.location?.city].filter(Boolean).join(', ')
 
   return {
     title: event.title || '',
     slug: event.slug?.current || '',
-    type: formatEventType(event.eventType),
+    type: 'Event',
     date: dateStr,
     time: timeStr,
     location: locationStr || 'TBA',
@@ -799,27 +781,9 @@ export function transformEvent(event: SanityEvent) {
       image: getSanityImageUrl(s.image, { width: 200 }) || '',
     })) || [],
     speakersList: event.speakers?.map(s => `${s.name}${s.role ? ', ' + s.role : ''}`) || [],
-    price: event.price || 'Free',
-    capacity: event.capacity || '',
     category: event.category || '',
     featured: event.featured || false,
-    registrationLink: event.registrationLink,
-    virtualLink: event.location?.virtualLink,
   }
-}
-
-function formatEventType(type: string): string {
-  const types: Record<string, string> = {
-    'conference': 'Conference',
-    'webinar': 'Webinar',
-    'workshop': 'Workshop',
-    'meetup': 'Meetup',
-    'trade-show': 'Trade Show',
-    'launch-event': 'Launch Event',
-    'summit': 'Summit',
-    'training': 'Training',
-  }
-  return types[type] || type || 'Event'
 }
 
 // Press Release Types and Queries
@@ -829,15 +793,11 @@ export interface SanityPressRelease {
   slug: { current: string }
   featuredImage?: any
   publishedAt: string
-  source?: string
-  externalLink?: string
   excerpt?: string
   content?: any[]
   category?: string
-  readTime?: string
-  hasFullArticle?: boolean
-  articleSlug?: { current: string }
   seo?: SanitySEO
+  metaDescription?: string
 }
 
 export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
@@ -848,11 +808,9 @@ export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
       slug,
       featuredImage,
       publishedAt,
-      source,
-      externalLink,
       excerpt,
       category,
-      readTime
+      "metaDescription": seo.metaDescription
     }
   `
   return safeFetch(query)
@@ -861,10 +819,10 @@ export async function getAllPressReleases(): Promise<SanityPressRelease[]> {
 export async function getPressReleases(limit?: number): Promise<SanityPressRelease[]> {
   const query = limit
     ? `*[_type == "pressRelease" && ${safePublishedFilter}] | order(publishedAt desc)[0...$limit] {
-        _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime
+        _id, title, slug, featuredImage, publishedAt, excerpt, category
       }`
     : `*[_type == "pressRelease" && ${safePublishedFilter}] | order(publishedAt desc) {
-        _id, title, slug, featuredImage, publishedAt, source, externalLink, excerpt, category, readTime
+        _id, title, slug, featuredImage, publishedAt, excerpt, category
       }`
   return safeFetch(query, { limit: limit ? limit - 1 : undefined })
 }
@@ -877,8 +835,6 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
       slug,
       featuredImage,
       publishedAt,
-      source,
-      externalLink,
       excerpt,
       content[]{
         ...,
@@ -889,9 +845,6 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
         }
       },
       category,
-      readTime,
-      hasFullArticle,
-      articleSlug,
       seo {
         metaTitle,
         metaDescription,
@@ -905,55 +858,6 @@ export async function getPressReleaseBySlug(slug: string): Promise<SanityPressRe
   return safeFetch(query, { slug })
 }
 
-// Fetch full article press release by articleSlug (for dedicated article pages like /series-c-funding)
-export async function getPressArticleBySlug(articleSlug: string): Promise<SanityPressRelease | null> {
-  const query = `
-    *[_type == "pressRelease" && articleSlug.current == $articleSlug && hasFullArticle == true][0] {
-      _id,
-      title,
-      slug,
-      featuredImage,
-      publishedAt,
-      source,
-      externalLink,
-      excerpt,
-      content[]{
-        ...,
-        _type == "video" => {
-          ...,
-          "videoFileUrl": videoFile.asset->url,
-          "videoFileMimeType": videoFile.asset->mimeType
-        }
-      },
-      category,
-      readTime,
-      hasFullArticle,
-      articleSlug
-    }
-  `
-  return safeFetch(query, { articleSlug })
-}
-
-// Get all press articles that have full article pages
-export async function getAllPressArticles(): Promise<SanityPressRelease[]> {
-  const query = `
-    *[_type == "pressRelease" && ${safePublishedFilter} && hasFullArticle == true] | order(publishedAt desc) {
-      _id,
-      title,
-      slug,
-      featuredImage,
-      publishedAt,
-      source,
-      externalLink,
-      excerpt,
-      category,
-      readTime,
-      articleSlug
-    }
-  `
-  return safeFetch(query)
-}
-
 export function transformPressRelease(pr: SanityPressRelease) {
   const imageUrl = getSanityImageUrl(pr.featuredImage, { width: 800 })
   return {
@@ -961,9 +865,7 @@ export function transformPressRelease(pr: SanityPressRelease) {
     category: formatPressCategory(pr.category),
     title: pr.title || '',
     excerpt: pr.excerpt || '',
-    readTime: pr.readTime || '3 min read',
     slug: pr.slug?.current || '',
-    externalLink: pr.externalLink,
     thumbnail: imageUrl || '', // Empty string lets component show category icons
   }
 }
@@ -977,11 +879,8 @@ export async function getRelatedPressReleases(currentSlug: string, category?: st
       slug,
       featuredImage,
       publishedAt,
-      source,
-      externalLink,
       excerpt,
-      category,
-      readTime
+      category
     }
   `
   return safeFetch(query, { currentSlug, limit: limit - 1 })
@@ -994,10 +893,7 @@ export function transformPressReleaseDetail(pr: SanityPressRelease) {
     category: formatPressCategory(pr.category),
     title: pr.title || '',
     excerpt: pr.excerpt || '',
-    readTime: pr.readTime || '3 min read',
     slug: pr.slug?.current || '',
-    externalLink: pr.externalLink,
-    source: pr.source || '',
     thumbnail: getSanityImageUrl(pr.featuredImage, { width: 1200 }) || '/assets/images/press-placeholder.svg',
     content: pr.content ? portableTextToHtml(pr.content) : '',
   }
@@ -2996,41 +2892,28 @@ export interface SanityOohFormat {
   slug: { current: string }
   category: string
   icon?: string
-  shortDescription?: string
   longDescription?: string
   specs?: string[]
   benefits?: string[]
   image?: any
-  imageUrl?: string
-  videoUrl?: string
-  averageCpm?: string
-  typicalReach?: string
-  bestFor?: string[]
-  order?: number
-  isFeatured?: boolean
-  isActive?: boolean
+  learnMoreEnabled?: boolean
+  learnMoreUrl?: string
 }
 
 export async function getAllOohFormats(): Promise<SanityOohFormat[]> {
   const query = `
-    *[_type == "oohFormat"] | order(order asc, name asc) {
+    *[_type == "oohFormat"] | order(name asc) {
       _id,
       name,
       slug,
       category,
       icon,
-      shortDescription,
       longDescription,
       specs,
       benefits,
       image,
-      imageUrl,
-      videoUrl,
-      averageCpm,
-      typicalReach,
-      bestFor,
-      order,
-      isFeatured
+      learnMoreEnabled,
+      learnMoreUrl
     }
   `
   return safeFetch(query)
@@ -3038,17 +2921,15 @@ export async function getAllOohFormats(): Promise<SanityOohFormat[]> {
 
 export async function getOohFormatsByCategory(category: string): Promise<SanityOohFormat[]> {
   const query = `
-    *[_type == "oohFormat" && category == $category] | order(order asc) {
+    *[_type == "oohFormat" && category == $category] | order(name asc) {
       _id,
       name,
       slug,
       category,
       icon,
-      shortDescription,
       specs,
       benefits,
-      image,
-      imageUrl
+      image
     }
   `
   return safeFetch(query, { category })
@@ -3062,16 +2943,12 @@ export async function getOohFormatBySlug(slug: string): Promise<SanityOohFormat 
       slug,
       category,
       icon,
-      shortDescription,
       longDescription,
       specs,
       benefits,
       image,
-      imageUrl,
-      videoUrl,
-      averageCpm,
-      typicalReach,
-      bestFor
+      learnMoreEnabled,
+      learnMoreUrl
     }
   `
   return safeFetch(query, { slug })
@@ -3083,17 +2960,32 @@ export function transformOohFormat(format: SanityOohFormat) {
     slug: format.slug?.current || '',
     category: format.category,
     icon: format.icon || 'billboard',
-    description: format.shortDescription || '',
     longDescription: format.longDescription || '',
     specs: format.specs || [],
     benefits: format.benefits || [],
-    image: getSanityImageUrl(format.image, { width: 800 }) || format.imageUrl || '',
-    video: format.videoUrl || '',
-    averageCpm: format.averageCpm || '',
-    typicalReach: format.typicalReach || '',
-    bestFor: format.bestFor || [],
-    isFeatured: format.isFeatured || false,
+    image: getSanityImageUrl(format.image, { width: 800 }) || '',
+    learnMoreEnabled: format.learnMoreEnabled !== false,
+    learnMoreUrl: format.learnMoreUrl || '',
   }
+}
+
+// ============================================
+// PAGE FAQ TYPES AND QUERIES
+// ============================================
+
+export interface PageFaq {
+  question: string
+  answer: string
+}
+
+export async function getPageFaqs(pageId: string): Promise<PageFaq[]> {
+  const query = `
+    *[_type == "pageFaq" && pageId == $pageId && isPublished != false] | order(order asc) {
+      question,
+      answer
+    }
+  `
+  return safeFetch(query, { pageId })
 }
 
 // Analytics Configuration Interface

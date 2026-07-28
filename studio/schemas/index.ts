@@ -20,6 +20,7 @@ import audiencePage from './audiencePage'
 import industryPage from './industryPage'
 import integration from './integration'
 import oohFormat from './oohFormat'
+import pageFaq from './pageFaq'
 import seo from './seo'
 import analyticsConfig from './analyticsConfig'
 import pageSeo from './pageSeo'
@@ -82,6 +83,7 @@ export const schemaTypes = [
   integration,
   partnerIntegrationLogo,
   oohFormat,
+  pageFaq,
   analyticsConfig,
   pageSeo,
   megaMenu,

@@ -36,7 +36,6 @@ const fallbackPressReleases: PressRelease[] = [
     category: "Product Launch",
     title: "MovingWalls Launches AI-Powered Audience Targeting Platform",
     excerpt: "Revolutionary machine learning algorithms improve campaign performance by 40% while reducing cost per acquisition.",
-    readTime: "3 min read",
     thumbnail: "/assets/images/press/ai-platform-launch.svg"
   },
   {
@@ -44,7 +43,6 @@ const fallbackPressReleases: PressRelease[] = [
     category: "Funding",
     title: "MovingWalls Closes $50M Series C Funding Round",
     excerpt: "Investment led by top-tier VCs will fuel international expansion and product development initiatives.",
-    readTime: "4 min read",
     thumbnail: "/assets/images/press/funding-announcement.svg"
   },
   {
@@ -52,7 +50,6 @@ const fallbackPressReleases: PressRelease[] = [
     category: "Partnership",
     title: "Strategic Partnership with Global Transit Authority Network",
     excerpt: "Major partnership expands MovingWalls's out-of-home advertising network to 25 new metropolitan areas.",
-    readTime: "2 min read",
     thumbnail: "/assets/images/press/transit-partnership.svg"
   },
   {
@@ -60,7 +57,6 @@ const fallbackPressReleases: PressRelease[] = [
     category: "Recognition",
     title: "MovingWalls Named 'AdTech Company of the Year' by Industry Awards",
     excerpt: "Recognition highlights company's innovation in programmatic advertising and measurement solutions.",
-    readTime: "3 min read",
     thumbnail: "/assets/images/press/industry-award.svg"
   },
   {
@@ -68,7 +64,6 @@ const fallbackPressReleases: PressRelease[] = [
     category: "Product Update",
     title: "New Privacy-First Measurement Suite Launches",
     excerpt: "Industry-leading privacy compliance tools help brands navigate evolving data regulations while maintaining effectiveness.",
-    readTime: "5 min read",
     thumbnail: "/assets/images/press/privacy-suite.svg"
   },
   {
@@ -76,7 +71,6 @@ const fallbackPressReleases: PressRelease[] = [
     category: "Expansion",
     title: "MovingWalls Opens European Headquarters in London",
     excerpt: "New office serves as regional hub for European operations and client services expansion.",
-    readTime: "2 min read",
     thumbnail: "/assets/images/press/london-office.svg"
   }
 ]
@@ -95,7 +89,6 @@ export default async function PressNewsPage() {
           category: transformed.category || 'News',
           title: transformed.title,
           excerpt: transformed.excerpt,
-          readTime: transformed.readTime || '3 min read',
           thumbnail: transformed.thumbnail,
           slug: transformed.slug
         }
