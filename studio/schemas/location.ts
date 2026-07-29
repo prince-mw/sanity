@@ -54,7 +54,22 @@ export default defineType({
       group: 'basic',
       options: { hotspot: true },
     }),
-    
+    defineField({
+      name: 'ctaButtonText',
+      title: 'Hero CTA Button Text',
+      type: 'string',
+      group: 'basic',
+      description: 'Text for the hero\'s primary button (e.g. "Book a Strategy Session"). Leave empty to use "Get Started".',
+    }),
+    defineField({
+      name: 'showAllLocationsButton',
+      title: 'Show "All Locations" Button',
+      type: 'boolean',
+      group: 'basic',
+      description: 'Toggle the secondary "All Locations" button in the hero on/off for this page.',
+      initialValue: true,
+    }),
+
     // Content Group
     defineField({
       name: 'description',
@@ -90,7 +105,14 @@ export default defineType({
         },
       ],
     }),
-    
+    defineField({
+      name: 'faqsHeading',
+      title: 'FAQs Section Heading',
+      type: 'string',
+      group: 'content',
+      description: 'Leave empty to use "Frequently Asked Questions".',
+    }),
+
     // Markets & Stats Group
     defineField({
       name: 'stats',
@@ -129,6 +151,13 @@ export default defineType({
         },
       ],
     }),
+    defineField({
+      name: 'mediaTypesHeading',
+      title: 'Media Types Section Heading',
+      type: 'string',
+      group: 'markets',
+      description: 'Leave empty to use "Media Types Available".',
+    }),
 
     // Billboards Group
     defineField({
@@ -154,7 +183,28 @@ export default defineType({
         },
       ],
     }),
-    
+    defineField({
+      name: 'billboardsHeading',
+      title: 'Billboards Section Heading',
+      type: 'string',
+      group: 'billboards',
+      description: 'Leave empty to use "High Visibility Billboards".',
+    }),
+    defineField({
+      name: 'billboardsDailyReachLabel',
+      title: 'Billboards "Reach" Label',
+      type: 'string',
+      group: 'billboards',
+      description: 'Leave empty to use "Daily Reach".',
+    }),
+    defineField({
+      name: 'billboardsMonthlyImpressionsLabel',
+      title: 'Billboards "Impressions" Label',
+      type: 'string',
+      group: 'billboards',
+      description: 'Leave empty to use "Monthly Impressions".',
+    }),
+
     // Page Sections Group
     defineField({
       name: 'sections',

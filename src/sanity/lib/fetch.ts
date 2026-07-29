@@ -1676,6 +1676,8 @@ export interface SanityLocation {
   city?: string
   heroTitle?: string
   heroImage?: any
+  ctaButtonText?: string
+  showAllLocationsButton?: boolean
   description?: string
   fullDescription?: string
   contactFormUrl?: string
@@ -1687,16 +1689,21 @@ export interface SanityLocation {
     description: string
     image?: any
   }>
+  billboardsHeading?: string
+  billboardsDailyReachLabel?: string
+  billboardsMonthlyImpressionsLabel?: string
   stats?: Array<{ label: string; value: string }>
   mediaTypes?: Array<{
     name: string
     icon: string
     description: string
   }>
+  mediaTypesHeading?: string
   faqs?: Array<{
     question: string
     answer: string
   }>
+  faqsHeading?: string
   order?: number
   isActive?: boolean
   seo?: SanitySEO
@@ -1728,6 +1735,8 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
       city,
       heroTitle,
       heroImage,
+      ctaButtonText,
+      showAllLocationsButton,
       description,
       fullDescription,
       contactFormUrl,
@@ -1739,9 +1748,14 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
         description,
         image
       },
+      billboardsHeading,
+      billboardsDailyReachLabel,
+      billboardsMonthlyImpressionsLabel,
       stats,
       mediaTypes,
+      mediaTypesHeading,
       faqs,
+      faqsHeading,
       order,
       isActive,
       sections[] {
@@ -1796,6 +1810,8 @@ export function transformLocationFull(location: SanityLocation) {
     description: location.fullDescription || location.description || '',
     heroTitle: location.heroTitle || '',
     heroImage: getSanityImageUrl(location.heroImage, { width: 1200 }) || '',
+    ctaButtonText: location.ctaButtonText || '',
+    showAllLocationsButton: location.showAllLocationsButton !== false,
     contactFormUrl: location.contactFormUrl || '',
     highVisibilityBillboards: (location.highVisibilityBillboards || []).map(billboard => ({
       name: billboard.name || '',
@@ -1805,9 +1821,14 @@ export function transformLocationFull(location: SanityLocation) {
       description: billboard.description || '',
       image: getSanityImageUrl(billboard.image, { width: 800 }) || '',
     })),
+    billboardsHeading: location.billboardsHeading || '',
+    billboardsDailyReachLabel: location.billboardsDailyReachLabel || '',
+    billboardsMonthlyImpressionsLabel: location.billboardsMonthlyImpressionsLabel || '',
     stats: location.stats || [],
     mediaTypes: location.mediaTypes || [],
+    mediaTypesHeading: location.mediaTypesHeading || '',
     faqs: location.faqs || [],
+    faqsHeading: location.faqsHeading || '',
     sections: location.sections || [],
     sectionsPosition: location.sectionsPosition || 'after-faqs',
   }
@@ -1820,11 +1841,15 @@ export interface SanityLocationCity {
   slug: { current: string }
   heroTitle?: string
   heroImage?: any
+  ctaButtonText?: string
+  showAllLocationsButton?: boolean
   description?: string
   fullDescription?: string
   faqs?: Array<{ question: string; answer: string }>
+  faqsHeading?: string
   billboards?: string
   mediaTypes?: Array<{ name: string; icon: string; description: string }>
+  mediaTypesHeading?: string
   highVisibilityBillboards?: Array<{
     name: string
     location: string
@@ -1833,6 +1858,9 @@ export interface SanityLocationCity {
     description: string
     image?: any
   }>
+  billboardsHeading?: string
+  billboardsDailyReachLabel?: string
+  billboardsMonthlyImpressionsLabel?: string
   contactFormUrl?: string
   order?: number
   isActive?: boolean
@@ -1848,10 +1876,14 @@ const locationCityProjection = `
   slug,
   heroTitle,
   heroImage,
+  ctaButtonText,
+  showAllLocationsButton,
   description,
   fullDescription,
   faqs,
+  faqsHeading,
   mediaTypes,
+  mediaTypesHeading,
   highVisibilityBillboards[] {
     name,
     location,
@@ -1860,6 +1892,9 @@ const locationCityProjection = `
     description,
     image
   },
+  billboardsHeading,
+  billboardsDailyReachLabel,
+  billboardsMonthlyImpressionsLabel,
   contactFormUrl,
   order,
   isActive,
@@ -1948,6 +1983,8 @@ export function transformCityFull(city: SanityLocationCity): LocationData {
     description: city.fullDescription || city.description || '',
     heroTitle: city.heroTitle || '',
     heroImage: getSanityImageUrl(city.heroImage, { width: 1200 }) || '',
+    ctaButtonText: city.ctaButtonText || '',
+    showAllLocationsButton: city.showAllLocationsButton !== false,
     contactFormUrl: city.contactFormUrl || '',
     highVisibilityBillboards: (city.highVisibilityBillboards || []).map(billboard => ({
       name: billboard.name || '',
@@ -1957,9 +1994,14 @@ export function transformCityFull(city: SanityLocationCity): LocationData {
       description: billboard.description || '',
       image: getSanityImageUrl(billboard.image, { width: 800 }) || '',
     })),
+    billboardsHeading: city.billboardsHeading || '',
+    billboardsDailyReachLabel: city.billboardsDailyReachLabel || '',
+    billboardsMonthlyImpressionsLabel: city.billboardsMonthlyImpressionsLabel || '',
     stats: [],
     mediaTypes: city.mediaTypes || [],
+    mediaTypesHeading: city.mediaTypesHeading || '',
     faqs: city.faqs || [],
+    faqsHeading: city.faqsHeading || '',
     sections: city.sections || [],
     sectionsPosition: city.sectionsPosition || 'after-faqs',
   }

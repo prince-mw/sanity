@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
 import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transformCityForList, getSanityImageUrl } from '@/sanity/lib/fetch'
 import { getStaticLocationData, STATIC_LOCATION_SLUGS, LocationData } from '@/data/staticLocationData'
+import { LOCATION_LANGUAGE_GROUPS } from '@/lib/locationLanguageGroups'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -29,12 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       },
       alternates: {
         canonical: `https://www.movingwalls.com/locations/${slug}`,
-        languages:
-          slug === 'americas'
-            ? { en: 'https://www.movingwalls.com/locations/americas', es: 'https://www.movingwalls.com/locations/americas-es' }
-            : slug === 'americas-es'
-            ? { en: 'https://www.movingwalls.com/locations/americas', es: 'https://www.movingwalls.com/locations/americas-es' }
-            : undefined,
+        languages: LOCATION_LANGUAGE_GROUPS[slug] ?? undefined,
       },
       robots: seo?.noIndex ? { index: false, follow: false } : undefined,
     }

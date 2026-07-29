@@ -136,12 +136,17 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
     return () => setCurrentPageFormUrl(null)
   }, [location.contactFormUrl, setCurrentPageFormUrl])
 
-  // The root <html lang> is hardcoded to "en"; correct it for Spanish location pages so
-  // browsers don't think an English page needs auto-translating (which was corrupting hydration).
+  // The root <html lang> reflects the visitor's chosen UI locale (see LocaleContext) — unrelated
+  // to this specific page's actual content language. Force it to match translated location pages
+  // so browsers don't offer to auto-translate an already-translated page, then restore whatever
+  // it was before on unmount (not a hardcoded "en" — that would clobber a non-English UI locale).
   useEffect(() => {
-    const isSpanish = location.slug?.endsWith('-es')
-    if (isSpanish) document.documentElement.lang = 'es'
-    return () => { document.documentElement.lang = 'en' }
+    const suffix = location.slug?.match(/-(es|zh)$/)?.[1]
+    if (!suffix) return
+    const langBySuffix: Record<string, string> = { es: 'es', zh: 'zh-CN' }
+    const previous = document.documentElement.lang
+    document.documentElement.lang = langBySuffix[suffix]
+    return () => { document.documentElement.lang = previous }
   }, [location.slug])
 
   const hasCmsSections = location.sections && location.sections.length > 0
@@ -200,22 +205,24 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                     onClick={() => openZohoPopup(location.contactFormUrl!, `Contact Our ${location.name} Team`)}
                     className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105"
                   >
-                    Get Started
+                    {location.ctaButtonText || 'Get Started'}
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </button>
                 ) : (
                   <CTAButton href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105">
-                    Get Started
+                    {location.ctaButtonText || 'Get Started'}
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </CTAButton>
                 )}
-                <Link href={backHref} className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">
-                  {backLabel}
-                </Link>
+                {location.showAllLocationsButton !== false && (
+                  <Link href={backHref} className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">
+                    {backLabel}
+                  </Link>
+                )}
               </div>
             </motion.div>
 
@@ -337,7 +344,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               variants={fadeUp}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">High Visibility Billboards</h2>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{location.billboardsHeading || 'High Visibility Billboards'}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">Premium advertising locations with maximum exposure</p>
             </motion.div>
             
@@ -370,11 +377,11 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                       <div>
                         <div className="text-lg font-bold text-mw-blue-600">{billboard.reach}</div>
-                        <div className="text-xs text-gray-500">Daily Reach</div>
+                        <div className="text-xs text-gray-500">{location.billboardsDailyReachLabel || 'Daily Reach'}</div>
                       </div>
                       <div>
                         <div className="text-lg font-bold text-mw-blue-600">{billboard.impressions}</div>
-                        <div className="text-xs text-gray-500">Monthly Impressions</div>
+                        <div className="text-xs text-gray-500">{location.billboardsMonthlyImpressionsLabel || 'Monthly Impressions'}</div>
                       </div>
                     </div>
                   </div>
@@ -389,7 +396,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
       {location.mediaTypes && location.mediaTypes.length > 0 && (
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Media Types Available</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.mediaTypesHeading || 'Media Types Available'}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {location.mediaTypes.map((media, index) => (
                 <motion.div
@@ -419,7 +426,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
       {location.faqs && location.faqs.length > 0 && (
         <section className="py-16 bg-gray-50">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Frequently Asked Questions</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.faqsHeading || 'Frequently Asked Questions'}</h2>
             <motion.div 
               initial="hidden" 
               whileInView="visible" 

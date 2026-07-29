@@ -4,10 +4,12 @@ import { useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import { useLocale, Locale } from "@/i18n/LocaleContext";
 import GlobalSearch from "./GlobalSearch";
 import { CTAButton } from "./CTAButton";
 import { useZohoPopup } from "./ZohoPopupProvider";
+import { LOCATION_LANGUAGE_GROUPS, getLocationGroupKeyForLocale, getLocationSlugFromPathname } from "@/lib/locationLanguageGroups";
 
 // A field translated per-locale in Sanity (see studio's `localeString` schema) — English is the
 // only guaranteed value, other locales are filled in progressively by content editors.
@@ -248,6 +250,24 @@ export default function Header({ sanityMenuData }: HeaderProps) {
   // Use the locale context
   const { locale, setLocale, localeNames, localeCodes, locales, t } = useLocale();
   const { openZohoPopup, currentPageFormUrl } = useZohoPopup();
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // Picking a language normally just swaps UI chrome strings in place (see LocaleContext).
+  // But if the current page is a location page with a real translated sibling document
+  // (e.g. /locations/china <-> /locations/china-zh), redirect there instead so the visitor
+  // actually sees translated page content, not just translated nav/buttons around English content.
+  const handleLanguageSelect = (newLocale: Locale) => {
+    const currentSlug = getLocationSlugFromPathname(pathname);
+    const groupKey = getLocationGroupKeyForLocale(newLocale);
+    const targetUrl = currentSlug && groupKey ? LOCATION_LANGUAGE_GROUPS[currentSlug]?.[groupKey] : undefined;
+
+    setLocale(newLocale);
+
+    if (targetUrl) {
+      router.push(new URL(targetUrl).pathname);
+    }
+  };
   
   // Transform Sanity data or fall back to local data
   const transformedSanityData = useMemo(() => transformSanityMenu(sanityMenuData || null, locale, t), [sanityMenuData, locale, t]);
@@ -386,7 +406,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                       <button
                         key={lang.locale}
                         onClick={() => {
-                          setLocale(lang.locale);
+                          handleLanguageSelect(lang.locale);
                           setIsLanguageOpen(false);
                         }}
                         className={`w-full flex items-center gap-3 px-4 py-2 text-sm hover:bg-mw-blue-50 transition-colors ${
@@ -638,7 +658,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                       <button
                         key={lang.locale}
                         onClick={() => {
-                          setLocale(lang.locale);
+                          handleLanguageSelect(lang.locale);
                         }}
                         className={`flex items-center gap-2 px-3 py-2 text-sm rounded-lg transition-colors ${
                           locale === lang.locale 

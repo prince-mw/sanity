@@ -9,6 +9,8 @@ export interface LocationData {
   heroTitle?: string
   heroImage: string
   heroTagline?: string
+  ctaButtonText?: string
+  showAllLocationsButton?: boolean
   contactFormUrl?: string
   highVisibilityBillboards: Array<{
     name: string
@@ -18,9 +20,14 @@ export interface LocationData {
     description: string
     image?: string
   }>
+  billboardsHeading?: string
+  billboardsDailyReachLabel?: string
+  billboardsMonthlyImpressionsLabel?: string
   stats: Array<{ label: string; value: string }>
   mediaTypes: Array<{ name: string; icon: string; description: string }>
+  mediaTypesHeading?: string
   faqs: Array<{ question: string; answer: string }>
+  faqsHeading?: string
   sections?: any[]
   sectionsPosition?: string
 }
