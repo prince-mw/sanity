@@ -88,7 +88,7 @@ export function StatsSection({
   const subtextColor = getSubtextColorClasses(backgroundColor);
 
   return (
-    <section className={`py-16 md:py-24 ${bgClasses}`}>
+    <section className={`py-10 md:py-16 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         {/* Header */}
         {(heading || subheading) && (

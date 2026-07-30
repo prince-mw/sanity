@@ -40,8 +40,14 @@ export function ImageGallerySection({
     4: 'md:grid-cols-2 lg:grid-cols-4',
   };
 
+  const gridImageSizes = {
+    2: '(min-width: 768px) 50vw, 100vw',
+    3: '(min-width: 768px) 33vw, 100vw',
+    4: '(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw',
+  };
+
   return (
-    <section className={`py-16 md:py-24 ${bgClasses}`}>
+    <section className={`py-10 md:py-16 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         {/* Header */}
         {(heading || subheading) && (
@@ -84,6 +90,7 @@ export function ImageGallerySection({
                       src={img.image}
                       alt={img.alt || img.caption || 'Gallery image'}
                       fill
+                      sizes={gridImageSizes[columns]}
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     {/* Hover Overlay */}
@@ -125,6 +132,7 @@ export function ImageGallerySection({
                   src={selectedImage.image}
                   alt={selectedImage.alt || selectedImage.caption || 'Gallery image'}
                   fill
+                  sizes="(min-width: 1024px) 1024px, 100vw"
                   className="object-contain"
                 />
               )}

@@ -165,6 +165,8 @@
         "events": "活动"
       },
       "countries": {
+        "africa": "非洲",
+        "americas": "美洲",
         "malaysia": "马来西亚",
         "singapore": "新加坡",
         "indonesia": "印度尼西亚",
@@ -173,7 +175,8 @@
         "japan": "日本",
         "australia": "澳大利亚",
         "sriLanka": "斯里兰卡",
-        "thailand": "泰国"
+        "thailand": "泰国",
+        "allLocations": "所有地点"
       }
     },
     "movingHearts": {

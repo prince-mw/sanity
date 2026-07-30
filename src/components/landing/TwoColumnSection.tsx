@@ -31,7 +31,7 @@ export function TwoColumnSection({
   const { openZohoPopup } = useZohoPopup();
 
   return (
-    <section className={`py-16 md:py-24 ${bgClasses}`}>
+    <section className={`py-10 md:py-16 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         <div className={`grid md:grid-cols-2 gap-12 items-center ${imagePosition === 'left' ? 'md:grid-flow-dense' : ''}`}>
           {/* Content */}
@@ -76,12 +76,13 @@ export function TwoColumnSection({
             className={imagePosition === 'left' ? 'md:col-start-1 md:row-start-1' : ''}
           >
             {image && (
-              <div className="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-xl">
+              <div className="relative aspect-video rounded-2xl overflow-hidden shadow-xl bg-white">
                 <Image
                   src={image}
                   alt={heading || 'Section image'}
                   fill
-                  className="object-cover"
+                  sizes="(min-width: 768px) 50vw, 100vw"
+                  className="object-contain"
                 />
               </div>
             )}

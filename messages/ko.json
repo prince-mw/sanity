@@ -165,6 +165,8 @@
         "events": "이벤트"
       },
       "countries": {
+        "africa": "아프리카",
+        "americas": "아메리카",
         "malaysia": "말레이시아",
         "singapore": "싱가포르",
         "indonesia": "인도네시아",
@@ -173,7 +175,8 @@
         "japan": "일본",
         "australia": "호주",
         "sriLanka": "스리랑카",
-        "thailand": "태국"
+        "thailand": "태국",
+        "allLocations": "모든 지역"
       }
     },
     "movingHearts": {

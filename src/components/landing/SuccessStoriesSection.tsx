@@ -83,7 +83,7 @@ export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stori
         : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
 
   return (
-    <section className={`py-16 md:py-20 ${bgClasses}`}>
+    <section className={`py-10 md:py-14 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         {(sectionHeading || sectionSubheading) && (
           <motion.div

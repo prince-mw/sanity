@@ -165,6 +165,8 @@
         "events": "Events"
       },
       "countries": {
+        "africa": "Africa",
+        "americas": "Americas",
         "malaysia": "Malaysia",
         "singapore": "Singapore",
         "indonesia": "Indonesia",
@@ -173,7 +175,8 @@
         "japan": "Japan",
         "australia": "Australia",
         "sriLanka": "Sri Lanka",
-        "thailand": "Thailand"
+        "thailand": "Thailand",
+        "allLocations": "All Locations"
       }
     },
     "movingHearts": {

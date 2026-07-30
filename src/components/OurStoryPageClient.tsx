@@ -4,7 +4,14 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import ContactForm from "./ContactForm";
-import { transformCompanyPage } from "@/sanity/lib/fetch";
+import { transformCompanyPage, type TrustBarStat } from "@/sanity/lib/fetch";
+
+// Static fallback stats (matches TrustBar component's own defaults)
+const staticStats = [
+  { value: "1M+", label: "OOH Sites" },
+  { value: "50+", label: "Markets" },
+  { value: "500+", label: "Clients" },
+];
 
 // Static fallback values
 const staticValues = [
@@ -32,10 +39,13 @@ const staticValues = [
 
 interface OurStoryPageClientProps {
   initialData: ReturnType<typeof transformCompanyPage> | null
+  trustBarStats?: TrustBarStat[] | null
 }
 
-export default function OurStoryPageClient({ initialData }: OurStoryPageClientProps) {
+export default function OurStoryPageClient({ initialData, trustBarStats }: OurStoryPageClientProps) {
   const [pageData] = useState<ReturnType<typeof transformCompanyPage> | null>(initialData)
+
+  const displayStats = trustBarStats && trustBarStats.length > 0 ? trustBarStats : staticStats
 
   const values = pageData?.values && pageData.values.length > 0 ? pageData.values : staticValues.map(v => ({
     icon: <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>,
@@ -80,14 +90,14 @@ export default function OurStoryPageClient({ initialData }: OurStoryPageClientPr
             className="text-center"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-mw-blue-100 rounded-full mb-8">
-              <span className="text-mw-blue-600 text-sm font-medium">About MovingWalls</span>
+              <span className="text-mw-blue-600 text-sm font-medium">About Moving Walls</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
               {pageData?.title || <>Our Story
               <span className="text-mw-blue-600 block">Innovation & Growth</span></>}
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              {pageData?.heroDescription || 'From a bold vision to market leadership, discover how MovingWalls transformed the advertising landscape through innovative technology and unwavering commitment to client success.'}
+              {pageData?.heroDescription || 'Moving Walls is a global connected media and programmatic out-of-home (pDOOH) company transforming how brands reach real people in real places. Operating across four continents and seven markets, we combine behavioural intelligence, audience research, and automation to turn physical locations into measurable, actionable media opportunities.'}
             </p>
           </motion.div>
         </div>
@@ -107,10 +117,10 @@ export default function OurStoryPageClient({ initialData }: OurStoryPageClientPr
                 Our Mission
               </h2>
               <p className="text-lg text-mw-gray-600 mb-6 leading-relaxed">
-                {pageData?.mission || 'At MovingWalls, we believe advertising should be more than just reaching audiences—it should create meaningful connections. Our mission is to empower brands with intelligent, data-driven advertising solutions that deliver measurable results and drive real business growth.'}
+                {pageData?.mission || 'Powered by Moving Audiences®, our US patented multi-sensor measurement technology, we process more than 10 billion data points and measure over 100,000 OOH and retail media sites globally. By tracking real-world movement, we enable smarter planning, buying, verification, and content delivery across billboards, digital signage, transit, and now in-store retail media.'}
               </p>
               <p className="text-lg text-mw-gray-600 leading-relaxed">
-                {pageData?.vision || 'We\'re not just an advertising platform; we\'re your strategic partner in building brand awareness, engaging customers, and achieving your marketing objectives through innovative out-of-home and digital advertising solutions.'}
+                {pageData?.vision || 'Our unified connected media platform brings addressability and automation to OOH, connecting advertisers to all media channels. Built on a Global Multi-Signal OOH Measurement Framework with full-funnel measurement, we deliver outcomes from exposure to action, helping brands activate programmatic DOOH, improve traditional OOH efficiency, and execute data driven outdoor campaigns at scale. Moving Walls provides independent solutions for both buyers and sellers, making location-based advertising measurable, transparent, and optimised.'}
               </p>
             </motion.div>
             
@@ -122,11 +132,14 @@ export default function OurStoryPageClient({ initialData }: OurStoryPageClientPr
               className="relative"
             >
               <div className="bg-gradient-to-br from-mw-blue-50 to-mw-blue-100 rounded-2xl p-8">
-                <blockquote className="text-xl font-medium text-mw-gray-900 mb-4">
-                  "We're building the future of advertising—one where technology meets creativity, 
-                  data drives decisions, and every campaign creates lasting impact."
-                </blockquote>
-                <cite className="text-mw-blue-600 font-semibold">— MovingWalls Leadership Team</cite>
+                <div className="grid grid-cols-1 gap-6">
+                  {displayStats.map((stat, index) => (
+                    <div key={index} className="text-center">
+                      <div className="text-3xl font-bold text-mw-blue-600 mb-1">{stat.value}</div>
+                      <div className="text-sm text-mw-gray-600">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </motion.div>
           </div>

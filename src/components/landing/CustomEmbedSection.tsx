@@ -24,7 +24,7 @@ export function CustomEmbedSection({
   if (!code) return null;
 
   return (
-    <section className={`${isFull ? '' : 'py-8 md:py-12'} ${bgClasses}`}>
+    <section className={`${isFull ? '' : 'py-6 md:py-8'} ${bgClasses}`}>
       <div className={isFull ? '' : 'container mx-auto px-4'}>
         <motion.div
           initial={{ opacity: 0, y: 20 }}

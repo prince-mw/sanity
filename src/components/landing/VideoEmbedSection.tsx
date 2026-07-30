@@ -57,7 +57,7 @@ export function VideoEmbedSection({
   };
 
   return (
-    <section className={`py-16 md:py-24 ${bgClasses}`}>
+    <section className={`py-10 md:py-16 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         {/* Header */}
         {(heading || subheading) && (
@@ -108,6 +108,7 @@ export function VideoEmbedSection({
                     src={getThumbnailUrl()!}
                     alt={heading || 'Video thumbnail'}
                     fill
+                    sizes="(min-width: 896px) 896px, 100vw"
                     className="object-cover"
                   />
                 )}

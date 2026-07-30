@@ -49,7 +49,7 @@ export default function Analytics({ config }: AnalyticsProps) {
 
       {/* Meta Pixel (Facebook/Instagram) */}
       {config.metaPixel?.enabled && config.metaPixel?.pixelId && (
-        <Script id="meta-pixel" strategy="afterInteractive">
+        <Script id="meta-pixel" strategy="lazyOnload">
           {`
             !function(f,b,e,v,n,t,s)
             {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -67,7 +67,7 @@ export default function Analytics({ config }: AnalyticsProps) {
 
       {/* LinkedIn Insight Tag */}
       {config.linkedinInsight?.enabled && config.linkedinInsight?.partnerId && (
-        <Script id="linkedin-insight" strategy="afterInteractive">
+        <Script id="linkedin-insight" strategy="lazyOnload">
           {`
             _linkedin_partner_id = "${config.linkedinInsight.partnerId}";
             window._linkedin_data_partner_ids = window._linkedin_data_partner_ids || [];

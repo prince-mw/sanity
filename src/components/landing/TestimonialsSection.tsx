@@ -62,6 +62,7 @@ function TestimonialCard({ testimonial, isDark }: { testimonial: Testimonial; is
               src={testimonial.image}
               alt={testimonial.name || 'Testimonial author'}
               fill
+              sizes="48px"
               className="object-cover"
             />
           </div>
@@ -99,7 +100,7 @@ export function TestimonialsSection({
   if (!items || items.length === 0) return null;
 
   return (
-    <section className={`py-16 md:py-24 ${bgClasses}`}>
+    <section className={`py-10 md:py-16 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         {/* Header */}
         {(heading || subheading) && (

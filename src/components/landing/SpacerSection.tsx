@@ -16,10 +16,10 @@ export function SpacerSection({
   const bgClasses = getBackgroundClasses(backgroundColor);
   
   const heightMap: Record<string, string> = {
-    small: 'h-8 md:h-12',
-    medium: 'h-16 md:h-24',
-    large: 'h-24 md:h-32',
-    xlarge: 'h-32 md:h-48',
+    small: 'h-6 md:h-8',
+    medium: 'h-10 md:h-16',
+    large: 'h-14 md:h-20',
+    xlarge: 'h-20 md:h-28',
   };
 
   const isDark = backgroundColor === 'dark' || backgroundColor === 'blue' || backgroundColor === 'gradient';

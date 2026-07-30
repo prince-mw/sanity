@@ -40,8 +40,14 @@ export function FeatureGridSection({
     4: 'md:grid-cols-2 lg:grid-cols-4',
   };
 
+  const gridImageSizes = {
+    2: '(min-width: 768px) 50vw, 100vw',
+    3: '(min-width: 768px) 33vw, 100vw',
+    4: '(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw',
+  };
+
   return (
-    <section className={`py-16 md:py-24 ${bgClasses}`}>
+    <section className={`py-10 md:py-16 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         {/* Header */}
         {(heading || subheading) && (
@@ -102,6 +108,7 @@ export function FeatureGridSection({
                         src={feature.icon}
                         alt={feature.title || 'Feature image'}
                         fill
+                        sizes={gridImageSizes[columns]}
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />

@@ -165,6 +165,8 @@
         "events": "Acara"
       },
       "countries": {
+        "africa": "Afrika",
+        "americas": "Amerika",
         "malaysia": "Malaysia",
         "singapore": "Singapura",
         "indonesia": "Indonesia",
@@ -173,7 +175,8 @@
         "japan": "Jepang",
         "australia": "Australia",
         "sriLanka": "Sri Lanka",
-        "thailand": "Thailand"
+        "thailand": "Thailand",
+        "allLocations": "Semua Lokasi"
       }
     },
     "movingHearts": {

@@ -85,15 +85,12 @@ export default function Footer({ content }: FooterProps) {
       { name: t('footer.links.resources.events'), href: "/events" },
     ],
     billboardLocations: [
+      { name: t('footer.links.countries.africa'), href: "/locations/africa" },
+      { name: t('footer.links.countries.americas'), href: "/locations/americas" },
+      { name: t('footer.links.countries.india'), href: "/locations/india" },
+      { name: t('footer.links.countries.japan'), href: "/locations/japan" },
       { name: t('footer.links.countries.malaysia'), href: "/locations/malaysia" },
       { name: t('footer.links.countries.singapore'), href: "/locations/singapore" },
-      { name: t('footer.links.countries.indonesia'), href: "/locations/indonesia" },
-      { name: t('footer.links.countries.india'), href: "/locations/india" },
-      { name: t('footer.links.countries.philippines'), href: "/locations/philippines" },
-      { name: t('footer.links.countries.japan'), href: "/locations/japan" },
-      { name: t('footer.links.countries.australia'), href: "/locations/australia" },
-      { name: t('footer.links.countries.sriLanka'), href: "/locations/sri-lanka" },
-      { name: t('footer.links.countries.thailand'), href: "/locations/thailand" },
     ],
   };
 
@@ -182,6 +179,16 @@ export default function Footer({ content }: FooterProps) {
                       </Link>
                     </li>
                   ))}
+                  {category.showLocationIcon && (
+                    <li>
+                      <Link
+                        href="/locations"
+                        className="inline-block mt-1 px-4 py-2 rounded-full border border-mw-blue-400 text-mw-blue-300 hover:bg-mw-blue-400 hover:text-white transition-colors text-sm font-medium"
+                      >
+                        {t('footer.links.countries.allLocations')}
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
             ))}

@@ -160,7 +160,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 py-14 md:py-20 overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         
         {/* Animated Background */}
@@ -265,7 +265,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* Cities */}
       {cities.length > 0 && (
-        <section className="py-16 md:py-20 bg-white">
+        <section className="py-10 md:py-14 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial="hidden"
@@ -293,7 +293,13 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                   >
                     {city.image && (
                       <div className="h-40 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 relative">
-                        <img src={city.image} alt={city.city} className="w-full h-full object-cover" />
+                        <Image
+                          src={city.image}
+                          alt={city.city}
+                          fill
+                          sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                          className="object-cover"
+                        />
                       </div>
                     )}
                     <div className="p-6">
@@ -318,7 +324,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
           whileInView="visible" 
           viewport={{ once: true, margin: "-50px" }} 
           variants={staggerContainer} 
-          className="py-12 bg-gray-50 border-b border-gray-200 lg:hidden"
+          className="py-8 bg-gray-50 border-b border-gray-200 lg:hidden"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -335,7 +341,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* High Visibility Billboards */}
       {location.highVisibilityBillboards && location.highVisibilityBillboards.length > 0 && (
-        <section className="py-16 md:py-20 bg-white">
+        <section className="py-10 md:py-14 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div 
               initial="hidden" 
@@ -360,10 +366,12 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                 >
                   {billboard.image && (
                     <div className="h-48 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 relative">
-                      <img 
-                        src={billboard.image} 
+                      <Image
+                        src={billboard.image}
                         alt={billboard.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                        className="object-cover"
                       />
                     </div>
                   )}
@@ -394,7 +402,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* Media Types */}
       {location.mediaTypes && location.mediaTypes.length > 0 && (
-        <section className="py-16 bg-white">
+        <section className="py-10 md:py-14 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.mediaTypesHeading || 'Media Types Available'}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -424,7 +432,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* FAQs */}
       {location.faqs && location.faqs.length > 0 && (
-        <section className="py-16 bg-gray-50">
+        <section className="py-10 md:py-14 bg-gray-50">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.faqsHeading || 'Frequently Asked Questions'}</h2>
             <motion.div 

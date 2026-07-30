@@ -25,7 +25,7 @@ export function TextBlockSection({
   const textColor = getTextColorClasses(backgroundColor);
 
   return (
-    <section className={`py-16 md:py-24 ${bgClasses}`}>
+    <section className={`py-10 md:py-16 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

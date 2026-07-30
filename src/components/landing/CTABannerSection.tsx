@@ -32,7 +32,7 @@ export function CTABannerSection({
   const { openZohoPopup } = useZohoPopup();
 
   return (
-    <section className={`relative py-16 md:py-24 overflow-hidden ${!backgroundImage ? bgClasses : ''}`}>
+    <section className={`relative py-10 md:py-16 overflow-hidden ${!backgroundImage ? bgClasses : ''}`}>
       {/* Background Image */}
       {backgroundImage && (
         <>

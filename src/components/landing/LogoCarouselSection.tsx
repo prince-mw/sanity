@@ -33,7 +33,7 @@ export function LogoCarouselSection({
   const { openZohoPopup } = useZohoPopup();
 
   return (
-    <section className={`py-16 md:py-20 ${bgClasses}`}>
+    <section className={`py-10 md:py-14 ${bgClasses}`}>
       <div className="container mx-auto px-4">
         {/* Header */}
         {(heading || subheading) && (
@@ -74,6 +74,7 @@ export function LogoCarouselSection({
                             src={logo.logo}
                             alt={logo.name || 'Partner logo'}
                             fill
+                            sizes="128px"
                             className="object-contain"
                           />
                         </button>
@@ -83,6 +84,7 @@ export function LogoCarouselSection({
                             src={logo.logo}
                             alt={logo.name || 'Partner logo'}
                             fill
+                            sizes="128px"
                             className="object-contain"
                           />
                         </a>
@@ -92,6 +94,7 @@ export function LogoCarouselSection({
                         src={logo.logo}
                         alt={logo.name || 'Partner logo'}
                         fill
+                        sizes="128px"
                         className="object-contain"
                       />
                     )
