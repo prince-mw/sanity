@@ -142,7 +142,7 @@ const nextConfig: NextConfig = {
           },
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://movingwalls-cms.sanity.studio",
+            value: "frame-ancestors 'self' https://movingwalls-cms.sanity.studio https://www.sanity.io http://localhost:3333",
           },
           {
             key: 'Permissions-Policy',

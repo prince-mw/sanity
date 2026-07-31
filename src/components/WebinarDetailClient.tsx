@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 import { sanitizeHtml } from '@/lib/sanitize'
+import { useZohoPopup, isZohoFormUrl } from './ZohoPopupProvider'
 
 // Helper to build Sanity image URL from asset reference
 function buildSanityImageUrl(image: any, width?: number): string {
@@ -52,6 +53,7 @@ interface WebinarDetail {
   featuredImage: string
   webinarType: 'upcoming' | 'past'
   registrationLink: string
+  zohoFormLink: string
   watchLink: string
   content?: any
   htmlContent?: string
@@ -340,15 +342,25 @@ function getVideoEmbedUrl(url: string | undefined): string {
     const videoId = url.split('/').pop()?.split('?')[0] || ''
     return videoId ? `https://player.vimeo.com/video/${videoId}?autoplay=1` : url
   }
-  
+
+  // Google Drive
+  if (url.includes('drive.google.com')) {
+    const match = url.match(/\/file\/d\/([^/]+)/)
+    const fileId = match?.[1]
+    return fileId ? `https://drive.google.com/file/d/${fileId}/preview` : url
+  }
+
   return url
 }
 
 export default function WebinarDetailClient({ webinar, relatedWebinars }: Readonly<WebinarDetailClientProps>) {
   const isUpcoming = webinar.webinarType === 'upcoming'
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
-  
+  const { openZohoPopup } = useZohoPopup()
+
   const videoEmbedUrl = getVideoEmbedUrl(webinar.watchLink)
+  // Only one of these is ever expected to be filled in — Zoho takes priority if both are set.
+  const registerUrl = webinar.zohoFormLink || webinar.registrationLink || ''
 
   // If htmlContent exists, render only the custom HTML
   if (webinar.htmlContent) {
@@ -451,17 +463,31 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                 <div className="flex flex-col sm:flex-row gap-4">
                   {isUpcoming ? (
                     <>
-                      <a
-                        href={webinar.registrationLink || '/contact'}
-                        target={webinar.registrationLink ? '_blank' : undefined}
-                        rel={webinar.registrationLink ? 'noopener noreferrer' : undefined}
-                        className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
-                      >
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                        Register Now
-                      </a>
+                      {registerUrl && (
+                        isZohoFormUrl(registerUrl) ? (
+                          <button
+                            onClick={() => openZohoPopup(registerUrl, 'Register Now')}
+                            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Register Now
+                          </button>
+                        ) : (
+                          <a
+                            href={registerUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
+                          >
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            Register Now
+                          </a>
+                        )
+                      )}
                       <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-mw-gray-200 hover:border-mw-blue-600 text-mw-gray-700 hover:text-mw-blue-600 font-semibold rounded-xl transition-all">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -471,15 +497,17 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                     </>
                   ) : (
                     <>
-                      <button
-                        onClick={() => webinar.watchLink && setIsVideoModalOpen(true)}
-                        className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
-                      >
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
-                        </svg>
-                        Watch Recording
-                      </button>
+                      {webinar.watchLink && (
+                        <button
+                          onClick={() => setIsVideoModalOpen(true)}
+                          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
+                        >
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
+                          </svg>
+                          Watch Recording
+                        </button>
+                      )}
                       <Link
                         href="/webinars"
                         className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-mw-gray-200 hover:border-mw-blue-600 text-mw-gray-700 hover:text-mw-blue-600 font-semibold rounded-xl transition-all"
@@ -730,14 +758,25 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
               }
             </p>
             {isUpcoming ? (
-              <a
-                href={webinar.registrationLink || '/contact'}
-                target={webinar.registrationLink ? '_blank' : undefined}
-                rel={webinar.registrationLink ? 'noopener noreferrer' : undefined}
-                className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
-              >
-                Register for Free
-              </a>
+              registerUrl && (
+                isZohoFormUrl(registerUrl) ? (
+                  <button
+                    onClick={() => openZohoPopup(registerUrl, 'Register Now')}
+                    className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
+                  >
+                    Register for Free
+                  </button>
+                ) : (
+                  <a
+                    href={registerUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
+                  >
+                    Register for Free
+                  </a>
+                )
+              )
             ) : (
               <Link
                 href="/webinars"

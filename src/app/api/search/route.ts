@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
           _type == "caseStudy" => industry,
           _type == "pressRelease" => category,
           _type == "event" => eventType,
-          _type == "webinar" => webinarType,
+          _type == "webinar" => select(defined(date) && dateTime(date) >= dateTime(now()) => "upcoming", "past"),
           _type == "ebook" => category,
           null
         )

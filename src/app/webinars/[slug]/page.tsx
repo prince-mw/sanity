@@ -93,6 +93,7 @@ export default async function WebinarDetailPage({ params }: PageProps) {
       featuredImage: getSanityImageUrl(webinar.featuredImage, { width: 1200 }) || '',
       webinarType: webinar.webinarType,
       registrationLink: webinar.registrationLink || '',
+      zohoFormLink: webinar.zohoFormLink || '',
       watchLink: webinar.watchLink || '',
       content: webinar.content,
       htmlContent: webinar.htmlContent || '',

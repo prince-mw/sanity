@@ -37,13 +37,6 @@ export default defineType({
       group: 'publishing',
     }),
     defineField({
-      name: 'scheduledPublishAt',
-      title: 'Scheduled Publish Date',
-      type: 'datetime',
-      description: 'Set a future date to automatically publish this content',
-      group: 'publishing',
-    }),
-    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
@@ -78,23 +71,10 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      name: 'webinarType',
-      title: 'Webinar Type',
-      type: 'string',
-      options: {
-        list: [
-          {title: 'Upcoming', value: 'upcoming'},
-          {title: 'Past', value: 'past'},
-        ],
-      },
-      initialValue: 'upcoming',
-      group: 'details',
-    }),
-    defineField({
       name: 'date',
       title: 'Date',
       type: 'datetime',
-      description: 'For upcoming webinars',
+      description: 'When the webinar is (or was) held. Whether it shows as Upcoming or Past is determined automatically by comparing this date to today — leave blank to treat it as Past (on-demand) content.',
       group: 'details',
     }),
     defineField({
@@ -220,11 +200,10 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      name: 'zohoForm',
-      title: 'Registration Form',
-      type: 'reference',
-      to: [{type: 'zohoForm'}],
-      description: 'Attach a Zoho form for webinar registration',
+      name: 'zohoFormLink',
+      title: 'Zoho Form Link',
+      type: 'url',
+      description: 'Paste the full Zoho form permalink to open it as a popup on click. Use this OR Registration Link above — not both.',
       group: 'content',
     }),
     defineField({
@@ -245,18 +224,18 @@ export default defineType({
   preview: {
     select: {
       title: 'title',
-      type: 'webinarType',
       date: 'date',
       media: 'featuredImage',
       isPublished: 'isPublished',
       status: 'status',
     },
     prepare(selection) {
-      const {title, type, date, media, isPublished, status} = selection
+      const {title, date, media} = selection
+      const isUpcoming = !!date && new Date(date).getTime() >= Date.now()
       return {
         title: title,
-        subtitle: type === 'upcoming' && date 
-          ? `Upcoming: ${new Date(date).toLocaleDateString()}` 
+        subtitle: isUpcoming
+          ? `Upcoming: ${new Date(date).toLocaleDateString()}`
           : 'On-Demand',
         media,
       }

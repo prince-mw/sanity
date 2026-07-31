@@ -2,7 +2,14 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
+
+export interface WebinarCardSpeaker {
+  name: string
+  role?: string
+  image?: string
+}
 
 export interface UpcomingWebinar {
   slug?: string
@@ -15,6 +22,7 @@ export interface UpcomingWebinar {
   speakerRole: string
   speakerImage?: string
   featuredImage?: string
+  speakers?: WebinarCardSpeaker[]
 }
 
 export interface PastWebinar {
@@ -28,11 +36,59 @@ export interface PastWebinar {
   speakerRole: string
   speakerImage?: string
   featuredImage?: string
+  speakers?: WebinarCardSpeaker[]
 }
 
 interface WebinarsPageClientProps {
   upcomingWebinars: UpcomingWebinar[]
   pastWebinars: PastWebinar[]
+}
+
+function WebinarSpeakerRow({
+  speakers,
+  speaker,
+  speakerRole,
+  speakerImage,
+}: {
+  speakers?: WebinarCardSpeaker[]
+  speaker: string
+  speakerRole: string
+  speakerImage?: string
+}) {
+  const list: WebinarCardSpeaker[] =
+    speakers && speakers.length > 0
+      ? speakers
+      : speaker
+        ? [{ name: speaker, role: speakerRole, image: speakerImage }]
+        : []
+
+  if (list.length === 0) return null
+
+  const visible = list.slice(0, 3)
+  const extra = list.length - visible.length
+
+  return (
+    <div className="sm:col-span-2 flex items-center gap-4 flex-wrap">
+      {visible.map((s, i) => (
+        <div key={i} className="flex items-center gap-2 text-sm text-mw-gray-600">
+          {s.image ? (
+            <img src={s.image} alt={s.name} className="w-10 h-10 rounded-full object-cover" />
+          ) : (
+            <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          )}
+          <div>
+            <p className="font-medium text-mw-gray-900">{s.name}</p>
+            {s.role && <p className="text-xs text-mw-gray-500">{s.role}</p>}
+          </div>
+        </div>
+      ))}
+      {extra > 0 && (
+        <span className="text-sm text-mw-gray-500">& {extra} other{extra > 1 ? 's' : ''}</span>
+      )}
+    </div>
+  )
 }
 
 export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: WebinarsPageClientProps) {
@@ -125,12 +181,14 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
 
             <div className="space-y-6">
               {upcomingWebinars.length === 0 ? (
-                <div className="text-center py-16">
-                  <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Upcoming Webinars</h3>
-                  <p className="text-mw-gray-500 max-w-md mx-auto">There are no upcoming webinars scheduled at the moment. Check back soon or browse our past webinars for on-demand content.</p>
+                <div className="flex justify-center py-16 bg-mw-gray-50 rounded-xl">
+                  <Image
+                    src="https://cdn.sanity.io/images/u10im6di/production/6f8f151d73788605ee99c1ce38efaa1ecf7e4b12-534x300.png"
+                    alt="Stay Tuned for Updates"
+                    width={534}
+                    height={300}
+                    className="w-full max-w-md h-auto"
+                  />
                 </div>
               ) : upcomingWebinars.map((webinar, index) => (
                 <motion.div
@@ -183,22 +241,15 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                           </svg>
                           <span>{webinar.time} ({webinar.duration})</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-mw-gray-600">
-                          {webinar.speakerImage ? (
-                            <img src={webinar.speakerImage} alt={webinar.speaker} className="w-10 h-10 rounded-full object-cover" />
-                          ) : (
-                            <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                          )}
-                          <div>
-                            <p className="font-medium text-mw-gray-900">{webinar.speaker}</p>
-                            <p className="text-xs text-mw-gray-500">{webinar.speakerRole}</p>
-                          </div>
-                        </div>
+                        <WebinarSpeakerRow
+                          speakers={webinar.speakers}
+                          speaker={webinar.speaker}
+                          speakerRole={webinar.speakerRole}
+                          speakerImage={webinar.speakerImage}
+                        />
                       </div>
 
-                      <Link 
+                      <Link
                         href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}
                         className="inline-block px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
                       >
@@ -282,19 +333,12 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                           </svg>
                           <span>{webinar.duration}</span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-mw-gray-600">
-                          {webinar.speakerImage ? (
-                            <img src={webinar.speakerImage} alt={webinar.speaker} className="w-10 h-10 rounded-full object-cover" />
-                          ) : (
-                            <svg className="w-5 h-5 text-mw-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                            </svg>
-                          )}
-                          <div>
-                            <p className="font-medium text-mw-gray-900">{webinar.speaker}</p>
-                            <p className="text-xs text-mw-gray-500">{webinar.speakerRole}</p>
-                          </div>
-                        </div>
+                        <WebinarSpeakerRow
+                          speakers={webinar.speakers}
+                          speaker={webinar.speaker}
+                          speakerRole={webinar.speakerRole}
+                          speakerImage={webinar.speakerImage}
+                        />
                       </div>
 
                       <Link 

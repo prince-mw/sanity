@@ -1053,6 +1053,7 @@ export interface SanityWebinar {
   speakerRole?: string
   speakers?: WebinarSpeaker[]
   registrationLink?: string
+  zohoFormLink?: string
   watchLink?: string
   content?: any
   htmlContent?: string
@@ -1066,6 +1067,12 @@ export interface SanityWebinar {
   }
 }
 
+// A webinar counts as "upcoming" only if it has a date and that date hasn't passed yet;
+// undated webinars (pure on-demand content) are treated as "past".
+const webinarTypeProjection = `"webinarType": select(defined(date) && dateTime(date) >= dateTime(now()) => "upcoming", "past")`
+const isUpcomingWebinarFilter = `defined(date) && dateTime(date) >= dateTime(now())`
+const isPastWebinarFilter = `!defined(date) || dateTime(date) < dateTime(now())`
+
 export async function getAllWebinars(): Promise<SanityWebinar[]> {
   const query = `
     *[_type == "webinar" && ${safePublishedFilter}] | order(date desc) {
@@ -1075,7 +1082,7 @@ export async function getAllWebinars(): Promise<SanityWebinar[]> {
       description,
       featuredImage,
       speakerImage,
-      webinarType,
+      ${webinarTypeProjection},
       date,
       time,
       duration,
@@ -1091,6 +1098,7 @@ export async function getAllWebinars(): Promise<SanityWebinar[]> {
         linkedin
       },
       registrationLink,
+      zohoFormLink,
       watchLink
     }
   `
@@ -1099,14 +1107,14 @@ export async function getAllWebinars(): Promise<SanityWebinar[]> {
 
 export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
   const query = `
-    *[_type == "webinar" && ${safePublishedFilter} && webinarType == "upcoming"] | order(date asc) {
+    *[_type == "webinar" && ${safePublishedFilter} && ${isUpcomingWebinarFilter}] | order(date asc) {
       _id,
       title,
       slug,
       description,
       featuredImage,
       speakerImage,
-      webinarType,
+      ${webinarTypeProjection},
       date,
       time,
       duration,
@@ -1121,7 +1129,8 @@ export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
         image,
         linkedin
       },
-      registrationLink
+      registrationLink,
+      zohoFormLink
     }
   `
   return safeFetch(query)
@@ -1129,14 +1138,14 @@ export async function getUpcomingWebinars(): Promise<SanityWebinar[]> {
 
 export async function getPastWebinars(): Promise<SanityWebinar[]> {
   const query = `
-    *[_type == "webinar" && ${safePublishedFilter} && webinarType == "past"] | order(date desc) {
+    *[_type == "webinar" && ${safePublishedFilter} && ${isPastWebinarFilter}] | order(date desc) {
       _id,
       title,
       slug,
       description,
       featuredImage,
       speakerImage,
-      webinarType,
+      ${webinarTypeProjection},
       date,
       time,
       duration,
@@ -1172,6 +1181,7 @@ export function transformWebinar(webinar: SanityWebinar) {
     featuredImage: getSanityImageUrl(webinar.featuredImage, { width: 800 }) || '',
     webinarType: webinar.webinarType,
     registrationLink: webinar.registrationLink,
+    zohoFormLink: webinar.zohoFormLink,
     watchLink: webinar.watchLink,
     speakers: webinar.speakers?.map(s => ({
       _key: s._key,
@@ -1194,7 +1204,7 @@ export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | nu
       description,
       featuredImage,
       speakerImage,
-      webinarType,
+      ${webinarTypeProjection},
       date,
       time,
       duration,
@@ -1210,6 +1220,7 @@ export async function getWebinarBySlug(slug: string): Promise<SanityWebinar | nu
         linkedin
       },
       registrationLink,
+      zohoFormLink,
       watchLink,
       content[]{
         ...,
@@ -1235,7 +1246,7 @@ export async function getRelatedWebinars(currentSlug: string, limit: number = 3)
       description,
       featuredImage,
       speakerImage,
-      webinarType,
+      ${webinarTypeProjection},
       date,
       time,
       duration,

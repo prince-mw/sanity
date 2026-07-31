@@ -167,6 +167,17 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://u10im6di.api.sanity.io" />
         <link rel="dns-prefetch" href="https://cdn.sanity.io" />
         <link rel="dns-prefetch" href="https://u10im6di.api.sanity.io" />
+
+        {/* Warm up connections for third-party tracking scripts (still lazy-loaded, just faster once they do load) */}
+        {(analyticsConfig?.googleAnalytics?.enabled || analyticsConfig?.googleTagManager?.enabled) && (
+          <link rel="preconnect" href="https://www.googletagmanager.com" />
+        )}
+        {analyticsConfig?.metaPixel?.enabled && (
+          <link rel="preconnect" href="https://connect.facebook.net" />
+        )}
+        {analyticsConfig?.linkedinInsight?.enabled && (
+          <link rel="preconnect" href="https://snap.licdn.com" />
+        )}
       </head>
       {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject data-gr-* attributes onto <body>
           before React hydrates, which would otherwise falsely report as a hydration mismatch */}

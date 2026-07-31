@@ -119,10 +119,11 @@ export default async function WebinarsPage() {
           date: transformed.date || 'TBD',
           time: transformed.time || 'TBD',
           duration: transformed.duration || '60 min',
-          speaker: transformed.speaker || 'TBD',
-          speakerRole: transformed.speakerRole || '',
+          speaker: transformed.speaker || transformed.speakers?.[0]?.name || 'TBD',
+          speakerRole: transformed.speakerRole || transformed.speakers?.[0]?.role || '',
           featuredImage: transformed.featuredImage || '',
-          speakerImage: transformed.speakerImage || ''
+          speakerImage: transformed.speakerImage || transformed.speakers?.[0]?.image || '',
+          speakers: transformed.speakers?.map(s => ({ name: s.name, role: s.role, image: s.image })) || []
         }
       })
     } else if (upcoming) {
@@ -139,10 +140,11 @@ export default async function WebinarsPage() {
           date: transformed.date || 'TBD',
           time: transformed.time || 'TBD',
           duration: transformed.duration || '60 min',
-          speaker: transformed.speaker || 'TBD',
-          speakerRole: transformed.speakerRole || '',
+          speaker: transformed.speaker || transformed.speakers?.[0]?.name || 'TBD',
+          speakerRole: transformed.speakerRole || transformed.speakers?.[0]?.role || '',
           featuredImage: transformed.featuredImage || '',
-          speakerImage: transformed.speakerImage || ''
+          speakerImage: transformed.speakerImage || transformed.speakers?.[0]?.image || '',
+          speakers: transformed.speakers?.map(s => ({ name: s.name, role: s.role, image: s.image })) || []
         }
       })
     } else if (past) {
