@@ -189,7 +189,7 @@ export default function FinancePageClient({
             className="text-center mb-12"
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-mw-gray-900 mb-4">
-              Why Financial Brands Choose MovingWalls
+              Why Financial Brands Choose Moving Walls
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Build customer trust and drive business growth with advertising that communicates stability and reliability.

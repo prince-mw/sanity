@@ -266,7 +266,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                   className="absolute inset-0"
                   style={{ 
                     transformStyle: 'preserve-3d',
-                    transform: 'rotateX(60deg) rotateZ(-45deg)',
+                    transform: 'rotateX(35deg) rotateZ(-45deg)',
                   }}
                 >
                   {/* City Base/Ground */}
@@ -285,169 +285,68 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                     ))}
                   </div>
 
-                  {/* Isometric Buildings */}
+                  {/* Digital OOH Billboards — each is one flat upright sign face (post + screen)
+                      drawn with ordinary 2D positioning, then rotated upright as a single rigid
+                      sheet via rotateX(-90deg)/transformOrigin:bottom. Keeping the post+panel
+                      artwork inside ONE rotated face (rather than composing it from several
+                      independently-rotated pieces) is what keeps it rendering reliably upright. */}
                   {[
-                    { x: -60, y: -40, height: 80, width: 40, color: 'blue', hasScreen: true, screenDelay: 0 },
-                    { x: 20, y: -60, height: 100, width: 35, color: 'indigo', hasScreen: true, screenDelay: 0.3 },
-                    { x: -30, y: 30, height: 60, width: 45, color: 'blue', hasScreen: true, screenDelay: 0.6 },
-                    { x: 50, y: 10, height: 70, width: 38, color: 'indigo', hasScreen: false, screenDelay: 0 },
-                    { x: -70, y: 20, height: 50, width: 30, color: 'blue', hasScreen: false, screenDelay: 0 },
-                    { x: 60, y: -30, height: 55, width: 32, color: 'indigo', hasScreen: true, screenDelay: 0.9 },
-                    { x: 0, y: 0, height: 90, width: 42, color: 'purple', hasScreen: true, screenDelay: 1.2 },
-                  ].map((building, i) => (
-                    <motion.div
-                      key={i}
-                      className="absolute"
-                      style={{
-                        left: `calc(50% + ${building.x}px)`,
-                        top: `calc(50% + ${building.y}px)`,
-                        transformStyle: 'preserve-3d',
-                      }}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 0.3 + i * 0.1, duration: 0.5 }}
-                    >
-                      {/* Building Side Face (right) */}
-                      <div
-                        className={`absolute ${
-                          building.color === 'blue' ? 'bg-blue-800' :
-                          building.color === 'indigo' ? 'bg-indigo-800' :
-                          'bg-purple-800'
-                        }`}
-                        style={{
-                          width: `${building.height}px`,
-                          height: `${building.width * 0.6}px`,
-                          left: `${building.width / 2}px`,
-                          top: `${-building.width * 0.3}px`,
-                          transform: 'rotateY(-90deg)',
-                          transformOrigin: 'left',
-                        }}
-                      />
-
-                      {/* Building Front Face */}
-                      <div
-                        className={`absolute bg-gradient-to-t ${
-                          building.color === 'blue' ? 'from-blue-700 to-blue-500' :
-                          building.color === 'indigo' ? 'from-indigo-700 to-indigo-500' :
-                          'from-purple-700 to-purple-500'
-                        }`}
-                        style={{
-                          width: `${building.width}px`,
-                          height: `${building.height}px`,
-                          left: `${-building.width / 2}px`,
-                          top: `${building.width * 0.3 - building.height}px`,
-                          transform: 'rotateX(-90deg)',
-                          transformOrigin: 'bottom',
-                          boxShadow: '0 0 20px rgba(0,0,0,0.3)',
-                        }}
-                      >
-                        {/* Windows */}
-                        <div className="absolute inset-2 grid grid-cols-3 gap-1">
-                          {[...Array(9)].map((_, wi) => (
-                            <motion.div
-                              key={wi}
-                              className="bg-yellow-300/60 rounded-sm"
-                              animate={{ opacity: [0.3, 0.8, 0.3] }}
-                              transition={{ 
-                                duration: 2, 
-                                repeat: Infinity, 
-                                delay: wi * 0.2 + i * 0.1 
-                              }}
-                            />
-                          ))}
-                        </div>
-                        
-                        {/* Digital Screen on Building */}
-                        {building.hasScreen && (
-                          <motion.div
-                            className="absolute -right-2 top-1/4 w-8 h-6 rounded overflow-hidden"
-                            style={{
-                              background: 'linear-gradient(135deg, #0ea5e9, #6366f1)',
-                              boxShadow: '0 0 15px rgba(14, 165, 233, 0.6)',
-                            }}
-                            animate={{
-                              boxShadow: [
-                                '0 0 15px rgba(14, 165, 233, 0.4)',
-                                '0 0 25px rgba(14, 165, 233, 0.8)',
-                                '0 0 15px rgba(14, 165, 233, 0.4)',
-                              ]
-                            }}
-                            transition={{ duration: 2, repeat: Infinity, delay: building.screenDelay }}
-                          >
-                            <motion.div
-                              className="w-full h-full bg-gradient-to-r from-cyan-400 to-blue-500"
-                              animate={{ opacity: [0.5, 1, 0.5] }}
-                              transition={{ duration: 1.5, repeat: Infinity, delay: building.screenDelay }}
-                            />
-                          </motion.div>
-                        )}
-                      </div>
-                      
-                      {/* Building Roof (top face) */}
-                      <div
-                        className={`absolute ${
-                          building.color === 'blue' ? 'bg-blue-400' :
-                          building.color === 'indigo' ? 'bg-indigo-400' :
-                          'bg-purple-400'
-                        }`}
-                        style={{
-                          width: `${building.width}px`,
-                          height: `${building.width * 0.6}px`,
-                          left: `${-building.width / 2}px`,
-                          top: `${-building.width * 0.3}px`,
-                          transform: `translateZ(${building.height}px)`,
-                        }}
-                      />
-                    </motion.div>
-                  ))}
-
-                  {/* Street Level Digital Screens */}
-                  {[
-                    { x: -80, y: -10, delay: 0.2 },
-                    { x: 80, y: 40, delay: 0.5 },
-                    { x: 30, y: -80, delay: 0.8 },
-                  ].map((screen, i) => (
-                    <motion.div
-                      key={`street-${i}`}
-                      className="absolute"
-                      style={{
-                        left: `calc(50% + ${screen.x}px)`,
-                        top: `calc(50% + ${screen.y}px)`,
-                        x: '-50%',
-                        y: '-100%',
-                        rotateX: -90,
-                        transformOrigin: 'bottom',
-                      }}
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      transition={{ delay: 1 + screen.delay }}
-                    >
-                      {/* Screen Frame */}
+                    { x: -90, y: -50, panelWidth: 56, postHeight: 38, delay: 0, gradient: ['#06b6d4', '#3b82f6'] },
+                    { x: 80, y: -60, panelWidth: 52, postHeight: 34, delay: 0.15, gradient: ['#8b5cf6', '#ec4899'] },
+                    { x: 0, y: -10, panelWidth: 64, postHeight: 46, delay: 0.3, gradient: ['#10b981', '#06b6d4'] },
+                    { x: -70, y: 60, panelWidth: 52, postHeight: 32, delay: 0.45, gradient: ['#3b82f6', '#6366f1'] },
+                    { x: 75, y: 55, panelWidth: 58, postHeight: 36, delay: 0.6, gradient: ['#ec4899', '#8b5cf6'] },
+                  ].map((sign, i) => {
+                    const panelHeight = 26
+                    const faceWidth = sign.panelWidth
+                    const faceHeight = sign.postHeight + panelHeight
+                    return (
                       <motion.div
-                        className="w-10 h-14 rounded bg-gradient-to-t from-gray-700 to-gray-500"
-                        style={{ boxShadow: '0 5px 15px rgba(0,0,0,0.3)' }}
+                        key={i}
+                        className="absolute"
+                        style={{
+                          left: `calc(50% + ${sign.x}px - ${faceWidth / 2}px)`,
+                          top: `calc(50% + ${sign.y}px - ${faceHeight}px)`,
+                          transformStyle: 'preserve-3d',
+                        }}
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.3 + sign.delay, duration: 0.5 }}
                       >
-                        <motion.div
-                          className="absolute top-1 left-1 right-1 bottom-4 rounded overflow-hidden"
+                        <div
+                          className="relative"
                           style={{
-                            background: 'linear-gradient(180deg, #06b6d4, #3b82f6)',
-                            boxShadow: '0 0 10px rgba(6, 182, 212, 0.5)',
+                            width: faceWidth,
+                            height: faceHeight,
+                            transform: 'rotateX(-90deg)',
+                            transformOrigin: 'bottom',
                           }}
-                          animate={{
-                            background: [
-                              'linear-gradient(180deg, #06b6d4, #3b82f6)',
-                              'linear-gradient(180deg, #8b5cf6, #ec4899)',
-                              'linear-gradient(180deg, #10b981, #06b6d4)',
-                              'linear-gradient(180deg, #06b6d4, #3b82f6)',
-                            ]
-                          }}
-                          transition={{ duration: 4, repeat: Infinity, delay: screen.delay }}
-                        />
+                        >
+                          {/* Post */}
+                          <div
+                            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 bg-gray-500"
+                            style={{ height: sign.postHeight }}
+                          />
+                          {/* Sign Frame */}
+                          <div
+                            className="absolute top-0 left-0 w-full rounded bg-gradient-to-b from-gray-600 to-gray-700"
+                            style={{ height: panelHeight, boxShadow: '0 4px 14px rgba(0,0,0,0.35)' }}
+                          >
+                            {/* Glowing Screen */}
+                            <motion.div
+                              className="absolute inset-1 rounded overflow-hidden"
+                              style={{
+                                background: `linear-gradient(135deg, ${sign.gradient[0]}, ${sign.gradient[1]})`,
+                                boxShadow: `0 0 12px ${sign.gradient[0]}80`,
+                              }}
+                              animate={{ opacity: [0.6, 1, 0.6] }}
+                              transition={{ duration: 2.2, repeat: Infinity, delay: sign.delay }}
+                            />
+                          </div>
+                        </div>
                       </motion.div>
-                      {/* Stand */}
-                      <div className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-1 h-3 bg-gray-600" />
-                    </motion.div>
-                  ))}
+                    )
+                  })}
 
                   {/* Animated Data Particles Rising */}
                   {[0, 1, 2, 3, 4].map((i) => (

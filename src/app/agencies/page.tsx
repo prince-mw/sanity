@@ -86,5 +86,28 @@ export default async function AgenciesPage() {
     testimonials,
   } : { testimonials };
 
-  return <AgenciesPageClient {...clientProps} />;
+  const faqJsonLd = clientProps.faqs && clientProps.faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: clientProps.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  } : null;
+
+  return (
+    <>
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      <AgenciesPageClient {...clientProps} />
+    </>
+  );
 }

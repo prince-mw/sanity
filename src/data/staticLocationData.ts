@@ -30,6 +30,7 @@ export interface LocationData {
   faqsHeading?: string
   sections?: any[]
   sectionsPosition?: string
+  hideDefaultHero?: boolean
 }
 
 // Malaysia static data

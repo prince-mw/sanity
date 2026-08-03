@@ -126,7 +126,7 @@ export default function SitemapPage() {
               Sitemap
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-6">
-              Explore all pages and sections of the MovingWalls website
+              Explore all pages and sections of the Moving Walls website
             </p>
             
             {/* Download Button */}

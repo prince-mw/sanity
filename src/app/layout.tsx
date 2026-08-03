@@ -110,10 +110,10 @@ export const metadata: Metadata = {
 const organizationJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "MovingWalls",
+  name: "Moving Walls",
   url: "https://www.movingwalls.com",
   logo: "https://www.movingwalls.com/assets/images/og-image.svg",
-  description: "MovingWalls delivers innovative out-of-home advertising solutions with AI-powered media planning, programmatic buying, and real-time measurement.",
+  description: "Moving Walls delivers innovative out-of-home advertising solutions with AI-powered media planning, programmatic buying, and real-time measurement.",
   foundingDate: "2014",
   sameAs: [
     "https://www.linkedin.com/company/moving-walls/",

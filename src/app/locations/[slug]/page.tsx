@@ -65,25 +65,63 @@ export async function generateStaticParams() {
   return STATIC_LOCATION_SLUGS.map((slug) => ({ slug }))
 }
 
+function buildFaqJsonLd(faqs: LocationData['faqs']) {
+  if (!faqs || faqs.length === 0) return null
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  }
+}
+
 export default async function LocationPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params
-  
+
   // Try to fetch from Sanity first
   const sanityLocation = await getLocationBySlug(slug)
-  
+
   if (sanityLocation) {
     const locationData = transformLocationFull(sanityLocation)
     const cities = (await getCitiesByCountry(slug)).map(transformCityForList)
-    return <LocationDetailClient initialData={locationData} cities={cities} pageType="country" />
+    const faqJsonLd = buildFaqJsonLd(locationData.faqs)
+    return (
+      <>
+        {faqJsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          />
+        )}
+        <LocationDetailClient initialData={locationData} cities={cities} pageType="country" />
+      </>
+    )
   }
-  
+
   // Fall back to static data
   const staticData = getStaticLocationData(slug)
-  
+
   if (staticData) {
-    return <LocationDetailClient initialData={staticData} pageType="country" />
+    const faqJsonLd = buildFaqJsonLd(staticData.faqs)
+    return (
+      <>
+        {faqJsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          />
+        )}
+        <LocationDetailClient initialData={staticData} pageType="country" />
+      </>
+    )
   }
-  
+
   // No data found - 404
   notFound()
 }

@@ -1720,6 +1720,7 @@ export interface SanityLocation {
   seo?: SanitySEO
   sections?: any[]
   sectionsPosition?: string
+  hideDefaultHero?: boolean
 }
 
 export async function getAllLocations(): Promise<SanityLocation[]> {
@@ -1790,6 +1791,7 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
         }
       },
       sectionsPosition,
+      hideDefaultHero,
       seo {
         metaTitle,
         metaDescription,
@@ -1842,6 +1844,7 @@ export function transformLocationFull(location: SanityLocation) {
     faqsHeading: location.faqsHeading || '',
     sections: location.sections || [],
     sectionsPosition: location.sectionsPosition || 'after-faqs',
+    hideDefaultHero: location.hideDefaultHero || false,
   }
 }
 

@@ -131,7 +131,7 @@ export default function PrivacyPolicyPage() {
                     </div>
                   </section>
 
-                  {/* Section 2: MovingWalls Advertising */}
+                  {/* Section 2: Moving Walls Advertising */}
                   <section id="advertising" className="mb-12 scroll-mt-24 pt-8 border-t border-gray-100">
                     <div className="flex items-center gap-3 mb-6">
                       <span className="flex items-center justify-center w-8 h-8 rounded-lg bg-mw-blue-100 text-mw-blue-700 text-sm font-bold">2</span>
@@ -563,7 +563,7 @@ export default function PrivacyPolicyPage() {
                         </svg>
                       </div>
                       <h2 className="text-3xl font-bold text-gray-900">Cookie Policy</h2>
-                      <p className="mt-2 text-gray-600">This is the Cookie Policy for the MovingWalls website.</p>
+                      <p className="mt-2 text-gray-600">This is the Cookie Policy for the Moving Walls website.</p>
                     </div>
 
                     <div className="space-y-6">

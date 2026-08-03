@@ -263,7 +263,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
           >
             <h2 className="text-3xl font-bold text-white mb-4">Ready to Achieve Similar Results?</h2>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let&apos;s discuss how MovingWalls can help you transform your advertising strategy and drive measurable results.
+              Let&apos;s discuss how Moving Walls can help you transform your advertising strategy and drive measurable results.
             </p>
             <CTAButton
               href="/contact"

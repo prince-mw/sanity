@@ -160,6 +160,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
+      {!location.hideDefaultHero && (
       <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 py-14 md:py-20 overflow-hidden">
         <div className="absolute inset-0 bg-black/10"></div>
         
@@ -259,6 +260,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
           </div>
         </div>
       </section>
+      )}
 
       {/* CMS Sections - After Hero */}
       {sectionsPosition === 'after-hero' && cmsSections}

@@ -15,8 +15,8 @@ export async function generateMetadata(): Promise<Metadata> {
     description: seo?.metaDescription || defaultMeta.description,
     keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
     openGraph: {
-      title: seo?.metaTitle || 'Privacy Policy | MovingWalls',
-      description: seo?.metaDescription || 'Learn how MovingWalls collects, uses, and protects your personal data.',
+      title: seo?.metaTitle || 'Privacy Policy | Moving Walls',
+      description: seo?.metaDescription || 'Learn how Moving Walls collects, uses, and protects your personal data.',
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
     alternates: {

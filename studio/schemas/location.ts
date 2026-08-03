@@ -230,7 +230,15 @@ export default defineType({
       },
       initialValue: 'after-faqs',
     }),
-    
+    defineField({
+      name: 'hideDefaultHero',
+      title: 'Hide Default Hero Section',
+      type: 'boolean',
+      group: 'sections',
+      description: 'Enable this for pages that are fully built via a Custom HTML section above — hides the default gradient hero banner (title, description, CTA buttons) so it doesn\'t sit on top of your custom design.',
+      initialValue: false,
+    }),
+
     // Settings & SEO Group
     defineField({
       name: 'contactFormUrl',

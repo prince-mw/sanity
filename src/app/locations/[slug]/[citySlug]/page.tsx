@@ -56,12 +56,33 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
   const cityData = transformCityFull(city)
 
+  const faqJsonLd = cityData.faqs && cityData.faqs.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: cityData.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  } : null
+
   return (
-    <LocationDetailClient
-      initialData={cityData}
-      backHref={`/locations/${slug}`}
-      backLabel={`Back to ${city.country?.country || 'Country'}`}
-      pageType="city"
-    />
+    <>
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      <LocationDetailClient
+        initialData={cityData}
+        backHref={`/locations/${slug}`}
+        backLabel={`Back to ${city.country?.country || 'Country'}`}
+        pageType="city"
+      />
+    </>
   )
 }

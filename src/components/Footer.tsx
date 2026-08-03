@@ -145,7 +145,7 @@ export default function Footer({ content }: FooterProps) {
             <Link href="/" className="inline-block mb-4">
               <Image
                 src="/assets/logo/MW-logo-web.svg"
-                alt="MovingWalls Logo"
+                alt="Moving Walls Logo"
                 width={180}
                 height={40}
                 className="h-10 w-auto brightness-0 invert"

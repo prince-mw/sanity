@@ -4,7 +4,7 @@ import { getPageSeo, getSanityImageUrl, getCompanyPage, transformCompanyPage } f
 
 const defaultMeta = {
   title: 'About Us | Moving Walls',
-  description: 'MovingWalls is a global connected media and programmatic out-of-home company powered by US patented measurement technology. Learn about our mission to transform outdoor advertising.',
+  description: 'Moving Walls is a global connected media and programmatic out-of-home company powered by US patented measurement technology. Learn about our mission to transform outdoor advertising.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {

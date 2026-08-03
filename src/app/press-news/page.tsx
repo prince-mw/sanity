@@ -4,7 +4,7 @@ import PressNewsPageClient, { PressRelease } from '@/components/PressNewsPageCli
 
 const defaultMeta = {
   title: 'Press & News | Moving Walls',
-  description: 'Stay updated with MovingWalls latest announcements, product launches, partnerships, and industry recognition.',
+  description: 'Stay updated with Moving Walls latest announcements, product launches, partnerships, and industry recognition.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -34,14 +34,14 @@ const fallbackPressReleases: PressRelease[] = [
   {
     date: "November 15, 2024",
     category: "Product Launch",
-    title: "MovingWalls Launches AI-Powered Audience Targeting Platform",
+    title: "Moving Walls Launches AI-Powered Audience Targeting Platform",
     excerpt: "Revolutionary machine learning algorithms improve campaign performance by 40% while reducing cost per acquisition.",
     thumbnail: "/assets/images/press/ai-platform-launch.svg"
   },
   {
     date: "October 28, 2024",
     category: "Funding",
-    title: "MovingWalls Closes $50M Series C Funding Round",
+    title: "Moving Walls Closes $50M Series C Funding Round",
     excerpt: "Investment led by top-tier VCs will fuel international expansion and product development initiatives.",
     thumbnail: "/assets/images/press/funding-announcement.svg"
   },
@@ -49,13 +49,13 @@ const fallbackPressReleases: PressRelease[] = [
     date: "September 12, 2024",
     category: "Partnership",
     title: "Strategic Partnership with Global Transit Authority Network",
-    excerpt: "Major partnership expands MovingWalls's out-of-home advertising network to 25 new metropolitan areas.",
+    excerpt: "Major partnership expands Moving Walls' out-of-home advertising network to 25 new metropolitan areas.",
     thumbnail: "/assets/images/press/transit-partnership.svg"
   },
   {
     date: "August 5, 2024",
     category: "Recognition",
-    title: "MovingWalls Named 'AdTech Company of the Year' by Industry Awards",
+    title: "Moving Walls Named 'AdTech Company of the Year' by Industry Awards",
     excerpt: "Recognition highlights company's innovation in programmatic advertising and measurement solutions.",
     thumbnail: "/assets/images/press/industry-award.svg"
   },
@@ -69,7 +69,7 @@ const fallbackPressReleases: PressRelease[] = [
   {
     date: "June 18, 2024",
     category: "Expansion",
-    title: "MovingWalls Opens European Headquarters in London",
+    title: "Moving Walls Opens European Headquarters in London",
     excerpt: "New office serves as regional hub for European operations and client services expansion.",
     thumbnail: "/assets/images/press/london-office.svg"
   }
