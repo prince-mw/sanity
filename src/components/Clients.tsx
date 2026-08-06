@@ -16,7 +16,7 @@ const defaultPartners = [
     name: "Vistar Media", 
     category: "DOOH SSP",
     logo: (
-      <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none">
+      <svg viewBox="0 0 24 24" className="w-16 h-16 sm:w-20 sm:h-20" fill="none">
         <rect width="24" height="24" rx="4" fill="#00D4AA"/>
         <path d="M6 12l4 5 8-10" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
       </svg>
@@ -26,7 +26,7 @@ const defaultPartners = [
     name: "Place Exchange", 
     category: "OOH Marketplace",
     logo: (
-      <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none">
+      <svg viewBox="0 0 24 24" className="w-16 h-16 sm:w-20 sm:h-20" fill="none">
         <rect width="24" height="24" rx="4" fill="#6366F1"/>
         <circle cx="12" cy="10" r="3" stroke="white" strokeWidth="2" fill="none"/>
         <path d="M12 13v4M8 21c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="white" strokeWidth="2" strokeLinecap="round"/>
@@ -37,7 +37,7 @@ const defaultPartners = [
     name: "VIOOH", 
     category: "Premium DOOH",
     logo: (
-      <svg viewBox="0 0 24 24" className="w-10 h-10" fill="none">
+      <svg viewBox="0 0 24 24" className="w-16 h-16 sm:w-20 sm:h-20" fill="none">
         <rect width="24" height="24" rx="4" fill="#1E3A8A"/>
         <path d="M4 8h16M4 12h16M4 16h10" stroke="white" strokeWidth="2" strokeLinecap="round"/>
         <circle cx="18" cy="16" r="2" fill="#60A5FA"/>
@@ -60,12 +60,20 @@ export default function Clients({ partners, sectionTitle, sectionDescription }: 
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <span className="text-mw-gray-500 text-sm font-medium uppercase tracking-wider">
-            {sectionTitle || t('landingPage.clients.title')}
+          <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
+            {t('landingPage.clients.eyebrow')}
           </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
+            {sectionTitle || t('landingPage.clients.title')}
+          </h2>
+          {sectionDescription && (
+            <p className="text-mw-gray-600 max-w-3xl mx-auto text-lg">
+              {sectionDescription}
+            </p>
+          )}
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
           {hasCmsPartners ? partners.map((partner, index) => (
             <motion.div
               key={partner.name}
@@ -73,17 +81,17 @@ export default function Clients({ partners, sectionTitle, sectionDescription }: 
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="flex flex-col items-center justify-center p-6 bg-mw-gray-50 rounded-xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
+              className="flex flex-col items-center justify-center p-6 sm:p-8 bg-mw-gray-50 rounded-xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
             >
-              <div className="w-16 h-16 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                 {partner.logo ? (
                   <img
-                    src={getSanityImageUrl(partner.logo, { width: 80 })}
+                    src={getSanityImageUrl(partner.logo, { width: 200 })}
                     alt={partner.name}
-                    className="w-10 h-10 object-contain"
+                    className="w-full h-full object-contain"
                   />
                 ) : (
-                  <div className="w-10 h-10 bg-mw-blue-100 rounded-lg flex items-center justify-center text-mw-blue-600 font-bold text-lg">
+                  <div className="w-16 h-16 bg-mw-blue-100 rounded-lg flex items-center justify-center text-mw-blue-600 font-bold text-2xl">
                     {partner.name.charAt(0)}
                   </div>
                 )}
@@ -102,9 +110,9 @@ export default function Clients({ partners, sectionTitle, sectionDescription }: 
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="flex flex-col items-center justify-center p-6 bg-mw-gray-50 rounded-xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
+              className="flex flex-col items-center justify-center p-6 sm:p-8 bg-mw-gray-50 rounded-xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
             >
-              <div className="w-16 h-16 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+              <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                 {client.logo}
               </div>
               <div className="text-center">
@@ -116,16 +124,6 @@ export default function Clients({ partners, sectionTitle, sectionDescription }: 
             </motion.div>
           ))}
         </div>
-
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="text-center text-mw-gray-500 mt-12 text-sm"
-        >
-          {sectionDescription || t('landingPage.clients.description')}
-        </motion.p>
       </div>
     </section>
   );

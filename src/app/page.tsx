@@ -14,7 +14,7 @@ const About = dynamic(() => import("../components/About"));
 const Newsletter = dynamic(() => import("../components/Newsletter"));
 const CaseStudiesSection = dynamic(() => import("../components/CaseStudiesSection"));
 const ContactForm = dynamic(() => import("../components/ContactForm"));
-import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm } from "@/sanity/lib/fetch";
+import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm, getClientPartnersContent } from "@/sanity/lib/fetch";
 
 export const revalidate = 30;
 
@@ -45,10 +45,11 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const [caseStudiesData, trustBarContent, contactForm] = await Promise.all([
+  const [caseStudiesData, trustBarContent, contactForm, clientPartnersContent] = await Promise.all([
     getAllCaseStudies().catch(() => null),
     getTrustBarContent(),
     getContactZohoForm(),
+    getClientPartnersContent(),
   ]);
 
   const caseStudies: SanityCaseStudy[] = caseStudiesData?.slice(0, 4) || [];
@@ -59,9 +60,13 @@ export default async function Home() {
       <TrustBar stats={trustBarContent?.stats} />
       <AsianBornGlobal />
       <Services />
-      {/* <Clients /> */}
       <PlatformEcosystem />
       <CustomerLogos />
+      <Clients
+        partners={clientPartnersContent?.partners}
+        sectionTitle={clientPartnersContent?.sectionTitle}
+        sectionDescription={clientPartnersContent?.sectionDescription}
+      />
       <TestimonialSection />
       {/* <About /> */}
       <Newsletter />
