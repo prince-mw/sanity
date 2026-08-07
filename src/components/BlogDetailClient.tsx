@@ -3,12 +3,16 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useEffect } from "react";
 import SanityPortableText from "./SanityPortableText";
 import ZohoCampaignsEmbed from "./ZohoCampaignsEmbed";
+import { useLocale } from "@/i18n/LocaleContext";
+import type { Locale } from "@/i18n/config";
 
 interface BlogPost {
   slug: string;
   title: string;
+  language?: string;
   excerpt: string;
   content: string;
   rawContent?: any[] | null;
@@ -37,7 +41,20 @@ interface BlogDetailClientProps {
   relatedPosts: RelatedBlogPost[];
 }
 
+const isSupportedBlogLocale = (value?: string): value is Locale =>
+  value === "en" || value === "zh";
+
 export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClientProps) {
+  const { locale, setLocale } = useLocale();
+
+  // Opening a post directly should sync the nav language to whatever language
+  // the post is written in, so e.g. landing on the Chinese post shows "CHN" in the nav.
+  useEffect(() => {
+    if (isSupportedBlogLocale(post.language) && post.language !== locale) {
+      setLocale(post.language);
+    }
+  }, [post.language, locale, setLocale]);
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}

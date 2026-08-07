@@ -44,6 +44,22 @@ export default defineType({
       group: 'content',
     }),
     defineField({
+      name: 'language',
+      title: 'Language',
+      type: 'string',
+      description: 'Controls which nav language this post shows under on /blog',
+      options: {
+        list: [
+          {title: 'English', value: 'en'},
+          {title: 'Chinese', value: 'zh'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'en',
+      validation: (Rule) => Rule.required(),
+      group: 'content',
+    }),
+    defineField({
       name: 'slug',
       title: 'Slug',
       type: 'slug',

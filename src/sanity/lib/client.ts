@@ -14,8 +14,10 @@ export const previewClient = createClient({
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2025-01-01',
   useCdn: false,
-  perspective: 'previewDrafts',
-  token: process.env.SANITY_API_READ_TOKEN,
+  perspective: 'drafts',
+  // Falls back to the write token when a dedicated read-only token hasn't been provisioned
+  // (SANITY_API_READ_TOKEN) — reading drafts requires an authenticated token either way.
+  token: process.env.SANITY_API_READ_TOKEN || process.env.SANITY_API_TOKEN,
 })
 
 // For authenticated requests (drafts, mutations)

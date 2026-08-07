@@ -2,13 +2,15 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import ZohoCampaignsEmbed from "./ZohoCampaignsEmbed";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface BlogPost {
   slug: string;
   title: string;
+  language?: string;
   excerpt: string;
   category: string;
   author: string;
@@ -31,20 +33,33 @@ const POSTS_PER_PAGE = 12;
 type SortOption = "newest" | "oldest" | "title-asc" | "title-desc";
 
 export default function BlogListClient({ posts, categories }: BlogListClientProps) {
+  const { locale } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [currentPage, setCurrentPage] = useState(1);
 
+  // Only show posts matching the current nav language (locales without their own
+  // blog content, e.g. ja/ko/id, fall back to English)
+  const localizedPosts = useMemo(() => {
+    const targetLanguage = locale === "zh" ? "zh" : "en";
+    return posts.filter(post => (post.language || "en") === targetLanguage);
+  }, [posts, locale]);
+
+  // Reset to page 1 whenever the language switch changes what's available
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [locale]);
+
   // Filter and sort articles
   const processedArticles = useMemo(() => {
-    let articles = selectedCategory === "All" 
-      ? [...posts] 
-      : posts.filter(article => article.category === selectedCategory);
+    let articles = selectedCategory === "All"
+      ? [...localizedPosts]
+      : localizedPosts.filter(article => article.category === selectedCategory);
 
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
-      articles = articles.filter(article => 
+      articles = articles.filter(article =>
         article.title.toLowerCase().includes(q) ||
         article.excerpt.toLowerCase().includes(q) ||
         article.tags.some(tag => tag.toLowerCase().includes(q))
@@ -67,7 +82,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
     }
 
     return articles;
-  }, [posts, selectedCategory, searchQuery, sortBy]);
+  }, [localizedPosts, selectedCategory, searchQuery, sortBy]);
 
   const totalPages = Math.ceil(processedArticles.length / POSTS_PER_PAGE);
   const paginatedArticles = processedArticles.slice(
@@ -90,7 +105,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
     setCurrentPage(1);
   };
 
-  const featuredArticle = posts.find(p => p.featured) || posts[0];
+  const featuredArticle = localizedPosts.find(p => p.featured) || localizedPosts[0];
 
   const getPageNumbers = () => {
     const pages: (number | string)[] = [];
@@ -174,9 +189,9 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                 className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer min-w-[180px]"
               >
                 {categories.map((category) => {
-                  const count = category === "All" 
-                    ? posts.length 
-                    : posts.filter(p => p.category === category).length;
+                  const count = category === "All"
+                    ? localizedPosts.length
+                    : localizedPosts.filter(p => p.category === category).length;
                   return (
                     <option key={category} value={category}>
                       {category} ({count})

@@ -27,6 +27,7 @@ export default {
     'border', 'border-gray-200', 'border-gray-300',
     'overflow-hidden', 'relative', 'absolute',
     'object-cover', 'object-contain',
+    'not-prose',
     { pattern: /^(md|lg):/ },
   ],
 

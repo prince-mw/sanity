@@ -315,11 +315,14 @@ const components: PortableTextComponents = {
     },
     // CTA Button
     ctaButton: ({ value }) => {
+      // not-prose opts this anchor out of the blog content's .prose typography styling
+      // (which otherwise applies its own link color + hover underline to every <a> tag,
+      // overriding the button's own text-white/no-underline classes below).
       const styleClasses: Record<string, string> = {
-        primary: 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors',
-        secondary: 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50 px-6 py-3 rounded-lg font-semibold transition-colors',
-        dark: 'bg-mw-gray-900 hover:bg-mw-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors',
-        link: 'text-mw-blue-600 hover:text-mw-blue-700 font-semibold inline-flex items-center gap-2 transition-colors',
+        primary: 'not-prose no-underline hover:no-underline bg-mw-blue-600 hover:bg-mw-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors',
+        secondary: 'not-prose no-underline hover:no-underline border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50 px-6 py-3 rounded-lg font-semibold transition-colors',
+        dark: 'not-prose no-underline hover:no-underline bg-mw-gray-900 hover:bg-mw-gray-800 text-white px-6 py-3 rounded-lg font-semibold transition-colors',
+        link: 'not-prose no-underline hover:no-underline text-mw-blue-600 hover:text-mw-blue-700 font-semibold inline-flex items-center gap-2 transition-colors',
       };
       
       const alignmentClass: Record<string, string> = {

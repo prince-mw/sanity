@@ -2,6 +2,9 @@
 
 import Link from 'next/link'
 import { motion } from 'framer-motion'
+import { useMemo } from 'react'
+import { useLocale } from '@/i18n/LocaleContext'
+import { shouldShowLocationForLocale } from '@/lib/locationLanguageGroups'
 
 // Animation variants
 const fadeUp = {
@@ -20,7 +23,7 @@ const staggerItem = {
 }
 
 // Static fallback location data
-const staticLocations = [
+const staticLocations: LocationItem[] = [
   {
     country: "Malaysia",
     city: "Kuala Lumpur",
@@ -99,6 +102,7 @@ interface LocationItem {
   href: string
   description: string
   image: string
+  slug?: string
 }
 
 interface LocationsPageClientProps {
@@ -106,7 +110,15 @@ interface LocationsPageClientProps {
 }
 
 export default function LocationsPageClient({ initialLocations }: LocationsPageClientProps) {
+  const { locale } = useLocale()
   const locations = initialLocations && initialLocations.length > 0 ? initialLocations : staticLocations
+
+  // Only affects locations that have a language-paired sibling (e.g. china/china-zh) —
+  // ordinary locations without a slug (or with no pairing) always pass through.
+  const localizedLocations = useMemo(
+    () => locations.filter(loc => !loc.slug || shouldShowLocationForLocale(loc.slug, locale)),
+    [locations, locale]
+  )
 
   return (
     <main className="min-h-screen bg-white">
@@ -182,13 +194,14 @@ export default function LocationsPageClient({ initialLocations }: LocationsPageC
           </motion.div>
 
           <motion.div
+            key={locale}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             variants={staggerContainer}
             className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {locations.length === 0 ? (
+            {localizedLocations.length === 0 ? (
               <div className="md:col-span-2 lg:col-span-3 text-center py-16">
                 <svg className="w-16 h-16 text-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -197,7 +210,7 @@ export default function LocationsPageClient({ initialLocations }: LocationsPageC
                 <h3 className="text-xl font-semibold text-gray-700 mb-2">No Locations Available</h3>
                 <p className="text-gray-500 max-w-md mx-auto">Office location information is not available at the moment. Check back soon.</p>
               </div>
-            ) : locations.map((location) => (
+            ) : localizedLocations.map((location) => (
               <motion.div key={location.country} variants={staggerItem}>
                 <Link href={location.href} className="group block">
                   <div className="bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">

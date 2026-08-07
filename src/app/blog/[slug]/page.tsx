@@ -1,7 +1,9 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
+import { draftMode } from "next/headers";
 import { getBlogPostBySlug, getRelatedBlogPosts, transformBlogPost, getAllBlogPosts, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
+import { BLOG_LANGUAGE_GROUPS } from "@/lib/blogLanguageGroups";
 import BlogDetailClient from "@/components/BlogDetailClient";
 
 export const revalidate = 30;
@@ -23,9 +25,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  
+  const { isEnabled: isPreview } = await draftMode();
+
   try {
-    const post = await getBlogPostBySlug(slug);
+    const post = await getBlogPostBySlug(slug, isPreview);
     
     if (post) {
       const seo = post.seo;
@@ -53,6 +56,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         },
         alternates: {
           canonical: `https://www.movingwalls.com/blog/${slug}`,
+          languages: BLOG_LANGUAGE_GROUPS[slug] ?? undefined,
         },
         robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       };
@@ -69,7 +73,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  
+  const { isEnabled: isPreview } = await draftMode();
+
   let post;
   let relatedPosts: Array<{
     slug: string;
@@ -83,7 +88,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   try {
     // Try to fetch from Sanity
-    const sanityPost = await getBlogPostBySlug(slug);
+    const sanityPost = await getBlogPostBySlug(slug, isPreview);
     
     if (sanityPost) {
       post = transformBlogPost(sanityPost);
@@ -91,7 +96,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       // Get related posts with improved algorithm
       const categoryTitles = sanityPost.categories?.map(c => c.title) || [];
       const authorId = (sanityPost.author as any)?._id;
-      const sanityRelated = await getRelatedBlogPosts(slug, categoryTitles, authorId, 3);
+      const sanityRelated = await getRelatedBlogPosts(slug, categoryTitles, authorId, 3, sanityPost.language);
       relatedPosts = sanityRelated.map(transformBlogPost);
     } else {
       // Fallback to static data

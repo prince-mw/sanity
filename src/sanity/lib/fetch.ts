@@ -1,5 +1,5 @@
 import { cache } from 'react'
-import { client, urlFor } from './client'
+import { client, previewClient, urlFor } from './client'
 import { sanitizeHtml } from '@/lib/sanitize'
 import type { LocationData } from '@/data/staticLocationData'
 
@@ -66,6 +66,7 @@ export interface SanityBlogPost {
   _id: string
   title: string
   slug: { current: string }
+  language?: string
   excerpt: string
   content: any[] // Portable Text blocks
   publishedAt: string
@@ -116,6 +117,7 @@ export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
       _id,
       title,
       slug,
+      language,
       "excerpt": seo.metaDescription,
       publishedAt,
       readTime,
@@ -127,12 +129,13 @@ export async function getAllBlogPosts(): Promise<SanityBlogPost[]> {
   return safeFetch(query)
 }
 
-export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | null> {
+export async function getBlogPostBySlug(slug: string, preview: boolean = false): Promise<SanityBlogPost | null> {
   const query = `
     *[_type == "blogPost" && slug.current == $slug][0] {
       _id,
       title,
       slug,
+      language,
       "excerpt": seo.metaDescription,
       content[] {
         ...,
@@ -157,6 +160,12 @@ export async function getBlogPostBySlug(slug: string): Promise<SanityBlogPost | 
       }
     }
   `
+  // The public `client` only ever sees published documents — a draft-only post (never
+  // published) is invisible to it regardless of query filters. Preview mode needs the
+  // draft-aware `previewClient` instead, bypassing the published-only dedup/cache wrapper.
+  if (preview) {
+    return previewClient.fetch(query, { slug })
+  }
   return safeFetch(query, { slug })
 }
 
@@ -176,6 +185,7 @@ export async function getFeaturedBlogPost(): Promise<SanityBlogPost | null> {
       _id,
       title,
       slug,
+      language,
       "excerpt": seo.metaDescription,
       publishedAt,
       readTime,
@@ -192,14 +202,20 @@ export async function getRelatedBlogPosts(
   currentSlug: string,
   categoryTitles: string[],
   authorId?: string,
-  limit: number = 3
+  limit: number = 3,
+  language?: string
 ): Promise<SanityBlogPost[]> {
+  // Keep related-post suggestions in the same language as the post being read
+  const languageFilter = `(language == $language || (!defined(language) && $language == "en"))`
+  const queryLanguage = language || 'en'
+
   // First, try to find posts with matching categories or same author
   const query = `
-    *[_type == "blogPost" && slug.current != $currentSlug && ${publishedFilter}] {
+    *[_type == "blogPost" && slug.current != $currentSlug && ${publishedFilter} && ${languageFilter}] {
       _id,
       title,
       slug,
+      language,
       "excerpt": seo.metaDescription,
       publishedAt,
       readTime,
@@ -216,6 +232,7 @@ export async function getRelatedBlogPosts(
       _id,
       title,
       slug,
+      language,
       excerpt,
       publishedAt,
       readTime,
@@ -224,25 +241,27 @@ export async function getRelatedBlogPosts(
       "categories": categories
     }
   `
-  
-  const results = await safeFetch<SanityBlogPost[]>(query, { 
-    currentSlug, 
-    categories: categoryTitles.length > 0 ? categoryTitles : [''], 
+
+  const results = await safeFetch<SanityBlogPost[]>(query, {
+    currentSlug,
+    categories: categoryTitles.length > 0 ? categoryTitles : [''],
     authorId: authorId || '',
-    limit: limit - 1 
+    limit: limit - 1,
+    language: queryLanguage
   }, [])
-  
+
   // If we don't have enough related posts, supplement with recent posts
   if (results.length < limit) {
     const existingSlugs = [currentSlug, ...results.map((p: SanityBlogPost) => p.slug?.current)]
     const neededCount = limit - results.length
-    
+
     const recentQuery = `
-      *[_type == "blogPost" && !(slug.current in $existingSlugs) && ${publishedFilter}] 
+      *[_type == "blogPost" && !(slug.current in $existingSlugs) && ${publishedFilter} && ${languageFilter}]
       | order(publishedAt desc)[0...$neededCount] {
         _id,
         title,
         slug,
+        language,
         "excerpt": seo.metaDescription,
         publishedAt,
         readTime,
@@ -251,15 +270,16 @@ export async function getRelatedBlogPosts(
         "categories": categories[]->{title, slug, color}
       }
     `
-    
-    const recentPosts = await safeFetch<SanityBlogPost[]>(recentQuery, { 
-      existingSlugs, 
-      neededCount: neededCount - 1 
+
+    const recentPosts = await safeFetch<SanityBlogPost[]>(recentQuery, {
+      existingSlugs,
+      neededCount: neededCount - 1,
+      language: queryLanguage
     }, [])
-    
+
     return [...results, ...recentPosts]
   }
-  
+
   return results
 }
 
@@ -323,6 +343,7 @@ export function transformBlogPost(post: SanityBlogPost) {
   return {
     slug: post.slug?.current || '',
     title: post.title || '',
+    language: post.language || 'en',
     excerpt: post.excerpt || '',
     content: portableTextToHtml(post.content) || '',
     rawContent: post.content || null,
@@ -588,11 +609,14 @@ function portableTextToHtml(blocks: any[] | undefined): string {
 
     // Handle CTA buttons
     if (block._type === 'ctaButton') {
+      // `not-prose` opts this anchor out of the blog content's .prose typography styling
+      // (which otherwise applies its own link color + hover underline to every <a> tag,
+      // overriding the button's own text-white/no-underline classes below).
       const styleMap: Record<string, string> = {
-        primary: 'bg-mw-blue-600 hover:bg-mw-blue-700 text-white px-6 py-3 rounded-lg font-semibold',
-        secondary: 'border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50 px-6 py-3 rounded-lg font-semibold',
-        dark: 'bg-mw-gray-900 hover:bg-mw-gray-800 text-white px-6 py-3 rounded-lg font-semibold',
-        link: 'text-mw-blue-600 hover:text-mw-blue-700 font-semibold',
+        primary: 'not-prose no-underline hover:no-underline bg-mw-blue-600 hover:bg-mw-blue-700 text-white px-6 py-3 rounded-lg font-semibold',
+        secondary: 'not-prose no-underline hover:no-underline border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50 px-6 py-3 rounded-lg font-semibold',
+        dark: 'not-prose no-underline hover:no-underline bg-mw-gray-900 hover:bg-mw-gray-800 text-white px-6 py-3 rounded-lg font-semibold',
+        link: 'not-prose no-underline hover:no-underline text-mw-blue-600 hover:text-mw-blue-700 font-semibold',
       }
       const btnClass = styleMap[block.style] || styleMap.primary
       const align = block.alignment === 'center' ? 'justify-center' : block.alignment === 'right' ? 'justify-end' : 'justify-start'
@@ -1809,6 +1833,7 @@ export function transformLocationForList(location: SanityLocation) {
   return {
     country: location.country || '',
     city: location.city || '',
+    slug: location.slug?.current || '',
     href: `/locations/${location.slug?.current || ''}`,
     description: location.description || '',
     image: getSanityImageUrl(location.heroImage, { width: 800 }) || '',
