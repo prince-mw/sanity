@@ -1419,7 +1419,7 @@ export async function getRelatedJobs(currentSlug: string, department: string | u
   // If not enough related jobs in same department, fetch from other departments
   if (jobs.length < limit) {
     const moreQuery = `
-      *[_type == "jobPosition" && isActive == true && slug.current != $currentSlug && slug.current !in $existingSlugs][0...$remaining] {
+      *[_type == "jobPosition" && isActive == true && slug.current != $currentSlug && !(slug.current in $existingSlugs)][0...$remaining] {
         _id,
         title,
         slug,
@@ -1534,18 +1534,13 @@ export interface SanityEbook {
   isNew?: boolean
   viewUrl?: string
   pdfFileUrl?: string
-  pages?: number
-  downloads?: string
-  topics?: string[]
   body?: any[]
-  order?: number
-  zohoForm?: ZohoFormData
   seo?: SanitySEO
 }
 
 export async function getAllEbooks(): Promise<SanityEbook[]> {
   const query = `
-    *[_type == "ebook" && ${safePublishedFilter}] | order(order asc, year desc) {
+    *[_type == "ebook" && ${safePublishedFilter}] | order(year desc) {
       _id,
       title,
       slug,
@@ -1556,21 +1551,7 @@ export async function getAllEbooks(): Promise<SanityEbook[]> {
       featured,
       isNew,
       viewUrl,
-      "pdfFileUrl": pdfFile.asset->url,
-      pages,
-      downloads,
-      topics,
-      order,
-      zohoForm->{
-        _id,
-        name,
-        formUrl,
-        formType,
-        "displayMode": embedSettings.displayMode,
-        "height": embedSettings.height,
-        "width": embedSettings.width,
-        isActive
-      }
+      "pdfFileUrl": pdfFile.asset->url
     }
   `
   return safeFetch(query)
@@ -1590,9 +1571,6 @@ export async function getEbookBySlug(slug: string): Promise<SanityEbook | null> 
       isNew,
       viewUrl,
       "pdfFileUrl": pdfFile.asset->url,
-      pages,
-      downloads,
-      topics,
       body[]{
         ...,
         _type == "video" => {
@@ -1601,18 +1579,7 @@ export async function getEbookBySlug(slug: string): Promise<SanityEbook | null> 
           "videoFileMimeType": videoFile.asset->mimeType
         }
       },
-      order,
-      seo,
-      zohoForm->{
-        _id,
-        name,
-        formUrl,
-        formType,
-        "displayMode": embedSettings.displayMode,
-        "height": embedSettings.height,
-        "width": embedSettings.width,
-        isActive
-      }
+      seo
     }
   `
   return safeFetch(query, { slug })
@@ -1630,11 +1597,7 @@ export async function getFeaturedEbook(): Promise<SanityEbook | null> {
       year,
       featured,
       isNew,
-      viewUrl,
-      pages,
-      downloads,
-      topics,
-      order
+      viewUrl
     }
   `
   return safeFetch(query)
@@ -1642,7 +1605,7 @@ export async function getFeaturedEbook(): Promise<SanityEbook | null> {
 
 export async function getEbooksByCategory(category: string): Promise<SanityEbook[]> {
   const query = `
-    *[_type == "ebook" && ${safePublishedFilter} && category == $category] | order(order asc) {
+    *[_type == "ebook" && ${safePublishedFilter} && category == $category] | order(year desc) {
       _id,
       title,
       slug,
@@ -1653,11 +1616,7 @@ export async function getEbooksByCategory(category: string): Promise<SanityEbook
       featured,
       isNew,
       viewUrl,
-      "pdfFileUrl": pdfFile.asset->url,
-      pages,
-      downloads,
-      topics,
-      order
+      "pdfFileUrl": pdfFile.asset->url
     }
   `
   return safeFetch(query, { category })
@@ -1678,17 +1637,7 @@ export function transformEbook(ebook: SanityEbook) {
     featured: ebook.featured || false,
     isNew: ebook.isNew || false,
     viewUrl: viewUrl,
-    pages: ebook.pages || 0,
-    downloads: ebook.downloads || '0',
-    topics: ebook.topics || [],
     body: ebook.body || [],
-    zohoForm: ebook.zohoForm && ebook.zohoForm.isActive !== false ? {
-      formUrl: ebook.zohoForm.formUrl,
-      name: ebook.zohoForm.name,
-      displayMode: ebook.zohoForm.displayMode || 'modal',
-      height: ebook.zohoForm.height || 600,
-      width: ebook.zohoForm.width || '100%',
-    } : undefined,
   }
 }
 

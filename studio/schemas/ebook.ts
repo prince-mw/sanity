@@ -36,13 +36,6 @@ export default defineType({
       group: 'publishing',
     }),
     defineField({
-      name: 'scheduledPublishAt',
-      title: 'Scheduled Publish Date',
-      type: 'datetime',
-      description: 'Set a future date to automatically publish this content',
-      group: 'publishing',
-    }),
-    defineField({
       name: 'title',
       title: 'Title',
       type: 'string',
@@ -119,14 +112,6 @@ export default defineType({
       group: 'details',
     }),
     defineField({
-      name: 'zohoForm',
-      title: 'Download Form',
-      type: 'reference',
-      to: [{type: 'zohoForm'}],
-      description: 'Select a Zoho form for lead capture before download',
-      group: 'details',
-    }),
-    defineField({
       name: 'pdfFile',
       title: 'PDF File',
       type: 'file',
@@ -134,26 +119,6 @@ export default defineType({
         accept: '.pdf',
       },
       group: 'content',
-    }),
-    defineField({
-      name: 'pages',
-      title: 'Number of Pages',
-      type: 'number',
-      group: 'details',
-    }),
-    defineField({
-      name: 'downloads',
-      title: 'Downloads Count',
-      type: 'string',
-      description: 'e.g., "5.2K+"',
-      group: 'details',
-    }),
-    defineField({
-      name: 'topics',
-      title: 'Topics',
-      type: 'array',
-      of: [{type: 'string'}],
-      group: 'details',
     }),
     defineField({
       name: 'body',
@@ -200,13 +165,6 @@ export default defineType({
       group: 'content',
     }),
     defineField({
-      name: 'order',
-      title: 'Display Order',
-      type: 'number',
-      description: 'Lower numbers appear first',
-      group: 'publishing',
-    }),
-    defineField({
       name: 'seo',
       title: 'SEO',
       type: 'seo',
@@ -215,11 +173,6 @@ export default defineType({
     }),
   ],
   orderings: [
-    {
-      title: 'Display Order',
-      name: 'orderAsc',
-      by: [{field: 'order', direction: 'asc'}],
-    },
     {
       title: 'Year (Newest)',
       name: 'yearDesc',

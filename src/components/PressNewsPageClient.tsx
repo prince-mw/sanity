@@ -3,7 +3,10 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
+import { useState } from 'react'
 import ContactForm from './ContactForm'
+
+const ITEMS_PER_PAGE = 12
 
 export interface PressRelease {
   date: string
@@ -19,6 +22,28 @@ interface PressNewsPageClientProps {
 }
 
 export default function PressNewsPageClient({ pressReleases }: PressNewsPageClientProps) {
+  const [currentPage, setCurrentPage] = useState(1)
+
+  const totalPages = Math.ceil(pressReleases.length / ITEMS_PER_PAGE)
+  const paginatedPressReleases = pressReleases.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  )
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    } else if (currentPage <= 3) {
+      pages.push(1, 2, 3, 4, "...", totalPages)
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages)
+    } else {
+      pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages)
+    }
+    return pages
+  }
+
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -70,7 +95,7 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
                 <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Press Releases</h3>
                 <p className="text-mw-gray-500 max-w-md mx-auto">There are no press releases available at the moment. Check back soon for the latest announcements.</p>
               </div>
-            ) : pressReleases.map((release, index) => (
+            ) : paginatedPressReleases.map((release, index) => (
               <motion.article
                 key={index}
                 initial={{ opacity: 0, y: 20 }}
@@ -160,6 +185,45 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
               </motion.article>
             ))}
           </div>
+
+          {totalPages > 1 && (
+            <div className="mt-12 flex justify-center">
+              <nav className="flex items-center gap-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Previous
+                </button>
+
+                {getPageNumbers().map((page, index) => (
+                  <button
+                    key={index}
+                    onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                    disabled={page === "..."}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                      page === currentPage
+                        ? "bg-mw-blue-600 text-white"
+                        : page === "..."
+                        ? "text-mw-gray-400 cursor-default"
+                        : "border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next
+                </button>
+              </nav>
+            </div>
+          )}
         </div>
       </section>
 

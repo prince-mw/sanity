@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import ContactForm from './ContactForm'
 import { CareersPageContent } from '@/sanity/lib/fetch'
 
 export interface JobPosition {
@@ -92,10 +91,6 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
   const departmentsData = pageContent?.departments?.length ? pageContent.departments : defaultDepartments
   const openPositionsTitle = pageContent?.openPositionsTitle || 'Open Positions'
   const openPositionsDescription = pageContent?.openPositionsDescription || 'Ready to make an impact? Explore our current openings and find your next opportunity.'
-  const ctaTitle = pageContent?.ctaTitle || "Don't See Your Perfect Role?"
-  const ctaDescription = pageContent?.ctaDescription || "We're always looking for exceptional talent. Send us your resume and let us know how you'd like to contribute to our mission of transforming advertising."
-  const ctaPrimaryButtonText = pageContent?.ctaPrimaryButtonText || 'Send Your Resume'
-  const ctaPrimaryButtonLink = pageContent?.ctaPrimaryButtonLink || '#contact'
 
   return (
     <div className="min-h-screen bg-white">
@@ -389,39 +384,6 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
           </div>
         </div>
       </section>
-
-      {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center text-white"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              {ctaTitle}
-            </h2>
-            <p className="text-xl text-mw-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
-              {ctaDescription}
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href={ctaPrimaryButtonLink}
-                className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-mw-gray-50 text-mw-blue-600 font-semibold rounded-lg transition-colors shadow-lg"
-              >
-                {ctaPrimaryButtonText}
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      <ContactForm />
 
       {/* Application Form Modal */}
       {applicationModal.isOpen && applicationModal.formUrl && (

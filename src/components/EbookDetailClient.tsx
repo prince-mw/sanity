@@ -1,20 +1,10 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useState } from 'react'
-import { usePathname } from 'next/navigation'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { PortableText } from '@portabletext/react'
 import SanityPortableText from '@/components/SanityPortableText'
-import { appendReferrerName } from '@/lib/referrerName'
-
-interface ZohoFormConfig {
-  formUrl?: string
-  name: string
-  displayMode: 'iframe' | 'modal' | 'newtab'
-  height: number
-  width: string
-}
+import { useZohoPopup } from './ZohoPopupProvider'
 
 interface Ebook {
   id: string
@@ -27,11 +17,7 @@ interface Ebook {
   featured?: boolean
   isNew?: boolean
   viewUrl?: string
-  pages?: number
-  downloads?: string
-  topics?: string[]
   body?: any[]
-  zohoForm?: ZohoFormConfig
 }
 
 interface EbookDetailClientProps {
@@ -39,166 +25,14 @@ interface EbookDetailClientProps {
   relatedEbooks: Ebook[]
 }
 
-// Download Modal Component
-const DownloadModal = ({ 
-  isOpen, 
-  onClose, 
-  ebook 
-}: { 
-  isOpen: boolean; 
-  onClose: () => void; 
-  ebook: Ebook | null 
-}) => {
-  const [email, setEmail] = useState('')
-  const [name, setName] = useState('')
-  const [company, setCompany] = useState('')
-  const [submitted, setSubmitted] = useState(false)
-  const pathname = usePathname()
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => {
-      onClose()
-      setSubmitted(false)
-      setEmail('')
-      setName('')
-      setCompany('')
-    }, 2000)
-  }
-
-  if (!isOpen || !ebook) return null
-
-  const hasZohoForm = ebook.zohoForm && ebook.zohoForm.formUrl
-
-  return (
-    <AnimatePresence>
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      >
-        <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          className={`bg-white rounded-2xl shadow-2xl w-full p-6 md:p-8 ${hasZohoForm ? 'max-w-2xl' : 'max-w-md'}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {hasZohoForm ? (
-            <>
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Get Your Copy</h3>
-                  <p className="text-sm text-gray-500 mt-1">{ebook.title}</p>
-                </div>
-                <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              <div className="overflow-hidden rounded-lg">
-                <iframe
-                  src={appendReferrerName(ebook.zohoForm!.formUrl!, pathname)}
-                  width={ebook.zohoForm!.width || '100%'}
-                  height={ebook.zohoForm!.height || 600}
-                  style={{ border: 'none' }}
-                  title={ebook.zohoForm!.name || 'Download Form'}
-                  loading="lazy"
-                />
-              </div>
-            </>
-          ) : !submitted ? (
-            <>
-              <div className="flex justify-between items-start mb-6">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Download E-Book</h3>
-                  <p className="text-sm text-gray-500 mt-1">Fill in your details to get instant access</p>
-                </div>
-                <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              
-              <div className="bg-gray-50 rounded-lg p-4 mb-6">
-                <p className="font-medium text-gray-900 text-sm line-clamp-2">{ebook.title}</p>
-                <span className="inline-block mt-2 text-xs bg-mw-blue-100 text-mw-blue-700 px-2 py-1 rounded-full">
-                  {ebook.category}
-                </span>
-              </div>
-
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                  <input
-                    type="text"
-                    id="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Work Email</label>
-                  <input
-                    type="email"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="john@company.com"
-                  />
-                </div>
-                <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">Company</label>
-                  <input
-                    type="text"
-                    id="company"
-                    value={company}
-                    onChange={(e) => setCompany(e.target.value)}
-                    required
-                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent outline-none transition-all"
-                    placeholder="Your Company"
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="w-full bg-mw-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-mw-blue-700 transition-colors flex items-center justify-center gap-2"
-                >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
-                  Download Now
-                </button>
-              </form>
-            </>
-          ) : (
-            <div className="text-center py-8">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Download Started!</h3>
-              <p className="text-gray-500">Your e-book is being downloaded. Check your downloads folder.</p>
-            </div>
-          )}
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  )
-}
-
 export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailClientProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const { openZohoPopup } = useZohoPopup()
+
+  const handleDownload = () => {
+    if (ebook.viewUrl) {
+      openZohoPopup(ebook.viewUrl, ebook.title)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -259,20 +93,9 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
                 {ebook.description}
               </p>
 
-              <div className="flex flex-wrap items-center gap-6 mb-8">
-                {ebook.pages && ebook.pages > 0 && (
-                  <div className="flex items-center gap-2 text-mw-blue-100">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                    </svg>
-                    <span>{ebook.pages} pages</span>
-                  </div>
-                )}
-              </div>
-
               <div className="flex flex-wrap gap-4">
                 <button
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={handleDownload}
                   className="bg-white text-mw-blue-600 px-8 py-4 rounded-lg font-semibold flex items-center gap-2 hover:bg-mw-blue-50 transition-colors shadow-lg"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -280,20 +103,6 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
                   </svg>
                   Download Free E-Book
                 </button>
-                {ebook.viewUrl && ebook.viewUrl !== '#' && (
-                  <a
-                    href={ebook.viewUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold flex items-center gap-2 hover:bg-white/10 transition-colors"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                    </svg>
-                    Preview E-Book
-                  </a>
-                )}
               </div>
             </motion.div>
 
@@ -317,33 +126,6 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
         </div>
       </section>
 
-      {/* Topics Section */}
-      {ebook.topics && ebook.topics.length > 0 && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-gray-900 mb-8">What You'll Learn</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {ebook.topics.map((topic, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  className="flex items-start gap-4 p-6 bg-gray-50 rounded-xl"
-                >
-                  <div className="flex-shrink-0 w-10 h-10 bg-mw-blue-100 rounded-lg flex items-center justify-center">
-                    <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                  </div>
-                  <p className="text-gray-700">{topic}</p>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* Body Content Section */}
       {ebook.body && ebook.body.length > 0 && (
@@ -383,11 +165,11 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
                   transition={{ delay: index * 0.1 }}
                   className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden">
-                    <img 
-                      src={relatedEbook.image} 
+                  <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                    <img
+                      src={relatedEbook.image}
                       alt={relatedEbook.title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
                     />
                     <div className="absolute top-4 right-4">
                       <span className="bg-white/90 backdrop-blur-sm text-gray-700 text-xs font-medium px-3 py-1 rounded-full">
@@ -419,13 +201,6 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
           </div>
         </section>
       )}
-
-      {/* Download Modal */}
-      <DownloadModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        ebook={ebook}
-      />
     </div>
   )
 }

@@ -1,8 +1,11 @@
 'use client'
 
 import Link from 'next/link'
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { useZohoPopup } from './ZohoPopupProvider'
+
+const ITEMS_PER_PAGE = 12
 
 // Animation variants
 const fadeUp = {
@@ -20,15 +23,6 @@ const staggerItem = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
 }
 
-// Zoho Form interface
-interface ZohoFormConfig {
-  formUrl?: string
-  name: string
-  displayMode: 'iframe' | 'modal' | 'newtab'
-  height: number
-  width: string
-}
-
 // E-Book type
 export interface Ebook {
   id: number | string
@@ -42,173 +36,10 @@ export interface Ebook {
   new?: boolean
   year: string
   viewUrl?: string
-  pages?: number
-  downloads?: string
-  topics?: string[]
-  zohoForm?: ZohoFormConfig
 }
 
 // Categories for filtering
 const categories = ["All", "Guide", "Whitepaper", "Playbook", "Market Report"]
-
-// Download Modal Component - Now supports Zoho Forms
-const DownloadModal = ({ 
-  isOpen, 
-  onClose, 
-  ebook 
-}: { 
-  isOpen: boolean; 
-  onClose: () => void; 
-  ebook: Ebook | null 
-}) => {
-  const [email, setEmail] = React.useState('')
-  const [name, setName] = React.useState('')
-  const [company, setCompany] = React.useState('')
-  const [submitted, setSubmitted] = React.useState(false)
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setSubmitted(true)
-    setTimeout(() => {
-      onClose()
-      setSubmitted(false)
-      setEmail('')
-      setName('')
-      setCompany('')
-    }, 2000)
-  }
-
-  if (!isOpen || !ebook) return null
-
-  // If ebook has a Zoho form configured, show the Zoho form iframe
-  const hasZohoForm = ebook.zohoForm && ebook.zohoForm.formUrl
-
-  return (
-    <AnimatePresence>
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-        onClick={onClose}
-      >
-        <motion.div 
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          exit={{ scale: 0.9, opacity: 0 }}
-          className={`bg-white rounded-2xl shadow-2xl w-full p-6 md:p-8 ${hasZohoForm ? 'max-w-2xl' : 'max-w-md'}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {hasZohoForm ? (
-            // Zoho Form Embed
-            <>
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">Get Your Copy</h3>
-                  <p className="text-sm text-gray-500 mt-1">{ebook.title}</p>
-                </div>
-                <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-              <div className="overflow-hidden rounded-lg">
-                <iframe
-                  src={ebook.zohoForm!.formUrl}
-                  width={ebook.zohoForm!.width || '100%'}
-                  height={ebook.zohoForm!.height || 600}
-                  style={{ border: 'none' }}
-                  title={ebook.zohoForm!.name || 'Download Form'}
-                  loading="lazy"
-                />
-              </div>
-            </>
-          ) : !submitted ? (
-          <>
-            <div className="flex justify-between items-start mb-6">
-              <div>
-                <h3 className="text-xl font-bold text-gray-900">Download E-Book</h3>
-                <p className="text-sm text-gray-500 mt-1">Fill in your details to get instant access</p>
-              </div>
-              <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="bg-gray-50 rounded-lg p-4 mb-6">
-              <p className="font-medium text-gray-900 text-sm line-clamp-2">{ebook.title}</p>
-              <span className="inline-block mt-2 text-xs bg-mw-blue-100 text-mw-blue-700 px-2 py-1 rounded-full">
-                {ebook.category}
-              </span>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
-                <input
-                  type="text"
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent outline-none transition-all"
-                  placeholder="John Doe"
-                />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Work Email</label>
-                <input
-                  type="email"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent outline-none transition-all"
-                  placeholder="john@company.com"
-                />
-              </div>
-              <div>
-                <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-1">Company</label>
-                <input
-                  type="text"
-                  id="company"
-                  value={company}
-                  onChange={(e) => setCompany(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent outline-none transition-all"
-                  placeholder="Your Company"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full bg-mw-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-mw-blue-700 transition-colors flex items-center justify-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-                Download Now
-              </button>
-            </form>
-          </>
-        ) : (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Download Started!</h3>
-            <p className="text-gray-500">Your e-book is being downloaded. Check your downloads folder.</p>
-          </div>
-        )}
-        </motion.div>
-      </motion.div>
-    </AnimatePresence>
-  )
-}
 
 // E-Book Card Component
 const EbookCard = ({ 
@@ -222,11 +53,11 @@ const EbookCard = ({
     variants={staggerItem}
     className="group bg-white rounded-md overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
   >
-    <div className="relative aspect-[4/3] overflow-hidden">
-      <img 
-        src={ebook.image} 
+    <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+      <img
+        src={ebook.image}
         alt={ebook.title}
-        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
       
@@ -245,31 +76,6 @@ const EbookCard = ({
         </span>
       </div>
 
-      <div className="absolute inset-0 flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        {ebook.viewUrl && ebook.viewUrl !== '#' && (
-          <a
-            href={ebook.viewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white text-mw-blue-600 px-5 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-mw-blue-50 shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            View
-          </a>
-        )}
-        <button
-          onClick={() => onDownload(ebook)}
-          className="bg-mw-blue-600 text-white px-5 py-3 rounded-lg font-semibold flex items-center gap-2 hover:bg-mw-blue-700 shadow-lg translate-y-4 group-hover:translate-y-0 transition-all duration-300 delay-75"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Download
-        </button>
-      </div>
     </div>
 
     <div className="p-6">
@@ -277,31 +83,22 @@ const EbookCard = ({
         <span className="text-xs text-gray-400">{ebook.year}</span>
       </div>
       <h3 className="font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-mw-blue-600 transition-colors">
-        {ebook.title}
+        {ebook.slug ? (
+          <Link href={`/ebooks/${ebook.slug}`}>{ebook.title}</Link>
+        ) : (
+          ebook.title
+        )}
       </h3>
       <p className="text-sm text-gray-500 line-clamp-2 mb-4">
         {ebook.description}
       </p>
       <div className="flex items-center gap-4">
-        {ebook.viewUrl && ebook.viewUrl !== '#' && (
-          <a
-            href={ebook.viewUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-gray-600 font-medium text-sm flex items-center gap-1 hover:text-mw-blue-600 hover:gap-2 transition-all"
-          >
-            View E-Book
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-            </svg>
-          </a>
-        )}
         {ebook.slug && (
           <Link
             href={`/ebooks/${ebook.slug}`}
             className="text-mw-blue-600 font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all"
           >
-            View Details
+            Read More
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -327,18 +124,44 @@ interface EbooksPageClientProps {
 
 export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
   const [activeCategory, setActiveCategory] = useState("All")
-  const [selectedEbook, setSelectedEbook] = useState<Ebook | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const { openZohoPopup } = useZohoPopup()
 
-  const filteredEbooks = activeCategory === "All" 
-    ? ebooks 
+  const filteredEbooks = activeCategory === "All"
+    ? ebooks
     : ebooks.filter(ebook => ebook.category === activeCategory)
+
+  const totalPages = Math.ceil(filteredEbooks.length / ITEMS_PER_PAGE)
+  const paginatedEbooks = filteredEbooks.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  )
+
+  const handleCategoryChange = (category: string) => {
+    setActiveCategory(category)
+    setCurrentPage(1)
+  }
+
+  const getPageNumbers = () => {
+    const pages: (number | string)[] = []
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i)
+    } else if (currentPage <= 3) {
+      pages.push(1, 2, 3, 4, "...", totalPages)
+    } else if (currentPage >= totalPages - 2) {
+      pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages)
+    } else {
+      pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages)
+    }
+    return pages
+  }
 
   const featuredEbook = ebooks.find(ebook => ebook.featured)
 
   const handleDownload = (ebook: Ebook) => {
-    setSelectedEbook(ebook)
-    setIsModalOpen(true)
+    if (ebook.viewUrl) {
+      openZohoPopup(ebook.viewUrl, ebook.title)
+    }
   }
 
   return (
@@ -393,22 +216,35 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
                   <p className="text-lg text-white/80 mb-8">
                     {featuredEbook.description}
                   </p>
-                  <button
-                    onClick={() => handleDownload(featuredEbook)}
-                    className="inline-flex items-center gap-2 bg-white text-mw-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-mw-blue-50 transition-colors shadow-lg"
-                  >
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                    </svg>
-                    Download Free E-Book
-                  </button>
+                  <div className="flex flex-wrap gap-4">
+                    <button
+                      onClick={() => handleDownload(featuredEbook)}
+                      className="inline-flex items-center gap-2 bg-white text-mw-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-mw-blue-50 transition-colors shadow-lg"
+                    >
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Download Free E-Book
+                    </button>
+                    {featuredEbook.slug && (
+                      <Link
+                        href={`/ebooks/${featuredEbook.slug}`}
+                        className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-colors"
+                      >
+                        Read More
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </Link>
+                    )}
+                  </div>
                 </div>
                 <div className="relative">
-                  <div className="aspect-[4/3] rounded-md overflow-hidden shadow-2xl transform lg:translate-x-8 lg:-translate-y-4 rotate-2 hover:rotate-0 transition-transform duration-500">
-                    <img 
-                      src={featuredEbook.image} 
+                  <div className="aspect-[4/3] rounded-md overflow-hidden shadow-2xl transform lg:translate-x-8 lg:-translate-y-4 rotate-2 hover:rotate-0 transition-transform duration-500 bg-gray-100">
+                    <img
+                      src={featuredEbook.image}
                       alt={featuredEbook.title}
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-contain"
                     />
                   </div>
                   <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
@@ -434,7 +270,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
             {categories.map((category) => (
               <button
                 key={category}
-                onClick={() => setActiveCategory(category)}
+                onClick={() => handleCategoryChange(category)}
                 className={`px-6 py-3 rounded-full font-medium transition-all ${
                   activeCategory === category
                     ? 'bg-mw-blue-600 text-white shadow-lg'
@@ -463,7 +299,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
             variants={staggerContainer}
             className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
           >
-            {filteredEbooks.map((ebook) => (
+            {paginatedEbooks.map((ebook) => (
               <EbookCard key={ebook.id} ebook={ebook} onDownload={handleDownload} />
             ))}
           </motion.div>
@@ -473,15 +309,47 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
               <p className="text-gray-500 text-lg">No e-books found in this category.</p>
             </div>
           )}
+
+          {totalPages > 1 && (
+            <div className="mt-12 flex justify-center">
+              <nav className="flex items-center gap-2">
+                <button
+                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Previous
+                </button>
+
+                {getPageNumbers().map((page, index) => (
+                  <button
+                    key={index}
+                    onClick={() => typeof page === 'number' && setCurrentPage(page)}
+                    disabled={page === "..."}
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
+                      page === currentPage
+                        ? "bg-mw-blue-600 text-white"
+                        : page === "..."
+                        ? "text-gray-400 cursor-default"
+                        : "border border-gray-300 text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    {page}
+                  </button>
+                ))}
+
+                <button
+                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  Next
+                </button>
+              </nav>
+            </div>
+          )}
         </div>
       </section>
-
-      {/* Download Modal */}
-      <DownloadModal 
-        isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
-        ebook={selectedEbook} 
-      />
     </div>
   )
 }

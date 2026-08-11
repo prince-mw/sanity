@@ -10,6 +10,7 @@ import GlobalSearch from "./GlobalSearch";
 import { CTAButton } from "./CTAButton";
 import { useZohoPopup } from "./ZohoPopupProvider";
 import { LOCATION_LANGUAGE_GROUPS, getLocationGroupKeyForLocale, getLocationSlugFromPathname } from "@/lib/locationLanguageGroups";
+import { BLOG_LANGUAGE_GROUPS, getBlogGroupKeyForLocale, getBlogSlugFromPathname } from "@/lib/blogLanguageGroups";
 
 // A field translated per-locale in Sanity (see studio's `localeString` schema) — English is the
 // only guaranteed value, other locales are filled in progressively by content editors.
@@ -254,13 +255,19 @@ export default function Header({ sanityMenuData }: HeaderProps) {
   const router = useRouter();
 
   // Picking a language normally just swaps UI chrome strings in place (see LocaleContext).
-  // But if the current page is a location page with a real translated sibling document
-  // (e.g. /locations/china <-> /locations/china-zh), redirect there instead so the visitor
-  // actually sees translated page content, not just translated nav/buttons around English content.
+  // But if the current page is a location page or blog post with a real translated sibling
+  // document (e.g. /locations/china <-> /locations/china-zh, or a blog post's -zh slug),
+  // redirect there instead so the visitor actually sees translated page content, not just
+  // translated nav/buttons around English content.
   const handleLanguageSelect = (newLocale: Locale) => {
-    const currentSlug = getLocationSlugFromPathname(pathname);
-    const groupKey = getLocationGroupKeyForLocale(newLocale);
-    const targetUrl = currentSlug && groupKey ? LOCATION_LANGUAGE_GROUPS[currentSlug]?.[groupKey] : undefined;
+    const locationSlug = getLocationSlugFromPathname(pathname);
+    const locationGroupKey = getLocationGroupKeyForLocale(newLocale);
+    const blogSlug = getBlogSlugFromPathname(pathname);
+    const blogGroupKey = getBlogGroupKeyForLocale(newLocale);
+
+    const targetUrl =
+      (locationSlug && locationGroupKey ? LOCATION_LANGUAGE_GROUPS[locationSlug]?.[locationGroupKey] : undefined) ??
+      (blogSlug && blogGroupKey ? BLOG_LANGUAGE_GROUPS[blogSlug]?.[blogGroupKey] : undefined);
 
     setLocale(newLocale);
 

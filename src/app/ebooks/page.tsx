@@ -41,9 +41,7 @@ const fallbackEbooks: Ebook[] = [
     image: "/assets/images/ebooks/programmatic-dooh-guide.jpg",
     featured: true,
     isNew: true,
-    year: "2026",
-    viewUrl: "#"
-  },
+    year: "2026"  },
   {
     id: 2,
     title: "OOH Measurement Playbook",
@@ -51,9 +49,7 @@ const fallbackEbooks: Ebook[] = [
     category: "Playbook",
     image: "/assets/images/ebooks/measurement-playbook.jpg",
     featured: false,
-    year: "2025",
-    viewUrl: "#"
-  },
+    year: "2025"  },
   {
     id: 3,
     title: "APAC OOH Market Report 2025",
@@ -62,9 +58,7 @@ const fallbackEbooks: Ebook[] = [
     image: "/assets/images/ebooks/apac-market-report.jpg",
     featured: false,
     isNew: true,
-    year: "2025",
-    viewUrl: "#"
-  },
+    year: "2025"  },
   {
     id: 4,
     title: "Audience Targeting in OOH: A Strategic Guide",
@@ -72,9 +66,7 @@ const fallbackEbooks: Ebook[] = [
     category: "Guide",
     image: "/assets/images/ebooks/audience-targeting-guide.jpg",
     featured: false,
-    year: "2025",
-    viewUrl: "#"
-  },
+    year: "2025"  },
   {
     id: 5,
     title: "The Future of Retail Media Networks",
@@ -82,9 +74,7 @@ const fallbackEbooks: Ebook[] = [
     category: "Whitepaper",
     image: "/assets/images/ebooks/retail-media-whitepaper.jpg",
     featured: false,
-    year: "2025",
-    viewUrl: "#"
-  },
+    year: "2025"  },
   {
     id: 6,
     title: "Creative Best Practices for DOOH",
@@ -92,9 +82,7 @@ const fallbackEbooks: Ebook[] = [
     category: "Playbook",
     image: "/assets/images/ebooks/creative-best-practices.jpg",
     featured: false,
-    year: "2024",
-    viewUrl: "#"
-  }
+    year: "2024"  }
 ]
 
 export default async function EbooksPage() {
@@ -116,11 +104,7 @@ export default async function EbooksPage() {
           featured: transformed.featured,
           isNew: transformed.isNew,
           year: transformed.year || '2025',
-          viewUrl: transformed.viewUrl || '#',
-          pages: transformed.pages,
-          downloads: transformed.downloads,
-          topics: transformed.topics,
-          zohoForm: transformed.zohoForm
+          viewUrl: transformed.viewUrl
         }
       })
     }
