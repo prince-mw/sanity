@@ -97,7 +97,7 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
               </div>
             ) : paginatedPressReleases.map((release, index) => (
               <motion.article
-                key={index}
+                key={`${currentPage}-${index}`}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
