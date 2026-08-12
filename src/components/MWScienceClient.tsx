@@ -1,99 +1,279 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import { CTAButton } from '@/components/CTAButton'
 import Image from 'next/image'
-import type { SanityProduct } from '@/sanity/lib/fetch'
+
+// ─── ICONS ─────────────────────────────────────────────────────────────────────
+// Hand-drawn, Heroicons-outline-style inline SVGs (this codebase never installs an
+// icon library — every product page hand-writes these). 24x24 viewBox, strokeWidth 2.
+
+const ArrowRightIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+  </svg>
+)
+
+const AudienceIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M18 18.72a9.09 9.09 0 0 0 3.74-.48 3 3 0 0 0-4.68-2.72M15 6.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm6 3a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Zm-13.5 0a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M6.94 15.52A3 3 0 0 0 2.26 18.24a8.99 8.99 0 0 0 3.74.48M6 18.72c0 .23.01.45.04.67A11.94 11.94 0 0 0 12 21c2.17 0 4.2-.58 5.96-1.58.03-.22.04-.44.04-.67m-12-3.2a5.97 5.97 0 0 1 5.06-2.78c2.1 0 3.96 1.08 5.06 2.78" />
+  </svg>
+)
+
+const LocationIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.14-7.5 11.25-7.5 11.25S4.5 17.64 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+  </svg>
+)
+
+const MediaIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M9.35 14.65a3.75 3.75 0 0 1 0-5.3m5.3 0a3.75 3.75 0 0 1 0 5.3M6.23 17.77a6.75 6.75 0 0 1 0-9.55m11.54 0a6.75 6.75 0 0 1 0 9.55M3.1 20.9c-3.8-3.81-3.8-9.98 0-13.79m17.8 0c3.8 3.81 3.8 9.98 0 13.79M12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z" />
+  </svg>
+)
+
+const BrandIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.5a.56.56 0 0 1 1.04 0l2.13 5.11c.06.15.2.25.36.27l5.52.44c.5.04.7.66.32.99l-4.2 3.6a.56.56 0 0 0-.18.56l1.28 5.39a.56.56 0 0 1-.84.6l-4.73-2.88a.56.56 0 0 0-.58 0l-4.73 2.88a.56.56 0 0 1-.84-.6l1.28-5.39a.56.56 0 0 0-.18-.56l-4.2-3.6a.56.56 0 0 1 .32-.99l5.52-.44a.56.56 0 0 0 .36-.27L11.48 3.5Z" />
+  </svg>
+)
+
+const OutcomeIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <circle cx="12" cy="12" r="8.25" />
+    <circle cx="12" cy="12" r="4.5" />
+    <circle cx="12" cy="12" r="1" fill="currentColor" stroke="none" />
+  </svg>
+)
+
+const CompassIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <circle cx="12" cy="12" r="8.25" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15.3 8.7l-1.8 4.6a1 1 0 0 1-.6.58l-4.2 1.42 1.8-4.6a1 1 0 0 1 .6-.58l4.2-1.42Z" />
+  </svg>
+)
+
+const TrendingUpIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M3 17l6-6 4 4 8-8" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M15 6h6v6" />
+  </svg>
+)
+
+const PulseIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M22 12h-4l-3 9L9 3l-3 9H2" />
+  </svg>
+)
+
+const SlidersIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M1 14h6M9 8h6M17 16h6" />
+  </svg>
+)
+
+const SearchIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <circle cx="11" cy="11" r="7" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-4.35-4.35" />
+  </svg>
+)
+
+const MapIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M1 6v15l7-4 8 4 7-4V2l-7 4-8-4-7 4Z" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M8 2v15M16 6v15" />
+  </svg>
+)
+
+const BuildingIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <rect x="4" y="2" width="16" height="20" rx="1" strokeLinejoin="round" />
+    <path strokeLinecap="round" d="M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M10 22v-4h4v4" />
+  </svg>
+)
+
+const EyeIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+)
+
+const FilterIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M22 3H2l8 9.46V19l4 2v-8.54L22 3Z" />
+  </svg>
+)
 
 // ─── DATA ──────────────────────────────────────────────────────────────────────
 
-const PILLARS = [
+const FRAMEWORK_STAGES = [
   {
-    id: 'experience',
-    label: 'Experience',
-    title: 'Experience Intelligence',
-    desc: 'Understanding how people experience brands across every interaction and every moment that shapes decision-making.',
-    themes: ['Customer journeys', 'Experience design', 'Behavioural signals', 'Moments that matter'],
-    capabilities: [
-      'CX measurement and monitoring',
-      'CSAT and NPS tracking',
-      'Real-time feedback collection',
-      'Experience journey analysis',
-      'Operational improvement insights',
-    ],
-    accent: 'bg-mw-blue-600', text: 'text-mw-blue-600', bg: 'bg-mw-blue-50', border: 'border-mw-blue-200', badge: 'bg-mw-blue-100 text-mw-blue-700',
+    id: 'thread',
+    kicker: '01',
+    label: 'THREAD',
+    tag: 'The lived experience.',
+    body: 'A journey, interaction, visit, exposure or behaviour before meaning is assigned.',
   },
   {
-    id: 'media',
-    label: 'Media',
-    title: 'Media Intelligence',
-    desc: 'Helping brands understand what media works, why it works, and how to continuously improve performance across channels.',
-    themes: ['Media effectiveness', 'Planning', 'Optimisation', 'Campaign performance'],
-    capabilities: [
-      'OOH measurement and attribution',
-      'Cross-channel effectiveness analysis',
-      'Incrementality science',
-      'Campaign performance forecasting',
-      'Media mix optimisation',
+    id: 'signal',
+    kicker: '02',
+    label: 'SIGNAL',
+    tag: 'The meaningful pattern.',
+    body: 'Evidence extracted from real-world behaviour, audiences, media exposure and outcomes.',
+  },
+  {
+    id: 'compass',
+    kicker: '03',
+    label: 'COMPASS',
+    tag: 'The confident decision.',
+    body: 'The confidence needed to plan, optimise, measure and grow.',
+  },
+]
+
+const SIGNALS = [
+  {
+    id: 'audience',
+    label: 'Audience',
+    title: 'Audience Signal',
+    desc: 'Understand who people are, what motivates them and how behaviours evolve.',
+    answers: [
+      'Who are my audiences?',
+      'What influences their decisions?',
+      'How do their preferences change over time?',
     ],
-    accent: 'bg-mw-blue-700', text: 'text-mw-blue-700', bg: 'bg-mw-blue-50', border: 'border-mw-blue-200', badge: 'bg-mw-blue-100 text-mw-blue-700',
+    powers: ['Every product in the Moving Walls ecosystem'],
+    icon: AudienceIcon,
+    accent: 'bg-mw-blue-600', text: 'text-mw-blue-600', bg: 'bg-mw-blue-50', border: 'border-mw-blue-200', badge: 'bg-mw-blue-100 text-mw-blue-700',
   },
   {
     id: 'location',
     label: 'Location',
-    title: 'Location Intelligence',
-    desc: 'Connecting physical environments with consumer behaviour to understand how place influences decisions.',
-    themes: ['Spatial intelligence', 'Mobility', 'Context', 'Footfall'],
-    capabilities: [
-      'Footfall and mobility analysis',
-      'Place-based audience segmentation',
-      'Context-aware targeting',
-      'Physical journey mapping',
-      'Retail environment intelligence',
+    title: 'Location Signal',
+    desc: 'Understand how movement, proximity and place shape behaviour.',
+    answers: [
+      'Where do audiences come from?',
+      'Which locations matter most?',
+      'How does place influence outcomes?',
     ],
-    accent: 'bg-mw-blue-500', text: 'text-mw-blue-500', bg: 'bg-mw-blue-50', border: 'border-mw-blue-200', badge: 'bg-mw-blue-100 text-mw-blue-700',
+    powers: ['Moving Walls Inventory', 'Moving Walls Market', 'Moving Walls Planner'],
+    icon: LocationIcon,
+    accent: 'bg-teal-600', text: 'text-teal-600', bg: 'bg-teal-50', border: 'border-teal-200', badge: 'bg-teal-100 text-teal-700',
   },
   {
-    id: 'audience',
-    label: 'Audience',
-    title: 'Audience Intelligence',
-    desc: 'Moving beyond demographics to understand intent, motivations, behaviours, and evolving audience needs.',
-    themes: ['Behaviour', 'Segmentation', 'Intent', 'Audience evolution'],
-    capabilities: [
-      'Audience personas and segmentation',
-      'Usage and attitude studies',
-      'Consumer journey mapping',
-      'Behavioral and preference analysis',
-      'Market and category intelligence',
+    id: 'media',
+    label: 'Media',
+    title: 'Media Signal',
+    desc: 'Measure exposure, engagement and contribution across channels.',
+    answers: [
+      'Which channels are working?',
+      'Where is media investment creating value?',
+      'How do channels work together?',
     ],
-    accent: 'bg-mw-blue-400', text: 'text-mw-blue-500', bg: 'bg-mw-blue-50', border: 'border-mw-blue-200', badge: 'bg-mw-blue-100 text-mw-blue-700',
+    powers: ['Moving Walls Planner', 'Moving Walls Influence', 'Moving Walls Activate'],
+    icon: MediaIcon,
+    accent: 'bg-violet-600', text: 'text-violet-600', bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-100 text-violet-700',
   },
   {
-    id: 'innovation',
-    label: 'Innovation',
-    title: 'Innovation Intelligence',
-    desc: 'Exploring AI and new methodologies that continuously shape the future of marketing intelligence and decision-making.',
-    themes: ['AI & Machine learning', 'New methodologies', 'Future capabilities', 'Experimentation'],
-    capabilities: [
-      'Concept and creative testing',
-      'Message and product validation',
-      'A/B experimentation frameworks',
-      'Predictive analytics',
-      'AI-powered research synthesis',
+    id: 'brand',
+    label: 'Brand',
+    title: 'Brand Signal',
+    desc: 'Track awareness, preference and perception over time.',
+    answers: [
+      'How is my brand performing?',
+      'What drives consideration and loyalty?',
+      'How do I compare against competitors?',
     ],
-    accent: 'bg-mw-blue-800', text: 'text-mw-blue-800', bg: 'bg-mw-blue-50', border: 'border-mw-blue-200', badge: 'bg-mw-blue-100 text-mw-blue-700',
+    powers: ['Moving Walls Measure'],
+    icon: BrandIcon,
+    accent: 'bg-orange-600', text: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-100 text-orange-700',
+  },
+  {
+    id: 'outcome',
+    label: 'Outcome',
+    title: 'Outcome Signal',
+    desc: 'Connect activity to measurable business impact.',
+    answers: [
+      'What changed?',
+      'What drove the result?',
+      'Where should investment go next?',
+    ],
+    powers: ['Moving Walls Measure'],
+    icon: OutcomeIcon,
+    accent: 'bg-green-600', text: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200', badge: 'bg-green-100 text-green-700',
   },
 ]
 
-const OUTCOMES = [
-  { title: 'Better Customer Understanding', metric: '94%', sub: 'audience prediction accuracy', desc: "Know who your audience is, what they want, and when they're ready to act." },
-  { title: 'Smarter Media Investments', metric: '+287%', sub: 'average audience lift', desc: 'Allocate budgets to the moments and channels that drive measurable impact.' },
-  { title: 'More Effective Planning', metric: '3.2×', sub: 'ROI improvement on planned campaigns', desc: 'Build plans grounded in evidence, not assumption, before spend begins.' },
-  { title: 'Higher Marketing Performance', metric: '40%', sub: 'reduction in wasted spend', desc: 'Continuous optimisation that gets smarter with every campaign cycle.' },
-  { title: 'Continuous Optimisation', metric: '60+', sub: 'signals processed per second', desc: 'Real-time intelligence that adapts as markets and audiences evolve.' },
-  { title: 'Confident Business Decisions', metric: '4B+', sub: 'physical signals analysed', desc: 'Turn physical-world complexity into clear, actionable recommendations.' },
+const SIGNAL_TAG_COLORS: Record<string, string> = {
+  'Audience Signal': 'text-mw-blue-600 bg-mw-blue-50',
+  'Location Signal': 'text-teal-600 bg-teal-50',
+  'Media Signal': 'text-violet-600 bg-violet-50',
+  'Brand Signal': 'text-orange-600 bg-orange-50',
+  'Outcome Signal': 'text-green-600 bg-green-50',
+}
+
+const RESEARCH_SOLUTIONS = [
+  {
+    title: 'Brand Lift Studies',
+    description: 'Measure how campaigns influence awareness, consideration, preference and purchase intent.',
+    tags: ['Brand Signal'],
+    icon: TrendingUpIcon,
+  },
+  {
+    title: 'Brand Health Tracking and Media Effectiveness',
+    description: 'Monitor brand performance and benchmark competitive position over time.',
+    tags: ['Brand Signal', 'Audience Signal'],
+    icon: PulseIcon,
+  },
+  {
+    title: 'Marketing Mix Modelling',
+    description: 'Understand the contribution of every channel and optimise future investment.',
+    tags: ['Media Signal', 'Outcome Signal'],
+    icon: SlidersIcon,
+  },
+  {
+    title: 'Audience Intelligence and Qualitative Research',
+    description: 'Reveal motivations, preferences and behavioural patterns.',
+    tags: ['Audience Signal'],
+    icon: SearchIcon,
+  },
+  {
+    title: 'Location & Place Intelligence',
+    description: 'Understand movement, catchments, visitation patterns and real-world behaviour.',
+    tags: ['Location Signal'],
+    icon: MapIcon,
+  },
+  {
+    title: 'Mall Experience Index',
+    description: 'Measure engagement, loyalty, shopper quality and commercial effectiveness.',
+    tags: ['Location Signal', 'Outcome Signal'],
+    icon: BuildingIcon,
+  },
+]
+
+const RESEARCH_AREAS = [
+  'Brand Lift Studies',
+  'Brand Health Tracking',
+  'Audience Research',
+  'Media Effectiveness and Concept Testing',
+  'Marketing Mix Modelling',
+  'Qualitative Research',
+  'Innovation and Product Development',
+  'Customer Experience',
+  'Custom Research Programmes',
+]
+
+const WHY_COLUMNS = [
+  { icon: EyeIcon, title: 'Read The Real World', body: 'Transform everyday human journeys into measurable signals.' },
+  { icon: FilterIcon, title: 'Extract Meaningful Signals', body: 'Separate what matters from what merely exists.' },
+  { icon: CompassIcon, title: 'Guide Better Decisions', body: 'Ground every decision, before, during and after investment in evidence, not assumption.' },
 ]
 
 const MW_PRODUCTS = [
@@ -107,16 +287,34 @@ const MW_PRODUCTS = [
 
 const TESTIMONIALS = [
   {
-    quote: 'We moved from gut-feel OOH planning to audience-led decisions. MW Science gave us the evidence we needed to justify spend and optimise in real time.',
-    author: 'Head of Media',
-    company: 'Regional FMCG Brand',
-    outcome: '34% reduction in wasted media spend',
+    quote: 'Thanks to their insightful market research, we were able to identify untapped opportunities in our industry and refine our product offerings accordingly. Their expertise truly helped us stay ahead of the competition.',
+    author: 'CEO',
+    company: 'Tech Startup',
   },
   {
-    quote: 'The ability to connect consumer sentiment with physical media performance changed how we brief campaigns. We now plan with confidence, not estimates.',
-    author: 'Chief Marketing Officer',
-    company: 'Telco Group, Southeast Asia',
-    outcome: '2.8× improvement in campaign efficiency',
+    quote: 'Their market research provided invaluable insights into consumer behavior, enabling us to tailor our marketing campaigns for maximum impact. The results were impressive, driving significant growth in sales and brand awareness.',
+    author: 'Marketing Director',
+    company: 'FMCG Company',
+  },
+  {
+    quote: 'We were amazed by the depth of analysis provided in their market research report. It gave us a clear understanding of our target audience and helped us develop products that truly resonate with their needs and preferences.',
+    author: 'Product Development Director',
+    company: 'Consumer Goods Company',
+  },
+  {
+    quote: 'Their thorough market research not only helped us understand market trends but also identified potential risks and challenges that we were able to proactively address. Their strategic recommendations were instrumental in guiding our business decisions.',
+    author: 'CFO',
+    company: 'F&B Chain',
+  },
+  {
+    quote: 'Their market research played a pivotal role in shaping our brand strategy. By understanding consumer perceptions and competitor landscapes, we were able to refine our messaging and establish a stronger brand presence in the market.',
+    author: 'Brand Manager',
+    company: 'Cosmetic Retailer',
+  },
+  {
+    quote: 'The market research conducted by their team provided us with actionable insights that led to significant improvements in our customer experience. We saw a notable increase in customer satisfaction and loyalty as a result of implementing their recommendations.',
+    author: 'Customer Experience Manager',
+    company: 'Hospitality Industry',
   },
 ]
 
@@ -302,6 +500,184 @@ function LivingJourneyMap() {
   )
 }
 
+// ─── SIGNAL CONSTELLATION (hero preview option 2) ─────────────────────────────
+// The five signals as orbiting nodes, each pulsing a connection into the core.
+
+function SignalConstellation() {
+  const nodes = [
+    { label: 'Audience', angle: -90 },
+    { label: 'Location', angle: -18 },
+    { label: 'Media', angle: 54 },
+    { label: 'Brand', angle: 126 },
+    { label: 'Outcome', angle: 198 },
+  ]
+  const CENTER = 150
+  const RADIUS = 118
+  const round = (n: number) => Math.round(n * 1000) / 1000
+  const toXY = (angle: number) => {
+    const rad = (angle * Math.PI) / 180
+    return { x: round(CENTER + RADIUS * Math.cos(rad)), y: round(CENTER + RADIUS * Math.sin(rad)) }
+  }
+  return (
+    <svg viewBox="0 0 300 300" className="w-full max-w-[400px] mx-auto" aria-hidden="true">
+      <defs>
+        <radialGradient id="coreGlow2" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.35" />
+          <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      <ellipse cx={CENTER} cy={CENTER} rx="70" ry="70" fill="url(#coreGlow2)" />
+      {nodes.map((n, i) => {
+        const { x, y } = toXY(n.angle)
+        const path = `M ${x} ${y} L ${CENTER} ${CENTER}`
+        return (
+          <g key={n.label}>
+            <line x1={x} y1={y} x2={CENTER} y2={CENTER} stroke="#60a5fa" strokeOpacity="0.15" strokeWidth="1" />
+            <circle r="2" fill="#93c5fd">
+              <animateMotion dur="3.2s" begin={`${i * 0.5}s`} repeatCount="indefinite" path={path} />
+            </circle>
+            <motion.circle
+              cx={x} cy={y} r="14"
+              fill="#1e3a8a" stroke="#93c5fd" strokeWidth="1.4"
+              initial={{ scale: 0, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.3 + i * 0.15, type: 'spring', stiffness: 140 }}
+            />
+            <motion.text
+              x={x} y={y - 22}
+              textAnchor="middle" fontSize="10.5" fontWeight="500" fill="#bfdbfe" fontFamily="inherit" letterSpacing="0.4"
+              initial={{ opacity: 0 }} animate={{ opacity: 0.9 }} transition={{ duration: 0.8, delay: 0.6 + i * 0.15 }}
+            >
+              {n.label}
+            </motion.text>
+          </g>
+        )
+      })}
+      <motion.g
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8, delay: 1.2, type: 'spring' }}
+      >
+        <circle cx={CENTER} cy={CENTER} r="34" fill="#1e3a8a" stroke="#60a5fa" strokeWidth="1.5" />
+        <text x={CENTER} y={CENTER - 3} textAnchor="middle" fontSize="11" fontWeight="700" fill="#ffffff" fontFamily="inherit" letterSpacing="1">MW</text>
+        <text x={CENTER} y={CENTER + 11} textAnchor="middle" fontSize="9" fontWeight="700" fill="#93c5fd" fontFamily="inherit" letterSpacing="1">SCIENCE</text>
+      </motion.g>
+    </svg>
+  )
+}
+
+// ─── THREAD WEAVE (hero preview option 3) ─────────────────────────────────────
+// Four labelled threads weave down and converge into a single signal.
+
+function ThreadWeave() {
+  const threads = [
+    { label: 'Commute', x: 55, delay: 0 },
+    { label: 'Store Visit', x: 148, delay: 1 },
+    { label: 'Media Exposure', x: 252, delay: 2 },
+    { label: 'Attention', x: 345, delay: 3 },
+  ]
+  const TOP_Y = 40
+  const CONVERGE_X = 200
+  const CONVERGE_Y = 210
+  return (
+    <svg viewBox="0 0 400 320" className="w-full max-w-[440px] mx-auto" aria-hidden="true">
+      <defs>
+        <radialGradient id="weaveGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.3" />
+          <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
+        </radialGradient>
+      </defs>
+      {threads.map((t, i) => {
+        const bow = i % 2 === 0 ? -30 : 30
+        const path = `M ${t.x} ${TOP_Y} Q ${(t.x + CONVERGE_X) / 2} ${(TOP_Y + CONVERGE_Y) / 2 + bow} ${CONVERGE_X} ${CONVERGE_Y}`
+        return (
+          <g key={t.label}>
+            <motion.path
+              d={path} fill="none" stroke="#93c5fd" strokeWidth="1.2" strokeOpacity="0.35"
+              initial={{ pathLength: 0 }} animate={{ pathLength: 1 }}
+              transition={{ duration: 1.6, delay: 0.3 + i * 0.15, ease: 'easeInOut' }}
+            />
+            <circle r="3" fill="#dbeafe">
+              <animateMotion dur="3.5s" begin={`${t.delay * 0.7}s`} repeatCount="indefinite" path={path} />
+            </circle>
+            <circle cx={t.x} cy={TOP_Y} r="4" fill="#1e3a8a" stroke="#93c5fd" strokeWidth="1.2" />
+            <text x={t.x} y={TOP_Y - 12} textAnchor="middle" fontSize="9.5" fill="#bfdbfe" fontFamily="inherit" letterSpacing="0.3">{t.label}</text>
+          </g>
+        )
+      })}
+      <ellipse cx={CONVERGE_X} cy={CONVERGE_Y} rx="90" ry="26" fill="url(#weaveGlow)" />
+      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 1.4 }}>
+        <line x1={CONVERGE_X - 80} y1={CONVERGE_Y} x2={CONVERGE_X + 80} y2={CONVERGE_Y} stroke="#60a5fa" strokeWidth="2" />
+        <text x={CONVERGE_X} y={CONVERGE_Y + 24} textAnchor="middle" fontSize="12" fontWeight="700" fill="#ffffff" fontFamily="inherit" letterSpacing="3">ONE SIGNAL</text>
+      </motion.g>
+      <motion.g initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 1, delay: 2 }}>
+        <line x1={CONVERGE_X} y1={CONVERGE_Y + 14} x2={CONVERGE_X} y2={CONVERGE_Y + 40} stroke="#60a5fa" strokeOpacity="0.4" strokeWidth="1" />
+        <text x={CONVERGE_X} y={CONVERGE_Y + 58} textAnchor="middle" fontSize="11" fontWeight="500" fill="#bfdbfe" fontFamily="inherit" letterSpacing="0.4">A Confident Decision</text>
+      </motion.g>
+    </svg>
+  )
+}
+
+// ─── COMPASS NEEDLE (used on the Final CTA, beside "True North for OOH.") ─────
+// Minimal compass that spins loosely and settles pointing north.
+
+function CompassNeedle({ className }: { className?: string }) {
+  const round = (n: number) => Math.round(n * 1000) / 1000
+  const ticks = Array.from({ length: 12 }, (_, i) => {
+    const angle = (i * 30 * Math.PI) / 180
+    return {
+      id: i,
+      x1: round(50 + 46 * Math.sin(angle)), y1: round(50 - 46 * Math.cos(angle)),
+      x2: round(50 + 40 * Math.sin(angle)), y2: round(50 - 40 * Math.cos(angle)),
+    }
+  })
+  return (
+    <svg viewBox="0 0 100 100" className={className}>
+      <circle cx="50" cy="50" r="46" fill="none" stroke="#60a5fa" strokeOpacity="0.4" strokeWidth="1.5" />
+      <circle cx="50" cy="50" r="38" fill="none" stroke="#93c5fd" strokeOpacity="0.2" strokeWidth="1" />
+      {ticks.map(t => (
+        <line key={t.id} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#93c5fd" strokeOpacity="0.3" strokeWidth="1" />
+      ))}
+      <motion.g
+        initial={{ rotate: 135, opacity: 0 }}
+        whileInView={{ rotate: [135, -20, 10, 0], opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 2.4, delay: 0.3, ease: 'easeOut' }}
+        style={{ transformOrigin: '50px 50px' }}
+      >
+        <path d="M50 14 L58 50 L50 86 L42 50 Z" fill="#60a5fa" opacity="0.9" />
+        <path d="M50 14 L58 50 L50 50 Z" fill="#ffffff" />
+      </motion.g>
+      <circle cx="50" cy="50" r="4" fill="#1e3a8a" stroke="#93c5fd" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
+// ─── FLOW CONNECTOR (Thread → Signal → Compass) ───────────────────────────────
+
+function FlowConnector({ index }: { index: number }) {
+  return (
+    <div className="flex items-center justify-center py-1 md:py-0 md:px-1 shrink-0" aria-hidden="true">
+      {/* Desktop: horizontal connector, dot travels left → right */}
+      <svg className="hidden md:block w-14 h-8 text-mw-blue-300" viewBox="0 0 56 32" fill="none">
+        <line x1="4" y1="16" x2="44" y2="16" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 3" />
+        <path d="M38 9l10 7-10 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle r="2.5" fill="#3b82f6">
+          <animateMotion dur="2.2s" begin={`${index * 0.4}s`} repeatCount="indefinite" path="M4 16 L44 16" />
+        </circle>
+      </svg>
+      {/* Mobile: vertical connector, dot travels top → bottom */}
+      <svg className="block md:hidden w-8 h-10 text-mw-blue-300" viewBox="0 0 32 40" fill="none">
+        <line x1="16" y1="4" x2="16" y2="28" stroke="currentColor" strokeWidth="1.5" strokeDasharray="4 3" />
+        <path d="M9 22l7 10 7-10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+        <circle r="2.5" fill="#3b82f6">
+          <animateMotion dur="2.2s" begin={`${index * 0.4}s`} repeatCount="indefinite" path="M16 4 L16 28" />
+        </circle>
+      </svg>
+    </div>
+  )
+}
+
 // ─── PRODUCT CARD ──────────────────────────────────────────────────────────────
 
 function ProductCard({ product, index }: { product: typeof MW_PRODUCTS[0]; index: number }) {
@@ -325,71 +701,37 @@ function ProductCard({ product, index }: { product: typeof MW_PRODUCTS[0]; index
 
 // ─── MAIN COMPONENT ────────────────────────────────────────────────────────────
 
-interface MWScienceClientProps {
-  product?: SanityProduct | null
-}
+type HeroVariant = 'map' | 'constellation' | 'weave'
 
-export default function MWScienceClient({ product }: MWScienceClientProps) {
-  const [activePillar, setActivePillar] = useState(0)
+const HERO_VARIANT_LABELS: { key: HeroVariant; label: string }[] = [
+  { key: 'map', label: 'Journey Map' },
+  { key: 'constellation', label: 'Signal Constellation' },
+  { key: 'weave', label: 'Thread Weave' },
+]
 
-  // ── CMS-driven content with static fallbacks ──
-  const heroTitle = product?.heroTitle || 'The Intelligence Layer Behind Better Decisions'
-  // Split title into 3 lines with a gradient middle line (preserves the designed treatment)
-  const titleWords = heroTitle.split(' ')
-  const third = Math.ceil(titleWords.length / 3)
-  const titleLine1 = titleWords.slice(0, third).join(' ')
-  const titleLine2 = titleWords.slice(third, third * 2).join(' ')
-  const titleLine3 = titleWords.slice(third * 2).join(' ')
-  const heroSubtitle = product?.heroSubtitle ||
-    'MW Science transforms human, spatial and behavioural signals into intelligence that helps businesses make better decisions across every moment of the customer journey.'
-  const heroStats = product?.heroStats && product.heroStats.length > 0
-    ? product.heroStats.map(s => ({ v: s.value, l: s.label }))
-    : [
-        { v: '4B+', l: 'signals analysed' },
-        { v: '30+', l: 'markets covered' },
-        { v: '5', l: 'intelligence domains' },
-      ]
-  const ctaText = product?.ctaText || 'Get Started'
-  const ctaLink = product?.ctaLink || '/contact'
-
-  // Pillars: CMS override via detailPageSections (sectionKey: 'intelligence-pillars')
-  const pillarSection = product?.detailPageSections?.find(s => s.sectionKey === 'intelligence-pillars')
-  const pillars = PILLARS.map((p, i) => {
-    const cms = pillarSection?.items?.[i]
-    return cms
-      ? {
-          ...p,
-          title: cms.title || p.title,
-          desc: cms.description || p.desc,
-          capabilities: cms.detail ? cms.detail.split('\n').filter(Boolean) : p.capabilities,
-        }
-      : p
-  })
-  const active = pillars[activePillar]
-
-  // Outcomes: CMS override via detailPageSections (sectionKey: 'outcomes')
-  const outcomeSection = product?.detailPageSections?.find(s => s.sectionKey === 'outcomes')
-  const outcomes = outcomeSection?.items && outcomeSection.items.length > 0
-    ? outcomeSection.items.map(item => ({
-        title: item.title,
-        metric: item.metric || '',
-        sub: item.metricLabel || '',
-        desc: item.description || '',
-      }))
-    : OUTCOMES
-
-  // Testimonials: CMS override
-  const testimonials = product?.testimonials && product.testimonials.length > 0
-    ? product.testimonials.slice(0, 2).map(t => ({
-        quote: t.quote,
-        author: t.author,
-        company: [t.role, t.company].filter(Boolean).join(', '),
-        outcome: t.metric || '',
-      }))
-    : TESTIMONIALS
+export default function MWScienceClient() {
+  const [activeSignal, setActiveSignal] = useState(0)
+  const active = SIGNALS[activeSignal]
+  const [heroVariant, setHeroVariant] = useState<HeroVariant>('map')
 
   return (
     <div className="min-h-screen bg-white overflow-x-hidden">
+
+      {/* TEMPORARY — hero animation preview switcher, remove once a variant is picked */}
+      <div className="fixed bottom-6 right-4 z-[60] bg-white/95 backdrop-blur rounded-xl shadow-xl border border-mw-gray-200 p-2 flex flex-col gap-1 text-xs">
+        <span className="text-mw-gray-400 font-semibold px-2 pt-1">Hero preview</span>
+        {HERO_VARIANT_LABELS.map(opt => (
+          <button
+            key={opt.key}
+            onClick={() => setHeroVariant(opt.key)}
+            className={`text-left px-3 py-1.5 rounded-lg transition-colors whitespace-nowrap ${
+              heroVariant === opt.key ? 'bg-mw-blue-600 text-white' : 'text-mw-gray-700 hover:bg-mw-gray-100'
+            }`}
+          >
+            {opt.label}
+          </button>
+        ))}
+      </div>
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
       <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white pt-28 pb-24 overflow-hidden">
@@ -407,116 +749,126 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
               transition={{ duration: 0.8 }}
               className="space-y-8"
             >
-              <h1 className="text-5xl md:text-6xl font-black tracking-tight leading-[1.05]">
-                {titleLine1}<br />
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-[1.1]">
+                MW Science — The{' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-400 to-mw-blue-500">
-                  {titleLine2}
-                </span>
-                {titleLine3 && <><br />{titleLine3}</>}
+                  Cognitive Compass
+                </span>{' '}
+                Behind Better OOH Decisions
               </h1>
 
-              <p className="text-lg text-mw-gray-300 max-w-xl leading-relaxed font-light">
-                {heroSubtitle}
-              </p>
+              <div className="space-y-5 max-w-xl">
+                <p className="text-xl md:text-2xl text-white font-light leading-snug">
+                  Every journey leaves a thread.
+                </p>
+                <p className="text-lg text-mw-blue-200 font-light leading-relaxed">
+                  A commute. A store visit. A smarter media exposure. A moment of attention.
+                </p>
+                <p className="text-mw-gray-300 leading-relaxed">
+                  These are not events that happen in isolation. MW Science connects them into meaningful signals that reveal how people move, engage, decide and respond.
+                </p>
+                <p className="text-mw-gray-400 text-sm leading-relaxed">
+                  As the Cognitive Compass powering the Moving Walls (MW) ecosystem, MW Science turns human, spatial, media and behavioural signals into the confidence to plan smarter, measure with rigour and act with precision.
+                </p>
+              </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <CTAButton
-                  href={ctaLink}
+                  href="/contact"
                   className="inline-flex items-center justify-center gap-2 bg-mw-blue-600 hover:bg-mw-blue-500 text-white px-8 py-4 rounded-xl font-semibold transition-all"
                 >
-                  {ctaText}
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                  </svg>
+                  Talk to a MW Science Lab Expert
+                  <ArrowRightIcon className="w-4 h-4" />
                 </CTAButton>
                 <a
-                  href="#capabilities"
+                  href="#signals"
                   className="inline-flex items-center justify-center gap-2 border border-white/20 hover:bg-white/5 text-white px-8 py-4 rounded-xl font-medium transition-all"
                 >
-                  Explore Capabilities
+                  Explore Signals
                 </a>
               </div>
             </motion.div>
 
-            {/* Right: living journey map — open, no card frame */}
+            {/* Right: variant-specific diagram */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1.4, delay: 0.4, ease: 'easeOut' }}
-              className="relative h-[420px] hidden lg:flex items-center justify-center"
+              className="relative hidden lg:flex items-center justify-center"
             >
-              <LivingJourneyMap />
+              {heroVariant === 'map' && <LivingJourneyMap />}
+              {heroVariant === 'constellation' && <SignalConstellation />}
+              {heroVariant === 'weave' && <ThreadWeave />}
             </motion.div>
 
           </div>
         </div>
       </section>
 
-      {/* ── 2. GAP NARRATIVE ────────────────────────────────────────────────── */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── 2. FROM THREADS TO DECISIONS ─────────────────────────────────────── */}
+      <section className="py-24 bg-white">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center mb-14"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight">
-              Understanding journeys.<br />
-              <span className="text-mw-blue-600">Powering better decisions.</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight mb-8">
+              Every Decision Starts With A Signal
             </h2>
+            <div className="max-w-3xl mx-auto space-y-4">
+              <p className="text-2xl md:text-3xl text-mw-gray-900 font-light leading-snug">
+                People do not live in channels.
+              </p>
+              <p className="text-lg text-mw-gray-500 leading-relaxed">
+                They move through places, experiences, screens, brands and moments.
+              </p>
+              <p className="text-mw-gray-600 leading-relaxed pt-2">
+                Every journey creates thousands of threads. Most disappear into noise. MW Science identifies the signals hidden within them and turns those signals into data to help make informed decisions.
+              </p>
+              <p className="text-mw-gray-600 leading-relaxed">
+                For some organisations, MW Science Lab serves as a standalone research partner. For others, it powers the intelligence behind the broader Moving Walls ecosystem. Built to get sharper with every campaign it measures.
+              </p>
+              <p className="text-mw-gray-600 leading-relaxed">
+                Either way, the objective remains the same: uncover meaningful signals that drive better decisions across the OOH journey, from uncovering opportunity to proving business outcomes. Turning real world complexities into decision confidence.
+              </p>
+            </div>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 items-stretch">
-            {[
-              {
-                icon: '⊘',
-                tag: 'The Problem',
-                head: "Brands don't struggle with a lack of data.",
-                body: "They struggle with making sense of it. Data lives in silos—media, retail, consumer research—disconnected from the moments that matter.",
-                cls: 'border-red-200 bg-red-50',
-                tagCls: 'text-red-600',
-              },
-              {
-                icon: '→',
-                tag: 'The Reality',
-                head: 'People move through journeys, not data points.',
-                body: 'Every location, exposure and experience creates a signal. The challenge is connecting these signals into something actionable and continuous.',
-                cls: 'border-mw-blue-100 bg-mw-blue-50',
-                tagCls: 'text-mw-blue-600',
-              },
-              {
-                icon: '◉',
-                tag: 'MW Science',
-                head: 'Intelligence that connects every signal.',
-                body: 'MW Science ingests human, spatial, and behavioural signals and connects them into a continuous intelligence layer powering smarter decisions across the Moving Walls ecosystem.',
-                cls: 'border-mw-blue-200 bg-mw-blue-50',
-                tagCls: 'text-mw-blue-600',
-              },
-            ].map((card, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
-                className={`flex flex-col p-8 border ${card.cls}`}
-              >
-                <div className={`text-3xl font-bold mb-3 ${card.tagCls}`}>{card.icon}</div>
-                <div className={`text-xs font-bold tracking-widest uppercase mb-3 ${card.tagCls}`}>{card.tag}</div>
-                <h3 className="text-lg font-bold text-mw-gray-900 mb-3 leading-snug">{card.head}</h3>
-                <p className="text-mw-gray-600 leading-relaxed text-sm flex-1">{card.body}</p>
-              </motion.div>
+          {/* Thread → Signal → Compass */}
+          <div className="flex flex-col md:flex-row items-stretch md:items-center">
+            {FRAMEWORK_STAGES.map((stage, i) => (
+              <Fragment key={stage.id}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.15 }}
+                  className={`flex-1 relative flex flex-col p-8 bg-white border-2 rounded-2xl ${
+                    i === 1
+                      ? 'border-mw-blue-300 shadow-lg shadow-mw-blue-100/60 md:scale-105 z-10'
+                      : 'border-mw-gray-200'
+                  }`}
+                >
+                  <span className="text-xs font-bold tracking-widest text-mw-gray-400 mb-4">STAGE {stage.kicker}</span>
+                  <h3 className="text-2xl font-black text-mw-gray-900 tracking-tight mb-2">{stage.label}</h3>
+                  <p className="text-sm font-semibold text-mw-blue-600 mb-3">{stage.tag}</p>
+                  <p className="text-mw-gray-600 text-sm leading-relaxed">{stage.body}</p>
+                </motion.div>
+                {i < FRAMEWORK_STAGES.length - 1 && <FlowConnector index={i} />}
+              </Fragment>
             ))}
           </div>
+          <p className="text-center text-mw-gray-400 italic text-sm mt-10">This is how the Cognitive Compass works.</p>
 
         </div>
       </section>
 
-      {/* ── 3. FIVE INTELLIGENCE PILLARS ────────────────────────────────────── */}
-      <section id="capabilities" className="py-24 bg-mw-gray-50">
+      {/* ── 3. FIVE SIGNALS ─────────────────────────────────────────────────── */}
+      <section id="signals" className="py-24 bg-mw-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <motion.div
@@ -526,31 +878,31 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
             className="mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4 tracking-tight">
-              Five Pillars of Intelligence
+              Five Signals. One Cognitive Compass.
             </h2>
             <p className="text-lg text-mw-gray-500 max-w-2xl">
-              Each pillar represents a domain where MW Science develops proprietary intelligence—not a methodology, but a living capability that continuously improves.
+              MW Science is built around five core signals that help agencies and brands understand people, places, media performance and business outcomes.
             </p>
           </motion.div>
 
           {/* Pill tabs */}
           <div className="flex flex-wrap gap-2 mb-8">
-            {pillars.map((p, i) => (
+            {SIGNALS.map((s, i) => (
               <button
-                key={p.id}
-                onClick={() => setActivePillar(i)}
+                key={s.id}
+                onClick={() => setActiveSignal(i)}
                 className={`px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 ${
-                  activePillar === i
-                    ? `${p.accent} text-white shadow-md scale-[1.02]`
+                  activeSignal === i
+                    ? `${s.accent} text-white shadow-md scale-[1.02]`
                     : 'bg-white border border-mw-gray-200 text-mw-gray-600 hover:border-gray-300 hover:bg-gray-50'
                 }`}
               >
-                {p.label}
+                {s.label}
               </button>
             ))}
           </div>
 
-          {/* Active pillar expanded content */}
+          {/* Active signal expanded content */}
           <AnimatePresence mode="wait">
             <motion.div
               key={active.id}
@@ -562,32 +914,35 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
             >
               <div className="grid lg:grid-cols-2 gap-10 items-start">
 
-                {/* Left: title + desc + themes */}
+                {/* Left: icon + title + desc + powers */}
                 <div>
-                  <div className={`inline-block w-3 h-3 rounded-full ${active.accent} mb-5`} />
+                  <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${active.accent} mb-5`}>
+                    <active.icon className="w-6 h-6 text-white" />
+                  </div>
                   <h3 className="text-2xl font-bold text-mw-gray-900 mb-3">{active.title}</h3>
                   <p className="text-mw-gray-600 leading-relaxed mb-6">{active.desc}</p>
+                  <h4 className="text-xs font-bold text-mw-gray-400 uppercase tracking-widest mb-3">Powers</h4>
                   <div className="flex flex-wrap gap-2">
-                    {active.themes.map(t => (
-                      <span key={t} className={`px-3 py-1 rounded-full text-xs font-semibold ${active.badge}`}>{t}</span>
+                    {active.powers.map(p => (
+                      <span key={p} className={`px-3 py-1 rounded-full text-xs font-semibold ${active.badge}`}>{p}</span>
                     ))}
                   </div>
                 </div>
 
-                {/* Right: capabilities */}
+                {/* Right: answers */}
                 <div>
-                  <h4 className="text-xs font-bold text-mw-gray-400 uppercase tracking-widest mb-5">Key Capabilities</h4>
+                  <h4 className="text-xs font-bold text-mw-gray-400 uppercase tracking-widest mb-5">Answers</h4>
                   <ul className="space-y-3.5">
-                    {active.capabilities.map((cap, i) => (
+                    {active.answers.map((ans, i) => (
                       <motion.li
-                        key={cap}
+                        key={ans}
                         initial={{ opacity: 0, x: 12 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: i * 0.07 }}
                         className="flex items-start gap-3"
                       >
                         <div className={`w-1.5 h-1.5 rounded-full ${active.accent} mt-2 flex-shrink-0`} />
-                        <span className="text-mw-gray-700 text-sm leading-relaxed">{cap}</span>
+                        <span className="text-mw-gray-700 text-sm leading-relaxed">{ans}</span>
                       </motion.li>
                     ))}
                   </ul>
@@ -600,7 +955,7 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
         </div>
       </section>
 
-      {/* ── 4. ONE INTELLIGENCE LAYER ───────────────────────────────────────── */}
+      {/* ── 4. SIGNALS IN ACTION ────────────────────────────────────────────── */}
       <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
@@ -613,23 +968,14 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
               className="space-y-6"
             >
               <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight">
-                One Intelligence Layer.<br />Every Product Smarter.
+                Signals at work across the entire OOH journey
               </h2>
               <p className="text-mw-gray-600 leading-relaxed text-lg">
-                Every Moving Walls product is powered by the same intelligence engine. Rather than operating independently, each product learns from the same connected intelligence—creating smarter recommendations, stronger optimisation, and better decisions over time.
+                The five signals do not operate independently. Together, they create a complete view of how audiences move from awareness to action.
               </p>
-              <p className="text-mw-gray-400 italic text-sm border-l-4 border-blue-200 pl-4 py-1">
-                "Every campaign teaches the system. Every insight sharpens the next decision."
+              <p className="text-mw-gray-600 leading-relaxed text-lg">
+                Whether planning a campaign, evaluating a location, measuring brand growth or optimising investment, MW Science helps organisations understand not just what happened, but the why behind it.
               </p>
-              <Link
-                href="/platform"
-                className="inline-flex items-center gap-2 text-mw-blue-600 font-semibold hover:gap-3 transition-all text-sm"
-              >
-                Explore the Platform
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </Link>
             </motion.div>
 
             {/* Right: constellation diagram */}
@@ -656,9 +1002,9 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
                   transition={{ delay: 0.3, type: 'spring' }}
                   className="relative z-10 bg-gradient-to-br from-mw-blue-700 to-mw-blue-800 text-white rounded-2xl px-10 py-5 text-center shadow-2xl shadow-mw-blue-900/30"
                 >
-                  <div className="text-[10px] uppercase tracking-widest text-mw-blue-200 mb-1">Intelligence Core</div>
-                  <div className="text-xl font-black tracking-tight">MW Science</div>
-                  <div className="text-xs text-mw-blue-200 mt-1">Self-Learning · Always On</div>
+                  <div className="text-[10px] uppercase tracking-widest text-mw-blue-200 mb-1">Five Signals</div>
+                  <div className="text-lg font-black tracking-tight leading-snug">Audience · Location · Media<br />Brand · Outcome</div>
+                  <div className="text-xs text-mw-blue-200 mt-1">Powering every decision</div>
                 </motion.div>
               </div>
 
@@ -674,40 +1020,95 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
         </div>
       </section>
 
-      {/* ── 5. OUTCOMES ─────────────────────────────────────────────────────── */}
-      <section className="py-24 bg-mw-gray-950 text-white">
+      {/* ── 5. MW SCIENCE LAB ────────────────────────────────────────────────── */}
+      <section className="py-24 bg-mw-gray-50">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight mb-3">MW Science Lab</h2>
+            <p className="text-lg text-mw-blue-600 font-medium mb-6">Research that reveals the signals behind growth.</p>
+            <p className="text-mw-gray-600 leading-relaxed max-w-2xl mx-auto mb-12">
+              MW Science Lab is the research capability within MW Science. It combines market research, human understanding and rigorous measurement to ground decisions about audiences, brands and outcomes with greater confidence.
+            </p>
+          </motion.div>
+
+          {/* Core Research Areas — pill cloud */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.15 }}
+            className="bg-gradient-to-br from-mw-blue-50 via-white to-mw-blue-50 border border-mw-blue-100 rounded-3xl p-8 md:p-10"
+          >
+            <h3 className="text-xs font-bold text-mw-gray-400 uppercase tracking-widest mb-6">Core Research Areas</h3>
+            <div className="flex flex-wrap gap-3 justify-center">
+              {RESEARCH_AREAS.map((area, i) => (
+                <motion.span
+                  key={area}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: i * 0.05 }}
+                  className={`inline-flex items-center gap-2 rounded-full border border-mw-blue-200 bg-white/70 backdrop-blur-sm text-mw-gray-800 font-medium shadow-sm
+                    hover:border-mw-blue-400 hover:bg-mw-blue-50 hover:text-mw-blue-700 hover:-translate-y-0.5 transition-all duration-200 cursor-default
+                    ${i % 3 === 0 ? 'text-base px-5 py-2.5' : 'text-sm px-4 py-2'}`}
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-mw-blue-400" />
+                  {area}
+                </motion.span>
+              ))}
+            </div>
+          </motion.div>
+
+        </div>
+      </section>
+
+      {/* ── 6. RESEARCH SOLUTIONS ────────────────────────────────────────────── */}
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-14"
+            className="mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mt-2 tracking-tight">
-              Intelligence That Creates Outcomes
+            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight">
+              Solutions Built Around Signals
             </h2>
-            <p className="text-mw-gray-400 mt-3 max-w-2xl mx-auto">
-              Instead of talking about features, here's what businesses actually achieve when intelligence replaces guesswork.
-            </p>
           </motion.div>
 
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10 rounded-2xl overflow-hidden">
-            {outcomes.map((o, i) => (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {RESEARCH_SOLUTIONS.map((sol, i) => (
               <motion.div
-                key={i}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                key={sol.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.07 }}
-                className="bg-mw-gray-950 hover:bg-mw-gray-900 p-8 transition-colors"
+                transition={{ delay: i * 0.08 }}
+                className="group bg-white rounded-md border border-gray-200 p-6 hover:border-blue-300 hover:shadow-md transition-all duration-200 flex flex-col"
               >
-                <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-400 to-mw-blue-500 mb-1">
-                  {o.metric}
+                <div className="flex items-start justify-between mb-5">
+                  <div className="w-12 h-12 bg-mw-blue-600 rounded-md flex items-center justify-center group-hover:bg-mw-blue-700 transition-colors duration-200 flex-shrink-0">
+                    <sol.icon className="w-6 h-6 text-white" />
+                  </div>
+                  <span className="text-2xl font-black text-gray-100 tabular-nums select-none leading-none">{String(i + 1).padStart(2, '0')}</span>
                 </div>
-                <div className="text-xs text-mw-gray-500 mb-5">{o.sub}</div>
-                <h3 className="text-white font-bold mb-2 text-sm">{o.title}</h3>
-                <p className="text-mw-gray-400 text-sm leading-relaxed">{o.desc}</p>
+                <h4 className="font-bold text-gray-900 text-base leading-snug mb-2">{sol.title}</h4>
+                <p className="text-gray-500 text-sm leading-relaxed flex-1">{sol.description}</p>
+                <div className="mt-5 pt-4 border-t border-gray-100 flex flex-wrap gap-2">
+                  {sol.tags.map(tag => (
+                    <span key={tag} className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${SIGNAL_TAG_COLORS[tag] || 'text-mw-gray-600 bg-mw-gray-100'}`}>
+                      <span className="w-1.5 h-1.5 rounded-full bg-current inline-block" />
+                      {tag}
+                    </span>
+                  ))}
+                </div>
               </motion.div>
             ))}
           </div>
@@ -715,8 +1116,8 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
         </div>
       </section>
 
-      {/* ── 6. SOCIAL PROOF ─────────────────────────────────────────────────── */}
-      <section className="py-24 bg-white">
+      {/* ── 7. SOCIAL PROOF ──────────────────────────────────────────────────── */}
+      <section className="py-24 bg-mw-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <motion.div
@@ -736,7 +1137,7 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
               {[...LOGOS, ...LOGOS].map((name, i) => (
                 <div
                   key={`${name}-${i}`}
-                  className="flex-shrink-0 flex items-center justify-center h-16 w-32 bg-mw-gray-50 rounded-xl border border-mw-gray-100 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:shadow-sm transition-all duration-300"
+                  className="flex-shrink-0 flex items-center justify-center h-16 w-32 bg-white rounded-xl border border-mw-gray-100 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:shadow-sm transition-all duration-300"
                 >
                   <Image
                     src={`/assets/images/ic-customers/${name}.webp`}
@@ -752,15 +1153,15 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
           </div>
 
           {/* Testimonials */}
-          <div className="grid md:grid-cols-2 gap-8">
-            {testimonials.map((t, i) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {TESTIMONIALS.map((t, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.12 }}
-                className="bg-gray-50 rounded-2xl border border-mw-gray-100 p-8 flex flex-col justify-between"
+                transition={{ delay: i * 0.08 }}
+                className="bg-white rounded-2xl border border-mw-gray-100 p-8 flex flex-col justify-between"
               >
                 <blockquote className="text-mw-gray-700 italic leading-relaxed text-base mb-6">
                   &ldquo;{t.quote}&rdquo;
@@ -776,49 +1177,93 @@ export default function MWScienceClient({ product }: MWScienceClientProps) {
         </div>
       </section>
 
-      {/* ── 7. NEWSROOM STRIP ───────────────────────────────────────────────── */}
-      <section className="py-20 bg-gray-50 border-t border-mw-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* ── 8. WHY MW SCIENCE ────────────────────────────────────────────────── */}
+      <section className="py-24 bg-white">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-          <div className="flex items-center justify-between mb-10">
-            <div>
-              <h2 className="text-2xl font-bold text-mw-gray-900 tracking-tight">Insights from MW Science</h2>
-            </div>
-            <Link href="/blog" className="text-sm text-mw-blue-600 font-semibold hover:underline hidden sm:block">
-              View all insights →
-            </Link>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-14"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight">
+              Beyond Measurement. Towards Understanding.
+            </h2>
+          </motion.div>
 
-          <div className="grid sm:grid-cols-3 gap-6">
-            {[
-              { type: 'Perspective', title: 'Why physical-world measurement is the next frontier for marketers', read: '5 min read' },
-              { type: 'Data Report', title: 'The state of audience intelligence in Southeast Asian OOH markets', read: '8 min read' },
-              { type: 'Thought Leadership', title: 'From gut feel to evidence: how brands are rewriting their media strategies', read: '6 min read' },
-            ].map((item, i) => (
+          <div className="grid md:grid-cols-3 gap-8 mb-14">
+            {WHY_COLUMNS.map((col, i) => (
               <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 15 }}
+                key={col.title}
+                initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ delay: i * 0.1 }}
+                transition={{ duration: 0.5, delay: i * 0.12 }}
+                className="text-center p-6"
               >
-                <Link
-                  href="/blog"
-                  className="group flex flex-col bg-white rounded-2xl border border-mw-gray-200 p-6 h-full hover:border-blue-200 hover:shadow-md transition-all"
-                >
-                  <span className="text-xs font-bold uppercase tracking-widest text-mw-blue-600 mb-3">{item.type}</span>
-                  <h3 className="font-semibold text-mw-gray-900 leading-snug mb-auto group-hover:text-mw-blue-700 transition-colors">{item.title}</h3>
-                  <div className="text-xs text-mw-gray-400 mt-5 flex items-center gap-1.5">
-                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                    </svg>
-                    {item.read}
-                  </div>
-                </Link>
+                <div className="inline-flex items-center justify-center w-14 h-14 bg-mw-blue-100 rounded-2xl text-mw-blue-600 mb-5">
+                  <col.icon className="w-7 h-7" />
+                </div>
+                <h3 className="text-lg font-bold text-mw-gray-900 mb-3">{col.title}</h3>
+                <p className="text-mw-gray-600 leading-relaxed text-sm">{col.body}</p>
               </motion.div>
             ))}
           </div>
 
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-2xl mx-auto text-center border-t border-mw-gray-200 pt-10"
+          >
+            <p className="text-mw-gray-600 leading-relaxed mb-2">
+              The challenge facing organisations today is not access to data. It is knowing which signals matter.
+            </p>
+            <p className="text-mw-gray-900 font-semibold">
+              MW Science exists to make those signals visible.
+            </p>
+          </motion.div>
+
+        </div>
+      </section>
+
+      {/* ── 9. FINAL CTA ─────────────────────────────────────────────────────── */}
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-24 overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(96,165,250,0.15),transparent_60%)]" />
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6">The Decision Compass for Out-of-Home</h2>
+            <p className="text-mw-gray-300 leading-relaxed max-w-2xl mx-auto mb-10">
+              Moving Walls is the Decision Compass for Out-of-Home. MW Science is the Cognitive Compass that powers it. Together, they help organisations understand where Out-of-Home will work before investment, measure what happened after activation, and continuously improve performance through evidence, not assumption.
+            </p>
+            <CTAButton
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 bg-white text-mw-blue-700 hover:bg-mw-blue-50 px-8 py-4 rounded-xl font-semibold transition-all"
+            >
+              Speak to MW Science Lab Expert
+              <ArrowRightIcon className="w-4 h-4" />
+            </CTAButton>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mt-16 flex flex-col items-center"
+          >
+            <CompassNeedle className="w-28 h-28 md:w-32 md:h-32" />
+            <p className="text-3xl md:text-4xl font-black tracking-tight text-white mt-4">True North for OOH.</p>
+          </motion.div>
         </div>
       </section>
 
