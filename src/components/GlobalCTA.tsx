@@ -7,8 +7,8 @@ import { CTAButton } from "./CTAButton";
 export default function GlobalCTA() {
   const pathname = usePathname();
 
-  // Hide on the main landing page and location pages
-  if (pathname === '/' || pathname.startsWith('/locations/')) return null;
+  // Hide on the main landing page, location pages, and MW Science (which has its own closing CTA)
+  if (pathname === '/' || pathname.startsWith('/locations/') || pathname === '/mw-science') return null;
 
   return (
     <section className="py-16 bg-gradient-to-br from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 relative overflow-hidden">

@@ -90,11 +90,16 @@ export default {
           from: { transform: 'rotate(0deg)' },
           to: { transform: 'rotate(360deg)' },
         },
+        compassDrift: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        },
       },
       animation: {
         marquee: 'marquee 40s linear infinite',
         'ring-fill': 'ringFill 8s linear forwards',
         'spin-slow': 'spin360 1s linear infinite',
+        'compass-drift': 'compassDrift 4s ease-in-out infinite',
       },
     },
   },

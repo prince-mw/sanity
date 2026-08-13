@@ -359,13 +359,18 @@ const LOGOS = [
 // The five signals as orbiting nodes, each pulsing a connection into the core.
 
 function SignalConstellation() {
-  const CENTER = 150
+  // Centre is offset down from the viewBox's true middle (150,150) — angle -90°
+  // puts one node (Audience) directly at the top, and at CENTER_Y=150 its label
+  // (rendered 26px above the node) fell above y=0 and was clipped by the SVG's
+  // default overflow:hidden. Shifting the whole layout down gives it headroom.
+  const CENTER_X = 150
+  const CENTER_Y = 165
   const RADIUS = 118
   const angles = [-90, -18, 54, 126, 198]
   const round = (n: number) => Math.round(n * 1000) / 1000
   const toXY = (angle: number) => {
     const rad = (angle * Math.PI) / 180
-    return { x: round(CENTER + RADIUS * Math.cos(rad)), y: round(CENTER + RADIUS * Math.sin(rad)) }
+    return { x: round(CENTER_X + RADIUS * Math.cos(rad)), y: round(CENTER_Y + RADIUS * Math.sin(rad)) }
   }
   return (
     <svg viewBox="0 0 300 300" className="w-full max-w-[400px] mx-auto" aria-hidden="true">
@@ -375,15 +380,15 @@ function SignalConstellation() {
           <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
         </radialGradient>
       </defs>
-      <ellipse cx={CENTER} cy={CENTER} rx="70" ry="70" fill="url(#coreGlow2)" />
+      <ellipse cx={CENTER_X} cy={CENTER_Y} rx="70" ry="70" fill="url(#coreGlow2)" />
       {SIGNALS.map((s, i) => {
         const { x, y } = toXY(angles[i])
         // animateMotion adds the path's own coordinates on top of the circle's static cx/cy,
         // so this must be a relative path (starting at 0,0), not an absolute one.
-        const path = `M 0 0 L ${CENTER - x} ${CENTER - y}`
+        const path = `M 0 0 L ${CENTER_X - x} ${CENTER_Y - y}`
         return (
           <g key={s.id}>
-            <line x1={x} y1={y} x2={CENTER} y2={CENTER} className={s.text} stroke="currentColor" strokeOpacity="0.4" strokeWidth="1.2" />
+            <line x1={x} y1={y} x2={CENTER_X} y2={CENTER_Y} className={s.text} stroke="currentColor" strokeOpacity="0.4" strokeWidth="1.2" />
             <circle cx={x} cy={y} r="2.5" className={s.text} fill="currentColor">
               <animateMotion dur="3.2s" begin={`${i * 0.5}s`} repeatCount="indefinite" path={path} />
             </circle>
@@ -412,9 +417,9 @@ function SignalConstellation() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.8, delay: 1.2, type: 'spring' }}
       >
-        <circle cx={CENTER} cy={CENTER} r="34" fill="#1e3a8a" stroke="#60a5fa" strokeWidth="1.5" />
-        <text x={CENTER} y={CENTER - 3} textAnchor="middle" fontSize="11" fontWeight="700" fill="#ffffff" fontFamily="inherit" letterSpacing="1">MW</text>
-        <text x={CENTER} y={CENTER + 11} textAnchor="middle" fontSize="9" fontWeight="700" fill="#93c5fd" fontFamily="inherit" letterSpacing="1">SCIENCE</text>
+        <circle cx={CENTER_X} cy={CENTER_Y} r="34" fill="#1e3a8a" stroke="#60a5fa" strokeWidth="1.5" />
+        <text x={CENTER_X} y={CENTER_Y - 3} textAnchor="middle" fontSize="11" fontWeight="700" fill="#ffffff" fontFamily="inherit" letterSpacing="1">MW</text>
+        <text x={CENTER_X} y={CENTER_Y + 11} textAnchor="middle" fontSize="9" fontWeight="700" fill="#93c5fd" fontFamily="inherit" letterSpacing="1">SCIENCE</text>
       </motion.g>
     </svg>
   )
@@ -628,11 +633,14 @@ function ThreadWeave() {
 }
 
 // ─── COMPASS NEEDLE (used on the Final CTA, beside "True North for OOH.") ─────
-// Minimal compass that spins loosely and settles pointing north.
+// Ambient Drift: ticks slowly orbit, the needle breathes gently, a soft glow pulses behind it.
+// NOTE: this file's Framer Motion + SVG `rotate` combo silently fails to apply
+// any transform (confirmed via getComputedStyle), so rotation here uses plain
+// CSS transforms (Tailwind keyframes) instead.
 
-function CompassNeedle({ className }: { className?: string }) {
+function compassTicks() {
   const round = (n: number) => Math.round(n * 1000) / 1000
-  const ticks = Array.from({ length: 12 }, (_, i) => {
+  return Array.from({ length: 12 }, (_, i) => {
     const angle = (i * 30 * Math.PI) / 180
     return {
       id: i,
@@ -640,23 +648,37 @@ function CompassNeedle({ className }: { className?: string }) {
       x2: round(50 + 40 * Math.sin(angle)), y2: round(50 - 40 * Math.cos(angle)),
     }
   })
+}
+
+const NEEDLE_PATH = <>
+  <path d="M50 14 L58 50 L50 86 L42 50 Z" fill="#60a5fa" opacity="0.9" />
+  <path d="M50 14 L58 50 L50 50 Z" fill="#ffffff" />
+</>
+
+function CompassNeedleAmbientDrift({ className }: { className?: string }) {
+  const ticks = compassTicks()
   return (
     <svg viewBox="0 0 100 100" className={className}>
+      <defs>
+        <filter id="compassGlow" x="-100%" y="-100%" width="300%" height="300%">
+          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
+        </filter>
+      </defs>
       <circle cx="50" cy="50" r="46" fill="none" stroke="#60a5fa" strokeOpacity="0.4" strokeWidth="1.5" />
       <circle cx="50" cy="50" r="38" fill="none" stroke="#93c5fd" strokeOpacity="0.2" strokeWidth="1" />
-      {ticks.map(t => (
-        <line key={t.id} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#93c5fd" strokeOpacity="0.3" strokeWidth="1" />
-      ))}
-      <motion.g
-        initial={{ rotate: 135, opacity: 0 }}
-        whileInView={{ rotate: [135, -20, 10, 0], opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 2.4, delay: 0.3, ease: 'easeOut' }}
-        style={{ transformOrigin: '50px 50px' }}
-      >
-        <path d="M50 14 L58 50 L50 86 L42 50 Z" fill="#60a5fa" opacity="0.9" />
-        <path d="M50 14 L58 50 L50 50 Z" fill="#ffffff" />
-      </motion.g>
+      <g className="animate-spin-slow" style={{ transformOrigin: '50px 50px', animationDuration: '26s' }}>
+        {ticks.map(t => (
+          <line key={t.id} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#93c5fd" strokeOpacity="0.3" strokeWidth="1" />
+        ))}
+      </g>
+      <circle cx="50" cy="50" r="10" fill="#60a5fa" opacity="0.35" filter="url(#compassGlow)" className="animate-pulse" />
+      <g className="animate-compass-drift" style={{ transformOrigin: '50px 50px' }}>
+        {NEEDLE_PATH}
+      </g>
       <circle cx="50" cy="50" r="4" fill="#1e3a8a" stroke="#93c5fd" strokeWidth="1.5" />
     </svg>
   )
@@ -1143,6 +1165,49 @@ function ScienceLabDiagram() {
   )
 }
 
+// The diagram above is authored at viewBox width 1000, so on narrow phones (~320-380px
+// actual rendered width) everything inside it — including the foreignObject text —
+// shrinks to roughly a third of its authored size and becomes illegible. Rather than
+// shrink an already-dense diagram further, mobile gets a plain HTML layout instead
+// (same data, same icons, normal document-flow text that stays legible at any width).
+function ScienceLabMobile() {
+  return (
+    <div className="space-y-8">
+      <div>
+        <h4 className="text-xs font-bold text-mw-gray-400 uppercase tracking-widest mb-4 text-center">The Process</h4>
+        <div className="flex flex-wrap justify-center gap-x-5 gap-y-4">
+          {LAB_PROCESS.map(step => (
+            <div key={step.label} className="flex flex-col items-center gap-1.5 w-16">
+              <div className="w-10 h-10 rounded-xl bg-white border-2 border-mw-blue-200 flex items-center justify-center text-mw-blue-600 shadow-sm flex-shrink-0">
+                <step.icon className="w-5 h-5" />
+              </div>
+              <span className="text-[11px] leading-tight font-medium text-mw-gray-600 text-center">{step.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center gap-3">
+        <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
+          <img src="/assets/logo/mw-science-badge.png" alt="MW Science" className="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      <div>
+        <h4 className="text-xs font-bold text-mw-gray-400 uppercase tracking-widest mb-4 text-center">Core Research Areas</h4>
+        <div className="grid grid-cols-2 gap-2.5">
+          {[...LAB_LEFT, ...LAB_RIGHT].map(item => (
+            <div key={item.label} className="flex items-center gap-2 bg-white rounded-lg px-2.5 py-2.5 border border-mw-gray-200">
+              <item.icon className="w-4 h-4 text-mw-blue-600 flex-shrink-0" />
+              <span className="text-xs font-medium text-mw-gray-700 leading-snug">{item.label}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 // ─── RESEARCH SOLUTIONS: NON-CARD VARIANTS ─────────────────────────────────────
 
 type Solution = typeof RESEARCH_SOLUTIONS[number]
@@ -1160,15 +1225,37 @@ const SOLUTION_SHORT_LABELS: Record<string, string> = {
   'Mall Experience Index': 'Mall Experience',
 }
 
+const SOLUTIONS_TAB_INTERVAL = 7000
+
 // Reveal Strip: a slim tab strip of solutions; clicking one expands a single detail panel below, all centred.
+// Auto-advances every 7s, pausing on hover (same timer pattern as the Compass Dial and Testimonials Spotlight).
 function SolutionsRevealStrip() {
   const [active, setActive] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const remainingRef = useRef(SOLUTIONS_TAB_INTERVAL)
+  const startRef = useRef(0)
+
+  useEffect(() => { remainingRef.current = SOLUTIONS_TAB_INTERVAL }, [active])
+  useEffect(() => {
+    if (isPaused) return
+    startRef.current = Date.now()
+    const id = setTimeout(() => setActive(a => (a + 1) % RESEARCH_SOLUTIONS.length), remainingRef.current)
+    return () => {
+      clearTimeout(id)
+      remainingRef.current = Math.max(0, remainingRef.current - (Date.now() - startRef.current))
+    }
+  }, [active, isPaused])
+
   const sol = RESEARCH_SOLUTIONS[active]
   const sigs = solutionSignals(sol)
   const primary = sigs[0] ?? SIGNALS[0]
 
   return (
-    <div className="flex flex-col items-center">
+    <div
+      className="flex flex-col items-center"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
       <div className="flex flex-wrap justify-center border-b border-mw-gray-200 mb-8">
         {RESEARCH_SOLUTIONS.map((s, i) => {
           const sPrimary = solutionSignals(s)[0] ?? SIGNALS[0]
@@ -1211,6 +1298,132 @@ function SolutionsRevealStrip() {
           </div>
         </motion.div>
       </AnimatePresence>
+    </div>
+  )
+}
+
+// ─── TESTIMONIALS SPOTLIGHT ────────────────────────────────────────────────────
+// One large testimonial at a time, auto-advancing every 7.5s, pause on hover.
+
+const TESTIMONIAL_INTERVAL = 7500
+
+function TestimonialsSpotlight() {
+  const [active, setActive] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const remainingRef = useRef(TESTIMONIAL_INTERVAL)
+  const startRef = useRef(0)
+
+  useEffect(() => { remainingRef.current = TESTIMONIAL_INTERVAL }, [active])
+  useEffect(() => {
+    if (isPaused) return
+    startRef.current = Date.now()
+    const id = setTimeout(() => setActive(a => (a + 1) % TESTIMONIALS.length), remainingRef.current)
+    return () => {
+      clearTimeout(id)
+      remainingRef.current = Math.max(0, remainingRef.current - (Date.now() - startRef.current))
+    }
+  }, [active, isPaused])
+
+  const t = TESTIMONIALS[active]
+  const go = (dir: number) => setActive(a => (a + dir + TESTIMONIALS.length) % TESTIMONIALS.length)
+
+  return (
+    <div
+      className="relative max-w-3xl mx-auto"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      <div className="text-center px-4 sm:px-16">
+        <span className="block text-6xl font-serif text-mw-blue-100 leading-none mb-2 select-none" aria-hidden="true">&ldquo;</span>
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -24 }}
+            transition={{ duration: 0.4 }}
+          >
+            <blockquote className="text-lg md:text-2xl font-medium text-mw-gray-800 leading-relaxed mb-8">
+              {t.quote}
+            </blockquote>
+            <div className="font-bold text-mw-gray-900">{t.author}</div>
+            <div className="text-mw-gray-400 text-sm">{t.company}</div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+
+      <button
+        onClick={() => go(-1)}
+        aria-label="Previous testimonial"
+        className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-mw-gray-200 items-center justify-center text-mw-gray-400 hover:text-mw-blue-600 hover:border-mw-blue-200 transition-colors"
+      >
+        <ArrowRightIcon className="w-4 h-4 rotate-180" />
+      </button>
+      <button
+        onClick={() => go(1)}
+        aria-label="Next testimonial"
+        className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-mw-gray-200 items-center justify-center text-mw-gray-400 hover:text-mw-blue-600 hover:border-mw-blue-200 transition-colors"
+      >
+        <ArrowRightIcon className="w-4 h-4" />
+      </button>
+
+      <div className="flex justify-center gap-2 mt-10">
+        {TESTIMONIALS.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setActive(i)}
+            aria-label={`Go to testimonial ${i + 1}`}
+            className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? 'w-8 bg-mw-blue-600' : 'w-1.5 bg-mw-gray-200 hover:bg-mw-gray-300'}`}
+          />
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── WHY MW SCIENCE: COMET FLOW ────────────────────────────────────────────────
+// A comet-trail relay connects the 3 columns, icons pulse as it arrives.
+
+function WhyMWScienceCometFlow() {
+  return (
+    <div className="relative">
+      <div className="hidden md:block absolute left-0 right-0 top-[46px] h-3 pointer-events-none" aria-hidden="true">
+        <svg viewBox="0 0 300 12" className="w-full h-full overflow-visible">
+          <line x1="50" y1="6" x2="250" y2="6" stroke="#dbeafe" strokeWidth="1.5" strokeDasharray="1 5" />
+          <circle cx="50" cy="6" r="3" fill="#3b82f6">
+            <animateMotion path="M 0 0 L 100 0" dur="2.5s" begin="0s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="150" cy="6" r="3" fill="#3b82f6">
+            <animateMotion path="M 0 0 L 100 0" dur="2.5s" begin="2.5s" repeatCount="indefinite" />
+          </circle>
+        </svg>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-8 mb-14 relative">
+        {WHY_COLUMNS.map((col, i) => (
+          <motion.div
+            key={col.title}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: i * 0.12 }}
+            className="text-center p-6"
+          >
+            <div className="relative inline-flex items-center justify-center w-14 h-14 mb-5">
+              <span
+                className="absolute inset-0 rounded-2xl bg-mw-blue-300 animate-ping"
+                style={{ animationDuration: '2.5s', animationDelay: `${i * 1.25}s` }}
+                aria-hidden="true"
+              />
+              <div className="relative w-14 h-14 flex items-center justify-center bg-mw-blue-100 rounded-2xl text-mw-blue-600">
+                <col.icon className="w-7 h-7" />
+              </div>
+            </div>
+            <h3 className="text-lg font-bold text-mw-gray-900 mb-3">{col.title}</h3>
+            <p className="text-mw-gray-600 leading-relaxed text-sm">{col.body}</p>
+          </motion.div>
+        ))}
+      </div>
     </div>
   )
 }
@@ -1430,7 +1643,12 @@ export default function MWScienceClient() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15 }}
           >
-            <ScienceLabDiagram />
+            <div className="hidden md:block">
+              <ScienceLabDiagram />
+            </div>
+            <div className="md:hidden">
+              <ScienceLabMobile />
+            </div>
           </motion.div>
 
         </div>
@@ -1492,27 +1710,7 @@ export default function MWScienceClient() {
             </div>
           </div>
 
-          {/* Testimonials */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {TESTIMONIALS.map((t, i) => (
-              <motion.div
-                key={i}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.08 }}
-                className="bg-white rounded-2xl border border-mw-gray-100 p-8 flex flex-col justify-between"
-              >
-                <blockquote className="text-mw-gray-700 italic leading-relaxed text-base mb-6">
-                  &ldquo;{t.quote}&rdquo;
-                </blockquote>
-                <div className="border-t border-mw-gray-200 pt-4">
-                  <div className="font-bold text-mw-gray-900 text-sm">{t.author}</div>
-                  <div className="text-mw-gray-400 text-xs">{t.company}</div>
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          <TestimonialsSpotlight />
 
         </div>
       </section>
@@ -1533,24 +1731,7 @@ export default function MWScienceClient() {
             </h2>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-14">
-            {WHY_COLUMNS.map((col, i) => (
-              <motion.div
-                key={col.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: i * 0.12 }}
-                className="text-center p-6"
-              >
-                <div className="inline-flex items-center justify-center w-14 h-14 bg-mw-blue-100 rounded-2xl text-mw-blue-600 mb-5">
-                  <col.icon className="w-7 h-7" />
-                </div>
-                <h3 className="text-lg font-bold text-mw-gray-900 mb-3">{col.title}</h3>
-                <p className="text-mw-gray-600 leading-relaxed text-sm">{col.body}</p>
-              </motion.div>
-            ))}
-          </div>
+          <WhyMWScienceCometFlow />
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1601,7 +1782,7 @@ export default function MWScienceClient() {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="mt-16 flex flex-col items-center"
           >
-            <CompassNeedle className="w-28 h-28 md:w-32 md:h-32" />
+            <CompassNeedleAmbientDrift className="w-28 h-28 md:w-32 md:h-32" />
             <p className="text-3xl md:text-4xl font-black tracking-tight text-white mt-4">True North for OOH.</p>
           </motion.div>
         </div>
