@@ -82,9 +82,19 @@ export default {
           '0%': { transform: 'translateX(0%)' },
           '100%': { transform: 'translateX(-50%)' },
         },
+        ringFill: {
+          from: { strokeDashoffset: '151' },
+          to: { strokeDashoffset: '0' },
+        },
+        spin360: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
       },
       animation: {
         marquee: 'marquee 40s linear infinite',
+        'ring-fill': 'ringFill 8s linear forwards',
+        'spin-slow': 'spin360 1s linear infinite',
       },
     },
   },
