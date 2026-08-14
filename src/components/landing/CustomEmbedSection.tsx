@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { getBackgroundClasses, getMaxWidthClasses, type BackgroundColor, type MaxWidth } from "./utils";
 import { sanitizeHtml } from "@/lib/sanitize";
@@ -11,12 +12,74 @@ interface CustomEmbedSectionProps {
   backgroundColor?: BackgroundColor;
 }
 
+function closeModal(modal: HTMLElement) {
+  modal.style.display = 'none';
+  document.body.style.overflow = '';
+  const frame = modal.querySelector('iframe');
+  if (frame) frame.setAttribute('src', 'about:blank');
+}
+
+// CMS-pasted custom HTML goes through sanitizeHtml(), which strips onclick
+// attributes and <script> tags (an XSS precaution — see src/lib/sanitize.ts).
+// So a popup-on-click pattern authored in a custom embed can't wire itself up
+// with inline onclick/script; instead it marks up its trigger/overlay/close
+// elements with data-modal-open/-root/-close, and this shared, trusted
+// delegated handler does the actual opening/closing.
+export function useCustomEmbedModals() {
+  useEffect(() => {
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+
+      const opener = target.closest<HTMLElement>('[data-modal-open]');
+      if (opener) {
+        const modalId = opener.getAttribute('data-modal-open');
+        const modal = modalId ? document.getElementById(modalId) : null;
+        if (modal) {
+          e.preventDefault();
+          const frame = modal.querySelector('iframe');
+          const src = opener.getAttribute('href');
+          if (frame && src) frame.setAttribute('src', src);
+          modal.style.display = 'flex';
+          document.body.style.overflow = 'hidden';
+        }
+        return;
+      }
+
+      const closer = target.closest<HTMLElement>('[data-modal-close]');
+      if (closer) {
+        const modal = closer.closest<HTMLElement>('[data-modal-root]');
+        if (modal) closeModal(modal);
+        return;
+      }
+
+      const overlay = target.closest<HTMLElement>('[data-modal-root]');
+      if (overlay && target === overlay) closeModal(overlay);
+    };
+
+    const handleKeydown = (e: KeyboardEvent) => {
+      if (e.key !== 'Escape') return;
+      document.querySelectorAll<HTMLElement>('[data-modal-root]').forEach((modal) => {
+        if (modal.style.display === 'flex') closeModal(modal);
+      });
+    };
+
+    document.addEventListener('click', handleClick);
+    document.addEventListener('keydown', handleKeydown);
+    return () => {
+      document.removeEventListener('click', handleClick);
+      document.removeEventListener('keydown', handleKeydown);
+    };
+  }, []);
+}
+
 export function CustomEmbedSection({
   title,
   code,
   maxWidth = 'full',
   backgroundColor = 'transparent',
 }: CustomEmbedSectionProps) {
+  useCustomEmbedModals();
+
   const bgClasses = getBackgroundClasses(backgroundColor);
   const isFull = maxWidth === 'full';
   const widthClasses = getMaxWidthClasses(maxWidth);
