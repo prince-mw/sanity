@@ -111,10 +111,10 @@ const FilterIcon = ({ className }: { className?: string }) => (
   </svg>
 )
 
-const ChatIcon = ({ className }: { className?: string }) => (
+const RefreshIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M3.5 8.5A4.5 4.5 0 0 1 8 4h8a4.5 4.5 0 0 1 4.5 4.5v4A4.5 4.5 0 0 1 16 17H9l-4.5 3.5V17A4.5 4.5 0 0 1 3.5 12.5v-4Z" />
-    <path strokeLinecap="round" d="M8.5 9.5h7M8.5 12.5h4" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12a7.5 7.5 0 0 1 12.8-5.3L20 9M20 9V4.5M20 9h-4.5" />
+    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12a7.5 7.5 0 0 1-12.8 5.3L4 14.5M4 14.5V19M4 14.5h4.5" />
   </svg>
 )
 
@@ -122,20 +122,6 @@ const LightbulbIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" d="M9 18h6M10 21h4M8 14.5A5.5 5.5 0 1 1 16 14.5c0 1.4-.6 2.4-1.5 3.2-.3.3-.5.7-.5 1.1v.2H10v-.2c0-.4-.2-.8-.5-1.1-.9-.8-1.5-1.8-1.5-3.2Z" />
     <path strokeLinecap="round" d="M12 3v2" />
-  </svg>
-)
-
-const GearIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-    <circle cx="12" cy="12" r="3" />
-    <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.5M12 18.5V21M21 12h-2.5M5.5 12H3M18.4 5.6l-1.8 1.8M7.4 16.6l-1.8 1.8M18.4 18.4l-1.8-1.8M7.4 7.4 5.6 5.6" />
-  </svg>
-)
-
-const DocumentIcon = ({ className }: { className?: string }) => (
-  <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M6 3h9l3 3v15H6V3Z" />
-    <path strokeLinecap="round" d="M9 9h6M9 13h6M9 17h4" />
   </svg>
 )
 
@@ -190,7 +176,7 @@ const SIGNALS = [
       'Which locations matter most?',
       'How does place influence outcomes?',
     ],
-    powers: ['Moving Walls Inventory', 'Moving Walls Market', 'Moving Walls Planner'],
+    powers: ['MW Inventory', 'MW Market', 'MW Planner'],
     icon: LocationIcon,
     accent: 'bg-teal-600', text: 'text-teal-600', bg: 'bg-teal-50', border: 'border-teal-200', badge: 'bg-teal-100 text-teal-700',
   },
@@ -204,7 +190,7 @@ const SIGNALS = [
       'Where is media investment creating value?',
       'How do channels work together?',
     ],
-    powers: ['Moving Walls Planner', 'Moving Walls Influence', 'Moving Walls Activate'],
+    powers: ['MW Planner', 'MW Influence', 'MW Activate'],
     icon: MediaIcon,
     accent: 'bg-violet-600', text: 'text-violet-600', bg: 'bg-violet-50', border: 'border-violet-200', badge: 'bg-violet-100 text-violet-700',
   },
@@ -218,7 +204,7 @@ const SIGNALS = [
       'What drives consideration and loyalty?',
       'How do I compare against competitors?',
     ],
-    powers: ['Moving Walls Measure'],
+    powers: ['MW Measure'],
     icon: BrandIcon,
     accent: 'bg-orange-600', text: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200', badge: 'bg-orange-100 text-orange-700',
   },
@@ -232,15 +218,11 @@ const SIGNALS = [
       'What drove the result?',
       'Where should investment go next?',
     ],
-    powers: ['Moving Walls Measure'],
+    powers: ['MW Measure'],
     icon: OutcomeIcon,
     accent: 'bg-green-600', text: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200', badge: 'bg-green-100 text-green-700',
   },
 ]
-
-const SIGNAL_BY_TITLE: Record<string, typeof SIGNALS[number]> = Object.fromEntries(
-  SIGNALS.map(s => [s.title, s])
-)
 
 const RESEARCH_SOLUTIONS = [
   {
@@ -281,30 +263,54 @@ const RESEARCH_SOLUTIONS = [
   },
 ]
 
-// Left side of the MW Science Lab diagram — 5 of the 9 Core Research Areas.
-const LAB_LEFT = [
-  { icon: TrendingUpIcon, label: 'Brand Lift Studies' },
-  { icon: PulseIcon, label: 'Brand Health Tracking' },
-  { icon: SearchIcon, label: 'Audience Research' },
-  { icon: MediaIcon, label: 'Media Effectiveness' },
-  { icon: SlidersIcon, label: 'Marketing Mix Modelling' },
+const SIGNAL_BY_TITLE: Record<string, typeof SIGNALS[number]> = Object.fromEntries(
+  SIGNALS.map(s => [s.title, s])
+)
+
+function solutionSignals(sol: typeof RESEARCH_SOLUTIONS[number]) {
+  return sol.tags.map(t => SIGNAL_BY_TITLE[t]).filter((s): s is typeof SIGNALS[number] => Boolean(s))
+}
+
+// Manager's 4 categories, for the filter pills above the solutions grid — a
+// solution can belong to more than one category (e.g. "Brand Health Tracking
+// and Media Effectiveness" spans both Brand and Media & Investment). Solutions
+// not covered by any category (Location & Place Intelligence) only show under "All".
+const SOLUTION_CATEGORIES = [
+  { title: 'Understand People', icon: AudienceIcon, solutions: ['Audience Intelligence and Qualitative Research'] },
+  { title: 'Understand Brand', icon: BrandIcon, solutions: ['Brand Lift Studies', 'Brand Health Tracking and Media Effectiveness'] },
+  { title: 'Understand Media & Investment', icon: MediaIcon, solutions: ['Marketing Mix Modelling', 'Brand Health Tracking and Media Effectiveness'] },
+  { title: 'Design & Improve', icon: LightbulbIcon, solutions: ['Mall Experience Index'] },
 ]
 
-// Right side — the remaining 4 Core Research Areas.
-const LAB_RIGHT = [
-  { icon: ChatIcon, label: 'Qualitative Research' },
-  { icon: LightbulbIcon, label: 'Product Innovation' },
-  { icon: EyeIcon, label: 'Customer Experience' },
-  { icon: GearIcon, label: 'Custom Programmes' },
-]
-
-// Top process strip, above the hub.
-const LAB_PROCESS = [
-  { icon: FilterIcon, label: 'Design' },
-  { icon: AudienceIcon, label: 'Collect' },
-  { icon: SearchIcon, label: 'Analyze' },
-  { icon: OutcomeIcon, label: 'Validate' },
-  { icon: DocumentIcon, label: 'Report' },
+// The full narrative loop — from research methodologies,
+// through signals, to the Cognitive Compass, to better decisions, and back again
+// as continuous learning compounds.
+const LAB_CIRCLE_STAGES = [
+  {
+    icon: SearchIcon,
+    label: 'Research Methodologies',
+    body: 'MW Science Lab’s research capability — brand, audience, media and experience studies.',
+  },
+  {
+    icon: PulseIcon,
+    label: 'Signals',
+    body: 'Human, spatial, media and behavioural signals extracted from that research.',
+  },
+  {
+    icon: CompassIcon,
+    label: 'Cognitive Compass',
+    body: 'Powers the MW ecosystem, and serves as a research partner to clients directly.',
+  },
+  {
+    icon: OutcomeIcon,
+    label: 'Better Decisions',
+    body: 'Sharper planning, measurement and action — before any spend.',
+  },
+  {
+    icon: RefreshIcon,
+    label: 'Continuous Learning',
+    body: 'Every campaign measured feeds back in, so the Lab’s research gets sharper over time.',
+  },
 ]
 
 const WHY_COLUMNS = [
@@ -354,76 +360,6 @@ const LOGOS = [
   'mediacorp','mpa','mudah','net','ocbc','paypal',
   'robi','sephora','taylors','uob','whisper','x',
 ]
-
-// ─── SIGNAL CONSTELLATION ──────────────────────────────────────────────────────
-// The five signals as orbiting nodes, each pulsing a connection into the core.
-
-function SignalConstellation() {
-  // Centre is offset down from the viewBox's true middle (150,150) — angle -90°
-  // puts one node (Audience) directly at the top, and at CENTER_Y=150 its label
-  // (rendered 26px above the node) fell above y=0 and was clipped by the SVG's
-  // default overflow:hidden. Shifting the whole layout down gives it headroom.
-  const CENTER_X = 150
-  const CENTER_Y = 165
-  const RADIUS = 118
-  const angles = [-90, -18, 54, 126, 198]
-  const round = (n: number) => Math.round(n * 1000) / 1000
-  const toXY = (angle: number) => {
-    const rad = (angle * Math.PI) / 180
-    return { x: round(CENTER_X + RADIUS * Math.cos(rad)), y: round(CENTER_Y + RADIUS * Math.sin(rad)) }
-  }
-  return (
-    <svg viewBox="0 0 300 300" className="w-full max-w-[400px] mx-auto" aria-hidden="true">
-      <defs>
-        <radialGradient id="coreGlow2" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.22" />
-          <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
-        </radialGradient>
-      </defs>
-      <ellipse cx={CENTER_X} cy={CENTER_Y} rx="70" ry="70" fill="url(#coreGlow2)" />
-      {SIGNALS.map((s, i) => {
-        const { x, y } = toXY(angles[i])
-        // animateMotion adds the path's own coordinates on top of the circle's static cx/cy,
-        // so this must be a relative path (starting at 0,0), not an absolute one.
-        const path = `M 0 0 L ${CENTER_X - x} ${CENTER_Y - y}`
-        return (
-          <g key={s.id}>
-            <line x1={x} y1={y} x2={CENTER_X} y2={CENTER_Y} className={s.text} stroke="currentColor" strokeOpacity="0.4" strokeWidth="1.2" />
-            <circle cx={x} cy={y} r="2.5" className={s.text} fill="currentColor">
-              <animateMotion dur="3.2s" begin={`${i * 0.5}s`} repeatCount="indefinite" path={path} />
-            </circle>
-            <motion.circle
-              cx={x} cy={y} r="16"
-              className={s.text} fill="currentColor" stroke="#ffffff" strokeWidth="2"
-              initial={{ scale: 0, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.3 + i * 0.15, type: 'spring', stiffness: 140 }}
-            />
-            <foreignObject x={x - 7} y={y - 7} width="14" height="14" className="pointer-events-none">
-              <s.icon className="w-full h-full text-white" />
-            </foreignObject>
-            <motion.text
-              x={x} y={y - 26}
-              textAnchor="middle" fontSize="10.5" fontWeight="600" className={s.text} fill="currentColor" fontFamily="inherit" letterSpacing="0.4"
-              initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8, delay: 0.6 + i * 0.15 }}
-            >
-              {s.label}
-            </motion.text>
-          </g>
-        )
-      })}
-      <motion.g
-        initial={{ opacity: 0, scale: 0.8 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.8, delay: 1.2, type: 'spring' }}
-      >
-        <circle cx={CENTER_X} cy={CENTER_Y} r="34" fill="#1e3a8a" stroke="#60a5fa" strokeWidth="1.5" />
-        <text x={CENTER_X} y={CENTER_Y - 3} textAnchor="middle" fontSize="11" fontWeight="700" fill="#ffffff" fontFamily="inherit" letterSpacing="1">MW</text>
-        <text x={CENTER_X} y={CENTER_Y + 11} textAnchor="middle" fontSize="9" fontWeight="700" fill="#93c5fd" fontFamily="inherit" letterSpacing="1">SCIENCE</text>
-      </motion.g>
-    </svg>
-  )
-}
 
 // ─── THREAD WEAVE (hero visual) ────────────────────────────────────────────────
 // Four labelled threads weave down and converge into a single signal.
@@ -1002,302 +938,727 @@ function SignalsCompassDial({ activeIndex, onSelect }: { activeIndex: number; on
   )
 }
 
-// ─── MW SCIENCE LAB DIAGRAM ────────────────────────────────────────────────────
-// Comet-flow diagram in the same visual language as the hero/other sections:
-// 9 research capabilities flow in from the left, 5 deliverables flow out on the
-// right, a short process strip sits above the hub. Everything — cards, curves,
-// comets and the hub itself — lives in one SVG coordinate system (icon cards via
-// foreignObject) so nothing can drift out of alignment the way a separate
-// HTML-positioned hub could.
+// ─── MW SCIENCE LAB LOOP — 3 animated preview variants ─────────────────────────
+// The manager's "full narrative circle" option: the whole loop — methodologies
+// → signals → compass (powers the ecosystem + research partner to clients) →
+// better decisions before spend → continuous learning, feeding back into
+// methodologies. Three different takes on how to animate that loop are built
+// below (Spotlight Relay / Comet Relay / Living Core) so one can be picked;
+// ScienceLabDiagramPreview renders whichever is selected via a small switcher.
+const LAB_LOOP_CYCLE_MS = 3200
 
-function ScienceLabDiagram() {
-  const CX = 500
-  const CY = 220
-  const leftYs = [124, 172, 220, 268, 316]
-  const rightYs = [127, 189, 251, 313]
-  const processXs = [320, 410, 500, 590, 680]
+// Per-stage accent — SVG elements need real hex values, HTML cards drive color via
+// Tailwind classes. Same 5-slot palette as the Signals section (blue/blue/indigo/
+// deep blue/blue) so Cognitive Compass reads as the one indigo "pivot" stage.
+const LAB_STAGE_HEX = ['#3b82f6', '#60a5fa', '#818cf8', '#2563eb', '#3b82f6']
+const LAB_STAGE_CLASS = [
+  { text: 'text-mw-blue-500', border: 'border-mw-blue-500', accent: 'bg-mw-blue-500', soft: 'bg-mw-blue-500/10', halo: 'bg-mw-blue-500/30' },
+  { text: 'text-mw-blue-400', border: 'border-mw-blue-400', accent: 'bg-mw-blue-400', soft: 'bg-mw-blue-400/10', halo: 'bg-mw-blue-400/30' },
+  { text: 'text-indigo-400', border: 'border-indigo-400', accent: 'bg-indigo-400', soft: 'bg-indigo-400/10', halo: 'bg-indigo-400/30' },
+  { text: 'text-mw-blue-600', border: 'border-mw-blue-600', accent: 'bg-mw-blue-600', soft: 'bg-mw-blue-600/10', halo: 'bg-mw-blue-600/30' },
+  { text: 'text-mw-blue-500', border: 'border-mw-blue-500', accent: 'bg-mw-blue-500', soft: 'bg-mw-blue-500/10', halo: 'bg-mw-blue-500/30' },
+]
 
-  return (
-    <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-mw-gray-200 shadow-sm p-4 md:p-6 overflow-hidden">
-      <svg viewBox="0 0 1000 400" className="w-full h-auto" aria-hidden="true">
-        <defs>
-          <linearGradient id="labFlowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.35" />
-            <stop offset="100%" stopColor="#2563eb" stopOpacity="0.9" />
-          </linearGradient>
-          <radialGradient id="labCometBlue" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#dbeafe" stopOpacity="1" />
-            <stop offset="60%" stopColor="#60a5fa" stopOpacity="0.6" />
-            <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
-          </radialGradient>
-          <filter id="labDotGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <filter id="labHubGlow" x="-150%" y="-150%" width="400%" height="400%">
-            <feGaussianBlur stdDeviation="10" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-        </defs>
+// The loop auto-advances a "spotlight" around the 5 stages every 3.2s — the arc
+// feeding into the new stage draws itself in with a travelling comet spark, the
+// hub glow recolours to match, and the centre badge sits inside a small living
+// core (breathing glow, sonar pulses, counter-rotating rings and motes) so it
+// never looks static between beats. Auto-advance pauses on hover; stages are
+// clickable so the loop is a re-enterable story, not a one-way sequence — same
+// remainingRef/startRef countdown pattern as the Compass Dial, Solutions Reveal
+// Strip and Testimonials Spotlight elsewhere on this page.
+function ScienceLabDiagramSpotlightRelay() {
+  const stages = LAB_CIRCLE_STAGES
+  const R = 37
+  const positions = stages.map((_, i) => {
+    const angle = ((-90 + i * (360 / stages.length)) * Math.PI) / 180
+    return { left: 50 + R * Math.cos(angle), top: 50 + R * Math.sin(angle) }
+  })
 
-        {/* Process strip above the hub */}
-        {LAB_PROCESS.map((step, i) => (
-          <g key={step.label}>
-            {i < LAB_PROCESS.length - 1 && (
-              <motion.line
-                x1={processXs[i] + 24} y1={28} x2={processXs[i + 1] - 24} y2={28}
-                stroke="#93c5fd" strokeWidth="1.5" strokeDasharray="4 4"
-                initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 1 }}
-                viewport={{ once: true }} transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
-              />
-            )}
-            <foreignObject x={processXs[i] - 32} y={2} width="64" height="76" className="pointer-events-none">
-              <div className="flex flex-col items-center gap-1">
-                <div className="w-11 h-11 rounded-xl bg-white border-2 border-mw-blue-200 flex items-center justify-center text-mw-blue-600 shadow-sm shrink-0">
-                  <step.icon className="w-5 h-5" />
-                </div>
-                <span className="text-[10px] leading-tight font-medium text-mw-gray-600 whitespace-nowrap">{step.label}</span>
-              </div>
-            </foreignObject>
-          </g>
-        ))}
-        <motion.line
-          x1={CX} y1={76} x2={CX} y2={CY - 46}
-          stroke="#93c5fd" strokeWidth="1.5" strokeDasharray="3 5"
-          initial={{ pathLength: 0, opacity: 0 }} whileInView={{ pathLength: 1, opacity: 0.7 }}
-          viewport={{ once: true }} transition={{ duration: 0.6, delay: 0.9 }}
-        />
-
-        {/* Left: 5 Core Research Areas flowing in */}
-        {LAB_LEFT.map((item, i) => {
-          const y = leftYs[i]
-          const path = `M 220,${y} C 340,${y} 420,${CY} 500,${CY}`
-          const motionPath = `M 0 0 C ${340 - 220} 0 ${420 - 220} ${CY - y} ${500 - 220} ${CY - y}`
-          const dur = 3.4 + (i % 4) * 0.35
-          return (
-            <g key={item.label}>
-              <motion.path
-                d={path} fill="none" stroke="url(#labFlowGrad)" strokeWidth="1.4" strokeOpacity="0.5"
-                initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.15 + i * 0.07, ease: 'easeInOut' }}
-              />
-              <circle cx={220} cy={y} r="2" fill="#60a5fa" opacity="0.4">
-                <animateMotion dur={`${dur}s`} begin={`${i * 0.35 + 0.15}s`} repeatCount="indefinite" path={motionPath} />
-                <animate attributeName="opacity" values="0;0.4;0.4;0" keyTimes="0;0.05;0.9;1" dur={`${dur}s`} begin={`${i * 0.35 + 0.15}s`} repeatCount="indefinite" />
-              </circle>
-              <circle cx={220} cy={y} r="4" fill="url(#labCometBlue)" filter="url(#labDotGlow)">
-                <animateMotion dur={`${dur}s`} begin={`${i * 0.35}s`} repeatCount="indefinite" path={motionPath} />
-                <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.9;1" dur={`${dur}s`} begin={`${i * 0.35}s`} repeatCount="indefinite" />
-              </circle>
-              <foreignObject x={20} y={y - 17} width="200" height="34" className="pointer-events-none">
-                <div className="flex items-center gap-2 bg-white rounded-md px-3 py-1.5 shadow-sm border border-mw-gray-200 w-full h-full box-border">
-                  <item.icon className="w-4 h-4 text-mw-blue-600 shrink-0" />
-                  <span className="text-xs font-medium text-mw-gray-700 truncate">{item.label}</span>
-                </div>
-              </foreignObject>
-            </g>
-          )
-        })}
-
-        {/* Right: remaining 4 Core Research Areas — also flowing IN toward the hub */}
-        {LAB_RIGHT.map((item, i) => {
-          const y = rightYs[i]
-          const path = `M 780,${y} C 660,${y} 580,${CY} 500,${CY}`
-          const motionPath = `M 0 0 C ${660 - 780} 0 ${580 - 780} ${CY - y} ${500 - 780} ${CY - y}`
-          const dur = 3.4 + (i % 4) * 0.35
-          return (
-            <g key={item.label}>
-              <motion.path
-                d={path} fill="none" stroke="url(#labFlowGrad)" strokeWidth="1.4" strokeOpacity="0.5"
-                initial={{ pathLength: 0 }} whileInView={{ pathLength: 1 }} viewport={{ once: true }}
-                transition={{ duration: 1, delay: 0.5 + i * 0.07, ease: 'easeInOut' }}
-              />
-              <circle cx={780} cy={y} r="2" fill="#60a5fa" opacity="0.4">
-                <animateMotion dur={`${dur}s`} begin={`${i * 0.35 + 1.15}s`} repeatCount="indefinite" path={motionPath} />
-                <animate attributeName="opacity" values="0;0.4;0.4;0" keyTimes="0;0.05;0.9;1" dur={`${dur}s`} begin={`${i * 0.35 + 1.15}s`} repeatCount="indefinite" />
-              </circle>
-              <circle cx={780} cy={y} r="4" fill="url(#labCometBlue)" filter="url(#labDotGlow)">
-                <animateMotion dur={`${dur}s`} begin={`${i * 0.35 + 1}s`} repeatCount="indefinite" path={motionPath} />
-                <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.9;1" dur={`${dur}s`} begin={`${i * 0.35 + 1}s`} repeatCount="indefinite" />
-              </circle>
-              <foreignObject x={780} y={y - 17} width="200" height="34" className="pointer-events-none">
-                <div className="flex items-center gap-2 bg-white rounded-md px-3 py-1.5 shadow-sm border border-mw-gray-200 w-full h-full box-border">
-                  <item.icon className="w-4 h-4 text-mw-blue-600 shrink-0" />
-                  <span className="text-xs font-medium text-mw-gray-700 truncate">{item.label}</span>
-                </div>
-              </foreignObject>
-            </g>
-          )
-        })}
-
-        {/* Hub */}
-        <circle cx={CX} cy={CY} r="55" fill="#2563eb" opacity="0.08" filter="url(#labHubGlow)">
-          <animate attributeName="r" values="50;62;50" dur="4s" repeatCount="indefinite" />
-          <animate attributeName="opacity" values="0.08;0.15;0.08" dur="4s" repeatCount="indefinite" />
-        </circle>
-        <circle cx={CX} cy={CY} r="50" fill="none" stroke="#3b82f6" strokeWidth="1" strokeDasharray="8 6" opacity="0.25">
-          <animateTransform attributeName="transform" type="rotate" values={`0 ${CX} ${CY};360 ${CX} ${CY}`} dur="24s" repeatCount="indefinite" />
-        </circle>
-        <circle cx={CX} cy={CY} r="60" fill="none" stroke="#818cf8" strokeWidth="0.8" strokeDasharray="3 8" opacity="0.2">
-          <animateTransform attributeName="transform" type="rotate" values={`360 ${CX} ${CY};0 ${CX} ${CY}`} dur="32s" repeatCount="indefinite" />
-        </circle>
-        <g>
-          <animateTransform attributeName="transform" type="rotate" values={`0 ${CX} ${CY};360 ${CX} ${CY}`} dur="9s" repeatCount="indefinite" />
-          <circle cx={CX + 58} cy={CY} r="2.5" fill="#60a5fa" opacity="0.7" filter="url(#labDotGlow)" />
-        </g>
-        <foreignObject x={CX - 44} y={CY - 44} width="88" height="88" className="pointer-events-none">
-          <motion.div
-            initial={{ scale: 0, opacity: 0 }} whileInView={{ scale: 1, opacity: 1 }}
-            viewport={{ once: true }} transition={{ duration: 0.7, delay: 0.3, type: 'spring', stiffness: 130 }}
-            className="w-full h-full rounded-full overflow-hidden shadow-xl"
-          >
-            <img src="/assets/logo/mw-science-badge.png" alt="MW Science" className="w-full h-full object-cover" />
-          </motion.div>
-        </foreignObject>
-      </svg>
-    </div>
-  )
-}
-
-// The diagram above is authored at viewBox width 1000, so on narrow phones (~320-380px
-// actual rendered width) everything inside it — including the foreignObject text —
-// shrinks to roughly a third of its authored size and becomes illegible. Rather than
-// shrink an already-dense diagram further, mobile gets a plain HTML layout instead
-// (same data, same icons, normal document-flow text that stays legible at any width).
-function ScienceLabMobile() {
-  return (
-    <div className="space-y-8">
-      <div>
-        <h4 className="text-xs font-bold text-mw-gray-400 uppercase tracking-widest mb-4 text-center">The Process</h4>
-        <div className="flex flex-wrap justify-center gap-x-5 gap-y-4">
-          {LAB_PROCESS.map(step => (
-            <div key={step.label} className="flex flex-col items-center gap-1.5 w-16">
-              <div className="w-10 h-10 rounded-xl bg-white border-2 border-mw-blue-200 flex items-center justify-center text-mw-blue-600 shadow-sm flex-shrink-0">
-                <step.icon className="w-5 h-5" />
-              </div>
-              <span className="text-[11px] leading-tight font-medium text-mw-gray-600 text-center">{step.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="flex flex-col items-center gap-3">
-        <div className="w-16 h-16 rounded-full overflow-hidden shadow-lg">
-          <img src="/assets/logo/mw-science-badge.png" alt="MW Science" className="w-full h-full object-cover" />
-        </div>
-      </div>
-
-      <div>
-        <h4 className="text-xs font-bold text-mw-gray-400 uppercase tracking-widest mb-4 text-center">Core Research Areas</h4>
-        <div className="grid grid-cols-2 gap-2.5">
-          {[...LAB_LEFT, ...LAB_RIGHT].map(item => (
-            <div key={item.label} className="flex items-center gap-2 bg-white rounded-lg px-2.5 py-2.5 border border-mw-gray-200">
-              <item.icon className="w-4 h-4 text-mw-blue-600 flex-shrink-0" />
-              <span className="text-xs font-medium text-mw-gray-700 leading-snug">{item.label}</span>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// ─── RESEARCH SOLUTIONS: NON-CARD VARIANTS ─────────────────────────────────────
-
-type Solution = typeof RESEARCH_SOLUTIONS[number]
-
-function solutionSignals(sol: Solution) {
-  return sol.tags.map(t => SIGNAL_BY_TITLE[t]).filter((s): s is typeof SIGNALS[number] => Boolean(s))
-}
-
-const SOLUTION_SHORT_LABELS: Record<string, string> = {
-  'Brand Lift Studies': 'Brand Lift',
-  'Brand Health Tracking and Media Effectiveness': 'Brand Health',
-  'Marketing Mix Modelling': 'MMM',
-  'Audience Intelligence and Qualitative Research': 'Audience Intel',
-  'Location & Place Intelligence': 'Location Intel',
-  'Mall Experience Index': 'Mall Experience',
-}
-
-const SOLUTIONS_TAB_INTERVAL = 7000
-
-// Reveal Strip: a slim tab strip of solutions; clicking one expands a single detail panel below, all centred.
-// Auto-advances every 7s, pausing on hover (same timer pattern as the Compass Dial and Testimonials Spotlight).
-function SolutionsRevealStrip() {
-  const [active, setActive] = useState(0)
+  const [activeIndex, setActiveIndex] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
-  const remainingRef = useRef(SOLUTIONS_TAB_INTERVAL)
+  const remainingRef = useRef(LAB_LOOP_CYCLE_MS)
   const startRef = useRef(0)
 
-  useEffect(() => { remainingRef.current = SOLUTIONS_TAB_INTERVAL }, [active])
+  useEffect(() => { remainingRef.current = LAB_LOOP_CYCLE_MS }, [activeIndex])
   useEffect(() => {
     if (isPaused) return
     startRef.current = Date.now()
-    const id = setTimeout(() => setActive(a => (a + 1) % RESEARCH_SOLUTIONS.length), remainingRef.current)
+    const id = setTimeout(() => setActiveIndex(i => (i + 1) % stages.length), remainingRef.current)
     return () => {
       clearTimeout(id)
       remainingRef.current = Math.max(0, remainingRef.current - (Date.now() - startRef.current))
     }
-  }, [active, isPaused])
+  }, [activeIndex, isPaused, stages.length])
 
-  const sol = RESEARCH_SOLUTIONS[active]
-  const sigs = solutionSignals(sol)
-  const primary = sigs[0] ?? SIGNALS[0]
+  const activeHex = LAB_STAGE_HEX[activeIndex]
 
   return (
     <div
-      className="flex flex-col items-center"
+      className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-mw-gray-200 shadow-sm p-4 md:p-8 overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      <div className="flex flex-wrap justify-center border-b border-mw-gray-200 mb-8">
-        {RESEARCH_SOLUTIONS.map((s, i) => {
-          const sPrimary = solutionSignals(s)[0] ?? SIGNALS[0]
-          const isActive = i === active
+      <div className="relative mx-auto aspect-square max-w-xs sm:max-w-sm md:max-w-md">
+        <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full overflow-visible">
+          <defs>
+            <marker id="labLoopArrowDim" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="4.5" markerHeight="4.5" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10Z" fill="#bfdbfe" />
+            </marker>
+            <marker id="labLoopArrowActive" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10Z" fill={activeHex} />
+            </marker>
+            <filter id="labLoopGlow" x="-150%" y="-150%" width="400%" height="400%">
+              <feGaussianBlur stdDeviation="1.6" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <radialGradient id="labLoopHubGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor={activeHex} stopOpacity="0.55" />
+              <stop offset="100%" stopColor={activeHex} stopOpacity="0" />
+            </radialGradient>
+          </defs>
+
+          <circle cx="50" cy="50" r={R} fill="none" stroke="#dbeafe" strokeWidth="1" strokeDasharray="2 4" />
+
+          {positions.map((p, i) => {
+            const nextIdx = (i + 1) % positions.length
+            const next = positions[nextIdx]
+            const dx = next.left - p.left
+            const dy = next.top - p.top
+            const dist = Math.sqrt(dx * dx + dy * dy)
+            const pad = 11
+            const x1 = p.left + (dx / dist) * pad
+            const y1 = p.top + (dy / dist) * pad
+            const x2 = next.left - (dx / dist) * pad
+            const y2 = next.top - (dy / dist) * pad
+            const d = `M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`
+            const isIncoming = nextIdx === activeIndex
+
+            return (
+              <g key={i}>
+                {/* Dim static track, always visible */}
+                <path d={d} fill="none" stroke="#bfdbfe" strokeWidth="1" strokeOpacity={0.6} markerEnd="url(#labLoopArrowDim)" />
+                {/* Bright flow that draws itself in exactly as this arc's destination lights up */}
+                <motion.path
+                  d={d}
+                  fill="none"
+                  stroke={activeHex}
+                  strokeWidth="1.8"
+                  strokeLinecap="round"
+                  markerEnd={isIncoming ? 'url(#labLoopArrowActive)' : undefined}
+                  style={{ filter: isIncoming ? 'url(#labLoopGlow)' : 'none' }}
+                  initial={false}
+                  animate={{ pathLength: isIncoming ? 1 : 0, opacity: isIncoming ? 1 : 0 }}
+                  transition={{ duration: 0.9, ease: 'easeInOut' }}
+                />
+                {/* Comet spark travelling the arc the instant it becomes active */}
+                {isIncoming && (
+                  <circle key={`comet-${activeIndex}`} r="1.7" fill={activeHex} filter="url(#labLoopGlow)">
+                    <animateMotion dur="0.9s" begin="0s" fill="freeze" path={d} />
+                    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.85;1" dur="0.9s" begin="0s" fill="freeze" />
+                  </circle>
+                )}
+              </g>
+            )
+          })}
+
+          {/* ── Living core around the MW Science badge ── */}
+          {/* Counter-rotating dashed rings keep the hub feeling alive between beats */}
+          <circle cx="50" cy="50" r="11.5" fill="none" stroke="#93c5fd" strokeWidth="0.6" strokeDasharray="1.4 3" opacity={0.5}>
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="24s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="50" cy="50" r="15" fill="none" stroke="#818cf8" strokeWidth="0.5" strokeDasharray="1 2.6" opacity={0.35}>
+            <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" dur="32s" repeatCount="indefinite" />
+          </circle>
+
+          {/* Two staggered sonar pulses breathing outward, recoloured to the active stage */}
+          <circle cx="50" cy="50" r="9" fill="none" stroke={activeHex} strokeWidth="1" style={{ transition: 'stroke 0.8s ease' }}>
+            <animate attributeName="r" values="9;15;9" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.6;0;0.6" dur="4s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="50" cy="50" r="9" fill="none" stroke={activeHex} strokeWidth="0.8" style={{ transition: 'stroke 0.8s ease' }}>
+            <animate attributeName="r" values="9;15;9" dur="4s" begin="2s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="4s" begin="2s" repeatCount="indefinite" />
+          </circle>
+
+          {/* Soft pulsing glow behind the badge, recoloured to whichever stage is active */}
+          <circle cx="50" cy="50" r="10" fill="url(#labLoopHubGlow)">
+            <animate attributeName="r" values="9;12.5;9" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.55;0.9;0.55" dur="4s" repeatCount="indefinite" />
+          </circle>
+
+          {/* Two motes orbiting the hub in opposite directions */}
+          <g>
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="9s" repeatCount="indefinite" />
+            <circle cx="50" cy="33.5" r="1.3" fill={activeHex} filter="url(#labLoopGlow)" />
+          </g>
+          <g>
+            <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" dur="13s" repeatCount="indefinite" />
+            <circle cx="50" cy="37" r="1" fill="#818cf8" filter="url(#labLoopGlow)" />
+          </g>
+        </svg>
+
+        {/* Ambient pulse behind the badge image itself */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <motion.div
+            className="w-20 h-20 sm:w-24 sm:h-24 rounded-full blur-xl"
+            animate={{ scale: [1, 1.15, 1], opacity: [0.3, 0.5, 0.3] }}
+            transition={{ scale: { duration: 4, repeat: Infinity, ease: 'easeInOut' }, opacity: { duration: 4, repeat: Infinity, ease: 'easeInOut' } }}
+            style={{ backgroundColor: activeHex, transition: 'background-color 0.8s ease' }}
+          />
+        </div>
+
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden transition-shadow duration-700"
+            style={{ boxShadow: `0 0 0 4px #ffffff, 0 0 18px 2px ${activeHex}66` }}
+          >
+            <img src="/assets/logo/mw-science-badge.png" alt="MW Science" className="w-full h-full object-cover" />
+          </div>
+        </div>
+
+        {stages.map((stage, i) => {
+          const isActive = i === activeIndex
+          const c = LAB_STAGE_CLASS[i % LAB_STAGE_CLASS.length]
+          return (
+            <motion.button
+              key={stage.label}
+              type="button"
+              onClick={() => setActiveIndex(i)}
+              aria-current={isActive ? 'step' : undefined}
+              aria-label={`Show ${stage.label} stage`}
+              className="absolute w-24 sm:w-28 md:w-32 text-center bg-transparent border-0 p-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-mw-blue-300 rounded-lg"
+              style={{ left: `${positions[i].left}%`, top: `${positions[i].top}%` }}
+              initial={{ x: '-50%', y: '-50%' }}
+              animate={{ x: '-50%', y: '-50%', scale: isActive ? 1.14 : 1, opacity: isActive ? 1 : 0.55 }}
+              transition={{ duration: 0.5, ease: 'easeOut' }}
+            >
+              <div className="relative w-9 h-9 mx-auto mb-1.5">
+                {isActive && <span className={`absolute inset-0 rounded-xl animate-ping ${c.halo}`} />}
+                <div
+                  className={`relative w-9 h-9 rounded-xl bg-white border-2 flex items-center justify-center shadow-sm transition-colors duration-500 ${
+                    isActive ? `${c.border} ${c.text}` : 'border-mw-blue-200 text-mw-blue-600'
+                  }`}
+                >
+                  <stage.icon className="w-4 h-4" />
+                </div>
+              </div>
+              <div className={`text-[11px] font-bold leading-tight transition-colors duration-500 ${isActive ? 'text-mw-gray-900' : 'text-mw-gray-400'}`}>
+                {stage.label}
+              </div>
+            </motion.button>
+          )
+        })}
+      </div>
+
+      <div className="sr-only" aria-live="polite">
+        {stages[activeIndex].label}: {stages[activeIndex].body}
+      </div>
+
+      <div className="flex items-center justify-center gap-1.5 mt-6">
+        {stages.map((stage, i) => {
+          const c = LAB_STAGE_CLASS[i % LAB_STAGE_CLASS.length]
+          const isActive = i === activeIndex
           return (
             <button
-              key={s.title}
-              onClick={() => setActive(i)}
-              className={`relative flex items-center gap-2 px-4 py-3 text-sm font-semibold whitespace-nowrap transition-colors ${isActive ? 'text-mw-gray-900' : 'text-mw-gray-400 hover:text-mw-gray-600'}`}
+              key={stage.label}
+              type="button"
+              onClick={() => setActiveIndex(i)}
+              aria-label={`Jump to ${stage.label}`}
+              className={`h-1.5 rounded-full transition-all duration-500 ${isActive ? `w-6 ${c.accent}` : 'w-2 bg-mw-blue-100'}`}
+            />
+          )
+        })}
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-6">
+        {stages.map((stage, i) => {
+          const isActive = i === activeIndex
+          const c = LAB_STAGE_CLASS[i % LAB_STAGE_CLASS.length]
+          return (
+            <div key={stage.label} className={`text-center px-2 py-2 rounded-xl transition-colors duration-500 ${isActive ? c.soft : ''}`}>
+              <div className={`text-xs font-bold mb-1 transition-colors duration-500 ${isActive ? c.text : 'text-mw-blue-600'}`}>{stage.label}</div>
+              <p className="text-xs text-mw-gray-500 leading-snug">{stage.body}</p>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// A bright comet with a fading tail circles the loop forever, giving each stage a
+// brief glow-pulse as it passes in sequence — motion reads as "signal flowing
+// through the loop" rather than a narrated slideshow. No click interaction; this
+// is a purely ambient variant. Same comet-head-plus-trail technique as ThreadWeave.
+function ScienceLabDiagramCometRelay() {
+  const stages = LAB_CIRCLE_STAGES
+  const R = 37
+  const LOOP_DURATION = 10 // seconds for one full lap of the relay comet
+  const SEGMENT = LOOP_DURATION / stages.length
+
+  const positions = stages.map((_, i) => {
+    const angle = ((-90 + i * (360 / stages.length)) * Math.PI) / 180
+    return { left: 50 + R * Math.cos(angle), top: 50 + R * Math.sin(angle) }
+  })
+
+  // animateMotion offsets an element relative to its own static cx/cy, so the comet
+  // circle keeps cx/cy pinned at the loop's start node and travels along a path of
+  // deltas from that node.
+  const origin = positions[0]
+  const relLoopPath =
+    positions.reduce((acc, p, i) => {
+      const rx = p.left - origin.left
+      const ry = p.top - origin.top
+      return i === 0 ? `M 0 0` : `${acc} A ${R} ${R} 0 0 1 ${rx} ${ry}`
+    }, '') + ` A ${R} ${R} 0 0 1 0 0`
+
+  // Every card lights up for a beat exactly when the comet reaches it, then waits
+  // out the rest of the lap before pulsing again.
+  const pulseTransition = (i: number) => ({
+    duration: 0.9,
+    repeat: Infinity,
+    repeatDelay: LOOP_DURATION - 0.9,
+    delay: i * SEGMENT,
+    ease: 'easeOut' as const,
+  })
+
+  return (
+    <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-mw-gray-200 shadow-sm p-4 md:p-8 overflow-hidden">
+      <div className="relative mx-auto aspect-square max-w-xs sm:max-w-sm md:max-w-md">
+        <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full overflow-visible">
+          <defs>
+            <marker id="labCometArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10Z" fill="#93c5fd" />
+            </marker>
+            <radialGradient id="labCometCore" cx="30%" cy="30%" r="70%">
+              <stop offset="0%" stopColor="#ffffff" />
+              <stop offset="45%" stopColor="#93c5fd" />
+              <stop offset="100%" stopColor="#2563eb" />
+            </radialGradient>
+            <radialGradient id="labCometHubGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.55" />
+              <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
+            </radialGradient>
+            <filter id="labCometGlow" x="-150%" y="-150%" width="400%" height="400%">
+              <feGaussianBlur stdDeviation="1.4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          <circle cx="50" cy="50" r={R} fill="none" stroke="#dbeafe" strokeWidth="1" strokeDasharray="2 4" />
+
+          {/* calm connecting arcs — one-time reveal only, no ongoing motion here on purpose */}
+          {positions.map((p, i) => {
+            const next = positions[(i + 1) % positions.length]
+            const dx = next.left - p.left
+            const dy = next.top - p.top
+            const dist = Math.sqrt(dx * dx + dy * dy)
+            const pad = 11
+            const x1 = p.left + (dx / dist) * pad
+            const y1 = p.top + (dy / dist) * pad
+            const x2 = next.left - (dx / dist) * pad
+            const y2 = next.top - (dy / dist) * pad
+            return (
+              <motion.path
+                key={i}
+                d={`M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`}
+                fill="none"
+                stroke="#93c5fd"
+                strokeWidth="1"
+                markerEnd="url(#labCometArrow)"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.15 + i * 0.12 }}
+              />
+            )
+          })}
+
+          {/* comet relay: bright head + 3-dot fading tail, forever circling the loop */}
+          {[0, 1, 2, 3].map(k => (
+            <circle
+              key={k}
+              cx={origin.left}
+              cy={origin.top}
+              r={k === 0 ? 2.1 : 1.6 - k * 0.3}
+              fill="url(#labCometCore)"
+              filter={k === 0 ? 'url(#labCometGlow)' : undefined}
+              opacity={k === 0 ? 1 : 0.5 - k * 0.12}
             >
-              <s.icon className={`w-4 h-4 transition-colors ${isActive ? sPrimary.text : 'text-mw-gray-400'}`} />
-              {SOLUTION_SHORT_LABELS[s.title] ?? s.title}
-              <span className={`absolute left-0 right-0 -bottom-px h-0.5 rounded-full ${sPrimary.accent} transition-opacity ${isActive ? 'opacity-100' : 'opacity-0'}`} />
+              <animateMotion dur={`${LOOP_DURATION}s`} begin={`${-k * 0.2}s`} repeatCount="indefinite" path={relLoopPath} />
+            </circle>
+          ))}
+
+          {/* hub: pulsing glow + two counter-rotating dashed rings + a tight orbiting spark */}
+          <circle cx="50" cy="50" r="13" fill="url(#labCometHubGlow)">
+            <animate attributeName="r" values="11;16;11" dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.35;0.65;0.35" dur="4s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="50" cy="50" r="9" fill="none" stroke="#bfdbfe" strokeWidth="0.6" strokeDasharray="1.5 3" opacity="0.85">
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="24s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="50" cy="50" r="11.5" fill="none" stroke="#818cf8" strokeWidth="0.5" strokeDasharray="1 4" opacity="0.55">
+            <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" dur="32s" repeatCount="indefinite" />
+          </circle>
+          <g>
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="9s" repeatCount="indefinite" />
+            <circle cx="50" cy="35" r="1.2" fill="#3b82f6" filter="url(#labCometGlow)" />
+          </g>
+        </svg>
+
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <span className="absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-mw-blue-300/40 animate-ping" />
+          <span className="absolute w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-mw-blue-200/40 blur-md" />
+          <div className="relative w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden shadow-lg ring-4 ring-mw-blue-50">
+            <img src="/assets/logo/mw-science-badge.png" alt="MW Science" className="w-full h-full object-cover" />
+          </div>
+        </div>
+
+        {stages.map((stage, i) => {
+          const isCompass = i === 2
+          return (
+            <div
+              key={stage.label}
+              className="absolute -translate-x-1/2 -translate-y-1/2 w-24 sm:w-28 md:w-32 text-center"
+              style={{ left: `${positions[i].left}%`, top: `${positions[i].top}%` }}
+            >
+              <motion.div
+                className="w-9 h-9 mx-auto mb-1.5 rounded-xl bg-white border-2 flex items-center justify-center text-mw-blue-600 shadow-sm"
+                initial={{ borderColor: isCompass ? '#c7d2fe' : '#bfdbfe' }}
+                animate={{
+                  scale: [1, 1.18, 1],
+                  borderColor: isCompass ? ['#c7d2fe', '#818cf8', '#c7d2fe'] : ['#bfdbfe', '#2563eb', '#bfdbfe'],
+                  boxShadow: [
+                    '0px 0px 0px rgba(37,99,235,0)',
+                    isCompass ? '0px 0px 14px rgba(129,140,248,0.6)' : '0px 0px 14px rgba(37,99,235,0.5)',
+                    '0px 0px 0px rgba(37,99,235,0)',
+                  ],
+                }}
+                transition={pulseTransition(i)}
+              >
+                <stage.icon className="w-4 h-4" />
+              </motion.div>
+              <motion.div
+                className="text-[11px] font-bold leading-tight"
+                initial={{ color: '#111827' }}
+                animate={{ color: isCompass ? ['#111827', '#4f46e5', '#111827'] : ['#111827', '#2563eb', '#111827'] }}
+                transition={pulseTransition(i)}
+              >
+                {stage.label}
+              </motion.div>
+            </div>
+          )
+        })}
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-8">
+        {stages.map((stage, i) => (
+          <motion.div
+            key={stage.label}
+            className="text-center px-2 py-2 rounded-xl"
+            initial={{ backgroundColor: 'rgba(37,99,235,0)' }}
+            animate={{ backgroundColor: ['rgba(37,99,235,0)', 'rgba(37,99,235,0.07)', 'rgba(37,99,235,0)'] }}
+            transition={pulseTransition(i)}
+          >
+            <div className="text-xs font-bold text-mw-blue-600 mb-1">{stage.label}</div>
+            <p className="text-xs text-mw-gray-500 leading-snug">{stage.body}</p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// The MW Science badge sits inside a small living machine: breathing glow, two
+// staggered sonar rings, two counter-rotating dashed rings and two motes orbiting
+// in opposite directions — nothing ever settles. The outer 5-stage ring stays
+// quieter: two comets chase each other endlessly around it, and each stage icon
+// gets a slow, staggered breathing halo. Reads as "the compass is always
+// running" rather than a scripted step-by-step walkthrough.
+function ScienceLabDiagramLivingCore() {
+  const stages = LAB_CIRCLE_STAGES
+  const R = 37
+  const positions = stages.map((_, i) => {
+    const angle = ((-90 + i * (360 / stages.length)) * Math.PI) / 180
+    return { left: 50 + R * Math.cos(angle), top: 50 + R * Math.sin(angle) }
+  })
+
+  // Hub geometry — every ring/mote below is centred on (50, 50), where the MW
+  // Science badge sits, and stays comfortably inside the outer stage ring (R).
+  const RING1 = 13 // inner dashed ring
+  const RING2 = 18 // outer dashed ring
+  const ORBIT = 22 // radius the two hub motes travel at
+
+  return (
+    <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-mw-gray-200 shadow-sm p-4 md:p-8 overflow-hidden">
+      <div className="relative mx-auto aspect-square max-w-xs sm:max-w-sm md:max-w-md">
+        <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full overflow-visible">
+          <defs>
+            <marker id="labLivingArrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+              <path d="M0 0L10 5L0 10Z" fill="#93c5fd" />
+            </marker>
+            <radialGradient id="labLivingHubWash" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.45" />
+              <stop offset="100%" stopColor="#60a5fa" stopOpacity="0" />
+            </radialGradient>
+            <radialGradient id="labLivingComet" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stopColor="#dbeafe" />
+              <stop offset="55%" stopColor="#60a5fa" />
+              <stop offset="100%" stopColor="#2563eb" stopOpacity="0" />
+            </radialGradient>
+            <filter id="labLivingMoteGlow" x="-150%" y="-150%" width="400%" height="400%">
+              <feGaussianBlur stdDeviation="1" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <filter id="labLivingHubGlow" x="-150%" y="-150%" width="400%" height="400%">
+              <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
+
+          {/* Outer stage ring — dashes drift slowly so the loop never looks frozen */}
+          <circle cx="50" cy="50" r={R} fill="none" stroke="#dbeafe" strokeWidth="1" strokeDasharray="2 4">
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="90s" repeatCount="indefinite" />
+          </circle>
+
+          {/* Connecting arcs between consecutive stages — plain scroll reveal */}
+          {positions.map((p, i) => {
+            const next = positions[(i + 1) % positions.length]
+            const dx = next.left - p.left
+            const dy = next.top - p.top
+            const dist = Math.sqrt(dx * dx + dy * dy)
+            const pad = 11
+            const x1 = p.left + (dx / dist) * pad
+            const y1 = p.top + (dy / dist) * pad
+            const x2 = next.left - (dx / dist) * pad
+            const y2 = next.top - (dy / dist) * pad
+            return (
+              <motion.path
+                key={i}
+                d={`M ${x1} ${y1} A ${R} ${R} 0 0 1 ${x2} ${y2}`}
+                fill="none"
+                stroke="#93c5fd"
+                strokeWidth="1"
+                markerEnd="url(#labLivingArrow)"
+                initial={{ pathLength: 0, opacity: 0 }}
+                whileInView={{ pathLength: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.15 + i * 0.12 }}
+              />
+            )
+          })}
+
+          {/* Two comets chase each other around the full loop, forever — the
+              ring's own ambient "energy flow", independent of story order */}
+          <circle cx={50 + R} cy="50" r="1.7" fill="url(#labLivingComet)" filter="url(#labLivingMoteGlow)">
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="11s" repeatCount="indefinite" />
+          </circle>
+          <circle cx={50 - R} cy="50" r="1.4" fill="url(#labLivingComet)" filter="url(#labLivingMoteGlow)" opacity="0.75">
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="11s" repeatCount="indefinite" />
+          </circle>
+
+          {/* ── Living core — the hub carries the richest, densest motion ── */}
+          <circle cx="50" cy="50" r={RING2 + 3} fill="url(#labLivingHubWash)" />
+
+          <circle cx="50" cy="50" r={RING1 - 4} fill="#60a5fa" opacity="0.3" filter="url(#labLivingHubGlow)">
+            <animate attributeName="r" values={`${RING1 - 4};${RING2 + 4};${RING1 - 4}`} dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.22;0.4;0.22" dur="4s" repeatCount="indefinite" />
+          </circle>
+
+          <circle cx="50" cy="50" r={RING1 - 4} fill="none" stroke="#dbeafe" strokeWidth="1">
+            <animate attributeName="r" values={`${RING1 - 4};${RING2 + 5};${RING1 - 4}`} dur="4s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.6;0;0.6" dur="4s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="50" cy="50" r={RING1 - 4} fill="none" stroke="#93c5fd" strokeWidth="0.8">
+            <animate attributeName="r" values={`${RING1 - 4};${RING2 + 5};${RING1 - 4}`} dur="4s" begin="2s" repeatCount="indefinite" />
+            <animate attributeName="opacity" values="0.5;0;0.5" dur="4s" begin="2s" repeatCount="indefinite" />
+          </circle>
+
+          <circle cx="50" cy="50" r={RING1} fill="none" stroke="#93c5fd" strokeWidth="1" strokeDasharray="4 3" opacity="0.55">
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="20s" repeatCount="indefinite" />
+          </circle>
+          <circle cx="50" cy="50" r={RING2} fill="none" stroke="#818cf8" strokeWidth="0.8" strokeDasharray="1 5" opacity="0.45">
+            <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" dur="30s" repeatCount="indefinite" />
+          </circle>
+
+          <g>
+            <animateTransform attributeName="transform" type="rotate" values="0 50 50;360 50 50" dur="9s" repeatCount="indefinite" />
+            <circle cx={50 + ORBIT} cy="50" r="1.4" fill="#60a5fa" filter="url(#labLivingMoteGlow)" />
+          </g>
+          <g>
+            <animateTransform attributeName="transform" type="rotate" values="360 50 50;0 50 50" dur="13s" repeatCount="indefinite" />
+            <circle cx="50" cy={50 - ORBIT} r="1.1" fill="#818cf8" filter="url(#labLivingMoteGlow)" />
+          </g>
+        </svg>
+
+        <div className="absolute inset-0 flex items-center justify-center">
+          <motion.div
+            className="w-14 h-14 sm:w-16 sm:h-16 rounded-full overflow-hidden shadow-lg ring-4 ring-mw-blue-50"
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <img src="/assets/logo/mw-science-badge.png" alt="MW Science" className="w-full h-full object-cover" />
+          </motion.div>
+        </div>
+
+        {stages.map((stage, i) => (
+          <div
+            key={stage.label}
+            className="absolute -translate-x-1/2 -translate-y-1/2 w-24 sm:w-28 md:w-32 text-center"
+            style={{ left: `${positions[i].left}%`, top: `${positions[i].top}%` }}
+          >
+            <div className="relative w-9 h-9 mx-auto mb-1.5">
+              <motion.span
+                className="absolute inset-0 rounded-xl bg-mw-blue-300"
+                animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
+                transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: i * 0.35 }}
+              />
+              <div className="relative w-9 h-9 rounded-xl bg-white border-2 border-mw-blue-200 flex items-center justify-center text-mw-blue-600 shadow-sm">
+                <stage.icon className="w-4 h-4" />
+              </div>
+            </div>
+            <div className="text-[11px] font-bold text-mw-gray-900 leading-tight">{stage.label}</div>
+          </div>
+        ))}
+      </div>
+
+      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-8">
+        {stages.map(stage => (
+          <div key={stage.label} className="text-center px-2">
+            <div className="text-xs font-bold text-mw-blue-600 mb-1">{stage.label}</div>
+            <p className="text-xs text-mw-gray-500 leading-snug">{stage.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+const LAB_PREVIEW_VARIANTS = [
+  { key: 'spotlight', label: 'Spotlight Relay', Component: ScienceLabDiagramSpotlightRelay },
+  { key: 'comet', label: 'Comet Relay', Component: ScienceLabDiagramCometRelay },
+  { key: 'living', label: 'Living Core', Component: ScienceLabDiagramLivingCore },
+] as const
+
+// TEMP PREVIEW — lets a reviewer flip between the 3 animated variants above
+// without scrolling through all three stacked. Remove this wrapper (and the two
+// unchosen variants) once one is picked; render the winner directly in its place.
+function ScienceLabDiagramPreview() {
+  const [variant, setVariant] = useState<typeof LAB_PREVIEW_VARIANTS[number]['key']>('spotlight')
+  const Active = LAB_PREVIEW_VARIANTS.find(v => v.key === variant)!.Component
+
+  return (
+    <div className="relative">
+      <Active />
+
+      <div className="absolute right-0 -bottom-14 md:-bottom-16 z-30 flex items-center gap-1 bg-white rounded-full border border-mw-gray-200 shadow-lg p-1">
+        {LAB_PREVIEW_VARIANTS.map(v => (
+          <button
+            key={v.key}
+            type="button"
+            onClick={() => setVariant(v.key)}
+            className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors ${
+              variant === v.key ? 'bg-mw-blue-600 text-white' : 'text-mw-gray-500 hover:text-mw-blue-600'
+            }`}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+// ─── RESEARCH SOLUTIONS GRID ────────────────────────────────────────────────────
+// All 6 solutions shown at once (title, description, Primary Signal badges) —
+// easier to scan than the old one-at-a-time carousel. The manager's 4 categories
+// sit above as filter pills; a solution can match more than one category (e.g.
+// "Brand Health Tracking and Media Effectiveness" spans Brand + Media &
+// Investment), and "All" surfaces everything, including Location & Place
+// Intelligence which isn't covered by any of the 4 named categories.
+function ResearchSolutionsGrid() {
+  const [activeCategory, setActiveCategory] = useState<string | null>(null)
+
+  const visible = activeCategory === null
+    ? RESEARCH_SOLUTIONS
+    : RESEARCH_SOLUTIONS.filter(sol => SOLUTION_CATEGORIES.find(c => c.title === activeCategory)?.solutions.includes(sol.title))
+
+  return (
+    <div>
+      <div className="flex flex-wrap justify-center gap-2 mb-10">
+        <button
+          type="button"
+          onClick={() => setActiveCategory(null)}
+          className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+            activeCategory === null ? 'bg-mw-blue-600 text-white' : 'bg-white text-mw-gray-500 border border-mw-gray-200 hover:text-mw-blue-600 hover:border-mw-blue-200'
+          }`}
+        >
+          All
+        </button>
+        {SOLUTION_CATEGORIES.map(cat => {
+          const isActive = activeCategory === cat.title
+          return (
+            <button
+              key={cat.title}
+              type="button"
+              onClick={() => setActiveCategory(cat.title)}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+                isActive ? 'bg-mw-blue-600 text-white' : 'bg-white text-mw-gray-500 border border-mw-gray-200 hover:text-mw-blue-600 hover:border-mw-blue-200'
+              }`}
+            >
+              <cat.icon className="w-4 h-4" />
+              {cat.title}
             </button>
           )
         })}
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={sol.title}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.3 }}
-          className="flex flex-col items-center text-center max-w-2xl"
-        >
-          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 mb-5 ${primary.bg} ${primary.text}`}>
-            <sol.icon className="w-8 h-8" />
-          </div>
-          <h3 className="text-2xl font-bold text-mw-gray-900 mb-3">{sol.title}</h3>
-          <p className="text-mw-gray-500 text-base leading-relaxed mb-4">{sol.description}</p>
-          <div className="flex flex-wrap justify-center gap-2">
-            {sigs.map(s => (
-              <span key={s.id} className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${s.badge}`}>
-                <s.icon className="w-3.5 h-3.5" />
-                {s.title}
-              </span>
-            ))}
-          </div>
-        </motion.div>
-      </AnimatePresence>
+      <motion.div layout className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <AnimatePresence mode="popLayout">
+          {visible.map(sol => {
+            const sigs = solutionSignals(sol)
+            const primary = sigs[0] ?? SIGNALS[0]
+            return (
+              <motion.div
+                key={sol.title}
+                layout
+                initial={{ opacity: 0, scale: 0.96 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.96 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white rounded-2xl border border-mw-gray-200 p-6 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-5 ${primary.bg} ${primary.text}`}>
+                  <sol.icon className="w-6 h-6" />
+                </div>
+                <h3 className="text-lg font-bold text-mw-gray-900 mb-2 leading-snug">{sol.title}</h3>
+                <p className="text-sm text-mw-gray-500 leading-relaxed mb-5">{sol.description}</p>
+                <div className="flex flex-wrap gap-2">
+                  {sigs.map(s => (
+                    <span key={s.id} className={`inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full ${s.badge}`}>
+                      <s.icon className="w-3.5 h-3.5" />
+                      {s.title}
+                    </span>
+                  ))}
+                </div>
+              </motion.div>
+            )
+          })}
+        </AnimatePresence>
+      </motion.div>
     </div>
   )
 }
@@ -1453,25 +1814,23 @@ export default function MWScienceClient() {
               className="space-y-8"
             >
               <h1 className="text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl font-black tracking-tight leading-[1.3] sm:leading-[1.25] lg:leading-[1.2] 2xl:leading-[1.15]">
-                MW Science — The{' '}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-400 to-mw-blue-500">
-                  Cognitive Compass
-                </span>{' '}
-                Behind Better Out-of-Home Decisions
+                MW Science<br />
+                <span className="text-2xl sm:text-3xl lg:text-4xl 2xl:text-5xl">
+                  The{' '}
+                  <span className="whitespace-nowrap text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-400 to-mw-blue-500">
+                    Cognitive Compass
+                  </span>{' '}
+                  Behind
+                </span>
+                <br />
+                <span className="text-2xl sm:text-3xl lg:text-4xl 2xl:text-5xl">
+                  Better <span className="whitespace-nowrap">Out-of-Home</span> Decisions
+                </span>
               </h1>
 
               <div className="space-y-4 sm:space-y-5">
                 <p className="text-lg sm:text-xl md:text-2xl text-white font-light leading-snug">
-                  Every journey leaves a thread.
-                </p>
-                <p className="text-base sm:text-lg text-mw-blue-200 font-light leading-relaxed">
-                  A commute. A store visit. A smarter media exposure. A moment of attention.
-                </p>
-                <p className="text-sm sm:text-base text-mw-gray-300 leading-relaxed">
-                  These are not events that happen in isolation. MW Science connects them into meaningful signals that reveal how people move, engage, decide and respond.
-                </p>
-                <p className="text-mw-gray-400 text-xs sm:text-sm leading-relaxed">
-                  As the Cognitive Compass powering the Moving Walls (MW) ecosystem, MW Science turns human, spatial, media and behavioural signals into the confidence to plan smarter, measure with rigour and act with precision.
+                  Transforming fragmented journeys into actionable signals, MW Science gives you the confidence to plan, measure, and act with precision.
                 </p>
               </div>
 
@@ -1481,7 +1840,6 @@ export default function MWScienceClient() {
                   className="inline-flex items-center justify-center gap-2 bg-mw-blue-600 hover:bg-mw-blue-500 text-white px-8 py-4 rounded-xl font-semibold transition-all"
                 >
                   Talk to a MW Science Lab Expert
-                  <ArrowRightIcon className="w-4 h-4" />
                 </CTAButton>
                 <a
                   href="#signals"
@@ -1521,40 +1879,38 @@ export default function MWScienceClient() {
             Every Decision Starts With A Signal
           </motion.h2>
 
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+          {/* Top: Intro copy */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="space-y-4 mb-12"
+          >
+            <p className="text-2xl md:text-3xl text-mw-gray-900 font-light leading-snug">
+              Every journey leaves a thread.
+            </p>
+            <p className="text-lg text-mw-blue-600 leading-relaxed">
+              A commute. A store visit. A smarter media exposure. A moment of attention.
+            </p>
+            <p className="text-mw-gray-600 leading-relaxed pt-2">
+              These are not events that happen in isolation. MW Science connects them into meaningful signals that reveal how people move, engage, decide and respond.
+            </p>
+            <p className="text-mw-gray-600 leading-relaxed">
+              As the Cognitive Compass powering the Moving Walls (MW) ecosystem, MW Science turns human, spatial, media and behavioural signals into the confidence to plan smarter, measure with rigour and act with precision.
+            </p>
+            <p className="text-mw-gray-600 leading-relaxed">
+              For some organisations, MW Science Lab serves as a standalone research partner.
+            </p>
+            <p className="text-mw-gray-600 leading-relaxed">
+              For others, it powers the intelligence behind the broader Moving Walls ecosystem. Built to get sharper with every campaign it measures.
+            </p>
+          </motion.div>
 
-            {/* Left: visual + closing line */}
-            <div>
-              <FlowParticleConverge />
-
-              <p className="text-mw-gray-400 italic text-sm mt-4">This is how the Cognitive Compass works.</p>
-            </div>
-
-            {/* Right: intro copy */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6 }}
-              className="space-y-4 lg:pt-2"
-            >
-              <p className="text-2xl md:text-3xl text-mw-gray-900 font-light leading-snug">
-                People do not live in channels.
-              </p>
-              <p className="text-lg text-mw-gray-500 leading-relaxed">
-                They move through places, experiences, screens, brands and moments.
-              </p>
-              <p className="text-mw-gray-600 leading-relaxed pt-2">
-                Every journey creates thousands of threads. Most disappear into noise. MW Science identifies the signals hidden within them and turns those signals into data to help make informed decisions.
-              </p>
-              <p className="text-mw-gray-600 leading-relaxed">
-                For some organisations, MW Science Lab serves as a standalone research partner. For others, it powers the intelligence behind the broader Moving Walls ecosystem. Built to get sharper with every campaign it measures.
-              </p>
-              <p className="text-mw-gray-600 leading-relaxed">
-                Either way, the objective remains the same: uncover meaningful signals that drive better decisions across the OOH journey, from uncovering opportunity to proving business outcomes. Turning real world complexities into decision confidence.
-              </p>
-            </motion.div>
-
+          {/* Bottom: visual, with a lead-in label above it instead of a trailing caption */}
+          <div>
+            <p className="text-2xl md:text-3xl text-mw-blue-600 font-light leading-snug text-center mb-6">How the Cognitive Compass works</p>
+            <FlowParticleConverge />
           </div>
         </div>
       </section>
@@ -1570,57 +1926,34 @@ export default function MWScienceClient() {
             className="mb-12 text-center"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4 tracking-tight">
-              Five Signals. One Cognitive Compass.
+              5 Signals. 1 Cognitive Compass. Across the entire OOH Journey
             </h2>
-            <p className="text-lg text-mw-gray-500 max-w-3xl mx-auto">
+            <p className="text-lg text-mw-gray-500">
               MW Science is built around five core signals that help agencies and brands understand people, places, media performance and business outcomes.
             </p>
           </motion.div>
 
           <SignalsCompassDial activeIndex={activeSignal} onSelect={setActiveSignal} />
 
-        </div>
-      </section>
+          {/* Closing statement — folded into the same section per the combined copy;
+              no separate heading/visual here since the constellation diagram was
+              dropped as repetitive alongside the signal dial above. */}
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-mw-gray-600 leading-relaxed text-lg text-center mt-20"
+          >
+            MW Science integrates five signals; Audience, Location, Media, Brand, and Outcome to provide a holistic view of the Out-of-Home journey from awareness to action. By connecting these insights, the platform empowers organizations to move beyond simple measurement, revealing the &ldquo;why&rdquo; behind consumer behavior to drive smarter, evidence-based investment decisions.
+          </motion.p>
 
-      {/* ── 4. SIGNALS IN ACTION ────────────────────────────────────────────── */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-
-            {/* Left: copy */}
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="space-y-6"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight">
-                Signals at work across the entire OOH journey
-              </h2>
-              <p className="text-mw-gray-600 leading-relaxed text-lg">
-                The five signals do not operate independently. Together, they create a complete view of how audiences move from awareness to action.
-              </p>
-              <p className="text-mw-gray-600 leading-relaxed text-lg">
-                Whether planning a campaign, evaluating a location, measuring brand growth or optimising investment, MW Science helps organisations understand not just what happened, but the why behind it.
-              </p>
-            </motion.div>
-
-            {/* Right: signal constellation diagram */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="flex items-center justify-center"
-            >
-              <SignalConstellation />
-            </motion.div>
-
-          </div>
         </div>
       </section>
 
       {/* ── 5. MW SCIENCE LAB ────────────────────────────────────────────────── */}
-      <section className="py-24 bg-mw-gray-50">
+      {/* bg-white (not gray-50): sections 3+4 merged into one gray-50 section right
+          above this one, so this needs the lighter band back to keep them visually separate. */}
+      <section className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
           <motion.div
@@ -1632,8 +1965,8 @@ export default function MWScienceClient() {
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight mb-3">MW Science Lab</h2>
             <p className="text-lg text-mw-blue-600 font-medium mb-6">Research that reveals the signals behind growth.</p>
-            <p className="text-mw-gray-600 leading-relaxed max-w-3xl mx-auto">
-              MW Science Lab is the research capability within MW Science. It combines market research, human understanding and rigorous measurement to ground decisions about audiences, brands and outcomes with greater confidence.
+            <p className="text-mw-gray-600 leading-relaxed">
+              MW Science Lab is the research capability within MW Science. It combines human understanding and rigorous measurement to ground decisions about audiences, brands and outcomes with greater confidence.
             </p>
           </motion.div>
 
@@ -1643,12 +1976,7 @@ export default function MWScienceClient() {
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.15 }}
           >
-            <div className="hidden md:block">
-              <ScienceLabDiagram />
-            </div>
-            <div className="md:hidden">
-              <ScienceLabMobile />
-            </div>
+            <ScienceLabDiagramPreview />
           </motion.div>
 
         </div>
@@ -1669,7 +1997,7 @@ export default function MWScienceClient() {
             </h2>
           </motion.div>
 
-          <SolutionsRevealStrip />
+          <ResearchSolutionsGrid />
 
         </div>
       </section>
