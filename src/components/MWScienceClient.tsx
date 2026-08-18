@@ -653,9 +653,9 @@ function FlowParticleConverge() {
   ]
 
   return (
-    <div className="flex gap-6 sm:gap-8 items-start">
-      <div className="w-24 sm:w-28 shrink-0 aspect-[140/620] relative">
-        <svg viewBox="0 0 140 620" className="absolute inset-0 w-full h-full" aria-hidden="true">
+    <div className="flex gap-6 sm:gap-8 items-stretch">
+      <div className="w-24 sm:w-28 shrink-0 relative">
+        <svg viewBox="0 0 140 620" preserveAspectRatio="none" className="absolute inset-0 w-full h-full" aria-hidden="true">
           <defs>
             <radialGradient id="particleHubGlow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stopColor="#60a5fa" stopOpacity="0.5" />
@@ -970,6 +970,27 @@ function ScienceLabDiagramLivingCore() {
   const RING2 = 18 // outer dashed ring
   const ORBIT = 22 // radius the two hub motes travel at
 
+  // Mobile: the 5-across description grid below shrinks to unreadably small
+  // text at phone widths, so below sm it's replaced with one stage at a time,
+  // auto-advancing every 5s (same remainingRef/startRef pause-on-interaction
+  // pattern as Testimonials Spotlight). Tablet/desktop keep the full grid.
+  const MOBILE_STAGE_INTERVAL = 5000
+  const [mobileActive, setMobileActive] = useState(0)
+  const [mobilePaused, setMobilePaused] = useState(false)
+  const mobileRemainingRef = useRef(MOBILE_STAGE_INTERVAL)
+  const mobileStartRef = useRef(0)
+
+  useEffect(() => { mobileRemainingRef.current = MOBILE_STAGE_INTERVAL }, [mobileActive])
+  useEffect(() => {
+    if (mobilePaused) return
+    mobileStartRef.current = Date.now()
+    const id = setTimeout(() => setMobileActive(i => (i + 1) % stages.length), mobileRemainingRef.current)
+    return () => {
+      clearTimeout(id)
+      mobileRemainingRef.current = Math.max(0, mobileRemainingRef.current - (Date.now() - mobileStartRef.current))
+    }
+  }, [mobileActive, mobilePaused, stages.length])
+
   return (
     <div className="relative bg-white/70 backdrop-blur-sm rounded-2xl border border-mw-gray-200 shadow-sm p-4 md:p-8 overflow-hidden">
       <div className="relative mx-auto aspect-square max-w-xs sm:max-w-sm md:max-w-md">
@@ -1088,34 +1109,76 @@ function ScienceLabDiagramLivingCore() {
           </motion.div>
         </div>
 
-        {stages.map((stage, i) => (
-          <div
-            key={stage.label}
-            className="absolute -translate-x-1/2 -translate-y-1/2 w-24 sm:w-28 md:w-32 text-center"
-            style={{ left: `${positions[i].left}%`, top: `${positions[i].top}%` }}
-          >
-            <div className="relative w-9 h-9 mx-auto mb-1.5">
-              <motion.span
-                className="absolute inset-0 rounded-xl bg-mw-blue-300"
-                animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
-                transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: i * 0.35 }}
-              />
-              <div className="relative w-9 h-9 rounded-xl bg-white border-2 border-mw-blue-200 flex items-center justify-center text-mw-blue-600 shadow-sm">
-                <stage.icon className="w-4 h-4" />
+        {stages.map((stage, i) => {
+          // Nodes in the upper half of the ring sit with the connecting arcs
+          // curving in close underneath them, so a label below the icon (the
+          // default) can visually merge into the arc — flip those nodes to
+          // put the label above the icon instead, always growing away from
+          // the ring's interior rather than into it.
+          const isUpperHalf = positions[i].top < 50
+          return (
+            <div
+              key={stage.label}
+              className={`absolute -translate-x-1/2 -translate-y-1/2 w-24 sm:w-28 md:w-32 text-center flex flex-col items-center gap-1.5 ${isUpperHalf ? 'flex-col-reverse' : ''}`}
+              style={{ left: `${positions[i].left}%`, top: `${positions[i].top}%` }}
+            >
+              <div className="relative w-9 h-9">
+                <motion.span
+                  className="absolute inset-0 rounded-xl bg-mw-blue-300"
+                  animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
+                  transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: i * 0.35 }}
+                />
+                <div className="relative w-9 h-9 rounded-xl bg-white border-2 border-mw-blue-200 flex items-center justify-center text-mw-blue-600 shadow-sm">
+                  <stage.icon className="w-4 h-4" />
+                </div>
               </div>
+              <div className="text-[11px] font-bold text-mw-gray-900 leading-tight">{stage.label}</div>
             </div>
-            <div className="text-[11px] font-bold text-mw-gray-900 leading-tight">{stage.label}</div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-3 mt-8">
-        {stages.map(stage => (
-          <div key={stage.label} className="text-center px-2">
-            <div className="text-xs font-bold text-mw-blue-600 mb-1">{stage.label}</div>
-            <p className="text-xs text-mw-gray-500 leading-snug">{stage.body}</p>
+      <div className="mt-8">
+        {/* Mobile: one stage at a time, bigger text, auto-advancing every 5s */}
+        <div
+          className="sm:hidden text-center px-4"
+          onTouchStart={() => setMobilePaused(true)}
+          onTouchEnd={() => setMobilePaused(false)}
+        >
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={stages[mobileActive].label}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div className="text-lg font-bold text-mw-blue-600 mb-2">{stages[mobileActive].label}</div>
+              <p className="text-base text-mw-gray-600 leading-relaxed">{stages[mobileActive].body}</p>
+            </motion.div>
+          </AnimatePresence>
+          <div className="flex justify-center gap-1.5 mt-5">
+            {stages.map((stage, i) => (
+              <button
+                key={stage.label}
+                type="button"
+                onClick={() => setMobileActive(i)}
+                aria-label={`Show ${stage.label}`}
+                className={`h-1.5 rounded-full transition-all duration-300 ${i === mobileActive ? 'w-6 bg-mw-blue-600' : 'w-1.5 bg-mw-blue-100'}`}
+              />
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Tablet/desktop: all 5 shown at once */}
+        <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
+          {stages.map(stage => (
+            <div key={stage.label} className="text-center px-2">
+              <div className="text-xs font-bold text-mw-blue-600 mb-1">{stage.label}</div>
+              <p className="text-xs text-mw-gray-500 leading-snug">{stage.body}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -1123,27 +1186,93 @@ function ScienceLabDiagramLivingCore() {
 
 
 // ─── RESEARCH SOLUTIONS: CATEGORY TABS ─────────────────────────────────────────
-// 4 category tabs at top; clicking one shows that category's items as a box
-// grid (icon + title + description) instead of a one-at-a-time detail panel.
-// On mobile the box grid becomes a horizontally swipeable, snap-scrolling
-// carousel (one card peeking the next) instead of a wrapping grid.
+// 4 category tabs at top, kept on one scrollable row at every width (mobile
+// scrolls horizontally instead of wrapping top-to-bottom, matching desktop's
+// single-row look). Clicking a tab shows that category's items: on tablet/
+// desktop as a box grid, on mobile as one box at a time auto-advancing every
+// 5s (same pattern as Testimonials Spotlight / the Lab stage spotlight) since
+// a swipeable multi-card carousel was harder to scan than a single card.
+const CATEGORY_ITEM_INTERVAL = 5000
+
 function ResearchSolutionsGrid() {
   const [catIndex, setCatIndex] = useState(0)
   const category = SOLUTION_CATEGORY_GROUPS[catIndex]
   const accent = CATEGORY_ACCENTS[category.title]
 
+  const [itemIndex, setItemIndex] = useState(0)
+  const [itemPaused, setItemPaused] = useState(false)
+  const itemRemainingRef = useRef(CATEGORY_ITEM_INTERVAL)
+  const itemStartRef = useRef(0)
+
+  // The auto-advance (item-by-item, then tab-to-tab) only makes sense for the
+  // mobile one-at-a-time view — on tablet/desktop all items in a category are
+  // already visible at once in the grid, so tabs there stay click-only.
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 639px)')
+    const update = () => setIsMobile(mq.matches)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+
+  // Changing category and resetting the item index must happen in the same
+  // update, not two separate setState calls reconciled by a later effect —
+  // otherwise React can render once with the NEW category but the OLD
+  // itemIndex still in place, and if that index doesn't exist in the smaller
+  // category (e.g. wrapping from 5-item "Design & Improve" back to 2-item
+  // "Understand People") activeItem is undefined and the render crashes.
+  const goToCategory = (i: number) => {
+    setCatIndex(i)
+    setItemIndex(0)
+  }
+
+  useEffect(() => { itemRemainingRef.current = CATEGORY_ITEM_INTERVAL }, [itemIndex, catIndex])
+  useEffect(() => {
+    if (itemPaused || !isMobile) return
+    itemStartRef.current = Date.now()
+    const isLastItem = itemIndex === category.items.length - 1
+    const id = setTimeout(() => {
+      // Once the active category's items have all had their turn, advance to
+      // the next tab (looping back to the first) instead of re-cycling the
+      // same category's items forever.
+      if (isLastItem) {
+        goToCategory((catIndex + 1) % SOLUTION_CATEGORY_GROUPS.length)
+      } else {
+        setItemIndex(i => i + 1)
+      }
+    }, itemRemainingRef.current)
+    return () => {
+      clearTimeout(id)
+      itemRemainingRef.current = Math.max(0, itemRemainingRef.current - (Date.now() - itemStartRef.current))
+    }
+  }, [itemIndex, itemPaused, isMobile, catIndex, category.items.length])
+
+  // Defensive fallback in addition to goToCategory keeping these in sync —
+  // never let a transient mismatch render a missing item.
+  const activeItem = category.items[itemIndex] ?? category.items[0]
+
+  // Keep the active tab scrolled into view on its own row (mobile scrolls the
+  // tab strip horizontally, so an auto-advance can otherwise move focus to a
+  // tab currently scrolled off-screen with no visible indication).
+  const tabRefs = useRef<(HTMLButtonElement | null)[]>([])
+  useEffect(() => {
+    tabRefs.current[catIndex]?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })
+  }, [catIndex])
+
   return (
     <div>
-      <div className="flex flex-wrap justify-center gap-2 mb-10">
+      <div className="flex sm:flex-wrap sm:justify-center gap-2 mb-10 overflow-x-auto sm:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
         {SOLUTION_CATEGORY_GROUPS.map((cat, i) => {
           const isActive = i === catIndex
           const a = CATEGORY_ACCENTS[cat.title]
           return (
             <button
               key={cat.title}
+              ref={el => { tabRefs.current[i] = el }}
               type="button"
-              onClick={() => setCatIndex(i)}
-              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold transition-colors ${
+              onClick={() => goToCategory(i)}
+              className={`flex items-center gap-1.5 px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap shrink-0 transition-colors ${
                 isActive ? `${a.accent} text-white` : "bg-white text-mw-gray-500 border border-mw-gray-200 hover:text-mw-gray-700"
               }`}
             >
@@ -1154,29 +1283,68 @@ function ResearchSolutionsGrid() {
         })}
       </div>
 
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={category.title}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -12 }}
-          transition={{ duration: 0.3 }}
-          className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 sm:grid sm:grid-cols-2 lg:grid-cols-3 sm:gap-5 sm:overflow-visible sm:snap-none sm:mx-0 sm:px-0 sm:pb-0"
-        >
-          {category.items.map(item => (
-            <div
-              key={item.title}
-              className="snap-start shrink-0 w-[78%] sm:w-auto sm:shrink bg-white rounded-2xl border border-mw-gray-200 p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
-            >
-              <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${accent.bg} ${accent.text}`}>
-                <item.icon className="w-5 h-5" />
-              </div>
-              <h4 className="text-base font-bold text-mw-gray-900 mb-2 leading-snug">{item.title}</h4>
-              <p className="text-sm text-mw-gray-500 leading-relaxed">{item.description}</p>
+      {/* Mobile: one item at a time, auto-advancing every 5s */}
+      <div
+        className="sm:hidden"
+        onTouchStart={() => setItemPaused(true)}
+        onTouchEnd={() => setItemPaused(false)}
+      >
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`${category.title}-${activeItem.title}`}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -8 }}
+            transition={{ duration: 0.3 }}
+            className="bg-white rounded-2xl border border-mw-gray-200 p-6 text-center"
+          >
+            <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 ${accent.bg} ${accent.text}`}>
+              <activeItem.icon className="w-6 h-6" />
             </div>
+            <h4 className="text-base font-bold text-mw-gray-900 mb-2 leading-snug">{activeItem.title}</h4>
+            <p className="text-sm text-mw-gray-500 leading-relaxed">{activeItem.description}</p>
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="flex justify-center gap-1.5 mt-5">
+          {category.items.map((item, i) => (
+            <button
+              key={item.title}
+              type="button"
+              onClick={() => setItemIndex(i)}
+              aria-label={`Show ${item.title}`}
+              className={`h-1.5 rounded-full transition-all duration-300 ${i === itemIndex ? `w-6 ${accent.accent}` : 'w-1.5 bg-mw-gray-200'}`}
+            />
           ))}
-        </motion.div>
-      </AnimatePresence>
+        </div>
+      </div>
+
+      {/* Tablet/desktop: full box grid */}
+      <div className="hidden sm:block">
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={category.title}
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.3 }}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
+          >
+            {category.items.map(item => (
+              <div
+                key={item.title}
+                className="bg-white rounded-2xl border border-mw-gray-200 p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${accent.bg} ${accent.text}`}>
+                  <item.icon className="w-5 h-5" />
+                </div>
+                <h4 className="text-base font-bold text-mw-gray-900 mb-2 leading-snug">{item.title}</h4>
+                <p className="text-sm text-mw-gray-500 leading-relaxed">{item.description}</p>
+              </div>
+            ))}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   )
 }
