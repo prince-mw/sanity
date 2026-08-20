@@ -79,6 +79,7 @@ const defaultContent = {
       name: "Planning",
       title: "Customisable Planning",
       description: "Our planning tool integrates with your current workflows with custom audiences, site scores, and negotiation features.",
+      image: undefined as string | undefined,
       linkHref: "/mw-planner",
       linkText: "Learn more",
     },
@@ -87,6 +88,7 @@ const defaultContent = {
       name: "Extended Reach",
       title: "Integrated Planning",
       description: "Extend OOH planning to mobile platforms and extract audience lists for retargeting.",
+      image: undefined as string | undefined,
       linkHref: "/mw-reach",
       linkText: "Learn more",
     },
@@ -95,6 +97,7 @@ const defaultContent = {
       name: "Support",
       title: "Live Support",
       description: "Our platform provides live support from OOH experts readily available for inquiries.",
+      image: undefined as string | undefined,
       linkHref: "/contact",
       linkText: "Contact us",
     },
@@ -130,6 +133,12 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
     platformFeatures: props.platformFeatures?.length ? props.platformFeatures : defaultContent.platformFeatures,
     faqs: props.faqs?.length ? props.faqs : defaultContent.faqs,
   };
+
+  // Platform Section tabs - CMS images keyed by feature id (falls back to the
+  // hand-drawn illustration below when no CMS image is set for that tab)
+  const planningTabImage = content.platformFeatures.find(f => f.id === 'planning')?.image;
+  const reachTabImage = content.platformFeatures.find(f => f.id === 'reach')?.image;
+  const supportTabImage = content.platformFeatures.find(f => f.id === 'support')?.image;
 
   // Trust bar logos - CMS or fallback
   const trustBarTitle = props.trustBarTitle || t('agenciesPage.trustBar.title');
@@ -443,6 +452,16 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                     </svg>
                   </Link>
                 </div>
+                {planningTabImage ? (
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
+                    <Image
+                      src={planningTabImage}
+                      alt={t('agenciesPage.platformSection.planning.title')}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-100 rounded-2xl p-8 aspect-[4/3] flex items-center justify-center">
                   <div className="w-full h-full flex flex-col">
                     <div className="flex gap-4 mb-4">
@@ -464,6 +483,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                     </div>
                   </div>
                 </div>
+                )}
               </div>
             )}
             {activePlatform === 'reach' && (
@@ -482,6 +502,16 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                     </svg>
                   </Link>
                 </div>
+                {reachTabImage ? (
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
+                    <Image
+                      src={reachTabImage}
+                      alt={t('agenciesPage.platformSection.reach.title')}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
                 <div className="bg-gradient-to-br from-green-50 to-emerald-100 rounded-2xl p-8 aspect-[4/3] flex items-center justify-center">
                   <div className="w-full h-full grid grid-cols-3 gap-3">
                     {[...Array(6)].map((_, i) => (
@@ -496,6 +526,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                     ))}
                   </div>
                 </div>
+                )}
               </div>
             )}
             {activePlatform === 'support' && (
@@ -514,6 +545,16 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                     </svg>
                   </CTAButton>
                 </div>
+                {supportTabImage ? (
+                  <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-lg">
+                    <Image
+                      src={supportTabImage}
+                      alt={t('agenciesPage.platformSection.support.title')}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
                 <div className="bg-gradient-to-br from-indigo-50 to-purple-100 rounded-2xl p-8 aspect-[4/3] flex items-center justify-center">
                   <div className="w-full h-full flex flex-col gap-4">
                     <div className="bg-white rounded-lg p-4 shadow-sm">
@@ -543,6 +584,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                     </div>
                   </div>
                 </div>
+                )}
               </div>
             )}
           </motion.div>

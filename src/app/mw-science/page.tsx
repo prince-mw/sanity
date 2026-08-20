@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import MWScienceClient from '@/components/MWScienceClient'
-import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getPageSeo, getSanityImageUrl, getProductBySlug } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
   title: 'MW Science | Moving Walls',
@@ -27,6 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
 export const revalidate = 30
 
-export default function MWSciencePage() {
-  return <MWScienceClient />
+export default async function MWSciencePage() {
+  const product = await getProductBySlug('mw-science')
+  return <MWScienceClient product={product} />
 }

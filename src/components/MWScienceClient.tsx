@@ -5,6 +5,7 @@ import { motion, AnimatePresence, useInView, animate } from 'framer-motion'
 import { CTAButton } from '@/components/CTAButton'
 import Image from 'next/image'
 import { GLOBE_FRAMES, GLOBE_SIZE } from '@/data/globe-frames'
+import type { SanityProduct } from '@/sanity/lib/fetch'
 
 // ─── ICONS ─────────────────────────────────────────────────────────────────────
 // Hand-drawn, Heroicons-outline-style inline SVGs (this codebase never installs an
@@ -244,16 +245,17 @@ const COMPASS_ACTIONS = ['Plan', 'Measure', 'Act']
 
 const COMPASS_FUNCTIONS = [
   {
+    id: 'ecosystem',
+    Icon: GearIcon,
+    label: 'Powers the MW Ecosystem',
+    body: 'Making every MW product sharper for confident OOH decisions.',
+    products: ['MW Inventory', 'MW Studio', 'MW Planner', 'MW Influence', 'MW Activate', 'MW Measure', 'MW Market'],
+  },
+  {
     id: 'partner',
     Icon: BeakerIcon,
     label: 'Research Partner',
     body: 'For organisations that need answers on their own, MW Science Lab works as a standalone research partner.',
-  },
-  {
-    id: 'ecosystem',
-    Icon: GearIcon,
-    label: 'Powers the Ecosystem',
-    body: 'For the broader Moving Walls ecosystem, it powers the intelligence behind every product — sharper with every campaign it measures.',
   },
 ]
 
@@ -944,11 +946,24 @@ function SignalFlowStrip() {
         transition={{ delay: 0.3, duration: 0.6 }}
         className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mt-1"
       >
-        {COMPASS_FUNCTIONS.map(({ id, Icon, label, body }) => (
+        {COMPASS_FUNCTIONS.map(({ id, Icon, label, body, products }) => (
           <div key={id} className="bg-mw-gray-50 border border-mw-gray-200 rounded-xl p-5 text-center">
             <Icon className="w-6 h-6 text-mw-blue-600 mx-auto mb-2" />
             <h4 className="text-sm font-bold text-mw-gray-900 mb-1">{label}</h4>
             <p className="text-xs text-mw-gray-500 leading-relaxed">{body}</p>
+            {products && (
+              <div className="flex flex-wrap justify-center gap-1.5 sm:gap-1 mt-3">
+                {products.map(p => {
+                  const GeoIcon = PRODUCT_GEO_ICONS[p]
+                  return (
+                    <span key={p} className="inline-flex items-center gap-1 px-2 py-1 sm:px-1.5 sm:py-0.5 rounded-full text-[10px] sm:text-[9px] font-semibold bg-white border border-mw-blue-100 text-mw-blue-700 whitespace-nowrap">
+                      {GeoIcon && <GeoIcon className="w-3 h-3 sm:w-2.5 sm:h-2.5 shrink-0" />}
+                      {p}
+                    </span>
+                  )
+                })}
+              </div>
+            )}
           </div>
         ))}
       </motion.div>
@@ -2205,7 +2220,14 @@ function WhyMWScienceCometFlow() {
 
 // ─── MAIN COMPONENT ────────────────────────────────────────────────────────────
 
-export default function MWScienceClient() {
+export default function MWScienceClient({ product }: { product?: SanityProduct | null } = {}) {
+  const heroLine1 = product?.heroSubtitle || 'Transforming fragmented journeys into actionable signals.'
+  const heroLine2 = product?.description || 'MW Science gives you the confidence to plan, measure, and act with precision.'
+  const heroCtaText = product?.ctaText || 'Talk to a MW Science Lab Expert'
+  const heroCtaLink = product?.ctaLink || '/contact'
+  const finalCtaTitle = product?.finalCtaTitle || 'True North for OOH'
+  const finalCtaSubtitle = product?.finalCtaSubtitle || 'Moving Walls is the decision compass for OOH. Powered by MW Science, we provide organisations the clarity to navigate complex journeys, eliminate guesswork, and invest with confidence.'
+
   const [activeSignal, setActiveSignal] = useState(0)
 
   return (
@@ -2244,19 +2266,19 @@ export default function MWScienceClient() {
 
               <div className="space-y-4 sm:space-y-5">
                 <p className="text-[1.1rem] sm:text-[1.2rem] md:text-[1.3rem] text-white font-light leading-snug">
-                  Transforming fragmented journeys into actionable signals.
+                  {heroLine1}
                 </p>
                 <p className="text-[1.1rem] sm:text-[1.2rem] md:text-[1.3rem] text-white font-light leading-snug">
-                  MW Science gives you the confidence to plan, measure, and act with precision.
+                  {heroLine2}
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4">
                 <CTAButton
-                  href="/contact"
+                  href={heroCtaLink}
                   className="inline-flex items-center justify-center gap-2 bg-mw-blue-600 hover:bg-mw-blue-500 text-white px-8 py-4 rounded-xl font-semibold transition-all"
                 >
-                  Talk to a MW Science Lab Expert
+                  {heroCtaText}
                 </CTAButton>
                 <a
                   href="#signals"
@@ -2539,9 +2561,9 @@ export default function MWScienceClient() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6">True North for OOH</h2>
+            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6">{finalCtaTitle}</h2>
             <p className="text-mw-gray-300 leading-relaxed max-w-2xl mx-auto mb-10">
-              Moving Walls is the decision compass for OOH. Powered by MW Science, we provide organisations the clarity to navigate complex journeys, eliminate guesswork, and invest with confidence.
+              {finalCtaSubtitle}
             </p>
             <CTAButton
               href="/contact"
