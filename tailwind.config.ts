@@ -97,7 +97,7 @@ export default {
       },
       animation: {
         marquee: 'marquee 40s linear infinite',
-        'ring-fill': 'ringFill 8s linear forwards',
+        'ring-fill': 'ringFill 5s linear forwards',
         'spin-slow': 'spin360 1s linear infinite',
         'compass-drift': 'compassDrift 4s ease-in-out infinite',
       },

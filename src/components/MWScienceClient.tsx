@@ -1112,16 +1112,16 @@ function SignalsCompassDial({ activeIndex, onSelect }: { activeIndex: number; on
     }
   })
 
-  // Auto-cycle every 8s, pausable on hover without losing progress. remainingRef/startRef
+  // Auto-cycle every 5s, pausable on hover without losing progress. remainingRef/startRef
   // track a real countdown in ms so pausing and resuming resumes from exactly where it left
-  // off (rather than restarting a fresh 8s) — the CSS progress ring below uses the browser's
+  // off (rather than restarting a fresh 5s) — the CSS progress ring below uses the browser's
   // native animation-play-state, which already pauses/resumes at the same visual position.
   const [isPaused, setIsPaused] = useState(false)
-  const remainingRef = useRef(8000)
+  const remainingRef = useRef(5000)
   const startRef = useRef(0)
 
   useEffect(() => {
-    remainingRef.current = 8000
+    remainingRef.current = 5000
   }, [activeIndex])
 
   useEffect(() => {
@@ -1219,16 +1219,23 @@ function SignalsCompassDial({ activeIndex, onSelect }: { activeIndex: number; on
               className="absolute -translate-x-1/2 -translate-y-1/2"
               style={{ left: `${leftPct}%`, top: `${topPct}%` }}
             >
-              {/* Progress ring — fills over the 8s auto-cycle window, pauses/resumes with hover */}
+              {/* Progress ring — fills over the 5s auto-cycle window, pauses/resumes with hover */}
               {isActive && (
                 <svg
                   key={`ring-${active.id}`}
                   width="56" height="56" viewBox="0 0 56 56"
                   className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none -rotate-90"
                 >
+                  {/* White border circle sits behind the blue ring, slightly wider, so it
+                      shows as an even outline around the blue stroke */}
                   <circle
                     cx="28" cy="28" r="24" fill="none" className="animate-ring-fill"
-                    stroke="#3b82f6" strokeWidth="2.5" strokeLinecap="round" strokeDasharray="151"
+                    stroke="#ffffff" strokeWidth="9" strokeLinecap="round" strokeDasharray="151"
+                    style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
+                  />
+                  <circle
+                    cx="28" cy="28" r="24" fill="none" className="animate-ring-fill"
+                    stroke="#3b82f6" strokeWidth="5" strokeLinecap="round" strokeDasharray="151"
                     style={{ animationPlayState: isPaused ? 'paused' : 'running' }}
                   />
                 </svg>

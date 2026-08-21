@@ -244,18 +244,26 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                     priority
                   />
                 </div>
-              ) : (
-                location.stats && location.stats.length > 0 && (
-                  <div className="grid grid-cols-2 gap-4">
-                    {location.stats.slice(0, 4).map((stat, index) => (
-                      <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
-                        <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                        <div className="text-mw-blue-200 text-sm">{stat.label}</div>
-                      </div>
-                    ))}
-                  </div>
-                )
-              )}
+              ) : location.stats && location.stats.length > 0 ? (
+                <div className="grid grid-cols-2 gap-4">
+                  {location.stats.slice(0, 4).map((stat, index) => (
+                    <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                      <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
+                      <div className="text-mw-blue-200 text-sm">{stat.label}</div>
+                    </div>
+                  ))}
+                </div>
+              ) : location.heroImage ? (
+                <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
+                  <Image
+                    src={location.heroImage}
+                    alt={location.heroTitle || location.name}
+                    fill
+                    className="object-cover"
+                    priority
+                  />
+                </div>
+              ) : null}
             </motion.div>
           </div>
         </div>
