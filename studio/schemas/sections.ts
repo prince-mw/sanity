@@ -1,5 +1,34 @@
 // Shared page section definitions used by landing pages and location pages
 
+// Default "Trusted Globally by Marketers" logo carousel, prefilled onto every new
+// location page's Page Sections (see location.ts / locationCity.ts) so it doesn't
+// have to be re-added by hand each time. Logos are the same 15 client logos already
+// used on the Mumbai location page (reusing the existing uploaded image assets).
+export const defaultTrustedLogosSection = {
+  _type: 'logoCarousel',
+  _key: 'trustedGloballyLogoCarousel',
+  heading: 'Trusted Globally by Marketers',
+  grayscale: true,
+  backgroundColor: 'white',
+  logos: [
+    {_key: '8fa9c141f417', name: 'airasia', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-dda79efc5891c075a2988e1018bc4ec869b760fe-291x104-heif'}}},
+    {_key: 'f6a7f56ac758', name: 'astro', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-9b818e254c343ad90a88dd374ba098c95f14a950-291x104-png'}}},
+    {_key: '7636080d8837', name: 'bosch', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-62bd1ef458b9d4908559fed056a684e6eae43416-291x104-heif'}}},
+    {_key: 'f1ccecb20207', name: 'coca-cola', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-88ccf20ac50742c28ef42a2bd594ac95ed5366c1-291x104-png'}}},
+    {_key: '06f793ae089d', name: 'dell', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-ba7a92f0599044cbe3eaf80529e739561232d0b1-291x104-heif'}}},
+    {_key: '5453ece364b0', name: 'fairprice', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-ec64d08d6de1fece841cbf7a768337bc67c3d7b6-291x104-png'}}},
+    {_key: '958b8cd73371', name: 'gamuda', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-e11311ec860afc38dc9a36c5370804bb179a0a93-291x104-heif'}}},
+    {_key: '29ed4c9d21c8', name: 'grab', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-62cc75c24599ec340aaa09e7f666a265ee589d6c-291x104-heif'}}},
+    {_key: '89661903be02', name: 'hbo go', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-7388a9204ca429af87fe6dc8a9392f156cdfab45-291x104-heif'}}},
+    {_key: '2ff9a051813a', name: 'lalamove', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-950f7625cd36238cbaf17d3573e5593fd036c281-291x104-heif'}}},
+    {_key: 'dc34d27bf4ff', name: "L'Oreal Paris", logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-49c2f588f10de75e7d12ace4fc4812867bf39d7e-291x104-heif'}}},
+    {_key: '7978f25b2cdc', name: 'McDonalds', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-f4e9fe262ceeeb10c9559768553c6a877c95be49-291x104-png'}}},
+    {_key: 'ae75eafb4f88', name: 'Netflix', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-47853b0e454977e979b6b4f13b101c1955095497-291x104-heif'}}},
+    {_key: 'dd4b1c5d2be1', name: 'samsung', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-b7b1dac874cd44ba71b2bb33033c4bb366f83ab0-291x104-heif'}}},
+    {_key: 'd304203b4fe3', name: 'sunsilk', logo: {_type: 'image', asset: {_type: 'reference', _ref: 'image-de9fbea9a0c838c2b60f2287933b801e7fab2b77-291x104-heif'}}},
+  ],
+}
+
 export const pageSections: any[] = [
   // Hero Section
   {

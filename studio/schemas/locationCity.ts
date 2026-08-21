@@ -1,5 +1,5 @@
 import { defineField, defineType } from 'sanity'
-import { pageSections } from './sections'
+import { pageSections, defaultTrustedLogosSection } from './sections'
 
 export default defineType({
   name: 'locationCity',
@@ -223,6 +223,7 @@ export default defineType({
       group: 'sections',
       description: 'Add and arrange custom sections for this city page. Drag to reorder.',
       of: pageSections,
+      initialValue: [defaultTrustedLogosSection],
     }),
     defineField({
       name: 'sectionsPosition',
