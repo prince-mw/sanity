@@ -1,0 +1,530 @@
+/* Scoped design tokens — do NOT move to :root, this must stay local to .page */
+.page {
+  --primary-blue: #1d4ed8;
+  --primary-hover: #1e40af;
+  --dark-navy: #0b1121;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --bg-light: #f8fafc;
+  --bg-white: #ffffff;
+  --border-light: #e2e8f0;
+  --gradient-primary: linear-gradient(135deg, #1d4ed8 0%, #4f46e5 100%);
+
+  color: var(--text-main);
+  background-color: var(--bg-white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page * {
+  box-sizing: border-box;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+.page h1,
+.page h2,
+.page h3,
+.page h4 {
+  line-height: 1.2;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: var(--text-main);
+}
+
+.page p {
+  margin: 0 0 1rem;
+  color: var(--text-muted);
+}
+
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+}
+
+.btnPrimary {
+  background-color: var(--primary-blue);
+  color: #ffffff;
+}
+
+.btnPrimary:hover {
+  background-color: var(--primary-hover);
+}
+
+.btnOutline {
+  background-color: transparent;
+  color: var(--primary-blue);
+  border-color: var(--primary-blue);
+}
+
+.btnOutline:hover {
+  background-color: var(--primary-blue);
+  color: #ffffff;
+}
+
+.tag {
+  display: inline-block;
+  background: rgba(29, 78, 216, 0.1);
+  color: var(--primary-blue);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* 1. Hero */
+.hero {
+  background: var(--dark-navy);
+  color: #ffffff;
+  padding: 120px 0 100px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background-image: radial-gradient(circle at 50% 0%, rgba(29, 78, 216, 0.15) 0%, transparent 70%);
+}
+
+.checkeredCorner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 240px;
+  height: 240px;
+  background-image: conic-gradient(#000 90deg, #fff 90deg 180deg, #000 180deg 270deg, #fff 270deg);
+  background-size: 20px 20px;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.f1CarIcon {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 280px;
+  height: auto;
+  color: rgba(96, 165, 250, 0.6);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.f1CarIconCta {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 230px;
+  height: auto;
+  color: rgba(96, 165, 250, 0.5);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.heroTag {
+  background: rgba(29, 78, 216, 0.2);
+  color: #60a5fa;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.hero h1 {
+  font-size: 3.5rem;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hero p {
+  color: #94a3b8;
+  font-size: 1.25rem;
+  max-width: 800px;
+  margin: 0 auto 2rem;
+}
+
+.dateline {
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 2.5rem;
+  font-size: 1.1rem;
+}
+
+.heroCta {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.heroBtnPrimary {
+  background-color: #3b82f6;
+  color: #ffffff;
+  border-color: #3b82f6;
+}
+.heroBtnPrimary:hover {
+  background-color: #2563eb;
+}
+
+.btnSecondary {
+  background-color: transparent;
+  border-color: #ffffff;
+  color: #ffffff;
+}
+.btnSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 2. Curated Journeys */
+.curatedJourneys {
+  padding: 100px 0;
+  text-align: center;
+}
+
+.curatedJourneys h2 {
+  font-size: 2.5rem;
+}
+
+.curatedJourneys .lead {
+  font-size: 1.125rem;
+  max-width: 760px;
+  margin: 0 auto 1.5rem;
+}
+
+.journeyFlow {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+
+.flowStep {
+  padding: 16px 40px;
+  border-radius: 999px;
+  font-weight: 700;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.flowStep:hover {
+  transform: translateY(-3px);
+}
+
+.stepArrive {
+  background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+  box-shadow: 0 10px 20px -5px rgba(5, 150, 105, 0.4);
+}
+
+.stepMove {
+  background: linear-gradient(135deg, #fbbf24 0%, #d97706 100%);
+  box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.4);
+}
+
+.stepExperience {
+  background: linear-gradient(135deg, #f87171 0%, #e11d48 100%);
+  box-shadow: 0 10px 20px -5px rgba(225, 29, 72, 0.4);
+}
+
+.stepEngage {
+  background: linear-gradient(135deg, #60a5fa 0%, #4f46e5 100%);
+  box-shadow: 0 10px 20px -5px rgba(79, 70, 229, 0.4);
+}
+
+.flowArrow {
+  color: #cbd5e1;
+  font-weight: 300;
+  font-size: 1.5rem;
+}
+
+/* 3. Locations */
+.locations {
+  padding: 80px 0;
+  background-color: var(--bg-light);
+}
+
+.locationsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.locationCard {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--border-light);
+  transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.locationCard:hover {
+  transform: translateY(-5px);
+}
+
+.locationImage {
+  height: 240px;
+  background-size: cover;
+  background-position: center;
+  background-color: #e2e8f0;
+}
+
+.locationContent {
+  padding: 40px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.locationCard h3 {
+  font-size: 1.75rem;
+  color: var(--text-main);
+  margin-top: 0.5rem;
+}
+
+.date {
+  color: var(--primary-blue);
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.journeyHighlights {
+  list-style: none;
+  margin: 24px 0;
+  padding: 0;
+  flex-grow: 1;
+}
+
+.journeyHighlights li {
+  position: relative;
+  padding-left: 28px;
+  margin-bottom: 12px;
+  color: var(--text-main);
+}
+
+.journeyHighlights li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--primary-blue);
+  font-weight: bold;
+}
+
+/* 4. FAQ */
+.faq {
+  padding: 100px 0;
+  background-color: var(--dark-navy);
+  background-image:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.2), transparent 40%),
+    linear-gradient(rgba(11, 17, 33, 0.9), rgba(11, 17, 33, 0.9)),
+    url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #ffffff;
+}
+
+.faq h2 {
+  text-align: center;
+  margin-bottom: 50px;
+  color: #ffffff;
+}
+
+.faqGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faqItem {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 28px 32px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: background 0.3s ease;
+}
+
+.faqItem:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.faqItem h4 {
+  margin-bottom: 10px;
+  color: #60a5fa;
+  font-size: 1.1rem;
+}
+
+.faqItem p {
+  margin-bottom: 0;
+  color: #cbd5e1;
+}
+
+/* 5. Final CTA & Form */
+.finalCta {
+  padding: 120px 0;
+  background: var(--dark-navy);
+  color: #ffffff;
+  background-image: radial-gradient(circle at 100% 100%, rgba(29, 78, 216, 0.15) 0%, transparent 50%);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaContainer {
+  display: grid;
+  grid-template-columns: 2fr 3fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.ctaText h2 {
+  font-size: 3rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+}
+
+.ctaText p {
+  color: #94a3b8;
+  font-size: 1.125rem;
+  margin-bottom: 2rem;
+}
+
+.urgencyLine {
+  display: inline-block;
+  background: rgba(239, 68, 68, 0.1);
+  color: #fca5a5;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.formCard {
+  background: #ffffff;
+  padding: 0;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  color: var(--text-main);
+}
+
+@media (max-width: 992px) {
+  .locationsGrid,
+  .ctaContainer {
+    grid-template-columns: 1fr;
+  }
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .ctaContainer {
+    gap: 40px;
+  }
+  .f1CarIcon {
+    width: 190px;
+  }
+  .checkeredCorner {
+    width: 160px;
+    height: 160px;
+  }
+  /* Final CTA stacks to a single column here — ctaText sits above the form card, so a
+     bottom-left car icon anchored to the whole section would end up hidden behind (or
+     overlapping) the opaque form card instead of sitting safely beside the text. */
+  .f1CarIconCta {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .journeyFlow {
+    flex-direction: column;
+    gap: 12px;
+  }
+  .flowArrow {
+    transform: rotate(90deg);
+  }
+  /* background-attachment: fixed is unreliable/janky on mobile browsers (notably iOS Safari) */
+  .faq {
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero {
+    padding: 90px 0 70px;
+  }
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .hero p {
+    font-size: 1.05rem;
+  }
+  .dateline {
+    font-size: 0.95rem;
+  }
+  /* Two pill buttons side by side don't fit most phone widths without wrapping oddly */
+  .heroCta {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .checkeredCorner {
+    width: 110px;
+    height: 110px;
+  }
+  .f1CarIcon {
+    width: 150px;
+  }
+  .curatedJourneys {
+    padding: 70px 0;
+  }
+  .curatedJourneys h2 {
+    font-size: 1.75rem;
+  }
+  .flowStep {
+    padding: 14px 28px;
+    font-size: 0.875rem;
+  }
+  .locationContent {
+    padding: 24px;
+  }
+  .locationCard h3 {
+    font-size: 1.5rem;
+  }
+  .faq {
+    padding: 70px 0;
+  }
+  .faqItem {
+    padding: 20px 22px;
+  }
+  .finalCta {
+    padding: 80px 0;
+  }
+  .ctaText h2 {
+    font-size: 2rem;
+  }
+}

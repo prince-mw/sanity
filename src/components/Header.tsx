@@ -298,6 +298,12 @@ export default function Header({ sanityMenuData }: HeaderProps) {
   
   // CTA button from Sanity or default
   const ctaButton = transformedSanityData?.ctaButton;
+
+  // F1 2026 campaign page has its own inline contact form — send "Get Started" there
+  // instead of the default /contact page.
+  const ctaHref = pathname === '/f1-2026'
+    ? '/f1-2026#contact'
+    : (ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact'));
   
   // Build languages array from locale context
   const languages = locales.map((loc) => ({
@@ -464,7 +470,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                   </button>
                 ) : (
                   <CTAButton
-                    href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')}
+                    href={ctaHref}
                     className={`px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-block ${
                       ctaButton?.style === 'secondary'
                         ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'
@@ -699,7 +705,7 @@ export default function Header({ sanityMenuData }: HeaderProps) {
                     </button>
                   ) : (
                     <CTAButton
-                      href={ctaButton?.linkType === 'custom' ? (ctaButton?.url || '/contact') : (ctaButton?.internalPage || '/contact')}
+                      href={ctaHref}
                       className={`block w-full px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 mt-4 text-center ${
                         ctaButton?.style === 'secondary'
                           ? 'bg-gray-200 hover:bg-gray-300 text-gray-900'

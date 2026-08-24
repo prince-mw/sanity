@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { openCookieSettings } from "./CookieConsent";
 import { useLocale } from "@/i18n/LocaleContext";
 import { FooterContent } from "@/sanity/lib/fetch";
@@ -54,6 +55,10 @@ const socialIconMap: Record<string, JSX.Element> = {
 
 export default function Footer({ content }: FooterProps) {
   const { t } = useLocale();
+  const pathname = usePathname();
+
+  // F1 2026 campaign page has its own self-contained footer/CTA — hide the default one
+  if (pathname === '/f1-2026') return null;
 
   const defaultFooterLinks = {
     company: [
