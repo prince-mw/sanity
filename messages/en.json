@@ -152,6 +152,7 @@
         "measure": "MW Measure",
         "influence": "MW Influence",
         "activate": "MW Activate",
+        "inventory": "MW Inventory",
         "science": "MW Science",
         "studio": "MW Studio",
         "market": "MW Market"
@@ -283,6 +284,10 @@
       "activate": {
         "name": "MW Activate",
         "description": "Real-time campaign activation & optimization"
+      },
+      "inventory": {
+        "name": "MW Inventory",
+        "description": "Streamlined OOH inventory management & selling"
       },
       "science": {
         "name": "MW Science",

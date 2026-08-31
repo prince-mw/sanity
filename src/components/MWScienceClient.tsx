@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, AnimatePresence, useInView, animate } from 'framer-motion'
 import { CTAButton } from '@/components/CTAButton'
+import { CompassNeedleAmbientDrift } from '@/components/CompassNeedleAmbientDrift'
 import Image from 'next/image'
 import { GLOBE_FRAMES, GLOBE_SIZE } from '@/data/globe-frames'
 import type { SanityProduct } from '@/sanity/lib/fetch'
@@ -797,57 +798,6 @@ function ThreadWeave() {
   )
 }
 
-// ─── COMPASS NEEDLE (used on the Final CTA, below the "True North for OOH" heading) ─────
-// Ambient Drift: ticks slowly orbit, the needle breathes gently, a soft glow pulses behind it.
-// NOTE: this file's Framer Motion + SVG `rotate` combo silently fails to apply
-// any transform (confirmed via getComputedStyle), so rotation here uses plain
-// CSS transforms (Tailwind keyframes) instead.
-
-function compassTicks() {
-  const round = (n: number) => Math.round(n * 1000) / 1000
-  return Array.from({ length: 12 }, (_, i) => {
-    const angle = (i * 30 * Math.PI) / 180
-    return {
-      id: i,
-      x1: round(50 + 46 * Math.sin(angle)), y1: round(50 - 46 * Math.cos(angle)),
-      x2: round(50 + 40 * Math.sin(angle)), y2: round(50 - 40 * Math.cos(angle)),
-    }
-  })
-}
-
-const NEEDLE_PATH = <>
-  <path d="M50 14 L58 50 L50 86 L42 50 Z" fill="#60a5fa" opacity="0.9" />
-  <path d="M50 14 L58 50 L50 50 Z" fill="#ffffff" />
-</>
-
-function CompassNeedleAmbientDrift({ className }: { className?: string }) {
-  const ticks = compassTicks()
-  return (
-    <svg viewBox="0 0 100 100" className={className}>
-      <defs>
-        <filter id="compassGlow" x="-100%" y="-100%" width="300%" height="300%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-      <circle cx="50" cy="50" r="46" fill="none" stroke="#60a5fa" strokeOpacity="0.4" strokeWidth="1.5" />
-      <circle cx="50" cy="50" r="38" fill="none" stroke="#93c5fd" strokeOpacity="0.2" strokeWidth="1" />
-      <g className="animate-spin-slow" style={{ transformOrigin: '50px 50px', animationDuration: '26s' }}>
-        {ticks.map(t => (
-          <line key={t.id} x1={t.x1} y1={t.y1} x2={t.x2} y2={t.y2} stroke="#93c5fd" strokeOpacity="0.3" strokeWidth="1" />
-        ))}
-      </g>
-      <circle cx="50" cy="50" r="10" fill="#60a5fa" opacity="0.35" filter="url(#compassGlow)" className="animate-pulse" />
-      <g className="animate-compass-drift" style={{ transformOrigin: '50px 50px' }}>
-        {NEEDLE_PATH}
-      </g>
-      <circle cx="50" cy="50" r="4" fill="#1e3a8a" stroke="#93c5fd" strokeWidth="1.5" />
-    </svg>
-  )
-}
 
 // ─── SIGNAL FLOW STRIP (Section 2: intro visual) ──────────────────────────────
 // Everyday touchpoints converge into one signal, the signal reads out as four

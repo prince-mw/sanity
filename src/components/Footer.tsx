@@ -77,6 +77,7 @@ export default function Footer({ content }: FooterProps) {
       { name: t('footer.links.products.measure'), href: "/mw-measure" },
       { name: t('footer.links.products.influence'), href: "/mw-influence" },
       { name: t('footer.links.products.activate'), href: "/mw-activate" },
+      { name: t('footer.links.products.inventory'), href: "/mw-inventory" },
       { name: t('footer.links.products.science'), href: "/mw-science" },
       { name: t('footer.links.products.studio'), href: "/mw-studio" },
       { name: t('footer.links.products.market'), href: "/mw-market" },

@@ -152,6 +152,7 @@
         "measure": "MW Measure",
         "influence": "MW Influence",
         "activate": "MW Activate",
+        "inventory": "MW 인벤토리",
         "science": "MW Science",
         "studio": "MW Studio",
         "market": "MW Market"
@@ -283,6 +284,10 @@
       "activate": {
         "name": "MW Activate",
         "description": "실시간 캠페인 활성화 및 최적화"
+      },
+      "inventory": {
+        "name": "MW 인벤토리",
+        "description": "OOH 재고 관리 및 판매 효율화"
       },
       "science": {
         "name": "MW Science",

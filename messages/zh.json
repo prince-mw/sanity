@@ -152,6 +152,7 @@
         "measure": "MW Measure",
         "influence": "MW Influence",
         "activate": "MW Activate",
+        "inventory": "MW Inventory",
         "science": "MW Science",
         "studio": "MW Studio",
         "market": "MW Market"
@@ -283,6 +284,10 @@
       "activate": {
         "name": "MW Activate",
         "description": "实时活动激活与优化"
+      },
+      "inventory": {
+        "name": "MW Inventory",
+        "description": "简化户外广告库存管理与销售"
       },
       "science": {
         "name": "MW Science",

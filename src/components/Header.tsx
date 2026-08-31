@@ -184,6 +184,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
           { name: t('megaMenu.products.measure.name'), description: t('megaMenu.products.measure.description'), href: "/mw-measure" },
           { name: t('megaMenu.products.influence.name'), description: t('megaMenu.products.influence.description'), href: "/mw-influence" },
           { name: t('megaMenu.products.activate.name'), description: t('megaMenu.products.activate.description'), href: "/mw-activate" },
+          { name: t('megaMenu.products.inventory.name'), description: t('megaMenu.products.inventory.description'), href: "/mw-inventory" },
         ],
       },
       {

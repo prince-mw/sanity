@@ -86,6 +86,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/mw-influence', priority: 0.9, changeFreq: 'monthly' as const },
     { route: '/mw-science', priority: 0.9, changeFreq: 'monthly' as const },
     { route: '/mw-studio', priority: 0.9, changeFreq: 'monthly' as const },
+    { route: '/mw-inventory', priority: 0.9, changeFreq: 'monthly' as const },
     // Solutions
     { route: '/brands', priority: 0.85, changeFreq: 'monthly' as const },
     { route: '/agencies', priority: 0.85, changeFreq: 'monthly' as const },

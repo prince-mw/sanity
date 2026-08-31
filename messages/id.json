@@ -152,6 +152,7 @@
         "measure": "MW Measure",
         "influence": "MW Influence",
         "activate": "MW Activate",
+        "inventory": "MW Inventory",
         "science": "MW Science",
         "studio": "MW Studio",
         "market": "MW Market"
@@ -283,6 +284,10 @@
       "activate": {
         "name": "MW Activate",
         "description": "Aktivasi dan optimasi kampanye real-time"
+      },
+      "inventory": {
+        "name": "MW Inventory",
+        "description": "Manajemen dan penjualan inventaris OOH yang efisien"
       },
       "science": {
         "name": "MW Science",

@@ -108,6 +108,7 @@ export default defineType({
           { title: 'Measurement', value: 'measurement' },
           { title: 'Intelligence', value: 'intelligence' },
           { title: 'Creative', value: 'creative' },
+          { title: 'Inventory', value: 'inventory' },
         ],
       },
       group: 'basic',

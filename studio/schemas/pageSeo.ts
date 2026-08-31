@@ -34,6 +34,7 @@ export default defineType({
           {title: 'MW Influence', value: 'mw-influence'},
           {title: 'MW Studio', value: 'mw-studio'},
           {title: 'MW Science', value: 'mw-science'},
+          {title: 'MW Inventory', value: 'mw-inventory'},
           
           // Resources listing pages
           {title: 'Blog', value: 'blog'},
