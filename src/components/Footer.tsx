@@ -57,8 +57,8 @@ export default function Footer({ content }: FooterProps) {
   const { t } = useLocale();
   const pathname = usePathname();
 
-  // F1 2026 campaign page has its own self-contained footer/CTA — hide the default one
-  if (pathname === '/f1-2026') return null;
+  // Race Week 2026 campaign page has its own self-contained footer/CTA — hide the default one
+  if (pathname === '/race-week-malaysia-singapore') return null;
 
   const defaultFooterLinks = {
     company: [

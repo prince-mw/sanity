@@ -7,8 +7,8 @@ import { CTAButton } from "./CTAButton";
 export default function GlobalCTA() {
   const pathname = usePathname();
 
-  // Hide on the main landing page, location pages, MW Science, MW Inventory, and F1 2026 (each has its own closing CTA)
-  if (pathname === '/' || pathname.startsWith('/locations/') || pathname === '/mw-science' || pathname === '/mw-inventory' || pathname === '/f1-2026') return null;
+  // Hide on the main landing page, location pages, MW Science, MW Inventory, and Race Week 2026 (each has its own closing CTA)
+  if (pathname === '/' || pathname.startsWith('/locations/') || pathname === '/mw-science' || pathname === '/mw-inventory' || pathname === '/race-week-malaysia-singapore') return null;
 
   return (
     <section className="py-16 bg-gradient-to-br from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 relative overflow-hidden">

@@ -99,41 +99,6 @@
   background-image: radial-gradient(circle at 50% 0%, rgba(29, 78, 216, 0.15) 0%, transparent 70%);
 }
 
-.checkeredCorner {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 240px;
-  height: 240px;
-  background-image: conic-gradient(#000 90deg, #fff 90deg 180deg, #000 180deg 270deg, #fff 270deg);
-  background-size: 20px 20px;
-  clip-path: polygon(0 0, 100% 0, 0 100%);
-  opacity: 0.85;
-  pointer-events: none;
-}
-
-.f1CarIcon {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 280px;
-  height: auto;
-  color: rgba(96, 165, 250, 0.6);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.f1CarIconCta {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 230px;
-  height: auto;
-  color: rgba(96, 165, 250, 0.5);
-  pointer-events: none;
-  z-index: 0;
-}
-
 .heroTag {
   background: rgba(29, 78, 216, 0.2);
   color: #60a5fa;
@@ -153,14 +118,7 @@
   color: #94a3b8;
   font-size: 1.25rem;
   max-width: 800px;
-  margin: 0 auto 2rem;
-}
-
-.dateline {
-  font-weight: 600;
-  color: #cbd5e1;
-  margin-bottom: 2.5rem;
-  font-size: 1.1rem;
+  margin: 0 auto 1rem;
 }
 
 .heroCta {
@@ -169,6 +127,7 @@
   justify-content: center;
   position: relative;
   z-index: 1;
+  margin-top: 2rem;
 }
 
 .heroBtnPrimary {
@@ -189,10 +148,58 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* 2. Curated Journeys */
+/* 2. Touchpoint card grids — reused for "Reach Audiences Along the Journey" and
+   "Plan Smarter With Data" */
+.touchpointsSection {
+  padding: 90px 0;
+  text-align: center;
+}
+
+.touchpointsSection.alt {
+  background-color: var(--bg-light);
+}
+
+.touchpointsSection h2 {
+  font-size: 2.5rem;
+}
+
+.touchpointsSection .lead {
+  font-size: 1.125rem;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.touchpointsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-top: 3rem;
+  text-align: left;
+}
+
+.touchpointCard {
+  background: #ffffff;
+  padding: 28px 24px;
+  border-radius: 16px;
+  border: 1px solid var(--border-light);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+}
+
+.touchpointCard h4 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.touchpointCard p {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+}
+
+/* 3. Curated Journeys flow */
 .curatedJourneys {
   padding: 100px 0;
   text-align: center;
+  background-color: var(--bg-light);
 }
 
 .curatedJourneys h2 {
@@ -238,7 +245,7 @@
   box-shadow: 0 10px 20px -5px rgba(217, 119, 6, 0.4);
 }
 
-.stepExperience {
+.stepExplore {
   background: linear-gradient(135deg, #f87171 0%, #e11d48 100%);
   box-shadow: 0 10px 20px -5px rgba(225, 29, 72, 0.4);
 }
@@ -249,15 +256,14 @@
 }
 
 .flowArrow {
-  color: #cbd5e1;
+  color: #94a3b8;
   font-weight: 300;
   font-size: 1.5rem;
 }
 
-/* 3. Locations */
+/* 4. Locations (Malaysia / Singapore) */
 .locations {
   padding: 80px 0;
-  background-color: var(--bg-light);
 }
 
 .locationsGrid {
@@ -301,12 +307,6 @@
   margin-top: 0.5rem;
 }
 
-.date {
-  color: var(--primary-blue);
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
 .journeyHighlights {
   list-style: none;
   margin: 24px 0;
@@ -330,60 +330,23 @@
   font-weight: bold;
 }
 
-/* 4. FAQ */
-.faq {
+/* 5. Built for brands — centered text + CTA */
+.brandsCta {
   padding: 100px 0;
-  background-color: var(--dark-navy);
-  background-image:
-    radial-gradient(circle at top right, rgba(37, 99, 235, 0.2), transparent 40%),
-    linear-gradient(rgba(11, 17, 33, 0.9), rgba(11, 17, 33, 0.9)),
-    url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=2070&auto=format&fit=crop');
-  background-size: cover;
-  background-position: center;
-  background-attachment: fixed;
-  color: #ffffff;
-}
-
-.faq h2 {
   text-align: center;
-  margin-bottom: 50px;
-  color: #ffffff;
 }
 
-.faqGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 16px;
-  max-width: 800px;
-  margin: 0 auto;
+.brandsCta h2 {
+  font-size: 2.5rem;
 }
 
-.faqItem {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 28px 32px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: background 0.3s ease;
+.brandsCta .lead {
+  font-size: 1.125rem;
+  max-width: 760px;
+  margin: 0 auto 2rem;
 }
 
-.faqItem:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.faqItem h4 {
-  margin-bottom: 10px;
-  color: #60a5fa;
-  font-size: 1.1rem;
-}
-
-.faqItem p {
-  margin-bottom: 0;
-  color: #cbd5e1;
-}
-
-/* 5. Final CTA & Form */
+/* 6. Final CTA & Form */
 .finalCta {
   padding: 120px 0;
   background: var(--dark-navy);
@@ -411,18 +374,7 @@
 .ctaText p {
   color: #94a3b8;
   font-size: 1.125rem;
-  margin-bottom: 2rem;
-}
-
-.urgencyLine {
-  display: inline-block;
-  background: rgba(239, 68, 68, 0.1);
-  color: #fca5a5;
-  padding: 16px 24px;
-  border-radius: 12px;
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  font-weight: 600;
-  line-height: 1.5;
+  margin-bottom: 1rem;
 }
 
 .formCard {
@@ -434,29 +386,25 @@
   color: var(--text-main);
 }
 
+.formCardHeading {
+  padding: 24px 24px 0;
+  font-size: 1.25rem;
+  margin-bottom: 0;
+}
+
 @media (max-width: 992px) {
   .locationsGrid,
   .ctaContainer {
     grid-template-columns: 1fr;
+  }
+  .touchpointsGrid {
+    grid-template-columns: repeat(2, 1fr);
   }
   .hero h1 {
     font-size: 2.5rem;
   }
   .ctaContainer {
     gap: 40px;
-  }
-  .f1CarIcon {
-    width: 190px;
-  }
-  .checkeredCorner {
-    width: 160px;
-    height: 160px;
-  }
-  /* Final CTA stacks to a single column here — ctaText sits above the form card, so a
-     bottom-left car icon anchored to the whole section would end up hidden behind (or
-     overlapping) the opaque form card instead of sitting safely beside the text. */
-  .f1CarIconCta {
-    display: none;
   }
 }
 
@@ -467,10 +415,6 @@
   }
   .flowArrow {
     transform: rotate(90deg);
-  }
-  /* background-attachment: fixed is unreliable/janky on mobile browsers (notably iOS Safari) */
-  .faq {
-    background-attachment: scroll;
   }
 }
 
@@ -484,26 +428,21 @@
   .hero p {
     font-size: 1.05rem;
   }
-  .dateline {
-    font-size: 0.95rem;
-  }
   /* Two pill buttons side by side don't fit most phone widths without wrapping oddly */
   .heroCta {
     flex-direction: column;
     align-items: stretch;
   }
-  .checkeredCorner {
-    width: 110px;
-    height: 110px;
+  .touchpointsSection {
+    padding: 60px 0;
   }
-  .f1CarIcon {
-    width: 150px;
-  }
-  .curatedJourneys {
-    padding: 70px 0;
-  }
-  .curatedJourneys h2 {
+  .touchpointsSection h2,
+  .curatedJourneys h2,
+  .brandsCta h2 {
     font-size: 1.75rem;
+  }
+  .touchpointsGrid {
+    grid-template-columns: 1fr;
   }
   .flowStep {
     padding: 14px 28px;
@@ -515,11 +454,9 @@
   .locationCard h3 {
     font-size: 1.5rem;
   }
-  .faq {
-    padding: 70px 0;
-  }
-  .faqItem {
-    padding: 20px 22px;
+  .curatedJourneys,
+  .brandsCta {
+    padding: 60px 0;
   }
   .finalCta {
     padding: 80px 0;

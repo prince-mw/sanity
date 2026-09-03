@@ -75,9 +75,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/about', priority: 0.9, changeFreq: 'monthly' as const },
     { route: '/contact', priority: 0.9, changeFreq: 'monthly' as const },
     { route: '/platform', priority: 0.9, changeFreq: 'weekly' as const },
-    // /f1-2026 is intentionally NOT listed here — it now comes from the Sanity landingPage
-    // doc (slug: f1-2026) via landingPageEntries below, so it automatically drops out of
-    // the sitemap when that doc is unpublished/archived after the campaign ends.
+    // /race-week-malaysia-singapore is intentionally NOT listed here — it comes from the
+    // Sanity landingPage doc (slug: race-week-malaysia-singapore) via landingPageEntries
+    // below, so it automatically drops out of the sitemap when that doc is
+    // unpublished/archived after the campaign ends.
     // Products
     { route: '/mw-planner', priority: 0.9, changeFreq: 'monthly' as const },
     { route: '/mw-market', priority: 0.9, changeFreq: 'monthly' as const },
