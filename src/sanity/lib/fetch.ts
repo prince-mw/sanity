@@ -103,6 +103,12 @@ export interface SanityCaseStudy {
   publishedAt: string
   seo?: SanitySEO
   metaDescription?: string
+  titleHighlight?: string
+  categoryBadge?: string
+  metaLine?: string
+  challenge?: string
+  whatWeDid?: string[]
+  whyItWorked?: string
 }
 
 // Helper for publishing filters - content must be published and not scheduled for future
@@ -303,7 +309,7 @@ export async function getAllCaseStudies(): Promise<SanityCaseStudy[]> {
   return safeFetch(query)
 }
 
-export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy | null> {
+export async function getCaseStudyBySlug(slug: string, preview: boolean = false): Promise<SanityCaseStudy | null> {
   const query = `
     *[_type == "caseStudy" && slug.current == $slug][0] {
       _id,
@@ -324,6 +330,12 @@ export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy 
         }
       },
       metrics,
+      titleHighlight,
+      categoryBadge,
+      metaLine,
+      challenge,
+      whatWeDid,
+      whyItWorked,
       publishedAt,
       seo {
         metaTitle,
@@ -335,6 +347,12 @@ export async function getCaseStudyBySlug(slug: string): Promise<SanityCaseStudy 
       }
     }
   `
+  // The public `client` only ever sees published documents — a draft-only edit is invisible
+  // to it regardless of query filters. Preview mode needs the draft-aware `previewClient`
+  // instead, same pattern as getBlogPostBySlug.
+  if (preview) {
+    return previewClient.fetch(query, { slug })
+  }
   return safeFetch(query, { slug })
 }
 
@@ -393,6 +411,12 @@ export function transformCaseStudy(study: SanityCaseStudy) {
     metrics: study.metrics || [],
     featuredImage: getSanityImageUrl(study.featuredImage, { width: 1200 }) || '/assets/images/case-study-placeholder.svg',
     date: study.publishedAt ? formatDate(study.publishedAt) : '',
+    titleHighlight: study.titleHighlight || '',
+    categoryBadge: study.categoryBadge || '',
+    metaLine: study.metaLine || '',
+    challenge: study.challenge || '',
+    whatWeDid: study.whatWeDid || [],
+    whyItWorked: study.whyItWorked || '',
   }
 }
 

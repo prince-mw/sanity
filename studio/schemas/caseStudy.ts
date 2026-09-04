@@ -6,6 +6,7 @@ export default defineType({
   type: 'document',
   groups: [
     {name: 'content', title: 'Content', default: true},
+    {name: 'onePager', title: 'One-Pager Format (New)'},
     {name: 'details', title: 'Details'},
     {name: 'publishing', title: 'Publishing'},
     {name: 'seo', title: 'SEO'},
@@ -138,7 +139,64 @@ export default defineType({
           ],
         },
       ],
+      description: 'Also used as the "THE PROOF" stat cards on the one-pager format below.',
       group: 'details',
+    }),
+    // One-pager format fields (2026 redesign) — additive, sits alongside the legacy
+    // `content` field above. A case study renders with the new one-pager template once
+    // `challenge` is filled in; until then it keeps using the long-form `content` field.
+    defineField({
+      name: 'titleHighlight',
+      title: 'Title Highlight',
+      type: 'string',
+      description: 'Exact substring of the Title above to render in blue (e.g. "Measurable Funnel Uplift"). Leave blank for no highlight.',
+      group: 'onePager',
+    }),
+    defineField({
+      name: 'categoryBadge',
+      title: 'Category Badge',
+      type: 'string',
+      description: 'Top-left label pill on the one-pager (e.g. "Campaign"). Separate from Industry, which drives the site-wide filter.',
+      options: {
+        list: [
+          {title: 'Measurement & Brand Lift', value: 'measurement-brand-lift'},
+          {title: 'Platform Adoption', value: 'platform-adoption'},
+          {title: 'Campaign', value: 'campaign'},
+          {title: 'Partnership', value: 'partnership'},
+          {title: 'Retail Media & Data', value: 'retail-media-data'},
+        ],
+      },
+      group: 'onePager',
+    }),
+    defineField({
+      name: 'metaLine',
+      title: 'Meta Line',
+      type: 'string',
+      description: 'Subhead under the title, e.g. "Bangkok, Thailand · Apr 1–15, 2026 · Brand Lift Study · with a global social platform"',
+      group: 'onePager',
+    }),
+    defineField({
+      name: 'challenge',
+      title: 'The Challenge',
+      type: 'text',
+      rows: 4,
+      group: 'onePager',
+    }),
+    defineField({
+      name: 'whatWeDid',
+      title: 'What We Did',
+      type: 'array',
+      of: [{type: 'string'}],
+      description: 'Bullet points',
+      group: 'onePager',
+    }),
+    defineField({
+      name: 'whyItWorked',
+      title: 'Why It Worked',
+      type: 'text',
+      rows: 3,
+      description: 'Callout box text',
+      group: 'onePager',
     }),
     defineField({
       name: 'seo',

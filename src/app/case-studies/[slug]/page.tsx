@@ -1,16 +1,19 @@
 import { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { draftMode } from "next/headers";
 import { getCaseStudyBySlug, getAllCaseStudies, transformCaseStudy, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { caseStudies as staticCaseStudies } from "@/data/case-studies";
 import CaseStudyDetailClient from "./CaseStudyDetailClient";
+import CaseStudyOnePagerClient from "./CaseStudyOnePagerClient";
 
 export const revalidate = 30;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
-  
+  const { isEnabled: isPreview } = await draftMode();
+
   try {
-    const caseStudy = await getCaseStudyBySlug(slug);
+    const caseStudy = await getCaseStudyBySlug(slug, isPreview);
     if (caseStudy) {
       const transformed = transformCaseStudy(caseStudy);
       const seo = caseStudy.seo;
@@ -77,13 +80,14 @@ function getRelatedCaseStudies(currentSlug: string, industry: string, caseStudie
 
 export default async function CaseStudyPage({ params }: PageProps) {
   const { slug } = await params;
-  
+  const { isEnabled: isPreview } = await draftMode();
+
   let caseStudy;
   let relatedCaseStudies = [];
 
   try {
-    const sanityCaseStudy = await getCaseStudyBySlug(slug);
-    
+    const sanityCaseStudy = await getCaseStudyBySlug(slug, isPreview);
+
     if (sanityCaseStudy) {
       caseStudy = transformCaseStudy(sanityCaseStudy);
       
@@ -111,6 +115,12 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   if (!caseStudy) {
     notFound();
+  }
+
+  // One-pager format kicks in once a case study has been migrated (has a `challenge` field);
+  // everything else keeps rendering through the legacy long-form article template.
+  if (caseStudy.challenge) {
+    return <CaseStudyOnePagerClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />;
   }
 
   return <CaseStudyDetailClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />;
