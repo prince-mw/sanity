@@ -303,6 +303,8 @@ export async function getAllCaseStudies(): Promise<SanityCaseStudy[]> {
       location,
       excerpt,
       publishedAt,
+      categoryBadge,
+      challenge,
       "metaDescription": seo.metaDescription
     }
   `

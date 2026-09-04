@@ -17,6 +17,35 @@ interface CaseStudy {
   featuredImage: string;
   date: string;
   featured?: boolean;
+  categoryBadge?: string;
+  challenge?: string;
+}
+
+const BADGE_LABELS: Record<string, string> = {
+  "measurement-brand-lift": "Measurement & Brand Lift",
+  "platform-adoption": "Platform Adoption",
+  campaign: "Campaign",
+  partnership: "Partnership",
+  "retail-media-data": "Retail Media & Data",
+};
+
+// Matches the case study detail page: most badges are MW blue, Retail Media & Data and
+// Partnership are orange/red.
+const WARM_BADGES = new Set(["retail-media-data", "partnership"]);
+
+function CategoryBadge({ caseStudy, className = "" }: { caseStudy: CaseStudy; className?: string }) {
+  const label = (caseStudy.categoryBadge && BADGE_LABELS[caseStudy.categoryBadge]) || caseStudy.industry;
+  const isWarm = caseStudy.categoryBadge ? WARM_BADGES.has(caseStudy.categoryBadge) : false;
+  if (!label) return null;
+  return (
+    <span
+      className={`inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wide uppercase ${
+        isWarm ? "bg-orange-500 text-white" : "bg-mw-blue-600 text-white"
+      } ${className}`}
+    >
+      {label}
+    </span>
+  );
 }
 
 interface CaseStudiesListClientProps {
@@ -215,12 +244,11 @@ export default function CaseStudiesListClient({
                       </span>
                       <h2 className="text-3xl lg:text-4xl font-bold mb-4">{featuredCase.title}</h2>
                       <p className="text-blue-100 text-lg mb-6 line-clamp-3">
-                        {featuredCase.excerpt || getExcerpt(featuredCase.content, 200)}
+                        {featuredCase.challenge || featuredCase.excerpt || getExcerpt(featuredCase.content, 200)}
                       </p>
-                      <div className="flex items-center gap-4 text-sm text-blue-200">
+                      <div className="flex items-center gap-3 text-sm text-blue-200">
+                        <CategoryBadge caseStudy={featuredCase} />
                         <span>{featuredCase.brand || 'Client'}</span>
-                        <span>•</span>
-                        <span>{featuredCase.industry}</span>
                         <span>•</span>
                         <span>{featuredCase.country}</span>
                       </div>
@@ -297,9 +325,7 @@ export default function CaseStudiesListClient({
                           />
                         )}
                         <div className="absolute top-4 left-4 flex gap-2">
-                          <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-medium text-mw-blue-600">
-                            {caseStudy.industry}
-                          </span>
+                          <CategoryBadge caseStudy={caseStudy} />
                         </div>
                       </div>
                       <div className="p-6 flex flex-col flex-grow">
@@ -307,7 +333,7 @@ export default function CaseStudiesListClient({
                           {caseStudy.title}
                         </h3>
                         <p className="text-mw-gray-600 mb-4 line-clamp-2 flex-grow">
-                          {caseStudy.excerpt || getExcerpt(caseStudy.content)}
+                          {caseStudy.challenge || caseStudy.excerpt || getExcerpt(caseStudy.content)}
                         </p>
                         <div className="flex items-center gap-3 text-sm text-mw-gray-500 mt-auto">
                           <span>{caseStudy.country}</span>
