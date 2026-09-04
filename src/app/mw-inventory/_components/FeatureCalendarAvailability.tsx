@@ -1,6 +1,5 @@
 import React from 'react';
 import { Filter } from 'lucide-react';
-import { CTAButton } from '@/components/CTAButton';
 
 const DATES = [
   { key: '2024-11-06', label: 'M', day: 'Nov 6' },
@@ -146,14 +145,11 @@ export const FeatureCalendarAvailability: React.FC = () => {
 
               </div>
 
-              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+              <div className="mt-4 pt-3 border-t border-gray-100 flex items-center text-xs text-gray-500">
                 <span className="flex items-center gap-1.5 text-emerald-700 font-medium">
                   <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                   Live Sync: Connected to DSP &amp; Direct Booking channels
                 </span>
-                <CTAButton href="/contact" className="font-semibold text-[#062068] hover:text-[#24387f] cursor-pointer">
-                  Talk to Our Team &rarr;
-                </CTAButton>
               </div>
 
             </div>

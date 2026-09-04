@@ -15,7 +15,7 @@ export const FeatureSupplyConfidence: React.FC = () => {
             Manage Your Supply With Confidence
           </h3>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed font-normal">
-            Keep your inventory organised in one place, with the information your teams need to manage a growing network without relying on fragmented spreadsheets or systems.
+            Keep your inventory organised in one place, giving your teams the information they need to manage a growing network without relying on fragmented spreadsheets or systems.
           </p>
         </div>
 
@@ -145,13 +145,12 @@ export const FeatureSupplyConfidence: React.FC = () => {
                     </div>
                   </div>
 
-                  <CTAButton
-                    href="/contact"
-                    className="self-center sm:self-auto bg-[#062068] hover:bg-[#001452] text-white text-xs font-semibold px-4 py-2 rounded-md shadow-sm transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
+                  <span
+                    className="self-center sm:self-auto bg-[#062068] text-white text-xs font-semibold px-4 py-2 rounded-md shadow-sm whitespace-nowrap cursor-default select-none"
                     id="view-schedule-btn"
                   >
                     View Schedule
-                  </CTAButton>
+                  </span>
                 </div>
               </div>
 

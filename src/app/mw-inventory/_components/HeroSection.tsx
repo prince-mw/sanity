@@ -1,6 +1,6 @@
 import React from 'react';
 import { CTAButton } from '@/components/CTAButton';
-import { ArtisticScreenMatrix } from './ArtisticScreenMatrix';
+import { HeroVisual } from './HeroVisual';
 
 interface HeroSectionProps {
   badge?: string;
@@ -54,7 +54,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           <div className="lg:col-span-6">
-            <ArtisticScreenMatrix />
+            <HeroVisual />
           </div>
 
         </div>
