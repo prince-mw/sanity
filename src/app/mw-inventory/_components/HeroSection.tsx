@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { CTAButton } from '@/components/CTAButton';
 import { HeroVisual } from './HeroVisual';
 
@@ -8,10 +9,42 @@ interface HeroSectionProps {
   subtitle?: string;
 }
 
+// MW Studio's brand geometry: three overlapping, fading squares — matches the icon
+// already used for MW Studio on the MW Science page. MW Inventory is part of MW Studio,
+// so this icon replaces the old plain 4-square mark next to the product name.
+const StudioGeoIcon: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <rect x="2" y="11" width="11" height="11" rx="1.5" opacity="0.45" />
+    <rect x="6.5" y="6.5" width="11" height="11" rx="1.5" opacity="0.7" />
+    <rect x="11" y="2" width="11" height="11" rx="1.5" />
+  </svg>
+);
+
+// Renders the subtitle with "MW Studio's streamlined inventory management" (if present)
+// bolded and linked to the MW Studio product page. "MW Studio's" is kept non-breaking
+// so the product name never splits across a line wrap.
+function renderSubtitle(subtitle: string) {
+  const marker = "MW Studio's streamlined inventory management";
+  const idx = subtitle.indexOf(marker);
+  if (idx === -1) return subtitle;
+  return (
+    <>
+      {subtitle.slice(0, idx)}
+      <Link
+        href="/mw-studio"
+        className="font-bold underline decoration-blue-200/60 hover:decoration-white transition-colors"
+      >
+        <span className="whitespace-nowrap">MW Studio&apos;s</span> streamlined inventory management
+      </Link>
+      {subtitle.slice(idx + marker.length)}
+    </>
+  );
+}
+
 export const HeroSection: React.FC<HeroSectionProps> = ({
   badge = 'MW Inventory',
   title = 'Turn Every Screen Into Revenue',
-  subtitle = 'Capture more revenue from your OOH inventory through streamlined management, real-time availability, and faster selling opportunities.',
+  subtitle = "Capture more revenue from your OOH inventory through MW Studio's streamlined inventory management, with real-time availability and faster selling opportunities.",
 }) => {
   return (
     <section className="relative overflow-hidden bg-[#062068] text-white pt-20 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12" id="hero-section">
@@ -25,12 +58,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="lg:col-span-6 space-y-6 sm:space-y-8 z-10">
             <h1 className="font-black tracking-tight leading-[1.15] text-white font-sans">
               <span className="flex items-center gap-3 sm:gap-4 text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl" id="hero-badge">
-                <span className="grid grid-cols-2 gap-1 w-9 h-9 sm:w-10 sm:h-10 shrink-0">
-                  <span className="bg-white rounded-[2px]" />
-                  <span className="bg-[#80f1b9] rounded-[2px]" />
-                  <span className="bg-white rounded-[2px]" />
-                  <span className="bg-white rounded-[2px]" />
-                </span>
+                <StudioGeoIcon className="w-6 h-6 sm:w-7 sm:h-7 text-[#80f1b9] shrink-0" />
                 {badge}
               </span>
               <span className="block text-2xl sm:text-3xl lg:text-4xl 2xl:text-5xl font-bold mt-3 sm:mt-4 lg:mt-5">
@@ -39,7 +67,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </h1>
 
             <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-xl font-normal">
-              {subtitle}
+              {renderSubtitle(subtitle)}
             </p>
 
             <div className="pt-6 text-center lg:text-left">
