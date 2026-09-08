@@ -11,6 +11,14 @@ export const BLOG_LANGUAGE_GROUPS: Record<string, Record<string, string>> = {
     en: 'https://www.movingwalls.com/blog/international-dooh-advertising-chinese-brands',
     'zh-CN': 'https://www.movingwalls.com/blog/international-dooh-advertising-chinese-brands-zh',
   },
+  'how-advertisers-can-make-dooh-more-measurable-china': {
+    en: 'https://www.movingwalls.com/blog/how-advertisers-can-make-dooh-more-measurable-china',
+    'zh-CN': 'https://www.movingwalls.com/blog/how-advertisers-can-make-dooh-more-measurable-china-zh',
+  },
+  'how-advertisers-can-make-dooh-more-measurable-china-zh': {
+    en: 'https://www.movingwalls.com/blog/how-advertisers-can-make-dooh-more-measurable-china',
+    'zh-CN': 'https://www.movingwalls.com/blog/how-advertisers-can-make-dooh-more-measurable-china-zh',
+  },
 }
 
 // The site's UI locale codes (see src/i18n/config.ts) don't always match the hreflang-style

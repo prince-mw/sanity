@@ -63,11 +63,23 @@ export default defineType({
       name: 'slug',
       title: 'Slug',
       type: 'slug',
+      description: 'A short path segment, e.g. "my-post-title" — never a full URL.',
       options: {
         source: 'title',
         maxLength: 96,
       },
-      validation: (Rule) => Rule.required(),
+      validation: (Rule) =>
+        Rule.required().custom((slugValue) => {
+          const current = (slugValue as { current?: string } | undefined)?.current
+          if (!current) return true
+          if (/^https?:\/\//i.test(current)) {
+            return 'Slug must be a short path segment, not a full URL (paste just "my-post-title", not "https://...")'
+          }
+          if (current.includes('/')) {
+            return 'Slug cannot contain "/" — use a single path segment'
+          }
+          return true
+        }),
       group: 'content',
     }),
     defineField({
