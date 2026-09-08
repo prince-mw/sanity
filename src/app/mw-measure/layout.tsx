@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
-  title: 'MW Measure - OOH Campaign Measurement & Analytics | Moving Walls',
-  description: 'Measure OOH campaign performance with MW Measure. Real-time analytics, attribution modeling, and comprehensive insights for outdoor advertising.',
+  title: "MW Measure - Don't Just Deliver OOH Campaigns. Prove It. | Moving Walls",
+  description: 'Convert campaign delivery data into actionable proof. MW Measure is the command center for Out-of-Home advertising, providing real-time reach, frequency, saturation analysis, and verified attribution analytics.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
     keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
     openGraph: {
       title: seo?.metaTitle || defaultMeta.title,
-      description: seo?.metaDescription || 'Measure OOH campaign performance with MW Measure.',
+      description: seo?.metaDescription || defaultMeta.description,
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
     alternates: {

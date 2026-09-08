@@ -20,11 +20,10 @@ const StudioGeoIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
-// Renders the subtitle with "MW Studio's streamlined inventory management" (if present)
-// bolded and linked to the MW Studio product page. "MW Studio's" is kept non-breaking
-// so the product name never splits across a line wrap.
+// Links only the words "MW Studio" (not the surrounding sentence) to the MW Studio
+// product page, wherever they appear in the subtitle.
 function renderSubtitle(subtitle: string) {
-  const marker = "MW Studio's streamlined inventory management";
+  const marker = 'MW Studio';
   const idx = subtitle.indexOf(marker);
   if (idx === -1) return subtitle;
   return (
@@ -32,9 +31,9 @@ function renderSubtitle(subtitle: string) {
       {subtitle.slice(0, idx)}
       <Link
         href="/mw-studio"
-        className="font-bold underline decoration-blue-200/60 hover:decoration-white transition-colors"
+        className="font-bold underline decoration-blue-200/60 hover:decoration-white transition-colors whitespace-nowrap"
       >
-        <span className="whitespace-nowrap">MW Studio&apos;s</span> streamlined inventory management
+        MW Studio
       </Link>
       {subtitle.slice(idx + marker.length)}
     </>
@@ -42,7 +41,7 @@ function renderSubtitle(subtitle: string) {
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({
-  badge = 'MW Inventory',
+  badge = 'MW Studio',
   title = 'Turn Every Screen Into Revenue',
   subtitle = "Capture more revenue from your OOH inventory through MW Studio's streamlined inventory management, with real-time availability and faster selling opportunities.",
 }) => {
@@ -58,7 +57,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="lg:col-span-6 space-y-6 sm:space-y-8 z-10">
             <h1 className="font-black tracking-tight leading-[1.15] text-white font-sans">
               <span className="flex items-center gap-3 sm:gap-4 text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl" id="hero-badge">
-                <StudioGeoIcon className="w-6 h-6 sm:w-7 sm:h-7 text-[#80f1b9] shrink-0" />
+                <StudioGeoIcon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
                 {badge}
               </span>
               <span className="block text-2xl sm:text-3xl lg:text-4xl 2xl:text-5xl font-bold mt-3 sm:mt-4 lg:mt-5">
