@@ -1,22 +1,10 @@
-import { getAllCaseStudies, SanityCaseStudy, getProductBySlug } from "@/sanity/lib/fetch";
-import MWInfluencePage from "./MWInfluenceClient";
-import { getPartnerIntegrationLogosList } from '@/data/default-integrations'
+import { getProductBySlug } from "@/sanity/lib/fetch";
+import MWInfluenceClient from "./MWInfluenceClient";
 
 export const revalidate = 30;
 
 export default async function MWInfluenceServerPage() {
-  let caseStudies: SanityCaseStudy[] = [];
-  try {
-    const data = await getAllCaseStudies();
-    caseStudies = data?.slice(0, 4) || [];
-  } catch (error) {
-    console.error("Error fetching case studies:", error);
-  }
+  const product = await getProductBySlug('mw-influence');
 
-  const [product, partnerLogos] = await Promise.all([
-    getProductBySlug('mw-influence'),
-    getPartnerIntegrationLogosList(),
-  ]);
-
-  return <MWInfluencePage caseStudies={caseStudies} product={product} partnerLogos={partnerLogos} />;
+  return <MWInfluenceClient product={product} />;
 }
