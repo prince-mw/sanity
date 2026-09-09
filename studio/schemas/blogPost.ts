@@ -131,6 +131,29 @@ export default defineType({
       description: 'Search engine optimization settings',
       group: 'seo',
     }),
+    defineField({
+      name: 'translations',
+      title: 'Translations',
+      type: 'array',
+      description: 'Link this post to its translated version(s) in other languages. Powers the language switcher and hreflang tags — only needs to be set on one side of a pair.',
+      of: [
+        {
+          type: 'reference',
+          to: [{type: 'blogPost'}],
+          options: {
+            filter: ({document}: {document: {_id?: string}}) => {
+              const rawId = document._id ?? ''
+              const id = rawId.startsWith('drafts.') ? rawId.slice(7) : rawId
+              return {
+                filter: '_id != $id && _id != $draftId',
+                params: {id, draftId: `drafts.${id}`},
+              }
+            },
+          },
+        },
+      ],
+      group: 'content',
+    }),
   ],
   preview: {
     select: {

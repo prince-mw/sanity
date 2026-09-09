@@ -1,4 +1,5 @@
-// One-off: uploads the new MW Inventory hero image to Sanity's asset library.
+// One-off: uploads the new MW Inventory hero image ("MW Inventory - Studio.png") to
+// Sanity's asset library.
 const fs = require('fs');
 const path = require('path');
 const { createClient } = require('@sanity/client');
@@ -20,9 +21,9 @@ const client = createClient({
 });
 
 async function run() {
-  const buffer = fs.readFileSync('C:\\Users\\admin\\Desktop\\mw-inventory-studio-hero-image.webp');
-  const asset = await client.assets.upload('image', buffer, { filename: 'mw-inventory-studio-hero-image.webp' });
-  console.log(`mw-inventory-studio-hero-image.webp -> ${asset.url}`);
+  const buffer = fs.readFileSync('C:\\Users\\admin\\Desktop\\MW Inventory - Studio.png');
+  const asset = await client.assets.upload('image', buffer, { filename: 'mw-inventory-studio-hero-v2.png' });
+  console.log(`mw-inventory-studio-hero-v2.png -> ${asset.url}`);
 }
 
 run().catch((err) => {

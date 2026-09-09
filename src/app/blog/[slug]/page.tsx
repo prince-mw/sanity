@@ -3,10 +3,28 @@ import { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { getBlogPostBySlug, getRelatedBlogPosts, transformBlogPost, getAllBlogPosts, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
-import { BLOG_LANGUAGE_GROUPS } from "@/lib/blogLanguageGroups";
+import { getBlogLanguageGroups, BlogLanguageGroups } from "@/sanity/lib/queries";
 import BlogDetailClient from "@/components/BlogDetailClient";
 
 export const revalidate = 30;
+
+// The site's UI locale codes (e.g. "zh") don't always match the hreflang codes search
+// engines expect (e.g. "zh-CN") — this converts a blog post's translation URLs, keyed by
+// UI locale, into the hreflang-keyed shape `alternates.languages` expects.
+const UI_LOCALE_TO_HREFLANG: Record<string, string> = {
+  en: 'en',
+  zh: 'zh-CN',
+}
+
+function toHreflangLanguages(urlsByLocale: Record<string, string> | undefined): Record<string, string> | undefined {
+  if (!urlsByLocale) return undefined
+  const result: Record<string, string> = {}
+  for (const [locale, url] of Object.entries(urlsByLocale)) {
+    const hreflang = UI_LOCALE_TO_HREFLANG[locale] ?? locale
+    result[hreflang] = url
+  }
+  return result
+}
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -27,9 +45,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const { isEnabled: isPreview } = await draftMode();
 
+  // Fetched independently of the post below: a failure here should only drop the
+  // hreflang alternates, not the post's own title/description/OG metadata.
+  const blogLanguageGroups: BlogLanguageGroups = await getBlogLanguageGroups().catch(() => ({}));
+
   try {
     const post = await getBlogPostBySlug(slug, isPreview);
-    
+
     if (post) {
       const seo = post.seo;
       const title = seo?.metaTitle || post.title;
@@ -56,7 +78,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         },
         alternates: {
           canonical: `https://www.movingwalls.com/blog/${slug}`,
-          languages: BLOG_LANGUAGE_GROUPS[slug] ?? undefined,
+          languages: toHreflangLanguages(blogLanguageGroups[slug]),
         },
         robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       };

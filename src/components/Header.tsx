@@ -10,7 +10,8 @@ import GlobalSearch from "./GlobalSearch";
 import { CTAButton } from "./CTAButton";
 import { useZohoPopup } from "./ZohoPopupProvider";
 import { LOCATION_LANGUAGE_GROUPS, getLocationGroupKeyForLocale, getLocationSlugFromPathname } from "@/lib/locationLanguageGroups";
-import { BLOG_LANGUAGE_GROUPS, getBlogGroupKeyForLocale, getBlogSlugFromPathname } from "@/lib/blogLanguageGroups";
+import { getBlogSlugFromPathname } from "@/lib/blogLanguageGroups";
+import type { BlogLanguageGroups } from "@/sanity/lib/queries";
 
 // A field translated per-locale in Sanity (see studio's `localeString` schema) — English is the
 // only guaranteed value, other locales are filled in progressively by content editors.
@@ -240,9 +241,10 @@ const navLinkKeys = [
 
 interface HeaderProps {
   sanityMenuData?: SanityMegaMenuData | null;
+  blogLanguageGroups?: BlogLanguageGroups;
 }
 
-export default function Header({ sanityMenuData }: HeaderProps) {
+export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(null);
@@ -264,11 +266,10 @@ export default function Header({ sanityMenuData }: HeaderProps) {
     const locationSlug = getLocationSlugFromPathname(pathname);
     const locationGroupKey = getLocationGroupKeyForLocale(newLocale);
     const blogSlug = getBlogSlugFromPathname(pathname);
-    const blogGroupKey = getBlogGroupKeyForLocale(newLocale);
 
     const targetUrl =
       (locationSlug && locationGroupKey ? LOCATION_LANGUAGE_GROUPS[locationSlug]?.[locationGroupKey] : undefined) ??
-      (blogSlug && blogGroupKey ? BLOG_LANGUAGE_GROUPS[blogSlug]?.[blogGroupKey] : undefined);
+      (blogSlug ? blogLanguageGroups?.[blogSlug]?.[newLocale] : undefined);
 
     setLocale(newLocale);
 

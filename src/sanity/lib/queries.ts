@@ -613,6 +613,46 @@ export async function getMegaMenu() {
   return client.fetch(megaMenuQuery)
 }
 
+// Blog language groups — replaces a hand-maintained map that had to be edited in code
+// every time a translated post pair was published. Editors now link posts to their
+// translation(s) via the `translations` reference field in Studio, and this derives the
+// same slug -> { locale: url } shape from that field at request time. Built bidirectionally
+// so editors only need to set the reference on one side of a pair.
+const blogLanguageGroupsQuery = `
+  *[_type == "blogPost" && defined(translations) && count(translations) > 0] {
+    "slug": slug.current,
+    language,
+    "translations": translations[]->{ "slug": slug.current, language }
+  }
+`
+
+export type BlogLanguageGroups = Record<string, Record<string, string>>
+
+function blogPostUrl(slug: string): string {
+  return `https://www.movingwalls.com/blog/${slug}`
+}
+
+export async function getBlogLanguageGroups(): Promise<BlogLanguageGroups> {
+  const rows: {slug?: string; language?: string; translations?: {slug?: string; language?: string}[]}[] =
+    await client.fetch(blogLanguageGroupsQuery)
+
+  const groups: BlogLanguageGroups = {}
+
+  const addPair = (slugA?: string, langA?: string, slugB?: string, langB?: string) => {
+    if (!slugA || !langA || !slugB || !langB) return
+    groups[slugA] = {...groups[slugA], [langA]: blogPostUrl(slugA), [langB]: blogPostUrl(slugB)}
+  }
+
+  for (const row of rows) {
+    for (const sibling of row.translations ?? []) {
+      addPair(row.slug, row.language, sibling.slug, sibling.language)
+      addPair(sibling.slug, sibling.language, row.slug, row.language)
+    }
+  }
+
+  return groups
+}
+
 // Testimonials Filter
 const testimonialPublishedFilter = `isPublished == true && (status == "published" || !defined(status))`
 

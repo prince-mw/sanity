@@ -20,6 +20,23 @@ const StudioGeoIcon: React.FC<{ className?: string }> = ({ className }) => (
   </svg>
 );
 
+// Highlights the closing word "Revenue" in the same cyan-to-blue gradient used for
+// "Prove It." on the MW Measure hero — falls back to plain text if the CMS copy changes.
+function renderTitle(title: string) {
+  const marker = 'Revenue';
+  const idx = title.lastIndexOf(marker);
+  if (idx === -1) return title;
+  return (
+    <>
+      {title.slice(0, idx)}
+      <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-200 bg-clip-text text-transparent">
+        {marker}
+      </span>
+      {title.slice(idx + marker.length)}
+    </>
+  );
+}
+
 // Links only the words "MW Studio" (not the surrounding sentence) to the MW Studio
 // product page, wherever they appear in the subtitle.
 function renderSubtitle(subtitle: string) {
@@ -55,14 +72,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
           <div className="lg:col-span-6 space-y-6 sm:space-y-8 z-10">
-            <h1 className="font-black tracking-tight leading-[1.15] text-white font-sans">
-              <span className="flex items-center gap-3 sm:gap-4 text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl" id="hero-badge">
-                <StudioGeoIcon className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-300/30 text-blue-100 text-xs font-semibold tracking-wide shadow-sm" id="hero-badge">
+              <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
+                <StudioGeoIcon className="w-3 h-3 text-white" />
+              </div>
+              <span className="font-sans uppercase tracking-wider text-[11px]">
                 {badge}
               </span>
-              <span className="block text-2xl sm:text-3xl lg:text-4xl 2xl:text-5xl font-bold mt-3 sm:mt-4 lg:mt-5">
-                {title}
-              </span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans">
+              {renderTitle(title)}
             </h1>
 
             <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-xl font-normal">

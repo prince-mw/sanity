@@ -1,7 +1,6 @@
 import React from 'react';
 import { LayoutGrid, Activity, Sparkles, Upload } from 'lucide-react';
 import { FeatureScreenshot } from './FeatureScreenshot';
-import { MeasureGeometry } from './brand/MeasureGeometry';
 
 const CAMPAIGN_INSIGHTS_IMG = 'https://cdn.sanity.io/images/u10im6di/production/386cb5e361b78bb8979f58012590c036d83acbdc-512x295.png?w=900&q=85&auto=format';
 const BRAND_LIFT_IMG = 'https://cdn.sanity.io/images/u10im6di/production/279738f88c4b015f90dba4479c5879960d6219cb-512x295.png?w=900&q=85&auto=format';
@@ -14,12 +13,6 @@ export const CampaignInsightsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center mb-10 sm:mb-14">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 border border-blue-200 text-blue-800 text-xs font-semibold mb-3 shadow-xs">
-            <div className="w-4 h-4 rounded-full bg-[#0b162c] flex items-center justify-center">
-              <MeasureGeometry size="xs" />
-            </div>
-            <span>Four Layers of Campaign Proof</span>
-          </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#14235d]">
             Deep Campaign Insights at Scale
           </h2>
