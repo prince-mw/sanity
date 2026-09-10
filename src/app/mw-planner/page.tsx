@@ -1,25 +1,23 @@
 import { Metadata } from 'next'
-import MWPlannerPageClient from '@/components/MWPlannerPageClient'
-import { getPageSeo, getSanityImageUrl, getAllBlogPosts, transformBlogPost, getProductBySlug, getPartnerIntegrationLogos } from '@/sanity/lib/fetch'
-import { getPartnerIntegrationLogosList } from '@/data/default-integrations'
+import { getPageSeo, getSanityImageUrl, getProductBySlug } from '@/sanity/lib/fetch'
+import MWPlannerClient from './MWPlannerClient'
 
 const defaultMeta = {
-  title: 'MW Planner | Moving Walls',
-  description: 'Plan smarter OOH campaigns with MW Planner - AI-powered audience targeting, location planning, and budget optimization for outdoor advertising.',
+  title: 'MW Planner - Build OOH Plans You Can Defend | Moving Walls',
+  description: 'Transform campaign briefs into data-backed OOH plans with live inventory, audience insights, and forecasting—all in one platform.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {
   const pageSeo = await getPageSeo('mw-planner');
   const seo = pageSeo?.seo;
-  
+
   return {
     title: seo?.metaTitle || defaultMeta.title,
     description: seo?.metaDescription || defaultMeta.description,
     keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
     openGraph: {
       title: seo?.metaTitle || defaultMeta.title,
-      description: seo?.metaDescription || 'AI-powered planning tool for out-of-home advertising campaigns.',
-      type: 'website',
+      description: seo?.metaDescription || defaultMeta.description,
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
     alternates: {
@@ -29,27 +27,10 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 30
+export const revalidate = 30;
 
 export default async function MWPlannerPage() {
-  const [blogPosts, product, partnerLogos] = await Promise.all([
-    getAllBlogPosts(),
-    getProductBySlug('mw-planner'),
-    getPartnerIntegrationLogosList(),
-  ]);
+  const product = await getProductBySlug('mw-planner');
 
-  // Transform latest 3 blog posts for the resources section
-  const latestBlogPosts = blogPosts.slice(0, 3).map(post => {
-    const transformed = transformBlogPost(post);
-    return {
-      title: transformed.title,
-      description: transformed.excerpt,
-      category: transformed.category,
-      readTime: transformed.readTime,
-      image: transformed.featuredImage,
-      slug: transformed.slug,
-    };
-  });
-
-  return <MWPlannerPageClient latestBlogPosts={latestBlogPosts.length ? latestBlogPosts : undefined} product={product} partnerLogos={partnerLogos} />
+  return <MWPlannerClient product={product} />;
 }

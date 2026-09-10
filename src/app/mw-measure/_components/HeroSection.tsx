@@ -1,7 +1,9 @@
 import React from 'react';
+import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
-import { MapCard } from './MapCard';
 import { MeasureGeometry } from './brand/MeasureGeometry';
+
+const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/9ee7f9c9809a16e13a94550e246ba7ec345adf0c-366x340.png?w=900&q=85&auto=format';
 
 interface HeroSectionProps {
   badge?: string;
@@ -86,8 +88,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
           </div>
 
-          <div className="md:col-span-6 w-full">
-            <MapCard />
+          <div className="md:col-span-6 w-full flex items-center justify-center">
+            <div className="relative w-full max-w-[420px] aspect-square">
+              <Image
+                src={HERO_IMAGE_URL}
+                alt=""
+                fill
+                className="object-contain"
+                sizes="(max-width: 640px) 90vw, 420px"
+                priority
+              />
+            </div>
           </div>
 
         </div>
