@@ -48,7 +48,7 @@ function renderSubtitle(subtitle: string) {
       {subtitle.slice(0, idx)}
       <Link
         href="/mw-studio"
-        className="font-bold underline decoration-blue-200/60 hover:decoration-white transition-colors whitespace-nowrap"
+        className="hover:text-white transition-colors whitespace-nowrap"
       >
         MW Studio
       </Link>
@@ -60,7 +60,7 @@ function renderSubtitle(subtitle: string) {
 export const HeroSection: React.FC<HeroSectionProps> = ({
   badge = 'MW Studio',
   title = 'Turn Every Screen Into Revenue',
-  subtitle = "Capture more revenue from your OOH inventory through MW Studio's streamlined inventory management, with real-time availability and faster selling opportunities.",
+  subtitle = "Capture more revenue from your OOH & DOOH inventories through MW Studio's streamlined inventory management, with real-time availability and faster selling opportunities.",
 }) => {
   return (
     <section className="relative overflow-hidden bg-[#062068] text-white pt-20 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12" id="hero-section">
@@ -95,7 +95,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-see-action-btn"
               >
-                <span>See MW Inventory In Action</span>
+                <span>See MW Studio In Action</span>
               </CTAButton>
             </div>
           </div>

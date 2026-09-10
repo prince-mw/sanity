@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
 import { MeasureGeometry } from './brand/MeasureGeometry';
 
-const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/9ee7f9c9809a16e13a94550e246ba7ec345adf0c-366x340.png?w=900&q=85&auto=format';
+const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/43c8ac7b042ac78e12326b6fdec3fed5126061a4-1200x1200.png?w=1200&q=90&auto=format';
 
 interface HeroSectionProps {
   badge?: string;
@@ -89,13 +89,16 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           </div>
 
           <div className="md:col-span-6 w-full flex items-center justify-center">
-            <div className="relative w-full max-w-[420px] aspect-square">
+            {/* Height is capped independently of width so a bigger visual doesn't grow the
+                section — object-cover crops the circle evenly top/bottom rather than
+                stretching the box (and the row height it drives) taller. */}
+            <div className="relative w-full max-w-[560px] h-[300px] sm:h-[360px] md:h-[400px] lg:h-[440px]">
               <Image
                 src={HERO_IMAGE_URL}
                 alt=""
                 fill
-                className="object-contain"
-                sizes="(max-width: 640px) 90vw, 420px"
+                className="object-cover"
+                sizes="(max-width: 640px) 90vw, 560px"
                 priority
               />
             </div>

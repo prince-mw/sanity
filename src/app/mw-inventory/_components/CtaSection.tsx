@@ -1,9 +1,15 @@
 import React from 'react';
 import { CTAButton } from '@/components/CTAButton';
 
-export const CtaSection: React.FC = () => {
+interface CtaSectionProps {
+  // Tighter vertical padding for contexts where this section is embedded inside another
+  // panel (e.g. the MW Studio IMS tab) rather than used as a full standalone page section.
+  compact?: boolean;
+}
+
+export const CtaSection: React.FC<CtaSectionProps> = ({ compact = false }) => {
   return (
-    <section className="relative overflow-hidden bg-[#062068] text-white py-16 sm:py-20 lg:py-24 text-center" id="cta-section">
+    <section className={`relative overflow-hidden bg-[#062068] text-white ${compact ? 'py-10 sm:py-12' : 'py-16 sm:py-20 lg:py-24'} text-center`} id="cta-section">
       <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
 
@@ -15,7 +21,7 @@ export const CtaSection: React.FC = () => {
           </h2>
 
           <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-2xl mx-auto font-normal">
-            Your network is already full of opportunities. MW Inventory gives you the structure, control, and visibility to put more of them to work.
+            Your network is already full of opportunities. MW Studio's inventory management system gives you the structure, control, and visibility to put more of them to work.
           </p>
 
           <div className="pt-4">

@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
-  title: 'MW Inventory - OOH Inventory Management | Moving Walls',
-  description: 'Capture more revenue from your OOH inventory through streamlined management, real-time availability, and faster selling opportunities.',
+  title: 'MW Studio: OOH & DOOH Inventory Management System',
+  description: "Turn OOH screens into revenue. Replace fragmented spreadsheets with our inventory management system to organize supply, track real-time availability, and sell DOOH faster.",
 };
 
 export async function generateMetadata(): Promise<Metadata> {

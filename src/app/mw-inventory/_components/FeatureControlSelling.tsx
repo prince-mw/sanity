@@ -18,7 +18,9 @@ export const FeatureControlSelling: React.FC = () => {
         <div className="lg:col-span-7">
           <FeatureScreenshot
             src="https://cdn.sanity.io/images/u10im6di/production/6ca02436d6ec92e76b9613f494549bcc1d2bc752-960x540.png"
-            alt="MW Inventory — Media Owner Selling Terms screen showing selling terms configuration and booking constraints"
+            alt="MW Studio — Media Owner Selling Terms screen showing selling terms configuration and booking constraints"
+            width={960}
+            height={540}
           />
         </div>
 

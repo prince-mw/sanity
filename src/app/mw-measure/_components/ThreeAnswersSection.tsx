@@ -36,7 +36,7 @@ export const ThreeAnswersSection: React.FC = () => {
             </span>
 
             <div>
-              <div className="w-12 h-12 rounded-xl bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 mb-6 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-amber-400/20 border border-amber-400/40 flex items-center justify-center text-amber-300 mb-6 shadow-sm">
                 <Map className="w-6 h-6 stroke-[2]" />
               </div>
 
@@ -82,7 +82,7 @@ export const ThreeAnswersSection: React.FC = () => {
             </span>
 
             <div>
-              <div className="w-12 h-12 rounded-xl bg-teal-400/20 border border-teal-400/40 flex items-center justify-center text-teal-300 mb-6 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-teal-400/20 border border-teal-400/40 flex items-center justify-center text-teal-300 mb-6 shadow-sm">
                 <Users className="w-6 h-6 stroke-[2]" />
               </div>
 
@@ -125,7 +125,7 @@ export const ThreeAnswersSection: React.FC = () => {
             </span>
 
             <div>
-              <div className="w-12 h-12 rounded-xl bg-cyan-400/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 mb-6 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-cyan-400/20 border border-cyan-400/40 flex items-center justify-center text-cyan-300 mb-6 shadow-sm">
                 <TrendingUp className="w-6 h-6 stroke-[2]" />
               </div>
 

@@ -21,7 +21,7 @@ export const ComparisonSection: React.FC = () => {
 
           {/* Card 1: The Old Way */}
           <div className="w-full md:w-80 lg:w-96 p-7 sm:p-8 rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md transition-all text-center flex flex-col items-center">
-            <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200/80 flex items-center justify-center mb-5 text-amber-500 shadow-sm">
+            <div className="w-14 h-14 rounded-full bg-amber-50 border border-amber-200/80 flex items-center justify-center mb-5 text-amber-500 shadow-sm">
               <FileText className="w-7 h-7 stroke-[1.75]" />
             </div>
 

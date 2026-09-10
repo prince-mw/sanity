@@ -250,7 +250,7 @@ const COMPASS_FUNCTIONS = [
     Icon: GearIcon,
     label: 'Powers the MW Ecosystem',
     body: 'Making every MW product sharper for confident OOH decisions.',
-    products: ['MW Inventory', 'MW Studio', 'MW Planner', 'MW Influence', 'MW Activate', 'MW Measure', 'MW Market'],
+    products: ['MW Studio', 'MW Planner', 'MW Influence', 'MW Activate', 'MW Measure', 'MW Market'],
   },
   {
     id: 'partner',

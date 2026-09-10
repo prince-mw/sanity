@@ -8,6 +8,16 @@ import { CTAButton } from '@/components/CTAButton'
 import { getSanityImageUrl } from '@/sanity/lib/fetch'
 import type { SanityProduct } from '@/sanity/lib/fetch'
 
+// The Inventory Management System tab mirrors the real /mw-inventory page's body content
+// verbatim, so both stay in sync automatically — same copy, screenshots, and design.
+import { ComparisonSection as InventoryComparisonSection } from '../mw-inventory/_components/ComparisonSection'
+import { FeatureSupplyConfidence as InventoryFeatureSupplyConfidence } from '../mw-inventory/_components/FeatureSupplyConfidence'
+import { FeatureBundleOpportunities as InventoryFeatureBundleOpportunities } from '../mw-inventory/_components/FeatureBundleOpportunities'
+import { FeatureControlSelling as InventoryFeatureControlSelling } from '../mw-inventory/_components/FeatureControlSelling'
+import { FeatureCalendarAvailability as InventoryFeatureCalendarAvailability } from '../mw-inventory/_components/FeatureCalendarAvailability'
+import { MwScienceStrip as InventoryMwScienceStrip } from '../mw-inventory/_components/MwScienceStrip'
+import { CtaSection as InventoryCtaSection } from '../mw-inventory/_components/CtaSection'
+
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const ArrowRightIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -146,6 +156,15 @@ const MoonIcon = ({ className }: { className?: string }) => (
     <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
   </svg>
 )
+// MW Studio's brand geometry: three overlapping, fading squares — matches the icon used
+// for MW Studio on the MW Science page and the MW Inventory hero badge.
+const StudioGeoIcon = ({ className }: { className?: string }) => (
+  <svg className={className} viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <rect x="2" y="11" width="11" height="11" rx="1.5" opacity="0.45" />
+    <rect x="6.5" y="6.5" width="11" height="11" rx="1.5" opacity="0.7" />
+    <rect x="11" y="2" width="11" height="11" rx="1.5" />
+  </svg>
+)
 const SettingsIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
@@ -184,61 +203,27 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
 
   // ── Hero ───────────────────────────────────────────────────────────────────
   const heroTitle = product?.heroTitle || 'The Complete OOH Operating System for Media Owners'
+  // Highlights the closing phrase "Media Owners" in the same cyan-to-blue gradient used on
+  // the MW Inventory hero — falls back to plain text if the CMS copy changes.
+  const renderHeroTitle = () => {
+    const marker = 'Media Owners'
+    const idx = heroTitle.lastIndexOf(marker)
+    if (idx === -1) return heroTitle
+    return (
+      <>
+        {heroTitle.slice(0, idx)}
+        <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-200 bg-clip-text text-transparent">
+          {marker}
+        </span>
+        {heroTitle.slice(idx + marker.length)}
+      </>
+    )
+  }
   const heroSubtitle = product?.heroSubtitle || 'Organise your inventory. Deliver content across every screen. Launch a self-serve OOH storefront for your advertisers — all in one platform.'
-  const heroDescription = product?.description || 'Moving Walls Studio gives you the tools to structure, deliver, and sell at scale.'
+  const heroDescription = product?.description || 'MW Studio gives you the tools to structure, deliver, and sell at scale.'
   const heroStats = product?.heroStats || []
   const heroImageUrl = product?.heroImage ? getSanityImageUrl(product.heroImage, { width: 800 }) : null
-  const gradientMap: Record<string, string> = {
-    'blue-indigo': 'from-blue-900 via-blue-800 to-indigo-900',
-    'teal-blue': 'from-teal-900 via-teal-800 to-blue-900',
-    'purple-pink': 'from-purple-900 via-purple-800 to-pink-900',
-    'indigo-purple': 'from-indigo-900 via-indigo-800 to-purple-900',
-  }
-  const heroGradient = gradientMap[product?.heroGradient || ''] || 'from-blue-900 via-blue-800 to-indigo-900'
   const heroStatColors = ['text-yellow-300', 'text-green-300', 'text-purple-300', 'text-pink-300']
-
-  // ── IMS data ───────────────────────────────────────────────────────────────
-  const imsSection = product?.detailPageSections?.find(s => s.sectionKey === 'ims')
-  const imsTitle = imsSection?.sectionTitle || 'Stop Managing Inventory in Fragments. Start Structuring It for Scale.'
-  const imsSubtitle = imsSection?.sectionSubtitle || "Managing OOH inventory across formats and markets often leads to fragmented data, limited visibility, and unstructured details. MW Studio's Inventory Management System brings structure, consistency, and control—so your inventory is always ready for planning and sales."
-  const imsBullets: string[] = (product?.benefits && product.benefits.length > 0)
-    ? product.benefits
-    : [
-        'Centralised system for all inventory types with complete asset data',
-        'Standardised onboarding with guided, structured workflows',
-        'Real-time visibility into availability and booking status',
-        'Organised inventory with networks and tagging for efficient planning',
-      ]
-  const defaultImsRows: ComparisonRow[] = [
-    { before: 'Disconnected inventory systems', after: 'Unified asset repository', impact: '100% Data Integrity' },
-    { before: 'No real-time sync', after: 'Live booking status visibility', impact: 'Zero Overselling' },
-    { before: 'Non-standardized inventory data', after: 'Structured, validated inventory', impact: 'Instant Channel Activation' },
-    { before: 'Fragmented inventory discovery', after: 'Tag-based segmentation', impact: '3× Faster Sales Response' },
-  ]
-  const imsRows: ComparisonRow[] = product?.painPoints?.some(p => p.beforeState)
-    ? product.painPoints.map(p => ({ before: p.beforeState || p.title, after: p.afterState || p.description, impact: p.title }))
-    : defaultImsRows
-  const defaultImsFeatures: FeatureItem[] = [
-    { icon: DatabaseIcon, title: 'Simplified Inventory Onboarding', description: 'Capture complete asset details with a guided workflow that ensures accuracy and consistency.' },
-    { icon: UploadIcon, title: 'Bulk Inventory Upload', description: 'Onboard large volumes of inventory quickly using validated Excel/CSV templates.' },
-    { icon: NetworkIcon, title: 'Network-Based Organisation', description: 'Group inventory by region, format, or business logic to simplify planning and selling.' },
-    { icon: ClockIcon, title: 'Real-Time Availability Tracking', description: 'Monitor booking status across hourly, daily, and monthly views for better utilisation.' },
-    { icon: CurrencyDollarIcon, title: 'Pricing & Selling Controls', description: 'Define flexible pricing models and enforce rules to optimise revenue per asset.' },
-    { icon: TagIcon, title: 'Tag-Based Discovery', description: 'Quickly search, filter, and match inventory to campaign requirements using custom tags.' },
-  ]
-  const imsFeatures: FeatureItem[] = product?.features?.length
-    ? product.features.map((f, i) => ({
-        icon: iconMap[f.icon || ''] || defaultImsFeatures[i]?.icon || DatabaseIcon,
-        title: f.title,
-        description: f.description || '',
-      }))
-    : defaultImsFeatures
-  const imsBenefits = [
-    'Works across all screen types and formats',
-    'Supports CMS, sales, and inventory workflows in one system',
-    'Enables both direct and self-serve sales models',
-    'Scales operations without increasing overhead',
-  ]
 
   // ── CMS data ────────────────────────────────────────────────────────────────
   const cmsSection = product?.detailPageSections?.find(s => s.sectionKey === 'cms')
@@ -336,9 +321,6 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
     'Track delivery and access proof-of-play reports',
   ]
 
-  // ── Section 4 ──────────────────────────────────────────────────────────────
-  const section4Title = product?.howItWorksTitle || "You're Operational in Days — Not Months"
-
   const tabs: { id: TabId; label: string }[] = [
     { id: 'ims', label: 'Inventory Management System' },
     { id: 'cms', label: 'Content Management System' },
@@ -348,22 +330,41 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ─── HERO ────────────────────────────────────────────────────────────── */}
-      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-16 sm:py-20 md:py-24 lg:py-28 overflow-hidden`}>
-        <div className="absolute inset-0 bg-black/10" />
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      {/* ─── HERO — same badge/heading/CTA format as the MW Inventory hero ────── */}
+      <section className="relative overflow-hidden bg-[#062068] text-white pt-20 sm:pt-16 lg:pt-20 pb-16 sm:pb-20 md:pb-24" id="hero-section">
+        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 leading-tight">{heroTitle}</h1>
-            <p className="text-lg sm:text-xl text-blue-200 mb-4 leading-relaxed">{heroSubtitle}</p>
+
+            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-300/30 text-blue-100 text-xs font-semibold tracking-wide shadow-sm mb-6" id="hero-badge">
+              <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
+                <StudioGeoIcon className="w-3 h-3 text-white" />
+              </div>
+              <span className="font-sans uppercase tracking-wider text-[11px]">MW Studio</span>
+            </div>
+
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans mb-5">
+              {renderHeroTitle()}
+            </h1>
+
+            <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-2xl mx-auto font-normal mb-4">
+              {heroSubtitle}
+            </p>
+
             {heroDescription && heroDescription !== heroSubtitle && (
-              <p className="text-base text-white/70 mb-8 leading-relaxed">{heroDescription}</p>
+              <p className="text-sm sm:text-base text-blue-100/60 leading-relaxed max-w-2xl mx-auto mb-8">{heroDescription}</p>
             )}
-            <div className="flex flex-col sm:flex-row justify-center gap-3 sm:gap-4">
+
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
               <CTAButton
                 href={product?.ctaLink || '/contact'}
-                className="bg-white text-blue-900 px-6 py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2"
+                className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
+                id="hero-lets-connect-btn"
               >
-                Get Started <ArrowRightIcon className="w-4 h-4" />
+                <span>Let&apos;s Connect</span>
               </CTAButton>
               {product?.secondaryCta?.text && (
                 <CTAButton
@@ -406,135 +407,44 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
           {/* ── TAB CONTENT ───────────────────────────────────────────────────── */}
           <AnimatePresence mode="wait">
             {activeTab === 'ims' && (
-              <motion.div key="ims" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }}>
+              <motion.div key="ims" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }} className="space-y-4 sm:space-y-6">
+                {/* Mirrors the real /mw-inventory page's body content verbatim — same
+                    comparison section, feature screenshots, MW Science strip, and closing
+                    CTA — contained in rounded cards to match this tab's panel presentation.
+                    No extra wrapper padding/margin is added beyond each section's own —
+                    they already carry the same spacing used on the live page. */}
 
-                {/* 1A: Intro + Bullets + Comparison */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 mb-8">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">{imsTitle}</h3>
-                  <p className="text-gray-600 leading-relaxed mb-6 max-w-3xl">{imsSubtitle}</p>
-                  <ul className="grid sm:grid-cols-2 gap-3 mb-8">
-                    {imsBullets.map((b, i) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <CheckCircleIcon className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                        <span className="text-gray-700 text-sm sm:text-base">{b}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm mb-6">
-                    <div className="grid grid-cols-3">
-                      <div className="bg-gray-100 px-4 py-3 text-center font-bold text-gray-500 text-xs sm:text-sm uppercase tracking-wide border-r border-gray-200">Before</div>
-                      <div className="bg-blue-600 px-4 py-3 text-center font-bold text-white text-xs sm:text-sm uppercase tracking-wide border-r border-blue-500">After</div>
-                      <div className="bg-blue-900 px-4 py-3 text-center font-bold text-white text-xs sm:text-sm uppercase tracking-wide">Impact</div>
+                <div className="rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
+                  <InventoryComparisonSection compact />
+                </div>
+
+                <section className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm" id="ims-tab-features-section">
+                  <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+                    <div className="text-center max-w-3xl mx-auto pt-6 sm:pt-8 pb-2">
+                      <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#062068] font-sans">
+                        Unlock More Value From What You Own.
+                      </h2>
                     </div>
-                    {imsRows.map((row, i) => (
-                      <div key={i} className={`grid grid-cols-3 ${i % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}>
-                        <div className="px-4 py-4 flex items-start gap-2 border-r border-gray-200">
-                          <XCircleIcon className="w-4 h-4 text-red-400 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-600 text-xs sm:text-sm leading-relaxed">{row.before}</span>
-                        </div>
-                        <div className="px-4 py-4 flex items-start gap-2 border-r border-gray-200">
-                          <CheckCircleIcon className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-gray-800 text-xs sm:text-sm font-medium leading-relaxed">{row.after}</span>
-                        </div>
-                        <div className="px-4 py-4 flex items-center justify-center">
-                          <span className="text-blue-900 text-xs sm:text-sm font-bold text-center">{row.impact}</span>
-                        </div>
-                      </div>
-                    ))}
+
+                    <InventoryFeatureSupplyConfidence />
+                    <InventoryFeatureBundleOpportunities />
+                    <InventoryFeatureControlSelling />
+                    <InventoryFeatureCalendarAvailability />
                   </div>
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg px-5 py-3 text-sm text-blue-800 font-medium mb-6">
-                    Average operational efficiency improvement: <strong>140% within 60 days</strong>
-                  </div>
-                  <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition-colors">
-                    See How It Works <ArrowRightIcon className="w-4 h-4" />
-                  </CTAButton>
-                </div>
+                </section>
 
-                {/* 1B: Features grid */}
-                <div className="bg-gray-50 rounded-md border border-gray-200 p-8 sm:p-10 mb-8">
-                  {/* Section heading */}
-                  <div className="text-center mb-10">
-                    <span className="inline-block bg-blue-50 text-blue-700 text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-3">
-                      Platform Capabilities
-                    </span>
-                    <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
-                      Everything You Need to Manage and Monetise Inventory
-                    </h3>
-                    <p className="text-gray-500 text-base sm:text-lg max-w-2xl mx-auto">
-                      Powerful tools designed to help you control operations and unlock revenue at scale.
-                    </p>
-                  </div>
-
-                  {/* 6-card grid — exactly 2 rows × 3 cols on desktop */}
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-                    {(() => {
-                      const tagMap = [
-                        { label: 'Onboarding',    color: 'text-blue-600   bg-blue-50'   },
-                        { label: 'Data Import',   color: 'text-violet-600 bg-violet-50' },
-                        { label: 'Organisation',  color: 'text-teal-600   bg-teal-50'   },
-                        { label: 'Availability',  color: 'text-green-600  bg-green-50'  },
-                        { label: 'Revenue',       color: 'text-orange-600 bg-orange-50' },
-                        { label: 'Discovery',     color: 'text-sky-600    bg-sky-50'    },
-                      ]
-                      const displayFeatures = imsFeatures.length >= 6
-                        ? imsFeatures.slice(0, 6)
-                        : [
-                            ...imsFeatures,
-                            ...defaultImsFeatures.slice(imsFeatures.length, 6),
-                          ]
-                      return displayFeatures.map((feat, i) => {
-                        const tag = tagMap[i]
-                        return (
-                          <motion.div
-                            key={feat.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.4, delay: i * 0.07 }}
-                            viewport={{ once: true }}
-                            className="group bg-white rounded-md border border-gray-200 p-6 hover:border-blue-300 hover:shadow-md transition-all duration-200 flex flex-col"
-                          >
-                            {/* Icon + number row */}
-                            <div className="flex items-start justify-between mb-5">
-                              <div className="w-12 h-12 bg-blue-600 rounded-md flex items-center justify-center group-hover:bg-blue-700 transition-colors duration-200 flex-shrink-0">
-                                <feat.icon className="w-6 h-6 text-white" />
-                              </div>
-                              <span className="text-2xl font-black text-gray-100 tabular-nums select-none leading-none">
-                                {String(i + 1).padStart(2, '0')}
-                              </span>
-                            </div>
-
-                            {/* Title */}
-                            <h4 className="font-bold text-gray-900 text-base leading-snug mb-2">
-                              {feat.title}
-                            </h4>
-
-                            {/* Description — grows to fill card height */}
-                            <p className="text-gray-500 text-sm leading-relaxed flex-1">
-                              {feat.description}
-                            </p>
-
-                            {/* Category tag */}
-                            <div className="mt-5 pt-4 border-t border-gray-100">
-                              <span className={`inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full ${tag.color}`}>
-                                <span className="w-1.5 h-1.5 rounded-full bg-current inline-block" />
-                                {tag.label}
-                              </span>
-                            </div>
-                          </motion.div>
-                        )
-                      })
-                    })()}
-                  </div>
-                </div>
-
-                {/* 1C: Build an Ecosystem */}
-                <div className="bg-blue-900 text-white rounded-md p-8 sm:p-10 mb-8">
-                  <div className="grid lg:grid-cols-2 gap-10 items-center">
+                <div className="bg-blue-900 text-white rounded-2xl p-6 sm:p-8 lg:p-10">
+                  <div className="grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
                     <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
                       <h3 className="text-2xl sm:text-3xl font-bold mb-4">{"Don't Just List Inventory. Build an Ecosystem Built for Growth."}</h3>
                       <p className="text-blue-200 mb-6 leading-relaxed">IMS integrates into your operations while transforming how inventory is managed, organised, and activated.</p>
                       <ul className="space-y-3">
-                        {imsBenefits.map((b, i) => (
+                        {[
+                          'Works across all screen types and formats',
+                          'Supports CMS, sales, and inventory workflows in one system',
+                          'Enables both direct and self-serve sales models',
+                          'Scales operations without increasing overhead',
+                        ].map((b, i) => (
                           <li key={i} className="flex items-start gap-3">
                             <CheckCircleIcon className="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" />
                             <span className="text-white/90 text-sm sm:text-base">{b}</span>
@@ -564,18 +474,12 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                   </div>
                 </div>
 
-                {/* 1D: Final CTA */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
-                  <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Put Your Inventory to Work 24/7</h3>
-                  <p className="text-gray-600 mb-6 max-w-2xl mx-auto">Move from fragmented inventory management to a structured system built for visibility, control, and growth.</p>
-                  <div className="flex flex-col sm:flex-row justify-center gap-3">
-                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition-colors">
-                      Get Started <ArrowRightIcon className="w-4 h-4" />
-                    </CTAButton>
-                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 border border-blue-600 text-blue-600 px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-50 transition-colors">
-                      Request an IMS Demo <ArrowRightIcon className="w-4 h-4" />
-                    </CTAButton>
-                  </div>
+                <div className="rounded-2xl overflow-hidden shadow-sm">
+                  <InventoryMwScienceStrip />
+                </div>
+
+                <div className="rounded-2xl overflow-hidden shadow-sm">
+                  <InventoryCtaSection compact />
                 </div>
               </motion.div>
             )}
@@ -849,30 +753,6 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
               </motion.div>
             )}
           </AnimatePresence>
-        </div>
-      </section>
-
-      {/* ─── SECTION 4: OPERATIONAL IN DAYS ─────────────────────────────────── */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-6">{section4Title}</h2>
-            <div className="space-y-3 mb-10 text-left max-w-lg mx-auto">
-              {[
-                'Every Studio module is designed for rapid activation.',
-                'No long implementation cycles.',
-                'No heavy technical lift.',
-              ].map((line, i) => (
-                <div key={i} className="flex items-start gap-3">
-                  <CheckCircleIcon className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                  <span className="text-gray-700 text-base">{line}</span>
-                </div>
-              ))}
-            </div>
-            <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-md font-bold text-base hover:bg-blue-700 transition-colors shadow-lg">
-              Get Started <ArrowRightIcon className="w-5 h-5" />
-            </CTAButton>
-          </motion.div>
         </div>
       </section>
 

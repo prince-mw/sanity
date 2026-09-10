@@ -1,12 +1,18 @@
 import React from 'react';
-import { Sparkles, Search } from 'lucide-react';
+import { Sparkles, Search, Check } from 'lucide-react';
 
-export const ComparisonSection: React.FC = () => {
+interface ComparisonSectionProps {
+  // Tighter vertical padding for contexts where this section is embedded inside another
+  // panel (e.g. the MW Studio IMS tab) rather than used as a full standalone page section.
+  compact?: boolean;
+}
+
+export const ComparisonSection: React.FC<ComparisonSectionProps> = ({ compact = false }) => {
   return (
-    <section className="py-16 sm:py-20 bg-[#f8f9fa]" id="comparison-section">
+    <section className={`${compact ? 'py-8 sm:py-10' : 'py-16 sm:py-20'} bg-[#f8f9fa]`} id="comparison-section">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
 
-        <div className="text-center max-w-3xl mx-auto mb-16 sm:mb-20">
+        <div className={`text-center max-w-3xl mx-auto ${compact ? 'mb-8 sm:mb-10' : 'mb-16 sm:mb-20'}`}>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#062068] font-sans">
             Your Screens Haven&rsquo;t Changed. Your Potential Has.
           </h2>
@@ -88,7 +94,7 @@ export const ComparisonSection: React.FC = () => {
           <div className="bg-white rounded-2xl border border-gray-200/80 p-6 sm:p-8 shadow-precision flex flex-col items-center text-center group hover:border-[#062068]/30 transition-all">
             <div className="text-xs font-bold uppercase tracking-widest text-[#062068] mb-6 font-sans flex items-center gap-1.5 justify-center">
               <Sparkles className="w-3.5 h-3.5 text-[#062068]" />
-              <span>WITH MW INVENTORY</span>
+              <span>WITH OUR INVENTORY MANAGEMENT SYSTEM</span>
             </div>
 
             <div className="w-full bg-gradient-to-br from-[#0c1f54] via-[#10276d] to-[#081845] rounded-xl p-4 sm:p-6 flex items-center justify-center min-h-[300px] sm:min-h-[340px] shadow-2xl relative overflow-hidden border border-blue-400/20">
@@ -192,10 +198,19 @@ export const ComparisonSection: React.FC = () => {
               </div>
             </div>
 
-            <div className="mt-8 space-y-2 text-center">
-              <div className="text-base sm:text-lg font-medium text-[#454651]">Structured supply</div>
-              <div className="text-base sm:text-lg font-medium text-[#454651]">Clearer decisions</div>
-              <div className="text-base sm:text-lg font-medium text-[#454651]">More ways to sell</div>
+            <div className="mt-8 space-y-2">
+              <div className="flex items-center justify-center gap-2 text-base sm:text-lg font-medium text-[#454651]">
+                <Check className="w-5 h-5 text-emerald-500 shrink-0" strokeWidth={3} />
+                <span>Structured supply</span>
+              </div>
+              <div className="flex items-center justify-center gap-2 text-base sm:text-lg font-medium text-[#454651]">
+                <Check className="w-5 h-5 text-emerald-500 shrink-0" strokeWidth={3} />
+                <span>Clearer decisions</span>
+              </div>
+              <div className="flex items-center justify-center gap-2 text-base sm:text-lg font-medium text-[#454651]">
+                <Check className="w-5 h-5 text-emerald-500 shrink-0" strokeWidth={3} />
+                <span>More ways to sell</span>
+              </div>
             </div>
           </div>
 

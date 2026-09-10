@@ -31,9 +31,6 @@ export default function MWInventoryClient({ product }: MWInventoryClientProps) {
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#062068] font-sans">
               Unlock More Value From What You Own.
             </h2>
-            <p className="text-base sm:text-lg font-medium text-gray-500 mt-2">
-              How MW Inventory Helps
-            </p>
           </div>
 
           <FeatureSupplyConfidence />
