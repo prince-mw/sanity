@@ -116,7 +116,9 @@ export default function LocationsPageClient({ initialLocations }: LocationsPageC
   // Only affects locations that have a language-paired sibling (e.g. china/china-zh) —
   // ordinary locations without a slug (or with no pairing) always pass through.
   const localizedLocations = useMemo(
-    () => locations.filter(loc => !loc.slug || shouldShowLocationForLocale(loc.slug, locale)),
+    () => locations
+      .filter(loc => !loc.slug || shouldShowLocationForLocale(loc.slug, locale))
+      .sort((a, b) => a.country.localeCompare(b.country)),
     [locations, locale]
   )
 

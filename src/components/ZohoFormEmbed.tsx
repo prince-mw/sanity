@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DynamicZohoForm } from './DynamicZohoForm'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
-import { getUTMCookies } from './ZohoUTMTracker'
+import { getUTMCookies } from '@/lib/utmCookies'
 import { appendReferrerName, getReferrerName } from '@/lib/referrerName'
 
 // Append UTM cookie values to a Zoho iframe URL
@@ -227,7 +227,7 @@ export function ZohoFormEmbed({
   // Default: Embedded iframe
   return (
     <div className={className || 'w-full'}>
-      {/* suppressHydrationWarning: ZohoUTMTracker may append UTM params to the src in the DOM */}
+      {/* suppressHydrationWarning: Zoho's own tracking script may append UTM params to the src in the DOM */}
       <iframe
         src={iframeUrl}
         width={width}

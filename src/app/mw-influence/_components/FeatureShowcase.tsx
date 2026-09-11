@@ -2,9 +2,9 @@ import React from 'react';
 import { Check } from 'lucide-react';
 import { FeatureScreenshot } from './FeatureScreenshot';
 
-const DASHBOARD_IMG = 'https://cdn.sanity.io/images/u10im6di/production/91b04ccbf6f5e7a804346f7f6f32f5e38cee2698-960x682.png?w=900&q=85&auto=format';
-const CREATIVES_MANAGEMENT_IMG = 'https://cdn.sanity.io/images/u10im6di/production/813ba98cfa769d47f6c30846850e75e97d23673e-960x682.png?w=900&q=85&auto=format';
-const CAMPAIGN_PERFORMANCE_IMG = 'https://cdn.sanity.io/images/u10im6di/production/0cd495bb759ecfdc1c8d6705e8e7239ed9f806bf-960x682.png?w=900&q=85&auto=format';
+const DASHBOARD_IMG = 'https://cdn.sanity.io/images/u10im6di/production/402da052892db4f3a8e04bd08383ea4a8a7ce538-960x682.png?w=900&q=85&auto=format';
+const CREATIVES_MANAGEMENT_IMG = 'https://cdn.sanity.io/images/u10im6di/production/f2e8ff1f8349edb7564a06b8c61da34a1b43aecb-960x682.png?w=900&q=85&auto=format';
+const CAMPAIGN_PERFORMANCE_IMG = 'https://cdn.sanity.io/images/u10im6di/production/db6556ba4409f5b27c90d299c14795df461192fb-960x682.png?w=900&q=85&auto=format';
 
 export const FeatureShowcase: React.FC = () => {
   return (

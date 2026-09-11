@@ -2,10 +2,10 @@ import React from 'react';
 import { LayoutGrid, Activity, Sparkles, Upload } from 'lucide-react';
 import { FeatureScreenshot } from './FeatureScreenshot';
 
-const CAMPAIGN_INSIGHTS_IMG = 'https://cdn.sanity.io/images/u10im6di/production/1d52b391402ec7aa7276070cdb97070934a483b1-960x682.png?w=900&q=85&auto=format';
-const BRAND_LIFT_IMG = 'https://cdn.sanity.io/images/u10im6di/production/9c4d57f3db5255bf967df4719ac1f8b78fce7023-960x682.png?w=900&q=85&auto=format';
-const AI_ANALYSER_IMG = 'https://cdn.sanity.io/images/u10im6di/production/e949c645a922cb51ad278a551d0433f1f81a8281-960x682.png?w=900&q=85&auto=format';
-const DASHBOARD_IMG = 'https://cdn.sanity.io/images/u10im6di/production/4993083e06b55a6e2c93c0ca1a01a3cc84dfebae-960x682.png?w=900&q=85&auto=format';
+const CAMPAIGN_INSIGHTS_IMG = 'https://cdn.sanity.io/images/u10im6di/production/b80ee10b0782ce161b58cd60537950836d3f676a-960x682.png?w=900&q=85&auto=format';
+const BRAND_LIFT_IMG = 'https://cdn.sanity.io/images/u10im6di/production/2ffd074f5357fabd0bc1ddca984e6a23db0989bb-960x682.png?w=900&q=85&auto=format';
+const AI_ANALYSER_IMG = 'https://cdn.sanity.io/images/u10im6di/production/76ceb0816d62bb2af983efe79c0f179db72f71cd-960x682.png?w=900&q=85&auto=format';
+const DASHBOARD_IMG = 'https://cdn.sanity.io/images/u10im6di/production/88abb9f9262ceef707030271f8f5f414d3d57635-960x682.png?w=900&q=85&auto=format';
 
 export const CampaignInsightsSection: React.FC = () => {
   return (

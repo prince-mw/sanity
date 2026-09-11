@@ -132,7 +132,7 @@ export default function ContactForm({
                 id={formPermalink ? `zf_div_${formPermalink}` : undefined}
                 className="bg-white rounded-2xl shadow-mw-lg overflow-hidden"
               >
-                {/* suppressHydrationWarning: ZohoUTMTracker appends UTM params to the src in the DOM */}
+                {/* suppressHydrationWarning: Zoho's own tracking script appends UTM params to the src in the DOM */}
                 <iframe
                   src={formUrl}
                   title="Contact Us"

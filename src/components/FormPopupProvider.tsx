@@ -5,7 +5,7 @@ import { usePathname, useSearchParams } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
 import { ZohoFormEmbed } from './ZohoFormEmbed'
-import { getUTMCookies } from './ZohoUTMTracker'
+import { getUTMCookies } from '@/lib/utmCookies'
 
 interface FormPopupContextType {
   /** Whether a popup form is available for the current page */

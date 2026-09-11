@@ -7,7 +7,6 @@ import Footer from "@/components/Footer";
 import GlobalCTA from "@/components/GlobalCTA";
 import CookieConsent from "@/components/CookieConsent";
 import Analytics from "@/components/Analytics";
-import ZohoUTMTracker from "@/components/ZohoUTMTracker";
 import ZohoLeadScript from "@/components/ZohoLeadScript";
 import PreviewBanner from "@/components/PreviewBanner";
 import PolyfillLoader from "@/components/PolyfillLoader";
@@ -188,14 +187,6 @@ export default async function RootLayout({
         {/* Analytics & Tracking - Managed via Sanity CMS */}
         <Suspense fallback={null}>
           <Analytics config={analyticsConfig} />
-        </Suspense>
-
-        {/* Zoho Lead Attribution Tracking - UTM capture & cookie persistence */}
-        <Suspense fallback={null}>
-          <ZohoUTMTracker
-            enabled={analyticsConfig?.zohoLeadTracking?.enabled !== false}
-            cookieExpiryDays={analyticsConfig?.zohoLeadTracking?.cookieExpiryDays || 7}
-          />
         </Suspense>
 
         {/* Zoho Lead Tracking Script - CMS-managed */}

@@ -5,9 +5,9 @@ import { Layers, Users, TrendingUp, FileText, ArrowRight, ChevronRight } from 'l
 import { CTAButton } from '@/components/CTAButton';
 import { FeatureScreenshot } from './FeatureScreenshot';
 
-const AUDIENCE_REACH_IMG = 'https://cdn.sanity.io/images/u10im6di/production/90d4090b2b6e14a886e14aec99147bf77cbc5584-960x682.png?w=900&q=85&auto=format';
-const BUDGET_TRACKER_IMG = 'https://cdn.sanity.io/images/u10im6di/production/e9a70595fe1d8edf3912fdda6d01470d400be7c2-960x682.png?w=900&q=85&auto=format';
-const DASHBOARD_OVERVIEW_IMG = 'https://cdn.sanity.io/images/u10im6di/production/5a7188df7cd1199cfafde87cc2578c094577b54c-960x682.png?w=900&q=85&auto=format';
+const AUDIENCE_REACH_IMG = 'https://cdn.sanity.io/images/u10im6di/production/d5193c37900abb8ed6e101e563912a309e776c20-960x682.png?w=900&q=85&auto=format';
+const BUDGET_TRACKER_IMG = 'https://cdn.sanity.io/images/u10im6di/production/360df29832713dee866442644d5d9132e343bea1-960x682.png?w=900&q=85&auto=format';
+const DASHBOARD_OVERVIEW_IMG = 'https://cdn.sanity.io/images/u10im6di/production/41aa96d675ad09b16f9afe885362d53ed9e65ee7-960x682.png?w=900&q=85&auto=format';
 
 const ExploreLink: React.FC<{ children: React.ReactNode; id: string }> = ({ children, id }) => (
   <CTAButton

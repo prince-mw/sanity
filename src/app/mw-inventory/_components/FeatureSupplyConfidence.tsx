@@ -17,7 +17,7 @@ export const FeatureSupplyConfidence: React.FC = () => {
 
         <div className="lg:col-span-7">
           <FeatureScreenshot
-            src="https://cdn.sanity.io/images/u10im6di/production/4ffa4b34fda0a2570e778f2c5e2bd809c83817b9-960x682.png?w=900&q=85&auto=format"
+            src="https://cdn.sanity.io/images/u10im6di/production/ea88434a669269dc4d6c42d1c84a7fd496cd91b1-960x682.png?w=900&q=85&auto=format"
             alt="MW Studio dashboard: total revenue, occupancy rate, fill rate, active campaigns and inventory intelligence by asset type"
           />
         </div>

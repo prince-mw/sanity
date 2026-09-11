@@ -8,7 +8,7 @@ export const FeatureCalendarAvailability: React.FC = () => {
 
         <div className="lg:col-span-7 order-2 lg:order-1">
           <FeatureScreenshot
-            src="https://cdn.sanity.io/images/u10im6di/production/d815f0094b7c3877ae58d73051caa3fd13788776-960x682.png?w=900&q=85&auto=format"
+            src="https://cdn.sanity.io/images/u10im6di/production/dbea3560a1890d1bee81e67cd3da2ef60b1511cc-960x682.png?w=900&q=85&auto=format"
             alt="MW Studio bookings calendar: view campaign bookings across a weekly timeline by inventory, with occupancy status and details on hover"
           />
         </div>
