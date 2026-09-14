@@ -3,7 +3,7 @@ import Image from 'next/image';
 
 // Hero visual — a single provided image, replacing the earlier four-screen photo grid.
 const HERO_IMAGE_URL =
-  'https://cdn.sanity.io/images/u10im6di/production/46f1aca0c9b75dbffbbb60f8aed2444d2387cac1-439x435.png?w=900&q=85&auto=format';
+  'https://cdn.sanity.io/images/u10im6di/production/86b8a0947cc132d8cc677d01ecb52bcdf8016634-525x475.png?w=900&q=85&auto=format';
 
 export const HeroVisual: React.FC = () => {
   return (
