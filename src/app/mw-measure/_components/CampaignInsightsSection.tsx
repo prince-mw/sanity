@@ -2,8 +2,8 @@ import React from 'react';
 import { LayoutGrid, Activity, Sparkles, Upload } from 'lucide-react';
 import { FeatureScreenshot } from './FeatureScreenshot';
 
-const CAMPAIGN_INSIGHTS_IMG = 'https://cdn.sanity.io/images/u10im6di/production/b80ee10b0782ce161b58cd60537950836d3f676a-960x682.png?w=900&q=85&auto=format';
-const BRAND_LIFT_IMG = 'https://cdn.sanity.io/images/u10im6di/production/2ffd074f5357fabd0bc1ddca984e6a23db0989bb-960x682.png?w=900&q=85&auto=format';
+const CAMPAIGN_INSIGHTS_IMG = 'https://cdn.sanity.io/images/u10im6di/production/2d0f754f1f0e3869c105e248db24b61b95a99356-960x682.png?w=900&q=85&auto=format';
+const BRAND_LIFT_IMG = 'https://cdn.sanity.io/images/u10im6di/production/8331725ca5b7d8cac7af02fd264e4ab2a3302718-960x682.png?w=900&q=85&auto=format';
 const AI_ANALYSER_IMG = 'https://cdn.sanity.io/images/u10im6di/production/76ceb0816d62bb2af983efe79c0f179db72f71cd-960x682.png?w=900&q=85&auto=format';
 const DASHBOARD_IMG = 'https://cdn.sanity.io/images/u10im6di/production/88abb9f9262ceef707030271f8f5f414d3d57635-960x682.png?w=900&q=85&auto=format';
 
