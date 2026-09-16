@@ -17,21 +17,16 @@ Moving Walls solves three core problems in the OOH advertising industry:
 ### Activation & Delivery
 - [MW Activate](https://www.movingwalls.com/mw-activate): Programmatic DOOH (pDOOH) campaign activation. Automates ad delivery across digital out-of-home screens using real-time triggers — audience, weather, time, and event-based targeting. Connects to SSPs and DSPs for automated buying.
 - [MW Studio](https://www.movingwalls.com/mw-studio): OOH operating system for media owners. Three modules: Inventory Management System (IMS) for structuring billboard inventory; Content Management System (CMS) for scheduling and delivering content to digital screens; Sitebuilder for launching a self-serve advertiser marketplace without code.
+- [MW Influence](https://www.movingwalls.com/mw-influence): DOOH ad server for revenue optimisation. A real-time decision engine (sub-100ms) that allocates every ad slot to the highest-value demand across direct and programmatic deals, with dynamic rule-based pricing, pacing controls, and immutable event-level proof-of-play — unifying fragmented direct/programmatic delivery into one yield-optimised system.
 
 ### Measurement & Analytics
 - [MW Measure](https://www.movingwalls.com/mw-measure): OOH audience measurement and campaign analytics. Tracks impressions, reach, frequency, and movement data. Provides real-time dashboards and post-campaign attribution reports.
 - [MW Science](https://www.movingwalls.com/mw-science): Data science and attribution modelling for OOH. Measures the real-world impact of outdoor advertising on brand lift, store visits, and sales using mobile data and econometric models.
-- [MW Influence](https://www.movingwalls.com/mw-influence): Location intelligence and audience profiling for OOH sites. Analyses footfall patterns, audience demographics, and contextual relevance of billboard locations to inform media planning.
 
 ## Who We Serve
 - [Brands](https://www.movingwalls.com/brands): For brand marketers and advertisers seeking data-driven OOH campaigns with measurable ROI, audience targeting, and self-serve booking.
 - [Agencies](https://www.movingwalls.com/agencies): For media agencies managing OOH buying across multiple clients and markets — unified planning, execution, and reporting in one platform.
 - [Media Owners](https://www.movingwalls.com/media-owners): For billboard operators and DOOH network owners to manage inventory, deliver content, sell programmatically, and provide advertiser-facing analytics.
-
-## Industry Solutions
-- [Finance & Banking](https://www.movingwalls.com/finance): OOH advertising strategies for financial services brands.
-- [Retail](https://www.movingwalls.com/retail): Drive store footfall and hyperlocal awareness with OOH.
-- [Healthcare](https://www.movingwalls.com/healthcare): Compliant, audience-targeted OOH for healthcare brands.
 
 ## Resources & Insights
 - [Blog](https://www.movingwalls.com/blog): Industry articles, OOH trends, programmatic DOOH guides, and advertising technology insights. 200+ posts.
@@ -44,15 +39,11 @@ Moving Walls solves three core problems in the OOH advertising industry:
 - [OOH Locations Directory](https://www.movingwalls.com/locations): Premium outdoor advertising sites across Asia Pacific, Middle East, North America, Europe, and Africa — with audience data, format details, and booking availability.
 - Key markets: Singapore, Malaysia, India, Indonesia, Australia, Japan, Philippines, Thailand, Sri Lanka, UAE, USA, UK.
 
-## Platform Integrations
-- [Integrations](https://www.movingwalls.com/integrations): Moving Walls connects with DSPs, SSPs, data providers, CRMs, and measurement platforms. Supports OpenRTB for programmatic DOOH transactions.
-
 ## OOH Formats Supported
 - [OOH Formats](https://www.movingwalls.com/ooh-formats): Billboards, transit advertising, street furniture, airport displays, mall screens, cinema, LED walls, and large-format digital displays.
 
 ## Company
 - [About Moving Walls](https://www.movingwalls.com/about): Founded in 2014. Headquartered in Singapore with offices across Asia Pacific, Middle East, and USA. Mission: make OOH advertising as data-driven, transparent, and accountable as digital media.
-- [Leadership Team](https://www.movingwalls.com/leadership): Executive team and key leaders.
 - [Our Journey](https://www.movingwalls.com/our-journey): Company milestones, funding, and growth story.
 - [Careers](https://www.movingwalls.com/careers): Open roles across engineering, product, sales, and data science.
 - [Contact Us](https://www.movingwalls.com/contact): Global offices, inquiry forms, and demo booking.
@@ -64,4 +55,3 @@ Moving Walls solves three core problems in the OOH advertising industry:
 
 ## Technical Metadata
 - [Sitemap](https://www.movingwalls.com/sitemap.xml): Full site index for automated discovery.
-- [API Reference](https://www.movingwalls.com/api-reference): Developer documentation for Moving Walls platform APIs.
