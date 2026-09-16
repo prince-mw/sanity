@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
+import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
 import { PlannerGeometry } from './brand/PlannerGeometry';
 
-const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/938c3bdc77e60f2bd6d124a79638befae15a4356-1376x768.jpg?w=1400&q=85&auto=format';
+const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/c08c5ef5a4b177066e024763e88d29c0f1bd1e3a-960x640.png?w=1200&q=90&auto=format';
 
 interface HeroSectionProps {
   badge?: string;
@@ -15,17 +15,19 @@ interface HeroSectionProps {
 
 // Highlights the closing word "Defend" in the same cyan-to-blue gradient used for
 // "Prove It." on the MW Measure hero — falls back to plain text if the CMS copy changes.
+// Also keeps "OOH Plans" from splitting across a line-wrap with a non-breaking space.
 function renderTitle(title: string) {
+  const joined = title.replaceAll('OOH Plans', 'OOH Plans');
   const marker = 'Defend';
-  const idx = title.lastIndexOf(marker);
-  if (idx === -1) return title;
+  const idx = joined.lastIndexOf(marker);
+  if (idx === -1) return joined;
   return (
     <>
-      {title.slice(0, idx)}
+      {joined.slice(0, idx)}
       <span className="bg-gradient-to-r from-cyan-400 via-sky-300 to-blue-200 bg-clip-text text-transparent">
         {marker}
       </span>
-      {title.slice(idx + marker.length)}
+      {joined.slice(idx + marker.length)}
     </>
   );
 }
@@ -35,9 +37,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   title = 'Build OOH Plans You Can Defend.',
   subtitle = 'Transform campaign briefs into data-backed OOH plans with live inventory, audience signals, and forecasting—all in one platform.',
 }) => {
+  // Keeps "OOH plans" from splitting across a line-wrap in the body copy too, same as the
+  // heading — applies to both the default copy and any CMS-sourced subtitle.
+  const renderedSubtitle = subtitle.replaceAll('OOH plans', 'OOH plans');
+
   return (
     <section
-      className="relative overflow-hidden text-white pt-20 sm:pt-16 lg:pt-20 pb-12 lg:pb-16"
+      className="relative overflow-hidden text-white pt-24 sm:pt-20 lg:pt-24 pb-20 lg:pb-28"
       style={{
         background:
           'radial-gradient(circle at 75% 30%, rgba(56, 189, 248, 0.15), transparent 45%), radial-gradient(circle at 25% 60%, rgba(36, 56, 127, 0.4), transparent 50%), #071948',
@@ -65,13 +71,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </h1>
 
             <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-xl font-normal">
-              {subtitle}
+              {renderedSubtitle}
             </p>
 
             <div className="pt-2 text-center lg:text-left">
               <CTAButton
                 href="/contact"
-                className="bg-white hover:bg-gray-100 text-[#071948] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
+                className="bg-white hover:bg-gray-100 text-[#071948] font-semibold text-xs sm:text-sm uppercase tracking-wider px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-plan-campaign-btn"
               >
                 <span>Plan Your Campaign</span>
@@ -79,43 +85,48 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </div>
 
-          {/* Chevron visual with ambient HUD overlay */}
-          <div className="lg:col-span-7 w-full">
-            <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-[#2b4494]/80 bg-[#0b1b46]">
-              <div className="relative w-full aspect-video overflow-hidden bg-[#071948]">
-                <motion.img
+          {/* Mobile/tablet — a normal contained image below the text (below lg the bleed
+              treatment below doesn't apply, since the columns are stacked). */}
+          <div className="lg:hidden w-full flex items-center justify-center">
+            <div className="relative w-full max-w-md aspect-[3/2]">
+              <Image
+                src={HERO_IMAGE_URL}
+                alt="Real-world signals and OOH vision intelligence"
+                fill
+                className="object-contain"
+                sizes="90vw"
+              />
+            </div>
+          </div>
+
+          {/* Chevron visual — a normal grid column, so its left edge sits exactly where the
+              grid puts it. The section's own padding is taller on purpose (pt-24/pb-28 above)
+              to make the whole banner match MW Measure's scale — bleeding the graphic into
+              that padding doesn't add anything beyond what the section already reserves. The
+              header is `position: fixed` (h-16/64px at lg, where this column first appears),
+              so the top bleed only cancels the part of the section's own top padding beyond
+              the header's height (96-64=32px) — canceling all of it would push the graphic up
+              underneath the fixed header. The bottom bleed has no such constraint and cancels
+              its padding in full. The section's own overflow-hidden clips this bleed at the
+              true edges. The box is sized by height only (h-full) with aspect-[3/2] deriving
+              its own width from that — no forced w-full/max-w-full and no object-cover, so
+              there's neither a crop nor empty letterbox padding on the sides. The bleed div's
+              right edge is pushed past the column with a negative `right` offset (not a
+              margin on the column — the column has an explicit w-full, so a margin never
+              actually changed its box, which is why increasing it did nothing visible). */}
+          <div className="hidden lg:block lg:col-span-7 w-full relative self-stretch">
+            <div className="absolute lg:-top-8 lg:-bottom-28 left-0 lg:right-[-2rem] flex items-center justify-end">
+              <div className="relative h-full aspect-[3/2]">
+                <Image
                   src={HERO_IMAGE_URL}
                   alt="Real-world signals and OOH vision intelligence"
-                  className="w-full h-full object-cover object-center select-none"
-                  initial={{ scale: 1.03 }}
-                  animate={{ scale: [1.03, 1.06, 1.03] }}
-                  transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
+                  fill
+                  className="object-contain"
+                  sizes="1100px"
+                  quality={90}
+                  priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#071948]/35 via-transparent to-transparent pointer-events-none" />
-                <div className="absolute inset-0 ring-1 ring-inset ring-white/10 rounded-2xl pointer-events-none" />
               </div>
-
-              <motion.div
-                animate={{ y: [0, -3, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute top-3.5 right-3.5 sm:top-4 sm:right-4 bg-[#071948]/85 backdrop-blur-md border border-[#38bdf8]/50 px-3 py-1 rounded-full flex items-center gap-2 shadow-lg"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-[#93c5fd] tracking-wider uppercase">
-                  Real-World Signals
-                </span>
-              </motion.div>
-
-              <motion.div
-                animate={{ y: [0, 3, 0] }}
-                transition={{ duration: 4.5, delay: 0.5, repeat: Infinity, ease: 'easeInOut' }}
-                className="absolute bottom-3.5 left-3.5 sm:bottom-4 sm:left-4 bg-[#071948]/85 backdrop-blur-md border border-[#ffdf42]/50 px-3 py-1 rounded-full flex items-center gap-2 shadow-lg"
-              >
-                <span className="w-2 h-2 rounded-full bg-[#ffdf42]" />
-                <span className="text-[10px] sm:text-[11px] font-sans font-semibold text-[#fef08a] tracking-wider uppercase">
-                  Cognitive Vision &amp; Mobility
-                </span>
-              </motion.div>
             </div>
           </div>
 
