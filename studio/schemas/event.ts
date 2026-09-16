@@ -91,6 +91,14 @@ export default defineType({
       group: 'details',
     }),
     defineField({
+      name: 'displayTime',
+      title: 'Time (shown on site)',
+      type: 'string',
+      description:
+        'Enter the event time exactly as it should appear, e.g. "10:00 AM - 12:00 PM SGT". Typed manually (rather than computed from Start/End Date) so it always shows the same on every device, regardless of that device or server\'s own timezone.',
+      group: 'details',
+    }),
+    defineField({
       name: 'location',
       title: 'Location',
       type: 'object',

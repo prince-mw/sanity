@@ -59,7 +59,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="lg:col-span-5 space-y-6 sm:space-y-8 z-10">
             <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-300/30 text-blue-100 text-xs font-semibold tracking-wide shadow-sm" id="hero-badge">
               <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
-                <PlannerGeometry className="w-3 h-3 text-white" />
+                <PlannerGeometry className="w-3.5 h-3.5 text-white" />
               </div>
               <span className="font-sans uppercase tracking-wider text-[11px]">
                 {badge}

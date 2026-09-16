@@ -697,6 +697,7 @@ export interface SanityEvent {
   featuredImage?: any
   startDate: string
   endDate?: string
+  displayTime?: string
   location: {
     venue?: string
     address?: string
@@ -725,6 +726,7 @@ export async function getAllEvents(): Promise<SanityEvent[]> {
       featuredImage,
       startDate,
       endDate,
+      displayTime,
       location,
       excerpt,
       content,
@@ -747,6 +749,7 @@ export async function getUpcomingEvents(limit: number = 10): Promise<SanityEvent
       featuredImage,
       startDate,
       endDate,
+      displayTime,
       location,
       excerpt,
       content,
@@ -768,6 +771,7 @@ export async function getEventBySlug(slug: string): Promise<SanityEvent | null> 
       featuredImage,
       startDate,
       endDate,
+      displayTime,
       location,
       excerpt,
       content[]{
@@ -807,9 +811,14 @@ export function transformEvent(event: SanityEvent) {
     }
   }
 
-  // Format time
-  const timeStr = startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) +
-    (event.endDate ? ' - ' + endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : '')
+  // Time is entered manually in Sanity (event.displayTime) rather than computed from
+  // startDate/endDate — toLocaleTimeString() with no fixed timeZone renders using whichever
+  // timezone the running server/browser defaults to, which showed different times on local
+  // vs the live site for the exact same stored value. Falls back to the old computed string
+  // only for events published before this field existed.
+  const timeStr = event.displayTime ||
+    (startDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) +
+    (event.endDate ? ' - ' + endDate.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true }) : ''))
 
   // Format location
   const locationStr = [event.location?.venue, event.location?.city].filter(Boolean).join(', ')

@@ -1,7 +1,9 @@
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
-import { HeroVisual } from './HeroVisual';
+
+const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/2a0473807356b167854ae96d7e5966c0030bf891-1200x1200.png?w=1200&q=90&auto=format';
 
 interface HeroSectionProps {
   badge?: string;
@@ -63,12 +65,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   subtitle = "Capture more revenue from your OOH & DOOH inventories through MW Studio's streamlined inventory management, with real-time availability and faster selling opportunities.",
 }) => {
   return (
-    <section className="relative overflow-hidden bg-[#062068] text-white pt-20 sm:pt-16 lg:pt-20 pb-8 sm:pb-10 lg:pb-12" id="hero-section">
+    <section className="relative overflow-hidden bg-[#062068] text-white pt-24 sm:pt-20 lg:pt-24 pb-20 lg:pb-28" id="hero-section">
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
           <div className="lg:col-span-6 space-y-6 sm:space-y-8 z-10">
@@ -100,8 +102,44 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             </div>
           </div>
 
-          <div className="lg:col-span-6">
-            <HeroVisual />
+          {/* Mobile/tablet — a normal contained image below the text. */}
+          <div className="lg:hidden w-full flex items-center justify-center">
+            <div className="relative w-full max-w-md aspect-square">
+              <Image
+                src={HERO_IMAGE_URL}
+                alt="Ring ring, calling all billboards"
+                fill
+                className="object-contain"
+                sizes="90vw"
+              />
+            </div>
+          </div>
+
+          {/* Image bleeds into the section's own existing padding (same technique used for
+              MW Planner) — sized by height (aspect-square, matching this image's own
+              1200x1200 ratio) so there's no crop and no letterbox gap. Left-aligned
+              (justify-start) so it sits flush against the text column instead of drifting to
+              the column's right edge and leaving a gap in between. Top offset only cancels the
+              part of the section's top padding beyond the fixed header's height (96-64=32px
+              at lg) so the image doesn't slide under it; the bottom bleed has no such
+              constraint and cancels its padding in full. h-[112%] (same trick used on MW
+              Measure) makes the image slightly taller than the available span — items-center
+              grows that extra height evenly up/down, and the section's own overflow-hidden
+              clips whatever spills past the true edges. */}
+          <div className="hidden lg:block lg:col-span-6 w-full relative self-stretch">
+            <div className="absolute lg:-top-8 lg:-bottom-28 left-0 right-0 flex items-center justify-start">
+              <div className="relative h-[112%] aspect-square">
+                <Image
+                  src={HERO_IMAGE_URL}
+                  alt="Ring ring, calling all billboards"
+                  fill
+                  className="object-contain"
+                  sizes="900px"
+                  quality={90}
+                  priority
+                />
+              </div>
+            </div>
           </div>
 
         </div>

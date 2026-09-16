@@ -18,6 +18,10 @@ import { FeatureCalendarAvailability as InventoryFeatureCalendarAvailability } f
 import { MwScienceStrip as InventoryMwScienceStrip } from '../mw-inventory/_components/MwScienceStrip'
 import { CtaSection as InventoryCtaSection } from '../mw-inventory/_components/CtaSection'
 
+// Same hero visual used on the MW Inventory hero (1200x1200 square, "Ring Ring, Calling
+// All Billboards" graphic).
+const STUDIO_HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/2a0473807356b167854ae96d7e5966c0030bf891-1200x1200.png?w=1200&q=90&auto=format'
+
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const ArrowRightIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
@@ -330,52 +334,114 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ─── HERO — same badge/heading/CTA format as the MW Inventory hero ────── */}
-      <section className="relative overflow-hidden bg-[#062068] text-white pt-20 sm:pt-16 lg:pt-20 pb-16 sm:pb-20 md:pb-24" id="hero-section">
+      {/* ─── HERO — same two-column bleed layout and visual as the MW Inventory hero ─── */}
+      <section className="relative overflow-hidden bg-[#062068] text-white pt-24 sm:pt-20 lg:pt-24 pb-20 lg:pb-28" id="hero-section">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-300/30 text-blue-100 text-xs font-semibold tracking-wide shadow-sm mb-6" id="hero-badge">
-              <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
-                <StudioGeoIcon className="w-3 h-3 text-white" />
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="lg:col-span-6 space-y-4 sm:space-y-5 z-10 text-center lg:text-left"
+            >
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-300/30 text-blue-100 text-xs font-semibold tracking-wide shadow-sm" id="hero-badge">
+                <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
+                  <StudioGeoIcon className="w-3 h-3 text-white" />
+                </div>
+                <span className="font-sans uppercase tracking-wider text-[11px]">MW Studio</span>
               </div>
-              <span className="font-sans uppercase tracking-wider text-[11px]">MW Studio</span>
-            </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans mb-5">
-              {renderHeroTitle()}
-            </h1>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans">
+                {renderHeroTitle()}
+              </h1>
 
-            <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-2xl mx-auto font-normal mb-4">
-              {heroSubtitle}
-            </p>
+              <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal">
+                {heroSubtitle}
+              </p>
 
-            {heroDescription && heroDescription !== heroSubtitle && (
-              <p className="text-sm sm:text-base text-blue-100/60 leading-relaxed max-w-2xl mx-auto mb-8">{heroDescription}</p>
-            )}
-
-            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-4">
-              <CTAButton
-                href={product?.ctaLink || '/contact'}
-                className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
-                id="hero-lets-connect-btn"
-              >
-                <span>Let&apos;s Connect</span>
-              </CTAButton>
-              {product?.secondaryCta?.text && (
-                <CTAButton
-                  href={product.secondaryCta.link || ''}
-                  className="bg-white/10 text-white border border-white/30 px-6 py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
-                >
-                  {product.secondaryCta.text}
-                </CTAButton>
+              {heroDescription && heroDescription !== heroSubtitle && (
+                <p className="text-sm sm:text-base text-blue-100/60 leading-relaxed max-w-xl mx-auto lg:mx-0">{heroDescription}</p>
               )}
+
+              <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
+                <CTAButton
+                  href={product?.ctaLink || '/contact'}
+                  className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
+                  id="hero-lets-connect-btn"
+                >
+                  <span>Let&apos;s Connect</span>
+                </CTAButton>
+                {product?.secondaryCta?.text && (
+                  <CTAButton
+                    href={product.secondaryCta.link || ''}
+                    className="bg-white/10 text-white border border-white/30 px-6 py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
+                  >
+                    {product.secondaryCta.text}
+                  </CTAButton>
+                )}
+              </div>
+            </motion.div>
+
+            {/* Mobile/tablet — a normal contained image below the text. */}
+            <div className="lg:hidden w-full flex items-center justify-center">
+              <div className="relative w-full max-w-md aspect-square">
+                <Image
+                  src={STUDIO_HERO_IMAGE_URL}
+                  alt="Ring ring, calling all billboards"
+                  fill
+                  className="object-contain"
+                  sizes="90vw"
+                />
+              </div>
             </div>
-          </motion.div>
+
+            {/* Image bleeds into the section's own existing padding, same technique as the
+                MW Inventory hero. Studio's text column runs taller than Inventory's (extra
+                description paragraph, 2-button CTA row), so copying Inventory's h-[112%]
+                literally produced a much bigger image here (112% of a taller row is a
+                bigger number) — oversized and clipped by the section's overflow-hidden.
+                Top-aligned (items-start, not items-center) at a plain h-full instead: this
+                anchors the image flush against the top bleed boundary regardless of row
+                height, matching Inventory's flush-top look without inheriting Inventory's
+                specific percentage. Sized by height (aspect-square, matching the image's
+                own 1200x1200 ratio) so there's no crop and no letterbox gap. Left-aligned
+                so it sits flush against the text column. The image is already at the
+                maximum safe top position for pt-24 (32px of clearance = -top-8): its top
+                edge sits exactly at the fixed header's bottom edge. IMPORTANT — do not
+                "move it up more" by bumping pt and recomputing the offset as (pt - header
+                height): that keeps the image's rendered position exactly where it already
+                is (still flush with the header) while only growing the section's total
+                height for no visual benefit — a mistake made and reverted once already.
+                Any further real upward movement is only possible via visually overlapping
+                the header, which is not acceptable. The bottom bleed cancels its padding
+                in full. The source PNG itself has blank transparent space baked in around
+                the composition (it doesn't start at the very edge of the 1200x1200 canvas)
+                — scale-110 on the image crops that away symmetrically (overflow-hidden on
+                this box clips the excess), pulling the visible artwork closer to every edge;
+                this is the only remaining lever for making it look "higher" without an
+                actual position change. */}
+            <div className="hidden lg:block lg:col-span-6 w-full relative self-stretch">
+              <div className="absolute lg:-top-8 lg:-bottom-28 left-0 right-0 flex items-start justify-start">
+                <div className="relative h-full aspect-square overflow-hidden">
+                  <Image
+                    src={STUDIO_HERO_IMAGE_URL}
+                    alt="Ring ring, calling all billboards"
+                    fill
+                    className="object-contain scale-110"
+                    sizes="900px"
+                    quality={90}
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+
+          </div>
         </div>
       </section>
 
