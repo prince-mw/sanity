@@ -6,7 +6,7 @@ import { caseStudies as staticCaseStudies } from "@/data/case-studies";
 import CaseStudyDetailClient from "./CaseStudyDetailClient";
 import CaseStudyOnePagerClient from "./CaseStudyOnePagerClient";
 
-export const revalidate = 30;
+export const revalidate = 3600;
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;

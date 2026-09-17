@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export const revalidate = 30
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const pairs = await getAllCitySlugPairs()

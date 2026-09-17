@@ -1,8 +1,10 @@
 import { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 
-// Use force-dynamic to fetch content from Sanity at request time
-export const dynamic = 'force-dynamic'
+// Cache for an hour — content freshness here doesn't need to be per-request,
+// and this query fans out to ~12 collections, so refetching on every crawler
+// hit is expensive. The Sanity webhook still revalidates '/' on content changes.
+export const revalidate = 3600
 
 // Publishing filter for Sanity queries
 const publishedFilter = `isPublished == true && status == "published" && (scheduledPublishAt == null || scheduledPublishAt <= now())`

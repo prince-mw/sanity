@@ -49,7 +49,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 }
 
-export const revalidate = 30
+export const revalidate = 3600;
 
 export default async function LeadershipMemberPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params

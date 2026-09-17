@@ -1,7 +1,7 @@
 import { getProductBySlug } from "@/sanity/lib/fetch";
 import MWMeasureClient from "./MWMeasureClient";
 
-export const revalidate = 30;
+export const revalidate = 3600;
 
 export default async function MWMeasureServerPage() {
   const product = await getProductBySlug('mw-measure');

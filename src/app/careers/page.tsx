@@ -28,7 +28,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 30
+export const revalidate = 3600;
 
 const fallbackJobs: JobPosition[] = [
   {

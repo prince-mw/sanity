@@ -6,7 +6,7 @@ import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
 import { getBlogLanguageGroups, BlogLanguageGroups } from "@/sanity/lib/queries";
 import BlogDetailClient from "@/components/BlogDetailClient";
 
-export const revalidate = 30;
+export const revalidate = 3600;
 
 // The site's UI locale codes (e.g. "zh") don't always match the hreflang codes search
 // engines expect (e.g. "zh-CN") — this converts a blog post's translation URLs, keyed by

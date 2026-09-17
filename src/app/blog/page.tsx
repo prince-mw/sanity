@@ -29,7 +29,7 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export const revalidate = 30; // Revalidate every 60 seconds
+export const revalidate = 3600;
 
 export default async function BlogPage() {
   let posts;

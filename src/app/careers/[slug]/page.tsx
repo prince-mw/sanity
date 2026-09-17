@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { getJobPositionBySlug, getJobPositionSlugs, getRelatedJobs, transformJobPosition, getSanityImageUrl } from "@/sanity/lib/fetch";
 import JobDetailClient from "@/components/JobDetailClient";
 
-export const revalidate = 30;
+export const revalidate = 3600;
 
 interface PageProps {
   params: Promise<{ slug: string }>;

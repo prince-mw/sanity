@@ -25,7 +25,7 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export const revalidate = 30
+export const revalidate = 3600;
 
 export default async function MWSciencePage() {
   const product = await getProductBySlug('mw-science')

@@ -2,7 +2,7 @@ import { getAllCaseStudies, SanityCaseStudy, getProductBySlug } from "@/sanity/l
 import MWActivate from "./MWActivateClient";
 import { getPartnerIntegrationLogosList } from '@/data/default-integrations'
 
-export const revalidate = 30;
+export const revalidate = 3600;
 
 export default async function MWActivatePage() {
   let caseStudies: SanityCaseStudy[] = [];

@@ -10,7 +10,7 @@ interface RedirectRule {
 // In-memory cache for redirects
 let redirectCache: RedirectRule[] | null = null
 let cacheTimestamp = 0
-const CACHE_TTL = 60 * 1000 // 60 seconds
+const CACHE_TTL = 5 * 60 * 1000 // 5 minutes — redirects rarely change; a shorter TTL just multiplies Sanity calls across serverless instances
 
 async function fetchRedirects(): Promise<RedirectRule[]> {
   const now = Date.now()

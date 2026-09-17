@@ -5,7 +5,7 @@ import { getLandingPageBySlug, getLandingPageSlugs } from "@/sanity/lib/queries"
 import { LandingPageRenderer } from "@/components/landing";
 
 
-export const revalidate = 30;
+export const revalidate = 3600;
 
 interface PageProps {
   params: Promise<{ slug: string }>;
