@@ -365,6 +365,10 @@
         "name": "户外广告101",
         "description": "户外广告基础知识"
       },
+      "locations": {
+        "name": "分支机构",
+        "description": "探索我们的全球媒体版图"
+      },
       "pressNews": {
         "name": "新闻媒体",
         "description": "最新公告"

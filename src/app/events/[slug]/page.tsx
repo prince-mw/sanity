@@ -77,11 +77,34 @@ export default async function EventDetailPage({ params }: PageProps) {
     }
     
     const transformed = transformEvent(event);
-    
-    // Get related events (same category, excluding current)
+
+    // Get related events — kept in the same upcoming/past bucket as the event being
+    // viewed, so an upcoming event never surfaces past ones (and vice versa).
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const isCurrentEventPast = (() => {
+      if (!event.startDate) return false;
+      const d = new Date(event.startDate);
+      d.setHours(0, 0, 0, 0);
+      return d < today;
+    })();
+
     const allEvents = await getAllEvents();
     const relatedEvents = allEvents
       .filter(e => e.slug?.current !== slug)
+      .filter(e => {
+        if (!e.startDate) return false;
+        const d = new Date(e.startDate);
+        d.setHours(0, 0, 0, 0);
+        return isCurrentEventPast ? d < today : d >= today;
+      })
+      .sort((a, b) => {
+        const timeA = new Date(a.startDate).getTime();
+        const timeB = new Date(b.startDate).getTime();
+        // Upcoming: soonest first. Past: most recently happened first.
+        return isCurrentEventPast ? timeB - timeA : timeA - timeB;
+      })
       .slice(0, 3)
       .map(e => {
         const t = transformEvent(e);

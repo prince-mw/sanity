@@ -90,7 +90,7 @@ const staticLocations: LocationItem[] = [
 ]
 
 const stats = [
-  { label: "Countries", value: "10+" },
+  { label: "Countries", value: "20+" },
   { label: "Billboard Inventory", value: "850K+" },
   { label: "Daily Impressions", value: "1.5B+" },
   { label: "Partner Networks", value: "250+" },

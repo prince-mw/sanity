@@ -365,6 +365,10 @@
         "name": "OOH Formats",
         "description": "Dasar-dasar iklan luar ruang"
       },
+      "locations": {
+        "name": "Lokasi",
+        "description": "Jelajahi kehadiran media global kami"
+      },
       "pressNews": {
         "name": "Berita Pers",
         "description": "Pengumuman terbaru"

@@ -365,6 +365,10 @@
         "name": "OOH Formats",
         "description": "屋外広告の基礎"
       },
+      "locations": {
+        "name": "拠点",
+        "description": "当社のグローバルなメディア展開をご覧ください"
+      },
       "pressNews": {
         "name": "プレス＆ニュース",
         "description": "最新のお知らせ"

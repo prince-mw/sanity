@@ -603,7 +603,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
       )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
+      <section className="py-16 bg-gradient-to-br from-mw-gray-900 to-mw-gray-800">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -612,12 +612,12 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
             viewport={{ once: true }}
           >
             <h2 className="text-3xl font-bold text-white mb-4">Stay Updated</h2>
-            <p className="text-xl text-mw-blue-100 mb-8">
+            <p className="text-xl text-mw-gray-300 mb-8">
               Don&apos;t miss out on upcoming events, webinars, and training sessions.
             </p>
-            <Link 
+            <Link
               href="/events"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-mw-blue-50 transition-colors shadow-mw-lg"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white font-semibold rounded-xl hover:bg-mw-blue-700 transition-colors shadow-mw-lg"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />

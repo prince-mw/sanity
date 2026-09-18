@@ -365,6 +365,10 @@
         "name": "OOH Formats",
         "description": "옥외 광고 기초"
       },
+      "locations": {
+        "name": "글로벌 거점",
+        "description": "글로벌 미디어 현황을 살펴보세요"
+      },
       "pressNews": {
         "name": "보도자료",
         "description": "최신 발표"

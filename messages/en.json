@@ -365,6 +365,10 @@
         "name": "OOH Formats",
         "description": "Explore billboard & digital formats"
       },
+      "locations": {
+        "name": "Locations",
+        "description": "Explore our global media presence"
+      },
       "pressNews": {
         "name": "Press & News",
         "description": "Latest announcements"

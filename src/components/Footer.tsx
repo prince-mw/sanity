@@ -158,7 +158,7 @@ export default function Footer({ content }: FooterProps) {
               />
             </Link>
             {/* Description */}
-            <p className="text-mw-gray-300 text-base leading-relaxed max-w-4xl">
+            <p className="text-mw-gray-300 text-base leading-relaxed max-w-none">
               {companyDescription}
             </p>
           </div>
