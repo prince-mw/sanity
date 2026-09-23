@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { getBackgroundClasses, getMaxWidthClasses, type BackgroundColor, type MaxWidth } from "./utils";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
 interface CustomEmbedSectionProps {
   title?: string;
@@ -26,6 +27,8 @@ function closeModal(modal: HTMLElement) {
 // elements with data-modal-open/-root/-close, and this shared, trusted
 // delegated handler does the actual opening/closing.
 export function useCustomEmbedModals() {
+  const { openZohoPopup } = useZohoPopup();
+
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -42,6 +45,17 @@ export function useCustomEmbedModals() {
           modal.style.display = 'flex';
           document.body.style.overflow = 'hidden';
         }
+        return;
+      }
+
+      // A plain <a href="https://forms.zohopublic.../..."> pasted into custom HTML —
+      // open it the same way the rest of the site does (CTABannerSection etc.): a
+      // shared popup, not a new tab. Explicit data-modal-open links (above) still
+      // take priority for embeds that want their own bespoke modal.
+      const zohoLink = target.closest<HTMLAnchorElement>('a[href]');
+      if (zohoLink && isZohoFormUrl(zohoLink.getAttribute('href'))) {
+        e.preventDefault();
+        openZohoPopup(zohoLink.getAttribute('href')!, zohoLink.textContent?.trim() || undefined);
         return;
       }
 
@@ -69,7 +83,7 @@ export function useCustomEmbedModals() {
       document.removeEventListener('click', handleClick);
       document.removeEventListener('keydown', handleKeydown);
     };
-  }, []);
+  }, [openZohoPopup]);
 }
 
 export function CustomEmbedSection({
