@@ -556,9 +556,8 @@ function portableTextToHtml(blocks: any[] | undefined): string {
         return `
           <figure class="my-8">
             <div class="relative aspect-video rounded-xl overflow-hidden bg-gray-100">
-              <video class="w-full h-full object-cover" controls preload="metadata" playsinline${poster ? ` poster="${poster}"` : ''}>
+              <video class="w-full h-full object-cover" autoplay muted loop preload="auto" playsinline${poster ? ` poster="${poster}"` : ''}>
                 <source src="${block.videoFileUrl}" type="${block.videoFileMimeType || 'video/mp4'}" />
-                <track kind="captions" default />
               </video>
             </div>
             ${caption ? `<figcaption class="text-center text-sm text-mw-gray-500 mt-3">${caption}</figcaption>` : ''}

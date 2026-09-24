@@ -86,12 +86,13 @@ const portableTextComponents: PortableTextComponents = {
             <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
               <video
                 className="absolute inset-0 w-full h-full object-cover"
-                controls
-                preload="metadata"
+                autoPlay
+                muted
+                loop
+                preload="auto"
                 playsInline
               >
                 <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
-                <track kind="captions" default />
               </video>
             </div>
             {value.caption && (
