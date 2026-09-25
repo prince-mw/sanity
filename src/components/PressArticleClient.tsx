@@ -6,6 +6,7 @@ import Image from "next/image";
 import { PortableText, PortableTextComponents } from "@portabletext/react";
 import { getSanityImageUrl } from "@/sanity/lib/fetch";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { getVideoSkipIntroProps } from "@/lib/videoSkipIntro";
 
 interface PressArticle {
   _id: string;
@@ -88,9 +89,9 @@ const portableTextComponents: PortableTextComponents = {
                 className="absolute inset-0 w-full h-full object-cover"
                 autoPlay
                 muted
-                loop
                 preload="auto"
                 playsInline
+                {...getVideoSkipIntroProps(value.startAtSeconds)}
               >
                 <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
               </video>

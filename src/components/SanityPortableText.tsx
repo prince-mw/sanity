@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { urlFor } from "@/sanity/lib/client";
 import { sanitizeHtml } from "@/lib/sanitize";
+import { getVideoSkipIntroProps } from "@/lib/videoSkipIntro";
 
 // Sanity asset refs encode their original dimensions, e.g. "image-abc123-1600x900-jpg"
 function getImageDimensions(ref?: string): { width: number; height: number } {
@@ -202,10 +203,10 @@ const components: PortableTextComponents = {
                 className="absolute inset-0 w-full h-full object-cover"
                 autoPlay
                 muted
-                loop
                 preload="auto"
                 playsInline
                 {...(posterUrl ? { poster: posterUrl } : {})}
+                {...getVideoSkipIntroProps(value.startAtSeconds)}
               >
                 <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
                 Your browser does not support the video tag.

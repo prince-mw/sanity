@@ -110,6 +110,14 @@ export default defineType({
           options: {hotspot: true},
         },
         {
+          name: 'startAtSeconds',
+          type: 'number',
+          title: 'Skip intro (seconds)',
+          description:
+            'If the clip has a blank or unwanted moment at the very start (e.g. leftover from screen-recording setup), enter how many seconds to skip. The video will start — and loop back to — this point instead of 0. Leave blank if the video is fine from the start.',
+          hidden: ({parent}: {parent: {videoType?: string}}) => parent?.videoType !== 'file',
+        },
+        {
           name: 'caption',
           type: 'string',
           title: 'Caption',

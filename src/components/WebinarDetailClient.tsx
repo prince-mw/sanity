@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 import { sanitizeHtml } from '@/lib/sanitize'
 import { useZohoPopup, isZohoFormUrl } from './ZohoPopupProvider'
+import { getVideoSkipIntroProps } from '@/lib/videoSkipIntro'
 
 // Helper to build Sanity image URL from asset reference
 function buildSanityImageUrl(image: any, width?: number): string {
@@ -98,7 +99,7 @@ const portableTextComponents = {
         return (
           <figure className="my-8">
             <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
-              <video className="absolute inset-0 w-full h-full object-cover" autoPlay muted loop preload="auto" playsInline>
+              <video className="absolute inset-0 w-full h-full object-cover" autoPlay muted preload="auto" playsInline {...getVideoSkipIntroProps(value.startAtSeconds)}>
                 <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
               </video>
             </div>
