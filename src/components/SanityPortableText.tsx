@@ -194,24 +194,19 @@ const components: PortableTextComponents = {
     video: ({ value }) => {
       // Handle uploaded video file
       if (value?.videoType === 'file' && value?.videoFileUrl) {
-        const posterUrl = value.thumbnail?.asset ? urlFor(value.thumbnail).width(1200).quality(80).url() : undefined;
-        
         return (
           <figure className="my-8">
-            <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
-              <video
-                className="absolute inset-0 w-full h-full object-cover"
-                autoPlay
-                muted
-                preload="auto"
-                playsInline
-                {...(posterUrl ? { poster: posterUrl } : {})}
-                {...getVideoSkipIntroProps(value.startAtSeconds)}
-              >
-                <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
-                Your browser does not support the video tag.
-              </video>
-            </div>
+            <video
+              className="w-full rounded-xl"
+              autoPlay
+              muted
+              preload="auto"
+              playsInline
+              {...getVideoSkipIntroProps(value.startAtSeconds)}
+            >
+              <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
+              Your browser does not support the video tag.
+            </video>
             {value.caption && (
               <figcaption className="text-center text-sm text-mw-gray-500 mt-3">
                 {value.caption}

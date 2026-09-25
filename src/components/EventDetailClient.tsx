@@ -123,11 +123,9 @@ const portableTextComponents = {
       if (value?.videoType === 'file' && value?.videoFileUrl) {
         return (
           <figure className="my-8">
-            <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
-              <video className="absolute inset-0 w-full h-full object-cover" autoPlay muted preload="auto" playsInline {...getVideoSkipIntroProps(value.startAtSeconds)}>
-                <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
-              </video>
-            </div>
+            <video className="w-full rounded-xl" autoPlay muted preload="auto" playsInline {...getVideoSkipIntroProps(value.startAtSeconds)}>
+              <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
+            </video>
             {value.caption && (
               <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
             )}

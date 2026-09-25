@@ -551,15 +551,12 @@ function portableTextToHtml(blocks: any[] | undefined): string {
     if (block._type === 'video') {
       // Uploaded video file
       if (block.videoType === 'file' && block.videoFileUrl) {
-        const poster = block.thumbnail?.asset ? getSanityImageUrl(block.thumbnail, { width: 1200 }) : ''
         const caption = block.caption || ''
         return `
           <figure class="my-8">
-            <div class="relative aspect-video rounded-xl overflow-hidden bg-gray-100">
-              <video class="w-full h-full object-cover" autoplay muted loop preload="auto" playsinline${poster ? ` poster="${poster}"` : ''}>
-                <source src="${block.videoFileUrl}" type="${block.videoFileMimeType || 'video/mp4'}" />
-              </video>
-            </div>
+            <video class="w-full rounded-xl" autoplay muted loop preload="auto" playsinline>
+              <source src="${block.videoFileUrl}" type="${block.videoFileMimeType || 'video/mp4'}" />
+            </video>
             ${caption ? `<figcaption class="text-center text-sm text-mw-gray-500 mt-3">${caption}</figcaption>` : ''}
           </figure>
         `
