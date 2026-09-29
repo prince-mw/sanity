@@ -28,13 +28,15 @@ export default function MWInventoryClient({ product }: MWInventoryClientProps) {
 
   return (
     <div className="min-h-screen bg-[#f8f9fa] text-[#191c1d] antialiased selection:bg-[#062068] selection:text-white font-sans">
+      {/* Hero's CTA button keeps its own hardcoded copy ("See MW Studio In Action") —
+          product.ctaText/ctaLink is the single shared field already used to drive the
+          Final CTA's "Get in Touch" button below, so wiring both to it would make them
+          show identical text. No separate schema field exists for a distinct hero CTA. */}
       <HeroSection
         badge={product?.heroBadge || undefined}
         title={product?.heroTitle || undefined}
         subtitle={product?.heroSubtitle || undefined}
         heroImageUrl={getSanityImageUrl(product?.heroImage, { width: 1200 })}
-        ctaText={product?.ctaText || undefined}
-        ctaLink={product?.ctaLink || undefined}
       />
       <ComparisonSection
         title={product?.painPointsTitle || undefined}
