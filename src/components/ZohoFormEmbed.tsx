@@ -5,22 +5,8 @@ import { usePathname } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
 import { DynamicZohoForm } from './DynamicZohoForm'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
-import { getUTMCookies } from '@/lib/utmCookies'
+import { getUTMCookies, appendUTMsToUrl } from '@/lib/utmCookies'
 import { appendReferrerName, getReferrerName } from '@/lib/referrerName'
-
-// Append UTM cookie values to a Zoho iframe URL
-function appendUTMsToUrl(url: string): string {
-  if (!url.includes('formperma')) return url
-  const cookies = getUTMCookies()
-  let result = url
-  for (const [key, val] of Object.entries(cookies)) {
-    const regex = new RegExp('[?&]' + key + '=')
-    if (!regex.test(result)) {
-      result += (result.includes('?') ? '&' : '?') + key + '=' + encodeURIComponent(val)
-    }
-  }
-  return result
-}
 
 interface ZohoFormEmbedProps {
   /** Pass the full ZohoFormData from Sanity for automatic mode detection */
@@ -67,6 +53,20 @@ export function ZohoFormEmbed({
   useEffect(() => {
     setIframeUrl(appendUTMsToUrl(appendReferrerName(formUrl, pathname)))
   }, [formUrl, pathname])
+
+  // Same SSR-safety reasoning as iframeUrl above: only fall back to cookies (client-only)
+  // after mount, so a caller that already computed utmParams (e.g. from the URL) isn't
+  // second-guessed, but one that didn't pass any still gets the visitor's UTM cookies.
+  const [resolvedUtmParams, setResolvedUtmParams] = useState(utmParams)
+  useEffect(() => {
+    if (!utmParams || Object.keys(utmParams).length === 0) {
+      setResolvedUtmParams(getUTMCookies())
+    } else {
+      setResolvedUtmParams(utmParams)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [JSON.stringify(utmParams)])
+
   const name = form?.name || legacyName
   const displayMode = form?.displayMode || legacyDisplayMode
   const height = form?.height || legacyHeight
@@ -85,7 +85,7 @@ export function ZohoFormEmbed({
         successRedirectUrl={form.successRedirectUrl}
         className={className}
         pageSource={pageSource}
-        utmParams={utmParams}
+        utmParams={resolvedUtmParams}
         referrername={getReferrerName(pathname)}
       />
     )

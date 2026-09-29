@@ -3,8 +3,9 @@
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { useLocale } from "@/i18n/LocaleContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { appendReferrerName } from "@/lib/referrerName";
+import { appendUTMsToUrl } from "@/lib/utmCookies";
 
 interface ContactFormProps {
   formSectionTitle?: string
@@ -32,8 +33,17 @@ export default function ContactForm({
   const address = companyAddress || '14, Robinson Road #8-02\nFar East Financial Building\nSingapore 048545';
   const email = companyEmail || 'info@movingwalls.com';
   const baseFormUrl = zohoFormUrl || 'https://forms.zohopublic.com/movingwallsholdingpteltd/form/MWContactUs/formperma/U0Rmmz1KaZyfpwtqHbfK6sbw19RecVMg6aMmZ3G0vuw';
-  const formUrl = appendReferrerName(baseFormUrl, pathname);
-  const formPermalink = formUrl.match(/formperma\/([^/?]+)/)?.[1];
+  const referrerTaggedUrl = appendReferrerName(baseFormUrl, pathname);
+  const formPermalink = referrerTaggedUrl.match(/formperma\/([^/?]+)/)?.[1];
+
+  // referrername is SSR-safe (derived from the route); UTM cookies aren't available until
+  // after mount, so they're appended in an effect rather than relying solely on Zoho's own
+  // tracking script to patch the iframe src later (see suppressHydrationWarning below).
+  const [formUrl, setFormUrl] = useState(referrerTaggedUrl);
+  useEffect(() => {
+    setFormUrl(appendUTMsToUrl(referrerTaggedUrl));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [referrerTaggedUrl]);
 
   // Zoho's iframe embed on this plan has no auto-height signal, so the height below is a fixed,
   // hand-tuned estimate per breakpoint (mobile fields stack into one column and need more height).
@@ -132,7 +142,9 @@ export default function ContactForm({
                 id={formPermalink ? `zf_div_${formPermalink}` : undefined}
                 className="bg-white rounded-2xl shadow-mw-lg overflow-hidden"
               >
-                {/* suppressHydrationWarning: Zoho's own tracking script appends UTM params to the src in the DOM */}
+                {/* suppressHydrationWarning: our own effect (above) updates src after mount with UTM
+                    cookie data not available during SSR; Zoho's tracking script may also patch it
+                    redundantly (harmless — it skips params we've already set) */}
                 <iframe
                   src={formUrl}
                   title="Contact Us"

@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useCallback, ReactNode } from 'rea
 import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { appendReferrerName } from '@/lib/referrerName'
+import { appendUTMsToUrl } from '@/lib/utmCookies'
 
 interface ZohoPopupContextType {
   /** Opens a popup iframe for an arbitrary Zoho form URL, independent of the current page. */
@@ -60,7 +61,7 @@ export function ZohoPopupProvider({ children }: { children: ReactNode }) {
               </div>
               <div className="h-[70vh]">
                 <iframe
-                  src={appendReferrerName(activeUrl, pathname)}
+                  src={appendUTMsToUrl(appendReferrerName(activeUrl, pathname))}
                   width="100%"
                   height="100%"
                   frameBorder={0}

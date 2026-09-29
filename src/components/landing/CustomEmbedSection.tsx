@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
 import { getBackgroundClasses, getMaxWidthClasses, type BackgroundColor, type MaxWidth } from "./utils";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
+import { appendReferrerName } from "@/lib/referrerName";
+import { appendUTMsToUrl } from "@/lib/utmCookies";
 
 interface CustomEmbedSectionProps {
   title?: string;
@@ -28,6 +31,7 @@ function closeModal(modal: HTMLElement) {
 // delegated handler does the actual opening/closing.
 export function useCustomEmbedModals() {
   const { openZohoPopup } = useZohoPopup();
+  const pathname = usePathname();
 
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
@@ -40,7 +44,13 @@ export function useCustomEmbedModals() {
         if (modal) {
           e.preventDefault();
           const frame = modal.querySelector('iframe');
-          const src = opener.getAttribute('href');
+          let src = opener.getAttribute('href');
+          // Bespoke modals (data-modal-open) skip the shared Zoho popup, so if the
+          // link they open happens to be a Zoho form (e.g. an RSVP button), tag it
+          // with the same referrer/UTM data every other form submission gets.
+          if (src && isZohoFormUrl(src)) {
+            src = appendUTMsToUrl(appendReferrerName(src, pathname));
+          }
           if (frame && src) frame.setAttribute('src', src);
           modal.style.display = 'flex';
           document.body.style.overflow = 'hidden';

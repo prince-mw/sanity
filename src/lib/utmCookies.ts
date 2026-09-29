@@ -30,3 +30,23 @@ export function getUTMCookies(): Record<string, string> {
   }
   return result
 }
+
+/**
+ * Appends the visitor's UTM/click-id cookies (see getUTMCookies) onto a Zoho form URL as
+ * query params, so the form's own hidden fields (and its ${zf:UTM_PARAM}-style email merge
+ * tags) get populated on submission. No-op for non-Zoho URLs, and never overwrites a param
+ * the URL already has. Client-only — cookies aren't available during SSR, so call this from
+ * an effect/event handler, not directly during render on a page that could be server-rendered.
+ */
+export function appendUTMsToUrl(url: string): string {
+  if (!url.includes('formperma')) return url
+  const cookies = getUTMCookies()
+  let result = url
+  for (const [key, val] of Object.entries(cookies)) {
+    const regex = new RegExp('[?&]' + key + '=')
+    if (!regex.test(result)) {
+      result += (result.includes('?') ? '&' : '?') + key + '=' + encodeURIComponent(val)
+    }
+  }
+  return result
+}

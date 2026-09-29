@@ -1,6 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { usePathname } from 'next/navigation';
+import { appendReferrerName } from '@/lib/referrerName';
+import { appendUTMsToUrl } from '@/lib/utmCookies';
 
 interface ZohoResponsiveFormProps {
   formUrl: string;
@@ -15,6 +18,7 @@ interface ZohoResponsiveFormProps {
 // anywhere we can verify — worst case a malformed message is just ignored.
 export function ZohoResponsiveForm({ formUrl, title, defaultHeight = 650, className }: ZohoResponsiveFormProps) {
   const [height, setHeight] = useState(defaultHeight);
+  const pathname = usePathname();
 
   useEffect(() => {
     function handleMessage(event: MessageEvent) {
@@ -29,7 +33,15 @@ export function ZohoResponsiveForm({ formUrl, title, defaultHeight = 650, classN
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  const src = `${formUrl}${formUrl.includes('?') ? '&' : '?'}zf_rszfm=1`;
+  const baseUrl = `${formUrl}${formUrl.includes('?') ? '&' : '?'}zf_rszfm=1`;
+
+  // referrername is SSR-safe (derived from the route); UTM cookies aren't available until
+  // after mount, so they're appended in an effect to avoid a hydration mismatch on src.
+  const [src, setSrc] = useState(() => appendReferrerName(baseUrl, pathname));
+  useEffect(() => {
+    setSrc(appendUTMsToUrl(appendReferrerName(baseUrl, pathname)));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [baseUrl, pathname]);
 
   return (
     <iframe
