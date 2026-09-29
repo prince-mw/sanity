@@ -9,6 +9,9 @@ interface HeroSectionProps {
   badge?: string;
   title?: string;
   subtitle?: string;
+  heroImageUrl?: string | null;
+  ctaText?: string;
+  ctaLink?: string;
 }
 
 // MW Studio's brand geometry: three overlapping, fading squares — matches the icon
@@ -63,7 +66,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   badge = 'MW Studio',
   title = 'Turn Every Screen Into Revenue',
   subtitle = "Capture more revenue from your OOH & DOOH inventories through MW Studio's streamlined inventory management, with real-time availability and faster selling opportunities.",
+  heroImageUrl,
+  ctaText = 'See MW Studio In Action',
+  ctaLink = '/contact',
 }) => {
+  const imageUrl = heroImageUrl || HERO_IMAGE_URL;
   return (
     <section className="relative overflow-hidden bg-[#062068] text-white pt-24 sm:pt-20 lg:pt-24 pb-20 lg:pb-28" id="hero-section">
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
@@ -93,11 +100,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
             <div className="pt-6 text-center lg:text-left">
               <CTAButton
-                href="/contact"
+                href={ctaLink}
                 className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-see-action-btn"
               >
-                <span>See MW Studio In Action</span>
+                <span>{ctaText}</span>
               </CTAButton>
             </div>
           </div>
@@ -106,7 +113,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           <div className="lg:hidden w-full flex items-center justify-center">
             <div className="relative w-full max-w-md aspect-square">
               <Image
-                src={HERO_IMAGE_URL}
+                src={imageUrl}
                 alt="Ring ring, calling all billboards"
                 fill
                 className="object-contain"
@@ -130,7 +137,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="absolute lg:-top-8 lg:-bottom-28 left-0 right-0 flex items-center justify-start">
               <div className="relative h-[112%] aspect-square">
                 <Image
-                  src={HERO_IMAGE_URL}
+                  src={imageUrl}
                   alt="Ring ring, calling all billboards"
                   fill
                   className="object-contain"

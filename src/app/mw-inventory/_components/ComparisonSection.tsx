@@ -5,16 +5,34 @@ interface ComparisonSectionProps {
   // Tighter vertical padding for contexts where this section is embedded inside another
   // panel (e.g. the MW Studio IMS tab) rather than used as a full standalone page section.
   compact?: boolean;
+  title?: string;
+  /** Short "before" phrases, e.g. product.painPoints[].beforeState. Falls back to the
+      original 3 hardcoded phrases if fewer than 3 are supplied. */
+  withoutPoints?: string[];
+  /** Short "after" phrases, e.g. product.painPoints[].afterState — paired index-for-index
+      with withoutPoints. Falls back the same way. */
+  withPoints?: string[];
 }
 
-export const ComparisonSection: React.FC<ComparisonSectionProps> = ({ compact = false }) => {
+const DEFAULT_WITHOUT_POINTS = ['Scattered supply', 'Manual effort', 'Missed opportunities'];
+const DEFAULT_WITH_POINTS = ['Structured supply', 'Clearer decisions', 'More ways to sell'];
+
+export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
+  compact = false,
+  title = "Your Screens Haven't Changed. Your Potential Has.",
+  withoutPoints,
+  withPoints,
+}) => {
+  const withoutList = withoutPoints?.length === 3 ? withoutPoints : DEFAULT_WITHOUT_POINTS;
+  const withList = withPoints?.length === 3 ? withPoints : DEFAULT_WITH_POINTS;
+
   return (
     <section className={`${compact ? 'py-8 sm:py-10' : 'py-16 sm:py-20'} bg-[#f8f9fa]`} id="comparison-section">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
 
         <div className={`text-center max-w-3xl mx-auto ${compact ? 'mb-8 sm:mb-10' : 'mb-16 sm:mb-20'}`}>
           <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#062068] font-sans">
-            Your Screens Haven&rsquo;t Changed. Your Potential Has.
+            {title}
           </h2>
         </div>
 
@@ -84,9 +102,9 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({ compact = 
             </div>
 
             <div className="mt-8 space-y-2 text-center">
-              <div className="text-base sm:text-lg font-medium text-[#ba1a1a]">Scattered supply</div>
-              <div className="text-base sm:text-lg font-medium text-[#ba1a1a]">Manual effort</div>
-              <div className="text-base sm:text-lg font-medium text-[#ba1a1a]">Missed opportunities</div>
+              {withoutList.map((point) => (
+                <div key={point} className="text-base sm:text-lg font-medium text-[#ba1a1a]">{point}</div>
+              ))}
             </div>
           </div>
 
@@ -199,18 +217,12 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({ compact = 
             </div>
 
             <div className="mt-8 space-y-2">
-              <div className="flex items-center justify-center gap-2 text-base sm:text-lg font-medium text-[#454651]">
-                <Check className="w-5 h-5 text-emerald-500 shrink-0" strokeWidth={3} />
-                <span>Structured supply</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 text-base sm:text-lg font-medium text-[#454651]">
-                <Check className="w-5 h-5 text-emerald-500 shrink-0" strokeWidth={3} />
-                <span>Clearer decisions</span>
-              </div>
-              <div className="flex items-center justify-center gap-2 text-base sm:text-lg font-medium text-[#454651]">
-                <Check className="w-5 h-5 text-emerald-500 shrink-0" strokeWidth={3} />
-                <span>More ways to sell</span>
-              </div>
+              {withList.map((point) => (
+                <div key={point} className="flex items-center justify-center gap-2 text-base sm:text-lg font-medium text-[#454651]">
+                  <Check className="w-5 h-5 text-emerald-500 shrink-0" strokeWidth={3} />
+                  <span>{point}</span>
+                </div>
+              ))}
             </div>
           </div>
 

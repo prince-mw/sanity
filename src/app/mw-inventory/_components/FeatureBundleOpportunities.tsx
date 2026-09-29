@@ -4,7 +4,15 @@ import React, { useState } from 'react';
 import { Tv, Share2 } from 'lucide-react';
 import { SAMPLE_BUNDLE } from './mockData';
 
-export const FeatureBundleOpportunities: React.FC = () => {
+interface FeatureBundleOpportunitiesProps {
+  title?: string;
+  description?: string;
+}
+
+export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProps> = ({
+  title = 'Turn Assets Into Opportunities',
+  description = 'Group inventory into relevant commercial networks and packages when you want to sell beyond individual screens. Make it easier to create supply that matches how buyers want to buy.',
+}) => {
   const bundle = SAMPLE_BUNDLE;
   const [activeScreenIndex, setActiveScreenIndex] = useState<number | null>(null);
 
@@ -101,10 +109,10 @@ export const FeatureBundleOpportunities: React.FC = () => {
 
         <div className="lg:col-span-5 space-y-6 order-1 lg:order-2">
           <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#062068] font-sans">
-            Turn Assets Into Opportunities
+            {title}
           </h3>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed font-normal">
-            Group inventory into relevant commercial networks and packages when you want to sell beyond individual screens. Make it easier to create supply that matches how buyers want to buy.
+            {description}
           </p>
         </div>
 

@@ -5,9 +5,19 @@ interface CtaSectionProps {
   // Tighter vertical padding for contexts where this section is embedded inside another
   // panel (e.g. the MW Studio IMS tab) rather than used as a full standalone page section.
   compact?: boolean;
+  title?: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
 }
 
-export const CtaSection: React.FC<CtaSectionProps> = ({ compact = false }) => {
+export const CtaSection: React.FC<CtaSectionProps> = ({
+  compact = false,
+  title = 'Turn What You Own Into What You Can Sell.',
+  subtitle = "Your network is already full of opportunities. MW Studio's inventory management system gives you the structure, control, and visibility to put more of them to work.",
+  ctaText = 'Get in Touch',
+  ctaLink = '/contact',
+}) => {
   return (
     <section className={`relative overflow-hidden bg-[#062068] text-white ${compact ? 'py-10 sm:py-12' : 'py-16 sm:py-20 lg:py-24'} text-center`} id="cta-section">
       <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
@@ -17,20 +27,20 @@ export const CtaSection: React.FC<CtaSectionProps> = ({ compact = false }) => {
         <div className="max-w-3xl mx-auto space-y-6 sm:space-y-8">
 
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-sans leading-tight">
-            Turn What You Own Into What You Can Sell.
+            {title}
           </h2>
 
           <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-2xl mx-auto font-normal">
-            Your network is already full of opportunities. MW Studio's inventory management system gives you the structure, control, and visibility to put more of them to work.
+            {subtitle}
           </p>
 
           <div className="pt-4">
             <CTAButton
-              href="/contact"
+              href={ctaLink}
               className="inline-flex items-center justify-center bg-white hover:bg-gray-100 text-[#062068] text-sm sm:text-base font-semibold px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
               id="cta-get-in-touch-btn"
             >
-              <span>Get in Touch</span>
+              <span>{ctaText}</span>
             </CTAButton>
           </div>
 
