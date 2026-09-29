@@ -8,6 +8,7 @@ import {
   getAllPressReleases,
   getSanityImageUrl
 } from "@/sanity/lib/fetch";
+import { extractFaqJsonLd } from "@/lib/faqJsonLd";
 import NewsDetailClient from "@/components/NewsDetailClient";
 
 export const revalidate = 3600;
@@ -84,6 +85,7 @@ export default async function PressNewsDetailPage({ params }: PageProps) {
     date: string;
     thumbnail: string;
   }> = [];
+  let faqJsonLd = null;
 
   try {
     // Fetch from Sanity
@@ -91,7 +93,8 @@ export default async function PressNewsDetailPage({ params }: PageProps) {
 
     if (sanityRelease) {
       release = transformPressReleaseDetail(sanityRelease);
-      
+      faqJsonLd = extractFaqJsonLd(sanityRelease.content);
+
       // Get related press releases
       const sanityRelated = await getRelatedPressReleases(slug, sanityRelease.category, 3);
       relatedNews = sanityRelated.map(transformPressRelease);
@@ -104,5 +107,15 @@ export default async function PressNewsDetailPage({ params }: PageProps) {
     notFound();
   }
 
-  return <NewsDetailClient release={release} relatedNews={relatedNews} />;
+  return (
+    <>
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      <NewsDetailClient release={release} relatedNews={relatedNews} />
+    </>
+  );
 }

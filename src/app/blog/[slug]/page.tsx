@@ -4,6 +4,7 @@ import { draftMode } from "next/headers";
 import { getBlogPostBySlug, getRelatedBlogPosts, transformBlogPost, getAllBlogPosts, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
 import { getBlogLanguageGroups, BlogLanguageGroups } from "@/sanity/lib/queries";
+import { extractFaqJsonLd } from "@/lib/faqJsonLd";
 import BlogDetailClient from "@/components/BlogDetailClient";
 
 export const revalidate = 3600;
@@ -107,13 +108,15 @@ export default async function BlogPostPage({ params }: PageProps) {
     readTime: string;
     featuredImage: string;
   }> = [];
+  let faqJsonLd = null;
 
   try {
     // Try to fetch from Sanity
     const sanityPost = await getBlogPostBySlug(slug, isPreview);
-    
+
     if (sanityPost) {
       post = transformBlogPost(sanityPost);
+      faqJsonLd = extractFaqJsonLd(sanityPost.content);
       
       // Get related posts with improved algorithm
       const categoryTitles = sanityPost.categories?.map(c => c.title) || [];
@@ -142,5 +145,15 @@ export default async function BlogPostPage({ params }: PageProps) {
     notFound();
   }
 
-  return <BlogDetailClient post={post} relatedPosts={relatedPosts} />;
+  return (
+    <>
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      <BlogDetailClient post={post} relatedPosts={relatedPosts} />
+    </>
+  );
 }

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getJobPositionBySlug, getJobPositionSlugs, getRelatedJobs, transformJobPosition, getSanityImageUrl } from "@/sanity/lib/fetch";
+import { extractFaqJsonLd } from "@/lib/faqJsonLd";
 import JobDetailClient from "@/components/JobDetailClient";
 
 export const revalidate = 3600;
@@ -196,15 +197,24 @@ export default async function JobDetailPage({ params }: PageProps) {
       const relatedJobs = await getRelatedJobs(slug, job.department, 3);
       
       const transformedRelatedJobs = relatedJobs.map(j => transformJobPosition(j));
-      
+      const faqJsonLd = extractFaqJsonLd(job.fullDescription);
+
       return (
-        <JobDetailClient 
-          job={{
-            ...transformed,
-            fullDescription: job.fullDescription,
-          }}
-          relatedJobs={transformedRelatedJobs}
-        />
+        <>
+          {faqJsonLd && (
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+            />
+          )}
+          <JobDetailClient
+            job={{
+              ...transformed,
+              fullDescription: job.fullDescription,
+            }}
+            relatedJobs={transformedRelatedJobs}
+          />
+        </>
       );
     }
     

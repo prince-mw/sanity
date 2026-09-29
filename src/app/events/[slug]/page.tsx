@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getEventBySlug, getAllEvents, transformEvent, getSanityImageUrl } from "@/sanity/lib/fetch";
+import { extractFaqJsonLd } from "@/lib/faqJsonLd";
 import EventDetailClient from "../../../components/EventDetailClient";
 
 export const revalidate = 3600;
@@ -141,7 +142,19 @@ export default async function EventDetailPage({ params }: PageProps) {
       })) || [],
     };
     
-    return <EventDetailClient event={transformedEvent} relatedEvents={relatedEvents} />;
+    const faqJsonLd = extractFaqJsonLd(event.content);
+
+    return (
+      <>
+        {faqJsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          />
+        )}
+        <EventDetailClient event={transformedEvent} relatedEvents={relatedEvents} />
+      </>
+    );
   } catch (error) {
     console.error("Error fetching event:", error);
     notFound();

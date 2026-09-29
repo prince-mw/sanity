@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getWebinarBySlug, getRelatedWebinars, getAllWebinars, getSanityImageUrl } from "@/sanity/lib/fetch";
+import { extractFaqJsonLd } from "@/lib/faqJsonLd";
 import WebinarDetailClient from "@/components/WebinarDetailClient";
 
 export const revalidate = 3600;
@@ -129,7 +130,19 @@ export default async function WebinarDetailPage({ params }: PageProps) {
       })) || [],
     }));
     
-    return <WebinarDetailClient webinar={transformedWebinar} relatedWebinars={transformedRelated} />;
+    const faqJsonLd = extractFaqJsonLd(webinar.content);
+
+    return (
+      <>
+        {faqJsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+          />
+        )}
+        <WebinarDetailClient webinar={transformedWebinar} relatedWebinars={transformedRelated} />
+      </>
+    );
   } catch (error) {
     console.error("Error fetching webinar:", error);
     notFound();

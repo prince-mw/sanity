@@ -1,6 +1,7 @@
 import { Metadata } from 'next'
 import LeadershipDetailClient from '@/components/LeadershipDetailClient'
 import { getTeamMemberBySlug, getSanityImageUrl, getLeadershipTeam, transformTeamMember, SanityTeamMember } from '@/sanity/lib/fetch'
+import { extractFaqJsonLd } from '@/lib/faqJsonLd'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -66,5 +67,17 @@ export default async function LeadershipMemberPage({ params }: { params: Promise
         .map(transformTeamMember)
     : []
 
-  return <LeadershipDetailClient initialMember={member} initialOtherMembers={otherMembers} />
+  const faqJsonLd = extractFaqJsonLd(sanityMember?.fullBio)
+
+  return (
+    <>
+      {faqJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+        />
+      )}
+      <LeadershipDetailClient initialMember={member} initialOtherMembers={otherMembers} />
+    </>
+  )
 }

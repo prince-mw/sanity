@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
 import { getCaseStudyBySlug, getAllCaseStudies, transformCaseStudy, getSanityImageUrl } from "@/sanity/lib/fetch";
 import { caseStudies as staticCaseStudies } from "@/data/case-studies";
+import { extractFaqJsonLd } from "@/lib/faqJsonLd";
 import CaseStudyDetailClient from "./CaseStudyDetailClient";
 import CaseStudyOnePagerClient from "./CaseStudyOnePagerClient";
 
@@ -84,13 +85,15 @@ export default async function CaseStudyPage({ params }: PageProps) {
 
   let caseStudy;
   let relatedCaseStudies = [];
+  let faqJsonLd = null;
 
   try {
     const sanityCaseStudy = await getCaseStudyBySlug(slug, isPreview);
 
     if (sanityCaseStudy) {
       caseStudy = transformCaseStudy(sanityCaseStudy);
-      
+      faqJsonLd = extractFaqJsonLd(sanityCaseStudy.content);
+
       // Get related case studies
       const allCaseStudies = await getAllCaseStudies();
       const transformedAll = allCaseStudies.map(transformCaseStudy);
@@ -117,11 +120,28 @@ export default async function CaseStudyPage({ params }: PageProps) {
     notFound();
   }
 
+  const faqScript = faqJsonLd && (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+    />
+  );
+
   // One-pager format kicks in once a case study has been migrated (has a `challenge` field);
   // everything else keeps rendering through the legacy long-form article template.
   if (caseStudy.challenge) {
-    return <CaseStudyOnePagerClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />;
+    return (
+      <>
+        {faqScript}
+        <CaseStudyOnePagerClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />
+      </>
+    );
   }
 
-  return <CaseStudyDetailClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />;
+  return (
+    <>
+      {faqScript}
+      <CaseStudyDetailClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />
+    </>
+  );
 }
