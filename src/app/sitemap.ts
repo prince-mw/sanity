@@ -94,7 +94,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/brands', priority: 0.85, changeFreq: 'monthly' as const },
     { route: '/agencies', priority: 0.85, changeFreq: 'monthly' as const },
     { route: '/media-owners', priority: 0.85, changeFreq: 'monthly' as const },
-    // Retail/Healthcare/Finance industry pages temporarily hidden — templated content, not final. Re-add once published.
+    { route: '/retail', priority: 0.85, changeFreq: 'monthly' as const },
+    // Healthcare/Finance industry pages temporarily hidden — templated content, not final. Re-add once published.
     // Resources
     { route: '/blog', priority: 0.9, changeFreq: 'weekly' as const },
     { route: '/case-studies', priority: 0.85, changeFreq: 'weekly' as const },

@@ -27,6 +27,7 @@ Moving Walls solves three core problems in the OOH advertising industry:
 - [Brands](https://www.movingwalls.com/brands): For brand marketers and advertisers seeking data-driven OOH campaigns with measurable ROI, audience targeting, and self-serve booking.
 - [Agencies](https://www.movingwalls.com/agencies): For media agencies managing OOH buying across multiple clients and markets — unified planning, execution, and reporting in one platform.
 - [Media Owners](https://www.movingwalls.com/media-owners): For billboard operators and DOOH network owners to manage inventory, deliver content, sell programmatically, and provide advertiser-facing analytics.
+- [Retail Media](https://www.movingwalls.com/retail): In-store retail media across Vietnam, the Philippines, Malaysia, Thailand and Indonesia — 4000+ retail screens in 800+ venues, planned on shopper audience data and measured on exposure, brand perception and retail sales.
 
 ## Resources & Insights
 - [Blog](https://www.movingwalls.com/blog): Industry articles, OOH trends, programmatic DOOH guides, and advertising technology insights. 200+ posts.

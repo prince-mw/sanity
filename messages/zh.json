@@ -145,7 +145,8 @@
       "solutions": {
         "brands": "品牌",
         "mediaOwners": "媒体业主",
-        "agencies": "代理商"
+        "agencies": "代理商",
+        "retailers": "零售商"
       },
       "products": {
         "planner": "MW Planner",
@@ -260,6 +261,10 @@
       "agencies": {
         "name": "代理商",
         "description": "建立信任和知名度"
+      },
+      "retailers": {
+        "name": "零售商",
+        "description": "在购买发生的地方触达购物者"
       },
       "featured": {
         "title": "案例研究：汽车行业",

@@ -172,6 +172,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
           { name: t('megaMenu.solutions.brand.name'), description: t('megaMenu.solutions.brand.description'), href: "/brands" },
           { name: t('megaMenu.solutions.mediaOwners.name'), description: t('megaMenu.solutions.mediaOwners.description'), href: "/media-owners" },
           { name: t('megaMenu.solutions.agencies.name'), description: t('megaMenu.solutions.agencies.description'), href: "/agencies" },
+          { name: t('megaMenu.solutions.retailers.name'), description: t('megaMenu.solutions.retailers.description'), href: "/retail" },
         ],
       },
     ],

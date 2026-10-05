@@ -2,6 +2,7 @@ import { cache } from 'react'
 import { client, previewClient, urlFor } from './client'
 import { sanitizeHtml } from '@/lib/sanitize'
 import type { LocationData } from '@/data/staticLocationData'
+import { defaultRetailMediaContent, type RetailMediaContent } from '@/data/retail-media-page'
 
 // Per-request deduplication: identical query+params won't fire twice within the same render tree
 // (e.g. generateMetadata + page body both calling getBlogPostBySlug for the same slug)
@@ -3680,6 +3681,48 @@ export async function getCareersPageContent(): Promise<CareersPageContent | null
     console.error('Error fetching careers page content:', error)
     return null
   }
+}
+
+// Retail Media Page (/retail) — singleton. Returns the defaults from
+// src/data/retail-media-page.ts with any non-empty Sanity fields layered on top.
+export async function getRetailMediaPage(): Promise<RetailMediaContent> {
+  const query = `
+    *[_type == "retailMediaPage" && _id == "retailMediaPage"][0] {
+      heroEyebrow, heroTitle, heroSubtitle, heroStats[] { value, label }, heroCtaText,
+      contextHeading, contextParagraphs, contextCallout, contextStats[] { value, label }, contextClosing,
+      lastMileHeading, lastMileParagraphs,
+      momentsHeading, moments[] { stage, where, whatItDoes, whatWeMeasure },
+      approachEyebrow, approachHeading, approachIntro, approachPillars[] { title, description },
+      categoriesLabel, categories,
+      howItWorksEyebrow, howItWorksHeading, howItWorksSteps[] { title, subtitle, description },
+      "howItWorksImage": howItWorksImage { "url": asset->url, alt },
+      creativeHeading, creativeIntro, creativeItems[] { title, description },
+      measurementHeading, measurementIntro, measurementLayers[] { layer, question, method },
+      caseEyebrow, caseHeading, caseBody, caseStats[] { value, label },
+      "caseImage": caseImage { "url": asset->url, alt },
+      caseLinkText, caseLinkUrl,
+      ctaHeading, ctaBody, ctaButtonText,
+      faqHeading, faqs[] { question, answer }
+    }
+  `
+  const doc = await safeFetch<Partial<Record<keyof RetailMediaContent, unknown>> | null>(query, undefined, null)
+  const merged: RetailMediaContent = { ...defaultRetailMediaContent }
+  if (!doc) return merged
+
+  for (const key of Object.keys(defaultRetailMediaContent) as Array<keyof RetailMediaContent>) {
+    const value = doc[key]
+    const fallback = defaultRetailMediaContent[key]
+    if (value == null || value === '' || (Array.isArray(value) && value.length === 0)) continue
+    if (key === 'howItWorksImage' || key === 'caseImage') {
+      const img = value as { url?: string; alt?: string }
+      if (!img.url) continue
+      const fallbackImg = fallback as RetailMediaContent['howItWorksImage']
+      merged[key] = { url: img.url, alt: img.alt || fallbackImg?.alt || '' }
+      continue
+    }
+    ;(merged as unknown as Record<string, unknown>)[key] = value
+  }
+  return merged
 }
 
 // Footer Configuration

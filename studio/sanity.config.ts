@@ -38,7 +38,7 @@ function resolvePreviewUrl(doc: any): string | null {
 }
 
 // Singleton document types - only one document should exist
-const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig', 'contactPage', 'trustBar', 'clientPartners']
+const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig', 'contactPage', 'trustBar', 'clientPartners', 'retailMediaPage']
 
 // Supported languages for i18n
 const supportedLanguages = [
@@ -104,6 +104,15 @@ const structure = (S: any) =>
               S.documentTypeListItem('companyPage').title('Company Pages'),
               S.documentTypeListItem('industryPage').title('Industry Pages'),
               S.documentTypeListItem('audiencePage').title('Audience Pages'),
+              S.listItem()
+                .title('Retail Media Page')
+                .id('retailMediaPage')
+                .child(
+                  S.document()
+                    .schemaType('retailMediaPage')
+                    .documentId('retailMediaPage')
+                    .title('Retail Media Page (/retail)')
+                ),
             ])
         ),
       // Team & Organization

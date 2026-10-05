@@ -145,7 +145,8 @@
       "solutions": {
         "brands": "Brand",
         "mediaOwners": "Pemilik Media",
-        "agencies": "Agensi"
+        "agencies": "Agensi",
+        "retailers": "Peritel"
       },
       "products": {
         "planner": "MW Planner",
@@ -260,6 +261,10 @@
       "agencies": {
         "name": "Agensi",
         "description": "Bangun kepercayaan dan kesadaran"
+      },
+      "retailers": {
+        "name": "Peritel",
+        "description": "Jangkau pembeli di tempat pembelian terjadi"
       },
       "featured": {
         "title": "Studi Kasus: Otomotif",

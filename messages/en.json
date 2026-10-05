@@ -145,7 +145,8 @@
       "solutions": {
         "brands": "Brands",
         "mediaOwners": "Media Owners",
-        "agencies": "Agencies"
+        "agencies": "Agencies",
+        "retailers": "Retailers"
       },
       "products": {
         "planner": "MW Planner",
@@ -260,6 +261,10 @@
       "agencies": {
         "name": "Agencies",
         "description": "Build trust and awareness"
+      },
+      "retailers": {
+        "name": "Retailers",
+        "description": "Reach shoppers where purchases happen"
       },
       "featured": {
         "title": "Case Study: Automotive",

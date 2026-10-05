@@ -71,6 +71,7 @@ export default function Footer({ content }: FooterProps) {
       { name: t('footer.links.solutions.brands'), href: "/brands" },
       { name: t('footer.links.solutions.mediaOwners'), href: "/media-owners" },
       { name: t('footer.links.solutions.agencies'), href: "/agencies" },
+      { name: t('footer.links.solutions.retailers'), href: "/retail" },
     ],
     products: [
       { name: t('footer.links.products.planner'), href: "/mw-planner" },

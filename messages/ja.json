@@ -145,7 +145,8 @@
       "solutions": {
         "brands": "ブランド",
         "mediaOwners": "メディアオーナー",
-        "agencies": "代理店"
+        "agencies": "代理店",
+        "retailers": "小売業者"
       },
       "products": {
         "planner": "MW Planner",
@@ -260,6 +261,10 @@
       "agencies": {
         "name": "エージェンシー",
         "description": "信頼と認知度を構築"
+      },
+      "retailers": {
+        "name": "小売業者",
+        "description": "購買の現場で買い物客にリーチ"
       },
       "featured": {
         "title": "ケーススタディ：自動車",

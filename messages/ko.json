@@ -145,7 +145,8 @@
       "solutions": {
         "brands": "브랜드",
         "mediaOwners": "미디어 오너",
-        "agencies": "에이전시"
+        "agencies": "에이전시",
+        "retailers": "리테일러"
       },
       "products": {
         "planner": "MW Planner",
@@ -260,6 +261,10 @@
       "agencies": {
         "name": "에이전시",
         "description": "신뢰와 인지도 구축"
+      },
+      "retailers": {
+        "name": "리테일러",
+        "description": "구매가 일어나는 곳에서 쇼핑객에게 도달"
       },
       "featured": {
         "title": "사례 연구: 자동차",
