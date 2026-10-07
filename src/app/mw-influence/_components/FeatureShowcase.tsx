@@ -10,12 +10,12 @@ export const FeatureShowcase: React.FC = () => {
   return (
     <div id="features" className="w-full">
 
-      <div className="bg-gray-50 text-[#1b1b20] py-10 sm:py-12 px-4 sm:px-6 lg:px-8 text-center border-y border-[#e3e1e8]">
+      <div className="bg-[#13245d] text-white py-10 sm:py-12 px-4 sm:px-6 lg:px-8 text-center border-y border-blue-900/40">
         <div className="max-w-4xl mx-auto space-y-3">
-          <div className="text-sm font-semibold tracking-wider uppercase text-[#14235d]">
+          <div className="text-sm font-semibold tracking-wider uppercase text-[#22d3ee]">
             Platform Capabilities
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#14235d]">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
             More Than Allocation,<br className="hidden sm:inline" /> MW Influence Helps You Run Your Network Smarter
           </h2>
         </div>
@@ -160,13 +160,14 @@ export const FeatureShowcase: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             <div className="lg:col-span-7">
-              <div className="bg-[#0f1d4a]/95 backdrop-blur-xl rounded-2xl p-5 sm:p-7 shadow-2xl border border-white/15">
+              <div className="bg-[#b9cfe5] rounded-2xl p-[30px] shadow-xl">
+              <div className="bg-white rounded-xl p-5 sm:p-7 border border-gray-200">
 
-                <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-5">
-                  <span className="text-xs font-bold uppercase tracking-wider text-blue-200">
+                <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
                     Network Performance
                   </span>
-                  <span className="text-[10px] bg-emerald-500/20 text-[#34d399] px-2 py-0.5 rounded font-bold flex items-center gap-1">
+                  <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-bold flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                     Nodes: 120 | Status: Stable
                   </span>
@@ -174,8 +175,8 @@ export const FeatureShowcase: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 mb-5">
 
-                  <div className="sm:col-span-7 bg-[#13245d] rounded-xl p-3.5 border border-white/10 relative overflow-hidden flex flex-col justify-between">
-                    <div className="text-[10px] font-semibold text-blue-200 mb-2">Global Screen Mesh Interconnect</div>
+                  <div className="sm:col-span-7 bg-gray-50 rounded-xl p-3.5 border border-gray-200 relative overflow-hidden flex flex-col justify-between">
+                    <div className="text-[10px] font-semibold text-gray-500 mb-2">Global Screen Mesh Interconnect</div>
 
                     <div className="relative h-32 w-full bg-[#0b162c] rounded-lg p-2 flex items-center justify-center overflow-hidden">
                       <svg className="w-full h-full" viewBox="0 0 200 100">
@@ -200,25 +201,25 @@ export const FeatureShowcase: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="sm:col-span-5 bg-[#13245d] rounded-xl p-3.5 border border-white/10 flex flex-col justify-between">
-                    <div className="text-[10px] font-semibold text-blue-200 mb-1">Revenue Opportunity</div>
+                  <div className="sm:col-span-5 bg-gray-50 rounded-xl p-3.5 border border-gray-200 flex flex-col justify-between">
+                    <div className="text-[10px] font-semibold text-gray-500 mb-1">Revenue Opportunity</div>
 
                     <div className="h-28 flex items-end justify-between gap-2 pt-2 px-1">
                       <div className="flex-1 flex flex-col items-center gap-1">
-                        <div className="w-full bg-blue-500/40 rounded-t h-12" />
-                        <span className="text-[9px] text-gray-400 font-bold">Q1</span>
+                        <div className="w-full bg-blue-400 rounded-t h-12" />
+                        <span className="text-[9px] text-gray-500 font-bold">Q1</span>
                       </div>
                       <div className="flex-1 flex flex-col items-center gap-1">
-                        <div className="w-full bg-blue-500/60 rounded-t h-16" />
-                        <span className="text-[9px] text-gray-400 font-bold">Q2</span>
+                        <div className="w-full bg-blue-500 rounded-t h-16" />
+                        <span className="text-[9px] text-gray-500 font-bold">Q2</span>
                       </div>
                       <div className="flex-1 flex flex-col items-center gap-1">
-                        <div className="w-full bg-blue-500/80 rounded-t h-20" />
-                        <span className="text-[9px] text-gray-400 font-bold">Q3</span>
+                        <div className="w-full bg-blue-600 rounded-t h-20" />
+                        <span className="text-[9px] text-gray-500 font-bold">Q3</span>
                       </div>
                       <div className="flex-1 flex flex-col items-center gap-1">
                         <div className="w-full bg-gradient-to-t from-[#22d3ee] to-[#34d399] rounded-t h-24 shadow-lg shadow-[#22d3ee]/30" />
-                        <span className="text-[9px] text-[#34d399] font-bold">Q4</span>
+                        <span className="text-[9px] text-[#0f9b76] font-bold">Q4</span>
                       </div>
                     </div>
                   </div>
@@ -227,20 +228,20 @@ export const FeatureShowcase: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
 
-                  <div className="sm:col-span-5 bg-[#13245d] rounded-xl p-3.5 border border-white/10 text-center flex flex-col items-center justify-center">
-                    <div className="text-[10px] font-semibold text-blue-200 uppercase mb-2">Inventory Utilization %</div>
+                  <div className="sm:col-span-5 bg-gray-50 rounded-xl p-3.5 border border-gray-200 text-center flex flex-col items-center justify-center">
+                    <div className="text-[10px] font-semibold text-gray-500 uppercase mb-2">Inventory Utilization %</div>
 
                     <div className="relative w-24 h-24 flex items-center justify-center">
                       <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
                         <path
-                          className="text-slate-800"
+                          className="text-gray-200"
                           strokeWidth="3.5"
                           stroke="currentColor"
                           fill="none"
                           d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                         />
                         <path
-                          className="text-[#22d3ee]"
+                          className="text-[#1e68e5]"
                           strokeDasharray="78, 100"
                           strokeWidth="3.5"
                           strokeLinecap="round"
@@ -249,42 +250,43 @@ export const FeatureShowcase: React.FC = () => {
                           d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                         />
                       </svg>
-                      <div className="absolute text-xl font-bold text-white tracking-tight">
+                      <div className="absolute text-xl font-bold text-[#14235d] tracking-tight">
                         78%
                       </div>
                     </div>
                   </div>
 
-                  <div className="sm:col-span-7 bg-[#13245d] rounded-xl p-3.5 border border-white/10 flex flex-col justify-center space-y-2">
-                    <div className="text-[10px] font-semibold text-blue-200 uppercase mb-1">Campaign Delivery</div>
+                  <div className="sm:col-span-7 bg-gray-50 rounded-xl p-3.5 border border-gray-200 flex flex-col justify-center space-y-2">
+                    <div className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Campaign Delivery</div>
 
-                    <div className="flex items-center justify-between text-[11px] bg-[#0b162c] p-2 rounded border border-white/5">
+                    <div className="flex items-center justify-between text-[11px] bg-white p-2 rounded border border-gray-200">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                        <span className="text-white font-medium">Campaign A</span>
+                        <span className="text-gray-900 font-medium">Campaign A</span>
                       </div>
-                      <span className="text-[#34d399] font-bold">95% (On Track)</span>
+                      <span className="text-emerald-600 font-bold">95% (On Track)</span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] bg-[#0b162c] p-2 rounded border border-white/5">
+                    <div className="flex items-center justify-between text-[11px] bg-white p-2 rounded border border-gray-200">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-amber-400" />
-                        <span className="text-white font-medium">Campaign B</span>
+                        <span className="text-gray-900 font-medium">Campaign B</span>
                       </div>
-                      <span className="text-amber-300 font-bold">In Progress</span>
+                      <span className="text-amber-600 font-bold">In Progress</span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] bg-[#0b162c] p-2 rounded border border-white/5">
+                    <div className="flex items-center justify-between text-[11px] bg-white p-2 rounded border border-gray-200">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-rose-400" />
-                        <span className="text-white font-medium">Campaign C</span>
+                        <span className="text-gray-900 font-medium">Campaign C</span>
                       </div>
-                      <span className="text-rose-300 font-bold">Delayed (Auto-reallocating)</span>
+                      <span className="text-rose-600 font-bold">Delayed (Auto-reallocating)</span>
                     </div>
                   </div>
 
                 </div>
 
+              </div>
               </div>
             </div>
 

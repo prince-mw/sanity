@@ -1,24 +1,12 @@
 'use client';
 
 import React from 'react';
-import { Layers, Users, TrendingUp, FileText, ArrowRight, ChevronRight } from 'lucide-react';
-import { CTAButton } from '@/components/CTAButton';
+import { Layers, Users, TrendingUp, FileText, ChevronRight } from 'lucide-react';
 import { FeatureScreenshot } from './FeatureScreenshot';
 
 const AUDIENCE_REACH_IMG = 'https://cdn.sanity.io/images/u10im6di/production/d5193c37900abb8ed6e101e563912a309e776c20-960x682.png?w=900&q=85&auto=format';
 const BUDGET_TRACKER_IMG = 'https://cdn.sanity.io/images/u10im6di/production/360df29832713dee866442644d5d9132e343bea1-960x682.png?w=900&q=85&auto=format';
 const DASHBOARD_OVERVIEW_IMG = 'https://cdn.sanity.io/images/u10im6di/production/41aa96d675ad09b16f9afe885362d53ed9e65ee7-960x682.png?w=900&q=85&auto=format';
-
-const ExploreLink: React.FC<{ children: React.ReactNode; id: string }> = ({ children, id }) => (
-  <CTAButton
-    href="/contact"
-    id={id}
-    className="inline-flex items-center gap-2 text-sm font-semibold text-[#062068] hover:text-[#24387f] group cursor-pointer"
-  >
-    <span>{children}</span>
-    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-  </CTAButton>
-);
 
 export const FeatureShowcaseSection: React.FC = () => {
   return (
@@ -49,9 +37,6 @@ export const FeatureShowcaseSection: React.FC = () => {
               <p className="text-base text-gray-600 leading-relaxed">
                 Move beyond choosing locations based on availability. Use Audience signals to identify environments and locations that align with who you want to reach.
               </p>
-              <div className="pt-2">
-                <ExploreLink id="explore-audience-mobility">Explore Audience Mobility Intelligence</ExploreLink>
-              </div>
             </div>
 
             <div className="md:col-span-6">
@@ -79,9 +64,6 @@ export const FeatureShowcaseSection: React.FC = () => {
               <p className="text-base text-gray-600 leading-relaxed">
                 Compare different planning scenarios to understand the trade-offs between reach, audience, frequency, and spend—and build a media mix that works harder.
               </p>
-              <div className="pt-2">
-                <ExploreLink id="simulate-custom-scenarios">Simulate Custom Scenarios</ExploreLink>
-              </div>
             </div>
           </div>
 
@@ -95,9 +77,6 @@ export const FeatureShowcaseSection: React.FC = () => {
               <p className="text-base text-gray-600 leading-relaxed">
                 Bring inventory, audience and media Signals, and forecasts together to build recommendations backed by evidence, not assumptions.
               </p>
-              <div className="pt-2">
-                <ExploreLink id="launch-planning-engine">Launch Planning Engine</ExploreLink>
-              </div>
             </div>
 
             <div className="md:col-span-6">
@@ -155,9 +134,6 @@ export const FeatureShowcaseSection: React.FC = () => {
               <p className="text-base text-gray-600 leading-relaxed">
                 Turn your media plan into a clear, client-ready proposal that makes your recommendations easier to understand, justify, and approve.
               </p>
-              <div className="pt-2">
-                <ExploreLink id="view-sample-proposal">View Sample Proposal</ExploreLink>
-              </div>
             </div>
           </div>
 

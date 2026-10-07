@@ -3,7 +3,7 @@ import { Network, Cpu, Layers } from 'lucide-react';
 
 export const StackIntegrationSection: React.FC = () => {
   return (
-    <section id="stack-integrations" className="py-14 sm:py-16 lg:py-20 bg-white text-[#1b1b20]">
+    <section id="stack-integrations" className="py-14 sm:py-16 lg:py-20 bg-[#fbf8ff] text-[#1b1b20] border-b border-[#e3e1e8]">
       <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
 
         <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
