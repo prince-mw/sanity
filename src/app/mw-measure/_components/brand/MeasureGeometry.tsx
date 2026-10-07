@@ -36,7 +36,7 @@ export const MeasureGeometry: React.FC<MeasureGeometryProps> = ({
 
       {showLabel && (
         <span className={`font-semibold tracking-normal text-white mt-1.5 ${current.textSize}`}>
-          Measure
+          MW Measure
         </span>
       )}
     </div>

@@ -18,9 +18,9 @@ import { FeatureCalendarAvailability as InventoryFeatureCalendarAvailability } f
 import { MwScienceStrip as InventoryMwScienceStrip } from '../mw-inventory/_components/MwScienceStrip'
 import { CtaSection as InventoryCtaSection } from '../mw-inventory/_components/CtaSection'
 
-// Same hero visual used on the MW Inventory hero (1200x1200 square, "Ring Ring, Calling
-// All Billboards" graphic).
-const STUDIO_HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/2a0473807356b167854ae96d7e5966c0030bf891-1200x1200.png?w=1200&q=90&auto=format'
+// MW Studio's own hero banner (1024x1024 square) — kept separate from the shared CDN
+// asset below, which is still used by the MW Inventory hero.
+const STUDIO_HERO_IMAGE_URL = '/assets/images/mw-studio-hero-banner-image.webp'
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 const ArrowRightIcon = ({ className }: { className?: string }) => (
@@ -392,7 +392,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
               <div className="relative w-full max-w-md aspect-square">
                 <Image
                   src={STUDIO_HERO_IMAGE_URL}
-                  alt="Ring ring, calling all billboards"
+                  alt="Colorful archway corridor with red, yellow, pink and blue painted columns"
                   fill
                   className="object-contain"
                   sizes="90vw"
@@ -409,7 +409,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 anchors the image flush against the top bleed boundary regardless of row
                 height, matching Inventory's flush-top look without inheriting Inventory's
                 specific percentage. Sized by height (aspect-square, matching the image's
-                own 1200x1200 ratio) so there's no crop and no letterbox gap. Left-aligned
+                own 1024x1024 ratio) so there's no crop and no letterbox gap. Left-aligned
                 so it sits flush against the text column. The image is already at the
                 maximum safe top position for pt-24 (32px of clearance = -top-8): its top
                 edge sits exactly at the fixed header's bottom edge. IMPORTANT — do not
@@ -419,20 +419,15 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 height for no visual benefit — a mistake made and reverted once already.
                 Any further real upward movement is only possible via visually overlapping
                 the header, which is not acceptable. The bottom bleed cancels its padding
-                in full. The source PNG itself has blank transparent space baked in around
-                the composition (it doesn't start at the very edge of the 1200x1200 canvas)
-                — scale-110 on the image crops that away symmetrically (overflow-hidden on
-                this box clips the excess), pulling the visible artwork closer to every edge;
-                this is the only remaining lever for making it look "higher" without an
-                actual position change. */}
+                in full. */}
             <div className="hidden lg:block lg:col-span-6 w-full relative self-stretch">
               <div className="absolute lg:-top-8 lg:-bottom-28 left-0 right-0 flex items-start justify-start">
                 <div className="relative h-full aspect-square overflow-hidden">
                   <Image
                     src={STUDIO_HERO_IMAGE_URL}
-                    alt="Ring ring, calling all billboards"
+                    alt="Colorful archway corridor with red, yellow, pink and blue painted columns"
                     fill
-                    className="object-contain scale-110"
+                    className="object-contain"
                     sizes="900px"
                     quality={90}
                     priority
@@ -450,7 +445,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-10">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">Three Modules. One Complete OOH Business Platform.</h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">Studio is purpose-built for media owners — integrating three core modules that manage, deliver, and monetise your inventory end to end.</p>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">MW Studio is purpose-built for media owners — integrating three core modules that manage, deliver, and monetise your inventory end to end.</p>
           </motion.div>
 
           {/* Tab Nav */}
@@ -648,6 +643,10 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                   </div>
                 </div>
 
+                <div className="rounded-2xl overflow-hidden shadow-sm mb-8">
+                  <InventoryMwScienceStrip />
+                </div>
+
                 {/* 2D: Final CTA */}
                 <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Run Smarter, Smoother Campaign Delivery</h3>
@@ -801,6 +800,10 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                       </motion.div>
                     )}
                   </div>
+                </div>
+
+                <div className="rounded-2xl overflow-hidden shadow-sm mb-8">
+                  <InventoryMwScienceStrip />
                 </div>
 
                 {/* 3E: Final CTA */}

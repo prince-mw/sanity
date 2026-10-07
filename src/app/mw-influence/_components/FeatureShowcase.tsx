@@ -10,12 +10,12 @@ export const FeatureShowcase: React.FC = () => {
   return (
     <div id="features" className="w-full">
 
-      <div className="bg-[#13245d] text-white py-10 sm:py-12 px-4 sm:px-6 lg:px-8 text-center border-y border-blue-900/40">
+      <div className="bg-gray-50 text-[#1b1b20] py-10 sm:py-12 px-4 sm:px-6 lg:px-8 text-center border-y border-[#e3e1e8]">
         <div className="max-w-4xl mx-auto space-y-3">
-          <div className="text-sm font-semibold tracking-wider uppercase text-[#22d3ee]">
+          <div className="text-sm font-semibold tracking-wider uppercase text-[#14235d]">
             Platform Capabilities
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#14235d]">
             More Than Allocation,<br className="hidden sm:inline" /> MW Influence Helps You Run Your Network Smarter
           </h2>
         </div>
@@ -154,9 +154,7 @@ export const FeatureShowcase: React.FC = () => {
       </section>
 
       {/* FEATURE 4: See Where Your Network Can Perform Better */}
-      <section id="network-performance" className="py-14 sm:py-16 lg:py-24 bg-[#182b6e] text-white relative overflow-hidden">
-
-        <div className="absolute top-1/2 left-0 w-96 h-96 bg-[#22d3ee]/15 rounded-full blur-3xl pointer-events-none" />
+      <section id="network-performance" className="py-14 sm:py-16 lg:py-24 bg-white border-b border-[#e3e1e8] relative overflow-hidden">
 
         <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -291,26 +289,26 @@ export const FeatureShowcase: React.FC = () => {
             </div>
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/10 text-white text-xs font-bold uppercase tracking-wider border border-white/20">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 text-[#14235d] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>04</span>
                 <span>Executive Analytics</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] leading-tight tracking-tight">
                 See Where Your Network Can Perform Better
               </h3>
-              <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
                 Monitor campaign performance, inventory utilization, revenue opportunities, and operational activity through centralized network insights.
               </p>
 
               <div className="pt-2 space-y-2.5">
-                <div className="flex items-center gap-3 text-sm text-blue-100 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-[#34d399] text-[#14235d] flex items-center justify-center font-bold shrink-0">
+                <div className="flex items-center gap-3 text-sm text-gray-700 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-[#34d399]/30 text-emerald-800 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3" />
                   </div>
                   <span>Identifies under-monetized slots &amp; off-peak opportunities</span>
                 </div>
-                <div className="flex items-center gap-3 text-sm text-blue-100 font-medium">
-                  <div className="w-5 h-5 rounded-full bg-[#34d399] text-[#14235d] flex items-center justify-center font-bold shrink-0">
+                <div className="flex items-center gap-3 text-sm text-gray-700 font-medium">
+                  <div className="w-5 h-5 rounded-full bg-[#34d399]/30 text-emerald-800 flex items-center justify-center shrink-0">
                     <Check className="w-3 h-3" />
                   </div>
                   <span>Automated revenue lift forecasting and yield benchmarking</span>

@@ -25,7 +25,7 @@ export const FooterCTA: React.FC = () => {
         </h2>
 
         <p className="text-sm sm:text-base text-blue-100/80 max-w-3xl mx-auto leading-relaxed">
-          Measure transforms campaign data into actionable insights that helps marketers prove OOH impact, optimize investment, and make every campaign smarter than the last. By connecting Audience, Location, Media, Brand and Outcome Signals, Measure turns campaign evidence into better decisions.
+          MW Measure transforms campaign data into actionable insights that helps marketers prove OOH impact, optimize investment, and make every campaign smarter than the last. By connecting Audience, Location, Media, Brand and Outcome Signals, MW Measure turns campaign evidence into better decisions.
         </p>
 
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">

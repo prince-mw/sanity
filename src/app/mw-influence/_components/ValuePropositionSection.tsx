@@ -18,7 +18,7 @@ export const ValuePropositionSection: React.FC = () => {
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
             Guaranteed campaigns, direct bookings, and programmatic demand all compete for the same OOH inventory.{' '}
             <strong className="font-semibold text-gray-900">
-              Influence continuously makes allocation decisions using media, location and audience Signals to turn competing demand into better utilization and revenue.
+              MW Influence continuously makes allocation decisions using media, location and audience Signals to turn competing demand into better utilization and revenue.
             </strong>
           </p>
         </div>
@@ -32,7 +32,7 @@ export const ValuePropositionSection: React.FC = () => {
                 What Should Run?
               </h3>
               <p className="text-sm text-blue-100/80 leading-relaxed mb-6 font-normal">
-                Influence evaluates every available slot against value demand while protecting guaranteed campaigns and business rules.
+                MW Influence evaluates every available slot against value demand while protecting guaranteed campaigns and business rules.
               </p>
             </div>
 
@@ -91,7 +91,7 @@ export const ValuePropositionSection: React.FC = () => {
                 What Should Come First?
               </h3>
               <p className="text-sm text-blue-100/80 leading-relaxed mb-6 font-normal">
-                Influence prioritizes the highest-value eligible demand while keeping guaranteed campaigns on track.
+                MW Influence prioritizes the highest-value eligible demand while keeping guaranteed campaigns on track.
               </p>
             </div>
 
@@ -191,7 +191,7 @@ export const ValuePropositionSection: React.FC = () => {
                 How Do You Get More From Your Inventory?
               </h3>
               <p className="text-sm text-blue-100/80 leading-relaxed mb-6 font-normal">
-                Influence automatically puts available inventory to work, improving utilization, reducing manual intervention, and increasing revenue.
+                MW Influence automatically puts available inventory to work, improving utilization, reducing manual intervention, and increasing revenue.
               </p>
             </div>
 
