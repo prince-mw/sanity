@@ -24,7 +24,7 @@ export interface LocationData {
   billboardsDailyReachLabel?: string
   billboardsMonthlyImpressionsLabel?: string
   stats: Array<{ label: string; value: string }>
-  mediaTypes: Array<{ name: string; icon: string; description: string }>
+  mediaTypes: Array<{ name: string; icon: string; description: string; link?: string }>
   mediaTypesHeading?: string
   faqs: Array<{ question: string; answer: string }>
   faqsHeading?: string

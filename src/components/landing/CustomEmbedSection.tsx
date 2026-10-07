@@ -113,9 +113,14 @@ export function CustomEmbedSection({
   return (
     <section className={`${isFull ? '' : 'py-6 md:py-8'} ${bgClasses}`}>
       <div className={isFull ? '' : 'container mx-auto px-4'}>
+        {/* Fades in on scroll via opacity only — no transform/y-translate. A transform
+            on this wrapper would make it the containing block for any `position: fixed`
+            element inside the embedded HTML (e.g. a custom contact-popup modal), so the
+            modal would position itself relative to this wrapper instead of the viewport —
+            getting clipped behind the site's fixed header instead of centering on screen. */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className={isFull ? '' : `${widthClasses} mx-auto`}

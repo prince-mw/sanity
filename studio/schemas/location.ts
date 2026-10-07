@@ -144,6 +144,7 @@ export default defineType({
             { name: 'name', title: 'Name', type: 'string' },
             { name: 'icon', title: 'Icon Key', type: 'string', description: 'Icon identifier: digital, transit, bus, mall, highway, airport, static' },
             { name: 'description', title: 'Description', type: 'string' },
+            { name: 'link', title: 'Link URL', type: 'string', description: 'Optional - makes this card clickable (e.g. a dedicated landing page for this format). Leave empty for a plain, non-clickable card.' },
           ],
           preview: {
             select: { title: 'name', subtitle: 'description' },

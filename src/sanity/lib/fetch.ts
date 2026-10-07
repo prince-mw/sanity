@@ -1713,6 +1713,7 @@ export interface SanityLocation {
     name: string
     icon: string
     description: string
+    link?: string
   }>
   mediaTypesHeading?: string
   faqs?: Array<{
