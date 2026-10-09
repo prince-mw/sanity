@@ -53,6 +53,7 @@ import contactPage from './contactPage'
 import trustBar from './trustBar'
 import clientPartners from './clientPartners'
 import retailMediaPage from './retailMediaPage'
+import partnerPage from './partnerPage'
 import helpCenterFaq from './helpCenterFaq'
 import apiReferencePage from './apiReferencePage'
 import communityPage from './communityPage'
@@ -120,6 +121,7 @@ export const schemaTypes = [
   trustBar,
   clientPartners,
   retailMediaPage,
+  partnerPage,
   // Phase 2: New content types
   helpCenterFaq,
   apiReferencePage,

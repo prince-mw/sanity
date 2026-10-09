@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
+import { defaultPartners } from '@/data/partners'
 
 // Cache for an hour — content freshness here doesn't need to be per-request,
 // and this query fans out to ~12 collections, so refetching on every crawler
@@ -57,6 +58,11 @@ async function getSitemapData() {
       "citySlug": slug.current,
       "lastModified": _updatedAt
     },
+    "partnerPages": *[_type == "partnerPage" && isPublished != false && defined(slug.current)] {
+      "slug": slug.current,
+      "lastModified": _updatedAt
+    },
+    "partnerPageTotal": count(*[_type == "partnerPage"]),
     "pageSeoDocs": *[_type == "pageSeo" && defined(pageId)] {
       pageId,
       "lastModified": _updatedAt
@@ -95,6 +101,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/agencies', priority: 0.85, changeFreq: 'monthly' as const },
     { route: '/media-owners', priority: 0.85, changeFreq: 'monthly' as const },
     { route: '/retail', priority: 0.85, changeFreq: 'monthly' as const },
+    { route: '/partners', priority: 0.7, changeFreq: 'monthly' as const },
     // Healthcare/Finance industry pages temporarily hidden — templated content, not final. Re-add once published.
     // Resources
     { route: '/blog', priority: 0.9, changeFreq: 'weekly' as const },
@@ -142,6 +149,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     teamMembers: [] as Array<{ slug: string; lastModified: string }>,
     locations: [] as Array<{ slug: string; lastModified: string }>,
     locationCities: [] as Array<{ countrySlug: string; citySlug: string; lastModified: string }>,
+    partnerPages: [] as Array<{ slug: string; lastModified: string }>,
+    partnerPageTotal: 0,
     pageSeoDocs: [] as Array<{ pageId: string; lastModified: string }>,
   }
 
@@ -265,8 +274,22 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.55,
     }))
 
+  // Partner pages — falls back to the bundled defaults until partnerPage docs exist in Sanity
+  const partnerSlugs = sanityData.partnerPageTotal > 0
+    ? sanityData.partnerPages
+    : defaultPartners.map(p => ({ slug: p.slug, lastModified: '' }))
+  const partnerEntries: MetadataRoute.Sitemap = partnerSlugs
+    .filter(p => p.slug)
+    .map(p => ({
+      url: `${baseUrl}/partners/${p.slug}`,
+      lastModified: p.lastModified || currentDate,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    }))
+
   return [
     ...staticEntries,
+    ...partnerEntries,
     ...locationEntries,
     ...blogEntries,
     ...caseStudyEntries,

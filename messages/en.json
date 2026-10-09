@@ -698,7 +698,8 @@
     "clients": {
       "eyebrow": "Technology Partners",
       "title": "Integrated With Leading Platforms",
-      "description": "Modern marketing is borderless. Your media should be too."
+      "description": "Modern marketing is borderless. Your media should be too.",
+      "viewAll": "Explore our partners"
     },
     "products": {
       "badge": "Complete MW Ecosystem",

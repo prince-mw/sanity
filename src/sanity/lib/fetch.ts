@@ -3,6 +3,7 @@ import { client, previewClient, urlFor } from './client'
 import { sanitizeHtml } from '@/lib/sanitize'
 import type { LocationData } from '@/data/staticLocationData'
 import { defaultRetailMediaContent, type RetailMediaContent } from '@/data/retail-media-page'
+import { defaultPartners, type PartnerPageContent } from '@/data/partners'
 
 // Per-request deduplication: identical query+params won't fire twice within the same render tree
 // (e.g. generateMetadata + page body both calling getBlogPostBySlug for the same slug)
@@ -3682,6 +3683,50 @@ export async function getCareersPageContent(): Promise<CareersPageContent | null
     console.error('Error fetching careers page content:', error)
     return null
   }
+}
+
+// Partner pages (/partners, /partners/[slug]). Falls back to src/data/partners.ts
+// when Sanity has no published partnerPage documents.
+const partnerPageProjection = `{
+  name,
+  "slug": slug.current,
+  "logo": select(defined(logo.asset) => { "url": logo.asset->url, "alt": coalesce(logo.alt, name + " logo") }, null),
+  logoBackground, category, summary, order,
+  heroEyebrow, heroTitle, heroParagraphs, heroCtaText,
+  "heroImage": select(defined(heroImage.asset) => { "url": heroImage.asset->url, "alt": coalesce(heroImage.alt, "") }, null),
+  heroIllustration,
+  highlights[] { icon, text },
+  sections[] { _type, icon, heading, intro, paragraphs, callout, cards[] { icon, title, description }, buttonText },
+  metaTitle, metaDescription
+}`
+
+export async function getAllPartnerPages(): Promise<PartnerPageContent[]> {
+  const result = await safeFetch<{ docs: PartnerPageContent[]; total: number } | null>(
+    `{
+      "docs": *[_type == "partnerPage" && isPublished != false && defined(slug.current)] | order(coalesce(order, 999) asc, name asc) ${partnerPageProjection},
+      "total": count(*[_type == "partnerPage"])
+    }`,
+    undefined,
+    null
+  )
+  return result && result.total > 0 ? result.docs : defaultPartners
+}
+
+export async function getPartnerPageBySlug(slug: string): Promise<PartnerPageContent | null> {
+  const result = await safeFetch<{ doc: PartnerPageContent | null; total: number } | null>(
+    `{
+      "doc": *[_type == "partnerPage" && slug.current == $slug && isPublished != false][0] ${partnerPageProjection},
+      "total": count(*[_type == "partnerPage"])
+    }`,
+    { slug },
+    null
+  )
+  const doc = result?.doc
+  if (doc) return { ...doc, heroParagraphs: doc.heroParagraphs || [], sections: doc.sections || [] }
+  // Only fall back to the bundled defaults when the CMS has no partner pages at all (or is
+  // unreachable) — otherwise a partner hidden in Studio would reappear from the defaults.
+  if (result && result.total > 0) return null
+  return defaultPartners.find((p) => p.slug === slug) || null
 }
 
 // Retail Media Page (/retail) — singleton. Returns the defaults from

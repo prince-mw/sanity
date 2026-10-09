@@ -113,6 +113,7 @@ const structure = (S: any) =>
                     .documentId('retailMediaPage')
                     .title('Retail Media Page (/retail)')
                 ),
+              S.documentTypeListItem('partnerPage').title('Partner Pages'),
             ])
         ),
       // Team & Organization

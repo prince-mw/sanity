@@ -14,7 +14,7 @@ const About = dynamic(() => import("../components/About"));
 const Newsletter = dynamic(() => import("../components/Newsletter"));
 const CaseStudiesSection = dynamic(() => import("../components/CaseStudiesSection"));
 const ContactForm = dynamic(() => import("../components/ContactForm"));
-import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm, getClientPartnersContent } from "@/sanity/lib/fetch";
+import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm, getClientPartnersContent, getAllPartnerPages } from "@/sanity/lib/fetch";
 
 export const revalidate = 3600;
 
@@ -45,11 +45,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
-  const [caseStudiesData, trustBarContent, contactForm, clientPartnersContent] = await Promise.all([
+  const [caseStudiesData, trustBarContent, contactForm, clientPartnersContent, partnerPages] = await Promise.all([
     getAllCaseStudies().catch(() => null),
     getTrustBarContent(),
     getContactZohoForm(),
     getClientPartnersContent(),
+    getAllPartnerPages(),
   ]);
 
   const caseStudies: SanityCaseStudy[] = caseStudiesData?.slice(0, 4) || [];
@@ -66,6 +67,7 @@ export default async function Home() {
         partners={clientPartnersContent?.partners}
         sectionTitle={clientPartnersContent?.sectionTitle}
         sectionDescription={clientPartnersContent?.sectionDescription}
+        partnerPages={partnerPages.map((p) => ({ name: p.name, slug: p.slug }))}
       />
       <TestimonialSection />
       {/* <About /> */}

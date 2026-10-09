@@ -422,7 +422,11 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 in full. */}
             <div className="hidden lg:block lg:col-span-6 w-full relative self-stretch">
               <div className="absolute lg:-top-8 lg:-bottom-28 left-0 right-0 flex items-start justify-start">
-                <div className="relative h-full aspect-square overflow-hidden">
+                {/* shrink-0: without it, flexbox shrinks this box's width down to fit the
+                    column (588px) while its height stays at the full bled height (604.5px,
+                    from h-full) — breaking the square aspect ratio and leaving the true-square
+                    image letterboxed with a gap top and bottom instead of touching both edges. */}
+                <div className="relative h-full aspect-square overflow-hidden shrink-0">
                   <Image
                     src={STUDIO_HERO_IMAGE_URL}
                     alt="Colorful archway corridor with red, yellow, pink and blue painted columns"

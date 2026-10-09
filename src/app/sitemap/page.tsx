@@ -77,6 +77,7 @@ export default function SitemapPage() {
         { name: "For Agencies", href: "/agencies" },
         { name: "For Media Owners", href: "/media-owners" },
         { name: "For Retailers", href: "/retail" },
+        { name: "Partners", href: "/partners" },
       ]
     },
     {

@@ -209,6 +209,7 @@ const createMegaMenuData = (t: (key: string) => string) => ({
           // Leadership link hidden from mega menu
           // { name: t('megaMenu.about.leadership.name'), description: t('megaMenu.about.leadership.description'), href: "/leadership" },
           { name: t('megaMenu.about.careers.name'), description: t('megaMenu.about.careers.description'), href: "/careers" },
+          { name: t('megaMenu.about.partners.name'), description: t('megaMenu.about.partners.description'), href: "/partners" },
         ],
       },
     ],

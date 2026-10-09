@@ -673,7 +673,8 @@
     "clients": {
       "eyebrow": "技术合作伙伴",
       "title": "与领先平台集成",
-      "description": "与您现有的营销技术栈无缝集成"
+      "description": "与您现有的营销技术栈无缝集成",
+      "viewAll": "了解我们的合作伙伴"
     },
     "products": {
       "badge": "完整的MW生态系统",

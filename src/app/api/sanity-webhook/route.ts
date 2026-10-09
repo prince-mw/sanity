@@ -74,6 +74,8 @@ const typeToPath: Record<string, string[]> = {
   analyticsConfig: ['/'],
   pageSeo: ['/', '/mw-inventory', '/retail'],
   retailMediaPage: ['/retail'],
+  // Slug is appended automatically → /partners/{slug}
+  partnerPage: ['/partners'],
   category: ['/blog', '/'],
   author: ['/blog', '/'],
   integration: ['/integrations', '/'],
