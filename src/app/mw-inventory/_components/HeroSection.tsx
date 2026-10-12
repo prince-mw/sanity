@@ -3,7 +3,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
 
-const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/2a0473807356b167854ae96d7e5966c0030bf891-1200x1200.png?w=1200&q=90&auto=format';
+// Same hero artwork as MW Studio (MW Inventory is part of MW Studio)
+const HERO_IMAGE_URL = '/assets/images/mw-studio-hero-banner-image.webp';
 
 interface HeroSectionProps {
   badge?: string;
@@ -114,7 +115,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="relative w-full max-w-md aspect-square">
               <Image
                 src={imageUrl}
-                alt="Ring ring, calling all billboards"
+                alt="Colorful archway corridor with red, yellow, pink and blue painted columns"
+                title="MW Inventory"
                 fill
                 className="object-contain"
                 sizes="90vw"
@@ -138,7 +140,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="relative h-[112%] aspect-square">
                 <Image
                   src={imageUrl}
-                  alt="Ring ring, calling all billboards"
+                  alt="Colorful archway corridor with red, yellow, pink and blue painted columns"
+                  title="MW Inventory"
                   fill
                   className="object-contain"
                   sizes="900px"

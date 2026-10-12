@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
 import { InfluenceGeometry } from './brand/InfluenceGeometry';
 
-const HERO_IMAGE_URL = '/assets/images/mw-influence-hero-banner-image.webp';
+// New filename (not overwritten in place): /assets images are served with a 1-year immutable cache
+const HERO_IMAGE_URL = '/assets/images/mw-influence-hero-banner-image-v2.webp';
 
 interface HeroSectionProps {
   badge?: string;
@@ -73,10 +74,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           {/* Mobile/tablet — a normal contained image below the text (below lg the bleed
               treatment below doesn't apply, since the columns are stacked). */}
           <div className="lg:hidden w-full flex items-center justify-center">
-            <div className="relative w-full max-w-sm aspect-[848/1227]">
+            <div className="relative w-full max-w-sm aspect-square">
               <Image
                 src={HERO_IMAGE_URL}
-                alt="A fountain pen's ink fans out into out-of-home billboard, city and lifestyle imagery"
+                alt="A fountain pen nib splitting a red page open to reveal city, lifestyle and out-of-home billboard scenes"
+                title="MW Influence"
                 fill
                 className="object-contain"
                 sizes="80vw"
@@ -101,9 +103,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="relative h-full aspect-square">
                 <Image
                   src={HERO_IMAGE_URL}
-                  alt="A fountain pen's ink fans out into out-of-home billboard, city and lifestyle imagery"
+                  alt="A fountain pen nib splitting a red page open to reveal city, lifestyle and out-of-home billboard scenes"
+                  title="MW Influence"
                   fill
-                  className="object-cover object-top"
+                  className="object-cover"
                   sizes="700px"
                   quality={90}
                   priority
