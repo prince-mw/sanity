@@ -40,6 +40,42 @@ function resolvePreviewUrl(doc: any): string | null {
 // Singleton document types - only one document should exist
 const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig', 'contactPage', 'trustBar', 'clientPartners', 'retailMediaPage', 'singaporePage']
 
+// Singapore uses its own page types (singaporePage + singaporeVenuePage) instead of the
+// generic location/locationCity ones, so its Locations entry opens those. The original
+// location doc stays: it still drives the /locations card, contact form URL and logo strip.
+const SINGAPORE_LOCATION_ID = 'NUzgRk9h7jKjntS8pyrlOI'
+
+const singaporeCountryList = (S: any, countryId: string) =>
+  S.list()
+    .title('Singapore')
+    .items([
+      S.listItem()
+        .title('Singapore Page')
+        .id('singaporePage')
+        .child(
+          S.document()
+            .schemaType('singaporePage')
+            .documentId('singaporePage')
+            .title('Singapore Page (/locations/singapore)')
+        ),
+      S.listItem()
+        .title('Cities (Venue Pages)')
+        .schemaType('singaporeVenuePage')
+        .child(
+          S.documentTypeList('singaporeVenuePage')
+            .title('Singapore Venue Pages')
+            .defaultOrdering([{ field: 'order', direction: 'asc' }])
+        ),
+      S.listItem()
+        .title('Card, Form & Logos')
+        .child(
+          S.document()
+            .schemaType('location')
+            .documentId(countryId)
+            .title('Singapore: /locations card, contact form & logo strip')
+        ),
+    ])
+
 // Supported languages for i18n
 const supportedLanguages = [
   {id: 'en', title: 'English', isDefault: true},
@@ -128,32 +164,6 @@ const structure = (S: any) =>
               S.documentTypeListItem('office').title('Offices'),
               S.documentTypeListItem('testimonial').title('Testimonials'),
               S.listItem()
-                .title('Singapore Pages')
-                .id('singaporePages')
-                .child(
-                  S.list()
-                    .title('Singapore Pages')
-                    .items([
-                      S.listItem()
-                        .title('Singapore Page')
-                        .id('singaporePage')
-                        .child(
-                          S.document()
-                            .schemaType('singaporePage')
-                            .documentId('singaporePage')
-                            .title('Singapore Page (/locations/singapore)')
-                        ),
-                      S.listItem()
-                        .title('Venue Pages')
-                        .schemaType('singaporeVenuePage')
-                        .child(
-                          S.documentTypeList('singaporeVenuePage')
-                            .title('Singapore Venue Pages')
-                            .defaultOrdering([{ field: 'order', direction: 'asc' }])
-                        ),
-                    ])
-                ),
-              S.listItem()
                 .title('Locations')
                 .schemaType('location')
                 .child(
@@ -166,7 +176,9 @@ const structure = (S: any) =>
                       S.orderingMenuItem({ title: 'Country (A-Z)', by: [{ field: 'country', direction: 'asc' }] }),
                     ])
                     .child((countryId: string) =>
-                      S.list()
+                      countryId === SINGAPORE_LOCATION_ID
+                        ? singaporeCountryList(S, countryId)
+                        : S.list()
                         .title('Country')
                         .items([
                           S.listItem()
