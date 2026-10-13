@@ -1,8 +1,9 @@
 // Singapore landing page (/locations/singapore) and its five venue pages
-// (/locations/singapore/{venue}). Hand-authored for now; structured so it can move
-// into Sanity later without changing the page components.
+// (/locations/singapore/{venue}). Content is edited in Sanity (singaporePage and
+// singaporeVenuePage, see src/sanity/lib/singapore.ts); this copy is the fallback used for
+// empty fields and when Sanity is unreachable, and the source for scripts/seed-singapore-pages.mjs.
 //
-// Image slots with `src: null` render a labelled placeholder until real images arrive.
+// Image slots with `src: null` render a labelled placeholder.
 
 export interface SgImage {
   src: string | null
@@ -90,6 +91,8 @@ export const SG_BASE_PATH = '/locations/singapore'
 // Fallback when the Sanity Singapore location doc can't be read
 export const SG_CONTACT_FORM_URL =
   'https://forms.zohopublic.com/movingwallsholdingpteltd/form/SingaporeContact/formperma/cR6lghl1nztf-tJNW-J0xIGt2JGSKsMmRVq_R7Kl4is'
+
+export type SgScience = typeof mwScienceBlock
 
 export const mwScienceBlock = {
   heading: 'Go Beyond Campaign Measurement with MW Science',
@@ -876,7 +879,7 @@ export const sgMain = {
       "It also means briefs move faster. A regional team that doesn't know the market shouldn't have to work out which mall sits in which district. Start from the venue type, and every relevant screen is already listed, once.",
     ],
     cta: 'Explore Advertising Options',
-    image: { src: 'https://cdn.sanity.io/images/u10im6di/production/452975c1a3aa24548b88788a703c28546c30df44-960x540.webp', alt: 'Singapore CBD and Marina Bay skyline at dusk, a prime market for outdoor advertising', title: 'Outdoor advertising in Singapore', need: '' },
+    image: { src: 'https://cdn.sanity.io/images/u10im6di/production/452975c1a3aa24548b88788a703c28546c30df44-960x540.webp', alt: 'Singapore CBD and Marina Bay skyline at dusk, a prime market for outdoor advertising', title: 'Outdoor advertising in Singapore', need: '' } as SgImage,
   },
   measurement: {
     heading: 'Run the Campaign. Get It Evaluated.',
@@ -959,6 +962,8 @@ export const sgMain = {
     },
   ] as SgFaq[],
 }
+
+export type SgMain = typeof sgMain
 
 /** FAQPage JSON-LD; multi-paragraph answers are joined with a space */
 export function sgFaqJsonLd(faqs: SgFaq[]) {

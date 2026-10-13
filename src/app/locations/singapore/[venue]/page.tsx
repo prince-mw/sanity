@@ -2,20 +2,22 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import SingaporeVenueClient from '@/components/SingaporeVenueClient'
 import { getLocationBySlug } from '@/sanity/lib/fetch'
-import { getSgVenue, sgVenues, sgFaqJsonLd, SG_BASE_PATH, SG_CONTACT_FORM_URL } from '@/data/singapore'
+import { getSingaporeMain, getSingaporeVenues } from '@/sanity/lib/singapore'
+import { sgFaqJsonLd, SG_BASE_PATH, SG_CONTACT_FORM_URL } from '@/data/singapore'
 
 type Props = { params: Promise<{ venue: string }> }
 
 export const revalidate = 3600
-export const dynamicParams = false
 
-export function generateStaticParams() {
-  return sgVenues.map((v) => ({ venue: v.slug }))
+// Venue pages added later in Studio render on first request (no redeploy needed)
+export async function generateStaticParams() {
+  const venues = await getSingaporeVenues()
+  return venues.map((v) => ({ venue: v.slug }))
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { venue: slug } = await params
-  const venue = getSgVenue(slug)
+  const venue = (await getSingaporeVenues()).find((v) => v.slug === slug)
   if (!venue) return {}
   const url = `https://www.movingwalls.com${SG_BASE_PATH}/${venue.slug}`
   return {
@@ -29,17 +31,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SingaporeVenuePage({ params }: Props) {
   const { venue: slug } = await params
-  const venue = getSgVenue(slug)
+  const [allVenues, { science }, doc] = await Promise.all([
+    getSingaporeVenues(),
+    getSingaporeMain(),
+    getLocationBySlug('singapore'),
+  ])
+  const venue = allVenues.find((v) => v.slug === slug)
   if (!venue) notFound()
 
-  const doc = await getLocationBySlug('singapore')
   /* eslint-disable @typescript-eslint/no-explicit-any */
   const sections: any[] = (doc as any)?.sections || []
   /* eslint-enable @typescript-eslint/no-explicit-any */
   const formUrl = doc?.contactFormUrl || SG_CONTACT_FORM_URL
   const logoSection = sections.find((s) => s._type === 'logoCarousel') || null
 
-  // Image-only cards: don't send the placeholder site details to the browser at all
+  // Image-only cards: don't send the hidden site details to the browser at all
   const clientVenue = venue.landmarksImageOnly
     ? { ...venue, landmarks: venue.landmarks.map((l) => ({ ...l, name: '', location: '', format: '', reach: '', impressions: '' })) }
     : venue
@@ -61,7 +67,7 @@ export default async function SingaporeVenuePage({ params }: Props) {
     <>
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <SingaporeVenueClient venue={clientVenue} formUrl={formUrl} logoSection={logoSection} />
+      <SingaporeVenueClient venue={clientVenue} allVenues={allVenues} science={science} formUrl={formUrl} logoSection={logoSection} />
     </>
   )
 }

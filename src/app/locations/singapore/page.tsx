@@ -1,20 +1,25 @@
 import { Metadata } from 'next'
 import SingaporeLandingClient from '@/components/SingaporeLandingClient'
 import { getLocationBySlug } from '@/sanity/lib/fetch'
-import { sgMain, sgFaqJsonLd, SG_CONTACT_FORM_URL } from '@/data/singapore'
+import { getSingaporeMain, getSingaporeVenues } from '@/sanity/lib/singapore'
+import { sgFaqJsonLd, SG_CONTACT_FORM_URL } from '@/data/singapore'
 
 // Dedicated Singapore page — takes precedence over the generic /locations/[slug] route.
-// The Singapore form URL and the "Trusted Globally by Marketers" logo strip still come
-// from the Singapore location document in Sanity.
+// Content comes from the Sanity `singaporePage` + `singaporeVenuePage` docs (falling back to
+// src/data/singapore.ts). The Singapore form URL and the "Trusted Globally by Marketers" logo
+// strip still come from the Singapore location document.
 
 const url = 'https://www.movingwalls.com/locations/singapore'
 
-export const metadata: Metadata = {
-  title: sgMain.metaTitle,
-  description: sgMain.metaDescription,
-  openGraph: { title: sgMain.metaTitle, description: sgMain.metaDescription, type: 'website', url },
-  twitter: { card: 'summary_large_image', title: sgMain.metaTitle, description: sgMain.metaDescription },
-  alternates: { canonical: url },
+export async function generateMetadata(): Promise<Metadata> {
+  const { main } = await getSingaporeMain()
+  return {
+    title: main.metaTitle,
+    description: main.metaDescription,
+    openGraph: { title: main.metaTitle, description: main.metaDescription, type: 'website', url },
+    twitter: { card: 'summary_large_image', title: main.metaTitle, description: main.metaDescription },
+    alternates: { canonical: url },
+  }
 }
 
 export const revalidate = 3600
@@ -31,8 +36,12 @@ async function getSingaporeShared() {
 }
 
 export default async function SingaporePage() {
-  const { formUrl, logoSection } = await getSingaporeShared()
-  const faqJsonLd = sgFaqJsonLd(sgMain.faqs)
+  const [{ formUrl, logoSection }, { main }, venues] = await Promise.all([
+    getSingaporeShared(),
+    getSingaporeMain(),
+    getSingaporeVenues(),
+  ])
+  const faqJsonLd = sgFaqJsonLd(main.faqs)
   const breadcrumbJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -47,7 +56,7 @@ export default async function SingaporePage() {
     <>
       {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }} />
-      <SingaporeLandingClient formUrl={formUrl} logoSection={logoSection} />
+      <SingaporeLandingClient main={main} venues={venues} formUrl={formUrl} logoSection={logoSection} />
     </>
   )
 }

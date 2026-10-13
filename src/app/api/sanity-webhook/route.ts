@@ -76,6 +76,10 @@ const typeToPath: Record<string, string[]> = {
   retailMediaPage: ['/retail'],
   // Slug is appended automatically → /partners/{slug}
   partnerPage: ['/partners'],
+  // Venue pages pick up MW Science block edits via revalidateTag('sanity') below
+  singaporePage: ['/locations/singapore'],
+  // Slug is appended automatically → /locations/singapore/{slug}; the main page lists every venue
+  singaporeVenuePage: ['/locations/singapore'],
   category: ['/blog', '/'],
   author: ['/blog', '/'],
   integration: ['/integrations', '/'],

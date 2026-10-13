@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { sgVenues, SG_BASE_PATH, type SgVenue } from '@/data/singapore'
+import { SG_BASE_PATH, type SgScience, type SgVenue } from '@/data/singapore'
 import {
   SG_NAVY,
   CheckIcon,
@@ -24,15 +24,19 @@ import {
 
 export default function SingaporeVenueClient({
   venue,
+  allVenues,
+  science,
   formUrl,
   logoSection,
 }: {
   venue: SgVenue
+  allVenues: SgVenue[]
+  science: SgScience
   formUrl: string
   logoSection: SgLogoSection | null
 }) {
   const openForm = useSgForm(formUrl)
-  const otherVenues = sgVenues.filter((v) => v.slug !== venue.slug)
+  const otherVenues = allVenues.filter((v) => v.slug !== venue.slug)
 
   return (
     <div className="bg-white text-gray-900">
@@ -162,7 +166,7 @@ export default function SingaporeVenueClient({
               </ul>
             </div>
           </div>
-          <SgMwScience />
+          <SgMwScience block={science} />
         </div>
       </section>
 

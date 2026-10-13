@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useZohoPopup } from './ZohoPopupProvider'
 import { LandingPageRenderer } from './landing'
-import { mwScienceBlock, type SgFaq, type SgImage, type SgLandmark, type SgSite } from '@/data/singapore'
+import { type SgFaq, type SgImage, type SgLandmark, type SgScience, type SgSite } from '@/data/singapore'
 
 export const SG_NAVY = 'bg-[#062068]'
 
@@ -171,7 +171,7 @@ export function SgFaqList({ faqs, heading = 'Frequently Asked Questions', bg = '
   )
 }
 
-export function SgMwScience() {
+export function SgMwScience({ block: mwScienceBlock }: { block: SgScience }) {
   return (
     <div className={`relative overflow-hidden rounded-3xl ${SG_NAVY} text-white p-6 sm:p-10`}>
       <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#61CBF5]/20 blur-3xl pointer-events-none" />

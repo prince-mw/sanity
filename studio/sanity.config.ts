@@ -38,7 +38,7 @@ function resolvePreviewUrl(doc: any): string | null {
 }
 
 // Singleton document types - only one document should exist
-const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig', 'contactPage', 'trustBar', 'clientPartners', 'retailMediaPage']
+const singletonTypes = ['analyticsConfig', 'megaMenu', 'redirectSettings', 'careersPage', 'footerConfig', 'contactPage', 'trustBar', 'clientPartners', 'retailMediaPage', 'singaporePage']
 
 // Supported languages for i18n
 const supportedLanguages = [
@@ -127,6 +127,32 @@ const structure = (S: any) =>
               S.documentTypeListItem('jobPosition').title('Job Positions'),
               S.documentTypeListItem('office').title('Offices'),
               S.documentTypeListItem('testimonial').title('Testimonials'),
+              S.listItem()
+                .title('Singapore Pages')
+                .id('singaporePages')
+                .child(
+                  S.list()
+                    .title('Singapore Pages')
+                    .items([
+                      S.listItem()
+                        .title('Singapore Page')
+                        .id('singaporePage')
+                        .child(
+                          S.document()
+                            .schemaType('singaporePage')
+                            .documentId('singaporePage')
+                            .title('Singapore Page (/locations/singapore)')
+                        ),
+                      S.listItem()
+                        .title('Venue Pages')
+                        .schemaType('singaporeVenuePage')
+                        .child(
+                          S.documentTypeList('singaporeVenuePage')
+                            .title('Singapore Venue Pages')
+                            .defaultOrdering([{ field: 'order', direction: 'asc' }])
+                        ),
+                    ])
+                ),
               S.listItem()
                 .title('Locations')
                 .schemaType('location')

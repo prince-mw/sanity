@@ -1,7 +1,8 @@
 import { MetadataRoute } from 'next'
 import { client } from '@/sanity/lib/client'
 import { defaultPartners } from '@/data/partners'
-import { sgVenues, SG_BASE_PATH } from '@/data/singapore'
+import { SG_BASE_PATH } from '@/data/singapore'
+import { getSingaporeVenues } from '@/sanity/lib/singapore'
 
 // Cache for an hour — content freshness here doesn't need to be per-request,
 // and this query fans out to ~12 collections, so refetching on every crawler
@@ -185,8 +186,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.6,
     }))
 
-  // Singapore venue pages (hand-authored, see src/data/singapore.ts)
-  const singaporeVenueEntries: MetadataRoute.Sitemap = sgVenues.map((v) => ({
+  // Singapore venue pages (Sanity singaporeVenuePage docs, falling back to src/data/singapore.ts)
+  const singaporeVenueEntries: MetadataRoute.Sitemap = (await getSingaporeVenues()).map((v) => ({
     url: `${baseUrl}${SG_BASE_PATH}/${v.slug}`,
     lastModified: currentDate,
     changeFrequency: 'monthly' as const,

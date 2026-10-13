@@ -15,7 +15,7 @@ const dedupedClientFetch = cache(
 )
 
 // Safe fetch wrapper - prevents page crashes on Sanity network errors
-async function safeFetch<T>(query: string, params?: Record<string, unknown>, fallback?: T): Promise<T> {
+export async function safeFetch<T>(query: string, params?: Record<string, unknown>, fallback?: T): Promise<T> {
   try {
     return await dedupedClientFetch(query, params ? JSON.stringify(params) : '') as T
   } catch (error) {
