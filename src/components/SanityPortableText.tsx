@@ -365,6 +365,96 @@ const components: PortableTextComponents = {
     },
     // Table block
     tableBlock: ({ value }) => {
+      const headers: string[] = value.headers || []
+      const rows: { _key?: string; cells: string[] }[] = value.rows || []
+
+      // "Columns" design: each column becomes its own card listing that column's cells.
+      // Suits tables whose columns are independent lists (e.g. MW Science capabilities).
+      if (value.design === 'columns') {
+        const gridCols =
+          headers.length >= 4 ? 'md:grid-cols-2 lg:grid-cols-4' : headers.length === 3 ? 'md:grid-cols-3' : headers.length === 2 ? 'md:grid-cols-2' : ''
+        return (
+          <div className={`not-prose my-10 grid gap-6 ${gridCols} text-left`}>
+            {headers.map((header, col) => {
+              const items = rows.map((r) => r.cells?.[col]).filter((c): c is string => !!c && c.trim() !== '')
+              return (
+                <div
+                  key={`col-${col}`}
+                  className="bg-white rounded-2xl border border-mw-gray-100 border-t-4 border-t-mw-blue-600 shadow-sm hover:shadow-lg transition-shadow p-6"
+                >
+                  <div className="flex items-center gap-3 mb-5">
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-mw-blue-50 text-mw-blue-600 font-bold">
+                      {col + 1}
+                    </span>
+                    <h3 className="text-lg font-bold text-mw-gray-900 leading-snug">{header}</h3>
+                  </div>
+                  <ul className="space-y-3">
+                    {items.map((item, i) => (
+                      <li key={i} className="flex items-start gap-3 text-sm text-mw-gray-700">
+                        <svg className="mt-0.5 h-5 w-5 flex-shrink-0 text-mw-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )
+            })}
+          </div>
+        )
+      }
+
+      // "Modern" design: branded header, rounded card, bold first column; rows stack on mobile.
+      if (value.design === 'modern') {
+        return (
+          <div className="not-prose my-10 text-left">
+            {value.caption && <div className="text-sm text-mw-gray-600 mb-3 font-medium">{value.caption}</div>}
+            <div className="overflow-hidden rounded-2xl border border-mw-gray-200 bg-white shadow-sm">
+              <table className="w-full">
+                <thead className="hidden md:table-header-group">
+                  <tr className="bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
+                    {headers.map((header, index) => (
+                      <th
+                        key={`header-${index}`}
+                        className={`px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-white ${index === 0 && headers.length > 1 ? 'md:w-1/3' : ''}`}
+                      >
+                        {header}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-mw-gray-100">
+                  {rows.map((row, rowIndex) => (
+                    <tr
+                      key={row._key || `row-${rowIndex}`}
+                      className={`block md:table-row px-5 py-4 md:p-0 transition-colors hover:bg-mw-blue-50/60 ${
+                        value.striped && rowIndex % 2 === 1 ? 'md:bg-mw-gray-50/70' : ''
+                      }`}
+                    >
+                      {row.cells?.map((cell, cellIndex) =>
+                        cellIndex === 0 ? (
+                          <td key={cellIndex} className="block md:table-cell md:px-6 md:py-4 md:align-middle">
+                            <span className="flex items-start gap-2 font-semibold text-mw-gray-900">
+                              <span className="mt-2 md:mt-0 md:self-center h-2 w-2 flex-shrink-0 rounded-full bg-mw-blue-600" />
+                              {cell}
+                            </span>
+                          </td>
+                        ) : (
+                          <td key={cellIndex} className="block md:table-cell pl-4 pt-1 md:px-6 md:py-4 text-sm text-mw-gray-600 md:align-middle">
+                            {cell}
+                          </td>
+                        )
+                      )}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+      }
+
       return (
         <div className="my-8 overflow-x-auto">
           {value.caption && (

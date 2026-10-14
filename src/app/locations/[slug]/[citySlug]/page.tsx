@@ -1,12 +1,14 @@
 import { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
-import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUrl, getCitiesByCountry, transformCityForList } from '@/sanity/lib/fetch'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
   const { slug, citySlug } = await params
 
-  const city = await getCityBySlug(slug, citySlug)
+  const { isEnabled: isPreview } = await draftMode()
+  const city = await getCityBySlug(slug, citySlug, isPreview)
   if (!city) {
     const formattedName = citySlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
     return {
@@ -49,12 +51,16 @@ export async function generateStaticParams() {
 export default async function CityPage({ params }: { params: Promise<{ slug: string; citySlug: string }> }) {
   const { slug, citySlug } = await params
 
-  const city = await getCityBySlug(slug, citySlug)
+  const { isEnabled: isPreview } = await draftMode()
+  const city = await getCityBySlug(slug, citySlug, isPreview)
   if (!city) {
     notFound()
   }
 
   const cityData = transformCityFull(city)
+  const relatedCities = (await getCitiesByCountry(slug, isPreview))
+    .filter((c) => c.slug?.current !== citySlug)
+    .map(transformCityForList)
 
   const faqJsonLd = cityData.faqs && cityData.faqs.length > 0 ? {
     "@context": "https://schema.org",
@@ -82,6 +88,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         backHref={`/locations/${slug}`}
         backLabel={`Back to ${city.country?.country || 'Country'}`}
         pageType="city"
+        relatedCities={relatedCities}
+        countryName={city.country?.country || undefined}
       />
     </>
   )

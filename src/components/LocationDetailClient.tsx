@@ -122,9 +122,12 @@ interface LocationDetailClientProps {
   cities?: LocationCityCard[]
   /** Distinguishes a country page from an individual city page — both render through this same component. */
   pageType?: 'country' | 'city'
+  /** City pages only: the country's other cities, linked at the bottom of the page */
+  relatedCities?: LocationCityCard[]
+  countryName?: string
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country' }: LocationDetailClientProps) {
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country', relatedCities = [], countryName }: LocationDetailClientProps) {
   const location = initialData
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)
   const { openZohoPopup, setCurrentPageFormUrl } = useZohoPopup()
@@ -196,7 +199,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                 )}
               </h1>
               
-              <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed">
+              <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed whitespace-pre-line">
                 {location.description}
               </p>
               
@@ -392,6 +395,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                       <span>{billboard.location}</span>
                     </div>
                     <p className="text-gray-600 text-sm mb-4">{billboard.description}</p>
+                    {/* Hidden until the site has real figures (e.g. pending MW Measure numbers) */}
+                    {(billboard.reach || billboard.impressions) && (
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                       <div>
                         <div className="text-lg font-bold text-mw-blue-600">{billboard.reach}</div>
@@ -402,6 +407,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                         <div className="text-xs text-gray-500">{location.billboardsMonthlyImpressionsLabel || 'Monthly Impressions'}</div>
                       </div>
                     </div>
+                    )}
                   </div>
                 </motion.div>
               ))}
@@ -415,7 +421,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
         <section className="py-10 md:py-14 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.mediaTypesHeading || 'Media Types Available'}</h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Flex-wrap rather than grid so an incomplete last row (e.g. 3 formats) is centred */}
+            <div className="flex flex-wrap justify-center gap-6">
               {location.mediaTypes.map((media, index) => {
                 const cardContent = (
                   <>
@@ -426,10 +433,11 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                     <p className="text-gray-600">{media.description}</p>
                   </>
                 );
-                const cardClassName = "bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow";
+                const cardClassName = "h-full bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow";
                 return (
                   <motion.div
                     key={index}
+                    className="w-full md:w-[calc(50%-12px)] lg:w-[calc(25%-18px)]"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
@@ -483,6 +491,43 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* CMS Sections - After FAQs */}
       {sectionsPosition === 'after-faqs' && cmsSections}
+
+      {/* Other cities in this country (city pages) — internal links between sibling city pages */}
+      {pageType === 'city' && relatedCities.length > 0 && (
+        <section className="py-14 md:py-16 bg-mw-gray-50 border-t border-mw-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+                Explore Other Cities{countryName ? ` in ${countryName}` : ''}
+              </h2>
+              <p className="text-lg text-gray-600">Plan your campaign across more cities in one buy</p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-6">
+              {relatedCities.map((related) => (
+                <Link
+                  key={related.href}
+                  href={related.href}
+                  className="group w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] bg-white rounded-xl p-6 border border-mw-gray-100 shadow-sm hover:shadow-lg hover:border-mw-blue-200 transition-all"
+                >
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-mw-blue-600 transition-colors">{related.city}</h3>
+                  {related.description && <p className="text-sm text-gray-600 mb-4">{related.description}</p>}
+                  <span className="inline-flex items-center gap-1 text-sm font-semibold text-mw-blue-600">
+                    Explore {related.city}
+                    <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </span>
+                </Link>
+              ))}
+            </div>
+            <div className="text-center mt-10">
+              <Link href={backHref} className="inline-flex items-center gap-2 font-semibold text-mw-blue-600 hover:text-mw-blue-700">
+                {backLabel.replace(/^Back to /, 'View all of ')}
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   )
 }

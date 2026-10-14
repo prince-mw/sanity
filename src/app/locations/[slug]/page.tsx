@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
 import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transformCityForList, getSanityImageUrl } from '@/sanity/lib/fetch'
@@ -9,7 +10,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   
   // Try Sanity first
-  const sanityLocation = await getLocationBySlug(slug)
+  const { isEnabled: isPreview } = await draftMode()
+  const sanityLocation = await getLocationBySlug(slug, isPreview)
   if (sanityLocation) {
     const seo = sanityLocation.seo
     const title = seo?.metaTitle || sanityLocation.country
@@ -85,11 +87,12 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
   const { slug } = await params
 
   // Try to fetch from Sanity first
-  const sanityLocation = await getLocationBySlug(slug)
+  const { isEnabled: isPreview } = await draftMode()
+  const sanityLocation = await getLocationBySlug(slug, isPreview)
 
   if (sanityLocation) {
     const locationData = transformLocationFull(sanityLocation)
-    const cities = (await getCitiesByCountry(slug)).map(transformCityForList)
+    const cities = (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
     const faqJsonLd = buildFaqJsonLd(locationData.faqs)
     return (
       <>

@@ -1745,7 +1745,7 @@ export async function getAllLocations(): Promise<SanityLocation[]> {
   return safeFetch(query)
 }
 
-export async function getLocationBySlug(slug: string): Promise<SanityLocation | null> {
+export async function getLocationBySlug(slug: string, preview: boolean = false): Promise<SanityLocation | null> {
   const query = `
     *[_type == "location" && slug.current == $slug][0] {
       _id,
@@ -1809,6 +1809,10 @@ export async function getLocationBySlug(slug: string): Promise<SanityLocation | 
       }
     }
   `
+  // Preview mode needs the draft-aware `previewClient` (same pattern as getBlogPostBySlug).
+  if (preview) {
+    return previewClient.fetch(query, { slug })
+  }
   return safeFetch(query, { slug })
 }
 
@@ -1951,7 +1955,7 @@ const locationCityProjection = `
   }
 `
 
-export async function getCitiesByCountry(countrySlug: string): Promise<SanityLocationCity[]> {
+export async function getCitiesByCountry(countrySlug: string, preview: boolean = false): Promise<SanityLocationCity[]> {
   const query = `
     *[_type == "locationCity" && isActive == true && country->slug.current == $countrySlug] | order(order asc) {
       _id,
@@ -1964,15 +1968,23 @@ export async function getCitiesByCountry(countrySlug: string): Promise<SanityLoc
       order
     }
   `
+  // Preview mode needs the draft-aware `previewClient` (same pattern as getBlogPostBySlug).
+  if (preview) {
+    return previewClient.fetch(query, { countrySlug })
+  }
   return safeFetch(query, { countrySlug })
 }
 
-export async function getCityBySlug(countrySlug: string, citySlug: string): Promise<SanityLocationCity | null> {
+export async function getCityBySlug(countrySlug: string, citySlug: string, preview: boolean = false): Promise<SanityLocationCity | null> {
   const query = `
     *[_type == "locationCity" && slug.current == $citySlug && country->slug.current == $countrySlug][0] {
       ${locationCityProjection}
     }
   `
+  // Preview mode needs the draft-aware `previewClient` (same pattern as getBlogPostBySlug).
+  if (preview) {
+    return previewClient.fetch(query, { countrySlug, citySlug })
+  }
   return safeFetch(query, { countrySlug, citySlug })
 }
 

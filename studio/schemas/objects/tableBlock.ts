@@ -45,6 +45,22 @@ export default defineType({
       ],
     }),
     defineField({
+      name: 'design',
+      title: 'Design',
+      type: 'string',
+      description:
+        'Classic = plain table. Modern = branded table (blue header, rounded card, bold first column). Columns = each column shown as its own card with a list, best when columns are independent lists (e.g. MW Science capabilities).',
+      options: {
+        list: [
+          {title: 'Classic', value: 'classic'},
+          {title: 'Modern', value: 'modern'},
+          {title: 'Columns (cards)', value: 'columns'},
+        ],
+        layout: 'radio',
+      },
+      initialValue: 'classic',
+    }),
+    defineField({
       name: 'striped',
       title: 'Striped Rows',
       type: 'boolean',
