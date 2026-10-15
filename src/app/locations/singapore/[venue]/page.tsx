@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import SingaporeVenueClient from '@/components/SingaporeVenueClient'
 import { getLocationBySlug } from '@/sanity/lib/fetch'
@@ -17,7 +18,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { venue: slug } = await params
-  const venue = (await getSingaporeVenues()).find((v) => v.slug === slug)
+  const { isEnabled: isPreview } = await draftMode()
+  const venue = (await getSingaporeVenues(isPreview)).find((v) => v.slug === slug)
   if (!venue) return {}
   const url = `https://www.movingwalls.com${SG_BASE_PATH}/${venue.slug}`
   return {
@@ -31,9 +33,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SingaporeVenuePage({ params }: Props) {
   const { venue: slug } = await params
+  const { isEnabled: isPreview } = await draftMode()
   const [allVenues, { science }, doc] = await Promise.all([
-    getSingaporeVenues(),
-    getSingaporeMain(),
+    getSingaporeVenues(isPreview),
+    getSingaporeMain(isPreview),
     getLocationBySlug('singapore'),
   ])
   const venue = allVenues.find((v) => v.slug === slug)

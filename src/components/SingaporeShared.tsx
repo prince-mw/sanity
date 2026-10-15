@@ -115,16 +115,23 @@ export function SgLandmarkCards({ landmarks, imageOnly = false }: { landmarks: S
             <h3 className="text-lg font-bold text-gray-900">{l.name}</h3>
             <p className="mt-1 flex items-center gap-1.5 text-sm text-gray-500"><PinIcon />{l.location}</p>
             <p className="mt-3 inline-flex rounded-full bg-mw-blue-50 px-3 py-1 text-xs font-semibold text-mw-blue-700">{l.format}</p>
-            <dl className="mt-5 grid grid-cols-2 gap-4 border-t border-gray-100 pt-4">
+            {/* Each figure shows only when filled in (e.g. reach not yet available for a site) */}
+            {(l.reach || l.impressions) && (
+            <dl className={`mt-5 grid gap-4 border-t border-gray-100 pt-4 ${l.reach && l.impressions ? 'grid-cols-2' : 'grid-cols-1'}`}>
+              {l.reach && (
               <div>
                 <dt className="text-xs text-gray-500">Monthly reach</dt>
                 <dd className="text-lg font-bold text-mw-blue-600">{l.reach}</dd>
               </div>
+              )}
+              {l.impressions && (
               <div>
                 <dt className="text-xs text-gray-500">Monthly impressions</dt>
                 <dd className="text-lg font-bold text-mw-blue-600">{l.impressions}</dd>
               </div>
+              )}
             </dl>
+            )}
           </div>
           )}
         </article>

@@ -3,6 +3,7 @@
 // and the whole page falls back to it when Sanity is unreachable.
 
 import { safeFetch } from './fetch'
+import { previewClient } from './client'
 import {
   sgMain as defaultMain,
   sgVenues as defaultVenues,
@@ -66,8 +67,10 @@ const mainQuery = `*[_type == "singaporePage" && _id == "singaporePage"][0]{
   scienceHeading, scienceBody, scienceLinkText, scienceHref, scienceGroups[]{ title, items }
 }`
 
-export async function getSingaporeMain(): Promise<{ main: SgMain; science: SgScience }> {
-  const d = await safeFetch<Doc | null>(mainQuery, undefined, null)
+export async function getSingaporeMain(preview: boolean = false): Promise<{ main: SgMain; science: SgScience }> {
+  const d = preview
+    ? await previewClient.fetch<Doc | null>(mainQuery).catch(() => null)
+    : await safeFetch<Doc | null>(mainQuery, undefined, null)
   if (!d) return { main: defaultMain, science: defaultScience }
   const m = defaultMain
 
@@ -237,15 +240,15 @@ function toVenue(d: Doc): SgVenue {
 }
 
 /** Published venue pages in display order. Uses the bundled defaults only when Sanity has none at all. */
-export async function getSingaporeVenues(): Promise<SgVenue[]> {
-  const result = await safeFetch<{ docs: Doc[]; total: number } | null>(
-    `{
+export async function getSingaporeVenues(preview: boolean = false): Promise<SgVenue[]> {
+  const query = `{
       "docs": *[_type == "singaporeVenuePage" && isPublished != false && defined(slug.current)] | order(coalesce(order, 999) asc) ${venueProjection},
       "total": count(*[_type == "singaporeVenuePage"])
-    }`,
-    undefined,
-    null
-  )
+    }`
+  // Preview mode reads drafts through the draft-aware previewClient (same pattern as getBlogPostBySlug)
+  const result = preview
+    ? await previewClient.fetch<{ docs: Doc[]; total: number } | null>(query).catch(() => null)
+    : await safeFetch<{ docs: Doc[]; total: number } | null>(query, undefined, null)
   if (!result || result.total === 0) return defaultVenues
   return result.docs.map(toVenue)
 }

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { draftMode } from 'next/headers'
 import SingaporeLandingClient from '@/components/SingaporeLandingClient'
 import { getLocationBySlug } from '@/sanity/lib/fetch'
 import { getSingaporeMain, getSingaporeVenues } from '@/sanity/lib/singapore'
@@ -12,7 +13,8 @@ import { sgFaqJsonLd, SG_CONTACT_FORM_URL } from '@/data/singapore'
 const url = 'https://www.movingwalls.com/locations/singapore'
 
 export async function generateMetadata(): Promise<Metadata> {
-  const { main } = await getSingaporeMain()
+  const { isEnabled: isPreview } = await draftMode()
+  const { main } = await getSingaporeMain(isPreview)
   return {
     title: main.metaTitle,
     description: main.metaDescription,
@@ -36,10 +38,11 @@ async function getSingaporeShared() {
 }
 
 export default async function SingaporePage() {
+  const { isEnabled: isPreview } = await draftMode()
   const [{ formUrl, logoSection }, { main }, venues] = await Promise.all([
     getSingaporeShared(),
-    getSingaporeMain(),
-    getSingaporeVenues(),
+    getSingaporeMain(isPreview),
+    getSingaporeVenues(isPreview),
   ])
   const faqJsonLd = sgFaqJsonLd(main.faqs)
   const breadcrumbJsonLd = {
