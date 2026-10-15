@@ -4,10 +4,11 @@ import { client } from '@/sanity/lib/client';
 import { ZohoResponsiveForm } from './ZohoResponsiveForm';
 import styles from './race-week-malaysia-singapore.module.css';
 
-// Revalidate on the same 60s cadence as the rest of the site — plus the Sanity webhook
-// on-demand-revalidates '/race-week-malaysia-singapore' automatically whenever this landingPage
-// doc is edited (see typeToPath['landingPage'] in src/app/api/sanity-webhook/route.ts).
-export const revalidate = 60;
+// Same 1hr cadence as the rest of the site (sitewide since the Sept 2026 CDN-spike fix) —
+// the Sanity webhook on-demand-revalidates '/race-week-malaysia-singapore' automatically
+// whenever this landingPage doc is edited (see typeToPath['landingPage'] in
+// src/app/api/sanity-webhook/route.ts), so a short TTL here only adds redundant load.
+export const revalidate = 3600;
 
 const PAGE_SLUG = 'race-week-malaysia-singapore';
 

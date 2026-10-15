@@ -30,7 +30,11 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 }
 
-export const dynamic = 'force-dynamic' // always fetch fresh — form URL must never be stale
+// Same 1hr cadence as the rest of the site — the Sanity webhook already on-demand-revalidates
+// '/newsletter' the instant its zohoForm doc changes (see typeToPath['zohoForm'] in
+// src/app/api/sanity-webhook/route.ts), so force-dynamic only added redundant uncached
+// Sanity calls on every single visit without actually buying any extra freshness.
+export const revalidate = 3600
 
 export default async function NewsletterPage() {
   // Fetch the newsletter Zoho Campaigns embed URL from Sanity (formType: 'newsletter')
