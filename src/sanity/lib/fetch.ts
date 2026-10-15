@@ -4,6 +4,7 @@ import { sanitizeHtml } from '@/lib/sanitize'
 import type { LocationData } from '@/data/staticLocationData'
 import { defaultRetailMediaContent, type RetailMediaContent } from '@/data/retail-media-page'
 import { defaultPartners, type PartnerPageContent } from '@/data/partners'
+import type { LocaleValue, LocaleTranslations } from '@/i18n/config'
 
 // Per-request deduplication: identical query+params won't fire twice within the same render tree
 // (e.g. generateMetadata + page body both calling getBlogPostBySlug for the same slug)
@@ -3784,13 +3785,14 @@ export async function getRetailMediaPage(): Promise<RetailMediaContent> {
 }
 
 // Footer Configuration
+// Text fields below are per-locale objects in Sanity (or legacy plain strings) — Footer resolves them.
 export interface FooterNavLink {
-  name: string
+  name: LocaleValue | string
   href: string
 }
 
 export interface FooterNavCategory {
-  title: string
+  title: LocaleValue | string
   showLocationIcon: boolean
   links: FooterNavLink[]
 }
@@ -3801,22 +3803,22 @@ export interface FooterSocialLink {
 }
 
 export interface FooterLegalLink {
-  label: string
+  label: LocaleValue | string
   href: string
 }
 
 export interface FooterContent {
-  companyDescription: string
+  companyDescription: LocaleValue | string
   navCategories: FooterNavCategory[]
   socialLinks: FooterSocialLink[]
   movingHeartsTitle: string
   movingHeartsStatsValue: string
-  movingHeartsStatsLabel: string
-  movingHeartsTagline: string
+  movingHeartsStatsLabel: LocaleValue | string
+  movingHeartsTagline: LocaleValue | string
   movingHeartsUrl: string
-  movingHeartsCtaText: string
+  movingHeartsCtaText: LocaleValue | string
   legalLinks: FooterLegalLink[]
-  copyrightText: string
+  copyrightText: LocaleValue | string
 }
 
 export async function getFooterContent(): Promise<FooterContent | null> {
@@ -3913,6 +3915,7 @@ export async function getContactPageContent(): Promise<ContactPageContent | null
 export interface TrustBarStat {
   value: string
   label: string
+  labelTranslations?: LocaleTranslations
 }
 
 export interface TrustBarContent {
@@ -3923,7 +3926,7 @@ export async function getTrustBarContent(): Promise<TrustBarContent | null> {
   try {
     const query = `
       *[_type == "trustBar" && _id == "trustBar"][0] {
-        stats[] { value, label }
+        stats[] { value, label, labelTranslations }
       }
     `
     return safeFetch(query)
@@ -3943,7 +3946,9 @@ export interface ClientPartner {
 
 export interface ClientPartnersContent {
   sectionTitle?: string
+  sectionTitleTranslations?: LocaleTranslations
   sectionDescription?: string
+  sectionDescriptionTranslations?: LocaleTranslations
   partners: ClientPartner[]
 }
 
@@ -3952,7 +3957,9 @@ export async function getClientPartnersContent(): Promise<ClientPartnersContent 
     const query = `
       *[_type == "clientPartners" && _id == "clientPartners"][0] {
         sectionTitle,
+        sectionTitleTranslations,
         sectionDescription,
+        sectionDescriptionTranslations,
         partners[] {
           name,
           category,

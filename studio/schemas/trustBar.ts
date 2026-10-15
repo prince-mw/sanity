@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import {translationsField} from './objects/translationsField'
 
 export default defineType({
   name: 'trustBar',
@@ -16,6 +17,7 @@ export default defineType({
           fields: [
             defineField({ name: 'value', title: 'Value', type: 'string', description: 'e.g. "40+", "1,500+", "1,000,000+"' }),
             defineField({ name: 'label', title: 'Label', type: 'string', description: 'e.g. "Markets Covered"' }),
+            translationsField('labelTranslations', 'Label translations'),
           ],
           preview: {
             select: { title: 'value', subtitle: 'label' },

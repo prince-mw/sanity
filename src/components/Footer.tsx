@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { openCookieSettings } from "./CookieConsent";
 import { useLocale } from "@/i18n/LocaleContext";
+import { resolveLocaleValue, type LocaleValue } from "@/i18n/config";
 import { FooterContent } from "@/sanity/lib/fetch";
 
 interface FooterProps {
@@ -54,7 +55,8 @@ const socialIconMap: Record<string, JSX.Element> = {
 };
 
 export default function Footer({ content }: FooterProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
+  const L = (value: LocaleValue | string | undefined) => resolveLocaleValue(value, locale);
   const pathname = usePathname();
 
   // Race Week 2026 campaign page has its own self-contained footer/CTA — hide the default one
@@ -115,18 +117,26 @@ export default function Footer({ content }: FooterProps) {
     { label: t('footer.cookiePolicy'), href: "/cookies" },
   ];
 
-  const companyDescription = content?.companyDescription || t('footer.description');
-  const navCategories = content?.navCategories?.length ? content.navCategories : defaultNavCategories;
+  const companyDescription = L(content?.companyDescription) || t('footer.description');
+  const navCategories = content?.navCategories?.length
+    ? content.navCategories.map((category) => ({
+        ...category,
+        title: L(category.title),
+        links: (category.links || []).map((link) => ({ ...link, name: L(link.name) })),
+      }))
+    : defaultNavCategories;
   const socials = content?.socialLinks?.length ? content.socialLinks : defaultSocialLinks;
   const movingHeartsTitle = content?.movingHeartsTitle || t('footer.movingHearts.title');
   const movingHeartsStatsValue = content?.movingHeartsStatsValue || '3M+';
-  const movingHeartsStatsLabel = content?.movingHeartsStatsLabel || t('footer.movingHearts.statsLabel');
-  const movingHeartsTagline = content?.movingHeartsTagline || t('footer.movingHearts.tagline');
+  const movingHeartsStatsLabel = L(content?.movingHeartsStatsLabel) || t('footer.movingHearts.statsLabel');
+  const movingHeartsTagline = L(content?.movingHeartsTagline) || t('footer.movingHearts.tagline');
   const movingHeartsUrl = content?.movingHeartsUrl || 'https://movinghearts.media/';
-  const movingHeartsCtaText = content?.movingHeartsCtaText || t('footer.movingHearts.ctaText');
-  const legalLinks = content?.legalLinks?.length ? content.legalLinks : defaultLegalLinks;
-  const copyrightText = content?.copyrightText
-    ? content.copyrightText.replace('{year}', new Date().getFullYear().toString())
+  const movingHeartsCtaText = L(content?.movingHeartsCtaText) || t('footer.movingHearts.ctaText');
+  const legalLinks = content?.legalLinks?.length
+    ? content.legalLinks.map((link) => ({ ...link, label: L(link.label) }))
+    : defaultLegalLinks;
+  const copyrightText = L(content?.copyrightText)
+    ? L(content?.copyrightText).replace('{year}', new Date().getFullYear().toString())
     : `© ${new Date().getFullYear()} Moving Walls. All rights reserved.`;
   
   return (

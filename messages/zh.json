@@ -36,7 +36,7 @@
       "跨市场触达受众。"
     ],
     "cta": {
-      "primary": "免费广告活动分析",
+      "primary": "联系我们",
       "secondary": "观看演示"
     },
     "stats": {
@@ -108,7 +108,7 @@
   "newsletter": {
     "title": "获取行业洞察",
     "titleHighlight": "每周送达",
-    "description": "通过我们精心策划的时事通讯，了解最新趋势、策略和成功案例，保持领先。",
+    "description": "抢先了解城市如何演变、受众如何流动，以及互联媒体如何重塑各地区的广告格局。",
     "subscribeNow": "立即订阅",
     "noSpam": "无垃圾邮件，随时取消订阅",
     "namePlaceholder": "您的姓名",
@@ -121,7 +121,7 @@
     "termsOfService": "服务条款"
   },
   "footer": {
-    "description": "Moving Walls通过单一智能云平台统一整个OOH生态系统。从受众发现到预订、激活、测量和优化，我们通过数据驱动的精确度简化每个步骤。",
+    "description": "Moving Walls将全球户外广告（OOH）生态系统连接到一个统一的云平台。从受众发现到预订、投放激活、效果测量和优化，我们化繁为简，助力品牌在各个市场自信成长。",
     "followUs": "关注我们",
     "company": "公司",
     "solutions": "解决方案",
@@ -367,15 +367,15 @@
         "description": "深度指南和报告"
       },
       "oohFormats": {
-        "name": "户外广告101",
-        "description": "户外广告基础知识"
+        "name": "户外广告格式",
+        "description": "探索广告牌与数字广告格式"
       },
       "locations": {
         "name": "分支机构",
         "description": "探索我们的全球媒体版图"
       },
       "pressNews": {
-        "name": "新闻媒体",
+        "name": "新闻动态",
         "description": "最新公告"
       },
       "helpCenter": {
@@ -433,24 +433,24 @@
     },
     "solutions": {
       "badge": "我们的解决方案",
-      "title": "为每个利益相关者量身定制的解决方案",
-      "description": "无论您是品牌、媒体所有者还是代理商，我们都提供您在DOOH生态系统中取得成功所需的工具和技术。",
+      "title": "互联OOH与零售媒体的一体化平台",
+      "description": "平台是基础。解决方案围绕使用平台的人群而打造。产品则是帮助他们走得更快、更远的工具。",
       "brand": {
         "title": "品牌",
-        "subtitle": "Turn Attention Into Real World Growth",
-        "description": "在优质户外广告库存中放大您的品牌信息。通过数据驱动的活动大规模触达目标受众，提升品牌知名度和参与度。",
+        "subtitle": "将关注转化为真实增长",
+        "description": "跨市场扩张的品牌都面临一个共同挑战：战略的一致性、衡量的清晰度，以及对本地差异的适应能力。\n\n我们将广告曝光与真实世界的成果相连接，例如跨多个城市和国家的到店访问、互动和效果信号。户外广告不再只是提升知名度，而是成为与您同行的增长渠道。\n\n为何重要：您能够满怀信心地跨区域扩展广告活动，而不会失去掌控力或可见性。",
         "features": {
-          "0": "多渠道活动管理",
+          "0": "多市场活动管理",
           "1": "高级受众定向",
-          "2": "实时效果分析",
+          "2": "真实世界归因与提升度测量",
           "3": "创意优化工具"
         },
         "cta": "探索品牌解决方案"
       },
       "mediaOwners": {
         "title": "媒体所有者",
-        "subtitle": "Unlock the Global Value of Your Inventory",
-        "description": "通过我们先进的程序化平台最大化您的库存价值。与优质广告商建立联系，优化所有数字和传统OOH资产的收益。",
+        "subtitle": "释放您库存的全球价值",
+        "description": "媒体主身处城市的核心。然而，其中的大部分价值仍局限于本地市场。\n\n我们将您的库存与区域及全球需求相连接，帮助您在保持本地相关性的同时优化收益。\n\n为何重要：您的屏幕不再受地域限制，而是成为全球市场的一部分。",
         "features": {
           "0": "程序化市场准入",
           "1": "库存管理系统",
@@ -461,12 +461,12 @@
       },
       "agencies": {
         "title": "代理商",
-        "subtitle": "Navigate Complexity With Clarity",
-        "description": "使用企业级工具简化您的DOOH运营。管理多个客户活动，访问优质库存，并通过我们的代理商平台交付出色结果。",
+        "subtitle": "以清晰驾驭复杂",
+        "description": "代理商需要管理跨越不同时区、货币、广告形式和报告体系的广告活动。业务增长往往带来运营摩擦。\n\n我们将规划、购买和报告整合到一个互联环境中，让代理商在拓展国际业务的同时不必倍增复杂性。\n\n为何重要：更少孤岛，更强掌控，为全球各地的客户带来更出色的成果。",
         "features": {
           "0": "多客户活动管理",
           "1": "白标报告",
-          "2": "统一计费",
+          "2": "统一计费与开票",
           "3": "专属客户支持"
         },
         "cta": "探索代理商解决方案"
@@ -733,7 +733,9 @@
     },
     "customerLogos": {
       "title": "受领先品牌信赖",
-      "description": "加入数千家获得更好结果的公司"
+      "description": "从区域挑战者到跨国领军企业，众多品牌依靠Moving Walls驾驭不断演变的户外媒体世界。",
+      "statBrands": "全球品牌",
+      "statCountries": "国家"
     },
     "testimonials": {
       "badge": "客户成功",
@@ -860,17 +862,17 @@
       }
     },
     "platformEcosystem": {
-      "badge": "MW Platform Ecosystem",
-      "title": "Where Movement Meets Media",
-      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "badge": "MW平台生态系统",
+      "title": "流动与媒体交汇之处",
+      "intro": "Moving Walls的核心是一个互联系统，跨市场整合数据、规划、投放激活与效果测量。",
       "cards": {
         "data": {
           "label": "Data Inputs",
-          "description": "Audience signals, location and mobility patterns, traffic flows, weather triggers, demographics, points of interest, event calendars, and first party and third party data."
+          "description": "受众信号、位置与出行模式、交通流量、天气触发、人口统计、兴趣点（POI）、活动日历，以及第一方和第三方数据。"
         },
         "execute": {
           "label": "Execute Locally",
-          "description": "Campaigns are planned centrally and executed locally, measured consistently across regions, and refined continuously."
+          "description": "广告活动集中规划、本地执行，跨区域统一衡量，并持续优化。"
         },
         "measure": {
           "label": "Measure & Refine",
@@ -879,10 +881,10 @@
       },
       "scenario": {
         "label": "Imagine This",
-        "description": "A retail brand expanding into a new city. Screens activate within defined trade areas when footfall rises and contextual conditions align with demand. Creative adapts to local moments while maintaining global brand consistency. Spend follows opportunity in real time."
+        "description": "一个零售品牌正在进军新城市。当客流上升且情境条件与需求相契合时，指定商圈内的屏幕随即激活。创意内容在保持全球品牌一致性的同时，适应本地时刻。预算实时追随机会。"
       },
-      "quote": "This is how outdoor evolves from static space into a responsive global network.",
-      "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
+      "quote": "这就是户外广告从静态空间演变为响应式全球网络的方式。",
+      "productsLine": "规划、投放激活、效果测量与优化在同一个互联旅程中运行。"
     }
   },
   "agenciesPage": {
@@ -1057,5 +1059,20 @@
         }
       ]
     }
+  },
+  "cookieConsent": {
+    "message": "我们使用Cookie来提升您的浏览体验。",
+    "learnMore": "了解更多",
+    "learnMoreAria": "了解我们的Cookie政策",
+    "settings": "设置",
+    "reject": "拒绝",
+    "acceptAll": "全部接受",
+    "settingsTitle": "Cookie设置",
+    "essential": "必要",
+    "functional": "功能",
+    "analytics": "分析",
+    "marketing": "营销",
+    "rejectAll": "全部拒绝",
+    "savePreferences": "保存偏好"
   }
 }

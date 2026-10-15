@@ -3,13 +3,16 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useLocale } from "@/i18n/LocaleContext";
+import { pickTranslation, type LocaleTranslations } from "@/i18n/config";
 import type { ClientPartner } from "@/sanity/lib/fetch";
 import { getSanityImageUrl } from "@/sanity/lib/fetch";
 
 interface ClientsProps {
   partners?: ClientPartner[] | null
   sectionTitle?: string | null
+  sectionTitleTranslations?: LocaleTranslations | null
   sectionDescription?: string | null
+  sectionDescriptionTranslations?: LocaleTranslations | null
   /** Partner pages under /partners — logos with a matching page link to it */
   partnerPages?: { name: string; slug: string }[]
 }
@@ -63,8 +66,10 @@ const defaultPartners = [
   },
 ];
 
-export default function Clients({ partners, sectionTitle, sectionDescription, partnerPages = [] }: ClientsProps) {
-  const { t } = useLocale();
+export default function Clients({ partners, sectionTitle, sectionTitleTranslations, sectionDescription, sectionDescriptionTranslations, partnerPages = [] }: ClientsProps) {
+  const { t, locale } = useLocale();
+  const title = sectionTitle ? pickTranslation(sectionTitle, sectionTitleTranslations, locale) : t('landingPage.clients.title');
+  const description = sectionDescription ? pickTranslation(sectionDescription, sectionDescriptionTranslations, locale) : '';
   const hasCmsPartners = partners && partners.length > 0;
   
   return (
@@ -81,11 +86,11 @@ export default function Clients({ partners, sectionTitle, sectionDescription, pa
             {t('landingPage.clients.eyebrow')}
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
-            {sectionTitle || t('landingPage.clients.title')}
+            {title}
           </h2>
-          {sectionDescription && (
+          {description && (
             <p className="text-mw-gray-600 max-w-3xl mx-auto text-lg">
-              {sectionDescription}
+              {description}
             </p>
           )}
         </motion.div>

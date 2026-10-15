@@ -6,24 +6,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import { useLocale, Locale } from "@/i18n/LocaleContext";
+import { resolveLocaleValue, type LocaleValue } from "@/i18n/config";
 import GlobalSearch from "./GlobalSearch";
 import { CTAButton } from "./CTAButton";
 import { useZohoPopup } from "./ZohoPopupProvider";
 import { LOCATION_LANGUAGE_GROUPS, getLocationGroupKeyForLocale, getLocationSlugFromPathname } from "@/lib/locationLanguageGroups";
 import { getBlogSlugFromPathname } from "@/lib/blogLanguageGroups";
 import type { BlogLanguageGroups } from "@/sanity/lib/queries";
-
-// A field translated per-locale in Sanity (see studio's `localeString` schema) — English is the
-// only guaranteed value, other locales are filled in progressively by content editors.
-export type LocaleValue = { en: string; ja?: string; ko?: string; id?: string; zh?: string };
-
-// Sanity content may still hold the pre-migration plain-string shape (e.g. right after a content
-// rollback) even though this code expects LocaleValue objects — tolerate both so a content/code
-// version mismatch degrades to "shows English" instead of crashing/rendering blank.
-function resolveLocaleValue(value: LocaleValue | string | undefined, locale: Locale): string {
-  if (typeof value === 'string') return value;
-  return value?.[locale] || value?.en || '';
-}
 
 // Types for Sanity mega menu data
 export interface SanityMenuLink {

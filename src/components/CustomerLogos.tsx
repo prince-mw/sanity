@@ -99,12 +99,12 @@ export default function CustomerLogos() {
           <div className="inline-flex items-center gap-8 flex-wrap justify-center">
             <div className="text-center">
               <div className="text-3xl font-bold text-mw-blue-600">500+</div>
-              <div className="text-sm text-mw-gray-600 mt-1">Global Brands</div>
+              <div className="text-sm text-mw-gray-600 mt-1">{t('landingPage.customerLogos.statBrands')}</div>
             </div>
             <div className="w-px h-12 bg-mw-gray-300 hidden sm:block" />
             <div className="text-center">
               <div className="text-3xl font-bold text-mw-blue-600">50+</div>
-              <div className="text-sm text-mw-gray-600 mt-1">Countries</div>
+              <div className="text-sm text-mw-gray-600 mt-1">{t('landingPage.customerLogos.statCountries')}</div>
             </div>
           </div>
         </motion.div>

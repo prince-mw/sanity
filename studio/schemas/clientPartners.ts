@@ -1,4 +1,5 @@
 import { defineType, defineField } from 'sanity'
+import {translationsField} from './objects/translationsField'
 
 export default defineType({
   name: 'clientPartners',
@@ -17,6 +18,8 @@ export default defineType({
       type: 'string',
       description: 'Subtext below the partner logos',
     }),
+    translationsField('sectionTitleTranslations', 'Section Title translations'),
+    translationsField('sectionDescriptionTranslations', 'Section Description translations'),
     defineField({
       name: 'partners',
       title: 'Partners',

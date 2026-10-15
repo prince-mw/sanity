@@ -66,7 +66,9 @@ export default async function Home() {
       <Clients
         partners={clientPartnersContent?.partners}
         sectionTitle={clientPartnersContent?.sectionTitle}
+        sectionTitleTranslations={clientPartnersContent?.sectionTitleTranslations}
         sectionDescription={clientPartnersContent?.sectionDescription}
+        sectionDescriptionTranslations={clientPartnersContent?.sectionDescriptionTranslations}
         partnerPages={partnerPages.map((p) => ({ name: p.name, slug: p.slug }))}
       />
       <TestimonialSection />

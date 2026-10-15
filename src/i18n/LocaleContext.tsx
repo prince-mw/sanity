@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { locales, defaultLocale, localeNames, localeCodes, Locale } from './config';
 
 // Statically import all translations to ensure they're bundled
@@ -9,6 +9,7 @@ import jaMessages from '../../messages/ja.json';
 import koMessages from '../../messages/ko.json';
 import idMessages from '../../messages/id.json';
 import zhMessages from '../../messages/zh.json';
+import esMessages from '../../messages/es.json';
 
 // Type for messages
 type Messages = typeof enMessages;
@@ -20,6 +21,7 @@ const messagesMap: Record<Locale, Messages> = {
   ko: koMessages,
   id: idMessages,
   zh: zhMessages,
+  es: esMessages,
 };
 
 interface LocaleContextType {
@@ -57,21 +59,10 @@ function setLocaleCookie(newLocale: Locale) {
 }
 
 export function LocaleProvider({ children, initialLocale }: { children: ReactNode; initialLocale?: Locale }) {
-  // The server already resolved the visitor's locale from the cookie (see RootLayout), so the
-  // very first client render matches SSR exactly — no post-mount flash, no hydration mismatch.
+  // The server already resolved the visitor's locale from the cookie, or from the browser's
+  // Accept-Language header on a first visit (see RootLayout), so the very first client render
+  // matches SSR exactly — no post-mount flash, no hydration mismatch.
   const [locale, setLocaleState] = useState<Locale>(initialLocale || defaultLocale);
-
-  // Only runs for a first-ever visit with no locale cookie yet: detect the browser's language
-  // and persist it as the cookie so the next request (even a full server navigation) renders it directly.
-  useEffect(() => {
-    if (initialLocale) return;
-    const browserLocale = navigator.language.split('-')[0] as Locale;
-    if (locales.includes(browserLocale) && browserLocale !== defaultLocale) {
-      setLocaleState(browserLocale);
-      setLocaleCookie(browserLocale);
-      document.documentElement.lang = browserLocale;
-    }
-  }, [initialLocale]);
 
   const setLocale = useCallback((newLocale: Locale) => {
     setLocaleState(newLocale);

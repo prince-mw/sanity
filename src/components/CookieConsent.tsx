@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
+import { useLocale } from '@/i18n/LocaleContext'
 
 interface CookiePreferences {
   essential: boolean
@@ -15,6 +16,7 @@ const COOKIE_CONSENT_KEY = 'mw_cookie_consent'
 const COOKIE_PREFERENCES_KEY = 'mw_cookie_preferences'
 
 export default function CookieConsent() {
+  const { t } = useLocale()
   const [isVisible, setIsVisible] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [preferences, setPreferences] = useState<CookiePreferences>({
@@ -113,8 +115,8 @@ export default function CookieConsent() {
                       {/* Text */}
                       <div className="flex-1">
                         <p className="text-gray-600 text-sm">
-                          We use cookies to enhance your experience.{' '}
-                          <Link href="/cookies" className="text-blue-600 hover:underline" aria-label="Learn more about our cookie policy">Learn more</Link>
+                          {t('cookieConsent.message')}{' '}
+                          <Link href="/cookies" className="text-blue-600 hover:underline" aria-label={t('cookieConsent.learnMoreAria')}>{t('cookieConsent.learnMore')}</Link>
                         </p>
                       </div>
 
@@ -124,19 +126,19 @@ export default function CookieConsent() {
                           onClick={() => setShowSettings(true)}
                           className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
                         >
-                          Settings
+                          {t('cookieConsent.settings')}
                         </button>
                         <button
                           onClick={handleRejectAll}
                           className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
                         >
-                          Reject
+                          {t('cookieConsent.reject')}
                         </button>
                         <button
                           onClick={handleAcceptAll}
                           className="px-4 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
                         >
-                          Accept All
+                          {t('cookieConsent.acceptAll')}
                         </button>
                       </div>
                     </div>
@@ -145,7 +147,7 @@ export default function CookieConsent() {
                   // Settings View
                   <div className="px-4 py-3 md:px-6 md:py-4">
                     <div className="flex items-center justify-between mb-3">
-                      <h3 className="text-sm font-semibold text-gray-900">Cookie Settings</h3>
+                      <h3 className="text-sm font-semibold text-gray-900">{t('cookieConsent.settingsTitle')}</h3>
                       <button
                         onClick={() => setShowSettings(false)}
                         className="text-gray-400 hover:text-gray-600 transition-colors"
@@ -160,7 +162,7 @@ export default function CookieConsent() {
                       {/* Essential */}
                       <div className="flex items-center gap-2 px-3 py-1.5 rounded-md text-xs font-medium bg-green-100 text-green-700">
                         <span className="w-2 h-2 rounded-full bg-green-600"></span>
-                        Essential
+                        {t('cookieConsent.essential')}
                       </div>
 
                       {/* Functional */}
@@ -171,7 +173,7 @@ export default function CookieConsent() {
                         }`}
                       >
                         <span className={`w-2 h-2 rounded-full ${preferences.functional ? 'bg-blue-600' : 'bg-gray-400'}`}></span>
-                        Functional
+                        {t('cookieConsent.functional')}
                       </button>
 
                       {/* Analytics */}
@@ -182,7 +184,7 @@ export default function CookieConsent() {
                         }`}
                       >
                         <span className={`w-2 h-2 rounded-full ${preferences.analytics ? 'bg-blue-600' : 'bg-gray-400'}`}></span>
-                        Analytics
+                        {t('cookieConsent.analytics')}
                       </button>
 
                       {/* Marketing */}
@@ -193,7 +195,7 @@ export default function CookieConsent() {
                         }`}
                       >
                         <span className={`w-2 h-2 rounded-full ${preferences.marketing ? 'bg-blue-600' : 'bg-gray-400'}`}></span>
-                        Marketing
+                        {t('cookieConsent.marketing')}
                       </button>
                     </div>
 
@@ -203,19 +205,19 @@ export default function CookieConsent() {
                         onClick={handleRejectAll}
                         className="flex-1 px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                       >
-                        Reject All
+                        {t('cookieConsent.rejectAll')}
                       </button>
                       <button
                         onClick={handleSavePreferences}
                         className="flex-1 px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
                       >
-                        Save Preferences
+                        {t('cookieConsent.savePreferences')}
                       </button>
                       <button
                         onClick={handleAcceptAll}
                         className="flex-1 px-5 py-2.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
                       >
-                        Accept All
+                        {t('cookieConsent.acceptAll')}
                       </button>
                     </div>
                   </div>

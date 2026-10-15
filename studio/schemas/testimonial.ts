@@ -1,4 +1,5 @@
 import { defineField, defineType } from 'sanity'
+import {translationsField} from './objects/translationsField'
 
 export default defineType({
   name: 'testimonial',
@@ -13,6 +14,7 @@ export default defineType({
       validation: (Rule) => Rule.required().min(10).max(500),
       description: 'The testimonial quote from the client',
     }),
+    translationsField('quoteTranslations', 'Quote translations', 'text'),
     defineField({
       name: 'author',
       title: 'Author Name',
@@ -25,6 +27,7 @@ export default defineType({
       type: 'string',
       description: 'Job title of the author',
     }),
+    translationsField('roleTranslations', 'Role/Title translations'),
     defineField({
       name: 'company',
       title: 'Company',

@@ -758,7 +758,9 @@
     },
     "customerLogos": {
       "title": "Trusted by Leading Brands",
-      "description": "From regional challengers to multinational leaders, brands rely on Moving Walls to navigate the evolving world of outdoor media."
+      "description": "From regional challengers to multinational leaders, brands rely on Moving Walls to navigate the evolving world of outdoor media.",
+      "statBrands": "Global Brands",
+      "statCountries": "Countries"
     },
     "testimonials": {
       "badge": "Client Success",
@@ -1057,5 +1059,20 @@
         }
       ]
     }
+  },
+  "cookieConsent": {
+    "message": "We use cookies to enhance your experience.",
+    "learnMore": "Learn more",
+    "learnMoreAria": "Learn more about our cookie policy",
+    "settings": "Settings",
+    "reject": "Reject",
+    "acceptAll": "Accept All",
+    "settingsTitle": "Cookie Settings",
+    "essential": "Essential",
+    "functional": "Functional",
+    "analytics": "Analytics",
+    "marketing": "Marketing",
+    "rejectAll": "Reject All",
+    "savePreferences": "Save Preferences"
   }
 }

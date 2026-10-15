@@ -3,6 +3,7 @@
 import { motion, PanInfo } from "framer-motion";
 import { useState, useEffect, useCallback } from "react";
 import { useLocale } from "@/i18n/LocaleContext";
+import { pickTranslation, type LocaleTranslations } from "@/i18n/config";
 import Image from "next/image";
 import { urlFor } from "@/sanity/lib/client";
 
@@ -10,8 +11,10 @@ import { urlFor } from "@/sanity/lib/client";
 interface Testimonial {
   _id?: string;
   quote: string;
+  quoteTranslations?: LocaleTranslations;
   author: string;
   role: string;
+  roleTranslations?: LocaleTranslations;
   company: string;
   metric?: string;
   industry?: string;
@@ -108,7 +111,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 }
 
 export default function TestimonialSection({ testimonials: sanityTestimonials, hideViewAll }: TestimonialSectionProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   // Use Sanity testimonials if provided, otherwise fall back to translated placeholder data
   const fallbackTestimonials: Testimonial[] = t('landingPage.testimonials.fallback').map(
@@ -118,7 +121,11 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
     })
   );
   const testimonials: Testimonial[] = sanityTestimonials && sanityTestimonials.length > 0
-    ? sanityTestimonials
+    ? sanityTestimonials.map((item) => ({
+        ...item,
+        quote: pickTranslation(item.quote, item.quoteTranslations, locale),
+        role: pickTranslation(item.role, item.roleTranslations, locale),
+      }))
     : fallbackTestimonials;
 
   const [currentIndex, setCurrentIndex] = useState(0);

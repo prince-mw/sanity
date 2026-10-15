@@ -19,7 +19,7 @@
   },
   "hero": {
     "badge": "Iklan OOH Bertenaga AI",
-    "title": "Transformasi",
+    "title": "Platform Media",
     "titleHighlight": "Strategi Iklan Anda",
     "wordMorphWords": [
       "OOH",
@@ -27,7 +27,7 @@
       "Programatik",
       "Terhubung"
     ],
-    "mediaPlatformLabel": "Platform Media",
+    "mediaPlatformLabel": "Terdepan di Dunia",
     "description": "Moving Walls menyatukan seluruh ekosistem periklanan luar ruang melalui satu platform cloud cerdas. Dari penemuan audiens hingga pemesanan, aktivasi, pengukuran, dan optimalisasi.",
     "bullets": [
       "Dibangun untuk koneksi, bukan hanya visibilitas.",
@@ -36,7 +36,7 @@
       "Menjangkau audiens di berbagai pasar."
     ],
     "cta": {
-      "primary": "Coba Gratis",
+      "primary": "Hubungi Kami",
       "secondary": "Lihat Demo"
     },
     "stats": {
@@ -108,7 +108,7 @@
   "newsletter": {
     "title": "Dapatkan Wawasan Industri",
     "titleHighlight": "Setiap Minggu",
-    "description": "Tetap terdepan dengan newsletter kami yang menampilkan tren, strategi, dan kisah sukses terbaru.",
+    "description": "Tetap terdepan dalam memahami bagaimana kota berkembang, bagaimana audiens bergerak, dan bagaimana media terhubung membentuk ulang periklanan di berbagai wilayah.",
     "subscribeNow": "Berlangganan Sekarang",
     "noSpam": "Tanpa spam, berhenti berlangganan kapan saja",
     "namePlaceholder": "Nama Anda",
@@ -121,7 +121,7 @@
     "termsOfService": "Ketentuan Layanan"
   },
   "footer": {
-    "description": "Moving Walls menyatukan seluruh ekosistem periklanan luar ruang melalui satu platform cloud cerdas.",
+    "description": "Moving Walls menghubungkan ekosistem Out of Home global ke dalam satu platform cloud terpadu. Mulai dari penemuan audiens hingga pemesanan, aktivasi, pengukuran, dan optimalisasi, kami menyederhanakan kompleksitas agar brand dapat tumbuh dengan percaya diri di berbagai pasar.",
     "followUs": "Ikuti Kami",
     "company": "Perusahaan",
     "solutions": "Solusi",
@@ -367,8 +367,8 @@
         "description": "Panduan dan laporan mendalam"
       },
       "oohFormats": {
-        "name": "OOH Formats",
-        "description": "Dasar-dasar iklan luar ruang"
+        "name": "Format OOH",
+        "description": "Jelajahi format billboard & digital"
       },
       "locations": {
         "name": "Lokasi",
@@ -418,10 +418,10 @@
     },
     "asianBornGlobal": {
       "badge": "Lahir di Asia, Visi Global",
-      "title": "Lahir di Asia,",
-      "titleHighlight": "Jejak Global",
-      "description": "Dari akar kami di Asia Tenggara, kami telah berkembang untuk mendorong kampanye iklan di lebih dari 30 negara, melayani lebih dari 10.000 klien secara global.",
-      "paragraph1": "Out of Home bukan lagi media statis. Ini adalah {{highlight}}'Platform Media Terhubung Terkemuka di Dunia'{{/highlight}} yang mendorong pengaruh dunia nyata. Dari Times Square hingga Orchard Road, setiap layar, tanda, dan ruang menjadi titik sentuh yang dapat diukur yang dapat diaktifkan merek dengan presisi digital.",
+      "title": "Lahir di Asia.",
+      "titleHighlight": "Dibangun untuk Dunia.",
+      "description": "Menguasai kompleksitas kawasan paling dinamis di dunia mendorong kami untuk berpikir melampaui media statis. Kini, kami menjembatani kesenjangan antara perhatian dan koneksi.",
+      "paragraph1": "Dari {{highlight}}Times Square hingga Orchard Road{{/highlight}}, kami mengubah OOH yang terfragmentasi menjadi lanskap media global yang terpadu dan terukur. Kami tidak hanya beroperasi secara global—kami memahami bagaimana kota bergerak.",
       "paragraph2": "Lahir di Asia dan dibangun untuk dunia, teknologi kami menyatukan inventaris luar ruang yang terfragmentasi menjadi ekosistem tunggal di mana pengiklan dapat {{highlight}}merencanakan, membeli, mengukur, menjangkau, dan memengaruhi{{/highlight}} kampanye secara real-time.",
       "paragraph3": "Kami tidak hanya menempatkan iklan di luar, kami mengubah kota menjadi jaringan media cerdas yang memberikan {{highlight}}perhatian, relevansi, dan dampak{{/highlight}} di mana pun audiens bergerak.",
       "paragraph4": "Today, our connected media powers campaigns from {{highlight}}Times Square to Orchard Road{{/highlight}}, from regional transport networks to premium retail districts.",
@@ -438,24 +438,24 @@
     },
     "solutions": {
       "badge": "Solusi Kami",
-      "title": "Solusi Khusus untuk Setiap Pemangku Kepentingan",
-      "description": "Baik Anda brand, pemilik media, atau agensi, kami menyediakan alat dan teknologi yang diperlukan untuk sukses dalam ekosistem DOOH.",
+      "title": "Satu Platform untuk OOH Terhubung dan Retail Media",
+      "description": "Platform kami adalah fondasinya. Solusi kami dirancang sesuai kebutuhan para penggunanya. Produk kami adalah alat yang membantu mereka bergerak lebih cepat dan lebih jauh.",
       "brand": {
         "title": "Brand",
-        "subtitle": "Turn Attention Into Real World Growth",
-        "description": "Perkuat pesan brand Anda di seluruh inventaris out-of-home premium. Jangkau audiens target Anda dalam skala besar melalui kampanye berbasis data yang mendorong kesadaran dan keterlibatan.",
+        "subtitle": "Ubah Perhatian Menjadi Pertumbuhan Nyata",
+        "description": "Brand yang berekspansi ke berbagai pasar menghadapi tantangan yang sama: konsistensi strategi, kejelasan pengukuran, dan kemampuan beradaptasi dengan nuansa lokal.\n\nKami menghubungkan eksposur iklan dengan hasil nyata seperti kunjungan toko, keterlibatan, dan sinyal kinerja di berbagai kota dan negara. Media luar ruang menjadi lebih dari sekadar kesadaran merek. Ia menjadi saluran pertumbuhan yang menyertai Anda ke mana pun.\n\nMengapa ini penting. Anda memperoleh keyakinan untuk memperluas kampanye lintas wilayah tanpa kehilangan kendali maupun visibilitas.",
         "features": {
-          "0": "Manajemen Kampanye Lintas Saluran",
+          "0": "Manajemen Kampanye Multi-Pasar",
           "1": "Penargetan Audiens Lanjutan",
-          "2": "Analitik Performa Real-time",
+          "2": "Atribusi Dunia Nyata dan Pengukuran Lift",
           "3": "Alat Optimalisasi Kreatif"
         },
         "cta": "Jelajahi Solusi Brand"
       },
       "mediaOwners": {
         "title": "Pemilik Media",
-        "subtitle": "Unlock the Global Value of Your Inventory",
-        "description": "Maksimalkan nilai inventaris Anda melalui platform programatik canggih kami. Terhubung dengan pengiklan premium dan optimalkan yield di seluruh aset OOH digital dan tradisional Anda.",
+        "subtitle": "Buka Nilai Global Inventaris Anda",
+        "description": "Pemilik media berada di jantung kota mereka. Namun, sebagian besar nilai tersebut masih terisolasi di pasar lokal.\n\nKami menghubungkan inventaris Anda dengan permintaan regional dan global, membantu Anda mengoptimalkan yield sambil tetap menjaga relevansi lokal.\n\nMengapa ini penting. Layar Anda tidak lagi dibatasi oleh geografi. Layar Anda menjadi bagian dari marketplace global.",
         "features": {
           "0": "Akses Pasar Programatik",
           "1": "Sistem Manajemen Inventaris",
@@ -466,12 +466,12 @@
       },
       "agencies": {
         "title": "Agensi",
-        "subtitle": "Navigate Complexity With Clarity",
-        "description": "Sederhanakan operasi DOOH dengan alat kelas enterprise. Kelola kampanye multi-klien, akses inventaris premium, dan sampaikan hasil luar biasa melalui platform agensi kami.",
+        "subtitle": "Hadapi Kompleksitas dengan Kejelasan",
+        "description": "Agensi mengelola kampanye lintas zona waktu, mata uang, format, dan struktur pelaporan. Pertumbuhan sering kali menimbulkan hambatan operasional.\n\nKami menyatukan perencanaan, pembelian, dan pelaporan dalam satu lingkungan terhubung sehingga agensi dapat berkembang secara internasional tanpa melipatgandakan kompleksitas.\n\nMengapa ini penting. Lebih sedikit silo. Kendali lebih besar. Hasil lebih kuat bagi klien di mana pun di dunia.",
         "features": {
           "0": "Manajemen Kampanye Multi-Klien",
           "1": "Pelaporan White-Label",
-          "2": "Penagihan Terkonsolidasi",
+          "2": "Penagihan dan Faktur Terkonsolidasi",
           "3": "Dukungan Akun Khusus"
         },
         "cta": "Jelajahi Solusi Agensi"
@@ -738,7 +738,9 @@
     },
     "customerLogos": {
       "title": "Dipercaya oleh Brand Terkemuka",
-      "description": "Bergabunglah dengan ribuan perusahaan yang mencapai hasil lebih baik"
+      "description": "Dari penantang regional hingga pemimpin multinasional, brand mengandalkan Moving Walls untuk menavigasi dunia media luar ruang yang terus berkembang.",
+      "statBrands": "Merek Global",
+      "statCountries": "Negara"
     },
     "testimonials": {
       "badge": "Kesuksesan Pelanggan",
@@ -865,17 +867,17 @@
       }
     },
     "platformEcosystem": {
-      "badge": "MW Platform Ecosystem",
-      "title": "Where Movement Meets Media",
-      "intro": "At the heart of Moving Walls is a connected system that brings together data, planning, activation, and measurement across markets.",
+      "badge": "Ekosistem Platform MW",
+      "title": "Tempat Pergerakan Bertemu Media",
+      "intro": "Inti dari Moving Walls adalah sistem terhubung yang menyatukan data, perencanaan, aktivasi, dan pengukuran di berbagai pasar.",
       "cards": {
         "data": {
           "label": "Data Inputs",
-          "description": "Audience signals, location and mobility patterns, traffic flows, weather triggers, demographics, points of interest, event calendars, and first party and third party data."
+          "description": "Sinyal audiens, pola lokasi dan mobilitas, arus lalu lintas, pemicu cuaca, demografi, titik minat (POI), kalender acara, serta data pihak pertama dan pihak ketiga."
         },
         "execute": {
           "label": "Execute Locally",
-          "description": "Campaigns are planned centrally and executed locally, measured consistently across regions, and refined continuously."
+          "description": "Kampanye direncanakan secara terpusat dan dijalankan secara lokal, diukur secara konsisten di seluruh wilayah, serta terus disempurnakan."
         },
         "measure": {
           "label": "Measure & Refine",
@@ -884,10 +886,10 @@
       },
       "scenario": {
         "label": "Imagine This",
-        "description": "A retail brand expanding into a new city. Screens activate within defined trade areas when footfall rises and contextual conditions align with demand. Creative adapts to local moments while maintaining global brand consistency. Spend follows opportunity in real time."
+        "description": "Sebuah brand ritel berekspansi ke kota baru. Layar aktif di dalam area perdagangan yang telah ditentukan ketika jumlah pengunjung meningkat dan kondisi kontekstual selaras dengan permintaan. Materi kreatif menyesuaikan dengan momen lokal sambil tetap menjaga konsistensi brand global. Anggaran mengikuti peluang secara real-time."
       },
-      "quote": "This is how outdoor evolves from static space into a responsive global network.",
-      "productsLine": "Planning, activation, measurement, and optimisation operate within one connected journey."
+      "quote": "Beginilah media luar ruang berevolusi dari ruang statis menjadi jaringan global yang responsif.",
+      "productsLine": "Perencanaan, aktivasi, pengukuran, dan optimalisasi berjalan dalam satu perjalanan yang terhubung."
     }
   },
   "agenciesPage": {
@@ -1062,5 +1064,20 @@
         }
       ]
     }
+  },
+  "cookieConsent": {
+    "message": "Kami menggunakan cookie untuk meningkatkan pengalaman Anda.",
+    "learnMore": "Selengkapnya",
+    "learnMoreAria": "Selengkapnya tentang kebijakan cookie kami",
+    "settings": "Pengaturan",
+    "reject": "Tolak",
+    "acceptAll": "Terima Semua",
+    "settingsTitle": "Pengaturan Cookie",
+    "essential": "Esensial",
+    "functional": "Fungsional",
+    "analytics": "Analitik",
+    "marketing": "Pemasaran",
+    "rejectAll": "Tolak Semua",
+    "savePreferences": "Simpan Preferensi"
   }
 }

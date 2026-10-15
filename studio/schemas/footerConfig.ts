@@ -17,8 +17,7 @@ export default defineType({
     defineField({
       name: 'companyDescription',
       title: 'Company Description',
-      type: 'text',
-      rows: 3,
+      type: 'localeText',
       group: 'companyInfo',
     }),
 
@@ -32,7 +31,7 @@ export default defineType({
         {
           type: 'object',
           fields: [
-            defineField({ name: 'title', title: 'Category Title', type: 'string' }),
+            defineField({ name: 'title', title: 'Category Title', type: 'localeString' }),
             defineField({
               name: 'showLocationIcon',
               title: 'Show Location Icon',
@@ -48,18 +47,18 @@ export default defineType({
                 {
                   type: 'object',
                   fields: [
-                    defineField({ name: 'name', title: 'Link Text', type: 'string' }),
+                    defineField({ name: 'name', title: 'Link Text', type: 'localeString' }),
                     defineField({ name: 'href', title: 'URL', type: 'string' }),
                   ],
                   preview: {
-                    select: { title: 'name', subtitle: 'href' },
+                    select: { title: 'name.en', subtitle: 'href' },
                   },
                 },
               ],
             }),
           ],
           preview: {
-            select: { title: 'title', links: 'links' },
+            select: { title: 'title.en', links: 'links' },
             prepare({ title, links }) {
               return {
                 title: title || 'Untitled Category',
@@ -122,14 +121,14 @@ export default defineType({
     defineField({
       name: 'movingHeartsStatsLabel',
       title: 'Stats Label',
-      type: 'string',
+      type: 'localeString',
       description: 'e.g. "Hearts Touched"',
       group: 'movingHearts',
     }),
     defineField({
       name: 'movingHeartsTagline',
       title: 'Tagline',
-      type: 'string',
+      type: 'localeString',
       group: 'movingHearts',
     }),
     defineField({
@@ -141,7 +140,7 @@ export default defineType({
     defineField({
       name: 'movingHeartsCtaText',
       title: 'CTA Button Text',
-      type: 'string',
+      type: 'localeString',
       group: 'movingHearts',
     }),
 
@@ -155,11 +154,11 @@ export default defineType({
         {
           type: 'object',
           fields: [
-            defineField({ name: 'label', title: 'Label', type: 'string' }),
+            defineField({ name: 'label', title: 'Label', type: 'localeString' }),
             defineField({ name: 'href', title: 'URL', type: 'string' }),
           ],
           preview: {
-            select: { title: 'label', subtitle: 'href' },
+            select: { title: 'label.en', subtitle: 'href' },
           },
         },
       ],
@@ -167,7 +166,7 @@ export default defineType({
     defineField({
       name: 'copyrightText',
       title: 'Copyright Text',
-      type: 'string',
+      type: 'localeString',
       description: 'Use {year} as placeholder for the current year. e.g. "© {year} Moving Walls. All rights reserved."',
       group: 'legal',
     }),

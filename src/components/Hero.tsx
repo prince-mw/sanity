@@ -366,10 +366,10 @@ function TypewriterBullets({ bullets }: { bullets: string[] }) {
       <div className="flex flex-wrap items-center justify-center gap-x-2 gap-y-2 text-base sm:text-lg text-gray-100 font-bold" style={{ textShadow: '0 1px 5px rgba(0,0,0,0.3)' }}>
         {completedBullets.map((bullet, index) => (
           <span key={index} className="flex items-center">
-            <span>{bullet}</span>
-            {index < bullets.length - 1 && (
-              <span className="text-mw-blue-400/50 mx-3">|</span>
+            {index > 0 && (
+              <span className="text-mw-blue-400/50 mr-3">|</span>
             )}
+            <span>{bullet}</span>
           </span>
         ))}
         {currentText && !isComplete && (
@@ -395,7 +395,7 @@ function TypewriterBullets({ bullets }: { bullets: string[] }) {
 export default function Hero() {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [videoError, setVideoError] = useState(false);
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   // Handle video load error
   useEffect(() => {
@@ -466,7 +466,8 @@ export default function Hero() {
         </motion.h1>
 
         {/* Typewriter Animated Bullet Points - One Row */}
-        <TypewriterBullets bullets={t('hero.bullets')} />
+        {/* key restarts the typing in the new language when the visitor switches locale */}
+        <TypewriterBullets key={locale} bullets={t('hero.bullets')} />
 
         <motion.div
           initial={{ opacity: 0, y: 30 }}

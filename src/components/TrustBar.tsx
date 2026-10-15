@@ -3,13 +3,14 @@
 import { motion } from "framer-motion";
 import type { TrustBarStat } from "@/sanity/lib/fetch";
 import { useLocale } from "@/i18n/LocaleContext";
+import { pickTranslation } from "@/i18n/config";
 
 interface TrustBarProps {
   stats?: TrustBarStat[] | null
 }
 
 export default function TrustBar({ stats }: TrustBarProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   const defaultStats: TrustBarStat[] = [
     { value: "1M+", label: t('landingPage.trustBarStats.oohSites') },
@@ -17,7 +18,9 @@ export default function TrustBar({ stats }: TrustBarProps) {
     { value: "500+", label: t('landingPage.trustBarStats.clients') },
   ];
 
-  const displayStats = stats && stats.length > 0 ? stats : defaultStats;
+  const displayStats = stats && stats.length > 0
+    ? stats.map((stat) => ({ ...stat, label: pickTranslation(stat.label, stat.labelTranslations, locale) }))
+    : defaultStats;
 
   return (
     <section className="py-8 bg-mw-gray-50 border-y border-mw-gray-200">

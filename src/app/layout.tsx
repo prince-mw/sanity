@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Suspense } from "react";
-import { cookies, draftMode } from "next/headers";
+import { cookies, draftMode, headers } from "next/headers";
 import HeaderWrapper from "@/components/HeaderWrapper";
 import Footer from "@/components/Footer";
 import GlobalCTA from "@/components/GlobalCTA";
@@ -11,7 +11,7 @@ import ZohoLeadScript from "@/components/ZohoLeadScript";
 import PreviewBanner from "@/components/PreviewBanner";
 import PolyfillLoader from "@/components/PolyfillLoader";
 import { LocaleProvider } from "@/i18n/LocaleContext";
-import { locales, defaultLocale, type Locale } from "@/i18n/config";
+import { locales, localeFromAcceptLanguage, type Locale } from "@/i18n/config";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
 import { ZohoPopupProvider } from "@/components/ZohoPopupProvider";
 import { getAllActiveZohoForms, getFooterContent, getAnalyticsConfig } from "@/sanity/lib/fetch";
@@ -152,8 +152,11 @@ export default async function RootLayout({
     getAnalyticsConfig(),
   ]);
 
+  // A language the visitor picked from the switcher (cookie) wins; otherwise use their browser language.
   const localeCookie = (await cookies()).get('locale')?.value;
-  const initialLocale: Locale = locales.includes(localeCookie as Locale) ? (localeCookie as Locale) : defaultLocale;
+  const initialLocale: Locale = locales.includes(localeCookie as Locale)
+    ? (localeCookie as Locale)
+    : localeFromAcceptLanguage((await headers()).get('accept-language'));
 
   return (
     <html lang={initialLocale} className="scroll-smooth">

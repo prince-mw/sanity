@@ -47,7 +47,7 @@ const LOCATION_OWN_GROUP_KEY: Record<string, string> = {
 // Ordinary, unpaired locations (the vast majority) always show. For a slug that's part
 // of a language pair, only its matching sibling shows — falling back to the English
 // sibling when the current locale has no counterpart in this particular group (e.g.
-// "es" isn't a selectable site locale, so americas-es never surfaces here).
+// a Japanese visitor sees americas, never americas-es).
 export function shouldShowLocationForLocale(slug: string, locale: string): boolean {
   const ownKey = LOCATION_OWN_GROUP_KEY[slug]
   if (!ownKey) return true
