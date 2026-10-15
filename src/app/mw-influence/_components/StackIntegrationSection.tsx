@@ -19,7 +19,7 @@ export const StackIntegrationSection: React.FC = () => {
 
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#e3e1e815_1px,transparent_1px),linear-gradient(to_bottom,#e3e1e815_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
-          <div className="flex items-center justify-between mb-8 relative z-10">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-6 sm:mb-8 relative z-10">
             <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest">
               <Network className="w-4 h-4 text-[#22d3ee]" />
               <span>Unified OOH Orchestration Protocol</span>
@@ -32,33 +32,33 @@ export const StackIntegrationSection: React.FC = () => {
 
           <div className="relative py-6 sm:py-8 z-10">
 
-            <div className="flex justify-center gap-4 sm:gap-16 mb-10">
-              <div className="px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-16 mb-6 sm:mb-10">
+              <div className="px-3.5 sm:px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
                 <span>CMS</span>
                 <span className="text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Screens</span>
               </div>
 
-              <div className="px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
+              <div className="px-3.5 sm:px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
                 <span>SSP</span>
                 <span className="text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Yield</span>
               </div>
 
-              <div className="px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
+              <div className="px-3.5 sm:px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
                 <span>DSP</span>
                 <span className="text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Bidding</span>
               </div>
             </div>
 
-            <div className="flex items-center justify-between max-w-2xl mx-auto gap-4 my-4">
+            <div className="flex flex-wrap sm:flex-nowrap items-center justify-center sm:justify-between max-w-2xl mx-auto gap-3 sm:gap-4 my-4">
 
-              <div className="px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
+              <div className="px-3.5 sm:px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
                 <span>CRM</span>
                 <span className="text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Direct</span>
               </div>
 
-              <div className="relative group">
+              <div className="relative group order-first w-full flex justify-center mb-3 sm:order-none sm:w-auto sm:mb-0">
                 <div className="absolute -inset-2 bg-gradient-to-r from-[#22d3ee] via-[#182b6e] to-[#34d399] rounded-2xl blur-md opacity-75 group-hover:opacity-100 transition duration-500 animate-pulse" />
-                <div className="relative bg-[#0f1d4a] text-white px-8 py-5 rounded-2xl border border-white/20 shadow-2xl flex items-center gap-3">
+                <div className="relative bg-[#0f1d4a] text-white px-5 sm:px-8 py-4 sm:py-5 rounded-2xl border border-white/20 shadow-2xl flex items-center gap-3">
                   <div className="w-10 h-10 rounded-xl bg-[#22d3ee]/20 flex items-center justify-center border border-[#22d3ee]/40">
                     <Cpu className="w-6 h-6 text-[#22d3ee]" />
                   </div>
@@ -72,20 +72,20 @@ export const StackIntegrationSection: React.FC = () => {
                 </div>
               </div>
 
-              <div className="px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
+              <div className="px-3.5 sm:px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
                 <span>Planning</span>
                 <span className="text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Audience</span>
               </div>
 
             </div>
 
-            <div className="flex justify-center gap-6 sm:gap-20 mt-10 mb-8">
-              <div className="px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
+            <div className="flex flex-wrap justify-center gap-3 sm:gap-20 mt-6 sm:mt-10 mb-8">
+              <div className="px-3.5 sm:px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
                 <span>Reporting</span>
                 <span className="text-[9px] bg-white/20 px-1.5 py-0.5 rounded">POP Logs</span>
               </div>
 
-              <div className="px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
+              <div className="px-3.5 sm:px-5 py-2.5 rounded-xl border border-blue-900 font-bold text-sm bg-[#182b6e] text-white shadow-sm flex items-center gap-2">
                 <span>Billing</span>
                 <span className="text-[9px] bg-white/20 px-1.5 py-0.5 rounded">Invoicing</span>
               </div>

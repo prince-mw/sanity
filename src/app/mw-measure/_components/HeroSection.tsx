@@ -62,7 +62,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-center">
 
-          <div className="md:col-span-6 space-y-6 sm:space-y-8 text-left">
+          <div className="md:col-span-6 space-y-6 sm:space-y-8 text-center md:text-left">
 
             {/* Pill Badge with MW Measure Geometry */}
             <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-400/30 text-blue-200 text-xs font-semibold tracking-wide shadow-sm">
@@ -78,11 +78,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {renderTitle()}
             </h1>
 
-            <p className="text-sm sm:text-base md:text-lg text-blue-100/80 font-normal leading-relaxed max-w-xl">
+            <p className="text-sm sm:text-base md:text-lg text-blue-100/80 font-normal leading-relaxed max-w-xl mx-auto md:mx-0">
               {renderSubtitle()}
             </p>
 
-            <div className="pt-2 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            <div className="pt-2 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
               <CTAButton
                 href="/contact"
                 className="inline-flex items-center justify-center px-7 py-3.5 sm:py-4 rounded-xl bg-white text-[#121f56] text-xs sm:text-sm font-bold tracking-wider uppercase shadow-xl shadow-blue-950/40 hover:bg-slate-100 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"

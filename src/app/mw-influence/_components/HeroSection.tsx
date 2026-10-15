@@ -42,7 +42,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="relative max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
-          <div className="lg:col-span-5 space-y-6 sm:space-y-8 z-10">
+          <div className="lg:col-span-5 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
             <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-400/30 text-blue-200 text-xs font-semibold tracking-wide shadow-sm" id="hero-badge">
               <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
                 <InfluenceGeometry className="w-3 h-3 text-white" />
@@ -56,7 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               {renderTitle(title)}
             </h1>
 
-            <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-xl font-normal">
+            <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal">
               {subtitle}
             </p>
 
