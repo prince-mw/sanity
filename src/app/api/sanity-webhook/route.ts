@@ -184,7 +184,12 @@ export async function POST(request: NextRequest) {
     try {
       revalidateTag(_type)
       revalidateTag('sanity')
-      console.log(`[Sanity Webhook] Revalidated tags: ${_type}, sanity`)
+      // Shared layout data (megaMenu, footerConfig, analyticsConfig, zohoForm, blogPost
+      // translations) is cached cross-request via cachedSanityFetch in sanity/lib/fetch.ts,
+      // independent of page-level revalidatePath — bust it on every edit so changes to these
+      // still show up within seconds instead of waiting for its 1hr cache to expire.
+      revalidateTag('sanity-shared')
+      console.log(`[Sanity Webhook] Revalidated tags: ${_type}, sanity, sanity-shared`)
     } catch (err) {
       console.error('[Sanity Webhook] Failed to revalidate tags', err)
     }

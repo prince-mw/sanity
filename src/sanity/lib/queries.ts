@@ -1,4 +1,5 @@
 import { client, previewClient } from './client'
+import { cachedSanityFetch } from './fetch'
 
 // Blog Posts Queries
 export const blogPostsQuery = `
@@ -610,7 +611,7 @@ export const megaMenuQuery = `
 `
 
 export async function getMegaMenu() {
-  return client.fetch(megaMenuQuery)
+  return cachedSanityFetch(megaMenuQuery)
 }
 
 // Blog language groups — replaces a hand-maintained map that had to be edited in code
@@ -634,7 +635,7 @@ function blogPostUrl(slug: string): string {
 
 export async function getBlogLanguageGroups(): Promise<BlogLanguageGroups> {
   const rows: {slug?: string; language?: string; translations?: {slug?: string; language?: string}[]}[] =
-    await client.fetch(blogLanguageGroupsQuery)
+    await cachedSanityFetch(blogLanguageGroupsQuery)
 
   const groups: BlogLanguageGroups = {}
 

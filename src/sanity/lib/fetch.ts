@@ -1,4 +1,5 @@
 import { cache } from 'react'
+import { unstable_cache } from 'next/cache'
 import { client, previewClient, urlFor } from './client'
 import { sanitizeHtml } from '@/lib/sanitize'
 import type { LocationData } from '@/data/staticLocationData'
@@ -13,6 +14,20 @@ const dedupedClientFetch = cache(
     client.fetch(query, paramsJson ? JSON.parse(paramsJson) : undefined, {
       next: { tags: ['sanity'] },
     })
+)
+
+// Cross-request cache for shared layout data (header/footer/menu/analytics/forms) fetched on
+// every page. root layout.tsx reads cookies()/headers() for locale detection, which makes the
+// whole site render dynamically per-request — so a plain client.fetch() in that tree is never
+// reused across requests and fires on literally every page view instead of once an hour. This
+// is a separate cache keyed off the query string itself, so it stays cached regardless of the
+// route's own dynamic/static status. Paired with revalidateTag('sanity-shared') in the Sanity
+// webhook so edits to these documents still show up within seconds, not after a full hour.
+export const cachedSanityFetch = unstable_cache(
+  (query: string, paramsJson?: string) =>
+    client.fetch(query, paramsJson ? JSON.parse(paramsJson) : undefined),
+  ['sanity-shared-fetch'],
+  { revalidate: 3600, tags: ['sanity-shared'] }
 )
 
 // Safe fetch wrapper - prevents page crashes on Sanity network errors
@@ -3114,7 +3129,7 @@ export async function getAnalyticsConfig(): Promise<AnalyticsConfig | null> {
         zohoLeadTracking
       }
     `
-    return await client.fetch(query)
+    return await cachedSanityFetch(query)
   } catch (error) {
     console.error('Failed to fetch analytics config:', error)
     return null
@@ -3564,7 +3579,7 @@ export async function getZohoFormsByType(formType: string): Promise<ZohoFormData
 export async function getAllActiveZohoForms(): Promise<ZohoFormData[]> {
   try {
     const query = `*[_type == "zohoForm" && isActive != false] | order(name asc) ${zohoFormProjection}`
-    const forms = await client.fetch(query)
+    const forms = await cachedSanityFetch(query)
     return (forms || []).map(transformZohoForm).filter(Boolean) as ZohoFormData[]
   } catch (error) {
     console.error('Error fetching all Zoho forms:', error)
@@ -3575,7 +3590,7 @@ export async function getAllActiveZohoForms(): Promise<ZohoFormData[]> {
 export async function getZohoFormsForPage(pagePath: string): Promise<ZohoFormData[]> {
   try {
     const query = `*[_type == "zohoForm" && isActive != false && $pagePath in assignedPages] | order(name asc) ${zohoFormProjection}`
-    const forms = await client.fetch(query, { pagePath })
+    const forms = await cachedSanityFetch(query, JSON.stringify({ pagePath }))
     return (forms || []).map(transformZohoForm).filter(Boolean) as ZohoFormData[]
   } catch (error) {
     console.error('Error fetching Zoho forms for page:', error)
@@ -3586,7 +3601,7 @@ export async function getZohoFormsForPage(pagePath: string): Promise<ZohoFormDat
 export async function getContactZohoForm(): Promise<ZohoFormData | undefined> {
   try {
     const query = `*[_type == "zohoForm" && formType == "contact" && isActive != false] | order(_createdAt asc) [0] ${zohoFormProjection}`
-    const form = await client.fetch(query)
+    const form = await cachedSanityFetch(query)
     return transformZohoForm(form)
   } catch (error) {
     console.error('Error fetching contact Zoho form:', error)
@@ -3842,7 +3857,7 @@ export async function getFooterContent(): Promise<FooterContent | null> {
         copyrightText
       }
     `
-    return safeFetch(query)
+    return await cachedSanityFetch(query)
   } catch (error) {
     console.error('Error fetching footer content:', error)
     return null
