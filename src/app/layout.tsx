@@ -6,6 +6,7 @@ import HeaderWrapper from "@/components/HeaderWrapper";
 import Footer from "@/components/Footer";
 import GlobalCTA from "@/components/GlobalCTA";
 import CookieConsent from "@/components/CookieConsent";
+import ScrollToTop from "@/components/ScrollToTop";
 import Analytics from "@/components/Analytics";
 import ZohoLeadScript from "@/components/ZohoLeadScript";
 import PreviewBanner from "@/components/PreviewBanner";
@@ -222,6 +223,7 @@ export default async function RootLayout({
               <Footer content={footerContent} />
             </ZohoPopupProvider>
           </FormPopupProvider>
+          <ScrollToTop />
           <CookieConsent />
           <PreviewBanner isPreview={isPreview} />
         </LocaleProvider>
