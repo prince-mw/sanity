@@ -82,6 +82,14 @@ export const pageSections: any[] = [
       {name: 'imagePosition', type: 'string', title: 'Image Position', options: {list: ['left', 'right']}, initialValue: 'right'},
       {name: 'ctaText', type: 'string', title: 'CTA Button Text'},
       {name: 'ctaLink', type: 'string', title: 'CTA Button Link'},
+      {
+        name: 'ctaPlacement',
+        type: 'string',
+        title: 'CTA Button Position',
+        description: 'Show the button under the text (default) or centred under the image.',
+        options: {list: [{title: 'Under the text', value: 'text'}, {title: 'Under the image', value: 'image'}], layout: 'radio'},
+        initialValue: 'text',
+      },
       {name: 'backgroundColor', type: 'string', title: 'Background Color', options: {list: ['white', 'gray', 'blue', 'dark']}, initialValue: 'white'},
     ],
     preview: {
@@ -490,6 +498,14 @@ export const pageSections: any[] = [
         description: 'e.g., "Success Stories: DOOH Advertising in Japan"',
       },
       {name: 'sectionSubheading', type: 'text', title: 'Section Subheading', rows: 2},
+      {
+        name: 'cardStyle',
+        type: 'string',
+        title: 'Card Style',
+        description: 'Standard = icon, label and title. Image = the case study / ebook featured image in place of those.',
+        options: {list: [{title: 'Standard', value: 'standard'}, {title: 'Image', value: 'image'}], layout: 'radio'},
+        initialValue: 'standard',
+      },
       {
         name: 'stories',
         type: 'array',

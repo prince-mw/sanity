@@ -92,7 +92,10 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
 
   if (sanityLocation) {
     const locationData = transformLocationFull(sanityLocation)
-    const cities = (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
+    // Pages that link to their sub-pages from their own sections (e.g. Philippines) hide the automatic city grid
+    const cities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards
+      ? []
+      : (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
     const faqJsonLd = buildFaqJsonLd(locationData.faqs)
     return (
       <>

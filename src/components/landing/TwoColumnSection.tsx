@@ -15,6 +15,8 @@ interface TwoColumnSectionProps {
   ctaText?: string;
   ctaLink?: string;
   backgroundColor?: BackgroundColor;
+  /** 'image' centres the CTA button under the image instead of under the text */
+  ctaPlacement?: 'text' | 'image';
 }
 
 export function TwoColumnSection({
@@ -25,10 +27,23 @@ export function TwoColumnSection({
   ctaText,
   ctaLink,
   backgroundColor = 'white',
+  ctaPlacement = 'text',
 }: TwoColumnSectionProps) {
   const bgClasses = getBackgroundClasses(backgroundColor);
   const isDark = backgroundColor === 'dark' || backgroundColor === 'blue' || backgroundColor === 'gradient';
   const { openZohoPopup } = useZohoPopup();
+
+  const cta = ctaText && ctaLink ? (
+    isZohoFormUrl(ctaLink) ? (
+      <button onClick={() => openZohoPopup(ctaLink, ctaText)} className={getButtonClasses('primary', isDark)}>
+        {ctaText}
+      </button>
+    ) : (
+      <CTAButton href={ctaLink} className={getButtonClasses('primary', isDark)}>
+        {ctaText}
+      </CTAButton>
+    )
+  ) : null;
 
   return (
     <section className={`py-10 md:py-16 ${bgClasses}`}>
@@ -54,17 +69,7 @@ export function TwoColumnSection({
               </div>
             )}
 
-            {ctaText && ctaLink && (
-              isZohoFormUrl(ctaLink) ? (
-                <button onClick={() => openZohoPopup(ctaLink, ctaText)} className={getButtonClasses('primary', isDark)}>
-                  {ctaText}
-                </button>
-              ) : (
-                <CTAButton href={ctaLink} className={getButtonClasses('primary', isDark)}>
-                  {ctaText}
-                </CTAButton>
-              )
-            )}
+            {ctaPlacement !== 'image' && cta}
           </motion.div>
 
           {/* Image */}
@@ -86,6 +91,7 @@ export function TwoColumnSection({
                 />
               </div>
             )}
+            {ctaPlacement === 'image' && cta && <div className="mt-8 flex justify-center">{cta}</div>}
           </motion.div>
         </div>
       </div>

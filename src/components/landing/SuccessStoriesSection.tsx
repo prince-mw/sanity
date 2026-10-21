@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
 
@@ -30,6 +31,7 @@ const DeviceIcon = (
 
 interface SuccessStoryRef {
   title?: string
+  image?: string
   slug?: string
   category?: string
   excerpt?: string
@@ -49,9 +51,11 @@ interface SuccessStoriesSectionProps {
   sectionSubheading?: string
   stories?: SuccessStoryItem[]
   backgroundColor?: BackgroundColor
+  /** 'image' shows each story's featured image in place of the icon, label and title */
+  cardStyle?: 'standard' | 'image'
 }
 
-export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stories, backgroundColor = 'gray' }: SuccessStoriesSectionProps) {
+export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stories, backgroundColor = 'gray', cardStyle = 'standard' }: SuccessStoriesSectionProps) {
   const bgClasses = getBackgroundClasses(backgroundColor);
   const textColor = getTextColorClasses(backgroundColor);
   const subtextColor = getSubtextColorClasses(backgroundColor);
@@ -66,6 +70,7 @@ export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stori
         type: story.contentType,
         label: isEbook ? formatEbookCategory(ref.category) : 'Case Study',
         title: ref.title || '',
+        image: ref.image || '',
         description: story.description || ref.excerpt || '',
         buttonText: story.buttonText || (isEbook ? 'Download Ebook' : 'View Case Study'),
         href: isEbook ? `/ebooks/${ref.slug}` : `/case-studies/${ref.slug}`,
@@ -110,13 +115,31 @@ export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stori
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              className="flex flex-col bg-white rounded-2xl shadow-lg p-6 md:p-8 border border-gray-100 hover:shadow-xl transition-shadow"
+              className={`flex flex-col bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-xl transition-shadow overflow-hidden ${
+                cardStyle === 'image' && item.image ? '' : 'p-6 md:p-8'
+              }`}
             >
-              <div className="w-12 h-12 rounded-full bg-mw-blue-50 flex items-center justify-center mb-4">
-                {item.type === 'ebook' ? DeviceIcon : ChartIcon}
-              </div>
-              <div className="text-sm font-semibold text-mw-blue-600 mb-2">{item.label}</div>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
+              {cardStyle === 'image' && item.image ? (
+                // Image card: the featured image replaces the icon, label and title
+                <Link href={item.href} className="relative block aspect-video bg-gray-50 group">
+                  <Image
+                    src={item.image}
+                    alt={item.title}
+                    fill
+                    sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                    className="object-contain transition-transform duration-500 group-hover:scale-105"
+                  />
+                </Link>
+              ) : (
+                <>
+                  <div className="w-12 h-12 rounded-full bg-mw-blue-50 flex items-center justify-center mb-4">
+                    {item.type === 'ebook' ? DeviceIcon : ChartIcon}
+                  </div>
+                  <div className="text-sm font-semibold text-mw-blue-600 mb-2">{item.label}</div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-3">{item.title}</h3>
+                </>
+              )}
+              <div className={cardStyle === 'image' && item.image ? 'flex flex-1 flex-col p-6 md:p-7' : 'contents'}>
               {item.description && <p className="text-gray-600 mb-6 flex-1">{item.description}</p>}
               <Link
                 href={item.href}
@@ -124,6 +147,7 @@ export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stori
               >
                 {item.buttonText}
               </Link>
+              </div>
             </motion.div>
           ))}
         </div>

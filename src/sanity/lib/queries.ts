@@ -303,11 +303,13 @@ export const landingPageBySlugQuery = `
         buttonText,
         "caseStudy": caseStudyRef-> {
           title,
+          "image": featuredImage.asset->url,
           "slug": slug.current,
           "excerpt": seo.metaDescription
         },
         "ebook": ebookRef-> {
           title,
+          "image": image.asset->url,
           "slug": slug.current,
           category,
           "excerpt": seo.metaDescription
@@ -440,11 +442,13 @@ export const landingPagePreviewBySlugQuery = `
         buttonText,
         "caseStudy": caseStudyRef-> {
           title,
+          "image": featuredImage.asset->url,
           "slug": slug.current,
           "excerpt": seo.metaDescription
         },
         "ebook": ebookRef-> {
           title,
+          "image": image.asset->url,
           "slug": slug.current,
           category,
           "excerpt": seo.metaDescription

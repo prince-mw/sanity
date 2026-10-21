@@ -243,6 +243,21 @@ export default defineType({
 
     // Settings & SEO Group
     defineField({
+      name: 'hideCityCards',
+      title: 'Hide automatic "Explore by City" cards',
+      type: 'boolean',
+      group: 'meta',
+      initialValue: false,
+      description: 'Turn on when this page links to its sub-pages from its own sections (e.g. Philippines), so the automatic city grid does not duplicate them.',
+    }),
+    defineField({
+      name: 'relatedPagesHeading',
+      title: 'Sub-page footer heading',
+      type: 'string',
+      group: 'meta',
+      description: 'Heading of the "other pages" strip at the bottom of the sub-pages of this country. Default: "Explore Other Cities in <country>".',
+    }),
+    defineField({
       name: 'contactFormUrl',
       title: 'Contact Form URL',
       type: 'url',

@@ -1801,11 +1801,13 @@ export async function getLocationBySlug(slug: string, preview: boolean = false):
             ...,
             "caseStudy": caseStudyRef-> {
               title,
+              "image": featuredImage.asset->url,
               "slug": slug.current,
               "excerpt": seo.metaDescription
             },
             "ebook": ebookRef-> {
               title,
+              "image": image.asset->url,
               "slug": slug.current,
               category,
               "excerpt": seo.metaDescription
@@ -1813,6 +1815,7 @@ export async function getLocationBySlug(slug: string, preview: boolean = false):
           }
         }
       },
+      hideCityCards,
       sectionsPosition,
       hideDefaultHero,
       seo {
@@ -1913,7 +1916,7 @@ export interface SanityLocationCity {
 
 const locationCityProjection = `
   _id,
-  country->{ country, slug },
+  country->{ country, slug, relatedPagesHeading },
   city,
   slug,
   heroTitle,
@@ -1948,11 +1951,13 @@ const locationCityProjection = `
         ...,
         "caseStudy": caseStudyRef-> {
           title,
+          "image": featuredImage.asset->url,
           "slug": slug.current,
           "excerpt": seo.metaDescription
         },
         "ebook": ebookRef-> {
           title,
+          "image": image.asset->url,
           "slug": slug.current,
           category,
           "excerpt": seo.metaDescription
@@ -1975,7 +1980,7 @@ export async function getCitiesByCountry(countrySlug: string, preview: boolean =
   const query = `
     *[_type == "locationCity" && isActive == true && country->slug.current == $countrySlug] | order(order asc) {
       _id,
-      country->{ country, slug },
+      country->{ country, slug, relatedPagesHeading },
       city,
       slug,
       heroImage,

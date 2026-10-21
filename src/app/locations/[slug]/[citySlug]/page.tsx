@@ -90,6 +90,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         pageType="city"
         relatedCities={relatedCities}
         countryName={city.country?.country || undefined}
+        relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || undefined}
       />
     </>
   )

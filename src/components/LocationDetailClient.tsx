@@ -125,9 +125,11 @@ interface LocationDetailClientProps {
   /** City pages only: the country's other cities, linked at the bottom of the page */
   relatedCities?: LocationCityCard[]
   countryName?: string
+  /** Overrides the default "Explore Other Cities in <country>" heading */
+  relatedHeading?: string
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country', relatedCities = [], countryName }: LocationDetailClientProps) {
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading }: LocationDetailClientProps) {
   const location = initialData
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)
   const { openZohoPopup, setCurrentPageFormUrl } = useZohoPopup()
@@ -367,7 +369,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">Premium advertising locations with maximum exposure</p>
             </motion.div>
             
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {/* Flex-wrap so fewer than three cards (or an incomplete last row) stay centred */}
+            <div className="flex flex-wrap justify-center gap-8">
               {location.highVisibilityBillboards.map((billboard, index) => (
                 <motion.div
                   key={index}
@@ -375,7 +378,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow"
+                  className="w-full md:w-[calc(50%-16px)] lg:w-[calc(33.333%-22px)] bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow"
                 >
                   {billboard.image && (
                     <div className="h-48 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 relative">
@@ -498,7 +501,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                Explore Other Cities{countryName ? ` in ${countryName}` : ''}
+                {relatedHeading || `Explore Other Cities${countryName ? ` in ${countryName}` : ''}`}
               </h2>
               <p className="text-lg text-gray-600">Plan your campaign across more cities in one buy</p>
             </div>
