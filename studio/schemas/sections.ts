@@ -378,6 +378,7 @@ export const pageSections: any[] = [
         options: {hotspot: true},
         hidden: ({document}: any) => document?._type === 'location' || document?._type === 'locationCity',
       },
+      {name: 'note', type: 'text', title: 'Small Line Under the Button', rows: 2, description: 'Optional supporting line shown below the button(s).'},
       {name: 'backgroundColor', type: 'string', title: 'Background Color', options: {list: ['white', 'gray', 'blue', 'dark', 'gradient']}, initialValue: 'blue'},
     ],
     preview: {

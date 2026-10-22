@@ -1738,6 +1738,8 @@ export interface SanityLocation {
     answer: string
   }>
   faqsHeading?: string
+  citiesHeading?: string
+  citiesSubheading?: string
   order?: number
   isActive?: boolean
   seo?: SanitySEO
@@ -1816,6 +1818,8 @@ export async function getLocationBySlug(slug: string, preview: boolean = false):
         }
       },
       hideCityCards,
+      citiesHeading,
+      citiesSubheading,
       sectionsPosition,
       hideDefaultHero,
       seo {
@@ -1873,6 +1877,8 @@ export function transformLocationFull(location: SanityLocation) {
     mediaTypesHeading: location.mediaTypesHeading || '',
     faqs: location.faqs || [],
     faqsHeading: location.faqsHeading || '',
+    citiesHeading: location.citiesHeading || '',
+    citiesSubheading: location.citiesSubheading || '',
     sections: location.sections || [],
     sectionsPosition: location.sectionsPosition || 'after-faqs',
     hideDefaultHero: location.hideDefaultHero || false,

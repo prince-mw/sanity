@@ -15,6 +15,8 @@ interface CTABannerSectionProps {
   secondaryCtaLink?: string;
   backgroundImage?: string;
   backgroundColor?: BackgroundColor;
+  /** Small line shown under the buttons */
+  note?: string;
 }
 
 export function CTABannerSection({
@@ -26,6 +28,7 @@ export function CTABannerSection({
   secondaryCtaLink,
   backgroundImage,
   backgroundColor = 'blue',
+  note,
 }: CTABannerSectionProps) {
   const bgClasses = getBackgroundClasses(backgroundColor);
   const isDark = ['blue', 'dark', 'gradient'].includes(backgroundColor);
@@ -105,6 +108,12 @@ export function CTABannerSection({
                 )
               )}
             </div>
+          )}
+
+          {note && (
+            <p className={`text-sm mt-6 ${isDark || backgroundImage ? 'text-white/80' : 'text-gray-500'}`}>
+              {note}
+            </p>
           )}
         </motion.div>
       </div>

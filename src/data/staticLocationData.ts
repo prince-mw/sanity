@@ -28,6 +28,8 @@ export interface LocationData {
   mediaTypesHeading?: string
   faqs: Array<{ question: string; answer: string }>
   faqsHeading?: string
+  citiesHeading?: string
+  citiesSubheading?: string
   sections?: any[]
   sectionsPosition?: string
   hideDefaultHero?: boolean

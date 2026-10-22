@@ -289,8 +289,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               variants={fadeUp}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Explore by City</h2>
-              <p className="text-lg text-gray-600">OOH advertising opportunities in {location.name}&apos;s key cities</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{location.citiesHeading || 'Explore by City'}</h2>
+              <p className="text-lg text-gray-600">{location.citiesSubheading || <>OOH advertising opportunities in {location.name}&apos;s key cities</>}</p>
             </motion.div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">

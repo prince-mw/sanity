@@ -251,6 +251,20 @@ export default defineType({
       description: 'Turn on when this page links to its sub-pages from its own sections (e.g. Philippines), so the automatic city grid does not duplicate them.',
     }),
     defineField({
+      name: 'citiesHeading',
+      title: 'City cards heading',
+      type: 'string',
+      group: 'meta',
+      description: 'Heading above the automatic city cards on this country page. Default: "Explore by City".',
+    }),
+    defineField({
+      name: 'citiesSubheading',
+      title: 'City cards sub-heading',
+      type: 'string',
+      group: 'meta',
+      description: 'Line under that heading. Default: "OOH advertising opportunities in <country> key cities".',
+    }),
+    defineField({
       name: 'relatedPagesHeading',
       title: 'Sub-page footer heading',
       type: 'string',
