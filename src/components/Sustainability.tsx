@@ -84,7 +84,7 @@ export default function Sustainability() {
 
           {/* CTA Button */}
           <Link
-            href="/movinghearts"
+            href="/moving-hearts"
             className="ml-0 sm:ml-4 px-6 py-2.5 bg-white text-rose-600 font-semibold rounded-full hover:bg-white/90 transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2 group"
           >
             Learn More

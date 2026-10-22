@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import { getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch'
 
 const defaultMeta = {
-  title: 'Moving Hearts - Social Impact Initiative | Moving Walls',
-  description: 'Moving Hearts initiative by Moving Walls. Using OOH advertising technology to support social causes and community impact.',
+  title: 'Moving Hearts: Donated DOOH for Social Causes | Moving Walls',
+  description: 'Moving Hearts connects nonprofits with media owners who donate digital out-of-home screen time to social and humanitarian causes. Get started today.',
 };
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -20,7 +20,7 @@ export async function generateMetadata(): Promise<Metadata> {
       images: seo?.ogImage ? [{ url: getSanityImageUrl(seo.ogImage, { width: 1200 }), width: 1200, height: 630 }] : [],
     },
     alternates: {
-      canonical: "https://www.movingwalls.com/movinghearts",
+      canonical: "https://www.movingwalls.com/moving-hearts",
     },
     robots: seo?.noIndex ? { index: false, follow: false } : undefined,
   };

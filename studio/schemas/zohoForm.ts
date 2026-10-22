@@ -86,7 +86,7 @@ export default defineType({
           {title: 'OOH Formats', value: '/ooh-formats'},
           {title: 'Our Story', value: '/our-story'},
           {title: 'Our Journey', value: '/our-journey'},
-          {title: 'Moving Hearts', value: '/movinghearts'},
+          {title: 'Moving Hearts', value: '/moving-hearts'},
           // ── Special / Feature Pages ──
           {title: 'AI Powered Audience Targeting', value: '/ai-powered-audience-targeting'},
           {title: 'Adtech Company of Year', value: '/adtech-company-of-year'},

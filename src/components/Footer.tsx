@@ -130,7 +130,7 @@ export default function Footer({ content }: FooterProps) {
   const movingHeartsStatsValue = content?.movingHeartsStatsValue || '3M+';
   const movingHeartsStatsLabel = L(content?.movingHeartsStatsLabel) || t('footer.movingHearts.statsLabel');
   const movingHeartsTagline = L(content?.movingHeartsTagline) || t('footer.movingHearts.tagline');
-  const movingHeartsUrl = content?.movingHeartsUrl || 'https://movinghearts.media/';
+  const movingHeartsUrl = content?.movingHeartsUrl || '/moving-hearts';
   const movingHeartsCtaText = L(content?.movingHeartsCtaText) || t('footer.movingHearts.ctaText');
   const legalLinks = content?.legalLinks?.length
     ? content.legalLinks.map((link) => ({ ...link, label: L(link.label) }))
@@ -385,8 +385,7 @@ export default function Footer({ content }: FooterProps) {
                 {/* CTA Button */}
                 <a
                   href={movingHeartsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  {...(/^https?:/.test(movingHeartsUrl) ? { target: "_blank", rel: "noopener noreferrer" } : {})}
                   className="ml-0 sm:ml-4 px-6 py-2.5 bg-white text-emerald-600 font-semibold rounded-[6px] hover:bg-lime-50 transition-all duration-300 shadow-lg hover:shadow-[0_0_20px_rgba(163,230,53,0.4)] flex items-center gap-2 group"
                   aria-label={`${movingHeartsCtaText} about ${movingHeartsTitle}`}
                 >

@@ -127,7 +127,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/community', priority: 0.6, changeFreq: 'monthly' as const },
     // Help Center page temporarily hidden — being updated. Re-add once published.
     { route: '/products', priority: 0.85, changeFreq: 'monthly' as const },
-    { route: '/movinghearts', priority: 0.4, changeFreq: 'yearly' as const },
+    { route: '/moving-hearts', priority: 0.4, changeFreq: 'yearly' as const },
     { route: '/search', priority: 0.5, changeFreq: 'weekly' as const },
     // Legal
     { route: '/privacy', priority: 0.3, changeFreq: 'yearly' as const },
