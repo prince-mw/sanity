@@ -71,7 +71,8 @@ async function getSitemapData() {
     }
   }`
 
-  return client.fetch(query)
+  // Tagged so the Sanity webhook's revalidateTag('sanity') clears this cached result on publish
+  return client.fetch(query, {}, { next: { revalidate: 3600, tags: ['sanity'] } })
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

@@ -170,6 +170,10 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // The sitemap lists pages from most document types; its time-based revalidate alone
+    // left new pages out for a day on Amplify, so refresh it on every publish too.
+    pathsToRevalidate.push('/sitemap.xml')
+
     // Revalidate all affected paths
     for (const path of pathsToRevalidate) {
       try {
