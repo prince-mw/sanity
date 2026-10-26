@@ -24,6 +24,9 @@ const ZohoPopupContext = createContext<ZohoPopupContextType | undefined>(undefin
 
 export function ZohoPopupProvider({ children }: { children: ReactNode }) {
   const [activeUrl, setActiveUrl] = useState<string | null>(null)
+  // Full iframe src, built once when the popup opens: the GA linker (_gl) appended by
+  // appendUTMsToUrl changes over time, so rebuilding it on every render would reload the form.
+  const [activeSrc, setActiveSrc] = useState('')
   const [activeTitle, setActiveTitle] = useState('Contact Us')
   const [currentPageFormUrl, setCurrentPageFormUrl] = useState<string | null>(null)
   const pathname = usePathname()
@@ -31,8 +34,9 @@ export function ZohoPopupProvider({ children }: { children: ReactNode }) {
   const openZohoPopup = useCallback((url: string, title?: string) => {
     if (!url) return
     setActiveUrl(url)
+    setActiveSrc(appendUTMsToUrl(appendReferrerName(url, pathname)))
     setActiveTitle(title || 'Contact Us')
-  }, [])
+  }, [pathname])
 
   const closeZohoPopup = useCallback(() => setActiveUrl(null), [])
 
@@ -61,7 +65,7 @@ export function ZohoPopupProvider({ children }: { children: ReactNode }) {
               </div>
               <div className="h-[70vh]">
                 <iframe
-                  src={appendUTMsToUrl(appendReferrerName(activeUrl, pathname))}
+                  src={activeSrc}
                   width="100%"
                   height="100%"
                   frameBorder={0}

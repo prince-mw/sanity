@@ -48,5 +48,32 @@ export function appendUTMsToUrl(url: string): string {
       result += (result.includes('?') ? '&' : '?') + key + '=' + encodeURIComponent(val)
     }
   }
-  return result
+  return appendGaLinker(result)
+}
+
+/**
+ * Adds GA4's cross-domain linker (_gl) so the GTM/GA4 tag inside the Zoho iframe (where
+ * zf_formsubmit fires) continues the visitor's movingwalls.com session instead of starting a
+ * new one on forms.zohopublic.com.
+ *
+ * GA4's cross-domain setting (forms.zohopublic.com is on its linker list) makes gtag decorate
+ * links to that domain on mousedown, but it never sees an iframe src set from JS. So we hand it
+ * a hidden link to the form, fire mousedown, and keep the decorated URL. If GA hasn't loaded
+ * (blocked, or consent declined) nothing decorates the link and the URL is returned unchanged.
+ * The _gl value expires after about two minutes, so call this when the iframe is about to load.
+ */
+function appendGaLinker(url: string): string {
+  if (typeof document === 'undefined' || !document.body || /[?&]_gl=/.test(url)) return url
+  try {
+    const link = document.createElement('a')
+    link.href = url
+    link.style.display = 'none'
+    document.body.appendChild(link)
+    link.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }))
+    const decorated = link.href
+    link.remove()
+    return /[?&]_gl=/.test(decorated) ? decorated : url
+  } catch {
+    return url
+  }
 }
