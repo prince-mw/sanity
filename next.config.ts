@@ -45,6 +45,21 @@ const nextConfig: NextConfig = {
   // SEO-Friendly Cache Headers
   async headers() {
     return [
+      // Internal dashboard: never index (deliberately not listed in robots.txt)
+      {
+        source: '/internal-insights/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+          { key: 'Cache-Control', value: 'private, no-store' },
+        ],
+      },
+      {
+        source: '/internal-insights',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },
+          { key: 'Cache-Control', value: 'private, no-store' },
+        ],
+      },
       // Static assets - Long-term cache (1 year) with immutable
       {
         source: '/:path*.(ico|svg|png|jpg|jpeg|gif|webp|avif)',

@@ -8,7 +8,7 @@ export default function GlobalCTA() {
   const pathname = usePathname();
 
   // Hide on the main landing page, location pages, individual partner pages, MW Science, MW Inventory, MW Measure, MW Influence, MW Planner, Race Week 2026 and Moving Hearts (each has its own closing CTA)
-  if (pathname === '/' || pathname.startsWith('/locations/') || pathname.startsWith('/partners/') || pathname === '/mw-science' || pathname === '/mw-inventory' || pathname === '/mw-measure' || pathname === '/mw-influence' || pathname === '/mw-planner' || pathname === '/race-week-malaysia-singapore' || pathname === '/moving-hearts') return null;
+  if (pathname === '/' || pathname.startsWith('/locations/') || pathname.startsWith('/partners/') || pathname.startsWith('/internal-insights') || pathname === '/mw-science' || pathname === '/mw-inventory' || pathname === '/mw-measure' || pathname === '/mw-influence' || pathname === '/mw-planner' || pathname === '/race-week-malaysia-singapore' || pathname === '/moving-hearts') return null;
 
   return (
     <section className="py-16 bg-gradient-to-br from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 relative overflow-hidden">
