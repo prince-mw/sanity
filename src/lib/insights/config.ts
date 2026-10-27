@@ -62,7 +62,7 @@ export async function getInsightsConfig(): Promise<InsightsConfig> {
 
 export interface SemrushSnapshot {
   snapshotDate: string
-  rows: { page: string; keyword: string; database: string; position: number; volume: number }[]
+  rows: { page: string; keyword: string; database: string; position: number; volume: number; difficulty?: number }[]
 }
 
 /** Monthly Semrush snapshot, stored in the private Sanity doc `secrets.internalInsightsSemrush` */
@@ -71,7 +71,7 @@ export async function getSemrushSnapshot(): Promise<SemrushSnapshot | null> {
   if (!token) return null
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di'
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
-  const query = encodeURIComponent('*[_id == "secrets.internalInsightsSemrush"][0]{snapshotDate, rows[]{page, keyword, database, position, volume}}')
+  const query = encodeURIComponent('*[_id == "secrets.internalInsightsSemrush"][0]{snapshotDate, rows[]{page, keyword, database, position, volume, difficulty}}')
   try {
     const res = await fetch(`https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${query}`, {
       headers: { authorization: `Bearer ${token}` },

@@ -1,11 +1,15 @@
 // Date range options for /internal-insights (shared by server and client code)
-export type RangeKey = 'this-month' | 'last-month' | '28' | '90'
+export type RangeKey = 'this-week' | 'last-week' | 'this-month' | 'last-month' | 'this-year' | 'last-year'
 
-export const RANGE_KEYS: RangeKey[] = ['this-month', 'last-month', '28', '90']
+export const RANGE_KEYS: RangeKey[] = ['this-week', 'last-week', 'this-month', 'last-month', 'this-year', 'last-year']
 
 export const RANGE_LABELS: Record<RangeKey, string> = {
+  'this-week': 'This week',
+  'last-week': 'Last week',
   'this-month': 'This month',
   'last-month': 'Last month',
-  '28': 'Last 28 days',
-  '90': 'Last 90 days',
+  'this-year': 'This year',
+  'last-year': 'Last year',
 }
+
+export const DEFAULT_RANGE: RangeKey = 'this-month'

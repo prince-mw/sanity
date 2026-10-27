@@ -1,7 +1,7 @@
 import { Metadata } from 'next'
 import { isAuthed } from '@/lib/insights/auth'
 import { getDashboard } from '@/lib/insights/data'
-import { RANGE_KEYS, type RangeKey } from '@/lib/insights/ranges'
+import { DEFAULT_RANGE, RANGE_KEYS, type RangeKey } from '@/lib/insights/ranges'
 import { isInsightsConfigured } from '@/lib/insights/google'
 import InsightsLogin from './InsightsLogin'
 import InsightsDashboard from './InsightsDashboard'
@@ -25,7 +25,7 @@ export default async function InternalInsightsPage({ searchParams }: { searchPar
   }
 
   const { range } = await searchParams
-  const key: RangeKey = RANGE_KEYS.includes(range as RangeKey) ? (range as RangeKey) : 'this-month'
+  const key: RangeKey = RANGE_KEYS.includes(range as RangeKey) ? (range as RangeKey) : DEFAULT_RANGE
   try {
     const data = await getDashboard(key)
     return <InsightsDashboard data={data} range={key} />
