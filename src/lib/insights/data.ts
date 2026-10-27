@@ -2,6 +2,7 @@ import 'server-only'
 import { unstable_cache } from 'next/cache'
 import { ga4Report, gscQuery } from './google'
 import { getSemrushSnapshot } from './config'
+import { actionId } from './actions'
 import type { RangeKey } from './ranges'
 export type { RangeKey } from './ranges'
 
@@ -102,6 +103,8 @@ export interface Finding {
 }
 
 export interface ActionItem {
+  /** Stable across refreshes (category + page + title), used for the shared status */
+  id: string
   priority: 'High' | 'Medium' | 'Low'
   category: 'Tracking' | 'Titles & CTR' | 'Rankings' | 'New page' | 'Content' | 'Indexing'
   title: string
@@ -650,6 +653,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
   for (const p of leaking.slice(0, 3)) {
     notWorking.push({ title: `${p.market}: ${p.realSessions} real visits, 0 leads`, detail: `${pct(p.bounceRate)} bounce${p.leadEvent ? '' : '; no lead event found for this page'}.`, page: p.page })
     actions.push({
+      id: '',
       priority: 'High',
       category: 'Tracking',
       title: `Check the ${p.market} form is tracked`,
@@ -680,6 +684,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
   }
   for (const o of clickGaps.slice(0, 4)) {
     actions.push({
+      id: '',
       priority: o.impressions >= 150 ? 'High' : 'Medium',
       category: 'Titles & CTR',
       title: `Rewrite the title/description for "${o.query}"`,
@@ -693,6 +698,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
   const sdSemrush = d.semrushTop.filter((k) => !isPoorTarget(k.keyword) && k.position >= 4 && k.position <= 15 && k.volume >= 90 && (k.difficulty || 0) <= 35)
   for (const k of sdSemrush.slice(0, 6)) {
     actions.push({
+      id: '',
       priority: k.volume >= 200 ? 'High' : 'Medium',
       category: 'Rankings',
       title: `Push "${k.keyword}" into the top 3`,
@@ -703,7 +709,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
   }
   if (!sdSemrush.length) {
     for (const o of d.opportunities.filter((x) => x.type === 'Striking distance').slice(0, 4)) {
-      actions.push({ priority: 'Medium', category: 'Rankings', title: `Push "${o.query}" into the top 3`, detail: `#${o.position.toFixed(0)} with ${fmtN(o.impressions)} impressions.`, page: o.page, score: 300 + o.impressions })
+      actions.push({ id: '', priority: 'Medium', category: 'Rankings', title: `Push "${o.query}" into the top 3`, detail: `#${o.position.toFixed(0)} with ${fmtN(o.impressions)} impressions.`, page: o.page, score: 300 + o.impressions })
     }
   }
 
@@ -727,6 +733,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
   for (const [key, x] of [...cityDemand.entries()].sort((a, b) => b[1].volume - a[1].volume).slice(0, 3)) {
     const city = key.split('/')[1].replace(/-/g, ' ')
     actions.push({
+      id: '',
       priority: x.volume >= 200 ? 'High' : 'Medium',
       category: 'New page',
       title: `Create a ${city.replace(/\b\w/g, (c) => c.toUpperCase())} city page`,
@@ -743,6 +750,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
   for (const [page, ks] of [...pricingByPage.entries()].sort((a, b) => b[1].reduce((n, k) => n + k.volume, 0) - a[1].reduce((n, k) => n + k.volume, 0)).slice(0, 2)) {
     const vol = ks.reduce((n, k) => n + k.volume, 0)
     actions.push({
+      id: '',
       priority: 'Medium',
       category: 'Content',
       title: `Add a "what affects billboard rates" section + FAQ`,
@@ -756,6 +764,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
   const noImpressions = d.pages.filter((p) => p.level === 'City' && p.gscImpressions === 0 && p.realSessions < 20)
   if (noImpressions.length >= 3) {
     actions.push({
+      id: '',
       priority: 'Low',
       category: 'Indexing',
       title: `${noImpressions.length} city pages have no Google impressions yet`,
@@ -766,11 +775,15 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
 
   const rank = { High: 0, Medium: 1, Low: 2 } as const
   actions.sort((a, b) => rank[a.priority] - rank[b.priority] || b.score - a.score)
-  return { working: working.slice(0, 6), notWorking: notWorking.slice(0, 6), actions: actions.slice(0, 12) }
+  return {
+    working: working.slice(0, 6),
+    notWorking: notWorking.slice(0, 6),
+    actions: actions.slice(0, 12).map((a) => ({ ...a, id: actionId([a.category, a.page || '', a.title]) })),
+  }
 }
 
 // Bump when the calculations change so cached results from older code are not reused
-const CACHE_VERSION = 'v8'
+const CACHE_VERSION = 'v9'
 
 export const getDashboard = (range: RangeKey) =>
   unstable_cache(() => build(range), ['internal-insights', CACHE_VERSION, range], { revalidate: 6 * 60 * 60, tags: ['internal-insights'] })()

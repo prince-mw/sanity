@@ -131,6 +131,95 @@ function Details({ title, summary, children }: { title: string; summary: string;
   )
 }
 
+type ActionStatus = 'not-started' | 'wip' | 'done'
+type StatusMap = Record<string, { status: ActionStatus; updatedAt: string }>
+const STATUS_BUTTONS: { key: ActionStatus; label: string; on: string }[] = [
+  { key: 'not-started', label: 'Not started', on: 'bg-gray-700 text-white' },
+  { key: 'wip', label: 'WIP', on: 'bg-amber-500 text-white' },
+  { key: 'done', label: 'Done', on: 'bg-emerald-600 text-white' },
+]
+
+/** Action items with a shared status (saved server-side, visible to everyone). Done items sink to the bottom. */
+function ActionList({ actions, initial }: { actions: ActionItem[]; initial: StatusMap }) {
+  const [statuses, setStatuses] = useState<StatusMap>(initial)
+  const [saving, setSaving] = useState<string | null>(null)
+  const [error, setError] = useState('')
+  const statusOf = (id: string): ActionStatus => statuses[id]?.status || 'not-started'
+  const ordered = [...actions].sort((a, b) => Number(statusOf(a.id) === 'done') - Number(statusOf(b.id) === 'done'))
+  const doneCount = actions.filter((a) => statusOf(a.id) === 'done').length
+
+  async function update(id: string, status: ActionStatus) {
+    const previous = statuses
+    setStatuses({ ...statuses, [id]: { status, updatedAt: new Date().toISOString() } })
+    setSaving(id)
+    setError('')
+    const res = await fetch('/api/internal-insights/actions', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ id, status }),
+    }).catch(() => null)
+    setSaving(null)
+    if (!res || !res.ok) {
+      setStatuses(previous)
+      const json = res ? await res.json().catch(() => ({})) : {}
+      setError(`Couldn't save the status: ${json.error || 'network error'}`)
+    }
+  }
+
+  if (actions.length === 0) return <p className="text-sm text-gray-500">No actions for this period.</p>
+  return (
+    <>
+      <p className="text-xs text-gray-500 mb-3">{doneCount} of {actions.length} done · statuses are shared with everyone who uses this dashboard.</p>
+      {error && <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700" role="alert">{error}</p>}
+      <ol className="divide-y divide-gray-100">
+        {ordered.map((a, i) => {
+          const st = statusOf(a.id)
+          const done = st === 'done'
+          return (
+            <li key={a.id} className={`flex gap-4 py-4 first:pt-0 last:pb-0 ${done ? 'opacity-60' : ''}`}>
+              <span className={`w-7 h-7 rounded-full text-white text-sm font-bold flex items-center justify-center flex-shrink-0 ${done ? 'bg-emerald-600' : 'bg-[#062068]'}`}>
+                {done ? '✓' : i + 1}
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${PRIORITY_STYLE[a.priority]}`}>{a.priority}</span>
+                      <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">{a.category}</span>
+                    </div>
+                    <p className={`mt-1 font-semibold text-gray-900 ${done ? 'line-through' : ''}`}>{a.title}</p>
+                  </div>
+                  <div className="inline-flex rounded-lg border border-gray-200 bg-white p-0.5 flex-shrink-0" role="group" aria-label={`Status of: ${a.title}`}>
+                    {STATUS_BUTTONS.map((b) => (
+                      <button
+                        key={b.key}
+                        type="button"
+                        disabled={saving === a.id}
+                        aria-pressed={st === b.key}
+                        onClick={() => st !== b.key && update(a.id, b.key)}
+                        className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors ${st === b.key ? b.on : 'text-gray-500 hover:text-gray-900'}`}
+                      >
+                        {b.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 leading-relaxed mt-1">{a.detail}</p>
+                <div className="mt-1 flex flex-wrap items-center gap-x-3 text-xs">
+                  {a.page && <a href={a.page} target="_blank" rel="noreferrer" className="font-semibold text-mw-blue-600 hover:underline">{a.page}</a>}
+                  {statuses[a.id] && st !== 'not-started' && (
+                    <span className="text-gray-400">{st === 'done' ? 'Done' : 'WIP'} since {new Date(statuses[a.id].updatedAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })}</span>
+                  )}
+                </div>
+              </div>
+            </li>
+          )
+        })}
+      </ol>
+    </>
+  )
+}
+
 const TH = 'px-3 py-2.5 font-semibold text-left'
 const THR = 'px-3 py-2.5 font-semibold text-right'
 
@@ -209,7 +298,7 @@ const METRICS: { key: keyof Totals; label: string; fmt: (n: number) => string; l
   { key: 'gscPosition', label: 'Avg Google position', fmt: (n) => (n ? n.toFixed(1) : '–'), lowerIsBetter: true },
 ]
 
-export default function InsightsDashboard({ data, range }: { data: Dashboard; range: RangeKey }) {
+export default function InsightsDashboard({ data, range, statuses }: { data: Dashboard; range: RangeKey; statuses: StatusMap }) {
   const router = useRouter()
 
   // Date bar: CSS sticky doesn't work site-wide (body has overflow set), so pin it with JS
@@ -288,36 +377,40 @@ export default function InsightsDashboard({ data, range }: { data: Dashboard; ra
           <Kpi label="Avg Google position" value={l.current.gscPosition ? l.current.gscPosition.toFixed(1) : '–'} cur={l.current.gscPosition} prev={l.previous.gscPosition} lowerIsBetter />
         </section>
 
-        {/* Working / not working */}
+        {/* Whole site vs location pages */}
+        <section className="mb-6">
+          <h2 className="text-lg font-bold text-[#062068] mb-3">Whole site vs location pages</h2>
+          <div className="overflow-x-auto rounded-2xl border border-gray-200 bg-white">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
+                <tr><th scope="col" className={TH}>Metric</th><th scope="col" className={THR}>Whole site</th><th scope="col" className={THR}>Location pages</th><th scope="col" className={THR}>Country pages</th><th scope="col" className={THR}>City pages</th></tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {METRICS.map((m) => (
+                  <tr key={m.key}>
+                    <th scope="row" className="px-3 py-2.5 text-left font-medium text-gray-700">{m.label}</th>
+                    <td className="px-3 py-2.5 text-right whitespace-nowrap"><span className="font-semibold">{m.fmt(s.current[m.key])}</span> <Delta cur={s.current[m.key]} prev={s.previous[m.key]} lowerIsBetter={m.lowerIsBetter} points={m.points} /></td>
+                    <td className="px-3 py-2.5 text-right whitespace-nowrap"><span className="font-semibold">{m.fmt(l.current[m.key])}</span> <Delta cur={l.current[m.key]} prev={l.previous[m.key]} lowerIsBetter={m.lowerIsBetter} points={m.points} /></td>
+                    <td className="px-3 py-2.5 text-right">{m.key === 'gscPosition' ? '–' : m.fmt(data.countries[m.key])}</td>
+                    <td className="px-3 py-2.5 text-right">{m.key === 'gscPosition' ? '–' : m.fmt(data.cities[m.key])}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Going well / needs attention */}
         <section className="grid lg:grid-cols-2 gap-4 mb-6">
-          <FindingList title="✓ What's working" items={data.working} tone="good" />
-          <FindingList title="✗ What's not working" items={data.notWorking} tone="bad" />
+          <FindingList title="✓ What's going well" items={data.working} tone="good" />
+          <FindingList title="⚠ What needs attention" items={data.notWorking} tone="bad" />
         </section>
 
         {/* Actions */}
         <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 mb-6">
           <h2 className="text-lg font-bold text-[#062068] mb-1">→ Action items</h2>
-          <p className="text-sm text-gray-500 mb-4">Most valuable first, based on leads, search demand (Semrush) and Google data.</p>
-          {data.actions.length === 0 ? (
-            <p className="text-sm text-gray-500">No actions for this period.</p>
-          ) : (
-            <ol className="divide-y divide-gray-100">
-              {data.actions.map((a, i) => (
-                <li key={a.title + (a.page || '')} className="flex gap-4 py-4 first:pt-0 last:pb-0">
-                  <span className="w-7 h-7 rounded-full bg-[#062068] text-white text-sm font-bold flex items-center justify-center flex-shrink-0">{i + 1}</span>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${PRIORITY_STYLE[a.priority]}`}>{a.priority}</span>
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">{a.category}</span>
-                    </div>
-                    <p className="mt-1 font-semibold text-gray-900">{a.title}</p>
-                    <p className="text-sm text-gray-600 leading-relaxed">{a.detail}</p>
-                    {a.page && <a href={a.page} target="_blank" rel="noreferrer" className="text-xs font-semibold text-mw-blue-600 hover:underline">{a.page}</a>}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          )}
+          <p className="text-sm text-gray-500 mb-1">Most valuable first, based on leads, search demand (Semrush) and Google data.</p>
+          <ActionList actions={data.actions} initial={statuses} />
         </section>
 
         {/* Trend */}
@@ -377,27 +470,6 @@ export default function InsightsDashboard({ data, range }: { data: Dashboard; ra
           </div>
         </Details>
 
-        <Details title="Whole site vs location pages" summary="All metrics side by side, with change vs the previous period">
-          <div className="overflow-x-auto rounded-xl border border-gray-200">
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
-                <tr><th scope="col" className={TH}>Metric</th><th scope="col" className={THR}>Whole site</th><th scope="col" className={THR}>Location pages</th><th scope="col" className={THR}>Country pages</th><th scope="col" className={THR}>City pages</th></tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
-                {METRICS.map((m) => (
-                  <tr key={m.key}>
-                    <th scope="row" className="px-3 py-2.5 text-left font-medium text-gray-700">{m.label}</th>
-                    <td className="px-3 py-2.5 text-right"><span className="font-semibold">{m.fmt(s.current[m.key])}</span> <Delta cur={s.current[m.key]} prev={s.previous[m.key]} lowerIsBetter={m.lowerIsBetter} points={m.points} /></td>
-                    <td className="px-3 py-2.5 text-right"><span className="font-semibold">{m.fmt(l.current[m.key])}</span> <Delta cur={l.current[m.key]} prev={l.previous[m.key]} lowerIsBetter={m.lowerIsBetter} points={m.points} /></td>
-                    <td className="px-3 py-2.5 text-right">{m.key === 'gscPosition' ? '–' : m.fmt(data.countries[m.key])}</td>
-                    <td className="px-3 py-2.5 text-right">{m.key === 'gscPosition' ? '–' : m.fmt(data.cities[m.key])}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Details>
-
         <Details title="Where leads come from" summary="Each Zoho form's GA4 lead event and the page it is credited to">
           <div className="overflow-x-auto rounded-xl border border-gray-200">
             <table className="w-full text-sm">
@@ -417,7 +489,8 @@ export default function InsightsDashboard({ data, range }: { data: Dashboard; ra
           </div>
         </Details>
 
-        <Details title="How the numbers work" summary="Bots, lead attribution and data sources">
+        <section className="mt-6 rounded-2xl border border-gray-200 bg-white p-5">
+          <h2 className="font-semibold text-gray-900 mb-2">How the numbers work</h2>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-gray-600">
             <li><strong>Real visits</strong> exclude estimated bots: blocks of sessions with 2% or less engagement from data-centre cities (e.g. Ashburn) in Direct/Unassigned/Email traffic.</li>
             <li><strong>Leads</strong> are credited by form: GA4 records enquiries inside the Zoho form, so each page gets its own form's generate_lead event. Site-wide contact and demo forms are not credited to any location page.</li>
@@ -425,7 +498,7 @@ export default function InsightsDashboard({ data, range }: { data: Dashboard; ra
             <li><strong>Semrush</strong> keywords are a monthly snapshot{data.semrushDate ? ` (last: ${fmtDate(data.semrushDate)})` : ''}; positions are for each market&apos;s Google.</li>
             <li>Data refreshes every 6 hours · last refreshed {new Date(data.generatedAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}.</li>
           </ul>
-        </Details>
+        </section>
       </div>
     </div>
   )
