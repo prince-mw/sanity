@@ -186,6 +186,7 @@ export const landingPageBySlugQuery = `
     "seo": seo {
       metaTitle,
       metaDescription,
+      noIndex,
       "ogImage": ogImage.asset->url
     },
     sections[] {
@@ -342,6 +343,7 @@ export const landingPagePreviewBySlugQuery = `
     "seo": seo {
       metaTitle,
       metaDescription,
+      noIndex,
       "ogImage": ogImage.asset->url
     },
     sections[] {

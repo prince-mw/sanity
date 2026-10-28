@@ -52,6 +52,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
           description,
           images: ogImage ? [ogImage] : [],
         },
+        // Honour the page's "Hide from search engines" setting (e.g. invitation-only event pages)
+        robots: seo?.noIndex ? { index: false, follow: false } : undefined,
         alternates: {
           canonical: `https://www.movingwalls.com/${slug}`,
         },
