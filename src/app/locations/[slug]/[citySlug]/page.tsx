@@ -3,6 +3,7 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
 import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUrl, getCitiesByCountry, transformCityForList } from '@/sanity/lib/fetch'
+import { buildLocationJsonLd } from '@/lib/locationSchema'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
   const { slug, citySlug } = await params
@@ -75,8 +76,16 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
     })),
   } : null
 
+  const locationJsonLd = buildLocationJsonLd({
+    countrySlug: slug,
+    countryName: city.country?.country || slug,
+    citySlug,
+    cityName: city.city || citySlug,
+  })
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(locationJsonLd) }} />
       {faqJsonLd && (
         <script
           type="application/ld+json"

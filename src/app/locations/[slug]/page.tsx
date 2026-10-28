@@ -5,6 +5,7 @@ import LocationDetailClient from '@/components/LocationDetailClient'
 import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transformCityForList, getSanityImageUrl } from '@/sanity/lib/fetch'
 import { getStaticLocationData, STATIC_LOCATION_SLUGS, LocationData } from '@/data/staticLocationData'
 import { LOCATION_LANGUAGE_GROUPS } from '@/lib/locationLanguageGroups'
+import { buildLocationJsonLd } from '@/lib/locationSchema'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -97,8 +98,10 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
       ? []
       : (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
     const faqJsonLd = buildFaqJsonLd(locationData.faqs)
+    const locationJsonLd = buildLocationJsonLd({ countrySlug: slug, countryName: sanityLocation.country || locationData.name })
     return (
       <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(locationJsonLd) }} />
         {faqJsonLd && (
           <script
             type="application/ld+json"
@@ -115,8 +118,10 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
 
   if (staticData) {
     const faqJsonLd = buildFaqJsonLd(staticData.faqs)
+    const locationJsonLd = buildLocationJsonLd({ countrySlug: slug, countryName: staticData.name })
     return (
       <>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(locationJsonLd) }} />
         {faqJsonLd && (
           <script
             type="application/ld+json"
