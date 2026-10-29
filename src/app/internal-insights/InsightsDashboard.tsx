@@ -1,10 +1,7 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
-import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
 import type { ActionItem, Dashboard, Finding, PageRow, Status, Totals } from '@/lib/insights/data'
-import { RANGE_KEYS, RANGE_LABELS, type RangeKey } from '@/lib/insights/ranges'
 
 const nf = (n: number) => Math.round(n).toLocaleString('en-US')
 const pct = (n: number, d = 1) => `${(n * 100).toFixed(d)}%`
@@ -298,76 +295,13 @@ const METRICS: { key: keyof Totals; label: string; fmt: (n: number) => string; l
   { key: 'gscPosition', label: 'Avg Google position', fmt: (n) => (n ? n.toFixed(1) : '–'), lowerIsBetter: true },
 ]
 
-export default function InsightsDashboard({ data, range, statuses }: { data: Dashboard; range: RangeKey; statuses: StatusMap }) {
-  const router = useRouter()
-
-  // Date bar: CSS sticky doesn't work site-wide (body has overflow set), so pin it with JS
-  const barSentinel = useRef<HTMLDivElement>(null)
-  const barRef = useRef<HTMLDivElement>(null)
-  const [pinned, setPinned] = useState(false)
-  const [barHeight, setBarHeight] = useState(0)
-  useEffect(() => {
-    const sentinel = barSentinel.current
-    if (!sentinel) return
-    const update = () => {
-      if (barRef.current && !pinned) setBarHeight(barRef.current.offsetHeight)
-      setPinned(sentinel.getBoundingClientRect().top < (window.innerWidth >= 1024 ? 65 : 57))
-    }
-    update()
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
-    return () => {
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
-    }
-  }, [pinned])
-
-  async function signOut() {
-    await fetch('/api/internal-insights', { method: 'DELETE' })
-    router.refresh()
-  }
-
+export default function InsightsDashboard({ data, statuses }: { data: Dashboard; statuses: StatusMap }) {
   const s = data.site
   const l = data.locations
   const share = (k: keyof Totals) => (s.current[k] ? pct(l.current[k] / s.current[k], 0) : undefined)
 
   return (
-    <div className="bg-gray-50 min-h-screen pt-24 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-2">
-          <p className="text-xs font-semibold uppercase tracking-wider text-mw-blue-600">Internal · Confidential</p>
-          <h1 className="text-3xl font-bold text-gray-900">Location Pages Performance</h1>
-        </div>
-
-        {/* Date bar */}
-        <div ref={barSentinel} aria-hidden="true" />
-        <div style={{ height: pinned ? barHeight : undefined }} className="mb-6">
-          <div ref={barRef} className={`z-40 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 ${pinned ? 'fixed left-0 right-0 top-[57px] lg:top-[65px] shadow-sm' : '-mx-4 sm:-mx-6 lg:-mx-8'}`}>
-            <div className={`${pinned ? 'max-w-7xl mx-auto' : ''} px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3`}>
-              <p className="text-xs sm:text-sm text-gray-600">
-                <span className="font-semibold text-gray-900">{fmtDate(data.period.start)} – {fmtDate(data.period.end)}</span>
-                <span className="hidden sm:inline text-gray-400"> vs {fmtDate(data.period.prevStart)} – {fmtDate(data.period.prevEnd)}</span>
-              </p>
-              <div className="flex items-center gap-2">
-                <div className="inline-flex flex-wrap rounded-lg border border-gray-200 bg-white p-1" role="group" aria-label="Date range">
-                  {RANGE_KEYS.map((r) => (
-                    <Link
-                      key={r}
-                      href={`/internal-insights?range=${r}`}
-                      scroll={false}
-                      aria-current={range === r ? 'true' : undefined}
-                      className={`px-2.5 sm:px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold whitespace-nowrap ${range === r ? 'bg-[#062068] text-white' : 'text-gray-600 hover:text-gray-900'}`}
-                    >
-                      {RANGE_LABELS[r]}
-                    </Link>
-                  ))}
-                </div>
-                <button type="button" onClick={signOut} className="rounded-lg border border-gray-200 bg-white px-3 py-2 text-xs sm:text-sm font-semibold text-gray-600 hover:text-gray-900">Sign out</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
+    <>
         {/* Headline numbers */}
         <section className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6" aria-label="Headline numbers for location pages">
           <Kpi label="Real visits" value={nf(l.current.realSessions)} cur={l.current.realSessions} prev={l.previous.realSessions} share={share('realSessions')} />
@@ -499,7 +433,6 @@ export default function InsightsDashboard({ data, range, statuses }: { data: Das
             <li>Data refreshes every 6 hours · last refreshed {new Date(data.generatedAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}.</li>
           </ul>
         </section>
-      </div>
-    </div>
+    </>
   )
 }
