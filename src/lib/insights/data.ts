@@ -155,7 +155,8 @@ export interface Dashboard {
 
 const isLocationPage = (p: string) => /^\/locations\/[^?#]+/.test(p)
 const cleanPath = (p: string) => (p.split('?')[0].replace(/\/$/, '') || '/').toLowerCase()
-const isBotRow = (city: string, channel: string, sessions: number, engaged: number) =>
+/** Shared with the Content tab (content.ts) */
+export const isBotRow = (city: string, channel: string, sessions: number, engaged: number) =>
   engaged / sessions <= 0.02 && BOT_CHANNELS.has(channel) && (DATA_CENTRE_CITIES.has(city) ? sessions >= 10 : sessions >= 200)
 const isNoiseQuery = (q: string) => /site:|"/.test(q) || q.length > 80
 const isBrand = (q: string) => /moving ?walls|movingwalls/i.test(q)

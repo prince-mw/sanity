@@ -316,6 +316,9 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
     setActiveMegaMenu(null);
   };
 
+  // Internal dashboard has its own minimal header (src/app/internal-insights/layout.tsx)
+  if (pathname.startsWith('/internal-insights')) return null;
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-mw-gray-200 shadow-mw-sm">
       <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -66,3 +66,27 @@ export function periods(range: RangeKey) {
     }
   }
 }
+
+/**
+ * Whole calendar periods (this month = 1st to last day, including days still to come) and the
+ * previous whole period. Used where future-dated data matters, e.g. planned work hours.
+ */
+export function calendarPeriods(range: RangeKey) {
+  const now = new Date()
+  const today = utc(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate())
+  const y = today.getUTCFullYear()
+  const m = today.getUTCMonth()
+  const monday = addDays(today, -((today.getUTCDay() + 6) % 7))
+  const out = (start: Date, end: Date, prevStart: Date, prevEnd: Date) => ({
+    start: iso(start), end: iso(end), prevStart: iso(prevStart), prevEnd: iso(prevEnd), days: dayCount(start, end),
+  })
+  switch (range) {
+    case 'this-week': return out(monday, addDays(monday, 6), addDays(monday, -7), addDays(monday, -1))
+    case 'last-week': return out(addDays(monday, -7), addDays(monday, -1), addDays(monday, -14), addDays(monday, -8))
+    case 'last-month': return out(utc(y, m - 1, 1), utc(y, m, 0), utc(y, m - 2, 1), utc(y, m - 1, 0))
+    case 'this-year': return out(utc(y, 0, 1), utc(y, 11, 31), utc(y - 1, 0, 1), utc(y - 1, 11, 31))
+    case 'last-year': return out(utc(y - 1, 0, 1), utc(y - 1, 11, 31), utc(y - 2, 0, 1), utc(y - 2, 11, 31))
+    case 'this-month':
+    default: return out(utc(y, m, 1), utc(y, m + 1, 0), utc(y, m - 1, 1), utc(y, m, 0))
+  }
+}

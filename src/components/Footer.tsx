@@ -61,6 +61,8 @@ export default function Footer({ content }: FooterProps) {
 
   // Race Week 2026 campaign page has its own self-contained footer/CTA — hide the default one
   if (pathname === '/race-week-malaysia-singapore') return null;
+  // Internal dashboard: no site footer
+  if (pathname.startsWith('/internal-insights')) return null;
 
   const defaultFooterLinks = {
     company: [

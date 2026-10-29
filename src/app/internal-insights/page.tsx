@@ -2,13 +2,19 @@ import { Metadata } from 'next'
 import { isAuthed } from '@/lib/insights/auth'
 import { getDashboard } from '@/lib/insights/data'
 import { getActionStatuses } from '@/lib/insights/actions'
-import { DEFAULT_RANGE, RANGE_KEYS, periods, type RangeKey } from '@/lib/insights/ranges'
+import { DEFAULT_RANGE, RANGE_KEYS, calendarPeriods, periods, type RangeKey } from '@/lib/insights/ranges'
 import { DEFAULT_TAB, TABS, type TabKey } from '@/lib/insights/tabs'
 import { isInsightsConfigured } from '@/lib/insights/google'
 import InsightsLogin from './InsightsLogin'
 import InsightsShell from './InsightsShell'
 import InsightsDashboard from './InsightsDashboard'
 import CampaignsTab from './CampaignsTab'
+import { getCampaignDashboard } from '@/lib/insights/campaigns'
+import { isZohoConfigured } from '@/lib/insights/zoho'
+import { getProjectsDashboard } from '@/lib/insights/projects'
+import ProjectsTab from './ProjectsTab'
+import { getContentDashboard } from '@/lib/insights/content'
+import ContentTab from './ContentTab'
 
 // Internal, password-protected performance dashboard. Not in the sitemap, not linked anywhere,
 // and noindex (meta tag here + X-Robots-Tag header in next.config.ts). Deliberately NOT listed
@@ -39,6 +45,36 @@ async function LocationsTab({ range }: { range: RangeKey }) {
   }
 }
 
+async function CampaignsSection({ range }: { range: RangeKey }) {
+  if (!(await isZohoConfigured())) return <Message title="Waiting for the Zoho Analytics connection." detail="Email campaign results will appear here once read-only Zoho Analytics access is set up." />
+  try {
+    const [data, statuses] = await Promise.all([getCampaignDashboard(range), getActionStatuses()])
+    return <CampaignsTab data={data} statuses={statuses} />
+  } catch (err) {
+    return <Message title="Could not load data from Zoho Analytics." detail={err instanceof Error ? err.message : String(err)} />
+  }
+}
+
+async function ProjectsSection({ range }: { range: RangeKey }) {
+  if (!(await isZohoConfigured())) return <Message title="Waiting for the Zoho Analytics connection." detail="Roadmap and execution data will appear here once read-only Zoho Analytics access is set up." />
+  try {
+    const [data, statuses] = await Promise.all([getProjectsDashboard(range), getActionStatuses()])
+    return <ProjectsTab data={data} statuses={statuses} />
+  } catch (err) {
+    return <Message title="Could not load data from Zoho Analytics." detail={err instanceof Error ? err.message : String(err)} />
+  }
+}
+
+async function ContentSection({ range }: { range: RangeKey }) {
+  if (!(await isZohoConfigured())) return <Message title="Waiting for the Zoho Analytics connection." detail="Content and social data will appear here once read-only Zoho Analytics access is set up." />
+  try {
+    const [data, statuses] = await Promise.all([getContentDashboard(range), getActionStatuses()])
+    return <ContentTab data={data} statuses={statuses} />
+  } catch (err) {
+    return <Message title="Could not load content data." detail={err instanceof Error ? err.message : String(err)} />
+  }
+}
+
 export default async function InternalInsightsPage({ searchParams }: { searchParams: Promise<{ range?: string; tab?: string }> }) {
   if (!(await isAuthed())) return <InsightsLogin />
 
@@ -47,8 +83,8 @@ export default async function InternalInsightsPage({ searchParams }: { searchPar
   const tab: TabKey = TABS.some((t) => t.key === params.tab) ? (params.tab as TabKey) : DEFAULT_TAB
 
   return (
-    <InsightsShell tab={tab} range={range} period={periods(range)}>
-      {tab === 'campaigns' ? <CampaignsTab /> : <LocationsTab range={range} />}
+    <InsightsShell tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)}>
+      {tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
     </InsightsShell>
   )
 }

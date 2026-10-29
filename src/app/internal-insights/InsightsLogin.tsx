@@ -25,7 +25,7 @@ export default function InsightsLogin() {
   }
 
   return (
-    <div className="min-h-[70vh] flex items-center justify-center px-4 pt-24 pb-16 bg-gray-50">
+    <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-gray-50">
       <form onSubmit={submit} className="w-full max-w-sm rounded-2xl bg-white border border-gray-200 shadow-precision-lg p-8">
         <div className="w-12 h-12 rounded-xl bg-[#062068] text-white flex items-center justify-center mb-5">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

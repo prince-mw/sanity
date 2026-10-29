@@ -25,7 +25,7 @@ export default function InsightsShell({ tab, range, period, children }: { tab: T
     if (!sentinel) return
     const update = () => {
       if (barRef.current && !pinned) setBarHeight(barRef.current.offsetHeight)
-      setPinned(sentinel.getBoundingClientRect().top < (window.innerWidth >= 1024 ? 65 : 57))
+      setPinned(sentinel.getBoundingClientRect().top < 0)
     }
     update()
     window.addEventListener('scroll', update, { passive: true })
@@ -42,10 +42,8 @@ export default function InsightsShell({ tab, range, period, children }: { tab: T
   }
 
   return (
-    <div className="bg-gray-50 min-h-screen pt-24 pb-16">
+    <div className="bg-gray-50 min-h-screen pt-4 pb-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <p className="text-xs font-semibold uppercase tracking-wider text-mw-blue-600 mb-3">Internal · Confidential</p>
-
         {/* Tabs */}
         <nav className="flex gap-1 overflow-x-auto border-b border-gray-200 mb-5" aria-label="Dashboard sections">
           {TABS.map((t) => (
@@ -65,7 +63,7 @@ export default function InsightsShell({ tab, range, period, children }: { tab: T
         {/* Date bar */}
         <div ref={barSentinel} aria-hidden="true" />
         <div style={{ height: pinned ? barHeight : undefined }} className="mb-6">
-          <div ref={barRef} className={`z-40 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 ${pinned ? 'fixed left-0 right-0 top-[57px] lg:top-[65px] shadow-sm' : '-mx-4 sm:-mx-6 lg:-mx-8'}`}>
+          <div ref={barRef} className={`z-40 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 ${pinned ? 'fixed left-0 right-0 top-0 shadow-sm' : '-mx-4 sm:-mx-6 lg:-mx-8'}`}>
             <div className={`${pinned ? 'max-w-7xl mx-auto' : ''} px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3`}>
               <p className="text-xs sm:text-sm text-gray-600">
                 <span className="font-semibold text-gray-900">{fmtDate(period.start)} – {fmtDate(period.end)}</span>

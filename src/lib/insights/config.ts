@@ -1,7 +1,7 @@
 import 'server-only'
 
 // Where the dashboard's settings come from, in order:
-// 1. Environment variables (INSIGHTS_PASSWORD, GOOGLE_SA_KEY_B64, GA4_PROPERTY_ID, GSC_SITE_URL)
+// 1. Environment variables (INSIGHTS_PASSWORD, GOOGLE_SA_KEY_B64, GA4_PROPERTY_ID, GSC_SITE_URL, ZOHO_ANALYTICS_*)
 // 2. The private Sanity document `secrets.internalInsights`. Documents whose _id contains a dot
 //    are not readable by the public API; the server reads it with its existing Sanity token.
 
@@ -10,7 +10,11 @@ export interface InsightsConfig {
   ga4PropertyId: string
   gscSiteUrl: string
   serviceAccount: { client_email: string; private_key: string } | null
+  /** Zoho Analytics Self Client (read-only scopes); see zoho.ts */
+  zohoAnalytics: ZohoAnalyticsConfig | null
 }
+
+export interface ZohoAnalyticsConfig { clientId: string; clientSecret: string; refreshToken: string; orgId: string; workspaceId: string }
 
 let cached: { value: InsightsConfig; at: number } | null = null
 const TTL = 10 * 60 * 1000
@@ -20,7 +24,7 @@ async function fromSanity(): Promise<Partial<InsightsConfig>> {
   if (!token) return {}
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di'
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
-  const query = encodeURIComponent('*[_id == "secrets.internalInsights"][0]{password, ga4PropertyId, gscSiteUrl, googleServiceAccount}')
+  const query = encodeURIComponent('*[_id == "secrets.internalInsights"][0]{password, ga4PropertyId, gscSiteUrl, googleServiceAccount, zohoAnalytics}')
   try {
     const res = await fetch(`https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${query}`, {
       headers: { authorization: `Bearer ${token}` },
@@ -33,6 +37,7 @@ async function fromSanity(): Promise<Partial<InsightsConfig>> {
       ga4PropertyId: doc.ga4PropertyId,
       gscSiteUrl: doc.gscSiteUrl,
       serviceAccount: doc.googleServiceAccount ? JSON.parse(doc.googleServiceAccount) : null,
+      zohoAnalytics: doc.zohoAnalytics || null,
     }
   } catch {
     return {}
@@ -47,14 +52,24 @@ export async function getInsightsConfig(): Promise<InsightsConfig> {
     ga4PropertyId: process.env.GA4_PROPERTY_ID,
     gscSiteUrl: process.env.GSC_SITE_URL,
     serviceAccount: envSa ? JSON.parse(Buffer.from(envSa, 'base64').toString('utf8')) : null,
+    zohoAnalytics: process.env.ZOHO_ANALYTICS_REFRESH_TOKEN
+      ? {
+          clientId: process.env.ZOHO_ANALYTICS_CLIENT_ID || '',
+          clientSecret: process.env.ZOHO_ANALYTICS_CLIENT_SECRET || '',
+          refreshToken: process.env.ZOHO_ANALYTICS_REFRESH_TOKEN,
+          orgId: process.env.ZOHO_ANALYTICS_ORG_ID || '',
+          workspaceId: process.env.ZOHO_ANALYTICS_WORKSPACE_ID || '',
+        }
+      : null,
   }
-  const needSanity = !env.password || !env.serviceAccount
+  const needSanity = !env.password || !env.serviceAccount || !env.zohoAnalytics
   const sanity = needSanity ? await fromSanity() : {}
   const value: InsightsConfig = {
     password: env.password || sanity.password || null,
     ga4PropertyId: env.ga4PropertyId || sanity.ga4PropertyId || '342007847',
     gscSiteUrl: env.gscSiteUrl || sanity.gscSiteUrl || 'https://www.movingwalls.com/',
     serviceAccount: env.serviceAccount || sanity.serviceAccount || null,
+    zohoAnalytics: env.zohoAnalytics || sanity.zohoAnalytics || null,
   }
   cached = { value, at: Date.now() }
   return value
