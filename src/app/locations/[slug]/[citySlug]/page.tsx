@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
 import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUrl, getCitiesByCountry, transformCityForList } from '@/sanity/lib/fetch'
 import { buildLocationJsonLd } from '@/lib/locationSchema'
+import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLanguageGroups'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
   const { slug, citySlug } = await params
@@ -37,6 +38,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     alternates: {
       canonical: `https://www.movingwalls.com/locations/${slug}/${citySlug}`,
+      languages: LOCATION_LANGUAGE_GROUPS[`${slug}/${citySlug}`] ?? undefined,
     },
     robots: seo?.noIndex ? { index: false, follow: false } : undefined,
   }
@@ -95,7 +97,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       <LocationDetailClient
         initialData={cityData}
         backHref={`/locations/${slug}`}
-        backLabel={`Back to ${city.country?.country || 'Country'}`}
+        backLabel={getLocationPageLang(slug) === 'zh' ? '返回中国市场页面' : `Back to ${city.country?.country || 'Country'}`}
+        lang={getLocationPageLang(slug)}
         pageType="city"
         relatedCities={relatedCities}
         countryName={city.country?.country || undefined}

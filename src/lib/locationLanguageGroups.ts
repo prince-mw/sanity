@@ -18,6 +18,22 @@ export const LOCATION_LANGUAGE_GROUPS: Record<string, Record<string, string>> = 
     en: 'https://www.movingwalls.com/locations/china',
     'zh-CN': 'https://www.movingwalls.com/locations/china-zh',
   },
+  ...cityPairs('china', 'china-zh', 'zh-CN', ['beijing', 'shanghai', 'guangzhou', 'shenzhen', 'chengdu']),
+}
+
+// City pages with a translated sibling under the translated country page, keyed "country/city":
+// /locations/china/beijing <-> /locations/china-zh/beijing.
+function cityPairs(country: string, translatedCountry: string, lang: string, cities: string[]) {
+  const groups: Record<string, Record<string, string>> = {}
+  for (const city of cities) {
+    const group = {
+      en: `https://www.movingwalls.com/locations/${country}/${city}`,
+      [lang]: `https://www.movingwalls.com/locations/${translatedCountry}/${city}`,
+    }
+    groups[`${country}/${city}`] = group
+    groups[`${translatedCountry}/${city}`] = group
+  }
+  return groups
 }
 
 // The site's UI locale codes (see src/i18n/config.ts) don't always match the hreflang-style
@@ -59,9 +75,15 @@ export function shouldShowLocationForLocale(slug: string, locale: string): boole
   return ownKey === targetKey
 }
 
-// Matches a country-level location page path exactly, e.g. "/locations/china" —
-// deliberately excludes the bare "/locations" listing page and nested city pages
-// like "/locations/india/mumbai", since only country pages have translated siblings today.
+// Group key for a location page path: "china" for /locations/china, "china/beijing" for a
+// city page. Excludes the bare "/locations" listing page.
 export function getLocationSlugFromPathname(pathname: string): string | undefined {
-  return pathname.match(/^\/locations\/([^/]+)\/?$/)?.[1]
+  const m = pathname.match(/^\/locations\/([^/]+)(?:\/([^/]+))?\/?$/)
+  if (!m) return undefined
+  return m[2] ? `${m[1]}/${m[2]}` : m[1]
+}
+
+// Translated location pages (slug ending in "-zh") show the page template's fixed labels in Chinese.
+export function getLocationPageLang(countrySlug: string): 'en' | 'zh' {
+  return countrySlug.endsWith('-zh') ? 'zh' : 'en'
 }

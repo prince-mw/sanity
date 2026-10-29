@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
 import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transformCityForList, getSanityImageUrl } from '@/sanity/lib/fetch'
 import { getStaticLocationData, STATIC_LOCATION_SLUGS, LocationData } from '@/data/staticLocationData'
-import { LOCATION_LANGUAGE_GROUPS } from '@/lib/locationLanguageGroups'
+import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLanguageGroups'
 import { buildLocationJsonLd } from '@/lib/locationSchema'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -108,7 +108,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
             dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
           />
         )}
-        <LocationDetailClient initialData={locationData} cities={cities} pageType="country" />
+        <LocationDetailClient initialData={locationData} cities={cities} pageType="country" lang={getLocationPageLang(slug)} />
       </>
     )
   }

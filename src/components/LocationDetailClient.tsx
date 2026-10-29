@@ -127,9 +127,50 @@ interface LocationDetailClientProps {
   countryName?: string
   /** Overrides the default "Explore Other Cities in <country>" heading */
   relatedHeading?: string
+  /** Language of the template's fixed labels (translated location pages pass 'zh') */
+  lang?: 'en' | 'zh'
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading }: LocationDetailClientProps) {
+// Fixed labels in the page template (the page content itself comes from Sanity).
+const LABELS = {
+  en: {
+    getStarted: 'Get Started',
+    contactTeam: (place: string) => `Contact Our ${place} Team`,
+    exploreByCity: 'Explore by City',
+    keyCities: (country: string) => <>OOH advertising opportunities in {country}&apos;s key cities</>,
+    billboards: 'billboards',
+    billboardsHeading: 'High Visibility Billboards',
+    billboardsSub: 'Premium advertising locations with maximum exposure',
+    dailyReach: 'Daily Reach',
+    monthlyImpressions: 'Monthly Impressions',
+    mediaTypes: 'Media Types Available',
+    faqs: 'Frequently Asked Questions',
+    otherCities: (country?: string) => `Explore Other Cities${country ? ` in ${country}` : ''}`,
+    otherCitiesSub: 'Plan your campaign across more cities in one buy',
+    explore: (city: string) => `Explore ${city}`,
+    viewAll: (back: string) => back.replace(/^Back to /, 'View all of '),
+  },
+  zh: {
+    getStarted: '立即开始',
+    contactTeam: (place: string) => `联系我们的${place}团队`,
+    exploreByCity: '按城市探索',
+    keyCities: () => <>探索中国主要城市的户外广告机会</>,
+    billboards: '个广告牌',
+    billboardsHeading: '高曝光广告牌',
+    billboardsSub: '优质广告点位，带来最大曝光',
+    dailyReach: '日均触达',
+    monthlyImpressions: '月度曝光',
+    mediaTypes: '可用媒体类型',
+    faqs: '常见问题',
+    otherCities: () => '探索中国其他城市',
+    otherCitiesSub: '一次投放，覆盖更多城市',
+    explore: (city: string) => `了解${city}`,
+    viewAll: () => '查看中国市场页面',
+  },
+}
+
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en' }: LocationDetailClientProps) {
+  const L = LABELS[lang]
   const location = initialData
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)
   const { openZohoPopup, setCurrentPageFormUrl } = useZohoPopup()
@@ -208,17 +249,17 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               <div className="flex flex-wrap gap-4">
                 {location.contactFormUrl ? (
                   <button
-                    onClick={() => openZohoPopup(location.contactFormUrl!, `Contact Our ${location.name} Team`)}
+                    onClick={() => openZohoPopup(location.contactFormUrl!, L.contactTeam(location.name))}
                     className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105"
                   >
-                    {location.ctaButtonText || 'Get Started'}
+                    {location.ctaButtonText || L.getStarted}
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </button>
                 ) : (
                   <CTAButton href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-all hover:scale-105">
-                    {location.ctaButtonText || 'Get Started'}
+                    {location.ctaButtonText || L.getStarted}
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -289,8 +330,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               variants={fadeUp}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{location.citiesHeading || 'Explore by City'}</h2>
-              <p className="text-lg text-gray-600">{location.citiesSubheading || <>OOH advertising opportunities in {location.name}&apos;s key cities</>}</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{location.citiesHeading || L.exploreByCity}</h2>
+              <p className="text-lg text-gray-600">{location.citiesSubheading || L.keyCities(location.name)}</p>
             </motion.div>
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -321,7 +362,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{city.city}</h3>
                       {city.description && <p className="text-gray-600 text-sm mb-4">{city.description}</p>}
                       {city.billboards && city.billboards !== '0' && (
-                        <div className="text-sm font-semibold text-mw-blue-600">{city.billboards} billboards</div>
+                        <div className="text-sm font-semibold text-mw-blue-600">{city.billboards} {L.billboards}</div>
                       )}
                     </div>
                   </Link>
@@ -365,8 +406,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               variants={fadeUp}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{location.billboardsHeading || 'High Visibility Billboards'}</h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">Premium advertising locations with maximum exposure</p>
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{location.billboardsHeading || L.billboardsHeading}</h2>
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto">{L.billboardsSub}</p>
             </motion.div>
             
             {/* Flex-wrap so fewer than three cards (or an incomplete last row) stay centred */}
@@ -403,11 +444,11 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                     <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-100">
                       <div>
                         <div className="text-lg font-bold text-mw-blue-600">{billboard.reach}</div>
-                        <div className="text-xs text-gray-500">{location.billboardsDailyReachLabel || 'Daily Reach'}</div>
+                        <div className="text-xs text-gray-500">{location.billboardsDailyReachLabel || L.dailyReach}</div>
                       </div>
                       <div>
                         <div className="text-lg font-bold text-mw-blue-600">{billboard.impressions}</div>
-                        <div className="text-xs text-gray-500">{location.billboardsMonthlyImpressionsLabel || 'Monthly Impressions'}</div>
+                        <div className="text-xs text-gray-500">{location.billboardsMonthlyImpressionsLabel || L.monthlyImpressions}</div>
                       </div>
                     </div>
                     )}
@@ -423,7 +464,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
       {location.mediaTypes && location.mediaTypes.length > 0 && (
         <section className="py-10 md:py-14 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.mediaTypesHeading || 'Media Types Available'}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.mediaTypesHeading || L.mediaTypes}</h2>
             {/* Flex-wrap rather than grid so an incomplete last row (e.g. 3 formats) is centred */}
             <div className="flex flex-wrap justify-center gap-6">
               {location.mediaTypes.map((media, index) => {
@@ -470,7 +511,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
       {location.faqs && location.faqs.length > 0 && (
         <section className="py-10 md:py-14 bg-gray-50">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.faqsHeading || 'Frequently Asked Questions'}</h2>
+            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.faqsHeading || L.faqs}</h2>
             <motion.div 
               initial="hidden" 
               whileInView="visible" 
@@ -501,9 +542,9 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                {relatedHeading || `Explore Other Cities${countryName ? ` in ${countryName}` : ''}`}
+                {relatedHeading || L.otherCities(countryName)}
               </h2>
-              <p className="text-lg text-gray-600">Plan your campaign across more cities in one buy</p>
+              <p className="text-lg text-gray-600">{L.otherCitiesSub}</p>
             </div>
             <div className="flex flex-wrap justify-center gap-6">
               {relatedCities.map((related) => (
@@ -515,7 +556,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                   <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-mw-blue-600 transition-colors">{related.city}</h3>
                   {related.description && <p className="text-sm text-gray-600 mb-4">{related.description}</p>}
                   <span className="inline-flex items-center gap-1 text-sm font-semibold text-mw-blue-600">
-                    Explore {related.city}
+                    {L.explore(related.city)}
                     <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -525,7 +566,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
             </div>
             <div className="text-center mt-10">
               <Link href={backHref} className="inline-flex items-center gap-2 font-semibold text-mw-blue-600 hover:text-mw-blue-700">
-                {backLabel.replace(/^Back to /, 'View all of ')}
+                {L.viewAll(backLabel)}
               </Link>
             </div>
           </div>

@@ -35,7 +35,8 @@ export function ZohoPopupProvider({ children }: { children: ReactNode }) {
     if (!url) return
     setActiveUrl(url)
     setActiveSrc(appendUTMsToUrl(appendReferrerName(url, pathname)))
-    setActiveTitle(title || 'Contact Us')
+    // Translated location pages (/locations/china-zh/...) get a Chinese default heading
+    setActiveTitle(title || (/^\/locations\/[^/]+-zh(\/|$)/.test(pathname) ? '联系我们' : 'Contact Us'))
   }, [pathname])
 
   const closeZohoPopup = useCallback(() => setActiveUrl(null), [])
