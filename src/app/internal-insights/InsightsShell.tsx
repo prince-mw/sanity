@@ -11,7 +11,8 @@ const fmtDate = (s: string) => new Date(s + 'T00:00:00Z').toLocaleDateString('en
 type Period = { start: string; end: string; prevStart: string; prevEnd: string }
 
 /** Frame shared by every tab: title, tab bar, pinned date bar and sign out */
-export default function InsightsShell({ tab, range, period, children }: { tab: TabKey; range: RangeKey; period: Period; children: React.ReactNode }) {
+/** `snapshot`: a tab with fixed, point-in-time data shows this label instead of the date buttons */
+export default function InsightsShell({ tab, range, period, snapshot, children }: { tab: TabKey; range: RangeKey; period: Period; snapshot?: string; children: React.ReactNode }) {
   const router = useRouter()
   const current = TABS.find((t) => t.key === tab) || TABS[0]
 
@@ -65,12 +66,16 @@ export default function InsightsShell({ tab, range, period, children }: { tab: T
         <div style={{ height: pinned ? barHeight : undefined }} className="mb-6">
           <div ref={barRef} className={`z-40 py-2 sm:py-3 bg-gray-50 border-b border-gray-200 ${pinned ? 'fixed left-0 right-0 top-0 shadow-sm' : '-mx-4 sm:-mx-6 lg:-mx-8'}`}>
             <div className={`${pinned ? 'max-w-7xl mx-auto' : ''} px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-3`}>
-              <p className="text-xs sm:text-sm text-gray-600">
-                <span className="font-semibold text-gray-900">{fmtDate(period.start)} – {fmtDate(period.end)}</span>
-                <span className="hidden sm:inline text-gray-400"> vs {fmtDate(period.prevStart)} – {fmtDate(period.prevEnd)}</span>
-              </p>
+              {snapshot ? (
+                <p className="text-xs sm:text-sm font-semibold text-gray-900">{snapshot}</p>
+              ) : (
+                <p className="text-xs sm:text-sm text-gray-600">
+                  <span className="font-semibold text-gray-900">{fmtDate(period.start)} – {fmtDate(period.end)}</span>
+                  <span className="hidden sm:inline text-gray-400"> vs {fmtDate(period.prevStart)} – {fmtDate(period.prevEnd)}</span>
+                </p>
+              )}
               <div className="flex items-center gap-2">
-                <div className="inline-flex flex-wrap rounded-lg border border-gray-200 bg-white p-1" role="group" aria-label="Date range">
+                <div className={`${snapshot ? 'hidden' : 'inline-flex'} flex-wrap rounded-lg border border-gray-200 bg-white p-1`} role="group" aria-label="Date range">
                   {RANGE_KEYS.map((r) => (
                     <Link
                       key={r}

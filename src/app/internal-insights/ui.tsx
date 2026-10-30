@@ -6,7 +6,10 @@ import { useState } from 'react'
 export type Priority = 'High' | 'Medium' | 'Low'
 export interface Finding { title: string; detail: string; page?: string }
 /** Any tab's action item. `id` must be stable across refreshes: it keys the shared status. */
-export interface Action { id: string; priority: Priority; category: string; title: string; detail: string; page?: string }
+/** `highlight`: a sub-item that needs attention (shown in an amber box) */
+export interface ActionSubItem { label: string; href?: string; note?: string; highlight?: string }
+/** `owner`: who it's assigned to; `flag`: a short warning shown under the title */
+export interface Action { id: string; priority: Priority; category: string; title: string; detail: string; page?: string; owner?: string; flag?: string; items?: ActionSubItem[] }
 
 export const nf = (n: number) => Math.round(n).toLocaleString('en-US')
 export const pct = (n: number, d = 1) => `${(n * 100).toFixed(d)}%`
@@ -111,7 +114,7 @@ const STATUS_BUTTONS: { key: ActionStatus; label: string; on: string }[] = [
 ]
 
 /** Action items with a shared status (saved server-side, visible to everyone). Done items sink to the bottom. */
-export function ActionList({ actions, initial }: { actions: Action[]; initial: StatusMap }) {
+export function ActionList({ actions, initial, onSaved }: { actions: Action[]; initial: StatusMap; onSaved?: (id: string, status: ActionStatus) => void }) {
   const [statuses, setStatuses] = useState<StatusMap>(initial)
   const [saving, setSaving] = useState<string | null>(null)
   const [error, setError] = useState('')
@@ -134,7 +137,7 @@ export function ActionList({ actions, initial }: { actions: Action[]; initial: S
       setStatuses(previous)
       const json = res ? await res.json().catch(() => ({})) : {}
       setError(`Couldn't save the status: ${json.error || 'network error'}`)
-    }
+    } else onSaved?.(id, status)
   }
 
   if (actions.length === 0) return <p className="text-sm text-gray-500">No actions for this period.</p>
@@ -157,6 +160,7 @@ export function ActionList({ actions, initial }: { actions: Action[]; initial: S
                     <div className="flex flex-wrap items-center gap-2">
                       <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${PRIORITY_STYLE[a.priority]}`}>{a.priority}</span>
                       <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">{a.category}</span>
+                      {a.owner && <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-800">Assigned to: {a.owner}</span>}
                     </div>
                     <p className={`mt-1 font-semibold text-gray-900 ${done ? 'line-through' : ''}`}>{a.title}</p>
                   </div>
@@ -176,6 +180,21 @@ export function ActionList({ actions, initial }: { actions: Action[]; initial: S
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed mt-1">{a.detail}</p>
+                {a.flag && <p className="mt-1.5 inline-flex rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">⚑ {a.flag}</p>}
+                {a.items && a.items.length > 0 && (
+                  <details className="mt-2 text-sm">
+                    <summary className="cursor-pointer text-xs font-semibold text-mw-blue-600">Show {a.items.length} page{a.items.length > 1 ? 's' : ''}{a.items.some((x) => x.highlight) ? ' (incl. flagged)' : ''}</summary>
+                    <ul className="mt-2 space-y-1.5 border-l-2 border-gray-100 pl-3">
+                      {a.items.map((x, n) => (
+                        <li key={`${x.label}-${n}`} className="leading-snug">
+                          {x.href ? <a href={x.href} target="_blank" rel="noreferrer" className="text-gray-800 hover:text-mw-blue-600">{x.label}</a> : <span className="font-mono text-xs text-gray-700 break-all">{x.label}</span>}
+                          {x.note && <span className="block text-xs text-gray-400">{x.note}</span>}
+                          {x.highlight && <span className="mt-1 block rounded-md border border-amber-200 bg-amber-50 px-2 py-1.5 text-xs text-amber-900">⚑ {x.highlight}</span>}
+                        </li>
+                      ))}
+                    </ul>
+                  </details>
+                )}
                 <div className="mt-1 flex flex-wrap items-center gap-x-3 text-xs">
                   {a.page && <a href={a.page} target="_blank" rel="noreferrer" className="font-semibold text-mw-blue-600 hover:underline">{a.page}</a>}
                   {statuses[a.id] && st !== 'not-started' && (

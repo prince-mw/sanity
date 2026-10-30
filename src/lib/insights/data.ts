@@ -4,15 +4,18 @@ import { ga4Report, gscQuery } from './google'
 import { getSemrushSnapshot } from './config'
 import { actionId } from './actions'
 import { periods, type RangeKey } from './ranges'
+import { getReferrerName } from '@/lib/referrerName'
 export type { RangeKey } from './ranges'
 
 // Builds the /internal-insights dashboard: location pages vs the whole site, from live GA4 +
 // Search Console data plus the monthly Semrush snapshot. Cached for 6 hours per range.
 //
 // GA4 quirks handled here (same rules as the Oct 2026 hyperlocal scorecard):
-// - Leads fire inside the Zoho form iframe, so GA4 can't tie them to our page. Each page's
-//   leads come from its own form event (generate_lead_<market/city>); generate_lead_contact,
-//   _demo and _f1 are site-wide forms.
+// - Leads fire inside the Zoho form iframe, so GA4 records the form's URL, not our page. That URL
+//   carries ?referrername=<page> (src/lib/referrerName.ts), so each lead is credited to the page it
+//   was submitted on; city pages share their country's form event (GA4's 30 key-event cap).
+//   Older leads without referrername fall back to the form event (generate_lead_<market/city>);
+//   generate_lead_contact, _demo and _f1 are site-wide forms.
 // - Data-centre bot bursts (e.g. Ashburn → /locations/europe at ~100% bounce) are estimated and
 //   removed: city × channel blocks with ≤2% engagement in Direct/Unassigned/Email.
 
@@ -49,6 +52,8 @@ export interface Totals {
   engaged: number
   bounceRate: number
   leads: number
+  /** Leads whose visit came from paid ads (Paid Search, Display, …) */
+  paidLeads: number
   convRate: number
   organic: number
   paid: number
@@ -82,6 +87,7 @@ export interface PageRow {
   other: number
   bounceRate: number
   leads: number
+  paidLeads: number
   prevLeads: number
   leadEvent: string | null
   convRate: number
@@ -130,6 +136,17 @@ export interface TrendPoint {
   locationLeads: number
 }
 
+export interface LeadSource {
+  event: string
+  leads: number
+  /** Of those, leads from paid-ad visits */
+  paid: number
+  /** Location page path, or a label for leads from other pages */
+  creditedTo: string
+  isLocation: boolean
+  by: 'page' | 'form'
+}
+
 export interface Dashboard {
   generatedAt: string
   range: RangeKey
@@ -139,7 +156,7 @@ export interface Dashboard {
   countries: Totals
   cities: Totals
   pages: PageRow[]
-  leadSources: { event: string; leads: number; creditedTo: string; isLocation: boolean }[]
+  leadSources: LeadSource[]
   trend: TrendPoint[]
   working: Finding[]
   notWorking: Finding[]
@@ -178,7 +195,7 @@ function marketFromPath(page: string): { market: string; level: 'Country' | 'Cit
 }
 
 const emptyTotals = (): Totals => ({
-  sessions: 0, botSessions: 0, realSessions: 0, engaged: 0, bounceRate: 0, leads: 0, convRate: 0,
+  sessions: 0, botSessions: 0, realSessions: 0, engaged: 0, bounceRate: 0, leads: 0, paidLeads: 0, convRate: 0,
   organic: 0, paid: 0, ai: 0, other: 0, gscClicks: 0, gscImpressions: 0, gscCtr: 0, gscPosition: 0,
 })
 
@@ -236,10 +253,10 @@ async function build(range: RangeKey): Promise<Dashboard> {
         metrics: [{ name: 'sessions' }],
         dimensionFilter: { filter: { fieldName: 'sessionSource', stringFilter: { matchType: 'FULL_REGEXP', value: '.*(chatgpt|openai|perplexity|gemini|copilot|claude|anthropic|bard).*', caseSensitive: false } } },
       }),
-      ga4Report({ dateRanges: ranges, dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }], dimensionFilter: leadFilter }),
+      ga4Report({ dateRanges: ranges, dimensions: [{ name: 'eventName' }, { name: 'pageLocation' }, { name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'eventCount' }], dimensionFilter: leadFilter, limit: 100000 }),
       ga4Report({ dateRanges: [ranges[0]], dimensions: [{ name: trendDim }], metrics: [{ name: 'sessions' }] }),
       ga4Report({ dateRanges: [ranges[0]], dimensions: [{ name: trendDim }], metrics: [{ name: 'sessions' }], dimensionFilter: locFilter }),
-      ga4Report({ dateRanges: [ranges[0]], dimensions: [{ name: trendDim }, { name: 'eventName' }], metrics: [{ name: 'eventCount' }], dimensionFilter: leadFilter }),
+      ga4Report({ dateRanges: [ranges[0]], dimensions: [{ name: trendDim }, { name: 'eventName' }, { name: 'pageLocation' }], metrics: [{ name: 'eventCount' }], dimensionFilter: leadFilter, limit: 100000 }),
       Promise.all([
         gscQuery({ startDate: p.start, endDate: p.end, dimensions: [] }),
         gscQuery({ startDate: p.prevStart, endDate: p.prevEnd, dimensions: [] }),
@@ -270,7 +287,7 @@ async function build(range: RangeKey): Promise<Dashboard> {
       const m = marketFromPath(page)
       r = {
         page, market: m.market, level: m.level, sessions: 0, botSessions: 0, realSessions: 0, prevRealSessions: 0,
-        organic: 0, paid: 0, ai: 0, other: 0, bounceRate: 0, leads: 0, prevLeads: 0, leadEvent: null, convRate: 0,
+        organic: 0, paid: 0, ai: 0, other: 0, bounceRate: 0, leads: 0, paidLeads: 0, prevLeads: 0, leadEvent: null, convRate: 0,
         gscClicks: 0, prevGscClicks: 0, gscImpressions: 0, gscPosition: null, topQuery: null, topQueryPosition: null,
         semrush: [], status: 'Steady', action: '',
       }
@@ -330,33 +347,54 @@ async function build(range: RangeKey): Promise<Dashboard> {
     }
   }
 
-  // Leads: map each form event to a location page
-  const knownPages = () => [...new Set([...pages.keys(), ...prevSessions.keys()])]
-  const leadTarget = (event: string): string | null => {
+  // Leads: credit each one to the page in the form URL's referrername, else map its form event to a page
+  const knownPages = () => [...new Set([...pages.keys(), ...prevSessions.keys(), ...[...citySlugs].map((s) => `/locations/${s}`)])]
+  let pageByRef: Map<string, string> | undefined
+  const referrerOf = (location: string) => {
+    try {
+      return new URL(location).searchParams.get('referrername')
+    } catch {
+      return null
+    }
+  }
+  const leadTarget = (event: string, location: string): string | null => {
+    const ref = referrerOf(location)
+    if (ref) {
+      pageByRef ??= new Map(knownPages().map((pg) => [getReferrerName(pg), pg]))
+      return pageByRef.get(ref) || null
+    }
     if (SITE_WIDE_FORMS[event]) return null
     const suffix = event.replace(/^generate_lead_/, '')
     const slug = LEAD_ALIASES[suffix] || suffix.replace(/_/g, '-')
     const list = knownPages()
     return list.find((pg) => pg.split('/').pop() === slug) || list.find((pg) => pg.split('/').pop()?.startsWith(slug)) || null
   }
-  const leadSources = new Map<string, { event: string; leads: number; creditedTo: string; isLocation: boolean }>()
+  const leadSources = new Map<string, LeadSource>()
   for (const { dims, mets } of leadRows) {
-    const [event] = dims
+    const [event, location, channel] = dims
     const period = which(dims)
-    const target = leadTarget(event)
+    const target = leadTarget(event, location)
+    const ref = referrerOf(location)
+    const paid = channelBucket(channel) === 'paid' ? mets[0] : 0
     site[period].leads += mets[0]
-    if (target) loc[period].leads += mets[0]
+    site[period].paidLeads += paid
     if (target) {
+      loc[period].leads += mets[0]
+      loc[period].paidLeads += paid
       const r = pageRow(target)
       if (period === 'cur') {
         r.leads += mets[0]
-        r.leadEvent = event
+        r.paidLeads += paid
+        r.leadEvent ??= event
       } else {
         r.prevLeads += mets[0]
       }
     }
-    if (period === 'cur') {
-      leadSources.set(event, { event, leads: mets[0], creditedTo: target || SITE_WIDE_FORMS[event] || '(no matching page)', isLocation: !!target })
+    if (period === 'cur' && mets[0] > 0) {
+      const creditedTo = target || (ref ? `Not a location page (${ref})` : SITE_WIDE_FORMS[event] || '(no matching page)')
+      const key = `${event}|${creditedTo}`
+      const prev = leadSources.get(key)
+      leadSources.set(key, { event, leads: (prev?.leads || 0) + mets[0], paid: (prev?.paid || 0) + paid, creditedTo, isLocation: !!target, by: ref ? 'page' : 'form' })
     }
   }
 
@@ -443,6 +481,7 @@ async function build(range: RangeKey): Promise<Dashboard> {
     agg.botSessions += r.botSessions
     agg.engaged += engaged
     agg.leads += r.leads
+    agg.paidLeads += r.paidLeads
     agg.organic += r.organic
     agg.paid += r.paid
     agg.ai += r.ai
@@ -463,7 +502,7 @@ async function build(range: RangeKey): Promise<Dashboard> {
   }
   for (const { dims, mets } of trendAll) pt(dims[0]).siteSessions += mets[0]
   for (const { dims, mets } of trendLoc) pt(dims[0]).locationSessions += mets[0]
-  for (const { dims, mets } of trendLeads) if (leadTarget(dims[1])) pt(dims[0]).locationLeads += mets[0]
+  for (const { dims, mets } of trendLeads) if (leadTarget(dims[1], dims[2])) pt(dims[0]).locationLeads += mets[0]
   const trend = [...points.values()].sort((a, b) => a.label.localeCompare(b.label))
 
   const semrushTop = semrushRows
@@ -727,7 +766,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
 }
 
 // Bump when the calculations change so cached results from older code are not reused
-const CACHE_VERSION = 'v9'
+const CACHE_VERSION = 'v11'
 
 export const getDashboard = (range: RangeKey) =>
   unstable_cache(() => build(range), ['internal-insights', CACHE_VERSION, range], { revalidate: 6 * 60 * 60, tags: ['internal-insights'] })()

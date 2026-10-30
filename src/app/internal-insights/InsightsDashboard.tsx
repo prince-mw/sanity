@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react'
 import type { Dashboard, PageRow, Status, Totals } from '@/lib/insights/data'
 import { ActionList, Delta, Details, FindingList, Kpi, TH, THR, fmtDate, nf, pct, type StatusMap } from './ui'
+import LeadCards from './LeadCards'
 
 const STATUS_STYLE: Record<Status, string> = {
   Winning: 'bg-emerald-100 text-emerald-800',
@@ -114,6 +115,7 @@ function Scorecard({ pages }: { pages: PageRow[] }) {
 const METRICS: { key: keyof Totals; label: string; fmt: (n: number) => string; lowerIsBetter?: boolean; points?: boolean }[] = [
   { key: 'realSessions', label: 'Real sessions', fmt: nf },
   { key: 'leads', label: 'Leads', fmt: nf },
+  { key: 'paidLeads', label: 'Leads from paid ads', fmt: nf },
   { key: 'convRate', label: 'Conversion rate', fmt: (n) => pct(n, 2), points: true },
   { key: 'bounceRate', label: 'Bounce rate', fmt: (n) => pct(n, 0), lowerIsBetter: true, points: true },
   { key: 'organic', label: 'Organic sessions', fmt: nf },
@@ -134,7 +136,7 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
         {/* Headline numbers */}
         <section className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-6" aria-label="Headline numbers for location pages">
           <Kpi label="Real visits" value={nf(l.current.realSessions)} cur={l.current.realSessions} prev={l.previous.realSessions} share={share('realSessions')} />
-          <Kpi label="Leads" value={nf(l.current.leads)} cur={l.current.leads} prev={l.previous.leads} share={share('leads')} />
+          <Kpi label="Leads" value={nf(l.current.leads)} cur={l.current.leads} prev={l.previous.leads} share={share('leads')} note={`${nf(l.current.paidLeads)} from paid ads`} />
           <Kpi label="Conversion rate" value={pct(l.current.convRate, 2)} cur={l.current.convRate} prev={l.previous.convRate} points />
           <Kpi label="Google clicks" value={nf(l.current.gscClicks)} cur={l.current.gscClicks} prev={l.previous.gscClicks} share={share('gscClicks')} />
           <Kpi label="Avg Google position" value={l.current.gscPosition ? l.current.gscPosition.toFixed(1) : '–'} cur={l.current.gscPosition} prev={l.previous.gscPosition} lowerIsBetter />
@@ -233,18 +235,22 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
           </div>
         </Details>
 
-        <Details title="Where leads come from" summary="Each Zoho form's GA4 lead event and the page it is credited to">
+        <Details title="Where leads come from" summary="Website leads by market and page, how many came from paid ads, and each Zoho form's GA4 lead event">
+          <p className="text-sm text-gray-500 mb-3">All website leads in this period: one card per market (country page and its city pages), plus the site-wide contact and demo forms. &ldquo;Paid&rdquo; = the visit came from paid ads (Google Ads search or display).</p>
+          <div className="mb-4"><LeadCards sources={data.leadSources} /></div>
           <div className="overflow-x-auto rounded-xl border border-gray-200">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
-                <tr><th scope="col" className={TH}>Form event</th><th scope="col" className={TH}>Credited to</th><th scope="col" className={THR}>Leads</th></tr>
+                <tr><th scope="col" className={TH}>Form event</th><th scope="col" className={TH}>Credited to</th><th scope="col" className={TH}>Matched by</th><th scope="col" className={THR}>Leads</th><th scope="col" className={THR}>Paid</th></tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
                 {data.leadSources.map((x) => (
-                  <tr key={x.event}>
+                  <tr key={`${x.event}|${x.creditedTo}`}>
                     <td className="px-3 py-2 font-mono text-xs text-gray-700">{x.event}</td>
                     <td className={`px-3 py-2 ${x.isLocation ? 'text-gray-900' : 'text-gray-500 italic'}`}>{x.creditedTo}</td>
+                    <td className="px-3 py-2 text-xs text-gray-500">{x.by === 'page' ? 'Page name on the form' : 'Form (older leads)'}</td>
                     <td className="px-3 py-2 text-right font-semibold">{x.leads}</td>
+                    <td className="px-3 py-2 text-right text-gray-600">{x.paid || '–'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -256,7 +262,7 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
           <h2 className="font-semibold text-gray-900 mb-2">How the numbers work</h2>
           <ul className="list-disc pl-5 space-y-1.5 text-sm text-gray-600">
             <li><strong>Real visits</strong> exclude estimated bots: blocks of sessions with 2% or less engagement from data-centre cities (e.g. Ashburn) in Direct/Unassigned/Email traffic.</li>
-            <li><strong>Leads</strong> are credited by form: GA4 records enquiries inside the Zoho form, so each page gets its own form's generate_lead event. Site-wide contact and demo forms are not credited to any location page.</li>
+            <li><strong>Leads</strong> are credited to the page the form was submitted on. GA4 records enquiries inside the Zoho form, whose address carries the page name (referrername), so a Pune enquiry counts for the Pune page even though it uses the India form. Older leads without a page name are credited by their form&apos;s event; site-wide contact and demo forms count only when submitted on a location page.</li>
             <li><strong>Google clicks, impressions and position</strong> come from Search Console, which lags 2–3 days.</li>
             <li><strong>Semrush</strong> keywords are a monthly snapshot{data.semrushDate ? ` (last: ${fmtDate(data.semrushDate)})` : ''}; positions are for each market&apos;s Google.</li>
             <li>Data refreshes every 6 hours · last refreshed {new Date(data.generatedAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}.</li>

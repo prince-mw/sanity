@@ -15,6 +15,10 @@ import { getProjectsDashboard } from '@/lib/insights/projects'
 import ProjectsTab from './ProjectsTab'
 import { getContentDashboard } from '@/lib/insights/content'
 import ContentTab from './ContentTab'
+import { getBlogAudit } from '@/lib/insights/blogAudit'
+import BlogTab from './BlogTab'
+import { getLeadsDashboard } from '@/lib/insights/leads'
+import LeadsTab from './LeadsTab'
 
 // Internal, password-protected performance dashboard. Not in the sitemap, not linked anywhere,
 // and noindex (meta tag here + X-Robots-Tag header in next.config.ts). Deliberately NOT listed
@@ -75,6 +79,27 @@ async function ContentSection({ range }: { range: RangeKey }) {
   }
 }
 
+async function LeadsSection({ range }: { range: RangeKey }) {
+  if (!(await isZohoConfigured())) return <Message title="Waiting for the Zoho Analytics connection." detail="Lead and deal data will appear here once read-only Zoho Analytics access is set up." />
+  try {
+    // Website leads by page come from the Location pages data (GA4); the tab still loads without them
+    const [data, site] = await Promise.all([getLeadsDashboard(range), getDashboard(range).catch(() => null)])
+    return <LeadsTab data={data} websiteLeads={site?.leadSources ?? null} />
+  } catch (err) {
+    return <Message title="Could not load lead and deal data from Zoho Analytics." detail={err instanceof Error ? err.message : String(err)} />
+  }
+}
+
+async function BlogSection() {
+  try {
+    const [data, statuses] = await Promise.all([getBlogAudit(), getActionStatuses()])
+    if (!data) return <Message title="The blog audit isn't available." detail="The audit data could not be read from the CMS." />
+    return <BlogTab data={data} statuses={statuses} />
+  } catch (err) {
+    return <Message title="Could not load the blog audit." detail={err instanceof Error ? err.message : String(err)} />
+  }
+}
+
 export default async function InternalInsightsPage({ searchParams }: { searchParams: Promise<{ range?: string; tab?: string }> }) {
   if (!(await isAuthed())) return <InsightsLogin />
 
@@ -83,8 +108,8 @@ export default async function InternalInsightsPage({ searchParams }: { searchPar
   const tab: TabKey = TABS.some((t) => t.key === params.tab) ? (params.tab as TabKey) : DEFAULT_TAB
 
   return (
-    <InsightsShell tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)}>
-      {tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
+    <InsightsShell tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)} snapshot={tab === 'blog' ? 'Snapshot audit · 30 Oct 2026 · data 29 Oct 2025 – 29 Oct 2026' : undefined}>
+      {tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
     </InsightsShell>
   )
 }

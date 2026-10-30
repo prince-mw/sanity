@@ -21,7 +21,6 @@ const ZOHO = {
   instagramInsights: '2553974000068972110', // Media Insights (Instagram Profile): images and carousels
   instagramReels: '2553974000068972140', // Reels Insights (Instagram Profile): video reach
   instagramProfile: '2553974000068972002', // Profile Information (Instagram Profile)
-  ebookMapping: '2553974000073374111', // Ebook Mapping: GA4 event name → ebook name
 }
 
 type Priority = 'High' | 'Medium' | 'Low'
@@ -64,7 +63,9 @@ export interface SocialChannel {
   byFormat: { format: string; posts: number; engagementsPerPost: number }[]
 }
 
-export interface ContentTotals { readers: number; botReaders: number; leads: number; published: number; ebookDownloads: number }
+export interface ContentTotals { readers: number; botReaders: number; leads: number; published: number; ebookOpens: number; ebookDownloads: number }
+
+export interface EbookRow { name: string; path: string; opened: number; downloaded: number; prevOpened: number; prevDownloaded: number }
 
 export interface ContentDashboard {
   generatedAt: string
@@ -75,7 +76,7 @@ export interface ContentDashboard {
   caseStudies: ContentPage[]
   channels: { channel: string; blog: number; caseStudy: number }[]
   published: { title: string; type: 'Blog' | 'Case study'; author: string; publishedAt: string; path: string }[]
-  ebooks: { name: string; downloads: number; prev: number }[]
+  ebooks: EbookRow[]
   social: SocialChannel[]
   working: { title: string; detail: string }[]
   notWorking: { title: string; detail: string }[]
@@ -95,10 +96,31 @@ const contentFilter = (field: string) => ({
   },
 })
 const leadFilter = { filter: { fieldName: 'eventName', stringFilter: { matchType: 'BEGINS_WITH', value: 'generate_lead' } } }
+// Ebook downloads: the Zoho form opens in a popup and GA4 records its page views, so no custom events are needed.
+// Opened = a view of the form; downloaded = a view of its Zoho "thankyou" page after submitting (only for forms set
+// to show that page). The old download_* events were removed in Oct 2026 (GA4 event limit) and count only before then.
+const zohoPageViews = {
+  andGroup: {
+    expressions: [
+      { filter: { fieldName: 'hostName', stringFilter: { matchType: 'CONTAINS', value: 'zohopublic' } } },
+      { filter: { fieldName: 'eventName', stringFilter: { matchType: 'EXACT', value: 'page_view' } } },
+    ],
+  },
+}
+const formOf = (path: string) => path.match(/\/form\/([^/?#]+)/)?.[1] || ''
+const NOT_EBOOK_FORM = /contact|bookdemo|formula1|airportinventory|doubledelight/i
+// Download forms that aren't website ebooks (no Sanity title)
+const FORM_NAMES: Record<string, string> = {
+  JapaneseWhitePaperTravelTourism: 'Japan whitepaper: Travel & Tourism',
+  JapanWhitepaperTechnologyConsumerElectronics: 'Japan whitepaper: Technology & Consumer Electronics',
+  JapanWhitepaperLuxuryFashion: 'Japan whitepaper: Luxury & Fashion',
+  MWeBookHowtoextenddigitalvideoreachusingOOHmedia: 'How to extend digital video reach using OOH media',
+}
+const EBOOK_FORM = /ebook|e-book|whitepaper|guide|playbook|report|download|getyourcopy|bestpractices|cms|roadmap|security/i
 
 async function website(start: string, end: string) {
   const dateRanges = [{ startDate: start, endDate: end }]
-  const [pages, leads, ebooks] = await Promise.all([
+  const [pages, leads, ebooks, zohoViews] = await Promise.all([
     // Page × city × channel, so data-centre bot bursts can be removed (same rule as the Location pages tab)
     ga4Report({
       dateRanges,
@@ -110,7 +132,16 @@ async function website(start: string, end: string) {
     // Enquiries in sessions that started on an article (form events fire inside the Zoho iframe, so credit the landing page)
     ga4Report({ dateRanges, dimensions: [{ name: 'landingPage' }], metrics: [{ name: 'eventCount' }], dimensionFilter: { andGroup: { expressions: [contentFilter('landingPage'), leadFilter] } } }),
     ga4Report({ dateRanges, dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }], dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { matchType: 'BEGINS_WITH', value: 'download_' } } } }),
+    ga4Report({ dateRanges, dimensions: [{ name: 'pagePath' }], metrics: [{ name: 'eventCount' }], dimensionFilter: zohoPageViews, limit: 5000 }),
   ])
+  const forms = new Map<string, { opened: number; downloaded: number }>()
+  for (const r of zohoViews) {
+    const form = formOf(r.dims[0])
+    if (!form) continue
+    const f = forms.get(form) || forms.set(form, { opened: 0, downloaded: 0 }).get(form)!
+    if (/\/thankyou\//i.test(r.dims[0])) f.downloaded += r.mets[0]
+    else f.opened += r.mets[0]
+  }
   const byPath = new Map<string, { readers: number; sessions: number; seconds: number; leads: number }>()
   const channelMap = new Map<string, { blog: number; caseStudy: number }>()
   let botReaders = 0
@@ -136,7 +167,8 @@ async function website(start: string, end: string) {
   return {
     byPath,
     botReaders,
-    ebooks: new Map(ebooks.map((r) => [r.dims[0], r.mets[0]])),
+    legacyDownloads: ebooks.reduce((n, r) => n + r.mets[0], 0),
+    forms,
     channels: channelMap,
     readers: [...byPath.values()].reduce((n, x) => n + x.readers, 0),
     leads: [...byPath.values()].reduce((n, x) => n + x.leads, 0),
@@ -147,16 +179,15 @@ interface SanityDoc { _type: string; title: string; slug: string; publishedAt: s
 
 /**
  * All social posts + small lookup tables, fetched once per refresh and shared by every date range
- * (8 Zoho calls per 6 hours). Zoho rate-limits API calls per minute, so per-range queries are avoided.
+ * (7 Zoho calls per 6 hours). Zoho rate-limits API calls per minute, so per-range queries are avoided.
  */
 const getSocialData = unstable_cache(async () => {
-  const [li, fb, ig, igInsights, reels, mapping, liFollowers, igProfile] = await Promise.all([
+  const [li, fb, ig, igInsights, reels, liFollowers, igProfile] = await Promise.all([
     zohoTableRows(ZOHO.linkedinPosts, { columns: ['Date', 'Message', 'Click Count', 'Like Count', 'Comment Count', 'Share Count', 'Impression Count', 'Engagement', 'Media Category', 'Post ID'] }),
     zohoTableRows(ZOHO.facebookPosts, { columns: ['Created Time', 'Type', 'Message', 'Total Reactions', 'Comments', 'Shares', 'Impressions', 'Post URL'] }),
     zohoTableRows(ZOHO.instagramMedia, { columns: ['Media ID', 'Caption', 'Like Count', 'Comments Count', 'Media Type', 'Permalink', 'Timestamp'] }),
     zohoTableRows(ZOHO.instagramInsights, { columns: ['Media ID', 'Engagement', 'Reach', 'Saved'] }),
     zohoTableRows(ZOHO.instagramReels, { columns: ['Reel ID', 'Likes', 'Comments', 'Saved', 'Shares', 'Reach'] }),
-    zohoTableRows(ZOHO.ebookMapping, { columns: ['Event Name', 'Ebook Name'] }),
     zohoTableRows(ZOHO.linkedinFollowers, { columns: ['Date', 'Total Followers'] }),
     zohoTableRows(ZOHO.instagramProfile, { columns: ['Followers'] }),
   ])
@@ -190,11 +221,10 @@ const getSocialData = unstable_cache(async () => {
     linkedin,
     facebook,
     instagram,
-    ebookNames: mapping.map((r) => [r['Event Name'], r['Ebook Name']] as [string, string]),
     linkedinFollowers: liFollowers.map((r) => ({ date: isoOf(r.Date), gained: num(r['Total Followers']) })),
     instagramFollowers: igProfile[0] ? num(igProfile[0].Followers) : null,
   }
-}, ['internal-insights-social', 's2'], { revalidate: 6 * 60 * 60, tags: ['internal-insights'] })
+}, ['internal-insights-social', 's3'], { revalidate: 6 * 60 * 60, tags: ['internal-insights'] })
 
 function channel(name: SocialChannel['name'], cur: SocialPost[], prev: SocialPost[], followers: number | null, followersLabel: string, impressionsLabel: string): SocialChannel {
   const sum = (xs: SocialPost[], f: (x: SocialPost) => number) => xs.reduce((n, x) => n + f(x), 0)
@@ -220,9 +250,10 @@ function channel(name: SocialChannel['name'], cur: SocialPost[], prev: SocialPos
 
 async function build(range: RangeKey): Promise<ContentDashboard> {
   const p = periods(range)
-  const [web, prevWeb, docs, socialData] = await Promise.all([
+  const [web, prevWeb, ebookDocs, docs, socialData] = await Promise.all([
     website(p.start, p.end),
     website(p.prevStart, p.prevEnd),
+    client.fetch<{ title: string; slug: string; viewUrl?: string }[]>(`*[_type == "ebook" && defined(slug.current)]{title, "slug": slug.current, viewUrl}`),
     client.fetch<SanityDoc[]>(`*[_type in ["blogPost", "caseStudy"] && defined(slug.current)]{_type, title, "slug": slug.current, publishedAt, "author": author->name, language}`),
     getSocialData(),
   ])
@@ -252,15 +283,27 @@ async function build(range: RangeKey): Promise<ContentDashboard> {
     .map((d) => ({ title: d.title, type: (d._type === 'caseStudy' ? 'Case study' : 'Blog') as ContentPage['type'], author: d.author || '', publishedAt: d.publishedAt.slice(0, 10), path: `/${d._type === 'caseStudy' ? 'case-studies' : 'blog'}/${d.slug}` }))
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
 
-  const ebookName = new Map(socialData.ebookNames)
-  const ebookEvents = new Set([...web.ebooks.keys(), ...prevWeb.ebooks.keys()])
-  const ebooks = [...ebookEvents]
-    .map((e) => ({ name: ebookName.get(e) || e.replace(/^download_/, '').replace(/_/g, ' '), downloads: web.ebooks.get(e) || 0, prev: prevWeb.ebooks.get(e) || 0 }))
-    .sort((a, b) => b.downloads - a.downloads || b.prev - a.prev)
-  const sumMap = (m: Map<string, number>) => [...m.values()].reduce((n, x) => n + x, 0)
+  // Ebook forms: the website's ebooks (by their Zoho form) plus other download forms (Japan whitepapers, playbooks)
+  const ebookByForm = new Map(ebookDocs.filter((e) => e.viewUrl).map((e) => [formOf(e.viewUrl!), e]))
+  const isEbookForm = (f: string) => ebookByForm.has(f) || (EBOOK_FORM.test(f) && !NOT_EBOOK_FORM.test(f))
+  const ebookRows = new Map<string, EbookRow>()
+  for (const [period, forms] of [['cur', web.forms], ['prev', prevWeb.forms]] as const) {
+    for (const [form, x] of forms) {
+      if (!isEbookForm(form)) continue
+      const doc = ebookByForm.get(form)
+      const name = doc?.title || FORM_NAMES[form] || form.replace(/([a-z])([A-Z0-9])/g, '$1 $2')
+      const row = ebookRows.get(name) || ebookRows.set(name, { name, path: doc ? `/ebooks/${doc.slug}` : '', opened: 0, downloaded: 0, prevOpened: 0, prevDownloaded: 0 }).get(name)!
+      if (period === 'cur') { row.opened += x.opened; row.downloaded += x.downloaded } else { row.prevOpened += x.opened; row.prevDownloaded += x.downloaded }
+    }
+  }
+  if (web.legacyDownloads || prevWeb.legacyDownloads) {
+    ebookRows.set('legacy', { name: 'Older download events (removed Oct 2026)', path: '', opened: 0, downloaded: web.legacyDownloads, prevOpened: 0, prevDownloaded: prevWeb.legacyDownloads })
+  }
+  const ebooks = [...ebookRows.values()].sort((a, b) => b.opened - a.opened || b.downloaded - a.downloaded || b.prevOpened - a.prevOpened)
+  const ebookTotal = (k: 'opened' | 'downloaded' | 'prevOpened' | 'prevDownloaded') => ebooks.reduce((n, e) => n + e[k], 0)
 
-  const current: ContentTotals = { readers: web.readers, botReaders: web.botReaders, leads: web.leads, published: published.length, ebookDownloads: sumMap(web.ebooks) }
-  const previous: ContentTotals = { readers: prevWeb.readers, botReaders: prevWeb.botReaders, leads: prevWeb.leads, published: publishedDocs(p.prevStart, p.prevEnd).length, ebookDownloads: sumMap(prevWeb.ebooks) }
+  const current: ContentTotals = { readers: web.readers, botReaders: web.botReaders, leads: web.leads, published: published.length, ebookOpens: ebookTotal('opened'), ebookDownloads: ebookTotal('downloaded') }
+  const previous: ContentTotals = { readers: prevWeb.readers, botReaders: prevWeb.botReaders, leads: prevWeb.leads, published: publishedDocs(p.prevStart, p.prevEnd).length, ebookOpens: ebookTotal('prevOpened'), ebookDownloads: ebookTotal('prevDownloaded') }
 
   const socialChannels: SocialChannel[] = [
     channel('LinkedIn', postsIn(socialData.linkedin, p.start, p.end), postsIn(socialData.linkedin, p.prevStart, p.prevEnd), socialData.linkedinFollowers.filter((r) => within(r.date, p.start, p.end)).reduce((n, r) => n + r.gained, 0), 'new followers', 'impressions'),
@@ -323,7 +366,7 @@ async function build(range: RangeKey): Promise<ContentDashboard> {
 }
 
 // Bump when the calculation changes so cached results are rebuilt
-const CACHE_VERSION = 'k4'
+const CACHE_VERSION = 'k6'
 
 export const getContentDashboard = (range: RangeKey) =>
   unstable_cache(() => build(range), ['internal-insights-content', CACHE_VERSION, range], { revalidate: 6 * 60 * 60, tags: ['internal-insights'] })()
