@@ -21,7 +21,7 @@ export function MalaysiaAtAGlance() {
   return (
     <figure
       className="w-full max-w-[520px] mx-auto md:pt-2"
-      aria-label="Malaysia at a glance: over 33.4 million people, about 76% living in cities, over 1.8 million in Kuala Lumpur, and the Klang Valley as the prime area for advertising."
+      aria-label="Malaysia at a glance: over 33.4 million people, about 76% living in cities, over 1.9 million in Kuala Lumpur, and the Klang Valley as the prime area for advertising."
     >
       <Kicker>Malaysia at a glance</Kicker>
 
@@ -61,7 +61,7 @@ export function MalaysiaAtAGlance() {
 
         <motion.div {...rise(2)} className="flex flex-col justify-center">
           <div className="text-4xl font-bold leading-none" style={{ color: MW.blue }}>
-            <CountUp to={1.8} decimals={1} suffix="M" />
+            <CountUp to={1.9} decimals={1} suffix="M" />
           </div>
           <div className="mt-2 text-sm leading-snug" style={{ color: MW.body }}>
             residents in <strong style={{ color: MW.navy }}>Kuala Lumpur</strong>
