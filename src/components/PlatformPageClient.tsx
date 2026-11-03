@@ -174,7 +174,7 @@ export default function PlatformPageClient() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 pt-24 pb-20">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-blue-50 mw-hero-top pb-20">
       <div className="mw-container">
         {/* Header */}
         <motion.div

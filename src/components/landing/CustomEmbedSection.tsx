@@ -111,7 +111,7 @@ export function CustomEmbedSection({
   if (!code) return null;
 
   return (
-    <section className={`${isFull ? '' : 'py-6 md:py-8'} ${bgClasses}`}>
+    <section className={`mw-embed ${isFull ? '' : 'py-6 md:py-8'} ${bgClasses}`}>
       <div className={isFull ? '' : 'container mx-auto px-4'}>
         {/* Fades in on scroll via opacity only — no transform/y-translate. A transform
             on this wrapper would make it the containing block for any `position: fixed`

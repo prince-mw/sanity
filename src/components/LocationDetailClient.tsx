@@ -7,6 +7,8 @@ import { motion } from 'framer-motion'
 import { LocationData } from '@/data/staticLocationData'
 import { CTAButton } from './CTAButton'
 import { LandingPageRenderer } from './landing'
+import { SectionGraphicProvider } from './landing/SectionGraphic'
+import { locationGraphicLookup } from './motion/locationGraphics'
 import { useZohoPopup } from './ZohoPopupProvider'
 import { useLocale } from '@/i18n/LocaleContext'
 import { messagesMap, getMessage } from '@/i18n/messages'
@@ -213,7 +215,9 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
   const sectionsPosition = location.sectionsPosition || 'after-faqs'
 
   const cmsSections = hasCmsSections ? (
-    <LandingPageRenderer sections={location.sections!} />
+    <SectionGraphicProvider lookup={locationGraphicLookup(location.slug || '')}>
+      <LandingPageRenderer sections={location.sections!} />
+    </SectionGraphicProvider>
   ) : null
 
   // Render location page
@@ -221,7 +225,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
       {!location.hideDefaultHero && (
-      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 overflow-hidden mw-section">
+      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 overflow-hidden mw-hero-top pb-12 md:pb-16 lg:pb-20">
         <div className="absolute inset-0 bg-black/10"></div>
         
         {/* Animated Background */}

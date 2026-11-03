@@ -70,7 +70,7 @@ export default function CommunityLandingPage() {
     <div className="min-h-screen bg-gray-50 text-gray-900 antialiased flex flex-col">
       
       {/* Top Navigation Bar */}
-      <div className="pt-8 mw-container">
+      <div className="mw-hero-top mw-container">
         <Link href="/mw-science" className="text-sm font-medium text-gray-500 hover:text-blue-600 inline-flex items-center gap-1 transition-colors">
           {t("ui.company.community.backToScience")}
         </Link>

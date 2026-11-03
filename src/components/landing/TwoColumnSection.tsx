@@ -7,6 +7,7 @@ import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getButtonClasses, type BackgroundColor } from "./utils";
 import SanityPortableText from "@/components/SanityPortableText";
 import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
+import { useSectionGraphic } from "./SectionGraphic";
 
 interface TwoColumnSectionProps {
   heading?: string;
@@ -34,6 +35,7 @@ export function TwoColumnSection({
   const bgClasses = getBackgroundClasses(backgroundColor);
   const isDark = backgroundColor === 'dark' || backgroundColor === 'blue' || backgroundColor === 'gradient';
   const { openZohoPopup } = useZohoPopup();
+  const graphic = useSectionGraphic(heading);
 
   const cta = ctaText && ctaLink ? (
     isZohoFormUrl(ctaLink) ? (
@@ -50,7 +52,7 @@ export function TwoColumnSection({
   return (
     <section className={`${bgClasses} mw-section`}>
       <div className="mw-container">
-        <div className={`grid md:grid-cols-2 gap-12 items-center ${imagePosition === 'left' ? 'md:grid-flow-dense' : ''}`}>
+        <div className={`grid grid-cols-1 md:grid-cols-2 gap-12 [&>*]:min-w-0 ${graphic ? "items-start" : "items-center"} ${imagePosition === 'left' ? 'md:grid-flow-dense' : ''}`}>
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: imagePosition === 'left' ? 30 : -30 }}
@@ -80,9 +82,10 @@ export function TwoColumnSection({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className={imagePosition === 'left' ? 'md:col-start-1 md:row-start-1' : ''}
+            className={`${imagePosition === 'left' ? 'md:col-start-1 md:row-start-1' : ''} ${graphic ? 'md:sticky md:top-28' : ''}`}
           >
-            {image && (
+            {graphic}
+            {!graphic && image && (
               <div className="relative aspect-video rounded-2xl overflow-hidden shadow-xl bg-white">
                 <Image
                   src={image}

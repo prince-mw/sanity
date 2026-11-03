@@ -22,6 +22,15 @@
 
   /* Running text never wider than ~720px (about 70 characters a line). */
   .mw-measure { max-width: 45rem; }
+  /* A page's first section sits under the fixed header (56px, 64px from lg),
+     so it takes the hero top whatever spacing class it was given. Embedded
+     CMS pages bring their own hero padding and only need the header cleared. */
+  :is(main > section:first-of-type, main > div:first-of-type > section:first-of-type):is(.mw-section, .mw-section-lg, .mw-section-sm) {
+    @apply pt-[104px] md:pt-[120px] lg:pt-36;
+  }
+  :is(main > section:first-of-type, main > div:first-of-type > section:first-of-type).mw-embed {
+    @apply pt-14 lg:pt-16;
+  }
 
   /* Buttons: primary, secondary (outline), on-dark; 8px corners, 16px / 600, no capitals. */
   .mw-btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold normal-case tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600; }
