@@ -6,6 +6,9 @@ import { getServerT } from '@/i18n/serverT'
 import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUrl, getCitiesByCountry, transformCityForList } from '@/sanity/lib/fetch'
 import { buildLocationJsonLd } from '@/lib/locationSchema'
 import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLanguageGroups'
+import { areasFor, sitesFor, usingSample } from '@/lib/inventory/source'
+import { siteHasPage } from '@/lib/inventory/normalize'
+import { CityInventorySection } from '@/components/inventory/CityInventorySection'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
   const { slug, citySlug } = await params
@@ -80,6 +83,9 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
     })),
   } : null
 
+  // Inventory from the Inventory API (sample until the key is set): only cities that have some.
+  const [inventory, inventoryAreas] = await Promise.all([sitesFor(slug, citySlug), areasFor(slug, citySlug)])
+
   const locationJsonLd = buildLocationJsonLd({
     countrySlug: slug,
     countryName: city.country?.country || slug,
@@ -106,6 +112,17 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         countryName={city.country?.country || undefined}
         relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || undefined}
       />
+      {inventory.length > 0 && (
+        <CityInventorySection
+          cityName={city.city || citySlug}
+          citySlug={citySlug}
+          countrySlug={slug}
+          sites={inventory}
+          pagedIds={inventory.filter(siteHasPage).map(s => s.id)}
+          areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
+          sample={usingSample()}
+        />
+      )}
     </>
   )
 }
