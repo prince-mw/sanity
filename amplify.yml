@@ -12,6 +12,8 @@ frontend:
         - echo "SANITY_PREVIEW_SECRET=$SANITY_PREVIEW_SECRET" >> .env.production
         - echo "NEXT_PUBLIC_SANITY_PROJECT_ID=$NEXT_PUBLIC_SANITY_PROJECT_ID" >> .env.production
         - echo "NEXT_PUBLIC_SANITY_DATASET=$NEXT_PUBLIC_SANITY_DATASET" >> .env.production
+        # Inventory pages preview (sample data) on the staging branch only — no effect on main/production.
+        - if [ "$AWS_BRANCH" = "staging" ]; then echo "INVENTORY_PREVIEW=1" >> .env.production; fi
         - npm run build
   artifacts:
     baseDirectory: .next
