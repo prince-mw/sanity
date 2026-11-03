@@ -33,7 +33,7 @@ const POSTS_PER_PAGE = 12;
 type SortOption = "newest" | "oldest" | "title-asc" | "title-desc";
 
 export default function BlogListClient({ posts, categories }: BlogListClientProps) {
-  const { locale } = useLocale();
+  const { locale, t } = useLocale();
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [sortBy, setSortBy] = useState<SortOption>("newest");
@@ -138,14 +138,14 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
               <svg className="w-4 h-4 text-mw-blue-600" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z" />
               </svg>
-              <span className="text-mw-blue-600 text-sm font-medium">Moving Walls Blog</span>
+              <span className="text-mw-blue-600 text-sm font-medium">{t("ui.blog.badge")}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
-              Industry Insights &
-              <span className="text-mw-blue-600 block">Expert Tips</span>
+              {t("ui.blog.heroTitle")}
+              <span className="text-mw-blue-600 block">{t("ui.blog.heroTitleHighlight")}</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Stay ahead with the latest trends, best practices, and insights from advertising experts.
+              {t("ui.blog.heroSubtitle")}
             </p>
 
             {/* Search Bar */}
@@ -153,7 +153,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
               <div className="relative">
                 <input
                   type="text"
-                  placeholder="Search articles..."
+                  placeholder={t("ui.blog.searchPlaceholder")}
                   value={searchQuery}
                   onChange={(e) => handleSearchChange(e.target.value)}
                   className="w-full px-6 py-4 pl-14 border border-mw-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent shadow-mw-sm"
@@ -182,7 +182,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-sm text-mw-gray-600 whitespace-nowrap">Category:</span>
+              <span className="text-sm text-mw-gray-600 whitespace-nowrap">{t("ui.blog.categoryLabel")}</span>
               <select
                 value={selectedCategory}
                 onChange={(e) => handleCategoryChange(e.target.value)}
@@ -194,7 +194,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                     : localizedPosts.filter(p => p.category === category).length;
                   return (
                     <option key={category} value={category}>
-                      {category} ({count})
+                      {category === "All" ? t("ui.blog.allCategories") : category} ({count})
                     </option>
                   );
                 })}
@@ -202,16 +202,16 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-sm text-mw-gray-600 whitespace-nowrap">Sort by:</span>
+              <span className="text-sm text-mw-gray-600 whitespace-nowrap">{t("ui.blog.sortBy")}</span>
               <select
                 value={sortBy}
                 onChange={(e) => handleSortChange(e.target.value as SortOption)}
                 className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer"
               >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="title-asc">Title (A-Z)</option>
-                <option value="title-desc">Title (Z-A)</option>
+                <option value="newest">{t("ui.blog.sortNewest")}</option>
+                <option value="oldest">{t("ui.blog.sortOldest")}</option>
+                <option value="title-asc">{t("ui.blog.sortTitleAsc")}</option>
+                <option value="title-desc">{t("ui.blog.sortTitleDesc")}</option>
               </select>
             </div>
           </div>
@@ -233,7 +233,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                     <div className="flex flex-col justify-center text-white">
                       <span className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full text-sm w-fit mb-4">
                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                        Featured Article
+                        {t("ui.blog.featuredArticle")}
                       </span>
                       <h2 className="text-3xl lg:text-4xl font-bold mb-4">{featuredArticle.title}</h2>
                       <p className="text-blue-100 text-lg mb-6 line-clamp-3">{featuredArticle.excerpt}</p>
@@ -267,10 +267,13 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
           {/* Results Count */}
           <div className="flex items-center justify-between mb-8">
             <p className="text-mw-gray-600">
-              Showing <span className="font-semibold">{paginatedArticles.length}</span> of{" "}
-              <span className="font-semibold">{processedArticles.length}</span> articles
-              {selectedCategory !== "All" && ` in ${selectedCategory}`}
-              {searchQuery && ` matching "${searchQuery}"`}
+              {t("ui.blog.showingCount").split(/(\{shown\}|\{total\})/).map((part: string, i: number) =>
+                part === "{shown}" ? <span key={i} className="font-semibold">{paginatedArticles.length}</span>
+                : part === "{total}" ? <span key={i} className="font-semibold">{processedArticles.length}</span>
+                : part
+              )}
+              {selectedCategory !== "All" && t("ui.blog.inCategory").replace("{category}", selectedCategory)}
+              {searchQuery && t("ui.blog.matchingQuery").replace("{query}", searchQuery)}
             </p>
           </div>
 
@@ -281,8 +284,8 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-mw-gray-900 mb-2">No articles found</h3>
-              <p className="text-mw-gray-600 mb-6">Try adjusting your search or filter to find what you&apos;re looking for.</p>
+              <h3 className="text-2xl font-bold text-mw-gray-900 mb-2">{t("ui.blog.noResultsTitle")}</h3>
+              <p className="text-mw-gray-600 mb-6">{t("ui.blog.noResultsText")}</p>
               <button
                 onClick={() => {
                   setSelectedCategory("All");
@@ -290,7 +293,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                 }}
                 className="px-6 py-3 bg-mw-blue-600 text-white rounded-lg hover:bg-mw-blue-700 transition-colors"
               >
-                Clear Filters
+                {t("ui.blog.clearFilters")}
               </button>
             </div>
           ) : (
@@ -343,7 +346,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                       disabled={currentPage === 1}
                       className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      Previous
+                      {t("ui.blog.previous")}
                     </button>
                     
                     {getPageNumbers().map((page, index) => (
@@ -368,7 +371,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                       disabled={currentPage === totalPages}
                       className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      Next
+                      {t("ui.blog.next")}
                     </button>
                   </nav>
                 </div>
@@ -384,10 +387,10 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div className="text-center lg:text-left">
               <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">
-                Subscribe to Our Newsletter
+                {t("ui.blog.newsletterTitle")}
               </h2>
               <p className="text-mw-gray-600 max-w-2xl">
-                Get the latest insights, trends, and updates delivered directly to your inbox.
+                {t("ui.blog.newsletterText")}
               </p>
             </div>
             <ZohoCampaignsEmbed height={320} />

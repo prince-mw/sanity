@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 import { sanitizeHtml } from '@/lib/sanitize'
 import { getVideoSkipIntroProps } from '@/lib/videoSkipIntro'
+import { useLocale } from '@/i18n/LocaleContext'
 
 // Helper to build Sanity image URL from asset reference
 function buildSanityImageUrl(image: any, width?: number): string {
@@ -326,6 +327,7 @@ const portableTextComponents = {
 }
 
 export default function EventDetailClient({ event, relatedEvents }: Readonly<EventDetailClientProps>) {
+  const { t } = useLocale()
   const isPast = (() => {
     const today = new Date()
     today.setHours(0, 0, 0, 0)
@@ -356,7 +358,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                 </svg>
-                <span>Back to Events</span>
+                <span>{t('ui.events.backToEvents')}</span>
               </Link>
 
               <div className="flex items-center gap-3 mb-4">
@@ -365,7 +367,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
                     ? 'bg-mw-gray-200 text-mw-gray-700' 
                     : 'bg-green-100 text-green-700'
                 }`}>
-                  {isPast ? 'Completed' : 'Upcoming'}
+                  {isPast ? t('ui.events.completed') : t('ui.events.upcomingBadge')}
                 </span>
                 <span className={`px-4 py-1.5 text-sm font-medium rounded-full ${
                   ({ Webinar: 'bg-green-100 text-green-700', Workshop: 'bg-purple-100 text-purple-700', Conference: 'bg-orange-100 text-orange-700', Summit: 'bg-red-100 text-red-700' } as Record<string, string>)[event.type] || 'bg-blue-100 text-blue-700'
@@ -374,7 +376,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
                 </span>
                 {event.featured && (
                   <span className="px-4 py-1.5 bg-yellow-100 text-yellow-800 text-sm font-medium rounded-full">
-                    Featured
+                    {t('ui.events.featured')}
                   </span>
                 )}
               </div>
@@ -396,7 +398,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-mw-gray-500">Date</p>
+                    <p className="text-sm text-mw-gray-500">{t('ui.events.date')}</p>
                     <p className="font-semibold text-mw-gray-900">{event.date}</p>
                   </div>
                 </div>
@@ -408,7 +410,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-mw-gray-500">Time</p>
+                    <p className="text-sm text-mw-gray-500">{t('ui.events.time')}</p>
                     <p className="font-semibold text-mw-gray-900">{event.time}</p>
                   </div>
                 </div>
@@ -421,7 +423,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
                     </svg>
                   </div>
                   <div>
-                    <p className="text-sm text-mw-gray-500">Location</p>
+                    <p className="text-sm text-mw-gray-500">{t('ui.events.location')}</p>
                     <p className="font-semibold text-mw-gray-900">{event.location}</p>
                   </div>
                 </div>
@@ -466,7 +468,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">Speakers</h2>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">{t('ui.events.speakers')}</h2>
               
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {event.speakers.map((speaker, index) => (
@@ -519,7 +521,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
               viewport={{ once: true }}
               className="prose prose-lg max-w-none"
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">About This Event</h2>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">{t('ui.events.aboutThisEvent')}</h2>
               <div className="bg-white rounded-2xl p-8 border border-mw-gray-200">
                 <PortableText value={event.content} components={portableTextComponents} />
               </div>
@@ -539,12 +541,12 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
               viewport={{ once: true }}
             >
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold text-mw-gray-900">More Events</h2>
+                <h2 className="text-3xl font-bold text-mw-gray-900">{t('ui.events.moreEvents')}</h2>
                 <Link 
                   href="/events"
                   className="text-mw-blue-600 hover:text-mw-blue-700 font-medium transition-colors"
                 >
-                  View All →
+                  {t('ui.events.viewAll')}
                 </Link>
               </div>
 
@@ -609,9 +611,9 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-white mb-4">Stay Updated</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">{t('ui.events.stayUpdated')}</h2>
             <p className="text-xl text-mw-gray-300 mb-8">
-              Don&apos;t miss out on upcoming events, webinars, and training sessions.
+              {t('ui.events.stayUpdatedText')}
             </p>
             <Link
               href="/events"
@@ -620,7 +622,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
-              View All Events
+              {t('ui.events.viewAllEvents')}
             </Link>
           </motion.div>
         </div>

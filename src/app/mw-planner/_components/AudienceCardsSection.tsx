@@ -1,6 +1,9 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { Building2, Store, CheckCircle2, ArrowRight } from 'lucide-react';
+import { useLocale } from '@/i18n/LocaleContext';
 
 const CARDS = [
   {
@@ -24,6 +27,7 @@ const CARDS = [
 ];
 
 export const AudienceCardsSection: React.FC = () => {
+  const { t } = useLocale();
   return (
     <section className="py-14 sm:py-16 lg:py-20 bg-[#f8f9fc] border-b border-[#e2e8f0]" id="audience-cards-section">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -70,7 +74,7 @@ export const AudienceCardsSection: React.FC = () => {
 
               <div className="px-6 sm:px-7 pb-6">
                 <div className="w-full py-3 rounded-lg bg-[#edf2fe] group-hover:bg-[#dde1ff] text-[#062068] text-xs font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-2">
-                  <span>Explore More</span>
+                  <span>{t('ui.products.exploreMore')}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>
               </div>

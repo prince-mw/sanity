@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import ContactForm from "./ContactForm";
 import { transformCompanyPage, type TrustBarStat } from "@/sanity/lib/fetch";
+import { useLocale } from "@/i18n/LocaleContext";
 
 // Static fallback stats (matches TrustBar component's own defaults)
 const staticStats = [
@@ -43,6 +44,7 @@ interface OurStoryPageClientProps {
 }
 
 export default function OurStoryPageClient({ initialData, trustBarStats }: OurStoryPageClientProps) {
+  const { t } = useLocale()
   const [pageData] = useState<ReturnType<typeof transformCompanyPage> | null>(initialData)
 
   const displayStats = trustBarStats && trustBarStats.length > 0 ? trustBarStats : staticStats
@@ -90,7 +92,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
             className="text-center"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-mw-blue-100 rounded-full mb-8">
-              <span className="text-mw-blue-600 text-sm font-medium">About Moving Walls</span>
+              <span className="text-mw-blue-600 text-sm font-medium">{t("ui.company.about.eyebrow")}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
               {pageData?.title || <>Our Story
@@ -114,7 +116,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
               transition={{ duration: 0.6 }}
             >
               <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-6">
-                Our Mission
+                {t("ui.company.about.mission")}
               </h2>
               <p className="text-lg text-mw-gray-600 mb-6 leading-relaxed">
                 {pageData?.mission || 'Powered by Moving Audiences®, our US patented multi-sensor measurement technology, we process more than 10 billion data points and measure over 100,000 OOH and retail media sites globally. By tracking real-world movement, we enable smarter planning, buying, verification, and content delivery across billboards, digital signage, transit, and now in-store retail media.'}
@@ -159,7 +161,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Our Core Values
+              {t("ui.company.story.coreValues")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               The principles that guide our decisions, shape our culture, and drive our commitment to excellence.
@@ -198,7 +200,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
             className="text-center text-white"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Looking Forward
+              {t("ui.company.story.lookingForward")}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
               As we continue to grow, our commitment remains unchanged: delivering innovative advertising 
@@ -210,7 +212,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
                 href="#contact"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-mw-gray-50 text-mw-blue-600 font-semibold rounded-lg transition-colors shadow-lg"
               >
-                Partner With Us
+                {t("ui.company.story.partnerWithUs")}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -219,7 +221,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
                 href="/brands"
                 className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"
               >
-                Explore Solutions
+                {t("ui.company.story.exploreSolutions")}
               </Link>
             </div>
           </motion.div>

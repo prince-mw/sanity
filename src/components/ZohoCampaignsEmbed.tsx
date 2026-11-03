@@ -1,5 +1,7 @@
 'use client'
 
+import { useLocale } from '@/i18n/LocaleContext'
+
 // Canonical Zoho Campaigns newsletter signup embed.
 // Used on the homepage, blog posts, and /newsletter page.
 // URL can be overridden via prop (e.g. from Sanity) — falls back to the static URL.
@@ -21,6 +23,7 @@ export default function ZohoCampaignsEmbed({
   height = 340,
   className = '',
 }: ZohoCampaignsEmbedProps) {
+  const { t } = useLocale()
   const embedUrl = src || ZOHO_CAMPAIGNS_URL
 
   return (
@@ -37,7 +40,7 @@ export default function ZohoCampaignsEmbed({
         width="100%"
         height="100%"
         className="w-full h-full border-0"
-        title="Newsletter Signup"
+        title={t('ui.shared.newsletterSignup')}
       />
     </div>
   )

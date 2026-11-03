@@ -3,9 +3,11 @@
 import { motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 import { CTAButton } from "./CTAButton";
+import { useLocale } from "@/i18n/LocaleContext";
 
 export default function GlobalCTA() {
   const pathname = usePathname();
+  const { t } = useLocale();
 
   // Hide on the main landing page, location pages, individual partner pages, MW Science, MW Inventory, MW Measure, MW Influence, MW Planner, Race Week 2026 and Moving Hearts (each has its own closing CTA)
   if (pathname === '/' || pathname.startsWith('/locations/') || pathname.startsWith('/partners/') || pathname.startsWith('/internal-insights') || pathname === '/mw-science' || pathname === '/mw-inventory' || pathname === '/mw-measure' || pathname === '/mw-influence' || pathname === '/mw-planner' || pathname === '/race-week-malaysia-singapore' || pathname === '/moving-hearts') return null;
@@ -37,10 +39,10 @@ export default function GlobalCTA() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Ready to Expand Your Reach
+              {t('ui.shared.globalCta.heading')}
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">
-              Whether you are entering a new city or scaling across continents, we help you activate outdoor media with clarity and measurable impact.
+              {t('ui.shared.globalCta.body')}
             </p>
           </motion.div>
 
@@ -58,14 +60,14 @@ export default function GlobalCTA() {
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
               </svg>
-              Get in Touch
+              {t('ui.shared.globalCta.getInTouch')}
             </CTAButton>
             <CTAButton
               href="/case-studies"
               forceNavigate
               className="inline-flex items-center gap-2 px-8 py-4 bg-transparent text-white font-semibold rounded-lg border-2 border-white/30 hover:bg-white/10 hover:border-white/50 transition-all duration-300"
             >
-              View Success Stories
+              {t('ui.shared.globalCta.viewSuccessStories')}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
@@ -88,7 +90,7 @@ export default function GlobalCTA() {
                   </svg>
                 </div>
                 <a href="mailto:info@movingwalls.com" className="text-white font-medium hover:text-blue-200 transition-colors">info@movingwalls.com</a>
-                <p className="text-blue-200 text-sm">Email us anytime</p>
+                <p className="text-blue-200 text-sm">{t('ui.shared.globalCta.emailUs')}</p>
               </div>
               <div className="flex flex-col items-center">
                 <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-3">
@@ -97,7 +99,7 @@ export default function GlobalCTA() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
-                <p className="text-white font-medium">Singapore HQ</p>
+                <p className="text-white font-medium">{t('ui.shared.globalCta.singaporeHq')}</p>
                 <p className="text-blue-200 text-sm">14 Robinson Road</p>
               </div>
             </div>

@@ -5,6 +5,7 @@ import { motion } from 'framer-motion'
 import { PortableText } from '@portabletext/react'
 import SanityPortableText from '@/components/SanityPortableText'
 import { useZohoPopup } from './ZohoPopupProvider'
+import { useLocale } from '@/i18n/LocaleContext'
 
 interface Ebook {
   id: string
@@ -27,6 +28,7 @@ interface EbookDetailClientProps {
 
 export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailClientProps) {
   const { openZohoPopup } = useZohoPopup()
+  const { t } = useLocale()
 
   const handleDownload = () => {
     if (ebook.viewUrl) {
@@ -47,7 +49,7 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
           <nav className="mb-8">
             <ol className="flex items-center gap-2 text-sm text-mw-blue-200">
               <li>
-                <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                <Link href="/" className="hover:text-white transition-colors">{t('ui.ebooks.breadcrumbHome')}</Link>
               </li>
               <li>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -55,7 +57,7 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
                 </svg>
               </li>
               <li>
-                <Link href="/ebooks" className="hover:text-white transition-colors">E-Books</Link>
+                <Link href="/ebooks" className="hover:text-white transition-colors">{t('ui.ebooks.breadcrumbEbooks')}</Link>
               </li>
               <li>
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,10 +80,10 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
                   {ebook.category}
                 </span>
                 {ebook.isNew && (
-                  <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
+                  <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">{t('ui.ebooks.newBadge')}</span>
                 )}
                 {ebook.featured && (
-                  <span className="bg-mw-yellow-500 text-mw-blue-900 text-xs font-bold px-3 py-1 rounded-full">FEATURED</span>
+                  <span className="bg-mw-yellow-500 text-mw-blue-900 text-xs font-bold px-3 py-1 rounded-full">{t('ui.ebooks.featuredBadge')}</span>
                 )}
               </div>
               
@@ -101,7 +103,7 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                   </svg>
-                  Download Free E-Book
+                  {t('ui.ebooks.downloadFreeEbook')}
                 </button>
               </div>
             </motion.div>
@@ -143,12 +145,12 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
         <section className="py-16 bg-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between mb-8">
-              <h2 className="text-2xl font-bold text-gray-900">Related E-Books</h2>
+              <h2 className="text-2xl font-bold text-gray-900">{t('ui.ebooks.relatedEbooks')}</h2>
               <Link 
                 href="/ebooks" 
                 className="text-mw-blue-600 font-medium flex items-center gap-1 hover:gap-2 transition-all"
               >
-                View All
+                {t('ui.ebooks.viewAll')}
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -189,7 +191,7 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
                       href={`/ebooks/${relatedEbook.slug}`}
                       className="text-mw-blue-600 font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all"
                     >
-                      View Details
+                      {t('ui.ebooks.viewDetails')}
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>

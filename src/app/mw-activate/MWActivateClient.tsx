@@ -7,6 +7,7 @@ import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
 import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
+import { useLocale } from "@/i18n/LocaleContext"
 
 interface MWActivateClientProps {
   caseStudies?: any[]
@@ -54,6 +55,7 @@ const BoltIcon = ({ className }: { className?: string }) => (
 
 
 export default function MWActivate({ caseStudies = [], product, partnerLogos }: MWActivateClientProps) {
+  const { t } = useLocale()
   const [activeMode, setActiveMode] = useState<'owners' | 'buyers'>('owners')
   const [systemStatus] = useState({
     online: true,
@@ -66,7 +68,7 @@ export default function MWActivate({ caseStudies = [], product, partnerLogos }: 
   const heroTitle = product?.heroTitle || 'MW Activate'
   const heroSubtitle = product?.heroSubtitle || 'A Complete Demand-Side Platform for DOOH and In-Store Retail Media Advertising'
   const heroDescription = product?.description || 'Launch and optimize campaigns instantly with AI-powered automation that delivers'
-  const ctaText = product?.ctaText || 'Book Demo'
+  const ctaText = product?.ctaText || t('ui.products.bookDemo')
   const ctaLink = product?.ctaLink || '/contact'
   const heroStats = product?.heroStats?.length ? product.heroStats : null
   const integrations = getDisplayIntegrations(product?.integrations, partnerLogos)
@@ -332,7 +334,7 @@ export default function MWActivate({ caseStudies = [], product, partnerLogos }: 
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                Media Owners
+                {t('ui.products.mediaOwners')}
               </button>
               <button
                 onClick={() => setActiveMode('buyers')}
@@ -342,7 +344,7 @@ export default function MWActivate({ caseStudies = [], product, partnerLogos }: 
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                Buyers & Agencies
+                {t('ui.products.buyersAgencies')}
               </button>
             </div>
           </div>

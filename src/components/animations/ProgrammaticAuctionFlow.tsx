@@ -1,23 +1,27 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export default function ProgrammaticAuctionFlow() {
+  const { t } = useLocale()
+  const stepLabels: string[] = t('homeVisuals.auction.steps')
+  const brand: string = t('homeVisuals.auction.brand')
   // Auction flow steps
   const steps = [
-    { id: 1, label: 'Screen\nAvailable', icon: 'screen', color: 'from-cyan-400 to-cyan-600' },
-    { id: 2, label: 'Bid Requests\nSent', icon: 'broadcast', color: 'from-blue-400 to-blue-600' },
-    { id: 3, label: 'Bids\nReceived', icon: 'bids', color: 'from-purple-400 to-purple-600' },
-    { id: 4, label: 'Winner\nSelected', icon: 'winner', color: 'from-yellow-400 to-yellow-600' },
-    { id: 5, label: 'Content\nDeployed', icon: 'deploy', color: 'from-green-400 to-green-600' },
+    { id: 1, label: stepLabels[0], icon: 'screen', color: 'from-cyan-400 to-cyan-600' },
+    { id: 2, label: stepLabels[1], icon: 'broadcast', color: 'from-blue-400 to-blue-600' },
+    { id: 3, label: stepLabels[2], icon: 'bids', color: 'from-purple-400 to-purple-600' },
+    { id: 4, label: stepLabels[3], icon: 'winner', color: 'from-yellow-400 to-yellow-600' },
+    { id: 5, label: stepLabels[4], icon: 'deploy', color: 'from-green-400 to-green-600' },
   ]
 
   // Bidders for animation
   const bidders = [
-    { name: 'Brand A', bid: '$2,450', delay: 0 },
-    { name: 'Brand B', bid: '$2,180', delay: 0.3 },
-    { name: 'Brand C', bid: '$2,890', delay: 0.6, winner: true },
-    { name: 'Brand D', bid: '$2,320', delay: 0.9 },
+    { name: `${brand} A`, bid: '$2,450', delay: 0 },
+    { name: `${brand} B`, bid: '$2,180', delay: 0.3 },
+    { name: `${brand} C`, bid: '$2,890', delay: 0.6, winner: true },
+    { name: `${brand} D`, bid: '$2,320', delay: 0.9 },
   ]
 
   return (
@@ -64,7 +68,7 @@ export default function ProgrammaticAuctionFlow() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="text-[10px] sm:text-xs font-semibold text-purple-300 uppercase tracking-wider">Real-Time Programmatic</span>
+          <span className="text-[10px] sm:text-xs font-semibold text-purple-300 uppercase tracking-wider">{t('homeVisuals.auction.title')}</span>
         </motion.div>
 
         {/* Horizontal Flow Line with Steps */}
@@ -211,7 +215,7 @@ export default function ProgrammaticAuctionFlow() {
           transition={{ delay: 2 }}
         >
           <div className="text-center">
-            <div className="text-[10px] text-slate-400 uppercase">Avg. Fill Rate</div>
+            <div className="text-[10px] text-slate-400 uppercase">{t('homeVisuals.auction.fillRate')}</div>
             <motion.div
               className="text-lg font-bold text-cyan-400"
               animate={{ opacity: [0.8, 1, 0.8] }}
@@ -221,11 +225,11 @@ export default function ProgrammaticAuctionFlow() {
             </motion.div>
           </div>
           <div className="text-center">
-            <div className="text-[10px] text-slate-400 uppercase">Response Time</div>
+            <div className="text-[10px] text-slate-400 uppercase">{t('homeVisuals.auction.responseTime')}</div>
             <div className="text-lg font-bold text-purple-400">&lt;100ms</div>
           </div>
           <div className="text-center">
-            <div className="text-[10px] text-slate-400 uppercase">Daily Auctions</div>
+            <div className="text-[10px] text-slate-400 uppercase">{t('homeVisuals.auction.dailyAuctions')}</div>
             <motion.div
               className="text-lg font-bold text-green-400"
               animate={{ scale: [1, 1.02, 1] }}

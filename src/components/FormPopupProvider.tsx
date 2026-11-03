@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
 import { ZohoFormEmbed } from './ZohoFormEmbed'
 import { getUTMCookies } from '@/lib/utmCookies'
+import { useLocale } from '@/i18n/LocaleContext'
 
 interface FormPopupContextType {
   /** Whether a popup form is available for the current page */
@@ -46,6 +47,7 @@ interface FormPopupProviderProps {
 export function FormPopupProvider({ children, forms }: FormPopupProviderProps) {
   const pathname = usePathname()
   const searchParams = useSearchParams()
+  const { t } = useLocale()
   const [isOpen, setIsOpen] = useState(false)
 
   // Extract UTM parameters — URL takes priority, fall back to cookies
@@ -129,7 +131,7 @@ export function FormPopupProvider({ children, forms }: FormPopupProviderProps) {
             className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
             role="dialog"
             aria-modal="true"
-            aria-label={currentForm.name || 'Form'}
+            aria-label={currentForm.name || t('ui.shared.form.formLabel')}
           >
             {/* Backdrop */}
             <div
@@ -149,7 +151,7 @@ export function FormPopupProvider({ children, forms }: FormPopupProviderProps) {
               <button
                 onClick={closeFormPopup}
                 className="absolute top-4 right-4 z-10 w-8 h-8 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors"
-                aria-label="Close form"
+                aria-label={t('ui.shared.form.closeForm')}
               >
                 <svg className="w-4 h-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />

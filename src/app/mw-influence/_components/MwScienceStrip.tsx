@@ -1,8 +1,12 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import { CompassNeedleAmbientDrift } from '@/components/CompassNeedleAmbientDrift';
+import { useLocale } from '@/i18n/LocaleContext';
 
 export const MwScienceStrip: React.FC = () => {
+  const { t } = useLocale();
   return (
     <section
       className="relative w-full overflow-hidden bg-gradient-to-r from-emerald-50 via-white to-violet-100 py-10 sm:py-14"
@@ -29,7 +33,7 @@ export const MwScienceStrip: React.FC = () => {
                 className="inline-flex items-center gap-2.5 bg-mw-blue-900 hover:bg-mw-blue-800 text-white text-xs sm:text-sm font-semibold px-5 py-2.5 rounded-xl shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer active:scale-[0.98] font-sans group"
                 id="btn-explore-mw-science"
               >
-                <span>Explore MW Science</span>
+                <span>{t('ui.products.exploreMwScience')}</span>
                 <span className="group-hover:translate-x-0.5 transition-transform font-bold">→</span>
               </Link>
             </div>

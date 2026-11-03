@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import Image from "next/image";
 import { useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface NewsRelease {
   slug: string;
@@ -31,6 +32,7 @@ interface NewsDetailClientProps {
 }
 
 export default function NewsDetailClient({ release, relatedNews }: NewsDetailClientProps) {
+  const { t } = useLocale();
   const [linkCopied, setLinkCopied] = useState(false);
   const shareUrl = `https://www.movingwalls.com/press-news/${release.slug}`;
 
@@ -61,7 +63,7 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-sm text-mw-gray-500 mb-8">
               <Link href="/press-news" className="hover:text-mw-blue-600 transition-colors">
-                Press & News
+                {t("ui.news.breadcrumb")}
               </Link>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -151,13 +153,13 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-mw-gray-700">Share this news:</span>
+              <span className="text-sm font-medium text-mw-gray-700">{t("ui.news.shareNews")}</span>
               <div className="flex items-center gap-2">
                 <a
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(release.title)}&url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on X (Twitter)"
+                  aria-label={t("ui.news.shareOnX")}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -168,7 +170,7 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on LinkedIn"
+                  aria-label={t("ui.news.shareOnLinkedIn")}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -178,7 +180,7 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
                 <button
                   type="button"
                   onClick={handleShareLink}
-                  aria-label="Copy link"
+                  aria-label={t("ui.news.copyLink")}
                   className="relative w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -186,7 +188,7 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
                   </svg>
                   {linkCopied && (
                     <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-mw-gray-900 px-2 py-1 text-xs text-white">
-                      Link copied!
+                      {t("ui.news.linkCopied")}
                     </span>
                   )}
                 </button>
@@ -199,7 +201,7 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Press & News
+              {t("ui.news.backToPressNews")}
             </Link>
           </div>
         </div>
@@ -209,7 +211,7 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
       {relatedNews.length > 0 && (
         <section className="py-16 bg-mw-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">Related News</h2>
+            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">{t("ui.news.relatedNews")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedNews.map((news, index) => (
                 <motion.div
@@ -265,15 +267,15 @@ export default function NewsDetailClient({ release, relatedNews }: NewsDetailCli
             transition={{ duration: 0.8 }}
             className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 rounded-2xl p-8 lg:p-12 text-center"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">Press Inquiries</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">{t("ui.news.pressInquiriesTitle")}</h2>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              For media inquiries, interview requests, or additional information, please contact our press team.
+              {t("ui.news.pressInquiriesText")}
             </p>
             <CTAButton
               href="/contact"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white text-mw-blue-600 rounded-lg font-semibold hover:bg-mw-gray-100 transition-colors"
             >
-              Contact Press Team
+              {t("ui.news.contactPressTeam")}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

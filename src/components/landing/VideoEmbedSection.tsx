@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, parseVideoUrl, type BackgroundColor } from "./utils";
 
 interface VideoEmbedSectionProps {
@@ -24,6 +25,7 @@ export function VideoEmbedSection({
   autoplay = false,
   backgroundColor = 'white',
 }: VideoEmbedSectionProps) {
+  const { t } = useLocale();
   const [isPlaying, setIsPlaying] = useState(autoplay);
   const bgClasses = getBackgroundClasses(backgroundColor);
   const textColor = getTextColorClasses(backgroundColor);
@@ -106,7 +108,7 @@ export function VideoEmbedSection({
                 {getThumbnailUrl() && (
                   <Image
                     src={getThumbnailUrl()!}
-                    alt={heading || 'Video thumbnail'}
+                    alt={heading || t('ui.shared.alt.videoThumbnail')}
                     fill
                     sizes="(min-width: 896px) 896px, 100vw"
                     className="object-cover"

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation'
 import { AnimatePresence, motion } from 'framer-motion'
 import { appendReferrerName } from '@/lib/referrerName'
 import { appendUTMsToUrl } from '@/lib/utmCookies'
+import { useLocale } from '@/i18n/LocaleContext'
 
 interface ZohoPopupContextType {
   /** Opens a popup iframe for an arbitrary Zoho form URL, independent of the current page. */
@@ -22,6 +23,9 @@ interface ZohoPopupContextType {
 
 const ZohoPopupContext = createContext<ZohoPopupContextType | undefined>(undefined)
 
+// Default popup heading on translated location pages, keyed by the slug's language suffix
+const TRANSLATED_TITLES: Record<string, string> = { zh: '联系我们', es: 'Contáctenos', pt: 'Fale Conosco' }
+
 export function ZohoPopupProvider({ children }: { children: ReactNode }) {
   const [activeUrl, setActiveUrl] = useState<string | null>(null)
   // Full iframe src, built once when the popup opens: the GA linker (_gl) appended by
@@ -30,14 +34,16 @@ export function ZohoPopupProvider({ children }: { children: ReactNode }) {
   const [activeTitle, setActiveTitle] = useState('Contact Us')
   const [currentPageFormUrl, setCurrentPageFormUrl] = useState<string | null>(null)
   const pathname = usePathname()
+  const { t } = useLocale()
 
   const openZohoPopup = useCallback((url: string, title?: string) => {
     if (!url) return
     setActiveUrl(url)
     setActiveSrc(appendUTMsToUrl(appendReferrerName(url, pathname)))
-    // Translated location pages (/locations/china-zh/...) get a Chinese default heading
-    setActiveTitle(title || (/^\/locations\/[^/]+-zh(\/|$)/.test(pathname) ? '联系我们' : 'Contact Us'))
-  }, [pathname])
+    // Translated location pages (/locations/china-zh/..., /locations/americas-pt) get a heading in their language
+    const lang = pathname.match(/^\/locations\/[^/]+-(zh|es|pt)(\/|$)/)?.[1]
+    setActiveTitle(title || (lang ? TRANSLATED_TITLES[lang] : t('ui.shared.contactUs')))
+  }, [pathname, t])
 
   const closeZohoPopup = useCallback(() => setActiveUrl(null), [])
 

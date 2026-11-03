@@ -7,6 +7,7 @@ import { PortableText } from '@portabletext/react'
 import { sanitizeHtml } from '@/lib/sanitize'
 import { useZohoPopup, isZohoFormUrl } from './ZohoPopupProvider'
 import { getVideoSkipIntroProps } from '@/lib/videoSkipIntro'
+import { useLocale } from '@/i18n/LocaleContext'
 
 // Helper to build Sanity image URL from asset reference
 function buildSanityImageUrl(image: any, width?: number): string {
@@ -355,6 +356,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
   const isUpcoming = webinar.webinarType === 'upcoming'
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false)
   const { openZohoPopup } = useZohoPopup()
+  const { t } = useLocale()
 
   const videoEmbedUrl = getVideoEmbedUrl(webinar.watchLink)
   // Only one of these is ever expected to be filled in — Zoho takes priority if both are set.
@@ -383,11 +385,11 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
             <nav className="mb-8">
               <ol className="flex items-center gap-2 text-sm text-mw-gray-600">
                 <li>
-                  <Link href="/" className="hover:text-mw-blue-600 transition-colors">Home</Link>
+                  <Link href="/" className="hover:text-mw-blue-600 transition-colors">{t('ui.webinars.breadcrumbHome')}</Link>
                 </li>
                 <li>/</li>
                 <li>
-                  <Link href="/webinars" className="hover:text-mw-blue-600 transition-colors">Webinars</Link>
+                  <Link href="/webinars" className="hover:text-mw-blue-600 transition-colors">{t('ui.webinars.breadcrumbWebinars')}</Link>
                 </li>
                 <li>/</li>
                 <li className="text-mw-gray-900 font-medium truncate max-w-[200px]">{webinar.title}</li>
@@ -404,7 +406,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                       ? 'bg-mw-blue-100 text-mw-blue-700' 
                       : 'bg-mw-gray-100 text-mw-gray-700'
                   }`}>
-                    {isUpcoming ? 'Upcoming Webinar' : 'Past Webinar'}
+                    {isUpcoming ? t('ui.webinars.upcomingWebinar') : t('ui.webinars.pastWebinar')}
                   </span>
                 </div>
 
@@ -425,7 +427,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                       </svg>
                     </div>
                     <div>
-                      <p className="text-xs text-mw-gray-500">Date</p>
+                      <p className="text-xs text-mw-gray-500">{t('ui.webinars.date')}</p>
                       <p className="font-medium text-mw-gray-900">{formatDate(webinar.date)}</p>
                     </div>
                   </div>
@@ -438,7 +440,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                         </svg>
                       </div>
                       <div>
-                        <p className="text-xs text-mw-gray-500">Time</p>
+                        <p className="text-xs text-mw-gray-500">{t('ui.webinars.time')}</p>
                         <p className="font-medium text-mw-gray-900">{webinar.time}</p>
                       </div>
                     </div>
@@ -451,8 +453,8 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                       </svg>
                     </div>
                     <div>
-                      <p className="text-xs text-mw-gray-500">Duration</p>
-                      <p className="font-medium text-mw-gray-900">{webinar.duration || '60 min'}</p>
+                      <p className="text-xs text-mw-gray-500">{t('ui.webinars.duration')}</p>
+                      <p className="font-medium text-mw-gray-900">{webinar.duration || t('ui.webinars.defaultDuration')}</p>
                     </div>
                   </div>
                 </div>
@@ -464,13 +466,13 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                       {registerUrl && (
                         isZohoFormUrl(registerUrl) ? (
                           <button
-                            onClick={() => openZohoPopup(registerUrl, 'Register Now')}
+                            onClick={() => openZohoPopup(registerUrl, t('ui.webinars.registerNow'))}
                             className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
-                            Register Now
+                            {t('ui.webinars.registerNow')}
                           </button>
                         ) : (
                           <a
@@ -482,7 +484,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
-                            Register Now
+                            {t('ui.webinars.registerNow')}
                           </a>
                         )
                       )}
@@ -490,7 +492,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
-                        Add to Calendar
+                        {t('ui.webinars.addToCalendar')}
                       </button>
                     </>
                   ) : (
@@ -503,7 +505,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
                           </svg>
-                          Watch Recording
+                          {t('ui.webinars.watchRecording')}
                         </button>
                       )}
                       <Link
@@ -513,7 +515,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
                         </svg>
-                        Browse All Webinars
+                        {t('ui.webinars.browseAllWebinars')}
                       </Link>
                     </>
                   )}
@@ -565,7 +567,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">
-              {webinar.speakers && webinar.speakers.length > 1 ? 'Meet the Speakers' : 'About the Speaker'}
+              {webinar.speakers && webinar.speakers.length > 1 ? t('ui.webinars.meetTheSpeakers') : t('ui.webinars.aboutTheSpeaker')}
             </h2>
             
             {webinar.speakers && webinar.speakers.length > 0 ? (
@@ -637,7 +639,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                   </div>
                 )}
                 <div>
-                  <h3 className="text-xl font-bold text-mw-gray-900">{webinar.speaker || 'Speaker TBD'}</h3>
+                  <h3 className="text-xl font-bold text-mw-gray-900">{webinar.speaker || t('ui.webinars.speakerTbd')}</h3>
                   <p className="text-mw-gray-600">{webinar.speakerRole || 'Moving Walls'}</p>
                 </div>
               </div>
@@ -656,7 +658,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">What You&apos;ll Learn</h2>
+              <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">{t('ui.webinars.whatYoullLearn')}</h2>
               <div className="prose prose-lg max-w-none">
                 <PortableText value={webinar.content} components={portableTextComponents} />
               </div>
@@ -676,12 +678,12 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
               transition={{ duration: 0.6 }}
             >
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-2xl font-bold text-mw-gray-900">More Webinars</h2>
+                <h2 className="text-2xl font-bold text-mw-gray-900">{t('ui.webinars.moreWebinars')}</h2>
                 <Link 
                   href="/webinars"
                   className="text-mw-blue-600 hover:text-mw-blue-700 font-medium flex items-center gap-1"
                 >
-                  View All
+                  {t('ui.webinars.viewAll')}
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -714,7 +716,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                             ? 'bg-mw-blue-100 text-mw-blue-700'
                             : 'bg-mw-gray-100 text-mw-gray-700'
                         }`}>
-                          {related.webinarType === 'upcoming' ? 'Upcoming' : 'Past'}
+                          {related.webinarType === 'upcoming' ? t('ui.webinars.upcomingBadge') : t('ui.webinars.pastBadge')}
                         </span>
                       </div>
                       <div className="p-6">
@@ -725,7 +727,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                         <div className="flex items-center gap-2 text-sm text-mw-gray-500">
                           <span>{formatDate(related.date)}</span>
                           <span>•</span>
-                          <span>{related.duration || '60 min'}</span>
+                          <span>{related.duration || t('ui.webinars.defaultDuration')}</span>
                         </div>
                       </div>
                     </Link>
@@ -747,22 +749,22 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
             transition={{ duration: 0.8 }}
           >
             <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-              {isUpcoming ? 'Secure Your Spot Today' : 'Want to Learn More?'}
+              {isUpcoming ? t('ui.webinars.ctaUpcomingTitle') : t('ui.webinars.ctaPastTitle')}
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
               {isUpcoming 
-                ? 'Register now and join our live session with industry experts.'
-                : 'Explore our upcoming webinars and stay ahead of industry trends.'
+                ? t('ui.webinars.ctaUpcomingText')
+                : t('ui.webinars.ctaPastText')
               }
             </p>
             {isUpcoming ? (
               registerUrl && (
                 isZohoFormUrl(registerUrl) ? (
                   <button
-                    onClick={() => openZohoPopup(registerUrl, 'Register Now')}
+                    onClick={() => openZohoPopup(registerUrl, t('ui.webinars.registerNow'))}
                     className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
                   >
-                    Register for Free
+                    {t('ui.webinars.registerForFree')}
                   </button>
                 ) : (
                   <a
@@ -771,7 +773,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                     rel="noopener noreferrer"
                     className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
                   >
-                    Register for Free
+                    {t('ui.webinars.registerForFree')}
                   </a>
                 )
               )
@@ -780,7 +782,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                 href="/webinars"
                 className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
               >
-                Browse Upcoming Webinars
+                {t('ui.webinars.browseUpcomingWebinars')}
               </Link>
             )}
           </motion.div>
@@ -822,7 +824,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                   className="w-full h-full"
                   allowFullScreen
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  title="Webinar video"
+                  title={t('ui.webinars.videoTitle')}
                 />
               </div>
               

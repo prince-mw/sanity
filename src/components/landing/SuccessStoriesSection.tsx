@@ -3,18 +3,20 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
 
+// Translation keys for the ebook category labels
 const ebookCategoryLabels: Record<string, string> = {
-  guide: 'Guide',
-  whitepaper: 'Whitepaper',
-  playbook: 'Playbook',
-  'market-report': 'Market Report',
-  'case-study': 'Case Study',
+  guide: 'ui.shared.stories.guide',
+  whitepaper: 'ui.shared.stories.whitepaper',
+  playbook: 'ui.shared.stories.playbook',
+  'market-report': 'ui.shared.stories.marketReport',
+  'case-study': 'ui.shared.stories.caseStudy',
 };
 
-function formatEbookCategory(category?: string): string {
-  return ebookCategoryLabels[category || ''] || 'Guide';
+function formatEbookCategory(t: (key: string) => any, category?: string): string {
+  return t(ebookCategoryLabels[category || ''] || 'ui.shared.stories.guide');
 }
 
 const ChartIcon = (
@@ -56,6 +58,7 @@ interface SuccessStoriesSectionProps {
 }
 
 export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stories, backgroundColor = 'gray', cardStyle = 'standard' }: SuccessStoriesSectionProps) {
+  const { t } = useLocale();
   const bgClasses = getBackgroundClasses(backgroundColor);
   const textColor = getTextColorClasses(backgroundColor);
   const subtextColor = getSubtextColorClasses(backgroundColor);
@@ -68,11 +71,11 @@ export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stori
       return {
         key: story._key,
         type: story.contentType,
-        label: isEbook ? formatEbookCategory(ref.category) : 'Case Study',
+        label: isEbook ? formatEbookCategory(t, ref.category) : t('ui.shared.stories.caseStudy'),
         title: ref.title || '',
         image: ref.image || '',
         description: story.description || ref.excerpt || '',
-        buttonText: story.buttonText || (isEbook ? 'Download Ebook' : 'View Case Study'),
+        buttonText: story.buttonText || (isEbook ? t('ui.shared.stories.downloadEbook') : t('ui.shared.stories.viewCaseStudy')),
         href: isEbook ? `/ebooks/${ref.slug}` : `/case-studies/${ref.slug}`,
       };
     })

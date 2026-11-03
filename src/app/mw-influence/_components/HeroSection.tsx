@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
 import { InfluenceGeometry } from './brand/InfluenceGeometry';
+import { useLocale } from '@/i18n/LocaleContext';
 
 // New filename (not overwritten in place): /assets images are served with a 1-year immutable cache
 const HERO_IMAGE_URL = '/assets/images/mw-influence-hero-banner-image-v2.webp';
@@ -34,6 +37,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   title = 'Make Every OOH Slot More Valuable.',
   subtitle = 'Automatically allocate every available slot to the highest-value demand while protecting guaranteed campaigns and maximizing network revenue.',
 }) => {
+  const { t } = useLocale();
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#182b6e] text-white pt-20 sm:pt-16 lg:pt-20 pb-12 lg:pb-16" id="hero-section">
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#182b6e]/40 rounded-full blur-3xl pointer-events-none" />
@@ -66,7 +70,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="bg-white hover:bg-gray-100 text-[#14235d] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-see-action-btn"
               >
-                <span>See MW Influence in Action</span>
+                <span>{t('ui.products.seeMwInfluenceInAction')}</span>
               </CTAButton>
             </div>
           </div>

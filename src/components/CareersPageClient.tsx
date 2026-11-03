@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { CareersPageContent } from '@/sanity/lib/fetch'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export interface JobPosition {
   title: string
@@ -61,6 +62,7 @@ const defaultStats = [
 ]
 
 export default function CareersPageClient({ jobs, pageContent, totalOpenings }: CareersPageClientProps) {
+  const { t } = useLocale()
   const [applicationModal, setApplicationModal] = useState<{ isOpen: boolean; formUrl: string; jobTitle: string }>({ isOpen: false, formUrl: '', jobTitle: '' })
   const [expandedJob, setExpandedJob] = useState<number | null>(null)
 
@@ -210,7 +212,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold text-mw-gray-900">{dept.name}</h3>
                   <span className={`px-3 py-1 rounded-full text-sm font-medium ${dept.color}`}>
-                    {dept.roleCount === 1 ? '1 role' : `${dept.roleCount} roles`}
+                    {dept.roleCount === 1 ? t('ui.company.careers.oneRole') : t('ui.company.careers.nRoles').replace('{n}', String(dept.roleCount))}
                   </span>
                 </div>
               </motion.div>
@@ -243,8 +245,8 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                 <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
-                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Open Positions</h3>
-                <p className="text-mw-gray-500 max-w-md mx-auto">There are no open positions at the moment. Check back soon or follow us on social media for updates.</p>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">{t('ui.company.careers.noPositionsTitle')}</h3>
+                <p className="text-mw-gray-500 max-w-md mx-auto">{t('ui.company.careers.noPositionsText')}</p>
               </div>
             ) : jobs.map((role, index) => (
               <motion.div
@@ -285,7 +287,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                       onClick={() => toggleJob(index)}
                       className="px-4 py-2 border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 font-medium rounded-lg transition-colors flex items-center gap-2"
                     >
-                      {expandedJob === index ? 'Hide Details' : 'View Details'}
+                      {expandedJob === index ? t('ui.company.careers.hideDetails') : t('ui.company.careers.viewDetails')}
                       <svg 
                         className={`w-4 h-4 transition-transform ${expandedJob === index ? 'rotate-180' : ''}`} 
                         fill="none" 
@@ -300,15 +302,15 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                         onClick={() => setApplicationModal({ isOpen: true, formUrl: role.applicationFormUrl!, jobTitle: role.title })}
                         className="px-6 py-2 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors"
                       >
-                        Apply Now
+                        {t('ui.company.careers.applyNow')}
                       </button>
                     ) : role.applyLink ? (
                       <a href={role.applyLink} target="_blank" rel="noopener noreferrer" className="px-6 py-2 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors">
-                        Apply Now
+                        {t('ui.company.careers.applyNow')}
                       </a>
                     ) : (
                       <button className="px-6 py-2 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors">
-                        Apply Now
+                        {t('ui.company.careers.applyNow')}
                       </button>
                     )}
                   </div>
@@ -333,7 +335,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
 
                     <div className="grid md:grid-cols-2 gap-6 mb-4">
                       <div>
-                        <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Key Requirements:</h4>
+                        <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">{t('ui.company.careers.keyRequirements')}</h4>
                         <div className="flex flex-wrap gap-2">
                           {role.requirements.map((req, reqIndex) => (
                             <span
@@ -347,7 +349,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                       </div>
                       {role.responsibilities && role.responsibilities.length > 0 && (
                         <div>
-                          <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Responsibilities:</h4>
+                          <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">{t('ui.company.careers.responsibilities')}</h4>
                           <ul className="text-sm text-mw-gray-600 space-y-1">
                             {role.responsibilities.map((resp, respIndex) => (
                               <li key={respIndex} className="flex items-start gap-2">
@@ -364,7 +366,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
 
                     {role.benefits && role.benefits.length > 0 && (
                       <div className="mb-4">
-                        <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">Benefits:</h4>
+                        <h4 className="text-sm font-semibold text-mw-gray-900 mb-2">{t('ui.company.careers.benefits')}</h4>
                         <div className="flex flex-wrap gap-2">
                           {role.benefits.map((benefit, benefitIndex) => (
                             <span
@@ -399,7 +401,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
             className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden z-10"
           >
             <div className="flex items-center justify-between p-4 border-b border-gray-200 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
-              <h3 className="text-lg font-semibold text-white">Apply for {applicationModal.jobTitle}</h3>
+              <h3 className="text-lg font-semibold text-white">{t('ui.company.careers.applyFor').replace('{title}', applicationModal.jobTitle)}</h3>
               <button
                 onClick={() => setApplicationModal({ isOpen: false, formUrl: '', jobTitle: '' })}
                 className="p-2 hover:bg-white/20 rounded-full transition-colors"
@@ -416,7 +418,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                 height="100%"
                 frameBorder={0}
                 style={{ border: 'none' }}
-                title={`Application Form - ${applicationModal.jobTitle}`}
+                title={`${t('ui.company.careers.applicationForm')} - ${applicationModal.jobTitle}`}
                 allow="geolocation"
               />
             </div>

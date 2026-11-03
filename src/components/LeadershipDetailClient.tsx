@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState } from "react";
 import { transformTeamMember } from "@/sanity/lib/fetch";
+import { useLocale } from "@/i18n/LocaleContext";
 
 // Team member type
 interface TeamMember {
@@ -28,14 +29,15 @@ interface LeadershipDetailClientProps {
 export default function LeadershipDetailClient({ initialMember, initialOtherMembers }: LeadershipDetailClientProps) {
   const [member] = useState(initialMember);
   const [otherMembers] = useState(initialOtherMembers);
+  const { t } = useLocale();
   const notFound = !member;
 
   if (notFound || !member) {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="text-center">
-          <h1 className="text-4xl font-bold text-mw-gray-900 mb-4">Team Member Not Found</h1>
-          <p className="text-mw-gray-600 mb-8">The team member you're looking for doesn't exist.</p>
+          <h1 className="text-4xl font-bold text-mw-gray-900 mb-4">{t('ui.leadership.notFoundTitle')}</h1>
+          <p className="text-mw-gray-600 mb-8">{t('ui.leadership.notFoundText')}</p>
           <Link
             href="/about"
             className="inline-flex items-center gap-2 px-6 py-3 bg-mw-blue-600 text-white font-medium rounded-lg hover:bg-mw-blue-700 transition-colors"
@@ -43,7 +45,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
-            Back to About
+            {t('ui.leadership.backToAbout')}
           </Link>
         </div>
       </div>
@@ -83,7 +85,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
               </svg>
-              Back to About
+              {t('ui.leadership.backToAbout')}
             </Link>
           </motion.div>
 
@@ -138,7 +140,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-                    aria-label="LinkedIn Profile"
+                    aria-label={t('ui.leadership.linkedinProfile')}
                   >
                     <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
@@ -151,7 +153,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
                     target="_blank"
                     rel="noopener noreferrer"
                     className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-                    aria-label="Twitter Profile"
+                    aria-label={t('ui.leadership.twitterProfile')}
                   >
                     <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
@@ -162,7 +164,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
                   <a
                     href={`mailto:${member.email}`}
                     className="p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
-                    aria-label="Email"
+                    aria-label={t('ui.leadership.email')}
                   >
                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
@@ -184,7 +186,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">About {member.name.split(' ')[0]}</h2>
+            <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">{t('ui.leadership.aboutName').replace('{name}', member.name.split(' ')[0])}</h2>
             {member.fullBio ? (
               <div 
                 className="prose prose-lg max-w-none text-mw-gray-600"
@@ -212,8 +214,8 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">Other Team Members</h2>
-              <p className="text-lg text-mw-gray-600">Meet more of our leadership team</p>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">{t('ui.leadership.otherTeamMembers')}</h2>
+              <p className="text-lg text-mw-gray-600">{t('ui.leadership.otherTeamMembersText')}</p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-8">
@@ -267,7 +269,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
                 href="/about"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-mw-blue-600 text-white font-medium rounded-lg hover:bg-mw-blue-700 transition-colors"
               >
-                Back to About
+                {t('ui.leadership.backToAbout')}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -287,16 +289,16 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-              Join Our Team
+              {t('ui.leadership.joinOurTeam')}
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              We're always looking for talented individuals to join our mission of transforming outdoor advertising.
+              {t('ui.leadership.joinOurTeamText')}
             </p>
             <Link
               href="/careers"
               className="inline-flex items-center gap-2 px-8 py-4 bg-white text-mw-blue-600 font-medium rounded-xl hover:bg-mw-gray-100 transition-colors shadow-lg"
             >
-              View Open Positions
+              {t('ui.leadership.viewOpenPositions')}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

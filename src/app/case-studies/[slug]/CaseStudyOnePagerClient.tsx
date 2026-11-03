@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { CTAButton } from "@/components/CTAButton";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface CaseStudy {
   slug: string;
@@ -30,20 +31,23 @@ interface CaseStudyOnePagerClientProps {
   relatedCaseStudies: CaseStudy[];
 }
 
-const BADGE_LABELS: Record<string, string> = {
-  "measurement-brand-lift": "Measurement & Brand Lift",
-  "platform-adoption": "Platform Adoption",
-  campaign: "Campaign",
-  partnership: "Partnership",
-  "retail-media-data": "Retail Media & Data",
+// Badge value -> translation key (ui.caseStudies.badges.*)
+const BADGE_LABEL_KEYS: Record<string, string> = {
+  "measurement-brand-lift": "measurementBrandLift",
+  "platform-adoption": "platformAdoption",
+  campaign: "campaign",
+  partnership: "partnership",
+  "retail-media-data": "retailMediaData",
 };
 
 // Matches the deck: most badges are MW blue, Retail Media & Data and Partnership are orange/red.
 const WARM_BADGES = new Set(["retail-media-data", "partnership"]);
 
 export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies }: CaseStudyOnePagerClientProps) {
+  const { t } = useLocale();
   const [linkCopied, setLinkCopied] = useState(false);
-  const badgeLabel = (caseStudy.categoryBadge && BADGE_LABELS[caseStudy.categoryBadge]) || caseStudy.industry;
+  const badgeKey = caseStudy.categoryBadge && BADGE_LABEL_KEYS[caseStudy.categoryBadge];
+  const badgeLabel = (badgeKey && t(`ui.caseStudies.badges.${badgeKey}`)) || caseStudy.industry;
   const isWarmBadge = caseStudy.categoryBadge ? WARM_BADGES.has(caseStudy.categoryBadge) : false;
   const metrics = caseStudy.metrics || [];
   const whatWeDid = caseStudy.whatWeDid || [];
@@ -91,7 +95,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-mw-gray-500 mb-8">
             <Link href="/case-studies" className="hover:text-mw-blue-600 transition-colors">
-              Case Studies
+              {t("ui.caseStudies.breadcrumb")}
             </Link>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -128,7 +132,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
                 {caseStudy.challenge && (
                   <div>
                     <h2 className="flex items-center gap-2 text-mw-blue-600 font-bold text-sm tracking-wide uppercase mb-3">
-                      <span>&#9656;</span> The Challenge
+                      <span>&#9656;</span> {t("ui.caseStudies.theChallenge")}
                     </h2>
                     <p className="text-mw-gray-700 leading-relaxed">{caseStudy.challenge}</p>
                   </div>
@@ -137,7 +141,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
                 {whatWeDid.length > 0 && (
                   <div>
                     <h2 className="flex items-center gap-2 text-mw-blue-600 font-bold text-sm tracking-wide uppercase mb-3">
-                      <span>&#9656;</span> What We Did
+                      <span>&#9656;</span> {t("ui.caseStudies.whatWeDid")}
                     </h2>
                     <ul className="space-y-2">
                       {whatWeDid.map((item, idx) => (
@@ -169,7 +173,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
             {caseStudy.whyItWorked && (
               <div className="bg-mw-blue-50 border-l-4 border-mw-blue-500 rounded-r-xl p-6 mb-10">
                 <p className="text-mw-gray-800 leading-relaxed">
-                  <span className="font-bold text-mw-blue-700">Why it worked: </span>
+                  <span className="font-bold text-mw-blue-700">{t("ui.caseStudies.whyItWorked")}{" "}</span>
                   {caseStudy.whyItWorked}
                 </p>
               </div>
@@ -179,7 +183,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
             {metrics.length > 0 && (
               <div>
                 <h2 className="flex items-center gap-2 text-mw-blue-600 font-bold text-sm tracking-wide uppercase mb-4">
-                  <span>&#9656;</span> The Proof
+                  <span>&#9656;</span> {t("ui.caseStudies.theProof")}
                 </h2>
                 <div className={`grid grid-cols-2 ${colsClass} gap-4`}>
                   {metrics.map((metric, idx) => (
@@ -206,7 +210,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
             {caseStudy.country ? ` · ${caseStudy.country}` : ""}
           </span>
           <span className="text-blue-100">
-            Source: campaign reporting {caseStudy.date ? `· ${caseStudy.date}` : ""} · movingwalls.com
+            {t("ui.caseStudies.sourceCampaignReporting")} {caseStudy.date ? `· ${caseStudy.date}` : ""} · movingwalls.com
           </span>
         </div>
       </section>
@@ -216,13 +220,13 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-mw-gray-700">Share this case study:</span>
+              <span className="text-sm font-medium text-mw-gray-700">{t("ui.caseStudies.shareCaseStudy")}</span>
               <div className="flex items-center gap-2">
                 <a
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(caseStudy.title)}&url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on X (Twitter)"
+                  aria-label={t("ui.caseStudies.shareOnX")}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -233,7 +237,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on LinkedIn"
+                  aria-label={t("ui.caseStudies.shareOnLinkedIn")}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -243,7 +247,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
                 <button
                   type="button"
                   onClick={handleShareLink}
-                  aria-label="Copy link"
+                  aria-label={t("ui.caseStudies.copyLink")}
                   className="relative w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -251,7 +255,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
                   </svg>
                   {linkCopied && (
                     <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-mw-gray-900 px-2 py-1 text-xs text-white">
-                      Link copied!
+                      {t("ui.caseStudies.linkCopied")}
                     </span>
                   )}
                 </button>
@@ -264,7 +268,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Case Studies
+              {t("ui.caseStudies.backToCaseStudies")}
             </Link>
           </div>
         </div>
@@ -274,7 +278,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
       {relatedCaseStudies.length > 0 && (
         <section className="py-16 bg-mw-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">Related Case Studies</h2>
+            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">{t("ui.caseStudies.relatedCaseStudies")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedCaseStudies.map((related, index) => (
                 <motion.div
@@ -324,15 +328,15 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
             transition={{ duration: 0.8 }}
             className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 rounded-2xl p-8 lg:p-12 text-center"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Achieve Similar Results?</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">{t("ui.caseStudies.similarResultsTitle")}</h2>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let&apos;s discuss how Moving Walls can help you transform your advertising strategy and drive measurable results.
+              {t("ui.caseStudies.similarResultsText")}
             </p>
             <CTAButton
               href="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors"
             >
-              Get Started
+              {t("ui.caseStudies.getStarted")}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

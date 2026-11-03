@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export interface WebinarCardSpeaker {
   name: string
@@ -55,6 +56,7 @@ function WebinarSpeakerRow({
   speakerRole: string
   speakerImage?: string
 }) {
+  const { t } = useLocale()
   const list: WebinarCardSpeaker[] =
     speakers && speakers.length > 0
       ? speakers
@@ -85,7 +87,7 @@ function WebinarSpeakerRow({
         </div>
       ))}
       {extra > 0 && (
-        <span className="text-sm text-mw-gray-500">& {extra} other{extra > 1 ? 's' : ''}</span>
+        <span className="text-sm text-mw-gray-500">{(extra > 1 ? t('ui.webinars.andOthers') : t('ui.webinars.andOther')).replace('{n}', String(extra))}</span>
       )}
     </div>
   )
@@ -93,6 +95,7 @@ function WebinarSpeakerRow({
 
 export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: WebinarsPageClientProps) {
   const [activeTab, setActiveTab] = useState('upcoming')
+  const { t } = useLocale()
 
   return (
     <div className="min-h-screen bg-white">
@@ -154,7 +157,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                   : 'bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200'
               }`}
             >
-              Upcoming Webinars
+              {t('ui.webinars.upcomingWebinars')}
             </button>
             <button
               onClick={() => setActiveTab('past')}
@@ -164,7 +167,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                   : 'bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200'
               }`}
             >
-              Past Webinars
+              {t('ui.webinars.pastWebinars')}
             </button>
           </div>
         </div>
@@ -175,8 +178,8 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">Upcoming Webinars</h2>
-              <p className="text-lg text-mw-gray-600">Register now to secure your spot</p>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">{t('ui.webinars.upcomingWebinars')}</h2>
+              <p className="text-lg text-mw-gray-600">{t('ui.webinars.registerSubtitle')}</p>
             </div>
 
             <div className="space-y-6">
@@ -184,7 +187,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                 <div className="flex justify-center py-16 bg-mw-gray-50 rounded-xl">
                   <Image
                     src="https://cdn.sanity.io/images/u10im6di/production/6f8f151d73788605ee99c1ce38efaa1ecf7e4b12-534x300.png"
-                    alt="Stay Tuned for Updates"
+                    alt={t('ui.webinars.stayTunedAlt')}
                     width={534}
                     height={300}
                     className="w-full max-w-md h-auto"
@@ -211,7 +214,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                             </svg>
                           )}
                           <span className="absolute top-3 left-3 px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
-                            Upcoming
+                            {t('ui.webinars.upcomingBadge')}
                           </span>
                         </div>
                       </Link>
@@ -253,7 +256,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                         href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}
                         className="inline-block px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
                       >
-                        View Details & Register
+                        {t('ui.webinars.viewDetailsRegister')}
                       </Link>
                     </div>
                   </div>
@@ -269,8 +272,8 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
         <section className="py-16 bg-mw-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">Past Webinars</h2>
-              <p className="text-lg text-mw-gray-600">Catch up on what you missed</p>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">{t('ui.webinars.pastWebinars')}</h2>
+              <p className="text-lg text-mw-gray-600">{t('ui.webinars.pastSubtitle')}</p>
             </div>
 
             <div className="space-y-6">
@@ -279,8 +282,8 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                   <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                   </svg>
-                  <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Past Webinars</h3>
-                  <p className="text-mw-gray-500 max-w-md mx-auto">There are no past webinars available at the moment. Check back after our upcoming sessions.</p>
+                  <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">{t('ui.webinars.noPastWebinars')}</h3>
+                  <p className="text-mw-gray-500 max-w-md mx-auto">{t('ui.webinars.noPastWebinarsText')}</p>
                 </div>
               ) : pastWebinars.map((webinar, index) => (
                 <motion.div
@@ -303,7 +306,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                             </svg>
                           )}
                           <span className="absolute top-3 right-3 px-3 py-1 bg-mw-gray-700 text-white text-xs font-medium rounded-full">
-                            Recorded
+                            {t('ui.webinars.recorded')}
                           </span>
                         </div>
                       </Link>
@@ -345,7 +348,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                         href={webinar.slug ? `/webinars/${webinar.slug}` : '#'}
                         className="inline-block px-6 py-3 bg-mw-gray-600 hover:bg-mw-gray-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
                       >
-                        View Details & Watch
+                        {t('ui.webinars.viewDetailsWatch')}
                       </Link>
                     </div>
                   </div>

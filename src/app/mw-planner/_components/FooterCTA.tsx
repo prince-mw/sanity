@@ -1,8 +1,12 @@
+'use client';
+
 import React from 'react';
 import { Database, ArrowRight, CheckCircle2 } from 'lucide-react';
 import { CTAButton } from '@/components/CTAButton';
+import { useLocale } from '@/i18n/LocaleContext';
 
 export const FooterCTA: React.FC = () => {
+  const { t } = useLocale();
   return (
     <section
       id="footer-cta"
@@ -40,7 +44,7 @@ export const FooterCTA: React.FC = () => {
           className="inline-flex items-center gap-2.5 px-8 py-4 rounded bg-white hover:bg-[#f1f4f9] text-[#062068] font-bold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
           id="footer-cta-see-planner-btn"
         >
-          <span>See MW Planner in Action</span>
+          <span>{t('ui.products.seeMwPlannerInAction')}</span>
           <ArrowRight className="w-4 h-4" />
         </CTAButton>
 

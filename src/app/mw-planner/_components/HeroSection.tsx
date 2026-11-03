@@ -4,6 +4,7 @@ import React from 'react';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
 import { PlannerGeometry } from './brand/PlannerGeometry';
+import { useLocale } from '@/i18n/LocaleContext';
 
 const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/c08c5ef5a4b177066e024763e88d29c0f1bd1e3a-960x640.png?w=1200&q=90&auto=format';
 
@@ -37,6 +38,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   title = 'Build OOH Plans You Can Defend.',
   subtitle = 'Transform campaign briefs into data-backed OOH plans with live inventory, audience signals, and forecasting—all in one platform.',
 }) => {
+  const { t } = useLocale();
   // Keeps "OOH plans" from splitting across a line-wrap in the body copy too, same as the
   // heading — applies to both the default copy and any CMS-sourced subtitle.
   const renderedSubtitle = subtitle.replaceAll('OOH plans', 'OOH plans');
@@ -80,7 +82,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="bg-white hover:bg-gray-100 text-[#071948] font-semibold text-xs sm:text-sm uppercase tracking-wider px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-plan-campaign-btn"
               >
-                <span>Plan Your Campaign</span>
+                <span>{t('ui.products.planYourCampaign')}</span>
               </CTAButton>
             </div>
           </div>

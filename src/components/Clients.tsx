@@ -129,7 +129,7 @@ export default function Clients({ partners, sectionTitle, sectionTitleTranslatio
                 </div>
                 <div className="text-xs text-mw-gray-500 mt-1">{partner.category}</div>
                 {href && (
-                  <div className="mt-2 text-xs font-semibold text-mw-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">View partnership →</div>
+                  <div className="mt-2 text-xs font-semibold text-mw-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">{t('homeVisuals.viewPartnership')}</div>
                 )}
               </div>
             </motion.div>

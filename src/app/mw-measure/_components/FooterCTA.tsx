@@ -1,8 +1,12 @@
+'use client';
+
 import React from 'react';
 import { CTAButton } from '@/components/CTAButton';
 import { MeasureGeometry } from './brand/MeasureGeometry';
+import { useLocale } from '@/i18n/LocaleContext';
 
 export const FooterCTA: React.FC = () => {
+  const { t } = useLocale();
   return (
     <section id="footer-cta" className="bg-[#121f56] text-white py-12 sm:py-16 lg:py-20 relative overflow-hidden border-t border-blue-900/40">
 
@@ -34,7 +38,7 @@ export const FooterCTA: React.FC = () => {
             className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-[#121f56] text-xs sm:text-sm font-extrabold uppercase tracking-wider shadow-2xl hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             id="footer-cta-see-action-btn"
           >
-            <span>See MW Measure In Action</span>
+            <span>{t('ui.products.seeMwMeasureInAction')}</span>
           </CTAButton>
         </div>
 

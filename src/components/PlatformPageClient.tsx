@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { CTAButton } from "@/components/CTAButton";
+import { useLocale } from "@/i18n/LocaleContext";
 
 // Flowing Dot Component for animated connections
 const FlowingDots = ({ pathId, duration = 3, delay = 0 }: { pathId: string; duration?: number; delay?: number }) => {
@@ -120,6 +121,7 @@ const ProductCard = ({ icon, label, href, index }: { icon: React.ReactNode; labe
 };
 
 export default function PlatformPageClient() {
+  const { t } = useLocale();
   const [isClient, setIsClient] = useState(false);
   const [hoveredInput, setHoveredInput] = useState<number | null>(null);
   const [hoveredOutput, setHoveredOutput] = useState<number | null>(null);
@@ -661,13 +663,13 @@ export default function PlatformPageClient() {
               href="/contact"
               className="px-8 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-colors shadow-lg"
             >
-              Request Demo
+              {t('ui.solutions.requestDemo')}
             </CTAButton>
             <a
               href="/mw-planner"
               className="px-8 py-3 bg-white text-blue-600 border border-blue-600 rounded-lg font-semibold hover:bg-blue-50 transition-colors"
             >
-              Explore Products
+              {t('ui.solutions.exploreProducts')}
             </a>
           </div>
         </motion.div>

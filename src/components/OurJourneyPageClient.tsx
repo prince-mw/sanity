@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import { useState } from "react";
 import { transformTimelineEvent, transformCompanyPage } from "@/sanity/lib/fetch";
+import { useLocale } from "@/i18n/LocaleContext";
 
 // Static fallback timeline data
 const staticTimelineMilestones = [
@@ -106,6 +107,7 @@ interface OurJourneyPageClientProps {
 }
 
 export default function OurJourneyPageClient({ initialTimeline, initialPageData }: OurJourneyPageClientProps) {
+  const { t } = useLocale();
   const [activePhase, setActivePhase] = useState(0);
   const [activeTimeline, setActiveTimeline] = useState(0);
   const [timelineMilestones] = useState(initialTimeline ?? staticTimelineMilestones);
@@ -226,11 +228,11 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
           >
             {/* Breadcrumb */}
             <div className="flex items-center justify-center gap-2 text-sm text-mw-gray-500 mb-8">
-              <Link href="/" className="hover:text-mw-blue-600">Home</Link>
+              <Link href="/" className="hover:text-mw-blue-600">{t("ui.company.home")}</Link>
               <span>/</span>
-              <Link href="/about" className="hover:text-mw-blue-600">About</Link>
+              <Link href="/about" className="hover:text-mw-blue-600">{t("ui.company.journey.breadcrumbAbout")}</Link>
               <span>/</span>
-              <span className="text-mw-blue-600">Our Journey</span>
+              <span className="text-mw-blue-600">{t("ui.company.journey.breadcrumbJourney")}</span>
             </div>
 
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-mw-blue-100 rounded-full mb-8">
@@ -257,7 +259,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 className="text-center bg-white rounded-xl p-6 shadow-mw-sm border border-mw-gray-100"
               >
                 <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">9+</div>
-                <div className="text-sm text-mw-gray-600">Years of Innovation</div>
+                <div className="text-sm text-mw-gray-600">{t("ui.company.journey.statYears")}</div>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -266,7 +268,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 className="text-center bg-white rounded-xl p-6 shadow-mw-sm border border-mw-gray-100"
               >
                 <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">1000+</div>
-                <div className="text-sm text-mw-gray-600">Brand Partners</div>
+                <div className="text-sm text-mw-gray-600">{t("ui.company.journey.statPartners")}</div>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -275,7 +277,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 className="text-center bg-white rounded-xl p-6 shadow-mw-sm border border-mw-gray-100"
               >
                 <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">9</div>
-                <div className="text-sm text-mw-gray-600">Global Offices</div>
+                <div className="text-sm text-mw-gray-600">{t("ui.company.journey.statOffices")}</div>
               </motion.div>
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -284,7 +286,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 className="text-center bg-white rounded-xl p-6 shadow-mw-sm border border-mw-gray-100"
               >
                 <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">$300M+</div>
-                <div className="text-sm text-mw-gray-600">Annual Revenue</div>
+                <div className="text-sm text-mw-gray-600">{t("ui.company.journey.statRevenue")}</div>
               </motion.div>
             </div>
           </motion.div>
@@ -302,7 +304,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Timeline of Innovation
+              {t("ui.company.journey.timelineTitle")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Every milestone tells a story of innovation, growth, and the relentless pursuit of excellence.
@@ -396,7 +398,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Phases of Growth
+              {t("ui.company.journey.phasesTitle")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Four distinct eras that shaped our evolution from startup to market leader.
@@ -443,7 +445,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
 
                 {/* Key Achievements */}
                 <div>
-                  <h4 className="text-lg font-bold text-mw-gray-900 mb-4">Key Achievements</h4>
+                  <h4 className="text-lg font-bold text-mw-gray-900 mb-4">{t("ui.company.journey.keyAchievements")}</h4>
                   <div className="space-y-2">
                     {growthPhases[activePhase].achievements.map((achievement, index) => (
                       <div key={index} className="flex items-center gap-2">
@@ -486,7 +488,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Global Expansion Timeline
+              {t("ui.company.journey.expansionTitle")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Our strategic expansion across key markets worldwide, building local expertise while maintaining global consistency.
@@ -509,11 +511,11 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-mw-gray-500">Type:</span>
+                    <span className="text-mw-gray-500">{t("ui.company.journey.type")}</span>
                     <span className="text-mw-gray-900 font-medium">{office.type}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-mw-gray-500">Team:</span>
+                    <span className="text-mw-gray-500">{t("ui.company.journey.team")}</span>
                     <span className="text-mw-gray-900 font-medium">{office.employees}</span>
                   </div>
                   <div className="pt-2 border-t border-mw-gray-100">
@@ -537,7 +539,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Recognition & Awards
+              {t("ui.company.journey.awardsTitle")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Industry recognition for our innovation, leadership, and commitment to excellence.
@@ -581,7 +583,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             className="text-center text-white"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              The Journey Continues
+              {t("ui.company.journey.continuesTitle")}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
               This is just the beginning. With cutting-edge AI, sustainable practices, and an unwavering 
@@ -612,7 +614,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 href="/contact"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-mw-gray-50 text-mw-blue-600 font-semibold rounded-lg transition-colors shadow-lg"
               >
-                Join Our Journey
+                {t("ui.company.journey.joinJourney")}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -621,7 +623,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 href="/careers"
                 className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"
               >
-                View Careers
+                {t("ui.company.journey.viewCareers")}
               </Link>
             </div>
           </motion.div>

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import Link from 'next/link'
 import ZohoCampaignsEmbed from "./ZohoCampaignsEmbed"
+import { useLocale } from '@/i18n/LocaleContext'
 
 // Static fallback content
 const STATIC_FORM_URL = 'https://xjwif-zgpm.maillist-manage.com/ua/Optin?od=11287ecbeb72cd&zx=13089112c&tD=1d17ccf5180e2411&sD=1d17ccf51ad46835'
@@ -20,6 +21,7 @@ export default function NewsletterPageClient({
   headline,
   description,
 }: NewsletterPageClientProps) {
+  const { t } = useLocale()
   const embedUrl = formUrl || STATIC_FORM_URL
   const displayHeadline = headline || STATIC_HEADLINE
   const displayDescription = description || STATIC_DESCRIPTION
@@ -39,7 +41,7 @@ export default function NewsletterPageClient({
           href="/"
           className="text-sm font-medium text-slate-500 hover:text-blue-600 inline-flex items-center gap-1 transition-colors"
         >
-          ← Back to Homepage
+          {t('ui.company.newsletter.backHome')}
         </Link>
       </div>
 
@@ -74,7 +76,7 @@ export default function NewsletterPageClient({
 
       {/* Footer */}
       <div className="py-6 text-center text-xs text-slate-400">
-        &copy; {new Date().getFullYear()} Moving Walls. All rights reserved.
+        &copy; {new Date().getFullYear()} Moving Walls. {t('ui.company.newsletter.rights')}
       </div>
 
     </div>

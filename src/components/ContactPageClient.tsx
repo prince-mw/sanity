@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import ContactForm from "./ContactForm";
 import { CTAButton } from "./CTAButton";
 import type { ContactPageContent } from "@/sanity/lib/fetch";
+import { useLocale } from "@/i18n/LocaleContext";
 
 export interface Office {
   city: string
@@ -21,6 +22,7 @@ interface ContactPageClientProps {
 }
 
 export default function ContactPageClient({ offices, content }: ContactPageClientProps) {
+  const { t } = useLocale();
   const heroTitle = content?.heroTitle || "Let's Build Something";
   const heroTitleHighlight = content?.heroTitleHighlight || "Extraordinary Together";
   const heroDescription = content?.heroDescription || "Every great campaign starts with a conversation. Whether you're launching your first digital campaign or scaling a global advertising strategy, our team of experts is ready to turn your vision into measurable results.";
@@ -196,7 +198,7 @@ export default function ContactPageClient({ offices, content }: ContactPageClien
                   </h3>
                   {office.isHeadquarters && (
                     <span className="bg-mw-blue-600 text-white text-xs px-2 py-1 rounded-full font-medium">
-                      HQ
+                      {t("ui.company.contact.hq")}
                     </span>
                   )}
                 </div>

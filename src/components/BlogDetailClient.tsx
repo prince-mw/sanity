@@ -45,13 +45,14 @@ const isSupportedBlogLocale = (value?: string): value is Locale =>
   value === "en" || value === "zh";
 
 export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClientProps) {
-  const { locale, setLocale } = useLocale();
+  const { locale, setLocale, t } = useLocale();
   const [linkCopied, setLinkCopied] = useState(false);
 
-  // Opening a post directly should sync the nav language to whatever language
-  // the post is written in, so e.g. landing on the Chinese post shows "CHN" in the nav.
+  // Opening a translated post directly should sync the nav language to it, so e.g. landing on
+  // the Chinese post shows "CHN" in the nav. English posts don't reset a visitor's chosen
+  // language — the page's buttons and labels stay in it around the English article.
   useEffect(() => {
-    if (isSupportedBlogLocale(post.language) && post.language !== locale) {
+    if (isSupportedBlogLocale(post.language) && post.language !== "en" && post.language !== locale) {
       setLocale(post.language);
     }
   }, [post.language, locale, setLocale]);
@@ -85,7 +86,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-sm text-mw-gray-500 mb-8">
               <Link href="/blog" className="hover:text-mw-blue-600 transition-colors">
-                Blog
+                {t("ui.blog.breadcrumbBlog")}
               </Link>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -198,7 +199,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
         <section className="py-8 border-t border-mw-gray-200">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap items-center gap-3">
-              <span className="text-sm font-medium text-mw-gray-700">Tags:</span>
+              <span className="text-sm font-medium text-mw-gray-700">{t("ui.blog.tagsLabel")}</span>
               {post.tags.map((tag, index) => (
                 <span
                   key={index}
@@ -217,13 +218,13 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-mw-gray-700">Share this article:</span>
+              <span className="text-sm font-medium text-mw-gray-700">{t("ui.blog.shareArticle")}</span>
               <div className="flex items-center gap-2">
                 <a
                   href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(post.title)}&url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on X (Twitter)"
+                  aria-label={t("ui.blog.shareOnX")}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -234,7 +235,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                   href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label="Share on LinkedIn"
+                  aria-label={t("ui.blog.shareOnLinkedIn")}
                   className="w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -244,7 +245,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                 <button
                   type="button"
                   onClick={handleShareLink}
-                  aria-label="Copy link"
+                  aria-label={t("ui.blog.copyLink")}
                   className="relative w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -252,7 +253,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                   </svg>
                   {linkCopied && (
                     <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-mw-gray-900 px-2 py-1 text-xs text-white">
-                      Link copied!
+                      {t("ui.blog.linkCopied")}
                     </span>
                   )}
                 </button>
@@ -265,7 +266,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Blog
+              {t("ui.blog.backToBlog")}
             </Link>
           </div>
         </div>
@@ -275,7 +276,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
       {relatedPosts.length > 0 && (
         <section className="py-16 bg-mw-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">Related Articles</h2>
+            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">{t("ui.blog.relatedArticles")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedPosts.map((relatedPost, index) => (
                 <motion.div
@@ -338,9 +339,9 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">Enjoyed this article?</h2>
+                <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">{t("ui.blog.enjoyedTitle")}</h2>
                 <p className="text-mw-gray-500 leading-relaxed">
-                  Subscribe to get the latest insights, tips, and industry news delivered straight to your inbox.
+                  {t("ui.blog.enjoyedText")}
                 </p>
               </div>
               <ZohoCampaignsEmbed height={320} />

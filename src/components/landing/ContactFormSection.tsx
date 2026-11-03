@@ -2,12 +2,15 @@
 
 import { motion } from "framer-motion";
 import { useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
 
 interface FormField {
   _key: string;
   name?: string;
   label?: string;
+  /** Built-in default fields: translation key for the label */
+  labelKey?: string;
   type?: 'text' | 'email' | 'phone' | 'textarea' | 'select' | 'checkbox';
   required?: boolean;
   options?: string[];
@@ -26,19 +29,19 @@ interface ContactFormSectionProps {
 // Default form fields by type
 const defaultFields: Record<string, FormField[]> = {
   contact: [
-    { _key: 'name', name: 'name', label: 'Full Name', type: 'text', required: true },
-    { _key: 'email', name: 'email', label: 'Email', type: 'email', required: true },
-    { _key: 'phone', name: 'phone', label: 'Phone', type: 'phone', required: false },
-    { _key: 'message', name: 'message', label: 'Message', type: 'textarea', required: true },
+    { _key: 'name', name: 'name', label: 'Full Name', labelKey: 'ui.shared.form.fullName', type: 'text', required: true },
+    { _key: 'email', name: 'email', label: 'Email', labelKey: 'ui.shared.form.email', type: 'email', required: true },
+    { _key: 'phone', name: 'phone', label: 'Phone', labelKey: 'ui.shared.form.phone', type: 'phone', required: false },
+    { _key: 'message', name: 'message', label: 'Message', labelKey: 'ui.shared.form.message', type: 'textarea', required: true },
   ],
   demo: [
-    { _key: 'name', name: 'name', label: 'Full Name', type: 'text', required: true },
-    { _key: 'email', name: 'email', label: 'Work Email', type: 'email', required: true },
-    { _key: 'company', name: 'company', label: 'Company', type: 'text', required: true },
-    { _key: 'role', name: 'role', label: 'Job Title', type: 'text', required: false },
+    { _key: 'name', name: 'name', label: 'Full Name', labelKey: 'ui.shared.form.fullName', type: 'text', required: true },
+    { _key: 'email', name: 'email', label: 'Work Email', labelKey: 'ui.shared.form.workEmail', type: 'email', required: true },
+    { _key: 'company', name: 'company', label: 'Company', labelKey: 'ui.shared.form.company', type: 'text', required: true },
+    { _key: 'role', name: 'role', label: 'Job Title', labelKey: 'ui.shared.form.jobTitle', type: 'text', required: false },
   ],
   newsletter: [
-    { _key: 'email', name: 'email', label: 'Email Address', type: 'email', required: true },
+    { _key: 'email', name: 'email', label: 'Email Address', labelKey: 'ui.shared.form.emailAddress', type: 'email', required: true },
   ],
 };
 
@@ -47,10 +50,11 @@ export function ContactFormSection({
   subheading,
   formType = 'contact',
   fields,
-  submitText = 'Submit',
-  successMessage = 'Thank you! We\'ll be in touch soon.',
+  submitText,
+  successMessage,
   backgroundColor = 'gray',
 }: ContactFormSectionProps) {
+  const { t } = useLocale();
   const [formData, setFormData] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -119,7 +123,7 @@ export function ContactFormSection({
                   </svg>
                 </div>
                 <p className={`text-lg ${isDark ? 'text-white' : 'text-gray-900'}`}>
-                  {successMessage}
+                  {successMessage === undefined ? t('ui.shared.form.successMessage') : successMessage}
                 </p>
               </div>
             ) : (
@@ -131,7 +135,7 @@ export function ContactFormSection({
                         htmlFor={field.name} 
                         className={`block text-sm font-medium mb-2 ${isDark ? 'text-white' : 'text-gray-700'}`}
                       >
-                        {field.label}
+                        {field.labelKey ? t(field.labelKey) : field.label}
                         {field.required && <span className="text-red-500 ml-1">*</span>}
                       </label>
                       
@@ -162,7 +166,7 @@ export function ContactFormSection({
                               : 'bg-white border-gray-300 text-gray-900'
                           }`}
                         >
-                          <option value="">Select an option</option>
+                          <option value="">{t('ui.shared.form.selectOption')}</option>
                           {field.options?.map((option) => (
                             <option key={option} value={option}>{option}</option>
                           ))}
@@ -179,7 +183,7 @@ export function ContactFormSection({
                             className="w-4 h-4 rounded text-mw-blue-600 focus:ring-mw-blue-500"
                           />
                           <span className={`text-sm ${isDark ? 'text-white/80' : 'text-gray-600'}`}>
-                            {field.label}
+                            {field.labelKey ? t(field.labelKey) : field.label}
                           </span>
                         </div>
                       ) : (
@@ -206,7 +210,7 @@ export function ContactFormSection({
                   disabled={isSubmitting}
                   className="w-full mt-8 bg-mw-blue-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-mw-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isSubmitting ? 'Submitting...' : submitText}
+                  {isSubmitting ? t('ui.shared.form.submitting') : (submitText === undefined ? t('ui.shared.form.submit') : submitText)}
                 </button>
               </form>
             )}

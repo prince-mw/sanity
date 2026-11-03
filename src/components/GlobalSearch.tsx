@@ -5,6 +5,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface SearchResult {
   _id: string;
@@ -31,13 +32,14 @@ const typeToPath: Record<string, string> = {
   ebook: "/ebooks",
 };
 
+// Translation keys for the result type badges
 const typeLabels: Record<string, string> = {
-  blogPost: "Blog",
-  caseStudy: "Case Study",
-  pressRelease: "Press",
-  event: "Event",
-  webinar: "Webinar",
-  ebook: "E-Book",
+  blogPost: "ui.shared.search.typeBlog",
+  caseStudy: "ui.shared.search.typeCaseStudy",
+  pressRelease: "ui.shared.search.typePress",
+  event: "ui.shared.search.typeEvent",
+  webinar: "ui.shared.search.typeWebinar",
+  ebook: "ui.shared.search.typeEbook",
 };
 
 export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
@@ -48,6 +50,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
   const [total, setTotal] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const { t } = useLocale();
 
   // Debounced search
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -186,7 +189,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                 <input
                   ref={inputRef}
                   type="text"
-                  placeholder="Search blog posts, case studies, resources..."
+                  placeholder={t('ui.shared.search.placeholder')}
                   value={query}
                   onChange={(e) => {
                     setQuery(e.target.value);
@@ -234,7 +237,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
                             <span className="text-xs font-medium text-mw-blue-600 bg-mw-blue-50 px-2 py-0.5 rounded">
-                              {typeLabels[result._type] || result._type}
+                              {typeLabels[result._type] ? t(typeLabels[result._type]) : result._type}
                             </span>
                             {result.category && (
                               <span className="text-xs text-mw-gray-500">
@@ -262,7 +265,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                         onClick={onClose}
                         className="block px-5 py-3 text-center text-sm text-mw-blue-600 hover:bg-mw-gray-50 border-t border-mw-gray-100"
                       >
-                        View all {total} results →
+                        {(t('ui.shared.search.viewAllResults') as string).replace('{n}', String(total))}
                       </Link>
                     )}
                   </div>
@@ -281,21 +284,21 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                         d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                       />
                     </svg>
-                    <p className="text-mw-gray-500">No results found for &quot;{query}&quot;</p>
+                    <p className="text-mw-gray-500">{(t('ui.shared.search.noResultsFor') as string).replace('{query}', query)}</p>
                     <p className="text-sm text-mw-gray-400 mt-1">
-                      Try different keywords or browse our categories
+                      {t('ui.shared.search.tryDifferent')}
                     </p>
                   </div>
                 ) : (
                   <div className="py-8 px-5">
-                    <p className="text-sm text-mw-gray-500 mb-4">Quick links</p>
+                    <p className="text-sm text-mw-gray-500 mb-4">{t('ui.shared.search.quickLinks')}</p>
                     <div className="grid grid-cols-2 gap-2">
                       {[
-                        { label: "Blog", href: "/blog", icon: "📝" },
-                        { label: "Case Studies", href: "/case-studies", icon: "📊" },
-                        { label: "Events", href: "/events", icon: "📅" },
-                        { label: "Webinars", href: "/webinars", icon: "🎥" },
-                        { label: "E-Books", href: "/ebooks", icon: "📚" },
+                        { label: t('ui.shared.search.blog'), href: "/blog", icon: "📝" },
+                        { label: t('ui.shared.search.caseStudies'), href: "/case-studies", icon: "📊" },
+                        { label: t('ui.shared.search.events'), href: "/events", icon: "📅" },
+                        { label: t('ui.shared.search.webinars'), href: "/webinars", icon: "🎥" },
+                        { label: t('ui.shared.search.ebooks'), href: "/ebooks", icon: "📚" },
                       ].map((link) => (
                         <Link
                           key={link.href}
@@ -318,11 +321,11 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                   <span className="flex items-center gap-1">
                     <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded">↑</kbd>
                     <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded">↓</kbd>
-                    <span className="ml-1">Navigate</span>
+                    <span className="ml-1">{t('ui.shared.search.navigate')}</span>
                   </span>
                   <span className="flex items-center gap-1">
                     <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded">Enter</kbd>
-                    <span className="ml-1">Select</span>
+                    <span className="ml-1">{t('ui.shared.search.select')}</span>
                   </span>
                 </div>
                 <span>Powered by Sanity</span>

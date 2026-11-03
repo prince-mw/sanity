@@ -4,6 +4,7 @@ import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { FormFieldRenderer } from './FormFieldRenderer'
 import type { ZohoFormFieldData } from '@/sanity/lib/fetch'
+import { useLocale } from '@/i18n/LocaleContext'
 
 interface DynamicZohoFormProps {
   fields: ZohoFormFieldData[]
@@ -23,9 +24,9 @@ interface DynamicZohoFormProps {
   referrername?: string
 }
 
-function validateField(field: ZohoFormFieldData, value: string): string | undefined {
+function validateField(field: ZohoFormFieldData, value: string, t: (key: string) => any): string | undefined {
   if (field.required && !value.trim()) {
-    return `${field.label} is required`
+    return (t('ui.shared.form.isRequired') as string).replace('{field}', field.label)
   }
 
   if (!value.trim()) return undefined
@@ -33,14 +34,14 @@ function validateField(field: ZohoFormFieldData, value: string): string | undefi
   if (field.fieldType === 'email') {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     if (!emailRegex.test(value)) {
-      return 'Please enter a valid email address'
+      return t('ui.shared.form.invalidEmail')
     }
   }
 
   if (field.fieldType === 'phone') {
     const phoneRegex = /^[+]?[\d\s()-]{7,20}$/
     if (!phoneRegex.test(value)) {
-      return 'Please enter a valid phone number'
+      return t('ui.shared.form.invalidPhone')
     }
   }
 
@@ -48,7 +49,7 @@ function validateField(field: ZohoFormFieldData, value: string): string | undefi
     try {
       const regex = new RegExp(field.validationPattern)
       if (!regex.test(value)) {
-        return field.validationMessage || `${field.label} is not in the expected format`
+        return field.validationMessage || (t('ui.shared.form.invalidFormat') as string).replace('{field}', field.label)
       }
     } catch {
       // Invalid regex pattern from CMS — skip custom validation
@@ -63,14 +64,17 @@ export function DynamicZohoForm({
   zohoFormPermalink,
   zohoFormLinkName,
   zohoPortalName,
-  submitButtonText = 'Submit',
-  successMessage = 'Thank you! Your submission has been received.',
+  submitButtonText: submitButtonTextProp,
+  successMessage: successMessageProp,
   successRedirectUrl,
   className,
   pageSource,
   utmParams,
   referrername,
 }: DynamicZohoFormProps) {
+  const { t } = useLocale()
+  const submitButtonText = submitButtonTextProp === undefined ? t('ui.shared.form.submit') : submitButtonTextProp
+  const successMessage = successMessageProp === undefined ? t('ui.shared.form.submissionReceived') : successMessageProp
   // Initialize form data with default values
   const [formData, setFormData] = useState<Record<string, string>>(() => {
     const initial: Record<string, string> = {}
@@ -111,7 +115,7 @@ export function DynamicZohoForm({
     // Validate all fields
     const newErrors: Record<string, string> = {}
     for (const field of fields) {
-      const error = validateField(field, formData[field.zohoFieldName] || '')
+      const error = validateField(field, formData[field.zohoFieldName] || '', t)
       if (error) {
         newErrors[field.zohoFieldName] = error
       }
@@ -140,7 +144,7 @@ export function DynamicZohoForm({
 
       if (!response.ok || !result.success) {
         setSubmitState('error')
-        setSubmitError(result.error || 'Submission failed. Please try again.')
+        setSubmitError(result.error || t('ui.shared.form.submissionFailed'))
         return
       }
 
@@ -151,7 +155,7 @@ export function DynamicZohoForm({
       }
     } catch {
       setSubmitState('error')
-      setSubmitError('Network error. Please check your connection and try again.')
+      setSubmitError(t('ui.shared.form.networkError'))
     } finally {
       setIsSubmitting(false)
     }
@@ -242,7 +246,7 @@ export function DynamicZohoForm({
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Submitting...
+              {t('ui.shared.form.submitting')}
             </span>
           ) : (
             submitButtonText

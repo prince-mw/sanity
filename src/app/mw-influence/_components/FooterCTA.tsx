@@ -1,7 +1,11 @@
+'use client';
+
 import React from 'react';
 import { CTAButton } from '@/components/CTAButton';
+import { useLocale } from '@/i18n/LocaleContext';
 
 export const FooterCTA: React.FC = () => {
+  const { t } = useLocale();
   return (
     <section id="footer-cta" className="bg-[#121f56] text-white py-16 sm:py-20 lg:py-24 relative overflow-hidden text-center border-t border-blue-900/40">
 
@@ -23,7 +27,7 @@ export const FooterCTA: React.FC = () => {
             className="inline-flex items-center justify-center bg-white hover:bg-gray-100 text-[#14235d] text-sm sm:text-base font-semibold px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
             id="footer-cta-get-in-touch-btn"
           >
-            <span>Get in Touch</span>
+            <span>{t('ui.products.getInTouch')}</span>
           </CTAButton>
         </div>
 

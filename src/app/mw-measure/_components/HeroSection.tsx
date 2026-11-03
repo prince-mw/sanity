@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
 import { MeasureGeometry } from './brand/MeasureGeometry';
+import { useLocale } from '@/i18n/LocaleContext';
 
 const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/670221eb1688190722ae99c3a30204f5690cb59b-1200x1200.png?w=1200&q=90&auto=format';
 
@@ -16,6 +19,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   title = "Don't Just Deliver OOH Campaign. Prove It.",
   subtitle = 'Convert campaign delivery data into actionable proof. MW Measure is the command center for Out-of-Home advertising, providing real-time reach, frequency, saturation analysis, and verified attribution analytics.',
 }) => {
+  const { t } = useLocale();
   // Splits the title into the mockup's original 3-line layout, with the closing
   // "Prove It." phrase rendered in its own cyan-to-blue gradient — matching the AI
   // Studio design. Falls back to the plain title if it doesn't match that shape
@@ -88,7 +92,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="inline-flex items-center justify-center px-7 py-3.5 sm:py-4 rounded-xl bg-white text-[#121f56] text-xs sm:text-sm font-bold tracking-wider uppercase shadow-xl shadow-blue-950/40 hover:bg-slate-100 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
                 id="hero-prove-campaign-btn"
               >
-                <span>Prove Your Campaign</span>
+                <span>{t('ui.products.proveYourCampaign')}</span>
               </CTAButton>
             </div>
 

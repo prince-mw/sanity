@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
+import { useLocale } from '@/i18n/LocaleContext';
 
 // Same hero artwork as MW Studio (MW Inventory is part of MW Studio)
 const HERO_IMAGE_URL = '/assets/images/mw-studio-hero-banner-image.webp';
@@ -68,9 +71,10 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   title = 'Turn Every Screen Into Revenue',
   subtitle = "Capture more revenue from your OOH & DOOH inventories through MW Studio's streamlined inventory management, with real-time availability and faster selling opportunities.",
   heroImageUrl,
-  ctaText = 'See MW Studio In Action',
+  ctaText,
   ctaLink = '/contact',
 }) => {
+  const { t } = useLocale();
   const imageUrl = heroImageUrl || HERO_IMAGE_URL;
   return (
     <section className="relative overflow-hidden bg-[#062068] text-white pt-24 sm:pt-20 lg:pt-24 pb-20 lg:pb-28" id="hero-section">
@@ -105,7 +109,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
                 className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-see-action-btn"
               >
-                <span>{ctaText}</span>
+                <span>{ctaText ?? t('ui.products.seeMwStudioInAction')}</span>
               </CTAButton>
             </div>
           </div>

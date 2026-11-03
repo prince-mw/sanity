@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface SearchResult {
   _id: string;
@@ -26,26 +27,28 @@ const typeToPath: Record<string, string> = {
   ebook: "/ebooks",
 };
 
+// Translation keys for the result-type badges (resolved with t() at render)
 const typeLabels: Record<string, string> = {
-  blogPost: "Blog",
-  caseStudy: "Case Study",
-  pressRelease: "Press",
-  event: "Event",
-  webinar: "Webinar",
-  ebook: "E-Book",
+  blogPost: "ui.search.types.blogPost",
+  caseStudy: "ui.search.types.caseStudy",
+  pressRelease: "ui.search.types.pressRelease",
+  event: "ui.search.types.event",
+  webinar: "ui.search.types.webinar",
+  ebook: "ui.search.types.ebook",
 };
 
 const contentTypes = [
-  { value: "", label: "All Content" },
-  { value: "blogPost", label: "Blog Posts" },
-  { value: "caseStudy", label: "Case Studies" },
-  { value: "pressRelease", label: "Press & News" },
-  { value: "event", label: "Events" },
-  { value: "webinar", label: "Webinars" },
-  { value: "ebook", label: "E-Books" },
+  { value: "", label: "ui.search.filters.all" },
+  { value: "blogPost", label: "ui.search.filters.blogPost" },
+  { value: "caseStudy", label: "ui.search.filters.caseStudy" },
+  { value: "pressRelease", label: "ui.search.filters.pressRelease" },
+  { value: "event", label: "ui.search.filters.event" },
+  { value: "webinar", label: "ui.search.filters.webinar" },
+  { value: "ebook", label: "ui.search.filters.ebook" },
 ];
 
 function SearchContent() {
+  const { t } = useLocale();
   const searchParams = useSearchParams();
   const router = useRouter();
   const initialQuery = searchParams.get("q") || "";
@@ -117,10 +120,10 @@ function SearchContent() {
             className="text-center mb-8"
           >
             <h1 className="text-4xl font-bold text-mw-gray-900 mb-4">
-              Search Results
+              {t("ui.search.title")}
             </h1>
             <p className="text-mw-gray-600">
-              Find blog posts, case studies, resources, and more
+              {t("ui.search.subtitle")}
             </p>
           </motion.div>
 
@@ -142,7 +145,7 @@ function SearchContent() {
               </svg>
               <input
                 type="text"
-                placeholder="Search..."
+                placeholder={t("ui.search.placeholder")}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 className="w-full px-14 py-4 border border-mw-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-mw-blue-500 text-lg"
@@ -151,7 +154,7 @@ function SearchContent() {
                 type="submit"
                 className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-mw-blue-600 text-white rounded-lg hover:bg-mw-blue-700 transition-colors"
               >
-                Search
+                {t("ui.search.button")}
               </button>
             </div>
 
@@ -171,7 +174,7 @@ function SearchContent() {
                       : "bg-mw-gray-100 text-mw-gray-600 hover:bg-mw-gray-200"
                   }`}
                 >
-                  {type.label}
+                  {t(type.label)}
                 </button>
               ))}
             </div>
@@ -189,7 +192,7 @@ function SearchContent() {
           ) : results.length > 0 ? (
             <>
               <p className="text-mw-gray-600 mb-8">
-                Found <span className="font-semibold">{total}</span> results for &quot;{query}&quot;
+                {t("ui.search.found").split("{n}")[0]}<span className="font-semibold">{total}</span>{(t("ui.search.found").split("{n}")[1] || "").replace("{q}", query)}
               </p>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -217,7 +220,7 @@ function SearchContent() {
                       <div className="p-5">
                         <div className="flex items-center gap-2 mb-2">
                           <span className="text-xs font-medium text-mw-blue-600 bg-mw-blue-50 px-2 py-1 rounded">
-                            {typeLabels[result._type] || result._type}
+                            {typeLabels[result._type] ? t(typeLabels[result._type]) : result._type}
                           </span>
                           {result.date && (
                             <span className="text-xs text-mw-gray-400">
@@ -244,7 +247,7 @@ function SearchContent() {
                     onClick={() => setPage((p) => p + 1)}
                     className="px-8 py-3 bg-mw-gray-100 text-mw-gray-700 rounded-lg font-medium hover:bg-mw-gray-200 transition-colors"
                   >
-                    Load more results
+                    {t("ui.search.loadMore")}
                   </button>
                 </div>
               )}
@@ -265,17 +268,17 @@ function SearchContent() {
                 />
               </svg>
               <h2 className="text-xl font-semibold text-mw-gray-900 mb-2">
-                No results found
+                {t("ui.search.noResults")}
               </h2>
               <p className="text-mw-gray-500 mb-6">
-                We couldn&apos;t find anything matching &quot;{query}&quot;
+                {t("ui.search.noMatch").replace("{q}", query)}
               </p>
               <div className="text-sm text-mw-gray-500">
-                <p className="mb-2">Suggestions:</p>
+                <p className="mb-2">{t("ui.search.suggestions")}</p>
                 <ul className="space-y-1">
-                  <li>• Check your spelling</li>
-                  <li>• Try different keywords</li>
-                  <li>• Use more general terms</li>
+                  <li>• {t("ui.search.checkSpelling")}</li>
+                  <li>• {t("ui.search.differentKeywords")}</li>
+                  <li>• {t("ui.search.generalTerms")}</li>
                 </ul>
               </div>
             </div>
@@ -295,10 +298,10 @@ function SearchContent() {
                 />
               </svg>
               <h2 className="text-xl font-semibold text-mw-gray-900 mb-2">
-                Start searching
+                {t("ui.search.startTitle")}
               </h2>
               <p className="text-mw-gray-500">
-                Enter a search term to find blog posts, case studies, and resources
+                {t("ui.search.startText")}
               </p>
             </div>
           )}

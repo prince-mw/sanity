@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
 
 interface Testimonial {
@@ -41,6 +42,7 @@ function StarRating({ rating }: { rating: number }) {
 }
 
 function TestimonialCard({ testimonial, isDark }: { testimonial: Testimonial; isDark: boolean }) {
+  const { t } = useLocale();
   return (
     <div className={`p-8 rounded-2xl ${isDark ? 'bg-white/10' : 'bg-white'} shadow-lg h-full flex flex-col`}>
       {testimonial.rating && (
@@ -60,7 +62,7 @@ function TestimonialCard({ testimonial, isDark }: { testimonial: Testimonial; is
           <div className="relative w-12 h-12 rounded-full overflow-hidden">
             <Image
               src={testimonial.image}
-              alt={testimonial.name || 'Testimonial author'}
+              alt={testimonial.name || t('ui.shared.alt.testimonialAuthor')}
               fill
               sizes="48px"
               className="object-cover"

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
 import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
@@ -29,6 +30,7 @@ export function FeatureGridSection({
   features,
   backgroundColor = 'white',
 }: FeatureGridSectionProps) {
+  const { t } = useLocale();
   const bgClasses = getBackgroundClasses(backgroundColor);
   const textColor = getTextColorClasses(backgroundColor);
   const subtextColor = getSubtextColorClasses(backgroundColor);
@@ -106,7 +108,7 @@ export function FeatureGridSection({
                     <div className="group relative h-72 sm:h-80">
                       <Image
                         src={feature.icon}
-                        alt={feature.title || 'Feature image'}
+                        alt={feature.title || t('ui.shared.alt.featureImage')}
                         fill
                         sizes={gridImageSizes[columns]}
                         className="object-cover transition-transform duration-500 group-hover:scale-105"

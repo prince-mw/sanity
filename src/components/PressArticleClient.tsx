@@ -7,6 +7,7 @@ import { PortableText, PortableTextComponents } from "@portabletext/react";
 import { getSanityImageUrl } from "@/sanity/lib/fetch";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { getVideoSkipIntroProps } from "@/lib/videoSkipIntro";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface PressArticle {
   _id: string;
@@ -294,6 +295,7 @@ const portableTextComponents: PortableTextComponents = {
 };
 
 export default function PressArticleClient({ article }: Readonly<PressArticleClientProps>) {
+  const { t } = useLocale();
   const featuredImageUrl = article.featuredImage 
     ? getSanityImageUrl(article.featuredImage, { width: 1200, height: 600 })
     : null;
@@ -312,7 +314,7 @@ export default function PressArticleClient({ article }: Readonly<PressArticleCli
               <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Press & News
+              {t("ui.news.backToPressNews")}
             </Link>
             
             <div className="flex flex-wrap items-center gap-3 mb-6">
@@ -373,15 +375,15 @@ export default function PressArticleClient({ article }: Readonly<PressArticleCli
                   components={portableTextComponents}
                 />
               ) : (
-                <p className="text-mw-gray-500 italic">Content not available.</p>
+                <p className="text-mw-gray-500 italic">{t("ui.news.contentNotAvailable")}</p>
               )}
 
               {/* Media Contact */}
               <div className="bg-mw-gray-50 rounded-lg p-6 mt-8">
-                <h3 className="text-lg font-bold text-mw-gray-900 mb-4">Media Contact</h3>
+                <h3 className="text-lg font-bold text-mw-gray-900 mb-4">{t("ui.news.mediaContact")}</h3>
                 <p className="text-mw-gray-700">
                   Moving Walls Communications<br/>
-                  Email: info@movingwalls.com
+                  {t("ui.news.emailLabel")} info@movingwalls.com
                 </p>
               </div>
             </div>

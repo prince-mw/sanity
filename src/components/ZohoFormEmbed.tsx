@@ -7,6 +7,7 @@ import { DynamicZohoForm } from './DynamicZohoForm'
 import type { ZohoFormData } from '@/sanity/lib/fetch'
 import { getUTMCookies, appendUTMsToUrl } from '@/lib/utmCookies'
 import { appendReferrerName, getReferrerName } from '@/lib/referrerName'
+import { useLocale } from '@/i18n/LocaleContext'
 
 interface ZohoFormEmbedProps {
   /** Pass the full ZohoFormData from Sanity for automatic mode detection */
@@ -33,7 +34,7 @@ export function ZohoFormEmbed({
   displayMode: legacyDisplayMode = 'iframe',
   height: legacyHeight = 600,
   width: legacyWidth = '100%',
-  buttonText = 'Download Now',
+  buttonText: buttonTextProp,
   buttonClassName,
   className,
   pageSource,
@@ -41,6 +42,8 @@ export function ZohoFormEmbed({
 }: ZohoFormEmbedProps) {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const pathname = usePathname()
+  const { t } = useLocale()
+  const buttonText = buttonTextProp === undefined ? t('ui.shared.form.downloadNow') : buttonTextProp
 
   // Resolve props — prefer `form` object, fall back to legacy individual props
   const renderMode = form?.renderMode || 'iframe'
@@ -119,12 +122,12 @@ export function ZohoFormEmbed({
                 >
                   <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                     <h3 className="text-lg font-semibold text-gray-900">
-                      {name || 'Submit Form'}
+                      {name || t('ui.shared.form.submitForm')}
                     </h3>
                     <button
                       onClick={() => setIsModalOpen(false)}
                       className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-                      aria-label="Close modal"
+                      aria-label={t('ui.shared.form.closeModal')}
                     >
                       <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -192,12 +195,12 @@ export function ZohoFormEmbed({
                 {/* Header */}
                 <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200">
                   <h3 className="text-lg font-semibold text-gray-900">
-                    {name || 'Get Your Copy'}
+                    {name || t('ui.shared.form.getYourCopy')}
                   </h3>
                   <button
                     onClick={() => setIsModalOpen(false)}
                     className="p-2 text-gray-400 hover:text-gray-600 transition-colors"
-                    aria-label="Close modal"
+                    aria-label={t('ui.shared.form.closeModal')}
                   >
                     <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -212,7 +215,7 @@ export function ZohoFormEmbed({
                     width="100%"
                     height={height}
                     style={{ border: 'none' }}
-                    title={name || 'Zoho Form'}
+                    title={name || t('ui.shared.form.zohoForm')}
                     loading="lazy"
                   />
                 </div>
@@ -233,7 +236,7 @@ export function ZohoFormEmbed({
         width={width}
         height={height}
         style={{ border: 'none' }}
-        title={name || 'Zoho Form'}
+        title={name || t('ui.shared.form.zohoForm')}
         loading="lazy"
         className="rounded-lg"
         suppressHydrationWarning

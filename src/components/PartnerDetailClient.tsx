@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { CTAButton } from '@/components/CTAButton'
+import { useLocale } from '@/i18n/LocaleContext'
 import type { PartnerIconName, PartnerPageContent, PartnerSection } from '@/data/partners'
 
 const NAVY = 'bg-[#062068]'
@@ -359,6 +360,7 @@ const HIGHLIGHT_COLS: Record<number, string> = {
 }
 
 export default function PartnerDetailClient({ partner }: { partner: PartnerPageContent }) {
+  const { t } = useLocale()
   const highlights = partner.highlights || []
 
   return (
@@ -370,11 +372,11 @@ export default function PartnerDetailClient({ partner }: { partner: PartnerPageC
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav aria-label="Breadcrumb" className="mb-6 text-sm text-blue-100/80">
+          <nav aria-label={t('ui.company.breadcrumb')} className="mb-6 text-sm text-blue-100/80">
             <ol className="flex flex-wrap items-center gap-2">
-              <li><Link href="/" className="hover:text-white">Home</Link></li>
+              <li><Link href="/" className="hover:text-white">{t('ui.company.home')}</Link></li>
               <li aria-hidden="true">/</li>
-              <li><Link href="/partners" className="hover:text-white">Partners</Link></li>
+              <li><Link href="/partners" className="hover:text-white">{t('ui.company.partners.title')}</Link></li>
               <li aria-hidden="true">/</li>
               <li aria-current="page" className="text-white">{partner.name}</li>
             </ol>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useLocale } from '@/i18n/LocaleContext'
 
 /**
  * Floating "back to top" button, bottom-right on every page.
@@ -8,6 +9,7 @@ import { useEffect, useState } from 'react'
  */
 export default function ScrollToTop() {
   const [visible, setVisible] = useState(false)
+  const { t } = useLocale()
 
   useEffect(() => {
     const onScroll = () => setVisible(window.scrollY > 600)
@@ -25,8 +27,8 @@ export default function ScrollToTop() {
     <button
       type="button"
       onClick={scrollUp}
-      aria-label="Back to top"
-      title="Back to top"
+      aria-label={t('ui.shared.backToTop')}
+      title={t('ui.shared.backToTop')}
       tabIndex={visible ? 0 : -1}
       aria-hidden={!visible}
       className={`fixed bottom-5 right-5 sm:bottom-8 sm:right-8 z-40 flex h-12 w-12 items-center justify-center rounded-full bg-mw-blue-600 text-white shadow-lg ring-1 ring-white/20 transition-all duration-300 hover:bg-mw-blue-700 hover:-translate-y-1 hover:shadow-xl focus:outline-none focus-visible:ring-4 focus-visible:ring-mw-blue-300 ${

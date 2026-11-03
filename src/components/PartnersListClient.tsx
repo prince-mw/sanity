@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import type { PartnerPageContent } from '@/data/partners'
 import { PartnerLogoTile } from '@/components/PartnerDetailClient'
+import { useLocale } from '@/i18n/LocaleContext'
 
 interface PartnersListClientProps {
   intro: { eyebrow: string; title: string; intro: string }
@@ -10,6 +11,7 @@ interface PartnersListClientProps {
 }
 
 export default function PartnersListClient({ intro, partners }: PartnersListClientProps) {
+  const { t } = useLocale()
   return (
     <div className="bg-white text-gray-900">
       <section className="relative overflow-hidden bg-[#062068] text-white pt-24 pb-12 lg:pt-28 lg:pb-16">
@@ -42,7 +44,7 @@ export default function PartnersListClient({ intro, partners }: PartnersListClie
                   <h2 className="text-xl font-bold text-gray-900 mb-2">{partner.name}</h2>
                   {partner.summary && <p className="text-gray-600 leading-relaxed flex-1">{partner.summary}</p>}
                   <span className="mt-5 inline-flex items-center gap-2 text-mw-blue-600 font-semibold group-hover:gap-3 transition-all">
-                    Explore the partnership
+                    {t('ui.company.partners.explore')}
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>

@@ -3,6 +3,7 @@
 import { motion } from "framer-motion"
 import { useState } from "react"
 import Link from 'next/link'
+import { useLocale } from "@/i18n/LocaleContext"
 
 // Custom Vector Icons for the 6 Community Features
 const CommunityIcon = ({ type }: { type: number }) => {
@@ -23,6 +24,7 @@ const CommunityIcon = ({ type }: { type: number }) => {
 };
 
 export default function CommunityLandingPage() {
+  const { t } = useLocale();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -70,7 +72,7 @@ export default function CommunityLandingPage() {
       {/* Top Navigation Bar */}
       <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-8">
         <Link href="/mw-science" className="text-sm font-medium text-gray-500 hover:text-blue-600 inline-flex items-center gap-1 transition-colors">
-          ← Back to MW Science
+          {t("ui.company.community.backToScience")}
         </Link>
       </div>
 
@@ -154,11 +156,11 @@ export default function CommunityLandingPage() {
               {!submitted ? (
                 <form onSubmit={handleSubmit} className="space-y-5">
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Full Name</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{t("ui.company.community.fullName")}</label>
                     <input 
                       type="text" 
                       required
-                      placeholder="Enter your full name"
+                      placeholder={t("ui.company.community.fullNamePlaceholder")}
                       value={formData.fullName}
                       onChange={(e) => setFormData({...formData, fullName: e.target.value})}
                       className="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
@@ -166,7 +168,7 @@ export default function CommunityLandingPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Email Address</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{t("ui.company.community.email")}</label>
                     <input 
                       type="email" 
                       required
@@ -178,11 +180,11 @@ export default function CommunityLandingPage() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Contact Number</label>
+                    <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{t("ui.company.community.contactNumber")}</label>
                     <input 
                       type="tel" 
                       required
-                      placeholder="Your contact number"
+                      placeholder={t("ui.company.community.contactNumberPlaceholder")}
                       value={formData.contactNumber}
                       onChange={(e) => setFormData({...formData, contactNumber: e.target.value})}
                       className="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
@@ -191,18 +193,18 @@ export default function CommunityLandingPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Country</label>
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{t("ui.company.community.country")}</label>
                       <input 
                         type="text" 
                         required
-                        placeholder="e.g. Malaysia"
+                        placeholder={t("ui.company.community.countryPlaceholder")}
                         value={formData.country}
                         onChange={(e) => setFormData({...formData, country: e.target.value})}
                         className="w-full bg-gray-50 border border-gray-300 rounded-lg p-3 text-sm focus:outline-none focus:border-blue-500 focus:bg-white transition-colors"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">Date of Birth</label>
+                      <label className="block text-xs font-bold text-gray-700 uppercase tracking-wider mb-2">{t("ui.company.community.dob")}</label>
                       <input 
                         type="date" 
                         required
@@ -217,7 +219,7 @@ export default function CommunityLandingPage() {
                     type="submit"
                     className="w-full bg-blue-600 text-white hover:bg-blue-700 py-3.5 rounded-lg font-bold text-sm tracking-wide transition-colors mt-6 shadow-md"
                   >
-                    Submit Registration
+                    {t("ui.company.community.submit")}
                   </button>
                 </form>
               ) : (
@@ -231,9 +233,9 @@ export default function CommunityLandingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                     </svg>
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Registration Received</h2>
+                  <h2 className="text-xl font-bold text-gray-900">{t("ui.company.community.receivedTitle")}</h2>
                   <p className="text-sm text-gray-500 mt-2 max-w-xs mx-auto leading-relaxed">
-                    Thank you, <strong className="text-gray-800">{formData.fullName}</strong>. Your setup has been registered successfully.
+                    {t("ui.company.community.thankYou")} <strong className="text-gray-800">{formData.fullName}</strong>. {t("ui.company.community.receivedText")}
                   </p>
                 </motion.div>
               )}
@@ -248,7 +250,7 @@ export default function CommunityLandingPage() {
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
                 </svg>
-                Go Back to MW Science Page
+                {t("ui.company.community.goBackToScience")}
               </Link>
             </div>
 

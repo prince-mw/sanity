@@ -5,6 +5,7 @@ import { CTAButton } from '@/components/CTAButton'
 import Image from 'next/image'
 import React from 'react'
 import { motion } from 'framer-motion'
+import { useLocale } from '@/i18n/LocaleContext'
 
 // Animation variants
 const fadeUp = {
@@ -68,6 +69,7 @@ interface OOHFormatsPageClientProps {
 
 export default function OOHFormatsPageClient({ oohFormats, faqs }: OOHFormatsPageClientProps) {
   const [openFAQ, setOpenFAQ] = React.useState<number | null>(0)
+  const { t } = useLocale()
 
   return (
     <div className="min-h-screen bg-white">
@@ -89,11 +91,11 @@ export default function OOHFormatsPageClient({ oohFormats, faqs }: OOHFormatsPag
             </motion.p>
             <motion.div initial="hidden" animate="visible" variants={fadeUp} className="flex flex-wrap gap-4 justify-center">
               <CTAButton href="/contact" className="inline-flex items-center gap-2 bg-white text-mw-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-50 transition-colors">
-                Plan Your Campaign
+                {t('ui.oohFormats.planYourCampaign')}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
               </CTAButton>
               <Link href="/locations" className="inline-flex items-center gap-2 border-2 border-white/30 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-colors">
-                View Locations
+                {t('ui.oohFormats.viewLocations')}
               </Link>
             </motion.div>
           </div>
@@ -137,7 +139,7 @@ export default function OOHFormatsPageClient({ oohFormats, faqs }: OOHFormatsPag
                         <svg className="w-5 h-5 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                         </svg>
-                        Specifications
+                        {t('ui.oohFormats.specifications')}
                       </h4>
                       <div className="relative">
                         <motion.div 
@@ -190,7 +192,7 @@ export default function OOHFormatsPageClient({ oohFormats, faqs }: OOHFormatsPag
                         <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        Key Benefits
+                        {t('ui.oohFormats.keyBenefits')}
                       </h4>
                       <div className="relative">
                         <motion.div 
@@ -244,7 +246,7 @@ export default function OOHFormatsPageClient({ oohFormats, faqs }: OOHFormatsPag
                       forceNavigate={!!format.learnMoreUrl}
                       className="inline-flex items-center gap-2 bg-mw-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-mw-blue-700 transition-colors"
                     >
-                      Learn more
+                      {t('ui.oohFormats.learnMore')}
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -294,10 +296,10 @@ export default function OOHFormatsPageClient({ oohFormats, faqs }: OOHFormatsPag
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
+              {t('ui.oohFormats.faqTitle')}
             </h2>
             <p className="text-lg text-gray-600">
-              Common questions about OOH advertising formats
+              {t('ui.oohFormats.faqSubtitle')}
             </p>
           </motion.div>
           <motion.div

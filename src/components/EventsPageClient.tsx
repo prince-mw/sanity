@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export interface Event {
   slug?: string
@@ -28,6 +29,7 @@ interface EventsPageClientProps {
 
 export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsPageClientProps) {
   const [activeTab, setActiveTab] = useState('upcoming')
+  const { t } = useLocale()
 
   return (
     <div className="min-h-screen bg-white">
@@ -90,7 +92,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                   : 'bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200'
               }`}
             >
-              Upcoming Events
+              {t('ui.events.upcomingEvents')}
             </button>
             <button
               onClick={() => setActiveTab('past')}
@@ -100,7 +102,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                   : 'bg-mw-gray-100 text-mw-gray-700 hover:bg-mw-gray-200'
               }`}
             >
-              Past Events
+              {t('ui.events.pastEvents')}
             </button>
           </div>
         </div>
@@ -111,15 +113,15 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">Upcoming Events</h2>
-              <p className="text-lg text-mw-gray-600">Register now to secure your spot</p>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">{t('ui.events.upcomingEvents')}</h2>
+              <p className="text-lg text-mw-gray-600">{t('ui.events.registerSubtitle')}</p>
             </div>
 
             {upcomingEvents.length === 0 ? (
               <div className="flex justify-center py-16 bg-mw-gray-50 rounded-xl">
                 <Image
                   src="https://cdn.sanity.io/images/u10im6di/production/6f8f151d73788605ee99c1ce38efaa1ecf7e4b12-534x300.png"
-                  alt="Stay Tuned for Updates"
+                  alt={t('ui.events.stayTunedAlt')}
                   width={534}
                   height={300}
                   className="w-full max-w-md h-auto"
@@ -149,11 +151,11 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                             )}
                             <div className="absolute top-3 left-3 flex gap-2">
                               <span className="px-3 py-1 bg-white text-mw-blue-600 text-xs font-medium rounded-full">
-                                Upcoming
+                                {t('ui.events.upcomingBadge')}
                               </span>
                               {event.featured && (
                                 <span className="px-3 py-1 bg-yellow-400 text-yellow-900 text-xs font-medium rounded-full">
-                                  Featured
+                                  {t('ui.events.featured')}
                                 </span>
                               )}
                             </div>
@@ -206,7 +208,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                         {/* Speakers */}
                         {event.speakersList && event.speakersList.length > 0 && (
                           <div className="mb-4">
-                            <p className="text-xs text-mw-gray-500 mb-2">Speakers</p>
+                            <p className="text-xs text-mw-gray-500 mb-2">{t('ui.events.speakers')}</p>
                             <div className="flex items-center gap-3 flex-wrap">
                               {event.speakersList.slice(0, 3).map((speaker, spkIdx) => (
                                 <div key={spkIdx} className="flex items-center gap-2">
@@ -231,7 +233,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                           href={event.slug ? `/events/${event.slug}` : '#'}
                           className="inline-block px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
                         >
-                          Register Now
+                          {t('ui.events.registerNow')}
                         </Link>
                       </div>
                     </div>
@@ -248,8 +250,8 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
         <section className="py-16 bg-mw-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">Past Events</h2>
-              <p className="text-lg text-mw-gray-600">Browse our event history</p>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">{t('ui.events.pastEvents')}</h2>
+              <p className="text-lg text-mw-gray-600">{t('ui.events.pastSubtitle')}</p>
             </div>
 
             {pastEvents.length === 0 ? (
@@ -257,8 +259,8 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                 <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Past Events</h3>
-                <p className="text-mw-gray-500">Events will appear here once they&apos;ve concluded.</p>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">{t('ui.events.noPastEvents')}</h3>
+                <p className="text-mw-gray-500">{t('ui.events.noPastEventsText')}</p>
               </div>
             ) : (
               <div className="space-y-6">
@@ -283,7 +285,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                               </svg>
                             )}
                             <span className="absolute top-3 right-3 px-3 py-1 bg-mw-gray-700 text-white text-xs font-medium rounded-full">
-                              Completed
+                              {t('ui.events.completed')}
                             </span>
                             <span className={`absolute top-3 left-3 px-3 py-1 text-xs font-medium rounded-full ${
                               event.type === 'Webinar' ? 'bg-green-100 text-green-700' :
@@ -328,7 +330,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                         {/* Speakers */}
                         {event.speakersList && event.speakersList.length > 0 && (
                           <div className="mb-4">
-                            <p className="text-xs text-mw-gray-500 mb-2">Speakers</p>
+                            <p className="text-xs text-mw-gray-500 mb-2">{t('ui.events.speakers')}</p>
                             <div className="flex items-center gap-3 flex-wrap">
                               {event.speakersList.slice(0, 3).map((speaker, spkIdx) => (
                                 <div key={spkIdx} className="flex items-center gap-2">
@@ -353,7 +355,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                           href={event.slug ? `/events/${event.slug}` : '#'}
                           className="inline-block px-6 py-3 bg-mw-gray-600 hover:bg-mw-gray-700 text-white font-medium rounded-lg transition-colors shadow-mw-md"
                         >
-                          View Event Details
+                          {t('ui.events.viewEventDetails')}
                         </Link>
                       </div>
                     </div>

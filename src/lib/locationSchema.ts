@@ -10,6 +10,7 @@ const PLACE_TYPE: Record<string, string> = {
   africa: 'Place',
   americas: 'Place',
   'americas-es': 'Place',
+  'americas-pt': 'Place',
   europe: 'Place',
   'hong-kong': 'Place',
   taiwan: 'Place',

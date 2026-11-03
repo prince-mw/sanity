@@ -6,6 +6,7 @@ import {defineField} from 'sanity'
 export function translationsField(name: string, title: string, kind: 'string' | 'text' = 'string', extra: Record<string, unknown> = {}) {
   const languages = [
     {name: 'es', title: 'Spanish'},
+    {name: 'pt', title: 'Portuguese'},
     {name: 'ja', title: 'Japanese'},
     {name: 'ko', title: 'Korean'},
     {name: 'id', title: 'Indonesian'},

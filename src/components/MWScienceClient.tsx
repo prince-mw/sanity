@@ -7,6 +7,7 @@ import { CompassNeedleAmbientDrift } from '@/components/CompassNeedleAmbientDrif
 import Image from 'next/image'
 import { GLOBE_FRAMES, GLOBE_SIZE } from '@/data/globe-frames'
 import type { SanityProduct } from '@/sanity/lib/fetch'
+import { useLocale } from '@/i18n/LocaleContext'
 
 // ─── ICONS ─────────────────────────────────────────────────────────────────────
 // Hand-drawn, Heroicons-outline-style inline SVGs (this codebase never installs an
@@ -1263,6 +1264,7 @@ function SignalsCompassDial({ activeIndex, onSelect }: { activeIndex: number; on
 // around it, and each stage icon gets a slow, staggered breathing halo. Reads
 // as "the compass is always running" rather than a scripted step-by-step walkthrough.
 function ScienceLabDiagramLivingCore() {
+  const { t } = useLocale()
   const stages = LAB_CIRCLE_STAGES
   const R = 37
   const positions = stages.map((_, i) => {
@@ -1469,7 +1471,7 @@ function ScienceLabDiagramLivingCore() {
                 key={stage.label}
                 type="button"
                 onClick={() => setMobileActive(i)}
-                aria-label={`Show ${stage.label}`}
+                aria-label={t('ui.products.aria.show').replace('{item}', stage.label)}
                 className={`h-1.5 rounded-full transition-all duration-300 ${i === mobileActive ? 'w-6 bg-mw-blue-600' : 'w-1.5 bg-mw-blue-100'}`}
               />
             ))}
@@ -1501,6 +1503,7 @@ function ScienceLabDiagramLivingCore() {
 const CATEGORY_ITEM_INTERVAL = 5000
 
 function ResearchSolutionsGrid() {
+  const { t } = useLocale()
   const [catIndex, setCatIndex] = useState(0)
   const category = SOLUTION_CATEGORY_GROUPS[catIndex]
   const accent = CATEGORY_ACCENTS[category.title]
@@ -1631,7 +1634,7 @@ function ResearchSolutionsGrid() {
               key={item.title}
               type="button"
               onClick={() => setItemIndex(i)}
-              aria-label={`Show ${item.title}`}
+              aria-label={t('ui.products.aria.show').replace('{item}', item.title)}
               className={`h-1.5 rounded-full transition-all duration-300 ${i === itemIndex ? `w-6 ${accent.accent}` : 'w-1.5 bg-mw-gray-200'}`}
             />
           ))}
@@ -1945,6 +1948,7 @@ function MarketCoverageMap() {
 const TESTIMONIAL_INTERVAL = 7500
 
 function TestimonialsSpotlight() {
+  const { t: tr } = useLocale()
   const [active, setActive] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const remainingRef = useRef(TESTIMONIAL_INTERVAL)
@@ -1991,14 +1995,14 @@ function TestimonialsSpotlight() {
 
       <button
         onClick={() => go(-1)}
-        aria-label="Previous testimonial"
+        aria-label={tr('ui.products.aria.previousTestimonial')}
         className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-mw-gray-200 items-center justify-center text-mw-gray-400 hover:text-mw-blue-600 hover:border-mw-blue-200 transition-colors"
       >
         <ArrowRightIcon className="w-4 h-4 rotate-180" />
       </button>
       <button
         onClick={() => go(1)}
-        aria-label="Next testimonial"
+        aria-label={tr('ui.products.aria.nextTestimonial')}
         className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white border border-mw-gray-200 items-center justify-center text-mw-gray-400 hover:text-mw-blue-600 hover:border-mw-blue-200 transition-colors"
       >
         <ArrowRightIcon className="w-4 h-4" />
@@ -2009,7 +2013,7 @@ function TestimonialsSpotlight() {
           <button
             key={i}
             onClick={() => setActive(i)}
-            aria-label={`Go to testimonial ${i + 1}`}
+            aria-label={tr('ui.products.aria.goToTestimonial').replace('{n}', String(i + 1))}
             className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? 'w-8 bg-mw-blue-600' : 'w-1.5 bg-mw-gray-200 hover:bg-mw-gray-300'}`}
           />
         ))}
@@ -2036,6 +2040,7 @@ function SingleItemCarousel<T>({
   renderItem: (item: T) => React.ReactNode
   ariaLabel: string
 }) {
+  const { t } = useLocale()
   const [active, setActive] = useState(0)
   const [isPaused, setIsPaused] = useState(false)
   const remainingRef = useRef(interval)
@@ -2076,14 +2081,14 @@ function SingleItemCarousel<T>({
 
       <button
         onClick={() => go(-1)}
-        aria-label={`Previous ${ariaLabel}`}
+        aria-label={t('ui.products.aria.previous').replace('{item}', ariaLabel)}
         className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-12 w-9 h-9 rounded-full bg-white border border-mw-gray-200 items-center justify-center text-mw-gray-400 hover:text-mw-blue-600 hover:border-mw-blue-200 transition-colors"
       >
         <ArrowRightIcon className="w-4 h-4 rotate-180" />
       </button>
       <button
         onClick={() => go(1)}
-        aria-label={`Next ${ariaLabel}`}
+        aria-label={t('ui.products.aria.next').replace('{item}', ariaLabel)}
         className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-12 w-9 h-9 rounded-full bg-white border border-mw-gray-200 items-center justify-center text-mw-gray-400 hover:text-mw-blue-600 hover:border-mw-blue-200 transition-colors"
       >
         <ArrowRightIcon className="w-4 h-4" />
@@ -2094,7 +2099,7 @@ function SingleItemCarousel<T>({
           <button
             key={i}
             onClick={() => setActive(i)}
-            aria-label={`Go to ${ariaLabel} ${i + 1}`}
+            aria-label={t('ui.products.aria.goTo').replace('{item}', ariaLabel).replace('{n}', String(i + 1))}
             className={`h-1.5 rounded-full transition-all duration-300 ${i === active ? 'w-6 bg-mw-blue-600' : 'w-1.5 bg-mw-gray-200 hover:bg-mw-gray-300'}`}
           />
         ))}
@@ -2109,6 +2114,7 @@ function SingleItemCarousel<T>({
 const WHY_COLUMNS_INTERVAL = 4000
 
 function WhyMWScienceCometFlow() {
+  const { t } = useLocale()
   return (
     <div className="relative">
       <div className="hidden md:block absolute left-0 right-0 top-[46px] h-3 pointer-events-none" aria-hidden="true">
@@ -2156,7 +2162,7 @@ function WhyMWScienceCometFlow() {
         <SingleItemCarousel
           items={WHY_COLUMNS}
           interval={WHY_COLUMNS_INTERVAL}
-          ariaLabel="highlight"
+          ariaLabel={t('ui.products.aria.highlight')}
           renderItem={(col) => (
             <div className="text-center p-6">
               <div className="relative inline-flex items-center justify-center w-14 h-14 mb-5">
@@ -2178,9 +2184,10 @@ function WhyMWScienceCometFlow() {
 // ─── MAIN COMPONENT ────────────────────────────────────────────────────────────
 
 export default function MWScienceClient({ product }: { product?: SanityProduct | null } = {}) {
+  const { t } = useLocale()
   const heroLine1 = product?.heroSubtitle || 'Transforming fragmented journeys into actionable signals.'
   const heroLine2 = product?.description || 'MW Science gives you the confidence to plan, measure, and act with precision.'
-  const heroCtaText = product?.ctaText || 'Talk to a MW Science Lab Expert'
+  const heroCtaText = product?.ctaText || t('ui.products.talkToScienceExpert')
   const heroCtaLink = product?.ctaLink || '/contact'
   const finalCtaTitle = product?.finalCtaTitle || 'True North for OOH'
   const finalCtaSubtitle = product?.finalCtaSubtitle || 'Moving Walls is the decision compass for OOH. Powered by MW Science, we provide organisations the clarity to navigate complex journeys, eliminate guesswork, and invest with confidence.'
@@ -2241,7 +2248,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
                   href="#signals"
                   className="inline-flex items-center justify-center gap-2 border border-white/20 hover:bg-white/5 text-white px-8 py-4 rounded-xl font-medium transition-all"
                 >
-                  Explore Signals
+                  {t('ui.products.exploreSignals')}
                 </a>
               </div>
             </motion.div>
@@ -2454,7 +2461,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
               <SingleItemCarousel
                 items={MARKET_METRICS}
                 interval={MARKET_METRICS_INTERVAL}
-                ariaLabel="metric"
+                ariaLabel={t('ui.products.aria.metric')}
                 renderItem={(m) => <AnimatedStat value={m.value} label={m.label} />}
               />
             </div>
@@ -2526,7 +2533,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
               href="/contact"
               className="inline-flex items-center justify-center gap-2 bg-white text-mw-blue-700 hover:bg-mw-blue-50 px-8 py-4 rounded-xl font-semibold transition-all"
             >
-              Speak to MW Science Lab Expert
+              {t('ui.products.speakToScienceExpert')}
             </CTAButton>
           </motion.div>
 

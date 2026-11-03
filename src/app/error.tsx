@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react'
 import Link from 'next/link'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export default function Error({
   error,
@@ -10,6 +11,7 @@ export default function Error({
   error: Error & { digest?: string }
   reset: () => void
 }) {
+  const { t } = useLocale()
   useEffect(() => {
     // Log the error to an error reporting service
     console.error('Application error:', error)
@@ -42,11 +44,10 @@ export default function Error({
 
         {/* Error Message */}
         <h1 className="text-3xl font-bold text-mw-gray-900 mb-4">
-          Oops! Something went wrong
+          {t('ui.errors.error.title')}
         </h1>
         <p className="text-mw-gray-600 mb-8 leading-relaxed">
-          We apologize for the inconvenience. An unexpected error occurred while loading this page. 
-          Our team has been notified.
+          {t('ui.errors.error.description')}
         </p>
 
         {/* Error Details (Development Only) */}
@@ -71,7 +72,7 @@ export default function Error({
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-            Try Again
+            {t('ui.errors.error.tryAgain')}
           </button>
           <Link
             href="/"
@@ -80,15 +81,15 @@ export default function Error({
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
-            Go Home
+            {t('ui.errors.error.goHome')}
           </Link>
         </div>
 
         {/* Help Text */}
         <p className="mt-8 text-sm text-mw-gray-500">
-          If the problem persists, please{' '}
+          {t('ui.errors.error.persists')}{' '}
           <Link href="/contact" className="text-mw-blue-600 hover:underline">
-            contact our support team
+            {t('ui.errors.error.contactSupport')}
           </Link>
         </p>
       </div>

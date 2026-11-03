@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useState, useMemo } from "react";
 import { CTAButton } from "./CTAButton";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface CaseStudy {
   slug: string;
@@ -21,12 +22,13 @@ interface CaseStudy {
   challenge?: string;
 }
 
-const BADGE_LABELS: Record<string, string> = {
-  "measurement-brand-lift": "Measurement & Brand Lift",
-  "platform-adoption": "Platform Adoption",
-  campaign: "Campaign",
-  partnership: "Partnership",
-  "retail-media-data": "Retail Media & Data",
+// Badge value -> translation key (ui.caseStudies.badges.*)
+const BADGE_LABEL_KEYS: Record<string, string> = {
+  "measurement-brand-lift": "measurementBrandLift",
+  "platform-adoption": "platformAdoption",
+  campaign: "campaign",
+  partnership: "partnership",
+  "retail-media-data": "retailMediaData",
 };
 
 // Matches the case study detail page: most badges are MW blue, Retail Media & Data and
@@ -34,7 +36,9 @@ const BADGE_LABELS: Record<string, string> = {
 const WARM_BADGES = new Set(["retail-media-data", "partnership"]);
 
 function CategoryBadge({ caseStudy, className = "" }: { caseStudy: CaseStudy; className?: string }) {
-  const label = (caseStudy.categoryBadge && BADGE_LABELS[caseStudy.categoryBadge]) || caseStudy.industry;
+  const { t } = useLocale();
+  const badgeKey = caseStudy.categoryBadge && BADGE_LABEL_KEYS[caseStudy.categoryBadge];
+  const label = (badgeKey && t(`ui.caseStudies.badges.${badgeKey}`)) || caseStudy.industry;
   const isWarm = caseStudy.categoryBadge ? WARM_BADGES.has(caseStudy.categoryBadge) : false;
   if (!label) return null;
   return (
@@ -63,6 +67,7 @@ export default function CaseStudiesListClient({
   countries, 
   industries 
 }: CaseStudiesListClientProps) {
+  const { t } = useLocale();
   const [selectedCountry, setSelectedCountry] = useState("All");
   const [selectedIndustry, setSelectedIndustry] = useState("All");
   const [sortBy, setSortBy] = useState<SortOption>("newest");
@@ -165,14 +170,14 @@ export default function CaseStudiesListClient({
               <svg className="w-4 h-4 text-mw-blue-600" fill="currentColor" viewBox="0 0 20 20">
                 <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
               </svg>
-              <span className="text-mw-blue-600 text-sm font-medium">Success Stories</span>
+              <span className="text-mw-blue-600 text-sm font-medium">{t("ui.caseStudies.badge")}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
-              Case Studies
-              <span className="text-mw-blue-600 block">Real Results, Real Impact</span>
+              {t("ui.caseStudies.heroTitle")}
+              <span className="text-mw-blue-600 block">{t("ui.caseStudies.heroTitleHighlight")}</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Discover how leading brands across industries achieve measurable success with our platform
+              {t("ui.caseStudies.heroSubtitle")}
             </p>
           </motion.div>
         </div>
@@ -184,41 +189,41 @@ export default function CaseStudiesListClient({
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                <span className="text-sm text-mw-gray-600 whitespace-nowrap">Country:</span>
+                <span className="text-sm text-mw-gray-600 whitespace-nowrap">{t("ui.caseStudies.countryLabel")}</span>
                 <select
                   value={selectedCountry}
                   onChange={(e) => handleCountryChange(e.target.value)}
                   className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer flex-1 sm:flex-none sm:min-w-[140px]"
                 >
                   {countries.map((country) => (
-                    <option key={country} value={country}>{country}</option>
+                    <option key={country} value={country}>{country === "All" ? t("ui.caseStudies.all") : country}</option>
                   ))}
                 </select>
               </div>
               <div className="flex items-center gap-3 w-full sm:w-auto">
-                <span className="text-sm text-mw-gray-600 whitespace-nowrap">Industry:</span>
+                <span className="text-sm text-mw-gray-600 whitespace-nowrap">{t("ui.caseStudies.industryLabel")}</span>
                 <select
                   value={selectedIndustry}
                   onChange={(e) => handleIndustryChange(e.target.value)}
                   className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer flex-1 sm:flex-none sm:min-w-[160px]"
                 >
                   {industries.map((industry) => (
-                    <option key={industry} value={industry}>{industry}</option>
+                    <option key={industry} value={industry}>{industry === "All" ? t("ui.caseStudies.all") : industry}</option>
                   ))}
                 </select>
               </div>
             </div>
             <div className="flex items-center gap-3">
-              <span className="text-sm text-mw-gray-600 whitespace-nowrap">Sort by:</span>
+              <span className="text-sm text-mw-gray-600 whitespace-nowrap">{t("ui.caseStudies.sortBy")}</span>
               <select
                 value={sortBy}
                 onChange={(e) => handleSortChange(e.target.value as SortOption)}
                 className="px-4 py-2 border border-mw-gray-300 rounded-lg text-sm font-medium text-mw-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-mw-blue-500 cursor-pointer"
               >
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="title-asc">Title (A-Z)</option>
-                <option value="title-desc">Title (Z-A)</option>
+                <option value="newest">{t("ui.caseStudies.sortNewest")}</option>
+                <option value="oldest">{t("ui.caseStudies.sortOldest")}</option>
+                <option value="title-asc">{t("ui.caseStudies.sortTitleAsc")}</option>
+                <option value="title-desc">{t("ui.caseStudies.sortTitleDesc")}</option>
               </select>
             </div>
           </div>
@@ -240,7 +245,7 @@ export default function CaseStudiesListClient({
                     <div className="flex flex-col justify-center text-white">
                       <span className="inline-flex items-center gap-2 px-3 py-1 bg-white/20 rounded-full text-sm w-fit mb-4">
                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                        Featured Case Study
+                        {t("ui.caseStudies.featuredCaseStudy")}
                       </span>
                       <h2 className="text-3xl lg:text-4xl font-bold mb-4">{featuredCase.title}</h2>
                       <p className="text-blue-100 text-lg mb-6 line-clamp-3">
@@ -248,7 +253,7 @@ export default function CaseStudiesListClient({
                       </p>
                       <div className="flex items-center gap-3 text-sm text-blue-200">
                         <CategoryBadge caseStudy={featuredCase} />
-                        <span>{featuredCase.brand || 'Client'}</span>
+                        <span>{featuredCase.brand || t("ui.caseStudies.client")}</span>
                         <span>•</span>
                         <span>{featuredCase.country}</span>
                       </div>
@@ -277,9 +282,12 @@ export default function CaseStudiesListClient({
           {/* Results Count */}
           <div className="flex items-center justify-between mb-8">
             <p className="text-mw-gray-600">
-              Showing <span className="font-semibold">{paginatedCaseStudies.length}</span> of{" "}
-              <span className="font-semibold">{filteredAndSortedCaseStudies.length}</span> case studies
-              {selectedCountry !== "All" && ` in ${selectedCountry}`}
+              {t("ui.caseStudies.showingCount").split(/(\{shown\}|\{total\})/).map((part: string, i: number) =>
+                part === "{shown}" ? <span key={i} className="font-semibold">{paginatedCaseStudies.length}</span>
+                : part === "{total}" ? <span key={i} className="font-semibold">{filteredAndSortedCaseStudies.length}</span>
+                : part
+              )}
+              {selectedCountry !== "All" && t("ui.caseStudies.inCountry").replace("{country}", selectedCountry)}
               {selectedIndustry !== "All" && ` • ${selectedIndustry}`}
             </p>
           </div>
@@ -291,8 +299,8 @@ export default function CaseStudiesListClient({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-mw-gray-900 mb-2">No case studies found</h3>
-              <p className="text-mw-gray-600 mb-6">Try adjusting your filters to find what you&apos;re looking for.</p>
+              <h3 className="text-2xl font-bold text-mw-gray-900 mb-2">{t("ui.caseStudies.noResultsTitle")}</h3>
+              <p className="text-mw-gray-600 mb-6">{t("ui.caseStudies.noResultsText")}</p>
               <button
                 onClick={() => {
                   setSelectedCountry("All");
@@ -300,7 +308,7 @@ export default function CaseStudiesListClient({
                 }}
                 className="px-6 py-3 bg-mw-blue-600 text-white rounded-lg hover:bg-mw-blue-700 transition-colors"
               >
-                Clear Filters
+                {t("ui.caseStudies.clearFilters")}
               </button>
             </div>
           ) : (
@@ -355,7 +363,7 @@ export default function CaseStudiesListClient({
                       disabled={currentPage === 1}
                       className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      Previous
+                      {t("ui.caseStudies.previous")}
                     </button>
                     
                     {getPageNumbers().map((page, index) => (
@@ -380,7 +388,7 @@ export default function CaseStudiesListClient({
                       disabled={currentPage === totalPages}
                       className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                     >
-                      Next
+                      {t("ui.caseStudies.next")}
                     </button>
                   </nav>
                 </div>
@@ -394,16 +402,16 @@ export default function CaseStudiesListClient({
       <section className="py-16 bg-white">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">
-            Ready to Create Your Success Story?
+            {t("ui.caseStudies.ctaTitle")}
           </h2>
           <p className="text-mw-gray-600 mb-8 max-w-2xl mx-auto">
-            Join leading brands who have achieved measurable results with our platform.
+            {t("ui.caseStudies.ctaText")}
           </p>
           <CTAButton
             href="/contact"
             className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white rounded-xl hover:bg-mw-blue-700 transition-colors font-medium"
           >
-            Get Started
+            {t("ui.caseStudies.getStarted")}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>

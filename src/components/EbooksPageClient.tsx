@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { useZohoPopup } from './ZohoPopupProvider'
+import { useLocale } from '@/i18n/LocaleContext'
 
 const ITEMS_PER_PAGE = 12
 
@@ -41,6 +42,15 @@ export interface Ebook {
 // Categories for filtering
 const categories = ["All", "Guide", "Whitepaper", "Playbook", "Market Report"]
 
+// Translation keys for the displayed category labels (the values above are matched against data)
+const categoryLabelKeys: Record<string, string> = {
+  "All": 'ui.ebooks.categoryAll',
+  "Guide": 'ui.ebooks.categoryGuide',
+  "Whitepaper": 'ui.ebooks.categoryWhitepaper',
+  "Playbook": 'ui.ebooks.categoryPlaybook',
+  "Market Report": 'ui.ebooks.categoryMarketReport',
+}
+
 // E-Book Card Component
 const EbookCard = ({ 
   ebook, 
@@ -48,7 +58,9 @@ const EbookCard = ({
 }: { 
   ebook: Ebook; 
   onDownload: (ebook: Ebook) => void 
-}) => (
+}) => {
+  const { t } = useLocale()
+  return (
   <motion.div
     variants={staggerItem}
     className="group bg-white rounded-md overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
@@ -63,10 +75,10 @@ const EbookCard = ({
       
       <div className="absolute top-4 left-4 flex gap-2">
         {(ebook.new || ebook.isNew) && (
-          <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">NEW</span>
+          <span className="bg-green-500 text-white text-xs font-bold px-3 py-1 rounded-full">{t('ui.ebooks.newBadge')}</span>
         )}
         {ebook.featured && (
-          <span className="bg-mw-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">FEATURED</span>
+          <span className="bg-mw-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">{t('ui.ebooks.featuredBadge')}</span>
         )}
       </div>
 
@@ -98,7 +110,7 @@ const EbookCard = ({
             href={`/ebooks/${ebook.slug}`}
             className="text-mw-blue-600 font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all"
           >
-            Read More
+            {t('ui.ebooks.readMore')}
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -108,7 +120,7 @@ const EbookCard = ({
           onClick={() => onDownload(ebook)}
           className="text-mw-blue-600 font-medium text-sm flex items-center gap-1 hover:gap-2 transition-all"
         >
-          Download
+          {t('ui.ebooks.download')}
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
           </svg>
@@ -116,7 +128,8 @@ const EbookCard = ({
       </div>
     </div>
   </motion.div>
-)
+  )
+}
 
 interface EbooksPageClientProps {
   ebooks: Ebook[]
@@ -126,6 +139,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
   const [activeCategory, setActiveCategory] = useState("All")
   const [currentPage, setCurrentPage] = useState(1)
   const { openZohoPopup } = useZohoPopup()
+  const { t } = useLocale()
 
   const filteredEbooks = activeCategory === "All"
     ? ebooks
@@ -208,7 +222,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
               <div className="grid lg:grid-cols-2 gap-8 p-8 md:p-12 lg:p-16 items-center relative">
                 <div>
                   <span className="inline-block bg-white/20 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-full mb-6">
-                    ✨ Featured E-Book
+                    {t('ui.ebooks.featuredEbook')}
                   </span>
                   <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
                     {featuredEbook.title}
@@ -224,14 +238,14 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                       </svg>
-                      Download Free E-Book
+                      {t('ui.ebooks.downloadFreeEbook')}
                     </button>
                     {featuredEbook.slug && (
                       <Link
                         href={`/ebooks/${featuredEbook.slug}`}
                         className="inline-flex items-center gap-2 bg-transparent border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white/10 transition-colors"
                       >
-                        Read More
+                        {t('ui.ebooks.readMore')}
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
@@ -248,7 +262,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
                     />
                   </div>
                   <div className="absolute -bottom-4 -left-4 w-24 h-24 bg-yellow-400 rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-yellow-900 font-bold text-sm text-center">NEW<br/>2026</span>
+                    <span className="text-yellow-900 font-bold text-sm text-center">{t('ui.ebooks.newBadge')}<br/>2026</span>
                   </div>
                 </div>
               </div>
@@ -277,7 +291,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
                     : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
-                {category}
+                {categoryLabelKeys[category] ? t(categoryLabelKeys[category]) : category}
                 {category !== "All" && (
                   <span className="ml-2 text-xs opacity-70">
                     ({ebooks.filter(e => e.category === category).length})
@@ -307,7 +321,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
 
           {filteredEbooks.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">No e-books found in this category.</p>
+              <p className="text-gray-500 text-lg">{t('ui.ebooks.noEbooksFound')}</p>
             </div>
           )}
 
@@ -319,7 +333,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
                   disabled={currentPage === 1}
                   className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  Previous
+                  {t('ui.ebooks.previous')}
                 </button>
 
                 {getPageNumbers().map((page, index) => (
@@ -344,7 +358,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
                   disabled={currentPage === totalPages}
                   className="px-4 py-2 rounded-lg border border-gray-300 text-gray-700 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  Next
+                  {t('ui.ebooks.next')}
                 </button>
               </nav>
             </div>

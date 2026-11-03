@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+import { useLocale } from '@/i18n/LocaleContext';
 
 const AUDIENCE_ROLES = [
   {
@@ -31,6 +34,7 @@ const AUDIENCE_ROLES = [
 ];
 
 export const AudiencesSection: React.FC = () => {
+  const { t } = useLocale();
   return (
     <section id="audiences" className="bg-[#f8fafc] text-slate-900 py-12 sm:py-16 lg:py-20 border-t border-slate-200/80">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -79,7 +83,7 @@ export const AudiencesSection: React.FC = () => {
                 </div>
 
                 <div className="mt-6 pt-4 border-t border-slate-100 flex items-center text-xs font-bold text-blue-600 group-hover:text-blue-700">
-                  <span>Explore More</span>
+                  <span>{t('ui.products.exploreMore')}</span>
                   <span className="ml-1 group-hover:translate-x-1 transition-transform">→</span>
                 </div>
               </div>

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useZohoPopup } from './ZohoPopupProvider'
+import { useLocale } from '@/i18n/LocaleContext'
 import { LandingPageRenderer } from './landing'
 import { type SgFaq, type SgImage, type SgLandmark, type SgScience, type SgSite } from '@/data/singapore'
 
@@ -35,11 +36,12 @@ const PinIcon = () => (
 /** Opens the Singapore Zoho form in the site popup, and points the navbar CTA at it while mounted */
 export function useSgForm(formUrl: string) {
   const { openZohoPopup, setCurrentPageFormUrl } = useZohoPopup()
+  const { t } = useLocale()
   useEffect(() => {
     setCurrentPageFormUrl(formUrl)
     return () => setCurrentPageFormUrl(null)
   }, [formUrl, setCurrentPageFormUrl])
-  return () => openZohoPopup(formUrl, 'Contact Our Singapore Team')
+  return () => openZohoPopup(formUrl, (t('ui.locations.contactTeam') as string).replace('{place}', 'Singapore'))
 }
 
 export function SgFormButton({
@@ -78,6 +80,7 @@ export function SgFormButton({
 
 /** Real image, or a labelled placeholder describing the photo still needed */
 export function SgImageBox({ image, className = '', sizes = '100vw', priority = false }: { image: SgImage; className?: string; sizes?: string; priority?: boolean }) {
+  const { t } = useLocale()
   return (
     <div className={`relative overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 ${className}`}>
       {image.src ? (
@@ -87,7 +90,7 @@ export function SgImageBox({ image, className = '', sizes = '100vw', priority = 
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <span className="text-[11px] font-semibold uppercase tracking-wider">Image placeholder</span>
+          <span className="text-[11px] font-semibold uppercase tracking-wider">{t('ui.shared.imagePlaceholder')}</span>
           <span className="text-xs leading-snug max-w-[18rem]">{image.need}</span>
         </div>
       )}
@@ -105,6 +108,7 @@ export function SgSectionHeading({ title, intro, center = false, as: Tag = 'h2' 
 }
 
 export function SgLandmarkCards({ landmarks, imageOnly = false }: { landmarks: SgLandmark[]; imageOnly?: boolean }) {
+  const { t } = useLocale()
   return (
     <div className="grid md:grid-cols-3 gap-4 lg:gap-6">
       {landmarks.map((l, i) => (
@@ -120,13 +124,13 @@ export function SgLandmarkCards({ landmarks, imageOnly = false }: { landmarks: S
             <dl className={`mt-5 grid gap-4 border-t border-gray-100 pt-4 ${l.reach && l.impressions ? 'grid-cols-2' : 'grid-cols-1'}`}>
               {l.reach && (
               <div>
-                <dt className="text-xs text-gray-500">Monthly reach</dt>
+                <dt className="text-xs text-gray-500">{t('ui.locations.monthlyReach')}</dt>
                 <dd className="text-lg font-bold text-mw-blue-600">{l.reach}</dd>
               </div>
               )}
               {l.impressions && (
               <div>
-                <dt className="text-xs text-gray-500">Monthly impressions</dt>
+                <dt className="text-xs text-gray-500">{t('ui.locations.monthlyImpressionsLower')}</dt>
                 <dd className="text-lg font-bold text-mw-blue-600">{l.impressions}</dd>
               </div>
               )}
@@ -140,7 +144,9 @@ export function SgLandmarkCards({ landmarks, imageOnly = false }: { landmarks: S
   )
 }
 
-export function SgFaqList({ faqs, heading = 'Frequently Asked Questions', bg = 'bg-gray-50' }: { faqs: SgFaq[]; heading?: string; bg?: string }) {
+export function SgFaqList({ faqs, heading: headingProp, bg = 'bg-gray-50' }: { faqs: SgFaq[]; heading?: string; bg?: string }) {
+  const { t } = useLocale()
+  const heading = headingProp === undefined ? t('ui.locations.faqs') : headingProp
   const [open, setOpen] = useState<number | null>(0)
   return (
     <section className={`py-12 lg:py-16 ${bg}`}>
@@ -234,13 +240,14 @@ export function SgClosingCta({ heading, body, button, onOpen, showArrow = true }
 
 /** Sites grouped by region / area: one tab per group, sites shown as tiles */
 export function SgSiteGrid({ sites }: { sites: SgSite[] }) {
+  const { t } = useLocale()
   const groups = useMemo(() => Array.from(new Set(sites.map((s) => s.group))), [sites])
   const [active, setActive] = useState(groups[0])
   const visible = sites.filter((s) => s.group === active)
 
   return (
     <div>
-      <div className="flex flex-wrap justify-center gap-2 mb-6" role="tablist" aria-label="Areas">
+      <div className="flex flex-wrap justify-center gap-2 mb-6" role="tablist" aria-label={t('ui.locations.areas')}>
         {groups.map((g) => {
           const selected = g === active
           const count = sites.filter((s) => s.group === g).length

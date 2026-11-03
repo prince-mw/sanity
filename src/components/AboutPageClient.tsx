@@ -7,6 +7,7 @@ import Image from "next/image";
 import ContactForm from "./ContactForm";
 import { CTAButton } from "./CTAButton";
 import { transformCompanyPage } from "@/sanity/lib/fetch";
+import { useLocale } from "@/i18n/LocaleContext";
 
 const staticAssociations = [
   { name: "World Out of Home Organisation", logo: "/assets/images/proudly-associated-logos/world-out-of-home-organisation-member-2024.png" },
@@ -25,6 +26,7 @@ interface AboutPageClientProps {
 }
 
 export default function AboutPageClient({ initialData }: AboutPageClientProps) {
+  const { t } = useLocale()
   const [pageData] = useState<ReturnType<typeof transformCompanyPage> | null>(initialData)
   const [associations] = useState(
     initialData?.associations && initialData.associations.length > 0
@@ -114,7 +116,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
               <svg className="w-4 h-4 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
-              <span className="text-mw-blue-600 text-sm font-medium">About Moving Walls</span>
+              <span className="text-mw-blue-600 text-sm font-medium">{t("ui.company.about.eyebrow")}</span>
             </div>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
               {pageData?.title || <>Transforming How Brands
@@ -141,7 +143,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             className="text-center mb-10"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-6">
-              Who We Are
+              {t("ui.company.about.whoWeAre")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
               Out of home advertising has always been powerful. But for decades it lacked one thing marketers demand today.
@@ -279,7 +281,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Our Core Capabilities
+              {t("ui.company.about.coreCapabilities")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Powered by Moving Audiences®, our technology stack transforms how outdoor media is planned, activated, and measured.
@@ -330,7 +332,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
               <div className="relative z-10 space-y-5">
                 <div>
                   <span className="inline-block px-4 py-1.5 bg-mw-blue-600/20 text-mw-blue-300 text-sm font-medium rounded-full mb-3">
-                    Industry Impact
+                    {t("ui.company.about.industryImpact")}
                   </span>
                   <h3 className="text-2xl font-bold">
                     Why This Changes the Industry
@@ -416,10 +418,10 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             className="text-center mb-12"
           >
             <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
-              Our Associations
+              {t("ui.company.about.associationsLabel")}
             </span>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
-              We are Proudly Associated with
+              {t("ui.company.about.associationsTitle")}
             </h2>
             <p className="text-mw-gray-600 max-w-2xl mx-auto text-lg">
               Partnering with leading industry organizations to drive innovation and excellence in out-of-home advertising.
@@ -479,7 +481,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             className="text-center text-white"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Our Mission
+              {t("ui.company.about.mission")}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-8 max-w-4xl mx-auto leading-relaxed">
               {pageData?.mission || 'We are on a mission to reimagine out-of-home media and turn every screen into a connected opportunity. By combining global reach with local expertise, we\'re transforming how brands connect with audiences in the physical world.'}
@@ -489,7 +491,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
                 href="/contact"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-mw-gray-50 text-mw-blue-600 font-semibold rounded-lg transition-colors shadow-lg"
               >
-                Get in Touch
+                {t("ui.company.getInTouch")}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -498,7 +500,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
                 href="/our-story"
                 className="px-8 py-3 border-2 border-white hover:bg-white hover:text-mw-blue-600 text-white font-semibold rounded-lg transition-colors"
               >
-                Read Our Story
+                {t("ui.company.about.readOurStory")}
               </Link>
             </div>
           </motion.div>

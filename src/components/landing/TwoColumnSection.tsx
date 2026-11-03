@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { CTAButton } from "../CTAButton";
+import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getButtonClasses, type BackgroundColor } from "./utils";
 import SanityPortableText from "@/components/SanityPortableText";
 import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
@@ -29,6 +30,7 @@ export function TwoColumnSection({
   backgroundColor = 'white',
   ctaPlacement = 'text',
 }: TwoColumnSectionProps) {
+  const { t } = useLocale();
   const bgClasses = getBackgroundClasses(backgroundColor);
   const isDark = backgroundColor === 'dark' || backgroundColor === 'blue' || backgroundColor === 'gradient';
   const { openZohoPopup } = useZohoPopup();
@@ -84,7 +86,7 @@ export function TwoColumnSection({
               <div className="relative aspect-video rounded-2xl overflow-hidden shadow-xl bg-white">
                 <Image
                   src={image}
-                  alt={heading || 'Section image'}
+                  alt={heading || t('ui.shared.alt.sectionImage')}
                   fill
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="object-contain"

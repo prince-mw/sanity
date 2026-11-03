@@ -5,10 +5,17 @@ export const LOCATION_LANGUAGE_GROUPS: Record<string, Record<string, string>> = 
   americas: {
     en: 'https://www.movingwalls.com/locations/americas',
     es: 'https://www.movingwalls.com/locations/americas-es',
+    'pt-BR': 'https://www.movingwalls.com/locations/americas-pt',
   },
   'americas-es': {
     en: 'https://www.movingwalls.com/locations/americas',
     es: 'https://www.movingwalls.com/locations/americas-es',
+    'pt-BR': 'https://www.movingwalls.com/locations/americas-pt',
+  },
+  'americas-pt': {
+    en: 'https://www.movingwalls.com/locations/americas',
+    es: 'https://www.movingwalls.com/locations/americas-es',
+    'pt-BR': 'https://www.movingwalls.com/locations/americas-pt',
   },
   china: {
     en: 'https://www.movingwalls.com/locations/china',
@@ -43,6 +50,7 @@ function cityPairs(country: string, translatedCountry: string, lang: string, cit
 const UI_LOCALE_TO_GROUP_KEY: Record<string, string> = {
   en: 'en',
   es: 'es',
+  pt: 'pt-BR',
   zh: 'zh-CN',
 }
 
@@ -55,6 +63,7 @@ export function getLocationGroupKeyForLocale(locale: string): string | undefined
 const LOCATION_OWN_GROUP_KEY: Record<string, string> = {
   americas: 'en',
   'americas-es': 'es',
+  'americas-pt': 'pt-BR',
   china: 'en',
   'china-zh': 'zh-CN',
 }

@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useLocale } from '@/i18n/LocaleContext'
 import { SG_BASE_PATH, type SgMain, type SgVenue } from '@/data/singapore'
 import {
   SG_NAVY,
@@ -48,6 +49,7 @@ export default function SingaporeLandingClient({
   logoSection: SgLogoSection | null
 }) {
   const openForm = useSgForm(formUrl)
+  const { t } = useLocale()
   const [activeVenue, setActiveVenue] = useState(venues[0]?.slug)
 
   return (
@@ -79,7 +81,7 @@ export default function SingaporeLandingClient({
                   href="/locations"
                   className="inline-flex items-center justify-center gap-2 border-2 border-white/40 text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-white/10 transition-all"
                 >
-                  All Locations
+                  {t('ui.locations.allLocations')}
                 </Link>
               </div>
             </div>
@@ -118,7 +120,7 @@ export default function SingaporeLandingClient({
       <section id="venues" className="py-12 lg:py-16 bg-gray-50 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <SgSectionHeading title={main.venuesHeading} intro={main.venuesIntro} center />
-          <div role="tablist" aria-label="Venue types" className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center">
+          <div role="tablist" aria-label={t('ui.locations.venueTypes')} className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center">
             {venues.map((v) => {
               const selected = activeVenue === v.slug
               return (
@@ -159,7 +161,7 @@ export default function SingaporeLandingClient({
                       {v.badge}
                     </span>
                   </div>
-                  <p className="text-sm text-gray-500 mb-3"><span className="font-semibold text-gray-900">Best for:</span> {v.tabBestFor}</p>
+                  <p className="text-sm text-gray-500 mb-3"><span className="font-semibold text-gray-900">{t('ui.locations.bestFor')}</span> {v.tabBestFor}</p>
                   <p className="text-gray-600 leading-relaxed mb-6">{v.tabDescription}</p>
                   {v.tabNote && <p className="mb-6 inline-flex rounded-lg bg-gray-50 border border-gray-100 px-4 py-3 text-sm font-semibold text-gray-700">{v.tabNote}</p>}
                   {v.tabStats.length > 0 && (
@@ -252,8 +254,8 @@ export default function SingaporeLandingClient({
             <table className="w-full text-left">
               <thead className={`${SG_NAVY} text-white`}>
                 <tr>
-                  <th scope="col" className="px-5 py-4 font-semibold w-2/5">What you get</th>
-                  <th scope="col" className="px-5 py-4 font-semibold">What it tells you</th>
+                  <th scope="col" className="px-5 py-4 font-semibold w-2/5">{t('ui.locations.whatYouGet')}</th>
+                  <th scope="col" className="px-5 py-4 font-semibold">{t('ui.locations.whatItTellsYou')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">

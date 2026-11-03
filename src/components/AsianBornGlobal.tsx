@@ -21,19 +21,20 @@ function parseHighlightedText(text: string): React.ReactNode[] {
 
 // 3D Globe component with rotating wireframe and city pins
 function Globe3D() {
+  const { t } = useLocale();
   // City locations on the globe (angle in degrees from center, distance from center)
   const cities = [
-    { name: "Singapore", angle: 105, distance: 0.15, lat: 1.3, isOrigin: true },
-    { name: "Malaysia", angle: 95, distance: 0.22, lat: 4.2, isOrigin: true },
-    { name: "Tokyo", angle: 60, distance: 0.55, lat: 35.7 },
-    { name: "Sydney", angle: 140, distance: 0.65, lat: -33.9 },
-    { name: "Dubai", angle: 250, distance: 0.35, lat: 25.2 },
-    { name: "London", angle: 280, distance: 0.72, lat: 51.5 },
-    { name: "New York", angle: 330, distance: 0.85, lat: 40.7 },
-    { name: "Mumbai", angle: 230, distance: 0.25, lat: 19.1 },
-    { name: "Shanghai", angle: 80, distance: 0.45, lat: 31.2 },
-    { name: "Los Angeles", angle: 350, distance: 0.75, lat: 34.1 },
-    { name: "Paris", angle: 275, distance: 0.68, lat: 48.9 },
+    { key: "singapore", name: "Singapore", angle: 105, distance: 0.15, lat: 1.3, isOrigin: true },
+    { key: "malaysia", name: "Malaysia", angle: 95, distance: 0.22, lat: 4.2, isOrigin: true },
+    { key: "tokyo", name: "Tokyo", angle: 60, distance: 0.55, lat: 35.7 },
+    { key: "sydney", name: "Sydney", angle: 140, distance: 0.65, lat: -33.9 },
+    { key: "dubai", name: "Dubai", angle: 250, distance: 0.35, lat: 25.2 },
+    { key: "london", name: "London", angle: 280, distance: 0.72, lat: 51.5 },
+    { key: "newYork", name: "New York", angle: 330, distance: 0.85, lat: 40.7 },
+    { key: "mumbai", name: "Mumbai", angle: 230, distance: 0.25, lat: 19.1 },
+    { key: "shanghai", name: "Shanghai", angle: 80, distance: 0.45, lat: 31.2 },
+    { key: "losAngeles", name: "Los Angeles", angle: 350, distance: 0.75, lat: 34.1 },
+    { key: "paris", name: "Paris", angle: 275, distance: 0.68, lat: 48.9 },
   ];
 
   // Convert polar to cartesian for pin positions on the globe face
@@ -297,7 +298,7 @@ function Globe3D() {
                   fontSize="10"
                   fontWeight="bold"
                 >
-                  {city.name}
+                  {t(`homeVisuals.cities.${city.key}`)}
                 </text>
               </motion.g>
             )}

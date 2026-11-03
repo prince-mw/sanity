@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
 import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
 
@@ -27,6 +28,7 @@ export function LogoCarouselSection({
   grayscale = true,
   backgroundColor = 'white',
 }: LogoCarouselSectionProps) {
+  const { t } = useLocale();
   const bgClasses = getBackgroundClasses(backgroundColor);
   const textColor = getTextColorClasses(backgroundColor);
   const subtextColor = getSubtextColorClasses(backgroundColor);
@@ -72,7 +74,7 @@ export function LogoCarouselSection({
                         <button onClick={() => openZohoPopup(logo.link!, logo.name)} className="relative block w-full h-full">
                           <Image
                             src={logo.logo}
-                            alt={logo.name || 'Partner logo'}
+                            alt={logo.name || t('ui.shared.alt.partnerLogo')}
                             fill
                             sizes="128px"
                             className="object-contain"
@@ -82,7 +84,7 @@ export function LogoCarouselSection({
                         <a href={logo.link} target="_blank" rel="noopener noreferrer" className="relative block w-full h-full">
                           <Image
                             src={logo.logo}
-                            alt={logo.name || 'Partner logo'}
+                            alt={logo.name || t('ui.shared.alt.partnerLogo')}
                             fill
                             sizes="128px"
                             className="object-contain"
@@ -92,7 +94,7 @@ export function LogoCarouselSection({
                     ) : (
                       <Image
                         src={logo.logo}
-                        alt={logo.name || 'Partner logo'}
+                        alt={logo.name || t('ui.shared.alt.partnerLogo')}
                         fill
                         sizes="128px"
                         className="object-contain"

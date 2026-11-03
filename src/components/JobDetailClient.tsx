@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import SanityPortableText from '@/components/SanityPortableText'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export interface JobDetail {
   id: string
@@ -40,6 +41,7 @@ interface JobDetailClientProps {
 }
 
 export default function JobDetailClient({ job, relatedJobs }: JobDetailClientProps) {
+  const { t } = useLocale()
   const [applicationModal, setApplicationModal] = useState<{ isOpen: boolean; formUrl: string }>({ 
     isOpen: false, 
     formUrl: '' 
@@ -59,9 +61,9 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
       <section className="pt-28 pb-4 bg-mw-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <nav className="flex items-center gap-2 text-sm text-mw-gray-600">
-            <Link href="/" className="hover:text-mw-blue-600 transition-colors">Home</Link>
+            <Link href="/" className="hover:text-mw-blue-600 transition-colors">{t('ui.company.home')}</Link>
             <span>/</span>
-            <Link href="/careers" className="hover:text-mw-blue-600 transition-colors">Careers</Link>
+            <Link href="/careers" className="hover:text-mw-blue-600 transition-colors">{t('ui.company.careers.breadcrumb')}</Link>
             <span>/</span>
             <span className="text-mw-gray-900 font-medium">{job.title}</span>
           </nav>
@@ -125,7 +127,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                 onClick={handleApply}
                 className="inline-flex items-center gap-2 px-8 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg transition-colors shadow-mw-md"
               >
-                Apply for this Role
+                {t('ui.company.careers.applyForRole')}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -137,7 +139,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                All Positions
+                {t('ui.company.careers.allPositions')}
               </Link>
             </div>
           </motion.div>
@@ -157,7 +159,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                 viewport={{ once: true }}
                 transition={{ duration: 0.5 }}
               >
-                <h2 className="text-2xl font-bold text-mw-gray-900 mb-4">About the Role</h2>
+                <h2 className="text-2xl font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.aboutRole')}</h2>
                 <p className="text-mw-gray-600 leading-relaxed text-lg">{job.description}</p>
               </motion.div>
 
@@ -182,7 +184,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h2 className="text-2xl font-bold text-mw-gray-900 mb-6">Responsibilities</h2>
+                  <h2 className="text-2xl font-bold text-mw-gray-900 mb-6">{t('ui.company.careers.responsibilitiesTitle')}</h2>
                   <ul className="space-y-4">
                     {job.responsibilities.map((resp, index) => (
                       <li key={index} className="flex items-start gap-3">
@@ -204,7 +206,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h2 className="text-2xl font-bold text-mw-gray-900 mb-6">Requirements</h2>
+                  <h2 className="text-2xl font-bold text-mw-gray-900 mb-6">{t('ui.company.careers.requirementsTitle')}</h2>
                   <ul className="space-y-4">
                     {job.requirements.map((req, index) => (
                       <li key={index} className="flex items-start gap-3">
@@ -226,7 +228,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
                 >
-                  <h2 className="text-2xl font-bold text-mw-gray-900 mb-6">Benefits</h2>
+                  <h2 className="text-2xl font-bold text-mw-gray-900 mb-6">{t('ui.company.careers.benefitsTitle')}</h2>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {job.benefits.map((benefit, index) => (
                       <div key={index} className="flex items-center gap-3 p-4 bg-green-50 rounded-lg">
@@ -252,13 +254,13 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   transition={{ duration: 0.5 }}
                   className="bg-mw-gray-50 rounded-xl p-6 border border-mw-gray-100"
                 >
-                  <h3 className="text-lg font-bold text-mw-gray-900 mb-4">Interested in this role?</h3>
-                  <p className="text-mw-gray-600 mb-6">Apply now and join our team of innovators shaping the future of advertising technology.</p>
+                  <h3 className="text-lg font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.interested')}</h3>
+                  <p className="text-mw-gray-600 mb-6">{t('ui.company.careers.interestedText')}</p>
                   <button
                     onClick={handleApply}
                     className="w-full px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg transition-colors"
                   >
-                    Apply Now
+                    {t('ui.company.careers.applyNow')}
                   </button>
                 </motion.div>
 
@@ -270,27 +272,27 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   transition={{ duration: 0.5, delay: 0.1 }}
                   className="bg-white rounded-xl p-6 border border-mw-gray-200 shadow-mw-md"
                 >
-                  <h3 className="text-lg font-bold text-mw-gray-900 mb-4">Job Details</h3>
+                  <h3 className="text-lg font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.jobDetails')}</h3>
                   <div className="space-y-4">
                     <div className="flex justify-between">
-                      <span className="text-mw-gray-500">Department</span>
+                      <span className="text-mw-gray-500">{t('ui.company.careers.department')}</span>
                       <span className="text-mw-gray-900 font-medium">{job.department}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-mw-gray-500">Location</span>
+                      <span className="text-mw-gray-500">{t('ui.company.careers.location')}</span>
                       <span className="text-mw-gray-900 font-medium">{job.location}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-mw-gray-500">Type</span>
+                      <span className="text-mw-gray-500">{t('ui.company.careers.type')}</span>
                       <span className="text-mw-gray-900 font-medium">{job.type}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-mw-gray-500">Level</span>
+                      <span className="text-mw-gray-500">{t('ui.company.careers.level')}</span>
                       <span className="text-mw-gray-900 font-medium">{formatLevel(job.level)}</span>
                     </div>
                     {job.salaryRange && (
                       <div className="flex justify-between">
-                        <span className="text-mw-gray-500">Salary</span>
+                        <span className="text-mw-gray-500">{t('ui.company.careers.salary')}</span>
                         <span className="text-mw-blue-600 font-medium">{job.salaryRange}</span>
                       </div>
                     )}
@@ -305,7 +307,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   transition={{ duration: 0.5, delay: 0.2 }}
                   className="bg-white rounded-xl p-6 border border-mw-gray-200"
                 >
-                  <h3 className="text-lg font-bold text-mw-gray-900 mb-4">Share this job</h3>
+                  <h3 className="text-lg font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.shareJob')}</h3>
                   <div className="flex gap-3">
                     <a 
                       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(`https://www.movingwalls.com/careers/${job.slug}`)}`}
@@ -356,8 +358,8 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
               transition={{ duration: 0.5 }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">Other Opportunities</h2>
-              <p className="text-lg text-mw-gray-600">Explore more positions that might interest you</p>
+              <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.otherOpportunities')}</h2>
+              <p className="text-lg text-mw-gray-600">{t('ui.company.careers.otherOpportunitiesText')}</p>
             </motion.div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -406,7 +408,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                 href="/careers"
                 className="inline-flex items-center gap-2 px-6 py-3 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg transition-colors"
               >
-                View All Positions
+                {t('ui.company.careers.viewAllPositions')}
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
@@ -425,7 +427,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
           />
           <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-mw-gray-200">
-              <h3 className="text-lg font-bold text-mw-gray-900">Apply for {job.title}</h3>
+              <h3 className="text-lg font-bold text-mw-gray-900">{t('ui.company.careers.applyFor').replace('{title}', job.title)}</h3>
               <button 
                 onClick={() => setApplicationModal({ isOpen: false, formUrl: '' })}
                 className="p-2 hover:bg-mw-gray-100 rounded-lg transition-colors"
@@ -439,7 +441,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
               <iframe 
                 src={applicationModal.formUrl} 
                 className="w-full h-full border-0"
-                title="Application Form"
+                title={t('ui.company.careers.applicationForm')}
               />
             </div>
           </div>

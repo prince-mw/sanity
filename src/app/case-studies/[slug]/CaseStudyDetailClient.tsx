@@ -5,6 +5,7 @@ import Link from "next/link";
 import { CTAButton } from "@/components/CTAButton";
 import Image from "next/image";
 import SanityPortableText from "@/components/SanityPortableText";
+import { useLocale } from "@/i18n/LocaleContext";
 
 interface CaseStudy {
   slug: string;
@@ -26,6 +27,7 @@ interface CaseStudyDetailClientProps {
 }
 
 export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }: CaseStudyDetailClientProps) {
+  const { t } = useLocale();
   const getExcerpt = (content: string, maxLength: number = 150) => {
     const text = content.replace(/<[^>]+>/g, '').trim();
     if (text.length <= maxLength) return text;
@@ -45,7 +47,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
             {/* Breadcrumb */}
             <nav className="flex items-center gap-2 text-sm text-mw-gray-500 mb-8">
               <Link href="/case-studies" className="hover:text-mw-blue-600 transition-colors">
-                Case Studies
+                {t("ui.caseStudies.breadcrumb")}
               </Link>
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -84,7 +86,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                   <svg className="w-5 h-5 text-mw-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                   </svg>
-                  <span className="text-mw-gray-700 font-medium">Client: {caseStudy.brand}</span>
+                  <span className="text-mw-gray-700 font-medium">{t("ui.caseStudies.clientName").replace("{brand}", caseStudy.brand)}</span>
                 </div>
               )}
               <div className="flex items-center gap-2 text-mw-gray-500 text-sm">
@@ -174,7 +176,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-sm font-medium text-mw-gray-700">Share:</span>
+              <span className="text-sm font-medium text-mw-gray-700">{t("ui.caseStudies.share")}</span>
               <div className="flex items-center gap-2">
                 <button className="w-10 h-10 flex items-center justify-center rounded-full bg-mw-gray-100 hover:bg-mw-blue-100 text-mw-gray-600 hover:text-mw-blue-600 transition-colors">
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
@@ -195,7 +197,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
               </svg>
-              Back to Case Studies
+              {t("ui.caseStudies.backToCaseStudies")}
             </Link>
           </div>
         </div>
@@ -205,7 +207,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
       {relatedCaseStudies.length > 0 && (
         <section className="py-16 bg-mw-gray-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">Related Case Studies</h2>
+            <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">{t("ui.caseStudies.relatedCaseStudies")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedCaseStudies.map((related, index) => (
                 <motion.div
@@ -261,15 +263,15 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
             transition={{ duration: 0.8 }}
             className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 rounded-2xl p-8 lg:p-12 text-center"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Achieve Similar Results?</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">{t("ui.caseStudies.similarResultsTitle")}</h2>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
-              Let&apos;s discuss how Moving Walls can help you transform your advertising strategy and drive measurable results.
+              {t("ui.caseStudies.similarResultsText")}
             </p>
             <CTAButton
               href="/contact"
               className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-medium rounded-lg transition-colors"
             >
-              Get Started
+              {t("ui.caseStudies.getStarted")}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>

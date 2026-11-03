@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useLocale } from '@/i18n/LocaleContext'
 import { SG_BASE_PATH, type SgScience, type SgVenue } from '@/data/singapore'
 import {
   SG_NAVY,
@@ -36,6 +37,7 @@ export default function SingaporeVenueClient({
   logoSection: SgLogoSection | null
 }) {
   const openForm = useSgForm(formUrl)
+  const { t } = useLocale()
   const otherVenues = allVenues.filter((v) => v.slug !== venue.slug)
 
   return (
@@ -60,7 +62,7 @@ export default function SingaporeVenueClient({
                   href={SG_BASE_PATH}
                   className="inline-flex w-full sm:w-auto items-center justify-center border-2 border-white/40 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all"
                 >
-                  Back to Singapore
+                  {(t('ui.locations.backTo') as string).replace('{name}', 'Singapore')}
                 </Link>
               </div>
             </div>
@@ -183,9 +185,9 @@ export default function SingaporeVenueClient({
               href={SG_BASE_PATH}
               className={`group flex flex-col rounded-2xl ${SG_NAVY} text-white p-5 hover:-translate-y-1 hover:shadow-precision-lg transition-all`}
             >
-              <span className="text-xs font-bold uppercase tracking-wider text-cyan-300">Overview</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-300">{t('ui.locations.overview')}</span>
               <span className="mt-2 font-bold flex-1">Outdoor Advertising in Singapore</span>
-              <span className="mt-4 text-sm font-semibold text-blue-100 group-hover:text-white transition-colors">All venues</span>
+              <span className="mt-4 text-sm font-semibold text-blue-100 group-hover:text-white transition-colors">{t('ui.locations.allVenues')}</span>
             </Link>
             {otherVenues.map((v) => (
               <Link
@@ -195,7 +197,7 @@ export default function SingaporeVenueClient({
               >
                 <span className="text-xs font-bold uppercase tracking-wider text-mw-blue-600">{v.tabLabel}</span>
                 <span className="mt-2 font-bold text-gray-900 flex-1">{v.breadcrumbLabel} in Singapore</span>
-                <span className="mt-4 text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068] transition-colors">Explore</span>
+                <span className="mt-4 text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068] transition-colors">{t('ui.locations.exploreShort')}</span>
               </Link>
             ))}
           </div>

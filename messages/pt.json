@@ -1,0 +1,1737 @@
+{
+  "metadata": {
+    "title": "Moving Walls - Plataforma de Publicidade OOH",
+    "description": "A Moving Walls unifica todo o ecossistema de mídia exterior em uma única plataforma inteligente na nuvem.",
+    "homeTitle": "Moving Walls | O Sistema Operacional Global para a Publicidade OOH",
+    "homeDescription": "A Moving Walls é o software OOH unificado para encontrar sua audiência, reservar inventário global instantaneamente e obter relatórios de desempenho transparentes. Agende uma demo hoje!"
+  },
+  "nav": {
+    "solutions": "Soluções",
+    "products": "Produtos",
+    "about": "Sobre nós",
+    "resources": "Recursos",
+    "contact": "Contato",
+    "getStarted": "Comece Agora",
+    "selectLanguage": "Selecionar idioma",
+    "openSearch": "Abrir busca",
+    "openMenu": "Abrir menu de navegação",
+    "closeMenu": "Fechar menu de navegação",
+    "language": "Idioma",
+    "viewAllLanguages": "Ver todos os idiomas"
+  },
+  "hero": {
+    "badge": "Publicidade OOH impulsionada por IA",
+    "title": "A plataforma de mídia",
+    "titleHighlight": "Mídia Conectada",
+    "wordMorphWords": [
+      "OOH",
+      "Digital",
+      "Programática",
+      "Conectada"
+    ],
+    "mediaPlatformLabel": "líder mundial",
+    "description": "A mídia exterior foi criada para dar visibilidade. Nós a criamos para gerar conexão. A Moving Walls transforma espaços físicos em ambientes publicitários mensuráveis em cidades, fronteiras e culturas. Reunimos telas, painéis, dados de mobilidade, insights de audiência e compra programática em um ecossistema conectado, para que as marcas avancem com confiança aonde quer que sua audiência vá. A confiança de mais de 500 marcas globais em mais de 40 mercados.",
+    "bullets": [
+      "Feita para conectar, não só para ser vista.",
+      "Transforma espaços físicos em mídia mensurável.",
+      "Reúne telas, dados e compra de mídia.",
+      "Alcança audiências em diversos mercados."
+    ],
+    "cta": {
+      "primary": "Vamos Conversar",
+      "secondary": "Assistir à demo"
+    },
+    "stats": {
+      "screens": "500K+ telas",
+      "countries": "25+ países",
+      "impressions": "1B+ impressões diárias",
+      "clients": "10K+ clientes"
+    }
+  },
+  "services": {
+    "badge": "Nossos serviços",
+    "title": "Soluções completas de",
+    "titleHighlight": "publicidade OOH",
+    "description": "Do planejamento à mensuração, oferecemos soluções completas para suas necessidades de mídia exterior."
+  },
+  "products": {
+    "badge": "Suíte de produtos",
+    "title": "Ferramentas poderosas para",
+    "titleHighlight": "cada necessidade",
+    "description": "Nossa plataforma integrada oferece tudo o que você precisa para planejar, executar e mensurar campanhas OOH de sucesso.",
+    "planner": {
+      "title": "MW Planner",
+      "description": "Planejamento e otimização estratégica de campanhas"
+    },
+    "measure": {
+      "title": "MW Measure",
+      "description": "Análises avançadas e acompanhamento de desempenho"
+    },
+    "influence": {
+      "title": "MW Influence",
+      "description": "Segmentação de audiência multicanal"
+    },
+    "activate": {
+      "title": "MW Activate",
+      "description": "Ativação e otimização de campanhas em tempo real"
+    },
+    "science": {
+      "title": "MW Science",
+      "description": "Insights e pesquisa de audiência com IA"
+    },
+    "studio": {
+      "title": "MW Studio",
+      "description": "Plataforma de gestão de conteúdo criativo"
+    },
+    "market": {
+      "title": "MW Market",
+      "description": "Ecossistema de inventário premium e parcerias"
+    }
+  },
+  "clients": {
+    "title": "Integrada às principais plataformas",
+    "description": "O marketing moderno não tem fronteiras. Sua mídia também não deveria ter."
+  },
+  "trustedBy": {
+    "title": "A confiança de marcas globais",
+    "description": "De desafiantes regionais a líderes multinacionais, as marcas contam com a Moving Walls para navegar pelo mundo em constante evolução da mídia exterior."
+  },
+  "testimonials": {
+    "badge": "Depoimentos",
+    "title": "O que nossos clientes",
+    "titleHighlight": "dizem sobre nós"
+  },
+  "caseStudies": {
+    "badge": "Cases de sucesso",
+    "title": "Histórias de sucesso",
+    "titleHighlight": "que inspiram",
+    "description": "Veja como marcas líderes alcançaram resultados extraordinários com a Moving Walls."
+  },
+  "newsletter": {
+    "title": "Receba insights do setor",
+    "titleHighlight": "toda semana",
+    "description": "Antecipe-se à evolução das cidades, à movimentação das audiências e a como a mídia conectada transforma a publicidade em cada região.",
+    "subscribeNow": "Inscreva-se",
+    "noSpam": "Sem spam, cancele quando quiser",
+    "namePlaceholder": "Seu nome",
+    "emailPlaceholder": "Seu e-mail",
+    "subscribedSuccess": "Inscrição realizada com sucesso!",
+    "getFreeInsights": "Receber insights grátis",
+    "agreementText": "Ao se inscrever, você concorda com nossa",
+    "privacyPolicy": "Política de Privacidade",
+    "and": "e",
+    "termsOfService": "Termos de Serviço"
+  },
+  "footer": {
+    "description": "A Moving Walls conecta o ecossistema global de mídia exterior em uma plataforma unificada na nuvem. Da descoberta de audiência à reserva, ativação, mensuração e otimização, simplificamos a complexidade para que as marcas cresçam com confiança em todos os mercados.",
+    "followUs": "Siga-nos",
+    "company": "Empresa",
+    "solutions": "Soluções",
+    "products": "Produtos",
+    "resources": "Recursos",
+    "support": "Suporte",
+    "billboardLocations": "Locais de painéis",
+    "copyright": "© 2024 Moving Walls. Todos os direitos reservados.",
+    "privacy": "Política de Privacidade",
+    "terms": "Termos de Serviço",
+    "cookies": "Configurações de cookies",
+    "cookiePolicy": "Política de Cookies",
+    "links": {
+      "company": {
+        "ourStory": "Nossa história",
+        "leadership": "Liderança",
+        "officeLocations": "Nossos escritórios",
+        "careers": "Carreiras",
+        "contactUs": "Fale Conosco"
+      },
+      "solutions": {
+        "brands": "Marcas",
+        "mediaOwners": "Proprietários de mídia",
+        "agencies": "Agências",
+        "retailers": "Varejistas"
+      },
+      "products": {
+        "planner": "MW Planner",
+        "measure": "MW Measure",
+        "influence": "MW Influence",
+        "activate": "MW Activate",
+        "inventory": "MW Inventory",
+        "science": "MW Science",
+        "studio": "MW Studio",
+        "market": "MW Market"
+      },
+      "resources": {
+        "oohFormats": "Formatos OOH",
+        "ebooks": "E-books",
+        "blog": "Blog",
+        "caseStudies": "Cases de sucesso",
+        "pressNews": "Imprensa e notícias",
+        "events": "Eventos"
+      },
+      "countries": {
+        "africa": "África",
+        "americas": "Américas",
+        "malaysia": "Malásia",
+        "singapore": "Singapura",
+        "indonesia": "Indonésia",
+        "india": "Índia",
+        "philippines": "Filipinas",
+        "japan": "Japão",
+        "australia": "Austrália",
+        "sriLanka": "Sri Lanka",
+        "thailand": "Tailândia",
+        "allLocations": "Todos os locais"
+      }
+    },
+    "movingHearts": {
+      "title": "Moving Hearts",
+      "statsLabel": "Corações tocados",
+      "tagline": "Mídia OOH responsável no mundo todo",
+      "ctaText": "Saiba mais"
+    }
+  },
+  "contact": {
+    "badge": "Fale Conosco",
+    "title": "Entre em contato",
+    "titleHighlight": "com nossa equipe",
+    "description": "Tem dúvidas? Adoraríamos falar com você. Envie uma mensagem e responderemos o mais rápido possível.",
+    "form": {
+      "firstName": "Nome",
+      "lastName": "Sobrenome",
+      "email": "E-mail",
+      "company": "Nome da empresa",
+      "phone": "Telefone",
+      "message": "Mensagem",
+      "submit": "Enviar mensagem",
+      "sending": "Enviando..."
+    }
+  },
+  "events": {
+    "badge": "Aprendizado e networking",
+    "title": "Eventos e treinamentos",
+    "titleHighlight": "Aprenda e conecte-se",
+    "description": "Participe de nossos webinars, workshops, conferências e sessões de treinamento.",
+    "upcoming": "Próximos eventos",
+    "register": "Inscreva-se",
+    "registerFree": "Inscrição gratuita",
+    "requestInvite": "Solicitar convite"
+  },
+  "about": {
+    "ourStory": {
+      "badge": "Nossa história",
+      "title": "Transformando a publicidade OOH",
+      "titleHighlight": "no mundo todo",
+      "description": "Desde 2015, a Moving Walls está na vanguarda da revolução no setor de mídia exterior."
+    },
+    "leadership": {
+      "badge": "Liderança",
+      "title": "Conheça nossa",
+      "titleHighlight": "equipe de liderança",
+      "description": "Nossa equipe experiente reúne conhecimento em tecnologia, publicidade e ciência de dados."
+    },
+    "careers": {
+      "badge": "Junte-se à equipe",
+      "title": "Construa sua",
+      "titleHighlight": "carreira conosco",
+      "description": "Faça parte de um time de inovadores, sonhadores e realizadores que está transformando o setor de publicidade."
+    }
+  },
+  "common": {
+    "learnMore": "Saiba mais",
+    "viewAll": "Ver tudo",
+    "readMore": "Leia mais",
+    "contactUs": "Fale Conosco",
+    "getStarted": "Comece Agora",
+    "bookDemo": "Agende uma demo",
+    "watchVideo": "Assistir ao vídeo",
+    "downloadNow": "Baixe agora",
+    "startFreeTrial": "Teste grátis",
+    "seeAllFeatures": "Ver todos os recursos",
+    "explorePlatform": "Explorar a plataforma"
+  },
+  "megaMenu": {
+    "solutions": {
+      "byIndustry": "Por segmento",
+      "brand": {
+        "name": "Marcas",
+        "description": "Alcance compradores em todas as etapas"
+      },
+      "mediaOwners": {
+        "name": "Proprietários de mídia",
+        "description": "Conecte-se com pacientes de forma eficaz"
+      },
+      "agencies": {
+        "name": "Agências",
+        "description": "Gere confiança e reconhecimento"
+      },
+      "retailers": {
+        "name": "Varejistas",
+        "description": "Alcance consumidores onde as compras acontecem"
+      },
+      "featured": {
+        "title": "Case: Automotivo",
+        "description": "Marca automotiva premium alcança ROI de 300% no 4º trimestre"
+      }
+    },
+    "products": {
+      "platformSuite": "MW Platform Suite",
+      "intelligenceSuite": "MW Intelligence Suite",
+      "planner": {
+        "name": "MW Planner",
+        "description": "Planejamento e otimização estratégica de campanhas"
+      },
+      "measure": {
+        "name": "MW Measure",
+        "description": "Análises avançadas e acompanhamento de desempenho"
+      },
+      "influence": {
+        "name": "MW Influence",
+        "description": "Segmentação de audiência multicanal"
+      },
+      "activate": {
+        "name": "MW Activate",
+        "description": "Ativação e otimização de campanhas em tempo real"
+      },
+      "inventory": {
+        "name": "MW Inventory",
+        "description": "Gestão e venda simplificadas de inventário OOH"
+      },
+      "science": {
+        "name": "MW Science",
+        "description": "Insights e pesquisa de audiência com IA"
+      },
+      "studio": {
+        "name": "MW Studio",
+        "description": "Plataforma de gestão de conteúdo criativo"
+      },
+      "market": {
+        "name": "MW Market",
+        "description": "Ecossistema de inventário premium e parcerias"
+      },
+      "featured": {
+        "title": "Case: Varejo",
+        "description": "Rede varejista nacional aumenta o fluxo de clientes em 45%"
+      }
+    },
+    "about": {
+      "company": "Empresa",
+      "connect": "Conecte-se",
+      "ourStory": {
+        "name": "Nossa história",
+        "description": "Conheça nossa trajetória"
+      },
+      "leadership": {
+        "name": "Equipe de liderança",
+        "description": "Conheça nossos executivos"
+      },
+      "careers": {
+        "name": "Carreiras",
+        "description": "Faça parte do nosso time"
+      },
+      "contact": {
+        "name": "Fale Conosco",
+        "description": "Entre em contato conosco"
+      },
+      "partners": {
+        "name": "Parceiros",
+        "description": "Ecossistema de parceiros"
+      },
+      "events": {
+        "name": "Eventos",
+        "description": "Próximos eventos"
+      },
+      "featured": {
+        "title": "Case: Finanças",
+        "description": "Fintech gera mais de 5.000 leads qualificados"
+      },
+      "aboutUs": {
+        "name": "Sobre nós",
+        "description": "Conheça a Moving Walls"
+      }
+    },
+    "resources": {
+      "learn": "Aprenda",
+      "support": "Suporte",
+      "blog": {
+        "name": "Blog",
+        "description": "Insights e dicas do setor"
+      },
+      "webinars": {
+        "name": "Webinars",
+        "description": "Conteúdo sob demanda"
+      },
+      "caseStudies": {
+        "name": "Cases de sucesso",
+        "description": "Histórias de sucesso"
+      },
+      "ebooks": {
+        "name": "E-books",
+        "description": "Guias e relatórios aprofundados"
+      },
+      "oohFormats": {
+        "name": "Formatos OOH",
+        "description": "Conheça formatos de painéis e digitais"
+      },
+      "locations": {
+        "name": "Locais",
+        "description": "Conheça nossa presença global em mídia"
+      },
+      "pressNews": {
+        "name": "Imprensa e notícias",
+        "description": "Últimos anúncios"
+      },
+      "helpCenter": {
+        "name": "Central de ajuda",
+        "description": "Respostas rápidas"
+      },
+      "documentation": {
+        "name": "Documentação",
+        "description": "Guias técnicos"
+      },
+      "apiReference": {
+        "name": "Referência da API",
+        "description": "Recursos para desenvolvedores"
+      },
+      "community": {
+        "name": "Comunidade",
+        "description": "Conecte-se com outros profissionais"
+      },
+      "integrations": {
+        "name": "Integrações",
+        "description": "Conecte suas ferramentas"
+      },
+      "featured": {
+        "title": "Case: Tecnologia",
+        "description": "Empresa de tecnologia lança produto com 10M de impressões"
+      }
+    }
+  },
+  "landingPage": {
+    "trustBar": {
+      "soc2": "Certificação SOC 2",
+      "googlePartner": "Google Premier Partner",
+      "iabMember": "Membro do IAB",
+      "gdprCompliant": "Em conformidade com o GDPR"
+    },
+    "trustBarStats": {
+      "oohSites": "Pontos OOH",
+      "markets": "Mercados",
+      "clients": "Clientes"
+    },
+    "asianBornGlobal": {
+      "badge": "Nascida na Ásia, visão global",
+      "title": "Nascida na Ásia.",
+      "titleHighlight": "Feita para o mundo.",
+      "description": "Dominar a complexidade das regiões mais dinâmicas do mundo nos levou a pensar além da mídia estática. Hoje, unimos atenção e conexão.",
+      "paragraph1": "Da {{highlight}}Times Square à Orchard Road{{/highlight}}, transformamos um OOH fragmentado em um cenário de mídia unificado, mensurável e global. Não apenas operamos globalmente: entendemos como as cidades se movem.",
+      "stats": {
+        "countries": "30+",
+        "countriesLabel": "Países",
+        "screens": "2.8B+",
+        "screensLabel": "Telas",
+        "clients": "10K+",
+        "clientsLabel": "Clientes"
+      }
+    },
+    "solutions": {
+      "badge": "Nossas soluções",
+      "title": "Uma plataforma para OOH conectado e Retail Media",
+      "description": "Nossa plataforma é a base. Nossas soluções são moldadas em torno de quem as usa. Nossos produtos são as ferramentas que ajudam essas pessoas a ir mais rápido e mais longe.",
+      "brand": {
+        "title": "Para marcas",
+        "subtitle": "Transforme atenção em crescimento real",
+        "description": "Marcas que se expandem por diferentes mercados enfrentam um desafio comum: consistência na estratégia, clareza na mensuração e adaptação às particularidades locais.\n\nConectamos a exposição a resultados no mundo real, como visitas às lojas, engajamento e sinais de desempenho em várias cidades e países. A mídia exterior deixa de ser apenas awareness. Ela se torna um canal de crescimento que acompanha você.\n\nPor que isso importa. Você ganha confiança para escalar campanhas entre regiões sem perder controle ou visibilidade.",
+        "features": {
+          "0": "Gestão de campanhas em vários mercados",
+          "1": "Segmentação avançada de audiência",
+          "2": "Atribuição no mundo real e mensuração de lift",
+          "3": "Ferramentas de otimização criativa"
+        },
+        "cta": "Conheça a solução para marcas"
+      },
+      "mediaOwners": {
+        "title": "Para proprietários de mídia",
+        "subtitle": "Libere o valor global do seu inventário",
+        "description": "Os proprietários de mídia estão no coração de suas cidades. Ainda assim, grande parte desse valor fica isolada nos mercados locais.\n\nConectamos seu inventário à demanda regional e global, ajudando você a otimizar o yield sem perder a relevância local.\n\nPor que isso importa. Suas telas deixam de ser limitadas pela geografia. Elas passam a fazer parte de um marketplace global.",
+        "features": {
+          "0": "Acesso ao marketplace programático",
+          "1": "Sistema de gestão de inventário",
+          "2": "Otimização dinâmica de preços",
+          "3": "Painel de analytics para publishers"
+        },
+        "cta": "Conheça a solução para proprietários de mídia"
+      },
+      "agencies": {
+        "title": "Para agências",
+        "subtitle": "Navegue pela complexidade com clareza",
+        "description": "As agências gerenciam campanhas em diferentes fusos horários, moedas, formatos e estruturas de relatórios. O crescimento muitas vezes gera atrito operacional.\n\nUnificamos planejamento, compra e relatórios em um único ambiente conectado, para que as agências possam escalar internacionalmente sem multiplicar a complexidade.\n\nPor que isso importa. Menos silos. Mais controle. Resultados melhores para clientes em qualquer lugar do mundo.",
+        "features": {
+          "0": "Gestão de campanhas para vários clientes",
+          "1": "Relatórios white label",
+          "2": "Faturamento e cobrança consolidados",
+          "3": "Suporte dedicado à conta"
+        },
+        "cta": "Conheça a solução para agências"
+      }
+    },
+    "brandsPage": {
+      "hero": {
+        "title": "Planejamento e compra de OOH orientados a resultados",
+        "titleHighlight": "em poucos cliques",
+        "description": "Lance campanhas orientadas por dados que alcançam sua audiência-alvo em escala, com analytics em tempo real e otimização com IA",
+        "ctaPrimary": "Comece sua campanha",
+        "ctaSecondary": "Assista à demo",
+        "stats": {
+          "activeBrands": "Marcas ativas",
+          "averageROI": "ROI médio",
+          "monthlyImpressions": "Impressões mensais",
+          "uptimeSLA": "SLA de disponibilidade"
+        }
+      },
+      "platform": {
+        "title": "Nossa plataforma",
+        "description": "Um conjunto completo de ferramentas para planejar, comprar e mensurar suas campanhas OOH",
+        "tabs": {
+          "planner": "Planejamento de campanhas",
+          "marketplace": "Acesso ao inventário",
+          "activate": "Ativação de campanhas",
+          "measure": "Analytics e mensuração",
+          "studio": "Ferramentas criativas"
+        },
+        "planner": {
+          "title": "Planejamento de campanhas com IA",
+          "description": "Planeje campanhas mais inteligentes com insights baseados em dados. Use IA para analisar padrões de audiência, prever o desempenho e recomendar os melhores locais.",
+          "features": [
+            "Insights de audiência baseados em dados demográficos e comportamento",
+            "Recomendações inteligentes de locais",
+            "Otimização de orçamento e previsão de ROI"
+          ],
+          "learnMore": "Saiba mais"
+        },
+        "market": {
+          "title": "Acesse inventário premium no mundo todo",
+          "description": "Explore e reserve mais de 250.000 pontos de outdoor em mais de 180 países, com preços transparentes e reserva instantânea.",
+          "features": [
+            "Mais de 250.000 pontos OOH premium no mundo",
+            "Disponibilidade de inventário em tempo real",
+            "Preços transparentes, sem taxas ocultas"
+          ],
+          "learnMore": "Saiba mais"
+        },
+        "activate": {
+          "title": "Lance campanhas em minutos",
+          "description": "Passe do planejamento à campanha no ar em minutos, não semanas. Simplifique a ativação com fluxos automatizados e otimização em tempo real.",
+          "features": [
+            "Ativação de campanhas com um clique",
+            "Distribuição automática do orçamento",
+            "Otimização criativa dinâmica"
+          ],
+          "learnMore": "Saiba mais"
+        },
+        "measure": {
+          "title": "Analytics e atribuição em tempo real",
+          "description": "Acompanhe cada impressão, mensure o impacto no mundo real e comprove o ROI com analytics completos e painéis personalizados.",
+          "features": [
+            "Rastreamento de impressões em tempo real",
+            "Atribuição de fluxo de visitantes",
+            "Mensuração de brand lift"
+          ],
+          "learnMore": "Saiba mais"
+        },
+        "studio": {
+          "title": "Design e otimização criativa",
+          "description": "Crie peças OOH impressionantes com ferramentas de design intuitivas. Adapte automaticamente os designs a qualquer formato de tela e faça testes A/B.",
+          "features": [
+            "Editor criativo de arrastar e soltar",
+            "Redimensionamento automático para todos os formatos de tela",
+            "Testes A/B e otimização criativa"
+          ],
+          "learnMore": "Saiba mais"
+        }
+      },
+      "trustBar": "A CONFIANÇA DAS PRINCIPAIS MARCAS DO MUNDO",
+      "journey": {
+        "oldWay": {
+          "badge": "O jeito antigo",
+          "title": "Desafios",
+          "items": [
+            {
+              "text": "Compra fragmentada entre fornecedores"
+            },
+            {
+              "text": "Sem dados de desempenho em tempo real"
+            },
+            {
+              "text": "Segmentação de audiência difícil"
+            },
+            {
+              "text": "Semanas para lançar campanhas"
+            },
+            {
+              "text": "Flexibilidade criativa limitada"
+            }
+          ]
+        },
+        "transformation": {
+          "badge": "Transformação",
+          "title": "Plataforma Moving Walls",
+          "subtitle": "Sua solução OOH completa",
+          "features": [
+            "Planejamento com IA",
+            "Analytics em tempo real",
+            "Ativação instantânea",
+            "Otimização dinâmica"
+          ],
+          "cta": "Comece sua transformação"
+        },
+        "newWay": {
+          "badge": "O jeito novo",
+          "title": "Resultados",
+          "items": [
+            {
+              "text": "Plataforma unificada, todo o inventário",
+              "metric": "250K+ telas"
+            },
+            {
+              "text": "Acompanhamento de desempenho em tempo real",
+              "metric": "Dados ao vivo"
+            },
+            {
+              "text": "Segmentação de audiência com IA",
+              "metric": "99% de precisão"
+            },
+            {
+              "text": "Lance em minutos, não semanas",
+              "metric": "< 5 min"
+            },
+            {
+              "text": "Otimização criativa dinâmica",
+              "metric": "+40% de engajamento"
+            }
+          ]
+        }
+      },
+      "features": {
+        "title": "Tudo o que as marcas precisam para ter sucesso",
+        "description": "Ferramentas poderosas criadas especialmente para profissionais de marketing de marcas criarem, lançarem e otimizarem campanhas OOH",
+        "items": [
+          {
+            "title": "Campanhas multicanal",
+            "description": "Gerencie com facilidade campanhas em painéis digitais, mídia em transporte e OOH tradicional a partir de uma única plataforma unificada"
+          },
+          {
+            "title": "Segmentação avançada",
+            "description": "Alcance exatamente a sua audiência usando dados demográficos, de localização, padrões de comportamento e insights com IA"
+          },
+          {
+            "title": "Analytics em tempo real",
+            "description": "Acompanhe impressões, engajamento e métricas de atribuição no momento em que acontecem, com painéis completos"
+          },
+          {
+            "title": "Otimização criativa",
+            "description": "Ferramentas com IA para testar, otimizar e personalizar peças criativas com máximo impacto e engajamento"
+          },
+          {
+            "title": "Automação de campanhas",
+            "description": "Configure regras e gatilhos automáticos para otimizar a alocação de orçamento e a rotação de criativos em tempo real"
+          },
+          {
+            "title": "Controles de brand safety",
+            "description": "Garanta que seus anúncios apareçam em ambientes seguros para a marca, com filtragem avançada de conteúdo e controles de localização"
+          },
+          {
+            "title": "Marketplace de inventário",
+            "description": "Acesse mais de 250.000 pontos de outdoor premium no mundo, com preços transparentes e reserva instantânea"
+          },
+          {
+            "title": "Conjunto de integrações",
+            "description": "Conecte-se às ferramentas que você já usa, incluindo CRM, analytics, DSPs e plataformas de gestão criativa"
+          }
+        ]
+      },
+      "howItWorks": {
+        "title": "Lance sua campanha em 4 passos simples",
+        "description": "Do planejamento à ativação em minutos, não semanas",
+        "steps": [
+          {
+            "title": "Planeje e segmente",
+            "description": "Use o MW Planner para definir sua audiência, selecionar locais e prever o desempenho da campanha"
+          },
+          {
+            "title": "Reserve inventário",
+            "description": "Navegue pelo MW Market para encontrar e reservar na hora pontos de outdoor premium no mundo todo"
+          },
+          {
+            "title": "Crie e otimize",
+            "description": "Crie peças envolventes com o MW Studio e otimize automaticamente para cada formato de tela"
+          },
+          {
+            "title": "Lance e mensure",
+            "description": "Ative com o MW Activate e acompanhe o desempenho em tempo real com o analytics do MW Measure"
+          }
+        ]
+      }
+    },
+    "platformEcosystem": {
+      "badge": "Ecossistema da plataforma MW",
+      "title": "Onde o movimento encontra a mídia",
+      "intro": "No coração da Moving Walls está um sistema conectado que reúne dados, planejamento, ativação e mensuração em diferentes mercados.",
+      "cards": {
+        "data": {
+          "label": "Entradas de dados",
+          "description": "Sinais de audiência, padrões de localização e mobilidade, fluxos de tráfego, gatilhos climáticos, dados demográficos, pontos de interesse, calendários de eventos e dados próprios e de terceiros."
+        },
+        "execute": {
+          "label": "Execute localmente",
+          "description": "As campanhas são planejadas de forma centralizada e executadas localmente, mensuradas de forma consistente entre regiões e refinadas continuamente."
+        },
+        "measure": {
+          "label": "Mensure e refine",
+          "description": "Acompanhe o desempenho entre mercados com analytics unificados, otimize em tempo real e incorpore os aprendizados a cada nova campanha."
+        }
+      },
+      "scenario": {
+        "label": "Imagine isto",
+        "description": "Uma marca de varejo se expande para uma nova cidade. As telas são ativadas em áreas comerciais definidas quando o fluxo de pessoas aumenta e as condições de contexto se alinham à demanda. O criativo se adapta aos momentos locais, mantendo a consistência global da marca. O investimento acompanha a oportunidade em tempo real."
+      },
+      "quote": "É assim que a mídia exterior evolui de espaço estático para uma rede global responsiva.",
+      "productsLine": "Planejamento, ativação, mensuração e otimização operam em uma única jornada conectada."
+    },
+    "clients": {
+      "eyebrow": "Parceiros de tecnologia",
+      "title": "Integrada às principais plataformas",
+      "description": "O marketing moderno não tem fronteiras. Sua mídia também não deveria ter.",
+      "viewAll": "Conheça nossos parceiros"
+    },
+    "products": {
+      "badge": "Ecossistema MW completo",
+      "title": "Soluções de publicidade de ponta a ponta",
+      "description": "Transforme sua estratégia de publicidade com nossa plataforma integrada. Cada produto se conecta perfeitamente para entregar resultados mensuráveis em todo o seu fluxo de marketing.",
+      "stages": {
+        "plan": "Planejar",
+        "create": "Criar",
+        "buy": "Comprar",
+        "activate": "Ativar",
+        "measure": "Mensurar"
+      },
+      "productsLabel": "Produtos",
+      "learnMore": "Saiba mais",
+      "mwPlanner": {
+        "stageLabel": "Planejamento estratégico",
+        "description": "Transforme sua estratégia de marketing com planejamento de campanhas com IA, análise competitiva e previsão de ROI.",
+        "outcome": "156% de aumento no ROI"
+      },
+      "mwStudio": {
+        "stageLabel": "Serviços criativos",
+        "description": "Escale a produção criativa com gestão inteligente de ativos, conformidade com a marca e otimização entre formatos.",
+        "outcome": "Entrega 5x mais rápida"
+      },
+      "mwMarket": {
+        "stageLabel": "Compra de mídia",
+        "description": "Acesse inventário premium e parcerias com publishers verificados em todos os canais, com preços transparentes.",
+        "outcome": "$2.8B+ em inventário"
+      },
+      "mwInfluence": {
+        "stageLabel": "Segmentação de audiência",
+        "description": "Execute segmentação precisa em mais de 3,5 bilhões de usuários com segmentação avançada de audiência e vinculação entre dispositivos.",
+        "outcome": "94,7% de taxa de match"
+      },
+      "mwActivate": {
+        "stageLabel": "Gestão de campanhas",
+        "description": "Automatize a otimização de campanhas com decisões de IA em tempo real, distribuição de orçamento e melhoria de desempenho.",
+        "outcome": "Implantação 95% mais rápida"
+      },
+      "mwMeasure": {
+        "stageLabel": "Analytics e insights",
+        "description": "Obtenha insights acionáveis com modelagem avançada de atribuição, analytics entre canais e previsões preditivas.",
+        "outcome": "Visibilidade completa"
+      },
+      "cta": {
+        "buildCustomStack": "Monte seu stack sob medida",
+        "productsSelected": "Produtos selecionados",
+        "readyToTransform": "Pronto para transformar sua publicidade?",
+        "getPersonalizedDemo": "Receba uma demo personalizada e preços para os produtos selecionados",
+        "selectProducts": "Selecione produtos acima ou comece com nossa plataforma completa",
+        "getCustomQuote": "Solicitar orçamento",
+        "startFreeTrial": "Teste grátis",
+        "scheduleDemo": "Agendar demo",
+        "clearSelection": "Limpar seleção"
+      }
+    },
+    "customerLogos": {
+      "title": "A confiança das principais marcas",
+      "description": "De desafiantes regionais a líderes multinacionais, as marcas contam com a Moving Walls para navegar pelo mundo em evolução da mídia exterior.",
+      "statBrands": "Marcas globais",
+      "statCountries": "Países"
+    },
+    "testimonials": {
+      "badge": "Sucesso dos clientes",
+      "title": "O que nossos clientes",
+      "titleHighlight": "dizem sobre nós",
+      "description": "Ouça as marcas e agências que estão transformando sua publicidade com a Moving Walls.",
+      "swipeHint": "Deslize para navegar",
+      "viewAllCta": "Ver todas as histórias de sucesso",
+      "ariaPrev": "Depoimentos anteriores",
+      "ariaNext": "Próximos depoimentos",
+      "ariaGoToSlide": "Ir para o slide",
+      "fallback": [
+        {
+          "quote": "Ao personalizar a plataforma da Moving Walls, a Jeki adiciona novos serviços usando sua experiência em mídia em transporte. Queremos construir um dos maiores marketplaces do Japão, com inventário OOH diversificado e de alcance nacional.",
+          "role": "Presidente e Diretor Representante"
+        },
+        {
+          "quote": "Esta parceria nos oferece soluções de ponta em mensuração de audiência, que trazem insights inéditos para nossas campanhas publicitárias.",
+          "role": "Diretor de Dados e Transformação Digital"
+        },
+        {
+          "quote": "Os investimentos das marcas crescem quando os anunciantes têm clareza sobre posicionamento e desempenho dos anúncios. Esta parceria fortalece nosso planejamento DOOH e amplia a capacidade de mensuração para nossos clientes.",
+          "role": "Chief Investment Officer"
+        }
+      ]
+    },
+    "about": {
+      "title": "Redefinindo a mídia out-of-home",
+      "description1": "A Moving Walls é a principal empresa de publicidade out-of-home orientada por tecnologia, combinando plataformas inovadoras e profundo conhecimento do setor para entregar resultados excepcionais a marcas no mundo todo.",
+      "description2": "Nossa missão é tornar a publicidade out-of-home tão segmentável, mensurável e eficaz quanto a publicidade digital, unindo o melhor dos dois mundos para ajudar as marcas a se conectarem com as audiências de forma significativa.",
+      "features": {
+        "yearsOfExcellence": "Anos de excelência",
+        "dailyImpressions": "Impressões diárias",
+        "markets": "Mercados",
+        "dataDriven": {
+          "label": "Orientada por dados",
+          "desc": "Insights que impulsionam decisões"
+        },
+        "fullService": {
+          "label": "Serviço completo",
+          "desc": "Soluções de ponta a ponta"
+        },
+        "globalReach": {
+          "label": "Alcance global",
+          "desc": "Mais de 100 mercados no mundo"
+        },
+        "innovation": {
+          "label": "Inovação",
+          "desc": "Tecnologia de ponta"
+        }
+      },
+      "cta": "Conheça nossa história"
+    },
+    "caseStudy": {
+      "badge": "Histórias de sucesso",
+      "title": "Case em destaque",
+      "industry": "Setor automotivo",
+      "roasIncrease": "Aumento de ROAS",
+      "headline": "Como a AutoBrand transformou sua estratégia de DOOH",
+      "description": "Uma marca automotiva líder transformou sua estratégia de publicidade digital out-of-home usando a plataforma com IA da MW. Descubra como ela alcançou um desempenho de campanha recorde, ampliou sua participação de mercado e obteve visibilidade completa de atribuição em 15 mercados.",
+      "readTime": "6 min de leitura",
+      "date": "Dezembro de 2024",
+      "dailyReach": "Alcance diário",
+      "lowerCPA": "CPA menor",
+      "readFullCaseStudy": "Leia o case completo",
+      "viewAllCaseStudies": "Ver todos os cases"
+    },
+    "caseStudiesSection": {
+      "title": "Explore nossos cases",
+      "description": "Descubra como marcas líderes de diversos setores alcançaram resultados notáveis com a plataforma de mídia conectada da Moving Walls.",
+      "loading": "Carregando cases...",
+      "empty": "Nenhum case encontrado.",
+      "readMore": "Leia mais",
+      "readMoreAria": "Leia mais sobre",
+      "viewAll": "Ver todos os cases"
+    },
+    "contactForm": {
+      "badge": "Vamos conversar sobre sua visão",
+      "title": "Sua história de sucesso começa aqui",
+      "description": "Compartilhe seus desafios e objetivos de publicidade. Nossos especialistas vão criar uma estratégia sob medida que transforma sua visão em resultados de negócio mensuráveis.",
+      "emailLabel": "E-mail",
+      "form": {
+        "name": "Nome completo",
+        "email": "Endereço de e-mail",
+        "company": "Empresa",
+        "phone": "Telefone",
+        "service": "Serviço de interesse",
+        "budget": "Orçamento mensal",
+        "message": "Conte-nos sobre seu projeto",
+        "submit": "Comece sua jornada",
+        "submitting": "Enviando...",
+        "success": "Mensagem enviada!",
+        "successDesc": "Entraremos em contato em até 24 horas."
+      },
+      "selectService": "Selecione um serviço",
+      "selectBudget": "Selecione a faixa de orçamento",
+      "services": {
+        "brandAdvertising": "Publicidade de marca",
+        "mediaOwnerSolutions": "Soluções para proprietários de mídia",
+        "agencyServices": "Serviços para agências",
+        "programmaticDOOH": "DOOH programático",
+        "customSolution": "Solução sob medida"
+      },
+      "budgets": {
+        "under10k": "Menos de $10,000",
+        "10k50k": "$10,000 - $50,000",
+        "50k100k": "$50,000 - $100,000",
+        "100k500k": "$100,000 - $500,000",
+        "over500k": "$500,000+"
+      },
+      "benefits": {
+        "title": "Por que ser nosso parceiro?",
+        "freeConsultation": "Consultoria estratégica gratuita",
+        "freeConsultationDesc": "Receba insights especializados adaptados aos seus objetivos",
+        "customProposal": "Proposta personalizada",
+        "customProposalDesc": "Receba um plano detalhado em até 48 horas",
+        "noCommitment": "Sem compromisso",
+        "noCommitmentDesc": "Explore as opções antes de decidir"
+      },
+      "contact": {
+        "title": "Contato direto",
+        "email": "info@movingwalls.com",
+        "phone": "+1 (888) MW-WALLS"
+      }
+    }
+  },
+  "agenciesPage": {
+    "hero": {
+      "title": "Plataforma OOH White Label",
+      "titleHighlight": "Feita para agências",
+      "subtitle": "Ofereça aos seus clientes uma solução completa de mídia exterior com a sua própria marca. A Moving Walls oferece inventário global, planejamento inteligente de campanhas e análises em tempo real que ajudam sua agência a agir mais rápido, planejar melhor e entregar resultados mensuráveis.",
+      "primaryCta": "Seja um parceiro"
+    },
+    "platformSection": {
+      "title": "Sua plataforma OOH completa",
+      "subtitle": "Tudo o que você precisa para planejar, comprar, ativar e mensurar campanhas para seus clientes em uma única plataforma integrada",
+      "tabs": {
+        "planning": "Planejamento",
+        "reach": "Alcance ampliado",
+        "support": "Suporte"
+      },
+      "planning": {
+        "title": "Planejamento personalizável",
+        "description": "Nossa ferramenta de planejamento foi criada para se integrar perfeitamente aos seus fluxos de trabalho atuais, oferecendo audiências personalizadas, pontuação de locais e recursos de negociação que podem ser adaptados às suas necessidades.",
+        "linkText": "Saiba mais"
+      },
+      "reach": {
+        "title": "Planejamento integrado",
+        "description": "Nosso sistema de planejamento oferece uma abordagem integrada que permite estender o planejamento OOH para plataformas mobile. Além disso, nossa plataforma permite extrair listas de audiência, que podem ser usadas em futuras ações de retargeting.",
+        "linkText": "Saiba mais"
+      },
+      "support": {
+        "title": "Suporte ao vivo",
+        "description": "Nossa plataforma oferece suporte ao vivo de especialistas em OOH, sempre disponíveis para ajudar com quaisquer dúvidas ou solicitações adicionais de planejamento.",
+        "linkText": "Fale Conosco"
+      }
+    },
+    "trustBar": {
+      "title": "A CONFIANÇA DE AGÊNCIAS LÍDERES NO MUNDO TODO"
+    },
+    "journey": {
+      "title": "Da complexidade à clareza",
+      "subtitle": "Veja como a Moving Walls transforma a capacidade OOH da sua agência",
+      "old": {
+        "stepLabel": "O jeito antigo",
+        "stepName": "Desafios",
+        "items": [
+          "RFPs manuais que levam semanas travam o crescimento",
+          "Acesso limitado a inventário restringe a escala",
+          "Sem dados de desempenho em tempo real",
+          "Gargalos complexos de faturamento",
+          "Dificuldade para escalar as operações"
+        ]
+      },
+      "transformation": {
+        "stepLabel": "Transformação",
+        "stepName": "A transformação Moving Walls",
+        "description": "Sua solução completa para agências",
+        "items": [
+          "Plataforma White Label",
+          "Acesso a inventário global",
+          "Análises em tempo real",
+          "Fluxos de trabalho automatizados",
+          "Infraestrutura escalável"
+        ],
+        "cta": "Comece sua transformação"
+      },
+      "new": {
+        "stepLabel": "O jeito novo",
+        "stepName": "Resultados",
+        "items": [
+          "Lançamento em menos de 5 minutos",
+          "500K+ telas disponíveis",
+          "Acompanhamento em tempo real",
+          "Faturamento e cobrança automatizados",
+          "Receita 3x maior"
+        ]
+      }
+    },
+    "featureGrid": {
+      "title": "Feita para agências que querem crescer",
+      "subtitle": "Ferramentas poderosas criadas especialmente para agências conquistarem mais clientes e entregarem campanhas OOH excepcionais",
+      "items": [
+        {
+          "title": "Plataforma White Label",
+          "description": "Mantém sua marca em destaque enquanto oferece uma solução OOH completa"
+        },
+        {
+          "title": "Gestão de múltiplos clientes",
+          "description": "Permite gerenciar todas as campanhas, orçamentos e equipes em um único painel"
+        },
+        {
+          "title": "Relatórios para clientes",
+          "description": "Entrega relatórios com sua marca, métricas em tempo real e dados de atribuição"
+        },
+        {
+          "title": "Fluxos de aprovação",
+          "description": "Agiliza notificações e aprovações, economizando horas toda semana"
+        },
+        {
+          "title": "Acesso a inventário global",
+          "description": "Conecta seus clientes a telas premium em mais de 50 países"
+        },
+        {
+          "title": "Controle de margem",
+          "description": "Define preços específicos por cliente mantendo a transparência"
+        },
+        {
+          "title": "Colaboração em equipe",
+          "description": "Permite acesso por função, gestão de tarefas e painéis compartilhados"
+        },
+        {
+          "title": "Integração via API",
+          "description": "Conecta-se perfeitamente a CRMs, DSPs e sistemas internos"
+        }
+      ]
+    },
+    "platformSuite": {
+      "title": "MW Platform Suite completa",
+      "subtitle": "Todas as ferramentas de que você precisa, perfeitamente integradas",
+      "learnMore": "Saiba mais",
+      "cards": {
+        "planner": {
+          "title": "MW Planner",
+          "description": "Planejamento de campanhas e insights de audiência com IA. Descubra onde sua audiência está e planeje com precisão."
+        },
+        "marketplace": {
+          "title": "MW Marketplace",
+          "description": "Acesse mais de 250.000 locais premium de painéis no mundo todo"
+        },
+        "studio": {
+          "title": "MW Studio",
+          "description": "Ferramentas de design e otimização criativa para todos os formatos"
+        },
+        "activate": {
+          "title": "MW Activate",
+          "description": "Ativação e automação de campanhas em escala"
+        },
+        "measure": {
+          "title": "MW Measure",
+          "description": "Análises e acompanhamento de atribuição em tempo real"
+        },
+        "science": {
+          "title": "MW Science",
+          "description": "Motor de ciência de dados e análise preditiva"
+        },
+        "influence": {
+          "title": "MW Influence",
+          "description": "Veiculação inteligente de anúncios DOOH e otimização de yield"
+        }
+      }
+    },
+    "faq": {
+      "title": "Perguntas frequentes",
+      "subtitle": "Tudo o que você precisa saber sobre ser parceiro da Moving Walls",
+      "items": [
+        {
+          "question": "Como funciona a plataforma white label?",
+          "answer": "Nossa solução white label permite implantar uma plataforma de compra OOH totalmente personalizada no domínio da sua agência. Os clientes veem sua marca, suas cores e seu logotipo em toda a experiência. Você mantém controle total sobre preços, margens e acesso dos clientes, enquanto cuidamos da tecnologia e do relacionamento com os proprietários de mídia."
+        },
+        {
+          "question": "Que inventário está disponível na plataforma?",
+          "answer": "Acesse mais de 500.000 telas OOH em mais de 50 países, incluindo painéis, displays digitais, mídia em transporte, mobiliário urbano e mídia em locais de grande circulação. Nosso inventário abrange locais premium nas principais cidades e se estende a mercados regionais no mundo todo."
+        },
+        {
+          "question": "Como funcionam os preços para agências?",
+          "answer": "Oferecemos modelos de preços flexíveis, incluindo porcentagem do investimento em mídia, mensalidades fixas ou modelos híbridos. Não há exigência de investimento mínimo, o que torna nossa plataforma acessível a agências de todos os portes. Fale conosco para receber uma proposta personalizada."
+        },
+        {
+          "question": "Podemos integrar com nossas ferramentas atuais?",
+          "answer": "Sim, nossa plataforma oferece APIs e integrações com as ferramentas mais usadas por agências, incluindo DSPs, DMPs, sistemas de gestão de projetos e softwares financeiros. Também oferecemos SSO para uma gestão de acesso da equipe sem complicações."
+        },
+        {
+          "question": "Que treinamento e suporte vocês oferecem?",
+          "answer": "Toda agência parceira recebe onboarding dedicado, treinamento na plataforma e suporte contínuo. Fornecemos materiais de capacitação de vendas, modelos de apresentação comercial e podemos participar de reuniões com clientes para ajudar a fechar negócios. Parceiros enterprise contam com gerentes de conta dedicados."
+        }
+      ]
+    }
+  },
+  "cookieConsent": {
+    "message": "Usamos cookies para melhorar sua experiência.",
+    "learnMore": "Saiba mais",
+    "learnMoreAria": "Saiba mais sobre nossa política de cookies",
+    "settings": "Configurações",
+    "reject": "Rejeitar",
+    "acceptAll": "Aceitar todos",
+    "settingsTitle": "Configurações de cookies",
+    "essential": "Essenciais",
+    "functional": "Funcionais",
+    "analytics": "Análise",
+    "marketing": "Marketing",
+    "rejectAll": "Rejeitar todos",
+    "savePreferences": "Salvar preferências"
+  },
+  "homeVisuals": {
+    "auction": {
+      "title": "Programática em Tempo Real",
+      "steps": [
+        "Tela\nDisponível",
+        "Solicitações\nde Lance",
+        "Lances\nRecebidos",
+        "Vencedor\nSelecionado",
+        "Conteúdo\nPublicado"
+      ],
+      "brand": "Marca",
+      "fillRate": "Fill Rate Médio",
+      "responseTime": "Tempo de Resposta",
+      "dailyAuctions": "Leilões Diários"
+    },
+    "portfolio": {
+      "formats": [
+        "Outdoor",
+        "Transporte",
+        "Mobiliário\nUrbano",
+        "Telas\nDigitais"
+      ],
+      "status": {
+        "live": "ao vivo",
+        "available": "disponível",
+        "maintenance": "manutenção"
+      },
+      "impressions": "Impressões",
+      "revenue": "Receita",
+      "hub": "Central de Gestão Unificada",
+      "stats": [
+        "Total de Telas",
+        "Campanhas Ativas",
+        "Total de Impressões",
+        "Receita Mensal"
+      ],
+      "legend": [
+        "Ao vivo",
+        "Disponível",
+        "Manutenção"
+      ]
+    },
+    "network": {
+      "controlCenter": "CENTRAL DE CONTROLE",
+      "yourBrand": "SUA MARCA",
+      "live": "AO VIVO",
+      "allSynced": "Tudo Sincronizado",
+      "cities": [
+        "NYC",
+        "Londres",
+        "Singapura"
+      ]
+    },
+    "ecosystem": {
+      "dataSources": "Fontes de Dados",
+      "sources": [
+        "Dados de Audiência",
+        "Localização",
+        "Padrões de Tráfego",
+        "Dados Climáticos",
+        "Dados Demográficos",
+        "Dados de POI",
+        "Sinais Móveis",
+        "Calendários de Eventos",
+        "Qualquer Fonte de Dados"
+      ],
+      "steps": [
+        "Planejamento",
+        "Otimização",
+        "Segmentação",
+        "Atribuição",
+        "Mensuração"
+      ],
+      "campaignIntelligence": "Inteligência de Campanhas",
+      "engine": "MOTOR",
+      "audienceIntelligence": "Inteligência de Audiência",
+      "features": [
+        "Grafos de Audiência",
+        "Eventos de Campanha",
+        "Sincronização de Dados",
+        "Feeds em Tempo Real"
+      ],
+      "outputs": "Resultados",
+      "outputList": [
+        "Integrações",
+        "Analytics",
+        "Relatórios",
+        "Acesso à API",
+        "Insights",
+        "Audiência",
+        "Desempenho",
+        "Planos de Mídia",
+        "Previsões"
+      ]
+    },
+    "cities": {
+      "singapore": "Singapura",
+      "malaysia": "Malásia",
+      "tokyo": "Tóquio",
+      "sydney": "Sydney",
+      "dubai": "Dubai",
+      "london": "Londres",
+      "newYork": "Nova York",
+      "mumbai": "Mumbai",
+      "shanghai": "Xangai",
+      "losAngeles": "Los Angeles",
+      "paris": "Paris"
+    },
+    "viewPartnership": "Ver parceria →",
+    "noImage": "Sem imagem"
+  },
+  "ui": {
+    "blog": {
+      "badge": "Blog da Moving Walls",
+      "heroTitle": "Insights do setor e",
+      "heroTitleHighlight": "dicas de especialistas",
+      "heroSubtitle": "Saia na frente com as últimas tendências, melhores práticas e insights de especialistas em publicidade.",
+      "searchPlaceholder": "Buscar artigos...",
+      "categoryLabel": "Categoria:",
+      "allCategories": "Todas",
+      "sortBy": "Ordenar por:",
+      "sortNewest": "Mais recentes",
+      "sortOldest": "Mais antigos",
+      "sortTitleAsc": "Título (A-Z)",
+      "sortTitleDesc": "Título (Z-A)",
+      "featuredArticle": "Artigo em destaque",
+      "showingCount": "Mostrando {shown} de {total} artigos",
+      "inCategory": " em {category}",
+      "matchingQuery": " correspondentes a \"{query}\"",
+      "noResultsTitle": "Nenhum artigo encontrado",
+      "noResultsText": "Tente ajustar sua busca ou filtro para encontrar o que procura.",
+      "clearFilters": "Limpar filtros",
+      "previous": "Anterior",
+      "next": "Próxima",
+      "newsletterTitle": "Assine nossa newsletter",
+      "newsletterText": "Receba os últimos insights, tendências e novidades diretamente na sua caixa de entrada.",
+      "breadcrumbBlog": "Blog",
+      "tagsLabel": "Tags:",
+      "shareArticle": "Compartilhe este artigo:",
+      "shareOnX": "Compartilhar no X (Twitter)",
+      "shareOnLinkedIn": "Compartilhar no LinkedIn",
+      "copyLink": "Copiar link",
+      "linkCopied": "Link copiado!",
+      "backToBlog": "Voltar ao blog",
+      "relatedArticles": "Artigos relacionados",
+      "enjoyedTitle": "Gostou deste artigo?",
+      "enjoyedText": "Assine para receber os últimos insights, dicas e notícias do setor diretamente na sua caixa de entrada."
+    },
+    "caseStudies": {
+      "badge": "Histórias de sucesso",
+      "heroTitle": "Cases de sucesso",
+      "heroTitleHighlight": "Resultados reais, impacto real",
+      "heroSubtitle": "Descubra como marcas líderes de diversos setores alcançam sucesso mensurável com nossa plataforma",
+      "countryLabel": "País:",
+      "industryLabel": "Setor:",
+      "all": "Todos",
+      "sortBy": "Ordenar por:",
+      "sortNewest": "Mais recentes",
+      "sortOldest": "Mais antigos",
+      "sortTitleAsc": "Título (A-Z)",
+      "sortTitleDesc": "Título (Z-A)",
+      "featuredCaseStudy": "Case em destaque",
+      "client": "Cliente",
+      "clientName": "Cliente: {brand}",
+      "showingCount": "Mostrando {shown} de {total} cases",
+      "inCountry": " em {country}",
+      "noResultsTitle": "Nenhum case encontrado",
+      "noResultsText": "Tente ajustar seus filtros para encontrar o que procura.",
+      "clearFilters": "Limpar filtros",
+      "previous": "Anterior",
+      "next": "Próxima",
+      "ctaTitle": "Pronto para criar sua história de sucesso?",
+      "ctaText": "Junte-se às marcas líderes que alcançaram resultados mensuráveis com nossa plataforma.",
+      "getStarted": "Comece Agora",
+      "badges": {
+        "measurementBrandLift": "Mensuração e Brand Lift",
+        "platformAdoption": "Adoção da plataforma",
+        "campaign": "Campanha",
+        "partnership": "Parceria",
+        "retailMediaData": "Retail Media e dados"
+      },
+      "breadcrumb": "Cases de sucesso",
+      "share": "Compartilhar:",
+      "shareCaseStudy": "Compartilhe este case:",
+      "shareOnX": "Compartilhar no X (Twitter)",
+      "shareOnLinkedIn": "Compartilhar no LinkedIn",
+      "copyLink": "Copiar link",
+      "linkCopied": "Link copiado!",
+      "backToCaseStudies": "Voltar aos cases",
+      "relatedCaseStudies": "Cases relacionados",
+      "similarResultsTitle": "Pronto para alcançar resultados semelhantes?",
+      "similarResultsText": "Vamos conversar sobre como a Moving Walls pode ajudar você a transformar sua estratégia de publicidade e gerar resultados mensuráveis.",
+      "theChallenge": "O desafio",
+      "whatWeDid": "O que fizemos",
+      "whyItWorked": "Por que funcionou:",
+      "theProof": "Os resultados",
+      "sourceCampaignReporting": "Fonte: relatórios de campanha"
+    },
+    "news": {
+      "heroTitle": "Imprensa e notícias",
+      "heroTitleHighlight": "Últimas novidades",
+      "heroSubtitle": "Fique por dentro dos últimos anúncios, lançamentos de produtos, parcerias e reconhecimentos do setor da Moving Walls. Acesse nossos recursos de mídia e materiais de imprensa.",
+      "latestReleasesTitle": "Últimos comunicados à imprensa",
+      "latestReleasesText": "Receba as últimas notícias e anúncios diretamente da Moving Walls.",
+      "noReleasesTitle": "Nenhum comunicado à imprensa",
+      "noReleasesText": "No momento, não há comunicados à imprensa disponíveis. Volte em breve para conferir os últimos anúncios.",
+      "readMore": "Leia mais",
+      "previous": "Anterior",
+      "next": "Próxima",
+      "breadcrumb": "Imprensa e notícias",
+      "shareNews": "Compartilhe esta notícia:",
+      "shareOnX": "Compartilhar no X (Twitter)",
+      "shareOnLinkedIn": "Compartilhar no LinkedIn",
+      "copyLink": "Copiar link",
+      "linkCopied": "Link copiado!",
+      "backToPressNews": "Voltar para Imprensa e notícias",
+      "relatedNews": "Notícias relacionadas",
+      "pressInquiriesTitle": "Contato com a imprensa",
+      "pressInquiriesText": "Para consultas da mídia, pedidos de entrevista ou informações adicionais, entre em contato com nossa equipe de imprensa.",
+      "contactPressTeam": "Fale com a equipe de imprensa",
+      "contentNotAvailable": "Conteúdo indisponível.",
+      "mediaContact": "Contato para a imprensa",
+      "emailLabel": "E-mail:"
+    },
+    "events": {
+      "upcomingEvents": "Próximos eventos",
+      "pastEvents": "Eventos anteriores",
+      "registerSubtitle": "Inscreva-se agora e garanta sua vaga",
+      "stayTunedAlt": "Fique atento às novidades",
+      "upcomingBadge": "Em breve",
+      "featured": "Destaque",
+      "speakers": "Palestrantes",
+      "registerNow": "Inscreva-se agora",
+      "pastSubtitle": "Confira nosso histórico de eventos",
+      "noPastEvents": "Nenhum evento anterior",
+      "noPastEventsText": "Os eventos aparecerão aqui assim que forem concluídos.",
+      "completed": "Concluído",
+      "viewEventDetails": "Ver detalhes do evento",
+      "backToEvents": "Voltar para eventos",
+      "date": "Data",
+      "time": "Horário",
+      "location": "Local",
+      "aboutThisEvent": "Sobre este evento",
+      "moreEvents": "Mais eventos",
+      "viewAll": "Ver tudo →",
+      "stayUpdated": "Fique por dentro",
+      "stayUpdatedText": "Não perca os próximos eventos, webinars e sessões de treinamento.",
+      "viewAllEvents": "Ver todos os eventos"
+    },
+    "webinars": {
+      "andOther": "e mais {n}",
+      "andOthers": "e mais {n}",
+      "upcomingWebinars": "Próximos webinars",
+      "pastWebinars": "Webinars anteriores",
+      "registerSubtitle": "Inscreva-se agora e garanta sua vaga",
+      "stayTunedAlt": "Fique atento às novidades",
+      "upcomingBadge": "Em breve",
+      "pastBadge": "Anterior",
+      "viewDetailsRegister": "Ver detalhes e inscrever-se",
+      "pastSubtitle": "Confira o que você perdeu",
+      "noPastWebinars": "Nenhum webinar anterior",
+      "noPastWebinarsText": "No momento não há webinars anteriores disponíveis. Volte após nossas próximas sessões.",
+      "recorded": "Gravado",
+      "viewDetailsWatch": "Ver detalhes e assistir",
+      "breadcrumbHome": "Início",
+      "breadcrumbWebinars": "Webinars",
+      "upcomingWebinar": "Próximo webinar",
+      "pastWebinar": "Webinar anterior",
+      "date": "Data",
+      "time": "Horário",
+      "duration": "Duração",
+      "defaultDuration": "60 min",
+      "registerNow": "Inscreva-se agora",
+      "addToCalendar": "Adicionar à agenda",
+      "watchRecording": "Assistir à gravação",
+      "browseAllWebinars": "Ver todos os webinars",
+      "meetTheSpeakers": "Conheça os palestrantes",
+      "aboutTheSpeaker": "Sobre o palestrante",
+      "speakerTbd": "Palestrante a definir",
+      "whatYoullLearn": "O que você vai aprender",
+      "moreWebinars": "Mais webinars",
+      "viewAll": "Ver tudo",
+      "ctaUpcomingTitle": "Garanta sua vaga hoje",
+      "ctaPastTitle": "Quer saber mais?",
+      "ctaUpcomingText": "Inscreva-se agora e participe da nossa sessão ao vivo com especialistas do setor.",
+      "ctaPastText": "Conheça nossos próximos webinars e fique à frente das tendências do setor.",
+      "registerForFree": "Inscreva-se gratuitamente",
+      "browseUpcomingWebinars": "Ver próximos webinars",
+      "videoTitle": "Vídeo do webinar"
+    },
+    "ebooks": {
+      "categoryAll": "Todos",
+      "categoryGuide": "Guia",
+      "categoryWhitepaper": "Whitepaper",
+      "categoryPlaybook": "Playbook",
+      "categoryMarketReport": "Relatório de mercado",
+      "newBadge": "NOVO",
+      "featuredBadge": "DESTAQUE",
+      "readMore": "Leia mais",
+      "download": "Baixar",
+      "featuredEbook": "✨ E-book em destaque",
+      "downloadFreeEbook": "Baixar e-book gratuito",
+      "noEbooksFound": "Nenhum e-book encontrado nesta categoria.",
+      "previous": "Anterior",
+      "next": "Próxima",
+      "breadcrumbHome": "Início",
+      "breadcrumbEbooks": "E-books",
+      "relatedEbooks": "E-books relacionados",
+      "viewAll": "Ver tudo",
+      "viewDetails": "Ver detalhes"
+    },
+    "oohFormats": {
+      "planYourCampaign": "Planeje sua campanha",
+      "viewLocations": "Ver locais",
+      "specifications": "Especificações",
+      "keyBenefits": "Principais benefícios",
+      "learnMore": "Saiba mais",
+      "faqTitle": "Perguntas frequentes",
+      "faqSubtitle": "Perguntas comuns sobre formatos de publicidade OOH"
+    },
+    "leadership": {
+      "notFoundTitle": "Membro da equipe não encontrado",
+      "notFoundText": "O membro da equipe que você procura não existe.",
+      "backToAbout": "Voltar para Sobre",
+      "linkedinProfile": "Perfil no LinkedIn",
+      "twitterProfile": "Perfil no Twitter",
+      "email": "E-mail",
+      "aboutName": "Sobre {name}",
+      "otherTeamMembers": "Outros membros da equipe",
+      "otherTeamMembersText": "Conheça mais membros da nossa liderança",
+      "joinOurTeam": "Junte-se à nossa equipe",
+      "joinOurTeamText": "Estamos sempre em busca de talentos para fazer parte da nossa missão de transformar a mídia exterior.",
+      "viewOpenPositions": "Ver vagas abertas",
+      "executiveLeadership": "Liderança executiva",
+      "noLeadershipTitle": "Nenhuma informação sobre a liderança",
+      "noLeadershipText": "As informações sobre a liderança não estão disponíveis no momento. Volte em breve.",
+      "viewProfile": "Ver perfil",
+      "ourValues": "Nossos valores"
+    },
+    "company": {
+      "home": "Início",
+      "breadcrumb": "Trilha de navegação",
+      "getInTouch": "Fale Conosco",
+      "about": {
+        "eyebrow": "Sobre a Moving Walls",
+        "whoWeAre": "Quem Somos",
+        "coreCapabilities": "Nossas Principais Capacidades",
+        "industryImpact": "Impacto no Setor",
+        "associationsLabel": "Nossas Associações",
+        "associationsTitle": "Temos Orgulho de Fazer Parte de",
+        "mission": "Nossa Missão",
+        "readOurStory": "Leia Nossa História"
+      },
+      "story": {
+        "coreValues": "Nossos Valores",
+        "lookingForward": "Olhando para o Futuro",
+        "partnerWithUs": "Seja Nosso Parceiro",
+        "exploreSolutions": "Conheça as Soluções"
+      },
+      "journey": {
+        "breadcrumbAbout": "Sobre",
+        "breadcrumbJourney": "Nossa Jornada",
+        "statYears": "Anos de Inovação",
+        "statPartners": "Marcas Parceiras",
+        "statOffices": "Escritórios Globais",
+        "statRevenue": "Receita Anual",
+        "timelineTitle": "Linha do Tempo da Inovação",
+        "phasesTitle": "Fases de Crescimento",
+        "keyAchievements": "Principais Conquistas",
+        "expansionTitle": "Linha do Tempo da Expansão Global",
+        "type": "Tipo:",
+        "team": "Equipe:",
+        "awardsTitle": "Reconhecimentos e Prêmios",
+        "continuesTitle": "A Jornada Continua",
+        "joinJourney": "Faça Parte da Nossa Jornada",
+        "viewCareers": "Ver Vagas"
+      },
+      "careers": {
+        "breadcrumb": "Carreiras",
+        "oneRole": "1 vaga",
+        "nRoles": "{n} vagas",
+        "noPositionsTitle": "Nenhuma Vaga Aberta",
+        "noPositionsText": "No momento não há vagas abertas. Volte em breve ou siga-nos nas redes sociais para novidades.",
+        "viewDetails": "Ver Detalhes",
+        "hideDetails": "Ocultar Detalhes",
+        "applyNow": "Candidate-se",
+        "keyRequirements": "Principais Requisitos:",
+        "responsibilities": "Responsabilidades:",
+        "benefits": "Benefícios:",
+        "applyFor": "Candidatar-se a {title}",
+        "applicationForm": "Formulário de Candidatura",
+        "applyForRole": "Candidate-se a Esta Vaga",
+        "allPositions": "Todas as Vagas",
+        "aboutRole": "Sobre a Vaga",
+        "responsibilitiesTitle": "Responsabilidades",
+        "requirementsTitle": "Requisitos",
+        "benefitsTitle": "Benefícios",
+        "interested": "Interessado nesta vaga?",
+        "interestedText": "Candidate-se agora e junte-se ao nosso time de inovadores que está moldando o futuro da tecnologia de publicidade.",
+        "jobDetails": "Detalhes da Vaga",
+        "department": "Departamento",
+        "location": "Localização",
+        "type": "Tipo",
+        "level": "Nível",
+        "salary": "Salário",
+        "shareJob": "Compartilhe esta vaga",
+        "otherOpportunities": "Outras Oportunidades",
+        "otherOpportunitiesText": "Explore outras vagas que podem interessar a você",
+        "viewAllPositions": "Ver Todas as Vagas"
+      },
+      "partners": {
+        "title": "Parceiros",
+        "explore": "Conheça a parceria"
+      },
+      "contact": {
+        "hq": "Sede"
+      },
+      "newsletter": {
+        "backHome": "← Voltar à Página Inicial",
+        "rights": "Todos os direitos reservados."
+      },
+      "community": {
+        "backToScience": "← Voltar ao MW Science",
+        "goBackToScience": "Voltar à Página do MW Science",
+        "fullName": "Nome Completo",
+        "fullNamePlaceholder": "Digite seu nome completo",
+        "email": "Endereço de E-mail",
+        "contactNumber": "Telefone de Contato",
+        "contactNumberPlaceholder": "Seu telefone de contato",
+        "country": "País",
+        "countryPlaceholder": "ex.: Malásia",
+        "dob": "Data de Nascimento",
+        "submit": "Enviar Cadastro",
+        "receivedTitle": "Cadastro Recebido",
+        "thankYou": "Obrigado,",
+        "receivedText": "Seu cadastro foi concluído com sucesso."
+      }
+    },
+    "search": {
+      "title": "Resultados da Busca",
+      "subtitle": "Encontre posts do blog, cases, materiais e muito mais",
+      "placeholder": "Buscar...",
+      "button": "Buscar",
+      "filters": {
+        "all": "Todo o Conteúdo",
+        "blogPost": "Posts do Blog",
+        "caseStudy": "Cases",
+        "pressRelease": "Imprensa e Notícias",
+        "event": "Eventos",
+        "webinar": "Webinars",
+        "ebook": "E-books"
+      },
+      "types": {
+        "blogPost": "Blog",
+        "caseStudy": "Case",
+        "pressRelease": "Imprensa",
+        "event": "Evento",
+        "webinar": "Webinar",
+        "ebook": "E-book"
+      },
+      "found": "{n} resultados encontrados para \"{q}\"",
+      "loadMore": "Carregar mais resultados",
+      "noResults": "Nenhum resultado encontrado",
+      "noMatch": "Não encontramos nada correspondente a \"{q}\"",
+      "suggestions": "Sugestões:",
+      "checkSpelling": "Verifique a ortografia",
+      "differentKeywords": "Tente outras palavras-chave",
+      "generalTerms": "Use termos mais gerais",
+      "startTitle": "Comece a buscar",
+      "startText": "Digite um termo para encontrar posts do blog, cases e materiais"
+    },
+    "errors": {
+      "needHelp": "Precisa de ajuda?",
+      "contactSupport": "Fale com nossa equipe de suporte",
+      "notFound": {
+        "title": "Ops! Página Não Encontrada",
+        "description": "A página que você procura parece ter se perdido. Não se preocupe, vamos ajudar você a encontrar o caminho.",
+        "searchPlaceholder": "Buscar no site...",
+        "searchButton": "Buscar",
+        "popularPages": "Páginas Populares",
+        "backHome": "Voltar à Página Inicial",
+        "links": {
+          "platform": "Nossa Plataforma",
+          "caseStudies": "Cases",
+          "blog": "Blog",
+          "contact": "Fale Conosco",
+          "about": "Sobre Nós",
+          "careers": "Carreiras"
+        }
+      },
+      "error": {
+        "title": "Ops! Algo deu errado",
+        "description": "Pedimos desculpas pelo inconveniente. Ocorreu um erro inesperado ao carregar esta página. Nossa equipe já foi notificada.",
+        "tryAgain": "Tentar Novamente",
+        "goHome": "Ir para o Início",
+        "persists": "Se o problema persistir,",
+        "contactSupport": "fale com nossa equipe de suporte"
+      }
+    },
+    "solutions": {
+      "learnMore": "Saiba Mais",
+      "viewCaseStudy": "Ver Estudo de Caso",
+      "viewAllCaseStudies": "Ver Todos os Estudos de Caso",
+      "faqTitle": "Perguntas Frequentes",
+      "startYourTransformation": "Comece Sua Transformação",
+      "requestDemo": "Solicitar Demo",
+      "exploreProducts": "Explorar Produtos"
+    },
+    "products": {
+      "getStarted": "Comece Agora",
+      "exploreMarketplace": "Explorar Marketplace",
+      "bookDemo": "Agendar Demo",
+      "mediaOwners": "Proprietários de Mídia",
+      "buyersAgencies": "Compradores e Agências",
+      "letsConnect": "Vamos Conversar",
+      "seeHowCmsWorks": "Veja Como o CMS Funciona",
+      "requestCmsDemo": "Solicitar uma Demo do CMS",
+      "requestSitebuilderDemo": "Solicitar uma Demo do Sitebuilder",
+      "talkToScienceExpert": "Fale com um Especialista do MW Science Lab",
+      "speakToScienceExpert": "Fale com um Especialista do MW Science Lab",
+      "exploreSignals": "Explorar Sinais",
+      "exploreMwScience": "Explorar MW Science",
+      "exploreMore": "Explorar Mais",
+      "seeMwPlannerInAction": "Veja o MW Planner em Ação",
+      "seeMwMeasureInAction": "Veja o MW Measure em Ação",
+      "seeMwInfluenceInAction": "Veja o MW Influence em Ação",
+      "seeMwStudioInAction": "Veja o MW Studio em Ação",
+      "planYourCampaign": "Planeje Sua Campanha",
+      "proveYourCampaign": "Comprove Sua Campanha",
+      "getInTouch": "Fale Conosco",
+      "aria": {
+        "show": "Mostrar {item}",
+        "previousTestimonial": "Depoimento anterior",
+        "nextTestimonial": "Próximo depoimento",
+        "goToTestimonial": "Ir para o depoimento {n}",
+        "previous": "{item} anterior",
+        "next": "{item} seguinte",
+        "goTo": "Ir para {item} {n}",
+        "highlight": "destaque",
+        "metric": "métrica"
+      }
+    },
+    "shared": {
+      "contactUs": "Fale Conosco",
+      "newsletterSignup": "Inscrição na newsletter",
+      "backToTop": "Voltar ao topo",
+      "imagePlaceholder": "Espaço reservado para imagem",
+      "videoNotSupported": "Seu navegador não suporta a tag de vídeo.",
+      "form": {
+        "fullName": "Nome completo",
+        "email": "E-mail",
+        "phone": "Telefone",
+        "message": "Mensagem",
+        "workEmail": "E-mail corporativo",
+        "company": "Empresa",
+        "jobTitle": "Cargo",
+        "emailAddress": "Endereço de e-mail",
+        "successMessage": "Obrigado! Entraremos em contato em breve.",
+        "selectOption": "Selecione uma opção",
+        "submitting": "Enviando...",
+        "submit": "Enviar",
+        "formLabel": "Formulário",
+        "closeForm": "Fechar formulário",
+        "downloadNow": "Baixar agora",
+        "submitForm": "Enviar formulário",
+        "getYourCopy": "Receba sua cópia",
+        "closeModal": "Fechar janela",
+        "zohoForm": "Formulário Zoho",
+        "isRequired": "{field} é obrigatório",
+        "invalidEmail": "Insira um endereço de e-mail válido",
+        "invalidPhone": "Insira um número de telefone válido",
+        "invalidFormat": "{field} não está no formato esperado",
+        "submissionReceived": "Obrigado! Recebemos seu envio.",
+        "submissionFailed": "Falha no envio. Tente novamente.",
+        "networkError": "Erro de rede. Verifique sua conexão e tente novamente."
+      },
+      "stories": {
+        "guide": "Guia",
+        "whitepaper": "Whitepaper",
+        "playbook": "Playbook",
+        "marketReport": "Relatório de mercado",
+        "caseStudy": "Estudo de caso",
+        "downloadEbook": "Baixar e-book",
+        "viewCaseStudy": "Ver estudo de caso"
+      },
+      "alt": {
+        "featureImage": "Imagem do recurso",
+        "galleryImage": "Imagem da galeria",
+        "partnerLogo": "Logotipo do parceiro",
+        "testimonialAuthor": "Autor do depoimento",
+        "sectionImage": "Imagem da seção",
+        "videoThumbnail": "Miniatura do vídeo",
+        "blogImage": "Imagem do blog",
+        "embeddedVideo": "Vídeo incorporado",
+        "companyLogo": "Logotipo da empresa"
+      },
+      "globalCta": {
+        "heading": "Pronto para ampliar seu alcance",
+        "body": "Seja entrando em uma nova cidade ou expandindo entre continentes, ajudamos você a ativar mídia exterior com clareza e impacto mensurável.",
+        "getInTouch": "Fale Conosco",
+        "viewSuccessStories": "Ver casos de sucesso",
+        "emailUs": "Envie um e-mail a qualquer momento",
+        "singaporeHq": "Sede em Singapura"
+      },
+      "search": {
+        "typeBlog": "Blog",
+        "typeCaseStudy": "Estudo de caso",
+        "typePress": "Imprensa",
+        "typeEvent": "Evento",
+        "typeWebinar": "Webinar",
+        "typeEbook": "E-book",
+        "placeholder": "Pesquisar posts do blog, estudos de caso, recursos...",
+        "viewAllResults": "Ver todos os {n} resultados →",
+        "noResultsFor": "Nenhum resultado encontrado para \"{query}\"",
+        "tryDifferent": "Tente outras palavras-chave ou navegue pelas nossas categorias",
+        "quickLinks": "Links rápidos",
+        "blog": "Blog",
+        "caseStudies": "Estudos de caso",
+        "events": "Eventos",
+        "webinars": "Webinars",
+        "ebooks": "E-books",
+        "navigate": "Navegar",
+        "select": "Selecionar"
+      }
+    },
+    "locations": {
+      "getStarted": "Comece Agora",
+      "contactTeam": "Fale com nossa equipe de {place}",
+      "exploreByCity": "Explore por cidade",
+      "keyCities": "Oportunidades de publicidade OOH nas principais cidades de {country}",
+      "billboards": "painéis",
+      "billboardsHeading": "Painéis de alta visibilidade",
+      "billboardsSub": "Locais de publicidade premium com exposição máxima",
+      "dailyReach": "Alcance diário",
+      "monthlyImpressions": "Impressões mensais",
+      "mediaTypes": "Tipos de mídia disponíveis",
+      "faqs": "Perguntas frequentes",
+      "otherCities": "Explore outras cidades",
+      "otherCitiesIn": "Explore outras cidades em {country}",
+      "otherCitiesSub": "Planeje sua campanha em mais cidades em uma única compra",
+      "explore": "Explore {city}",
+      "viewAllOf": "Ver tudo de {name}",
+      "allLocations": "Todas as localizações",
+      "oohAdvertisingIn": "Publicidade OOH em",
+      "backTo": "Voltar para {name}",
+      "monthlyReach": "Alcance mensal",
+      "monthlyImpressionsLower": "Impressões mensais",
+      "areas": "Áreas",
+      "venueTypes": "Tipos de local",
+      "bestFor": "Ideal para:",
+      "whatYouGet": "O que você recebe",
+      "whatItTellsYou": "O que isso revela",
+      "overview": "Visão geral",
+      "allVenues": "Todos os locais",
+      "exploreShort": "Explorar"
+    }
+  }
+}

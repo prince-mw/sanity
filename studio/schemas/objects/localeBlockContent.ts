@@ -48,5 +48,11 @@ export default defineType({
       type: 'blockContent',
       fieldset: 'translations',
     }),
+    defineField({
+      name: 'pt',
+      title: 'Portuguese',
+      type: 'blockContent',
+      fieldset: 'translations',
+    }),
   ],
 })

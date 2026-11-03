@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import { CTAButton } from "@/components/CTAButton"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
+import { useLocale } from "@/i18n/LocaleContext"
 
 // Custom SVG icons with sci-fi styling
 const TerminalIcon = ({ className }: { className?: string }) => (
@@ -133,6 +134,7 @@ interface ProductsMWActivateClientProps {
 }
 
 export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClientProps) {
+  const { t } = useLocale()
   const [activeMode, setActiveMode] = useState<'owners' | 'buyers'>('owners')
   const [systemStatus] = useState({
     online: true,
@@ -240,7 +242,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
                 <CTAButton href="/contact" className="bg-white text-mw-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl inline-flex items-center gap-2">
-                  Book Demo
+                  {t('ui.products.bookDemo')}
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
@@ -372,7 +374,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                Media Owners
+                {t('ui.products.mediaOwners')}
               </button>
               <button
                 onClick={() => setActiveMode('buyers')}
@@ -382,7 +384,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                     : 'text-gray-600 hover:text-gray-900'
                 }`}
               >
-                Buyers & Agencies
+                {t('ui.products.buyersAgencies')}
               </button>
             </div>
           </div>

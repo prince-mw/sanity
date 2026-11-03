@@ -6,6 +6,7 @@ import Link from "next/link";
 import { urlFor } from "@/sanity/lib/client";
 import { sanitizeHtml } from "@/lib/sanitize";
 import { getVideoSkipIntroProps } from "@/lib/videoSkipIntro";
+import { useLocale } from "@/i18n/LocaleContext";
 
 // Sanity asset refs encode their original dimensions, e.g. "image-abc123-1600x900-jpg"
 function getImageDimensions(ref?: string): { width: number; height: number } {
@@ -121,11 +122,12 @@ const components: PortableTextComponents = {
 
   // Custom types (images, code blocks, etc.)
   types: {
-    image: ({ value }) => {
+    image: function PortableImage({ value }) {
+      const { t } = useLocale();
       if (!value?.asset) return null;
 
       const imageUrl = urlFor(value).width(1200).quality(90).url();
-      const alt = value.alt || "Blog image";
+      const alt = value.alt || t('ui.shared.alt.blogImage');
       const { width, height } = getImageDimensions(value.asset._ref || value.asset._id);
 
       return (
@@ -191,7 +193,8 @@ const components: PortableTextComponents = {
       );
     },
     // Video embed (YouTube/Vimeo URL or uploaded file)
-    video: ({ value }) => {
+    video: function PortableVideo({ value }) {
+      const { t } = useLocale();
       // Handle uploaded video file
       if (value?.videoType === 'file' && value?.videoFileUrl) {
         return (
@@ -205,7 +208,7 @@ const components: PortableTextComponents = {
               {...getVideoSkipIntroProps(value.startAtSeconds)}
             >
               <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
-              Your browser does not support the video tag.
+              {t('ui.shared.videoNotSupported')}
             </video>
             {value.caption && (
               <figcaption className="text-center text-sm text-mw-gray-500 mt-3">
@@ -245,7 +248,7 @@ const components: PortableTextComponents = {
               className="absolute inset-0 w-full h-full"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
-              title={value.caption || 'Embedded video'}
+              title={value.caption || t('ui.shared.alt.embeddedVideo')}
             />
           </div>
           {value.caption && (
@@ -499,7 +502,8 @@ const components: PortableTextComponents = {
       );
     },
     // Testimonial block
-    testimonialBlock: ({ value }) => {
+    testimonialBlock: function PortableTestimonial({ value }) {
+      const { t } = useLocale();
       return (
         <div className="my-8 bg-mw-gray-50 rounded-xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-6">
@@ -544,7 +548,7 @@ const components: PortableTextComponents = {
                 {value.companyLogo?.asset && (
                   <Image
                     src={urlFor(value.companyLogo).width(100).height(40).url()}
-                    alt={value.company || 'Company logo'}
+                    alt={value.company || t('ui.shared.alt.companyLogo')}
                     width={100}
                     height={40}
                     className="object-contain"

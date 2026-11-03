@@ -10,6 +10,7 @@ import type { DisplayIntegration } from '@/data/default-integrations'
 import { getDisplayIntegrations } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
 import { getSanityImageUrl } from "@/sanity/lib/fetch"
+import { useLocale } from "@/i18n/LocaleContext"
 
 interface MWMarketClientProps {
   readonly caseStudies?: any[]
@@ -107,13 +108,14 @@ const ArticleIcon = ({ className }: { className?: string }) => (
 
 export default function MWMarketPage({ caseStudies = [], product, partnerLogos, testimonials }: MWMarketClientProps) {
   const { openFormPopup } = useFormPopup()
+  const { t } = useLocale()
   const heroTitle = product?.heroTitle || 'Turn OOH Buying Into a Self-Serve Experience'
   const heroSubtitle = product?.heroSubtitle || 'Discover, plan, and launch billboard campaigns globally \u2014 faster, simpler, and with full transparency.'
   const heroDescription = product?.description || 'MW Market is a self-serve OOH marketplace that lets advertisers access inventory, book campaigns, and track performance \u2014 all in one place.'
   const tagline = product?.tagline || product?.heroBadge || 'Global OOH Marketplace'
   const heroImageUrl = product?.heroImage ? getSanityImageUrl(product.heroImage, { width: 800 }) : null
   const heroStats = product?.heroStats || []
-  const ctaLabel = product?.ctaText || 'Get Started'
+  const ctaLabel = product?.ctaText || t('ui.products.getStarted')
   const heroStatColors = ['text-yellow-300', 'text-green-300', 'text-purple-300', 'text-pink-300']
 
   const gradientMap: Record<string, string> = {
@@ -235,7 +237,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
                   onClick={openFormPopup}
                   className="bg-white text-blue-900 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2"
                 >
-                  Get Started
+                  {t('ui.products.getStarted')}
                   <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </button>
                 <a
@@ -244,7 +246,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
                   rel="noopener noreferrer"
                   className="bg-white/10 text-white border border-white/30 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
                 >
-                  Explore Marketplace
+                  {t('ui.products.exploreMarketplace')}
                   <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </a>
               </div>

@@ -1,3 +1,5 @@
+// ⚠ HISTORICAL — do not re-run. The live page was edited in Studio (bold removed) and updated on 3 Nov 2026
+// (Chainzone co-branded artwork, "Co-hosted with Chainzone." line). Edit the live document instead.
 // Creates a DRAFT invitation landing page for "An Evening in Ho Chi Minh City" (Hilton Saigon, 12 Nov 2026),
 // same email-style layout and 900px width as /woo-warsaw-2026 and /networking-session (artwork header, details box,
 // RSVP popup, footer artwork, no site header/footer).

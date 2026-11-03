@@ -5,6 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
 import ContactForm from './ContactForm'
+import { useLocale } from '@/i18n/LocaleContext'
 
 const ITEMS_PER_PAGE = 12
 
@@ -22,6 +23,7 @@ interface PressNewsPageClientProps {
 }
 
 export default function PressNewsPageClient({ pressReleases }: PressNewsPageClientProps) {
+  const { t } = useLocale()
   const [currentPage, setCurrentPage] = useState(1)
 
   const totalPages = Math.ceil(pressReleases.length / ITEMS_PER_PAGE)
@@ -56,13 +58,11 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
             className="text-center"
           >
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-mw-gray-900 mb-6">
-              Press & News
-              <span className="text-mw-blue-600 block">Latest Updates</span>
+              {t('ui.news.heroTitle')}
+              <span className="text-mw-blue-600 block">{t('ui.news.heroTitleHighlight')}</span>
             </h1>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto mb-12 leading-relaxed">
-              Stay updated with Moving Walls&apos;s latest announcements, product launches, 
-              partnerships, and industry recognition. Access our media resources 
-              and press materials.
+              {t('ui.news.heroSubtitle')}
             </p>
           </motion.div>
         </div>
@@ -79,10 +79,10 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Latest Press Releases
+              {t('ui.news.latestReleasesTitle')}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
-              Get the latest news and announcements directly from Moving Walls.
+              {t('ui.news.latestReleasesText')}
             </p>
           </motion.div>
 
@@ -92,8 +92,8 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
                 <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
                 </svg>
-                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Press Releases</h3>
-                <p className="text-mw-gray-500 max-w-md mx-auto">There are no press releases available at the moment. Check back soon for the latest announcements.</p>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">{t('ui.news.noReleasesTitle')}</h3>
+                <p className="text-mw-gray-500 max-w-md mx-auto">{t('ui.news.noReleasesText')}</p>
               </div>
             ) : paginatedPressReleases.map((release, index) => (
               <motion.article
@@ -175,7 +175,7 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
                   </h3>
                   <p className="text-mw-gray-600 leading-relaxed mb-4">{release.excerpt}</p>
                   <span className="text-mw-blue-600 hover:text-mw-blue-700 font-medium text-sm flex items-center gap-1">
-                    Read More
+                    {t('ui.news.readMore')}
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -194,7 +194,7 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
                   disabled={currentPage === 1}
                   className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  Previous
+                  {t('ui.news.previous')}
                 </button>
 
                 {getPageNumbers().map((page, index) => (
@@ -219,7 +219,7 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
                   disabled={currentPage === totalPages}
                   className="px-4 py-2 rounded-lg border border-mw-gray-300 text-mw-gray-700 hover:bg-mw-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                 >
-                  Next
+                  {t('ui.news.next')}
                 </button>
               </nav>
             </div>

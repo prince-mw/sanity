@@ -54,5 +54,12 @@ export default defineType({
       rows: 4,
       fieldset: 'translations',
     }),
+    defineField({
+      name: 'pt',
+      title: 'Portuguese',
+      type: 'text',
+      rows: 4,
+      fieldset: 'translations',
+    }),
   ],
 })

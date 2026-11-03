@@ -104,41 +104,44 @@ export default function PlatformEcosystem() {
   const [hoveredInput, setHoveredInput] = useState<number | null>(null);
   const [hoveredOutput, setHoveredOutput] = useState<number | null>(null);
   const { t } = useLocale();
+  const sourceLabels: string[] = t('homeVisuals.ecosystem.sources');
+  const stepLabels: string[] = t('homeVisuals.ecosystem.steps');
+  const outputLabels: string[] = t('homeVisuals.ecosystem.outputList');
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   const dataSources = [
-    { icon: <UsersIcon />, label: "Audience Data" },
-    { icon: <MapPinIcon />, label: "Location" },
-    { icon: <ChartIcon />, label: "Traffic Patterns" },
-    { icon: <CloudIcon />, label: "Weather Data" },
-    { icon: <UserGroupIcon />, label: "Demographics" },
-    { icon: <BuildingIcon />, label: "POI Data" },
-    { icon: <DeviceIcon />, label: "Mobile Signals" },
-    { icon: <CalendarIcon />, label: "Event Calendars" },
-    { icon: <DatabaseIcon />, label: "Any Data Source" },
+    { icon: <UsersIcon />, label: sourceLabels[0] },
+    { icon: <MapPinIcon />, label: sourceLabels[1] },
+    { icon: <ChartIcon />, label: sourceLabels[2] },
+    { icon: <CloudIcon />, label: sourceLabels[3] },
+    { icon: <UserGroupIcon />, label: sourceLabels[4] },
+    { icon: <BuildingIcon />, label: sourceLabels[5] },
+    { icon: <DeviceIcon />, label: sourceLabels[6] },
+    { icon: <CalendarIcon />, label: sourceLabels[7] },
+    { icon: <DatabaseIcon />, label: sourceLabels[8] },
   ];
 
   const aiSteps = [
-    { icon: <PlanIcon />, label: "Planning" },
-    { icon: <OptimizeIcon />, label: "Optimization" },
-    { icon: <TargetIcon />, label: "Targeting" },
-    { icon: <MeasureIcon />, label: "Attribution" },
-    { icon: <MeasureIcon />, label: "Measure" },
+    { icon: <PlanIcon />, label: stepLabels[0] },
+    { icon: <OptimizeIcon />, label: stepLabels[1] },
+    { icon: <TargetIcon />, label: stepLabels[2] },
+    { icon: <MeasureIcon />, label: stepLabels[3] },
+    { icon: <MeasureIcon />, label: stepLabels[4] },
   ];
 
   const outputs = [
-    { icon: <IntegrationIcon />, label: "Integrations" },
-    { icon: <AnalyticsIcon />, label: "Analytics" },
-    { icon: <ReportIcon />, label: "Reporting" },
-    { icon: <APIAccessIcon />, label: "API Access" },
-    { icon: <InsightsIcon />, label: "Insights" },
-    { icon: <AudienceProfileIcon />, label: "Audience" },
-    { icon: <CampaignPerfIcon />, label: "Performance" },
-    { icon: <MediaPlanIcon />, label: "Media Plans" },
-    { icon: <ForecastIcon />, label: "Forecasting" },
+    { icon: <IntegrationIcon />, label: outputLabels[0] },
+    { icon: <AnalyticsIcon />, label: outputLabels[1] },
+    { icon: <ReportIcon />, label: outputLabels[2] },
+    { icon: <APIAccessIcon />, label: outputLabels[3] },
+    { icon: <InsightsIcon />, label: outputLabels[4] },
+    { icon: <AudienceProfileIcon />, label: outputLabels[5] },
+    { icon: <CampaignPerfIcon />, label: outputLabels[6] },
+    { icon: <MediaPlanIcon />, label: outputLabels[7] },
+    { icon: <ForecastIcon />, label: outputLabels[8] },
   ];
 
   const products = [
@@ -496,7 +499,7 @@ export default function PlatformEcosystem() {
                 transition={{ delay: 0.2 }}
                 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3"
               >
-                Data Sources
+                {t('homeVisuals.ecosystem.dataSources')}
               </motion.div>
               {dataSources.map((source, index) => (
                 <DataSourceCard key={source.label} {...source} index={index}
@@ -575,7 +578,7 @@ export default function PlatformEcosystem() {
                     />
                   </svg>
                   <div className="relative bg-gradient-to-r from-blue-600 to-indigo-600 rounded-[6px] px-5 py-2 text-white text-sm font-semibold shadow-lg">
-                    Campaign Intelligence
+                    {t('homeVisuals.ecosystem.campaignIntelligence')}
                   </div>
                 </div>
               </motion.div>
@@ -636,7 +639,7 @@ export default function PlatformEcosystem() {
                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 flex items-center justify-center shadow-2xl border-4 border-white/90 ring-2 ring-blue-400/20">
                       <div className="text-center">
                         <img src="/assets/logo/MW-logo-web.svg" alt="MW" className="w-10 h-10 mx-auto brightness-0 invert" />
-                        <span className="text-[10px] text-white/90 font-bold mt-0.5 block tracking-wider">ENGINE</span>
+                        <span className="text-[10px] text-white/90 font-bold mt-0.5 block tracking-wider">{t('homeVisuals.ecosystem.engine')}</span>
                       </div>
                     </div>
                   </motion.div>
@@ -656,7 +659,7 @@ export default function PlatformEcosystem() {
                     <span className="text-white text-[10px] font-bold">AI</span>
                   </div>
                   <span className="text-sm font-semibold text-gray-700">MW AI</span>
-                  <span className="text-xs text-gray-500">Audience Intelligence</span>
+                  <span className="text-xs text-gray-500">{t('homeVisuals.ecosystem.audienceIntelligence')}</span>
                 </div>
               </motion.div>
 
@@ -669,16 +672,16 @@ export default function PlatformEcosystem() {
                 className="flex flex-wrap justify-center gap-3"
               >
                 <div className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-sm">
-                  <span className="text-xs font-medium text-gray-700">Audience Graphs</span>
+                  <span className="text-xs font-medium text-gray-700">{t('homeVisuals.ecosystem.features')[0]}</span>
                 </div>
                 <div className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-sm">
-                  <span className="text-xs font-medium text-gray-700">Campaign Events</span>
+                  <span className="text-xs font-medium text-gray-700">{t('homeVisuals.ecosystem.features')[1]}</span>
                 </div>
                 <div className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-sm">
-                  <span className="text-xs font-medium text-gray-700">Data Sync</span>
+                  <span className="text-xs font-medium text-gray-700">{t('homeVisuals.ecosystem.features')[2]}</span>
                 </div>
                 <div className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg shadow-sm">
-                  <span className="text-xs font-medium text-gray-700">Real-time Feeds</span>
+                  <span className="text-xs font-medium text-gray-700">{t('homeVisuals.ecosystem.features')[3]}</span>
                 </div>
               </motion.div>
             </div>
@@ -692,7 +695,7 @@ export default function PlatformEcosystem() {
                 transition={{ delay: 0.6 }}
                 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3"
               >
-                Outputs
+                {t('homeVisuals.ecosystem.outputs')}
               </motion.div>
               
               {/* Output Cards */}

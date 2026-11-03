@@ -16,7 +16,21 @@ const CaseStudiesSection = dynamic(() => import("../components/CaseStudiesSectio
 const ContactForm = dynamic(() => import("../components/ContactForm"));
 import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm, getClientPartnersContent, getAllPartnerPages } from "@/sanity/lib/fetch";
 
+import { getRequestLocale } from "@/i18n/serverLocale";
+import ja from "../../messages/ja.json";
+import ko from "../../messages/ko.json";
+import id from "../../messages/id.json";
+import zh from "../../messages/zh.json";
+import es from "../../messages/es.json";
+import pt from "../../messages/pt.json";
+
 export const revalidate = 3600;
+
+// Tab title/description for visitors browsing in another language. Crawlers and link previews
+// send no language, so they always get the English SEO text from Sanity.
+const translatedMeta: Record<string, { homeTitle: string; homeDescription: string }> = {
+  ja: ja.metadata, ko: ko.metadata, id: id.metadata, zh: zh.metadata, es: es.metadata, pt: pt.metadata,
+};
 
 const defaultMeta = {
   title: "Moving Walls - Connected Media Platform for OOH Advertising",
@@ -24,12 +38,13 @@ const defaultMeta = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  const pageSeo = await getPageSeo('home');
+  const [pageSeo, locale] = await Promise.all([getPageSeo('home'), getRequestLocale()]);
   const seo = pageSeo?.seo;
-  
+  const translated = translatedMeta[locale];
+
   return {
-    title: seo?.metaTitle || defaultMeta.title,
-    description: seo?.metaDescription || defaultMeta.description,
+    title: translated?.homeTitle || seo?.metaTitle || defaultMeta.title,
+    description: translated?.homeDescription || seo?.metaDescription || defaultMeta.description,
     keywords: seo?.enableKeywords !== false && seo?.keywords?.length ? seo.keywords : undefined,
     alternates: {
       canonical: "https://www.movingwalls.com",

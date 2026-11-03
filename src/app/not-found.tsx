@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
 
 // SVG Icon Components
 const PlatformIcon = () => (
@@ -42,6 +43,7 @@ const CareersIcon = () => (
 );
 
 export default function NotFound() {
+  const { t } = useLocale();
   const [searchQuery, setSearchQuery] = useState("");
   const [recentPosts, setRecentPosts] = useState<any[]>([]);
 
@@ -65,12 +67,12 @@ export default function NotFound() {
   };
 
   const popularLinks = [
-    { name: "Our Platform", href: "/platform", icon: <PlatformIcon /> },
-    { name: "Case Studies", href: "/case-studies", icon: <CaseStudiesIcon /> },
-    { name: "Blog", href: "/blog", icon: <BlogIcon /> },
-    { name: "Contact Us", href: "/contact", icon: <ContactIcon /> },
-    { name: "About Us", href: "/about", icon: <AboutIcon /> },
-    { name: "Careers", href: "/careers", icon: <CareersIcon /> },
+    { name: t("ui.errors.notFound.links.platform"), href: "/platform", icon: <PlatformIcon /> },
+    { name: t("ui.errors.notFound.links.caseStudies"), href: "/case-studies", icon: <CaseStudiesIcon /> },
+    { name: t("ui.errors.notFound.links.blog"), href: "/blog", icon: <BlogIcon /> },
+    { name: t("ui.errors.notFound.links.contact"), href: "/contact", icon: <ContactIcon /> },
+    { name: t("ui.errors.notFound.links.about"), href: "/about", icon: <AboutIcon /> },
+    { name: t("ui.errors.notFound.links.careers"), href: "/careers", icon: <CareersIcon /> },
   ];
 
   return (
@@ -110,11 +112,10 @@ export default function NotFound() {
           transition={{ delay: 0.2 }}
         >
           <h1 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-            Oops! Page Not Found
+            {t("ui.errors.notFound.title")}
           </h1>
           <p className="text-lg text-mw-gray-600 mb-8 max-w-xl mx-auto">
-            The page you&apos;re looking for seems to have wandered off. Don&apos;t worry, 
-            let&apos;s help you find your way back.
+            {t("ui.errors.notFound.description")}
           </p>
         </motion.div>
 
@@ -129,7 +130,7 @@ export default function NotFound() {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search our site..."
+              placeholder={t("ui.errors.notFound.searchPlaceholder")}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full px-6 py-4 pl-14 border border-mw-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent shadow-mw-sm bg-white"
@@ -146,7 +147,7 @@ export default function NotFound() {
               type="submit"
               className="absolute right-2 top-1/2 transform -translate-y-1/2 px-4 py-2 bg-mw-blue-600 text-white rounded-lg hover:bg-mw-blue-700 transition-colors"
             >
-              Search
+              {t("ui.errors.notFound.searchButton")}
             </button>
           </div>
         </motion.form>
@@ -159,7 +160,7 @@ export default function NotFound() {
           className="mb-12"
         >
           <h2 className="text-lg font-semibold text-mw-gray-900 mb-4">
-            Popular Pages
+            {t("ui.errors.notFound.popularPages")}
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-w-lg mx-auto">
             {popularLinks.map((link) => (
@@ -190,7 +191,7 @@ export default function NotFound() {
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
-            Back to Homepage
+            {t("ui.errors.notFound.backHome")}
           </Link>
         </motion.div>
 
@@ -201,7 +202,7 @@ export default function NotFound() {
           transition={{ delay: 0.6 }}
           className="mt-8 text-mw-gray-500"
         >
-          Need help? <Link href="/contact" className="text-mw-blue-600 hover:underline">Contact our support team</Link>
+          {t("ui.errors.needHelp")} <Link href="/contact" className="text-mw-blue-600 hover:underline">{t("ui.errors.contactSupport")}</Link>
         </motion.p>
       </div>
     </div>

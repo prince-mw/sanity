@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import { useState } from "react";
+import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getTextColorClasses, getSubtextColorClasses, type BackgroundColor } from "./utils";
 
 interface GalleryImage {
@@ -29,6 +30,7 @@ export function ImageGallerySection({
   columns = 3,
   backgroundColor = 'white',
 }: ImageGallerySectionProps) {
+  const { t } = useLocale();
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const bgClasses = getBackgroundClasses(backgroundColor);
   const textColor = getTextColorClasses(backgroundColor);
@@ -88,7 +90,7 @@ export function ImageGallerySection({
                   <>
                     <Image
                       src={img.image}
-                      alt={img.alt || img.caption || 'Gallery image'}
+                      alt={img.alt || img.caption || t('ui.shared.alt.galleryImage')}
                       fill
                       sizes={gridImageSizes[columns]}
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -130,7 +132,7 @@ export function ImageGallerySection({
               {selectedImage.image && (
                 <Image
                   src={selectedImage.image}
-                  alt={selectedImage.alt || selectedImage.caption || 'Gallery image'}
+                  alt={selectedImage.alt || selectedImage.caption || t('ui.shared.alt.galleryImage')}
                   fill
                   sizes="(min-width: 1024px) 1024px, 100vw"
                   className="object-contain"

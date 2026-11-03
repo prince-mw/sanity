@@ -8,6 +8,8 @@ import { LocationData } from '@/data/staticLocationData'
 import { CTAButton } from './CTAButton'
 import { LandingPageRenderer } from './landing'
 import { useZohoPopup } from './ZohoPopupProvider'
+import { useLocale } from '@/i18n/LocaleContext'
+import { messagesMap, getMessage } from '@/i18n/messages'
 
 // Animation variants
 const fadeUp = {
@@ -132,24 +134,28 @@ interface LocationDetailClientProps {
 }
 
 // Fixed labels in the page template (the page content itself comes from Sanity).
+// English-content pages follow the visitor's UI language; the -zh pages keep their own Chinese labels.
+const getEnLabels = (t: (key: string) => any) => ({
+  getStarted: t('ui.locations.getStarted') as string,
+  contactTeam: (place: string) => (t('ui.locations.contactTeam') as string).replace('{place}', place),
+  exploreByCity: t('ui.locations.exploreByCity') as string,
+  keyCities: (country: string) => <>{(t('ui.locations.keyCities') as string).replace('{country}', country)}</>,
+  billboards: t('ui.locations.billboards') as string,
+  billboardsHeading: t('ui.locations.billboardsHeading') as string,
+  billboardsSub: t('ui.locations.billboardsSub') as string,
+  dailyReach: t('ui.locations.dailyReach') as string,
+  monthlyImpressions: t('ui.locations.monthlyImpressions') as string,
+  mediaTypes: t('ui.locations.mediaTypes') as string,
+  faqs: t('ui.locations.faqs') as string,
+  otherCities: (country?: string) => country ? (t('ui.locations.otherCitiesIn') as string).replace('{country}', country) : (t('ui.locations.otherCities') as string),
+  otherCitiesSub: t('ui.locations.otherCitiesSub') as string,
+  explore: (city: string) => (t('ui.locations.explore') as string).replace('{city}', city),
+  viewAll: (_back: string, country?: string) => (t('ui.locations.viewAllOf') as string).replace('{name}', country || 'Country'),
+  allLocations: t('ui.locations.allLocations') as string,
+  oohAdvertisingIn: t('ui.locations.oohAdvertisingIn') as string,
+})
+
 const LABELS = {
-  en: {
-    getStarted: 'Get Started',
-    contactTeam: (place: string) => `Contact Our ${place} Team`,
-    exploreByCity: 'Explore by City',
-    keyCities: (country: string) => <>OOH advertising opportunities in {country}&apos;s key cities</>,
-    billboards: 'billboards',
-    billboardsHeading: 'High Visibility Billboards',
-    billboardsSub: 'Premium advertising locations with maximum exposure',
-    dailyReach: 'Daily Reach',
-    monthlyImpressions: 'Monthly Impressions',
-    mediaTypes: 'Media Types Available',
-    faqs: 'Frequently Asked Questions',
-    otherCities: (country?: string) => `Explore Other Cities${country ? ` in ${country}` : ''}`,
-    otherCitiesSub: 'Plan your campaign across more cities in one buy',
-    explore: (city: string) => `Explore ${city}`,
-    viewAll: (back: string) => back.replace(/^Back to /, 'View all of '),
-  },
   zh: {
     getStarted: '立即开始',
     contactTeam: (place: string) => `联系我们的${place}团队`,
@@ -165,13 +171,21 @@ const LABELS = {
     otherCities: () => '探索中国其他城市',
     otherCitiesSub: '一次投放，覆盖更多城市',
     explore: (city: string) => `了解${city}`,
-    viewAll: () => '查看中国市场页面',
+    viewAll: (_back?: string, _country?: string) => '查看中国市场页面',
+    allLocations: 'All Locations',
+    oohAdvertisingIn: 'OOH Advertising in',
   },
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel = 'All Locations', cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en' }: LocationDetailClientProps) {
-  const L = LABELS[lang]
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en' }: LocationDetailClientProps) {
+  const { t } = useLocale()
   const location = initialData
+  // Spanish/Portuguese pages (americas-es, americas-pt) keep their template labels in the page's own
+  // language; English-content pages follow the visitor's language.
+  const pageLang = location.slug?.match(/-(es|pt)$/)?.[1] as 'es' | 'pt' | undefined
+  const labelT = pageLang ? (key: string) => getMessage(messagesMap[pageLang], key) : t
+  const L = lang === 'zh' ? LABELS.zh : getEnLabels(labelT)
+  const backLabel = backLabelProp ?? L.allLocations
   const [openFAQ, setOpenFAQ] = useState<number | null>(0)
   const { openZohoPopup, setCurrentPageFormUrl } = useZohoPopup()
 
@@ -187,9 +201,9 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
   // so browsers don't offer to auto-translate an already-translated page, then restore whatever
   // it was before on unmount (not a hardcoded "en" — that would clobber a non-English UI locale).
   useEffect(() => {
-    const suffix = location.slug?.match(/-(es|zh)$/)?.[1]
+    const suffix = location.slug?.match(/-(es|zh|pt)$/)?.[1]
     if (!suffix) return
-    const langBySuffix: Record<string, string> = { es: 'es', zh: 'zh-CN' }
+    const langBySuffix: Record<string, string> = { es: 'es', zh: 'zh-CN', pt: 'pt-BR' }
     const previous = document.documentElement.lang
     document.documentElement.lang = langBySuffix[suffix]
     return () => { document.documentElement.lang = previous }
@@ -234,7 +248,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
                 {location.heroTitle ? location.heroTitle : (
                   <>
-                    OOH Advertising in{' '}
+                    {L.oohAdvertisingIn}{' '}
                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
                       {location.name}
                     </span>
@@ -566,7 +580,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
             </div>
             <div className="text-center mt-10">
               <Link href={backHref} className="inline-flex items-center gap-2 font-semibold text-mw-blue-600 hover:text-mw-blue-700">
-                {L.viewAll(backLabel)}
+                {L.viewAll(backLabel, countryName)}
               </Link>
             </div>
           </div>

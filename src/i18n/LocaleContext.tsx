@@ -2,27 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
 import { locales, defaultLocale, localeNames, localeCodes, Locale } from './config';
-
-// Statically import all translations to ensure they're bundled
-import enMessages from '../../messages/en.json';
-import jaMessages from '../../messages/ja.json';
-import koMessages from '../../messages/ko.json';
-import idMessages from '../../messages/id.json';
-import zhMessages from '../../messages/zh.json';
-import esMessages from '../../messages/es.json';
-
-// Type for messages
-type Messages = typeof enMessages;
-
-// Messages map
-const messagesMap: Record<Locale, Messages> = {
-  en: enMessages,
-  ja: jaMessages,
-  ko: koMessages,
-  id: idMessages,
-  zh: zhMessages,
-  es: esMessages,
-};
+import { messagesMap, getMessage } from './messages';
 
 interface LocaleContextType {
   locale: Locale;
@@ -34,23 +14,6 @@ interface LocaleContextType {
 }
 
 const LocaleContext = createContext<LocaleContextType | undefined>(undefined);
-
-// Helper function to get nested value from object using dot notation
-function getNestedValue(obj: Record<string, unknown>, path: string): any {
-  const keys = path.split('.');
-  let current: unknown = obj;
-  
-  for (const key of keys) {
-    if (current && typeof current === 'object' && key in current) {
-      current = (current as Record<string, unknown>)[key];
-    } else {
-      return path; // Return the key if translation not found
-    }
-  }
-  
-  // Return whatever type it is - string, array, object, etc.
-  return current !== undefined ? current : path;
-}
 
 const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365; // 1 year
 
@@ -74,8 +37,8 @@ export function LocaleProvider({ children, initialLocale }: { children: ReactNod
   }, []);
 
   const t = useCallback((key: string): string => {
-    const messages = messagesMap[locale] || messagesMap[defaultLocale];
-    return getNestedValue(messages as Record<string, unknown>, key);
+    // Falls back to English when this language is missing the key
+    return getMessage(messagesMap[locale] || messagesMap[defaultLocale], key);
   }, [locale]);
 
   const contextValue: LocaleContextType = {

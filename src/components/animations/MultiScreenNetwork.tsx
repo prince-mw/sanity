@@ -1,13 +1,16 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export default function MultiScreenNetwork() {
+  const { t } = useLocale()
+  const cityNames: string[] = t('homeVisuals.network.cities')
   // City silhouettes with billboard positions
   const cities = [
-    { name: 'NYC', x: 15, y: 65, buildings: [40, 65, 55, 80, 45, 70, 50] },
-    { name: 'London', x: 45, y: 25, buildings: [35, 50, 45, 60, 40, 55, 48] },
-    { name: 'Singapore', x: 80, y: 55, buildings: [50, 75, 60, 85, 55, 70, 65] },
+    { name: cityNames[0], x: 15, y: 65, buildings: [40, 65, 55, 80, 45, 70, 50] },
+    { name: cityNames[1], x: 45, y: 25, buildings: [35, 50, 45, 60, 40, 55, 48] },
+    { name: cityNames[2], x: 80, y: 55, buildings: [50, 75, 60, 85, 55, 70, 65] },
   ]
 
   // Billboard screens that sync
@@ -207,7 +210,7 @@ export default function MultiScreenNetwork() {
                     animate={{ scale: [0.95, 1.05, 0.95] }}
                     transition={{ duration: 2, repeat: Infinity }}
                   >
-                    YOUR BRAND
+                    {t('homeVisuals.network.yourBrand')}
                   </motion.div>
                 </div>
 
@@ -288,7 +291,7 @@ export default function MultiScreenNetwork() {
               animate={{ opacity: [1, 0.5, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             />
-            <span className="text-[10px] text-cyan-300 font-semibold tracking-wider">CONTROL CENTER</span>
+            <span className="text-[10px] text-cyan-300 font-semibold tracking-wider">{t('homeVisuals.network.controlCenter')}</span>
           </div>
 
           {/* Mini dashboard */}
@@ -306,7 +309,7 @@ export default function MultiScreenNetwork() {
                   animate={{ opacity: [0.7, 1, 0.7] }}
                   transition={{ duration: 1, repeat: Infinity }}
                 >
-                  LIVE
+                  {t('homeVisuals.network.live')}
                 </motion.div>
               </motion.div>
             ))}
@@ -324,7 +327,7 @@ export default function MultiScreenNetwork() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </motion.svg>
-            <span className="text-[9px] text-green-400">All Synced</span>
+            <span className="text-[9px] text-green-400">{t('homeVisuals.network.allSynced')}</span>
           </div>
         </div>
       </motion.div>

@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
+import { getServerT } from '@/i18n/serverT'
 import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUrl, getCitiesByCountry, transformCityForList } from '@/sanity/lib/fetch'
 import { buildLocationJsonLd } from '@/lib/locationSchema'
 import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLanguageGroups'
@@ -53,6 +54,7 @@ export async function generateStaticParams() {
 
 export default async function CityPage({ params }: { params: Promise<{ slug: string; citySlug: string }> }) {
   const { slug, citySlug } = await params
+  const t = await getServerT()
 
   const { isEnabled: isPreview } = await draftMode()
   const city = await getCityBySlug(slug, citySlug, isPreview)
@@ -97,7 +99,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
       <LocationDetailClient
         initialData={cityData}
         backHref={`/locations/${slug}`}
-        backLabel={getLocationPageLang(slug) === 'zh' ? '返回中国市场页面' : `Back to ${city.country?.country || 'Country'}`}
+        backLabel={getLocationPageLang(slug) === 'zh' ? '返回中国市场页面' : (t('ui.locations.backTo') as string).replace('{name}', city.country?.country || 'Country')}
         lang={getLocationPageLang(slug)}
         pageType="city"
         relatedCities={relatedCities}

@@ -6,6 +6,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 import TestimonialSectionClient from '@/components/TestimonialSectionClient'
 import { CTAButton } from '@/components/CTAButton'
+import { useLocale } from '@/i18n/LocaleContext'
 
 // Types for CMS-managed content
 interface MediaOwnersPageProps {
@@ -114,6 +115,7 @@ const defaultContent = {
 };
 
 export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
+  const { t } = useLocale()
   // Merge props with defaults
   const content = {
     title: props.title || defaultContent.title,
@@ -935,7 +937,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   </div>
                   <div className="mt-6 text-center">
                     <CTAButton href="/contact" className="inline-flex items-center gap-2 bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-all text-sm">
-                      Start Your Transformation
+                      {t('ui.solutions.startYourTransformation')}
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
@@ -1154,7 +1156,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">MW Planner</h3>
                 <p className="text-blue-100 text-lg mb-6 max-w-md">AI-powered campaign planning and audience insights. Discover where your audiences are and plan with precision.</p>
                 <Link href="/mw-planner" className="inline-flex items-center gap-2 text-white font-semibold text-sm bg-white/20 hover:bg-white/30 backdrop-blur-sm px-5 py-2.5 rounded-lg transition-all">
-                  Learn More
+                  {t('ui.solutions.learnMore')}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -1179,7 +1181,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Marketplace</h3>
               <p className="text-mw-gray-600 text-sm mb-4">Access 250,000+ premium billboard locations worldwide</p>
               <Link href="/mw-market" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1203,7 +1205,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Studio</h3>
               <p className="text-mw-gray-600 text-sm mb-4">Creative design and optimization tools for every format</p>
               <Link href="/mw-studio" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1227,7 +1229,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Activate</h3>
               <p className="text-mw-gray-600 text-sm mb-4">Campaign activation and automation at scale</p>
               <Link href="/mw-activate" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1250,7 +1252,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Measure</h3>
               <p className="text-mw-gray-600 text-sm mb-4">Real-time analytics and attribution tracking</p>
               <Link href="/mw-measure" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1273,7 +1275,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Science</h3>
               <p className="text-mw-gray-600 text-sm mb-4">Data science and predictive analytics engine</p>
               <Link href="/mw-science" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1296,7 +1298,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Influence</h3>
               <p className="text-mw-gray-600 text-sm mb-4">Intelligent DOOH ad serving and yield optimization</p>
               <Link href="/mw-influence" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
-                Learn More
+                {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                 </svg>
@@ -1319,7 +1321,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
+              {t('ui.solutions.faqTitle')}
             </h2>
             <p className="text-xl text-gray-600">
               Everything you need to know about partnering with Moving Walls

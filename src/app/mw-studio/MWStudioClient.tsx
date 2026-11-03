@@ -17,6 +17,7 @@ import { FeatureControlSelling as InventoryFeatureControlSelling } from '../mw-i
 import { FeatureCalendarAvailability as InventoryFeatureCalendarAvailability } from '../mw-inventory/_components/FeatureCalendarAvailability'
 import { MwScienceStrip as InventoryMwScienceStrip } from '../mw-inventory/_components/MwScienceStrip'
 import { CtaSection as InventoryCtaSection } from '../mw-inventory/_components/CtaSection'
+import { useLocale } from '@/i18n/LocaleContext'
 
 // MW Studio's own hero banner (1024x1024 square) — kept separate from the shared CDN
 // asset below, which is still used by the MW Inventory hero.
@@ -203,6 +204,7 @@ interface MWStudioClientProps {
 }
 
 export default function MWStudioClient({ caseStudies = [], product, partnerLogos }: MWStudioClientProps) {
+  const { t } = useLocale()
   const [activeTab, setActiveTab] = useState<TabId>('ims')
 
   // ── Hero ───────────────────────────────────────────────────────────────────
@@ -374,7 +376,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                   className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                   id="hero-lets-connect-btn"
                 >
-                  <span>Let&apos;s Connect</span>
+                  <span>{t('ui.products.letsConnect')}</span>
                 </CTAButton>
                 {product?.secondaryCta?.text && (
                   <CTAButton
@@ -590,7 +592,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                     Average campaign delivery accuracy improvement: <strong>94% within 30 days of activation</strong>
                   </div>
                   <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition-colors">
-                    See How CMS Works <ArrowRightIcon className="w-4 h-4" />
+                    {t('ui.products.seeHowCmsWorks')} <ArrowRightIcon className="w-4 h-4" />
                   </CTAButton>
                 </div>
 
@@ -657,10 +659,10 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                   <p className="text-gray-600 mb-6 max-w-2xl mx-auto">Bring all screen operations into one system designed for control, continuity, and real-time execution.</p>
                   <div className="flex flex-col sm:flex-row justify-center gap-3">
                     <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition-colors">
-                      Get Started <ArrowRightIcon className="w-4 h-4" />
+                      {t('ui.products.getStarted')} <ArrowRightIcon className="w-4 h-4" />
                     </CTAButton>
                     <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 border border-blue-600 text-blue-600 px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-50 transition-colors">
-                      Request a CMS Demo <ArrowRightIcon className="w-4 h-4" />
+                      {t('ui.products.requestCmsDemo')} <ArrowRightIcon className="w-4 h-4" />
                     </CTAButton>
                   </div>
                 </div>
@@ -816,10 +818,10 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                   <p className="text-gray-600 mb-6 max-w-2xl mx-auto">Create a branded, always-on buying experience that drives discovery, demand, and direct advertiser engagement.</p>
                   <div className="flex flex-col sm:flex-row justify-center gap-3">
                     <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition-colors">
-                      Get Started <ArrowRightIcon className="w-4 h-4" />
+                      {t('ui.products.getStarted')} <ArrowRightIcon className="w-4 h-4" />
                     </CTAButton>
                     <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 border border-blue-600 text-blue-600 px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-50 transition-colors">
-                      Request a Sitebuilder Demo <ArrowRightIcon className="w-4 h-4" />
+                      {t('ui.products.requestSitebuilderDemo')} <ArrowRightIcon className="w-4 h-4" />
                     </CTAButton>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import type { ZohoFormFieldData } from '@/sanity/lib/fetch'
+import { useLocale } from '@/i18n/LocaleContext'
 
 interface FormFieldRendererProps {
   field: ZohoFormFieldData
@@ -15,6 +16,7 @@ const errorInputClass =
   'w-full px-4 py-3 bg-white border border-red-400 rounded-lg text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors'
 
 export function FormFieldRenderer({ field, value, onChange, error }: FormFieldRendererProps) {
+  const { t } = useLocale()
   const inputClass = error ? errorInputClass : baseInputClass
   const fieldId = `field-${field.zohoFieldName}`
 
@@ -58,7 +60,7 @@ export function FormFieldRenderer({ field, value, onChange, error }: FormFieldRe
             aria-invalid={!!error}
             aria-describedby={error ? `${fieldId}-error` : undefined}
           >
-            <option value="">{field.placeholder || 'Select an option'}</option>
+            <option value="">{field.placeholder || t('ui.shared.form.selectOption')}</option>
             {field.options?.map((option) => (
               <option key={option} value={option}>
                 {option}

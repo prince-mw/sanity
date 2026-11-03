@@ -1,13 +1,18 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export default function ScreenPortfolioManager() {
+  const { t } = useLocale()
+  const formatNames: string[] = t('homeVisuals.portfolio.formats')
+  const statLabels: string[] = t('homeVisuals.portfolio.stats')
+  const legendLabels: string[] = t('homeVisuals.portfolio.legend')
   // OOH format types with stats
   const oohFormats = [
     {
       id: 1,
-      type: 'Billboard',
+      type: formatNames[0],
       icon: 'billboard',
       status: 'live',
       impressions: '2.4M',
@@ -17,7 +22,7 @@ export default function ScreenPortfolioManager() {
     },
     {
       id: 2,
-      type: 'Transit',
+      type: formatNames[1],
       icon: 'transit',
       status: 'available',
       impressions: '890K',
@@ -27,7 +32,7 @@ export default function ScreenPortfolioManager() {
     },
     {
       id: 3,
-      type: 'Street\nFurniture',
+      type: formatNames[2],
       icon: 'street',
       status: 'live',
       impressions: '1.2M',
@@ -37,7 +42,7 @@ export default function ScreenPortfolioManager() {
     },
     {
       id: 4,
-      type: 'Digital\nScreens',
+      type: formatNames[3],
       icon: 'digital',
       status: 'maintenance',
       impressions: '3.1M',
@@ -197,14 +202,14 @@ export default function ScreenPortfolioManager() {
                   </div>
                   <div>
                     <div className="text-[8px] sm:text-[9px] text-white font-semibold whitespace-pre-line leading-tight">{format.type}</div>
-                    <div className={`text-[6px] sm:text-[7px] ${status.text} uppercase font-medium`}>{format.status}</div>
+                    <div className={`text-[6px] sm:text-[7px] ${status.text} uppercase font-medium`}>{t(`homeVisuals.portfolio.status.${format.status}`)}</div>
                   </div>
                 </div>
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-1.5">
                   <div className="bg-slate-700/30 rounded px-1.5 py-0.5">
-                    <div className="text-[5px] sm:text-[6px] text-slate-400 uppercase">Impressions</div>
+                    <div className="text-[5px] sm:text-[6px] text-slate-400 uppercase">{t('homeVisuals.portfolio.impressions')}</div>
                     <motion.div
                       className="text-[8px] sm:text-[10px] font-bold text-white"
                       animate={{ opacity: [0.8, 1, 0.8] }}
@@ -214,7 +219,7 @@ export default function ScreenPortfolioManager() {
                     </motion.div>
                   </div>
                   <div className="bg-slate-700/30 rounded px-1.5 py-0.5">
-                    <div className="text-[5px] sm:text-[6px] text-slate-400 uppercase">Revenue</div>
+                    <div className="text-[5px] sm:text-[6px] text-slate-400 uppercase">{t('homeVisuals.portfolio.revenue')}</div>
                     <motion.div
                       className="text-[8px] sm:text-[10px] font-bold text-green-400"
                       animate={{ scale: [1, 1.02, 1] }}
@@ -250,7 +255,7 @@ export default function ScreenPortfolioManager() {
                 animate={{ opacity: [1, 0.5, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
               />
-              <span className="text-[9px] text-blue-300 font-semibold uppercase tracking-wider">Unified Management Hub</span>
+              <span className="text-[9px] text-blue-300 font-semibold uppercase tracking-wider">{t('homeVisuals.portfolio.hub')}</span>
             </div>
             <div className="flex gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
@@ -262,10 +267,10 @@ export default function ScreenPortfolioManager() {
           {/* Dashboard Stats Row */}
           <div className="relative grid grid-cols-4 gap-2">
             {[
-              { label: 'Total Screens', value: '1,847', color: 'text-white' },
-              { label: 'Active Campaigns', value: '234', color: 'text-cyan-400' },
-              { label: 'Total Impressions', value: '7.6M', color: 'text-purple-400' },
-              { label: 'Monthly Revenue', value: '$58.8K', color: 'text-green-400' },
+              { label: statLabels[0], value: '1,847', color: 'text-white' },
+              { label: statLabels[1], value: '234', color: 'text-cyan-400' },
+              { label: statLabels[2], value: '7.6M', color: 'text-purple-400' },
+              { label: statLabels[3], value: '$58.8K', color: 'text-green-400' },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
@@ -289,9 +294,9 @@ export default function ScreenPortfolioManager() {
           {/* Status Legend */}
           <div className="relative mt-2 pt-1.5 border-t border-slate-700/50 flex justify-center gap-3">
             {[
-              { label: 'Live', color: 'bg-green-500' },
-              { label: 'Available', color: 'bg-cyan-500' },
-              { label: 'Maintenance', color: 'bg-amber-500' },
+              { label: legendLabels[0], color: 'bg-green-500' },
+              { label: legendLabels[1], color: 'bg-cyan-500' },
+              { label: legendLabels[2], color: 'bg-amber-500' },
             ].map((item) => (
               <div key={item.label} className="flex items-center gap-1">
                 <div className={`w-1.5 h-1.5 rounded-full ${item.color}`} />

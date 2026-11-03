@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import ContactForm from './ContactForm'
+import { useLocale } from '@/i18n/LocaleContext'
 
 export interface LeadershipMember {
   name: string
@@ -22,6 +23,7 @@ interface LeadershipPageClientProps {
 }
 
 export default function LeadershipPageClient({ leadership }: LeadershipPageClientProps) {
+  const { t } = useLocale()
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -84,7 +86,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Executive Leadership
+              {t('ui.leadership.executiveLeadership')}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               Our leadership team brings decades of combined experience in advertising technology, 
@@ -98,8 +100,8 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
                 <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
-                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">No Leadership Information</h3>
-                <p className="text-mw-gray-500 max-w-md mx-auto">Leadership team information is not available at the moment. Check back soon.</p>
+                <h3 className="text-xl font-semibold text-mw-gray-700 mb-2">{t('ui.leadership.noLeadershipTitle')}</h3>
+                <p className="text-mw-gray-500 max-w-md mx-auto">{t('ui.leadership.noLeadershipText')}</p>
               </div>
             ) : leadership.map((member, index) => (
               <motion.div
@@ -131,7 +133,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
                     )}
                     <div className="absolute inset-0 bg-mw-blue-900/80 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-3">
                       <span className="px-4 py-2 bg-white text-mw-blue-600 text-sm font-medium rounded-full">
-                        View Profile
+                        {t('ui.leadership.viewProfile')}
                       </span>
                     </div>
                   </div>
@@ -165,7 +167,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Our Values
+              {t('ui.leadership.ourValues')}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
               The principles that guide our leadership and shape our company culture.
@@ -187,7 +189,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
             className="text-center text-white"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Join Our Team
+              {t('ui.leadership.joinOurTeam')}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">
               We are always looking for talented individuals who share our passion for innovation 
@@ -197,7 +199,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
               href="/careers"
               className="inline-flex items-center gap-2 px-8 py-3 bg-white hover:bg-mw-gray-50 text-mw-blue-600 font-semibold rounded-lg transition-colors shadow-lg"
             >
-              View Open Positions
+              {t('ui.leadership.viewOpenPositions')}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
