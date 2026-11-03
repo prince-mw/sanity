@@ -21,7 +21,7 @@ export default function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section - Document Header Style */}
-      <section className="relative bg-white border-b border-gray-200 py-12 md:py-16">
+      <section className="relative bg-white border-b border-gray-200 mw-section">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             {/* Document Icon */}
@@ -49,12 +49,12 @@ export default function PrivacyPolicyPage() {
 
       {/* Main Content with Sidebar TOC */}
       <section className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="py-12 mw-container">
           <div className="lg:flex lg:gap-12">
             
             {/* Table of Contents - Sidebar */}
             <aside className="hidden lg:block lg:w-72 flex-shrink-0">
-              <div className="sticky top-24 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <div className="sticky top-24 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
                 <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
                   Table of Contents
                 </h3>
@@ -75,7 +75,7 @@ export default function PrivacyPolicyPage() {
             {/* Main Document Content */}
             <main className="flex-1 min-w-0">
               {/* Mobile TOC */}
-              <div className="lg:hidden mb-8 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <div className="lg:hidden mb-8 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
                 <details className="group">
                   <summary className="flex items-center justify-between cursor-pointer text-sm font-semibold text-gray-900 uppercase tracking-wider">
                     Table of Contents
@@ -140,7 +140,7 @@ export default function PrivacyPolicyPage() {
                     <div className="pl-11 space-y-6">
                       
                       {/* 2.1 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">2.1 What Does Moving Walls Pte Ltd Provide?</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -159,7 +159,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 2.2 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">2.2 What Information Do We Collect?</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -226,7 +226,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 2.3 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">2.3 How Do We Use Information That We Collect?</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -239,7 +239,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 2.4 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">2.4 Who Do We Share Information With?</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <div className="bg-white rounded-lg p-4 border border-gray-200">
@@ -264,7 +264,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 2.5 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">2.5 How Do We Keep Information Secure?</h3>
                         <p className="text-gray-600 leading-relaxed">
                           Moving Walls Pte Ltd uses reasonable technical and organisational measures to protect the information it collects about you and your device. We may anonymise the information we collect using one-way hashing technology before sharing it with any third parties. We also seek appropriate contractual protection from our partners regarding their treatment of user data.
@@ -272,7 +272,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 2.6 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">2.6 How Long Do We Keep Information For?</h3>
                         <p className="text-gray-600 leading-relaxed">
                           Moving Walls Pte Ltd may retain the information relating to your device collected from partnering mobile publishers or app developers for a period of up to <strong>thirteen (13) months</strong>, unless otherwise required by law or applicable contract.
@@ -280,7 +280,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 2.7 */}
-                      <div className="bg-amber-50 rounded-xl p-6 ">
+                      <div className="bg-amber-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                           <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -340,7 +340,7 @@ export default function PrivacyPolicyPage() {
                       <h2 className="text-2xl font-bold text-gray-900">What About Children?</h2>
                     </div>
                     <div className="pl-11">
-                      <div className="bg-red-50 border border-red-100 rounded-xl p-5">
+                      <div className="bg-red-50 border border-red-100 rounded-2xl p-5">
                         <p className="text-gray-700 leading-relaxed">
                           Moving Walls Pte Ltd complies with the Children&apos;s Online Privacy Protection Act (COPPA) in the U.S. and <strong>does not knowingly collect personal information</strong> about users of sites directed to children under the age of <strong>thirteen (13)</strong>.
                         </p>
@@ -384,7 +384,7 @@ export default function PrivacyPolicyPage() {
                       <p className="text-gray-600 leading-relaxed">
                         Much of the information we hold is purely technical in nature, and relates to the devices that interact with our website or our ads. Information on how to refuse use of this information for interest-based advertising purposes is provided above in the section &quot;Opting Out of Interest-based Advertising&quot;.
                       </p>
-                      <div className="bg-green-50 border border-green-100 rounded-xl p-5">
+                      <div className="bg-green-50 border border-green-100 rounded-2xl p-5">
                         <p className="text-gray-700 leading-relaxed">
                           Where we do hold limited personal information about you (such as personal information about a Moving Walls Pte Ltd account you have with us), you can ask us for:
                         </p>
@@ -419,7 +419,7 @@ export default function PrivacyPolicyPage() {
                     <div className="pl-11 space-y-6">
                       
                       {/* 10.1 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">10.1 What Information Do We Collect?</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -432,7 +432,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 10.2 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">10.2 The Usage Information We Collect</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -462,7 +462,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 10.3 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">10.3 How Do We Use the Info We Collect?</h3>
                         <p className="text-gray-600 leading-relaxed">
                           We use the account information and other personal information you provide to manage your account, communicate with you, conduct business with you (e.g. reporting and payment), personalise the Moving Walls Pte Ltd website, comply with your requests, and inform you about products and services in accordance with your marketing preferences. We use your usage information to analyse our web traffic, to figure out how often customers use parts of the site, to improve the site and generally to make it appealing to as many users as possible.
@@ -470,7 +470,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 10.4 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">10.4 Who Do We Share Information With?</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p className="font-medium text-gray-800">
@@ -489,7 +489,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 10.5 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">10.5 International Transfers</h3>
                         <p className="text-gray-600 leading-relaxed">
                           We may share your information with our affiliates and other third parties described above who are based in countries outside of your country of residence (for example, if you are an EU resident, we may share your information with our non-EU clients or affiliates). While some countries may not have data protection laws that are equivalent to those of the country in which you reside, we will take all reasonable measures to protect your information in accordance with this Privacy Policy and all applicable legal requirements.
@@ -497,7 +497,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 10.6 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">10.6 How Do We Keep Information Secure?</h3>
                         <p className="text-gray-600 leading-relaxed">
                           We use appropriate technical and organisational security measures to protect the information we collect. We use multiple electronic, procedural, and physical security measures to protect against unauthorised or unlawful use or alteration of information, and against any accidental loss, destruction, or damage to information. However, no method of transmission over the Internet, or method of electronic storage, is 100% secure.
@@ -505,7 +505,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* 10.7 */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">10.7 How Long Do You Keep Information?</h3>
                         <p className="text-gray-600 leading-relaxed">
                           We retain information for only as long as is necessary to fulfil the purposes outlined in this Privacy Policy, unless otherwise required by law.
@@ -524,7 +524,7 @@ export default function PrivacyPolicyPage() {
                       <p className="text-gray-600 leading-relaxed mb-4">
                         If you have any questions about this Privacy Policy, please contact us:
                       </p>
-                      <div className="bg-gradient-to-br from-mw-blue-50 to-mw-blue-100/50 rounded-xl p-6 border border-mw-blue-200">
+                      <div className="bg-gradient-to-br from-mw-blue-50 to-mw-blue-100/50 rounded-2xl p-6 border border-mw-blue-200">
                         <div className="flex items-start gap-4">
                           <div className="w-12 h-12 rounded-full bg-mw-blue-500 flex items-center justify-center flex-shrink-0">
                             <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -562,13 +562,13 @@ export default function PrivacyPolicyPage() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       </div>
-                      <h2 className="text-3xl font-bold text-gray-900">Cookie Policy</h2>
+                      <h2 className="font-bold text-gray-900 text-3xl lg:text-4xl">Cookie Policy</h2>
                       <p className="mt-2 text-gray-600">This is the Cookie Policy for the Moving Walls website.</p>
                     </div>
 
                     <div className="space-y-6">
                       {/* What Are Cookies */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">What Are Cookies</h3>
                         <div className="space-y-3 text-gray-600 leading-relaxed">
                           <p>
@@ -581,7 +581,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* How We Use Cookies */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">How We Use Cookies</h3>
                         <p className="text-gray-600 leading-relaxed">
                           We use cookies for a variety of reasons detailed below. Unfortunately, in most cases, there are no industry standard options for disabling cookies without completely disabling the functionality and features they add to this site. It is recommended that you leave on all cookies if you are not sure whether you need them or not in case they are used to provide a service that you use.
@@ -589,7 +589,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* Disabling Cookies */}
-                      <div className="bg-amber-50 rounded-xl p-6 ">
+                      <div className="bg-amber-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
                           <svg className="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -602,7 +602,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* The Cookies We Set */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">The Cookies We Set</h3>
                         <div className="bg-white rounded-lg p-4 border border-gray-200">
                           <h4 className="font-semibold text-gray-800 mb-2">Site preferences cookies</h4>
@@ -613,7 +613,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* Third Party Cookies */}
-                      <div className="bg-gray-50 rounded-xl p-6 ">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">Third Party Cookies</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -643,7 +643,7 @@ export default function PrivacyPolicyPage() {
                       </div>
 
                       {/* More Information */}
-                      <div className="bg-gradient-to-br from-mw-blue-50 to-mw-blue-100/50 rounded-xl p-6 border border-mw-blue-200">
+                      <div className="bg-gradient-to-br from-mw-blue-50 to-mw-blue-100/50 rounded-2xl p-6 border border-mw-blue-200">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">More Information</h3>
                         <div className="space-y-3 text-gray-600 leading-relaxed">
                           <p>

@@ -9,7 +9,7 @@ export default function CookiePolicyPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-16 md:py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden mw-section-lg">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl"></div>
@@ -33,7 +33,7 @@ export default function CookiePolicyPage() {
       </section>
 
       {/* Content Section */}
-      <section className="py-16">
+      <section className="mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -72,7 +72,7 @@ export default function CookiePolicyPage() {
               <h2 className="text-2xl font-bold text-gray-900 mb-4">3. Types of Cookies We Use</h2>
               
               {/* Essential Cookies */}
-              <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-6">
+              <div className="bg-green-50 border border-green-200 rounded-2xl p-6 mb-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
                     <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -115,7 +115,7 @@ export default function CookiePolicyPage() {
               </div>
 
               {/* Functional Cookies */}
-              <div className="bg-blue-50 border border-blue-200 rounded-xl p-6 mb-6">
+              <div className="bg-blue-50 border border-blue-200 rounded-2xl p-6 mb-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
                     <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -159,7 +159,7 @@ export default function CookiePolicyPage() {
               </div>
 
               {/* Analytics Cookies */}
-              <div className="bg-purple-50 border border-purple-200 rounded-xl p-6 mb-6">
+              <div className="bg-purple-50 border border-purple-200 rounded-2xl p-6 mb-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
                     <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -202,7 +202,7 @@ export default function CookiePolicyPage() {
               </div>
 
               {/* Marketing Cookies */}
-              <div className="bg-orange-50 border border-orange-200 rounded-xl p-6">
+              <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6">
                 <div className="flex items-center gap-3 mb-3">
                   <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
                     <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -291,7 +291,7 @@ export default function CookiePolicyPage() {
               <p className="text-gray-600 leading-relaxed mb-4">
                 If you have any questions about our use of cookies or this Cookie Policy, please contact us:
               </p>
-              <div className="bg-gray-50 rounded-xl p-6">
+              <div className="bg-gray-50 rounded-2xl p-6">
                 <p className="text-gray-700 mb-2"><strong>Moving Walls Pte. Ltd.</strong></p>
                 <p className="text-gray-600 mb-2">Email: info@movingwalls.com</p>
                 <p className="text-gray-600 mb-2">Address: Far East Finance Building, #8-02, 14 Robinson Road, Singapore 048545</p>

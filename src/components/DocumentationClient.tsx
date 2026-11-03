@@ -35,8 +35,8 @@ export default function DocumentationClient({ content }: { content?: Documentati
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-12 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-12 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -64,12 +64,12 @@ export default function DocumentationClient({ content }: { content?: Documentati
       </section>
 
       {/* Content */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-4 gap-8">
             {/* Sidebar */}
             <div className="lg:col-span-1">
-              <div className="sticky top-24 bg-white border border-mw-gray-200 rounded-xl p-4 space-y-2">
+              <div className="sticky top-24 bg-white border border-mw-gray-200 rounded-2xl p-4 space-y-2">
                 {defaultSidebarItems.map((item) => (
                   <button
                     key={item.id}
@@ -89,8 +89,8 @@ export default function DocumentationClient({ content }: { content?: Documentati
 
             {/* Main Content */}
             <div className="lg:col-span-3">
-              <div className="bg-white border border-mw-gray-200 rounded-xl p-8">
-                <h2 className="text-3xl font-bold text-mw-gray-900 mb-6">Quick Start Guide</h2>
+              <div className="bg-white border border-mw-gray-200 rounded-2xl p-8">
+                <h2 className="font-bold text-mw-gray-900 mb-6 text-3xl lg:text-4xl">Quick Start Guide</h2>
                 
                 <div className="prose max-w-none">
                   <h3 className="text-2xl font-bold text-mw-gray-900 mt-8 mb-4">Getting Started with Moving Walls</h3>
@@ -139,7 +139,7 @@ export default function DocumentationClient({ content }: { content?: Documentati
                         {content.endpoints.map((ep, idx) => (
                           <div key={idx} className="bg-mw-gray-50 rounded-lg p-4 border border-mw-gray-200">
                             <div className="flex items-center gap-3 mb-2">
-                              <span className={`px-2 py-1 rounded text-xs font-bold uppercase ${
+                              <span className={`px-2 py-1 rounded-lg text-xs font-bold uppercase ${
                                 ep.method === 'GET' ? 'bg-green-100 text-green-700' :
                                 ep.method === 'POST' ? 'bg-blue-100 text-blue-700' :
                                 ep.method === 'PUT' ? 'bg-yellow-100 text-yellow-700' :
@@ -152,7 +152,7 @@ export default function DocumentationClient({ content }: { content?: Documentati
                             {ep.params && ep.params.length > 0 && (
                               <div className="mt-2 flex flex-wrap gap-2">
                                 {ep.params.map((param, pIdx) => (
-                                  <span key={pIdx} className="text-xs bg-mw-gray-200 text-mw-gray-700 px-2 py-1 rounded font-mono">{param}</span>
+                                  <span key={pIdx} className="text-xs bg-mw-gray-200 text-mw-gray-700 px-2 py-1 rounded-lg font-mono">{param}</span>
                                 ))}
                               </div>
                             )}
@@ -171,7 +171,7 @@ export default function DocumentationClient({ content }: { content?: Documentati
                           <div key={idx} className="bg-mw-gray-50 rounded-lg p-4 border border-mw-gray-200">
                             <h4 className="font-bold text-mw-gray-900 mb-1">{sdk.name}</h4>
                             <p className="text-sm text-mw-gray-500 mb-2">{sdk.language}</p>
-                            <code className="text-xs bg-mw-gray-200 text-mw-gray-700 px-2 py-1 rounded block font-mono">{sdk.installCommand}</code>
+                            <code className="text-xs bg-mw-gray-200 text-mw-gray-700 px-2 py-1 rounded-lg block font-mono">{sdk.installCommand}</code>
                             {sdk.docsUrl && (
                               <a href={sdk.docsUrl} target="_blank" rel="noopener noreferrer" className="text-sm text-mw-blue-600 hover:underline mt-2 inline-block">View Docs →</a>
                             )}

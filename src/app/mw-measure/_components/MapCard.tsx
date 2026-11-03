@@ -36,7 +36,7 @@ export const MapCard: React.FC = () => {
         <div className="flex items-center gap-2 text-xs">
           <button
             onClick={() => setShowHeatmap(!showHeatmap)}
-            className={`px-2.5 py-1 rounded-md transition-all flex items-center gap-1.5 font-medium ${
+            className={`px-2.5 py-1 rounded-lg transition-all flex items-center gap-1.5 font-medium ${
               showHeatmap
                 ? 'bg-blue-600/40 text-blue-200 border border-blue-400/30'
                 : 'bg-slate-800/60 text-slate-400 border border-slate-700 hover:text-slate-200'
@@ -178,9 +178,9 @@ export const MapCard: React.FC = () => {
               </div>
 
               <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block z-30 pointer-events-none whitespace-nowrap">
-                <div className="bg-slate-950/95 text-white text-[11px] font-medium px-2.5 py-1.5 rounded-md shadow-xl border border-slate-700">
+                <div className="bg-slate-950/95 text-white text-xs font-medium px-2.5 py-1.5 rounded-lg shadow-xl border border-slate-700">
                   <div className="font-bold text-cyan-400">{loc.name}</div>
-                  <div className="text-slate-300 text-[10px]">{loc.impressions} Impr. · {loc.reach} Reach</div>
+                  <div className="text-slate-300 text-xs">{loc.impressions} Impr. · {loc.reach} Reach</div>
                 </div>
               </div>
             </div>
@@ -188,20 +188,20 @@ export const MapCard: React.FC = () => {
         })}
 
         {selectedLocation && (
-          <div className="absolute top-3 right-3 z-30 max-w-[210px] bg-slate-950/90 backdrop-blur-md rounded-xl p-3 border border-cyan-500/40 shadow-xl text-left animate-in fade-in zoom-in-95 duration-200">
+          <div className="absolute top-3 right-3 z-30 max-w-[210px] bg-slate-950/90 backdrop-blur-md rounded-2xl p-3 border border-cyan-500/40 shadow-xl text-left animate-in fade-in zoom-in-95 duration-200">
             <div className="flex items-center justify-between gap-1 mb-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">Verified Node</span>
-              <span className="text-[9px] px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-sans">Active</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-cyan-400">Verified Node</span>
+              <span className="text-xs px-1.5 py-0.5 rounded-lg bg-emerald-500/20 text-emerald-300 font-sans">Active</span>
             </div>
             <div className="text-xs font-bold text-white line-clamp-1">{selectedLocation.name}</div>
-            <div className="text-[10px] text-slate-400 mb-2">{selectedLocation.format}</div>
-            <div className="grid grid-cols-2 gap-1.5 pt-1.5 border-t border-slate-800 text-[10px]">
+            <div className="text-xs text-slate-400 mb-2">{selectedLocation.format}</div>
+            <div className="grid grid-cols-2 gap-1.5 pt-1.5 border-t border-slate-800 text-xs">
               <div>
-                <div className="text-slate-400 text-[9px]">Impressions</div>
+                <div className="text-slate-400 text-xs">Impressions</div>
                 <div className="font-bold text-white font-sans">{selectedLocation.impressions}</div>
               </div>
               <div>
-                <div className="text-slate-400 text-[9px]">Audience</div>
+                <div className="text-slate-400 text-xs">Audience</div>
                 <div className="font-bold text-white font-sans">{selectedLocation.reach}</div>
               </div>
             </div>
@@ -214,7 +214,7 @@ export const MapCard: React.FC = () => {
       <div className="grid grid-cols-4 divide-x divide-blue-800/40 bg-[#13235d] px-2 sm:px-4 py-3.5 text-center">
 
         <div className="px-2">
-          <div className="flex items-center justify-center gap-1 text-[11px] sm:text-xs text-blue-200/90 font-medium mb-0.5">
+          <div className="flex items-center justify-center gap-1 text-xs sm:text-xs text-blue-200/90 font-medium mb-0.5">
             <Eye className="w-3.5 h-3.5 text-blue-300" />
             <span>Impressions</span>
           </div>
@@ -224,7 +224,7 @@ export const MapCard: React.FC = () => {
         </div>
 
         <div className="px-2">
-          <div className="flex items-center justify-center gap-1 text-[11px] sm:text-xs text-blue-200/90 font-medium mb-0.5">
+          <div className="flex items-center justify-center gap-1 text-xs sm:text-xs text-blue-200/90 font-medium mb-0.5">
             <Users className="w-3.5 h-3.5 text-blue-300" />
             <span>Reach</span>
           </div>
@@ -234,7 +234,7 @@ export const MapCard: React.FC = () => {
         </div>
 
         <div className="px-2">
-          <div className="flex items-center justify-center gap-1 text-[11px] sm:text-xs text-blue-200/90 font-medium mb-0.5">
+          <div className="flex items-center justify-center gap-1 text-xs sm:text-xs text-blue-200/90 font-medium mb-0.5">
             <MapPin className="w-3.5 h-3.5 text-blue-300" />
             <span>Locations</span>
           </div>
@@ -244,7 +244,7 @@ export const MapCard: React.FC = () => {
         </div>
 
         <div className="px-2">
-          <div className="flex items-center justify-center gap-1 text-[11px] sm:text-xs text-cyan-300/90 font-medium mb-0.5">
+          <div className="flex items-center justify-center gap-1 text-xs sm:text-xs text-cyan-300/90 font-medium mb-0.5">
             <TrendingUp className="w-3.5 h-3.5 text-cyan-400" />
             <span>Lift</span>
           </div>

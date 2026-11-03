@@ -29,10 +29,10 @@ const CARDS = [
 export const AudienceCardsSection: React.FC = () => {
   const { t } = useLocale();
   return (
-    <section className="py-14 sm:py-16 lg:py-20 bg-[#f8f9fc] border-b border-[#e2e8f0]" id="audience-cards-section">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-[#f8f9fc] border-b border-[#e2e8f0] mw-section" id="audience-cards-section">
+      <div className="mw-container">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-[40px] font-extrabold text-[#062068] tracking-tight mb-3">
+          <h2 className="font-extrabold text-[#062068] tracking-tight mb-3 text-3xl lg:text-4xl">
             Built for Those Who Build OOH Plans
           </h2>
         </div>
@@ -42,7 +42,7 @@ export const AudienceCardsSection: React.FC = () => {
             <Link
               key={card.title}
               href={card.href}
-              className="group bg-white rounded-xl border border-[#e2e8f0] shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md hover:border-blue-300 transition-all"
+              className="group bg-white rounded-2xl border border-[#e2e8f0] shadow-sm overflow-hidden flex flex-col justify-between hover:shadow-md hover:border-blue-300 transition-all"
             >
               <div>
                 <div className="bg-[#0b1b46] px-6 py-4 flex items-center justify-between text-white">
@@ -50,7 +50,7 @@ export const AudienceCardsSection: React.FC = () => {
                     <card.Icon className="w-5 h-5 text-[#93c5fd]" />
                     <h3 className="text-lg font-bold">{card.title}</h3>
                   </div>
-                  <span className="text-[11px] font-sans text-[#93c5fd] bg-[#152759] px-2.5 py-1 rounded">
+                  <span className="text-xs font-sans text-[#93c5fd] bg-[#152759] px-2.5 py-1 rounded-lg">
                     {card.roleTag}
                   </span>
                 </div>

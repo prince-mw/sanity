@@ -50,7 +50,7 @@ function BreakdownTable({ rows: all, label, top = 12 }: { rows: BreakdownRow[]; 
     rest.reduce((t, r) => ({ ...t, leads: t.leads + r.leads, deals: t.deals + r.deals, dealValue: t.dealValue + r.dealValue, won: t.won + r.won, wonValue: t.wonValue + r.wonValue }), { name: `${rest.length} more`, leads: 0, deals: 0, dealValue: 0, won: 0, wonValue: 0 }),
   ]
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200">
+    <div className="overflow-x-auto rounded-2xl border border-gray-200">
       <table className="w-full text-sm">
         <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
           <tr><th scope="col" className={TH}>{label}</th><th scope="col" className={THR}>Leads</th><th scope="col" className={THR}>Deals</th><th scope="col" className={THR}>Lead → deal</th><th scope="col" className={THR}>Deal value</th><th scope="col" className={THR}>Closed won</th></tr>
@@ -151,7 +151,7 @@ export default function LeadsTab({ data, websiteLeads }: { data: LeadsDashboard;
         {data.deals.length === 0 ? (
           <p className="text-sm text-gray-500">No deals in this period.</p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-gray-200 max-h-[70vh]">
+          <div className="overflow-x-auto rounded-2xl border border-gray-200 max-h-[70vh]">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500 sticky top-0">
                 <tr><th scope="col" className={TH}>Deal</th><th scope="col" className={TH}>Type</th><th scope="col" className={TH}>Stage</th><th scope="col" className={THR}>Amount</th><th scope="col" className={TH}>Lead date</th><th scope="col" className={TH}>Owner</th></tr>
@@ -179,7 +179,7 @@ export default function LeadsTab({ data, websiteLeads }: { data: LeadsDashboard;
         )}
       </Details>
       <Details title="Last 12 months" summary="Leads per month and the deals and deal value from them, inbound vs outbound">
-        <div className="overflow-x-auto rounded-xl border border-gray-200">
+        <div className="overflow-x-auto rounded-2xl border border-gray-200">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
               <tr>

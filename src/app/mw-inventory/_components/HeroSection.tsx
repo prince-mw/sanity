@@ -77,12 +77,12 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const { t } = useLocale();
   const imageUrl = heroImageUrl || HERO_IMAGE_URL;
   return (
-    <section className="relative overflow-hidden bg-[#062068] text-white pt-24 sm:pt-20 lg:pt-24 pb-20 lg:pb-28" id="hero-section">
+    <section className="relative overflow-hidden bg-[#062068] text-white pb-20 lg:pb-28 mw-hero-top" id="hero-section">
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative mw-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
           <div className="lg:col-span-6 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
@@ -90,7 +90,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
                 <StudioGeoIcon className="w-3 h-3 text-white" />
               </div>
-              <span className="font-sans uppercase tracking-wider text-[11px]">
+              <span className="font-sans uppercase tracking-wider text-xs">
                 {badge}
               </span>
             </div>
@@ -106,7 +106,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="pt-6 text-center lg:text-left">
               <CTAButton
                 href={ctaLink}
-                className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
+                className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-base px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-see-action-btn"
               >
                 <span>{ctaText ?? t('ui.products.seeMwStudioInAction')}</span>

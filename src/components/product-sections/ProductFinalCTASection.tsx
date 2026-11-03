@@ -40,7 +40,7 @@ export default function ProductFinalCTASection({
   const gradientClass = gradientClasses[gradient] || gradientClasses['blue-indigo']
 
   return (
-    <section className={`relative py-24 bg-gradient-to-r ${gradientClass} overflow-hidden`}>
+    <section className={`relative bg-gradient-to-r ${gradientClass} overflow-hidden mw-section-lg`}>
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-0 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl" />
@@ -66,7 +66,7 @@ export default function ProductFinalCTASection({
           transition={{ duration: 0.8 }}
         >
           {/* Headline */}
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+          <h2 className="font-bold text-white mb-6 leading-tight text-3xl lg:text-4xl">
             {title}
           </h2>
 

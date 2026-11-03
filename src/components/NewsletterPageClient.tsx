@@ -36,7 +36,7 @@ export default function NewsletterPageClient({
     <div className="min-h-screen bg-slate-50 text-slate-900 font-sans antialiased flex flex-col justify-between">
 
       {/* Top Header Back Navigation */}
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="pt-8 mw-container">
         <Link
           href="/"
           className="text-sm font-medium text-slate-500 hover:text-blue-600 inline-flex items-center gap-1 transition-colors"
@@ -46,7 +46,7 @@ export default function NewsletterPageClient({
       </div>
 
       {/* Main Core Body Segment */}
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow flex items-center">
+      <div className="py-12 flex-grow flex items-center mw-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
 
           {/* Left Column: Headline + Description */}

@@ -48,8 +48,8 @@ export function TwoColumnSection({
   ) : null;
 
   return (
-    <section className={`py-10 md:py-16 ${bgClasses}`}>
-      <div className="container mx-auto px-4">
+    <section className={`${bgClasses} mw-section`}>
+      <div className="mw-container">
         <div className={`grid md:grid-cols-2 gap-12 items-center ${imagePosition === 'left' ? 'md:grid-flow-dense' : ''}`}>
           {/* Content */}
           <motion.div
@@ -60,7 +60,7 @@ export function TwoColumnSection({
             className={imagePosition === 'left' ? 'md:col-start-2' : ''}
           >
             {heading && (
-              <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`font-bold mb-6 ${isDark ? 'text-white' : 'text-gray-900'} text-3xl lg:text-4xl`}>
                 {heading}
               </h2>
             )}

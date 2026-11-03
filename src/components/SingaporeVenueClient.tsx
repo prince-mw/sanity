@@ -43,11 +43,11 @@ export default function SingaporeVenueClient({
   return (
     <div className="bg-white text-gray-900">
       {/* Hero */}
-      <section className={`relative overflow-hidden ${SG_NAVY} text-white pt-24 pb-12 lg:pt-28 lg:pb-16`}>
+      <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             <div className="lg:col-span-7">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3">{venue.h1}</h1>
@@ -67,14 +67,14 @@ export default function SingaporeVenueClient({
               </div>
             </div>
             <div className="lg:col-span-5">
-              <SgImageBox image={venue.image} className="aspect-[4/3] rounded-3xl ring-1 ring-white/15 shadow-2xl" sizes="(min-width: 1024px) 40vw, 100vw" priority />
+              <SgImageBox image={venue.image} className="aspect-[4/3] rounded-2xl ring-1 ring-white/15 shadow-2xl" sizes="(min-width: 1024px) 40vw, 100vw" priority />
               <dl className="-mt-8 mx-4 relative grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-gray-200 shadow-precision-lg">
                 {venue.heroStats.map((s) => (
                   <div key={s.label} className="bg-white p-3 sm:p-4 text-center">
                     <dt className="sr-only">{s.label}</dt>
                     <dd>
                       <span className="block text-lg sm:text-2xl font-bold text-[#062068]">{s.value}</span>
-                      <span className="block text-[11px] sm:text-xs text-gray-500 leading-tight">{s.label}</span>
+                      <span className="block text-xs sm:text-xs text-gray-500 leading-tight">{s.label}</span>
                     </dd>
                   </div>
                 ))}
@@ -85,8 +85,8 @@ export default function SingaporeVenueClient({
       </section>
 
       {/* Why advertise */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={venue.whyHeading} center />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             {venue.why.map((w, i) => (
@@ -102,8 +102,8 @@ export default function SingaporeVenueClient({
       </section>
 
       {/* Premium locations */}
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={venue.premiumHeading} intro={venue.premiumIntro} center />
           <SgLandmarkCards landmarks={venue.landmarks} imageOnly={venue.landmarksImageOnly} />
           {venue.landmarksNote && <p className="mt-4 text-sm text-gray-500 text-center">{venue.landmarksNote}</p>}
@@ -111,8 +111,8 @@ export default function SingaporeVenueClient({
       </section>
 
       {/* Locations */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={venue.locationsHeading} center />
           {venue.sites.length > 0 ? (
             <SgSiteGrid sites={venue.sites} />
@@ -130,8 +130,8 @@ export default function SingaporeVenueClient({
       </section>
 
       {/* Formats */}
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={venue.formatsHeading} center />
           <ul className="flex flex-wrap justify-center gap-3">
             {venue.formats.map((f) => (
@@ -145,11 +145,11 @@ export default function SingaporeVenueClient({
       </section>
 
       {/* Why Moving Walls + MW Science (two-column, left-aligned) */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 mb-10">
             <div className="lg:col-span-5">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-4">Why Choose Moving Walls?</h2>
+              <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">Why Choose Moving Walls?</h2>
               <div className="space-y-3 text-gray-600 text-base sm:text-lg leading-relaxed">
                 {venue.whyChooseLead.map((p) => <p key={p}>{p}</p>)}
               </div>
@@ -158,8 +158,8 @@ export default function SingaporeVenueClient({
               <p className="font-semibold text-gray-900 mb-4">With Moving Walls, you can:</p>
               <ul className="grid sm:grid-cols-2 gap-3">
                 {venue.whyChooseList.map((item) => (
-                  <li key={item} className="flex items-start gap-3 rounded-xl bg-gray-50 border border-gray-200 p-4">
-                    <span className="mt-0.5 w-6 h-6 rounded-full bg-mw-blue-100 text-mw-blue-600 flex items-center justify-center flex-shrink-0">
+                  <li key={item} className="flex items-start gap-3 rounded-2xl bg-gray-50 border border-gray-200 p-4">
+                    <span className="mt-0.5 w-6 h-6 rounded-full bg-mw-blue-100 text-mw-blue-700 flex items-center justify-center flex-shrink-0">
                       <CheckIcon className="w-4 h-4" />
                     </span>
                     <span className="text-gray-700">{item}</span>
@@ -177,8 +177,8 @@ export default function SingaporeVenueClient({
       <SgFaqList faqs={venue.faqs} bg="bg-white" />
 
       {/* Internal links: back to Singapore and across to the other venue pages */}
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <SgSectionHeading title="Explore More Advertising in Singapore" intro="Combine venues in one plan, with reporting in one place." center />
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             <Link

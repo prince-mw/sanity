@@ -79,8 +79,8 @@ export default function ProductResourcesSection({
   }
 
   return (
-    <section className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-gray-50 mw-section">
+      <div className="mw-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -91,7 +91,7 @@ export default function ProductResourcesSection({
           <span className="inline-block px-4 py-1 bg-green-100 text-green-700 rounded-full text-sm font-medium mb-4">
             Learn More
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
             {title}
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -121,7 +121,7 @@ export default function ProductResourcesSection({
                 >
                   <Link
                     href={`/case-studies/${caseStudy.slug?.current || caseStudy._id}`}
-                    className="group block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                    className="group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
                   >
                     <div className="aspect-video relative overflow-hidden bg-gray-200">
                       {caseStudy.heroImage ? (
@@ -179,7 +179,7 @@ export default function ProductResourcesSection({
                 >
                   <Link
                     href={`/blog/${post.slug?.current || post._id}`}
-                    className="group block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                    className="group block bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
                   >
                     <div className="aspect-video relative overflow-hidden bg-gray-200">
                       {post.featuredImage ? (
@@ -237,7 +237,7 @@ export default function ProductResourcesSection({
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ delay: index * 0.1 }}
-                    className="group flex items-center gap-4 bg-white rounded-xl p-5 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
+                    className="group flex items-center gap-4 bg-white rounded-2xl p-5 shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100"
                   >
                     <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center group-hover:bg-orange-500 transition-colors">
                       <IconComponent className="w-5 h-5 text-orange-600 group-hover:text-white transition-colors" />

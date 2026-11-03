@@ -4,12 +4,12 @@ import { MeasureGeometry } from './brand/MeasureGeometry';
 
 export const ThreeAnswersSection: React.FC = () => {
   return (
-    <section id="three-answers" className="bg-[#18286a] text-white py-12 sm:py-16 lg:py-20 relative overflow-hidden">
+    <section id="three-answers" className="bg-[#18286a] text-white relative overflow-hidden mw-section">
 
       <div className="absolute top-0 right-1/4 w-80 h-80 bg-blue-400/5 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-purple-500/5 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative z-10 mw-container">
 
         <div className="text-center mb-10 sm:mb-12">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-900/60 border border-blue-400/30 text-blue-200 text-xs font-semibold mb-3">
@@ -18,7 +18,7 @@ export const ThreeAnswersSection: React.FC = () => {
             </div>
             <span>The MW Performance Framework</span>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white">
+          <h2 className="font-extrabold tracking-tight text-white text-3xl lg:text-4xl">
             One Campaign. Three Answers.
           </h2>
           <p className="mt-3 text-sm sm:text-base text-blue-100/75 max-w-xl mx-auto">
@@ -49,7 +49,7 @@ export const ThreeAnswersSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="mt-8 pt-4 relative h-36 w-full rounded-xl bg-blue-950/40 border border-blue-500/10 p-3 overflow-hidden flex items-center justify-center">
+            <div className="mt-8 pt-4 relative h-36 w-full rounded-2xl bg-blue-950/40 border border-blue-500/10 p-3 overflow-hidden flex items-center justify-center">
 
               <div className="absolute inset-0 opacity-25" style={{
                 backgroundImage: 'radial-gradient(#93c5fd 1px, transparent 1px)',
@@ -95,7 +95,7 @@ export const ThreeAnswersSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="mt-8 pt-4 relative h-36 w-full rounded-xl bg-blue-950/40 border border-blue-500/10 p-3 overflow-hidden flex flex-col justify-end">
+            <div className="mt-8 pt-4 relative h-36 w-full rounded-2xl bg-blue-950/40 border border-blue-500/10 p-3 overflow-hidden flex flex-col justify-end">
 
               <div className="relative h-24 w-full flex items-end justify-between gap-3 px-2 pb-2">
                 <div className="w-1/5 bg-[#2dd4bf]/40 rounded-t-md h-[30%] transition-all group-hover:h-[35%]"></div>
@@ -105,7 +105,7 @@ export const ThreeAnswersSection: React.FC = () => {
                 <div className="w-1/5 bg-[#2dd4bf]/70 rounded-t-md h-[65%] transition-all group-hover:h-[70%]"></div>
               </div>
 
-              <div className="flex justify-between text-[9px] text-blue-200/60 font-sans px-2 border-t border-blue-400/10 pt-1">
+              <div className="flex justify-between text-xs text-blue-200/60 font-sans px-2 border-t border-blue-400/10 pt-1">
                 <span>18-24</span>
                 <span>25-34</span>
                 <span>35-44</span>
@@ -138,7 +138,7 @@ export const ThreeAnswersSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="mt-8 pt-4 relative h-36 w-full rounded-xl bg-blue-950/40 border border-blue-500/10 p-3 overflow-hidden flex items-center justify-center">
+            <div className="mt-8 pt-4 relative h-36 w-full rounded-2xl bg-blue-950/40 border border-blue-500/10 p-3 overflow-hidden flex items-center justify-center">
 
               <div className="relative flex items-center justify-center">
                 <svg className="w-28 h-28 animate-[spin_24s_linear_infinite]" viewBox="0 0 100 100">

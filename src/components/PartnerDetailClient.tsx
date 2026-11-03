@@ -60,7 +60,7 @@ export function PartnerLogoTile({
   const isWhite = /^#?(fff|ffffff)$/i.test(bg.trim())
   return (
     <div
-      className={`relative flex items-center justify-center rounded-xl overflow-hidden ${isWhite ? 'ring-1 ring-gray-200' : ''} ${className}`}
+      className={`relative flex items-center justify-center rounded-2xl overflow-hidden ${isWhite ? 'ring-1 ring-gray-200' : ''} ${className}`}
       style={{ backgroundColor: bg }}
     >
       {partner.logo ? (
@@ -91,7 +91,7 @@ function DisplayIllustration() {
   return (
     <div className="relative aspect-[5/4] w-full" aria-hidden="true">
       <style>{`@keyframes partner-float { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }`}</style>
-      <div className="absolute inset-0 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm" />
+      <div className="absolute inset-0 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm" />
       <div className="absolute -inset-6 bg-[#1E76BB]/25 blur-3xl rounded-full pointer-events-none" />
 
       {/* LCD screen */}
@@ -105,23 +105,23 @@ function DisplayIllustration() {
             <div className="absolute left-4 top-4 space-y-2">
               <div className="h-2.5 w-24 rounded-full bg-white/90" />
               <div className="h-2.5 w-16 rounded-full bg-white/60" />
-              <div className="mt-3 inline-flex rounded-md bg-white px-2 py-1 text-[10px] font-bold text-[#062068]">SHOP NOW</div>
+              <div className="mt-3 inline-flex rounded-lg bg-white px-2 py-1 text-xs font-bold text-[#062068]">SHOP NOW</div>
             </div>
             <div className="absolute left-3 bottom-3 flex items-center gap-1 rounded-full bg-black/30 px-2 py-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
-              <span className="text-[9px] font-semibold text-white">LIVE</span>
+              <span className="text-xs font-semibold text-white">LIVE</span>
             </div>
           </div>
         </div>
         <div className="mx-auto h-6 w-3 bg-gray-800" />
         <div className="mx-auto h-1.5 w-20 rounded-full bg-gray-800" />
-        <span className="mt-2 block text-center text-[11px] font-semibold uppercase tracking-wider text-cyan-200">LCD signage</span>
+        <span className="mt-2 block text-center text-xs font-semibold uppercase tracking-wider text-cyan-200">LCD signage</span>
       </div>
 
       {/* E-paper label */}
       <div className="absolute right-[7%] bottom-[12%] w-[34%] motion-safe:animate-[partner-float_6s_ease-in-out_1.5s_infinite]">
-        <div className="rounded-xl bg-[#e9e9e4] p-3 shadow-2xl ring-4 ring-gray-300/60">
-          <p className="text-[10px] font-bold tracking-wider text-gray-800">PROMO</p>
+        <div className="rounded-2xl bg-[#e9e9e4] p-3 shadow-2xl ring-4 ring-gray-300/60">
+          <p className="text-xs font-bold tracking-wider text-gray-800">PROMO</p>
           <p className="text-2xl font-extrabold leading-none text-gray-900 mt-1">2 for 1</p>
           <div className="mt-2 flex gap-[2px] h-5" >
             {[2, 1, 3, 1, 2, 1, 1, 3, 2, 1, 2, 1, 3, 1].map((w, i) => (
@@ -129,7 +129,7 @@ function DisplayIllustration() {
             ))}
           </div>
         </div>
-        <span className="mt-2 block text-center text-[11px] font-semibold uppercase tracking-wider text-cyan-200">E-paper</span>
+        <span className="mt-2 block text-center text-xs font-semibold uppercase tracking-wider text-cyan-200">E-paper</span>
       </div>
 
       {/* Shelf line */}
@@ -144,7 +144,7 @@ function ScreenNetworkIllustration() {
   return (
     <div className="relative aspect-[5/4] w-full" aria-hidden="true">
       <style>{`@keyframes partner-float { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-8px) } }`}</style>
-      <div className="absolute inset-0 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm" />
+      <div className="absolute inset-0 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm" />
       <div className="absolute -inset-6 bg-[#1E76BB]/25 blur-3xl rounded-full pointer-events-none" />
 
       {/* Landscape screen: own content */}
@@ -156,14 +156,14 @@ function ScreenNetworkIllustration() {
               <div className="h-2.5 w-3/4 rounded-full bg-gray-800" />
               <div className="h-2 w-full rounded-full bg-gray-300" />
               <div className="h-2 w-5/6 rounded-full bg-gray-300" />
-              <div className="mt-3 inline-flex rounded-md bg-[#062068] px-2 py-1 text-[10px] font-bold text-white">THIS WEEK</div>
+              <div className="mt-3 inline-flex rounded-lg bg-[#062068] px-2 py-1 text-xs font-bold text-white">THIS WEEK</div>
             </div>
-            <div className="absolute left-3 bottom-3 rounded-full bg-black/40 px-2 py-0.5 text-[9px] font-semibold text-white">10:00 – 14:00</div>
+            <div className="absolute left-3 bottom-3 rounded-full bg-black/40 px-2 py-0.5 text-xs font-semibold text-white">10:00 – 14:00</div>
           </div>
         </div>
         <div className="mx-auto h-5 w-3 bg-gray-800" />
         <div className="mx-auto h-1.5 w-20 rounded-full bg-gray-800" />
-        <span className="mt-2 block text-center text-[11px] font-semibold uppercase tracking-wider text-cyan-200">Your content</span>
+        <span className="mt-2 block text-center text-xs font-semibold uppercase tracking-wider text-cyan-200">Your content</span>
       </div>
 
       {/* Portrait screen: paid advertising */}
@@ -180,17 +180,17 @@ function ScreenNetworkIllustration() {
                 <span className="text-[#062068] text-xs font-extrabold">NEW</span>
               </div>
             </div>
-            <div className="absolute left-2 bottom-2 rounded bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-[#062068]">AD</div>
+            <div className="absolute left-2 bottom-2 rounded-lg bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-[#062068]">AD</div>
           </div>
         </div>
         <div className="mx-auto h-4 w-6 rounded-b bg-gray-800" />
-        <span className="mt-2 block text-center text-[11px] font-semibold uppercase tracking-wider text-cyan-200">Paid advertising</span>
+        <span className="mt-2 block text-center text-xs font-semibold uppercase tracking-wider text-cyan-200">Paid advertising</span>
       </div>
 
       {/* Programmatic chip */}
       <div className="absolute left-[30%] bottom-[9%] inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 shadow-xl">
         <span className="w-2 h-2 rounded-full bg-emerald-500 motion-safe:animate-pulse" />
-        <span className="text-[11px] font-bold text-[#062068]">Direct + programmatic</span>
+        <span className="text-xs font-bold text-[#062068]">Direct + programmatic</span>
       </div>
     </div>
   )
@@ -202,7 +202,7 @@ function MediaPlayerIllustration() {
   return (
     <div className="relative aspect-[5/4] w-full" aria-hidden="true">
       <style>{`@keyframes partner-float { 0%, 100% { transform: translateY(0) } 50% { transform: translateY(-8px) } } @keyframes partner-flow { 0% { stroke-dashoffset: 24 } 100% { stroke-dashoffset: 0 } }`}</style>
-      <div className="absolute inset-0 rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-sm" />
+      <div className="absolute inset-0 rounded-2xl border border-white/10 bg-white/[0.04] backdrop-blur-sm" />
       <div className="absolute -inset-6 bg-[#1E76BB]/25 blur-3xl rounded-full pointer-events-none" />
 
       {/* Screen */}
@@ -216,13 +216,13 @@ function MediaPlayerIllustration() {
               <div className="h-2 flex-[3] rounded-full bg-amber-400" />
               <div className="h-2 flex-[2] rounded-full bg-[#61CBF5]" />
             </div>
-            <div className={`absolute left-3 right-3 top-8 bottom-3 rounded-md ${BRAND_GRADIENT}`}>
+            <div className={`absolute left-3 right-3 top-8 bottom-3 rounded-lg ${BRAND_GRADIENT}`}>
               <div className="absolute -right-4 -bottom-4 w-20 h-20 rounded-full bg-white/20" />
               <div className="absolute left-3 top-3 space-y-1.5">
                 <div className="h-2 w-20 rounded-full bg-white/90" />
                 <div className="h-2 w-12 rounded-full bg-white/60" />
               </div>
-              <div className="absolute left-2 bottom-2 rounded bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-[#062068]">AD</div>
+              <div className="absolute left-2 bottom-2 rounded-lg bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-[#062068]">AD</div>
             </div>
           </div>
         </div>
@@ -237,7 +237,7 @@ function MediaPlayerIllustration() {
 
       {/* Media player box */}
       <div className="absolute right-[5%] bottom-[7%] w-[31%] motion-safe:animate-[partner-float_6s_ease-in-out_1.5s_infinite]">
-        <div className="relative rounded-xl bg-gradient-to-b from-gray-700 to-gray-900 px-3 py-4 shadow-2xl ring-1 ring-white/15">
+        <div className="relative rounded-2xl bg-gradient-to-b from-gray-700 to-gray-900 px-3 py-4 shadow-2xl ring-1 ring-white/15">
           <div className="flex items-center justify-between">
             <div className="flex gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 motion-safe:animate-pulse" />
@@ -247,9 +247,9 @@ function MediaPlayerIllustration() {
               {[0, 1, 2, 3].map((i) => <span key={i} className="w-0.5 h-3 rounded-full bg-white/20" />)}
             </div>
           </div>
-          <div className="mt-3 rounded-md bg-white px-1.5 py-1 text-center text-[9px] sm:text-[10px] leading-tight font-bold text-[#062068]">Moving Walls app</div>
+          <div className="mt-3 rounded-lg bg-white px-1.5 py-1 text-center text-xs sm:text-xs leading-tight font-bold text-[#062068]">Moving Walls app</div>
         </div>
-        <span className="mt-2 block text-center text-[11px] font-semibold uppercase tracking-wider text-cyan-200">Media player</span>
+        <span className="mt-2 block text-center text-xs font-semibold uppercase tracking-wider text-cyan-200">Media player</span>
       </div>
     </div>
   )
@@ -268,9 +268,9 @@ function SectionBlock({ section, index, partner }: { section: PartnerSection; in
 
   if (section._type === 'partnerCtaSection') {
     return (
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className={`relative overflow-hidden rounded-3xl ${NAVY} text-white px-6 py-12 sm:px-12 lg:py-16 text-center`}>
+      <section className="bg-white mw-section">
+        <div className="mw-container">
+          <div className={`relative overflow-hidden rounded-2xl ${NAVY} text-white px-6 py-12 sm:px-12 lg:py-16 text-center`}>
             <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
             <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-[#61CBF5]/25 blur-3xl pointer-events-none" />
             <div className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-[#1E76BB]/40 blur-3xl pointer-events-none" />
@@ -278,7 +278,7 @@ function SectionBlock({ section, index, partner }: { section: PartnerSection; in
               <div className="mb-6 flex justify-center">
                 <LogoLockup partner={partner} compact />
               </div>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">{section.heading}</h2>
+              <h2 className="font-bold tracking-tight leading-tight mb-4 text-3xl lg:text-4xl">{section.heading}</h2>
               <div className="space-y-1 text-base sm:text-lg text-blue-100/90 leading-relaxed">
                 {section.paragraphs?.map((p) => <p key={p}>{p}</p>)}
               </div>
@@ -300,10 +300,10 @@ function SectionBlock({ section, index, partner }: { section: PartnerSection; in
 
   if (section._type === 'partnerCardsSection') {
     return (
-      <section className={`${bg} py-12 lg:py-16`}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className={`${bg} mw-section`}>
+        <div className="mw-container">
           <div className="max-w-3xl mx-auto text-center mb-8 lg:mb-10">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-4">{section.heading}</h2>
+            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">{section.heading}</h2>
             {section.intro && <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{section.intro}</p>}
           </div>
           <div className={`grid gap-4 lg:gap-6 ${CARD_COLS[Math.min(section.cards?.length || 3, 4)] || CARD_COLS[3]}`}>
@@ -325,11 +325,11 @@ function SectionBlock({ section, index, partner }: { section: PartnerSection; in
   }
 
   return (
-    <section className={`${bg} py-12 lg:py-16`}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-6 lg:gap-12 items-start">
+    <section className={`${bg} mw-section`}>
+      <div className="grid lg:grid-cols-12 gap-6 lg:gap-12 items-start mw-container">
         <div className="lg:col-span-5 lg:sticky lg:top-28">
           <div className="mb-5"><IconBadge name={section.icon} size="lg" /></div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068]">{section.heading}</h2>
+          <h2 className="font-bold tracking-tight text-[#062068] text-3xl lg:text-4xl">{section.heading}</h2>
         </div>
         <div className="lg:col-span-7 space-y-4 text-base sm:text-lg leading-relaxed">
           {section.intro && <p className="text-xl text-gray-900 font-medium leading-snug">{section.intro}</p>}
@@ -366,12 +366,12 @@ export default function PartnerDetailClient({ partner }: { partner: PartnerPageC
   return (
     <div className="bg-white text-gray-900">
       {/* Hero */}
-      <section className={`relative overflow-hidden ${NAVY} text-white pt-24 lg:pt-28 ${highlights.length ? 'pb-20 lg:pb-24' : 'pb-12 lg:pb-16'}`}>
+      <section className={`relative overflow-hidden ${NAVY} text-white ${highlights.length ? 'pb-20 lg:pb-24' : 'pb-12 lg:pb-16'} mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <nav aria-label={t('ui.company.breadcrumb')} className="mb-6 text-sm text-blue-100/80">
             <ol className="flex flex-wrap items-center gap-2">
               <li><Link href="/" className="hover:text-white">{t('ui.company.home')}</Link></li>
@@ -414,7 +414,7 @@ export default function PartnerDetailClient({ partner }: { partner: PartnerPageC
                   <LogoLockup partner={partner} compact />
                 </div>
                 {partner.heroImage ? (
-                  <div className="relative aspect-[5/4] rounded-3xl overflow-hidden shadow-2xl ring-1 ring-white/10">
+                  <div className="relative aspect-[5/4] rounded-2xl overflow-hidden shadow-2xl ring-1 ring-white/10">
                     <Image src={partner.heroImage.url} alt={partner.heroImage.alt} fill sizes="(min-width: 1024px) 600px, 100vw" className="object-cover" priority />
                   </div>
                 ) : partner.heroIllustration === 'retail-displays' ? (
@@ -432,7 +432,7 @@ export default function PartnerDetailClient({ partner }: { partner: PartnerPageC
 
       {/* Highlights strip, overlapping the hero */}
       {highlights.length > 0 && (
-        <div className="relative z-10 -mt-10 lg:-mt-12 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 -mt-10 lg:-mt-12 mw-container">
           <ul className={`grid gap-px overflow-hidden rounded-2xl bg-gray-200 shadow-precision-lg ${HIGHLIGHT_COLS[Math.min(highlights.length, 4)]}`}>
             {highlights.map((h) => (
               <li key={h.text} className="flex items-center gap-4 bg-white p-5 lg:p-6">

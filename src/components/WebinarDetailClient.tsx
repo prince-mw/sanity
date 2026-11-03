@@ -88,7 +88,7 @@ const portableTextComponents = {
       if (!imageUrl) return null
       return (
         <figure className="my-8">
-          <img src={imageUrl} alt={value.alt || ''} className="rounded-xl w-full" />
+          <img src={imageUrl} alt={value.alt || ''} className="rounded-2xl w-full" />
           {value.caption && (
             <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
           )}
@@ -99,7 +99,7 @@ const portableTextComponents = {
       if (value?.videoType === 'file' && value?.videoFileUrl) {
         return (
           <figure className="my-8">
-            <video className="w-full rounded-xl" autoPlay muted preload="auto" playsInline {...getVideoSkipIntroProps(value.startAtSeconds)}>
+            <video className="w-full rounded-2xl" autoPlay muted preload="auto" playsInline {...getVideoSkipIntroProps(value.startAtSeconds)}>
               <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
             </video>
             {value.caption && (
@@ -120,7 +120,7 @@ const portableTextComponents = {
       if (!embedUrl) return null
       return (
         <figure className="my-8">
-          <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
+          <div className="relative aspect-video rounded-2xl overflow-hidden bg-mw-gray-100">
             <iframe src={embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title={value.caption || 'Embedded video'} />
           </div>
           {value.caption && (
@@ -134,7 +134,7 @@ const portableTextComponents = {
         return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }} />
       }
       return (
-        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-xl overflow-x-auto text-sm">
+        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-2xl overflow-x-auto text-sm">
           <code>{value.code}</code>
         </pre>
       )
@@ -173,7 +173,7 @@ const portableTextComponents = {
       }
       const style = themeStyles[value.theme] || themeStyles.light
       return (
-        <div className={`my-8 p-6 ${style.bg} rounded-xl`}>
+        <div className={`my-8 p-6 ${style.bg} rounded-2xl`}>
           <div className={value.layout === 'row' ? 'flex flex-wrap justify-center gap-8' : 'grid grid-cols-2 gap-4'}>
             {value.stats?.map((stat: any, i: number) => (
               <div key={stat._key || `stat-${i}`} className="text-center">
@@ -214,7 +214,7 @@ const portableTextComponents = {
     testimonialBlock: ({ value }: any) => {
       const avatarUrl = value.avatar?.asset ? buildSanityImageUrl(value.avatar, 80) : ''
       return (
-        <div className="my-8 bg-mw-gray-50 rounded-xl p-6 md:p-8">
+        <div className="my-8 bg-mw-gray-50 rounded-2xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-6">
             {avatarUrl && <img src={avatarUrl} alt={value.author} width={80} height={80} className="rounded-full flex-shrink-0" />}
             <div className="flex-1">
@@ -292,7 +292,7 @@ const portableTextComponents = {
       <span className="line-through">{children}</span>
     ),
     code: ({ children }: any) => (
-      <code className="bg-mw-gray-100 text-mw-blue-600 px-1.5 py-0.5 rounded text-sm font-mono">{children}</code>
+      <code className="bg-mw-gray-100 text-mw-blue-600 px-1.5 py-0.5 rounded-lg text-sm font-mono">{children}</code>
     ),
   },
   list: {
@@ -374,8 +374,8 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -467,7 +467,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                         isZohoFormUrl(registerUrl) ? (
                           <button
                             onClick={() => openZohoPopup(registerUrl, t('ui.webinars.registerNow'))}
-                            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
+                            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg transition-colors shadow-mw-lg"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -479,7 +479,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                             href={registerUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
+                            className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg transition-colors shadow-mw-lg"
                           >
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -488,7 +488,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                           </a>
                         )
                       )}
-                      <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-mw-gray-200 hover:border-mw-blue-600 text-mw-gray-700 hover:text-mw-blue-600 font-semibold rounded-xl transition-all">
+                      <button className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-mw-gray-200 hover:border-mw-blue-600 text-mw-gray-700 hover:text-mw-blue-600 font-semibold rounded-lg transition-all">
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                         </svg>
@@ -500,7 +500,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                       {webinar.watchLink && (
                         <button
                           onClick={() => setIsVideoModalOpen(true)}
-                          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-xl transition-colors shadow-mw-lg"
+                          className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-mw-blue-600 hover:bg-mw-blue-700 text-white font-semibold rounded-lg transition-colors shadow-mw-lg"
                         >
                           <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z" />
@@ -510,7 +510,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                       )}
                       <Link
                         href="/webinars"
-                        className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-mw-gray-200 hover:border-mw-blue-600 text-mw-gray-700 hover:text-mw-blue-600 font-semibold rounded-xl transition-all"
+                        className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white border-2 border-mw-gray-200 hover:border-mw-blue-600 text-mw-gray-700 hover:text-mw-blue-600 font-semibold rounded-2xl transition-all"
                       >
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -558,8 +558,8 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
       </section>
 
       {/* Speakers Section */}
-      <section className="py-16 bg-white border-b border-mw-gray-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white border-b border-mw-gray-100 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -650,7 +650,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
 
       {/* Content Section */}
       {webinar.content && (
-        <section className="py-16 bg-white">
+        <section className="bg-white mw-section">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -669,8 +669,8 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
 
       {/* Related Webinars */}
       {relatedWebinars.length > 0 && (
-        <section className="py-16 bg-mw-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 mw-section">
+          <div className="mw-container">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -701,7 +701,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                   >
                     <Link
                       href={`/webinars/${related.slug}`}
-                      className="block bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 group"
+                      className="block bg-white rounded-2xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 group"
                     >
                       <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative">
                         {related.featuredImage && (
@@ -740,15 +740,15 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
       )}
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-br from-mw-blue-600 to-mw-blue-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="bg-gradient-to-br from-mw-blue-600 to-mw-blue-800 mw-section">
+        <div className="text-center mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            <h2 className="font-bold text-white mb-6 text-3xl lg:text-4xl">
               {isUpcoming ? t('ui.webinars.ctaUpcomingTitle') : t('ui.webinars.ctaPastTitle')}
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -762,7 +762,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                 isZohoFormUrl(registerUrl) ? (
                   <button
                     onClick={() => openZohoPopup(registerUrl, t('ui.webinars.registerNow'))}
-                    className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
+                    className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-mw-lg"
                   >
                     {t('ui.webinars.registerForFree')}
                   </button>
@@ -771,7 +771,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
                     href={registerUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
+                    className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-lg hover:bg-blue-50 transition-colors shadow-mw-lg"
                   >
                     {t('ui.webinars.registerForFree')}
                   </a>
@@ -780,7 +780,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
             ) : (
               <Link
                 href="/webinars"
-                className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-xl hover:bg-blue-50 transition-colors shadow-mw-lg"
+                className="inline-block px-8 py-4 bg-white text-mw-blue-600 font-semibold rounded-2xl hover:bg-blue-50 transition-colors shadow-mw-lg"
               >
                 {t('ui.webinars.browseUpcomingWebinars')}
               </Link>
@@ -818,7 +818,7 @@ export default function WebinarDetailClient({ webinar, relatedWebinars }: Readon
               </button>
               
               {/* Video Container */}
-              <div className="aspect-video bg-black rounded-xl overflow-hidden shadow-2xl">
+              <div className="aspect-video bg-black rounded-2xl overflow-hidden shadow-2xl">
                 <iframe
                   src={videoEmbedUrl}
                   className="w-full h-full"

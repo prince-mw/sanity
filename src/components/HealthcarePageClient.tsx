@@ -87,8 +87,8 @@ export default function HealthcarePageClient({
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -149,15 +149,15 @@ export default function HealthcarePageClient({
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               Why Healthcare Providers Choose Moving Walls
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -173,7 +173,7 @@ export default function HealthcarePageClient({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="text-center p-6 rounded-xl bg-white border border-mw-gray-200 shadow-mw-sm hover:shadow-mw-md transition-shadow"
+                className="text-center p-6 rounded-2xl bg-white border border-mw-gray-200 shadow-mw-sm hover:shadow-mw-md transition-shadow"
               >
                 <div className="text-mw-blue-600 mb-4 flex justify-center"><BenefitIcon title={benefit.title} /></div>
                 <h3 className="text-xl font-semibold text-mw-gray-900 mb-2">{benefit.title}</h3>
@@ -185,15 +185,15 @@ export default function HealthcarePageClient({
       </section>
 
       {/* Solutions Section */}
-      <section id="solutions" className="py-16 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="solutions" className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               Healthcare Advertising Solutions
             </h2>
           </motion.div>
@@ -206,7 +206,7 @@ export default function HealthcarePageClient({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="bg-white p-8 rounded-xl shadow-mw-md"
+                className="bg-white p-8 rounded-2xl shadow-mw-md"
               >
                 <h3 className="text-xl font-bold text-mw-gray-900 mb-4">{solution.title}</h3>
                 <p className="text-mw-gray-600 mb-6">{solution.description}</p>
@@ -225,8 +225,8 @@ export default function HealthcarePageClient({
       </section>
 
       {/* Compliance Section */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <div className="bg-mw-blue-50 rounded-2xl p-12 border border-mw-blue-200">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -234,7 +234,7 @@ export default function HealthcarePageClient({
               viewport={{ once: true }}
               className="text-center"
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-6">HIPAA-Compliant Advertising</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-6 text-3xl lg:text-4xl">HIPAA-Compliant Advertising</h2>
               <p className="text-lg text-mw-gray-600 mb-8 max-w-3xl mx-auto">
                 All our healthcare advertising campaigns are designed with privacy and compliance in mind, 
                 ensuring your patient information and marketing efforts meet all regulatory requirements.
@@ -271,14 +271,14 @@ export default function HealthcarePageClient({
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-mw-blue-600">
+      <section className="bg-mw-blue-600 mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            <h2 className="font-bold text-white mb-6 text-3xl lg:text-4xl">
               Ready to Reach More Patients?
             </h2>
             <p className="text-lg text-mw-blue-100 mb-8">

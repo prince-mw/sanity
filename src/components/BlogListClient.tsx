@@ -126,8 +126,8 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -156,7 +156,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                   placeholder={t("ui.blog.searchPlaceholder")}
                   value={searchQuery}
                   onChange={(e) => handleSearchChange(e.target.value)}
-                  className="w-full px-6 py-4 pl-14 border border-mw-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent shadow-mw-sm"
+                  className="w-full px-6 py-4 pl-14 border border-mw-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent shadow-mw-sm"
                 />
                 <svg className="absolute left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-mw-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -178,8 +178,8 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
       </section>
 
       {/* Filter & Sort Bar */}
-      <section className="py-6 bg-white border-b border-mw-gray-200 sticky top-14 lg:top-16 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white border-b border-mw-gray-200 sticky top-14 lg:top-16 z-40 mw-section-sm">
+        <div className="mw-container">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-3">
               <span className="text-sm text-mw-gray-600 whitespace-nowrap">{t("ui.blog.categoryLabel")}</span>
@@ -220,8 +220,8 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
 
       {/* Featured Article */}
       {selectedCategory === "All" && !searchQuery && currentPage === 1 && featuredArticle && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -235,7 +235,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                         {t("ui.blog.featuredArticle")}
                       </span>
-                      <h2 className="text-3xl lg:text-4xl font-bold mb-4">{featuredArticle.title}</h2>
+                      <h2 className="font-bold mb-4 text-3xl lg:text-4xl">{featuredArticle.title}</h2>
                       <p className="text-blue-100 text-lg mb-6 line-clamp-3">{featuredArticle.excerpt}</p>
                       <div className="flex items-center gap-4 text-sm text-blue-200">
                         <span>{featuredArticle.author}</span>
@@ -244,7 +244,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                       </div>
                     </div>
                     {featuredArticle.featuredImage && (
-                      <div className="relative aspect-video lg:aspect-auto rounded-xl overflow-hidden">
+                      <div className="relative aspect-video lg:aspect-auto rounded-2xl overflow-hidden">
                         <Image
                           src={featuredArticle.featuredImage}
                           alt={featuredArticle.title}
@@ -262,8 +262,8 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
       )}
 
       {/* Articles Grid */}
-      <section className="py-16 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           {/* Results Count */}
           <div className="flex items-center justify-between mb-8">
             <p className="text-mw-gray-600">
@@ -307,7 +307,7 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                     className="group"
                   >
-                    <Link href={`/blog/${article.slug}`} className="bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 h-full flex flex-col">
+                    <Link href={`/blog/${article.slug}`} className="bg-white rounded-2xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 h-full flex flex-col">
                       <div className="relative aspect-video overflow-hidden">
                         {article.featuredImage && (
                           <Image
@@ -382,11 +382,11 @@ export default function BlogListClient({ posts, categories }: BlogListClientProp
       </section>
 
       {/* Newsletter CTA */}
-      <section className="py-16 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-8 items-center">
             <div className="text-center lg:text-left">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">
+              <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
                 {t("ui.blog.newsletterTitle")}
               </h2>
               <p className="text-mw-gray-600 max-w-2xl">

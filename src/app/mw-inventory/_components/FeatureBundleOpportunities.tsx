@@ -21,7 +21,7 @@ export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProp
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
         <div className="lg:col-span-7 order-2 lg:order-1">
-          <div className="bg-[#e9ecef]/60 rounded-3xl p-4 sm:p-8 border border-gray-200 shadow-precision">
+          <div className="bg-[#e9ecef]/60 rounded-2xl p-4 sm:p-8 border border-gray-200 shadow-precision">
             <div className="bg-white rounded-2xl border border-gray-200/90 p-6 sm:p-8 shadow-precision font-sans">
 
               <div className="text-center mb-6">
@@ -33,7 +33,7 @@ export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProp
                 </p>
               </div>
 
-              <div className="relative w-full h-64 sm:h-72 bg-gradient-to-b from-gray-50/50 to-blue-50/20 rounded-xl border border-gray-100 p-4 flex items-center justify-center overflow-hidden">
+              <div className="relative w-full h-64 sm:h-72 bg-gradient-to-b from-gray-50/50 to-blue-50/20 rounded-2xl border border-gray-100 p-4 flex items-center justify-center overflow-hidden">
                 <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 400 240">
                   <defs>
                     <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -74,7 +74,7 @@ export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProp
                         <div className="w-10 h-10 rounded-lg bg-blue-50 border border-blue-200 text-[#062068] flex items-center justify-center shadow-sm">
                           <Tv className="w-5 h-5" />
                         </div>
-                        <span className="mt-1.5 text-[11px] font-medium text-gray-800 text-center whitespace-nowrap bg-white/90 px-2 py-0.5 rounded shadow-xs border border-gray-200">
+                        <span className="mt-1.5 text-xs font-medium text-gray-800 text-center whitespace-nowrap bg-white/90 px-2 py-0.5 rounded-lg shadow-xs border border-gray-200">
                           {screen.name}
                         </span>
                       </div>
@@ -85,7 +85,7 @@ export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProp
 
               <div className="mt-6 pt-5 border-t border-gray-100 grid grid-cols-2 gap-4">
                 <div>
-                  <div className="text-[11px] font-medium text-gray-400">Total Reach</div>
+                  <div className="text-xs font-medium text-gray-400">Total Reach</div>
                   <div className="mt-1 flex items-baseline gap-1.5">
                     <span className="text-xl sm:text-2xl font-bold text-gray-900 tracking-tight">{bundle.totalReach}</span>
                     <span className="text-xs text-gray-500 font-medium">Impressions / week</span>
@@ -93,7 +93,7 @@ export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProp
                 </div>
 
                 <div>
-                  <div className="text-[11px] font-medium text-gray-400">Bundle Status</div>
+                  <div className="text-xs font-medium text-gray-400">Bundle Status</div>
                   <div className="mt-1.5 flex items-center gap-1.5">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-semibold">
                       <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />

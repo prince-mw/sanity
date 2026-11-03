@@ -321,7 +321,7 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-mw-gray-200 shadow-mw-sm">
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav className="mw-container">
         <div className="flex items-center justify-between h-14 lg:h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center">
@@ -410,7 +410,7 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-lg border border-mw-gray-200 py-2 z-50 max-h-80 overflow-y-auto"
+                    className="absolute right-0 top-full mt-2 w-48 bg-white rounded-2xl shadow-lg border border-mw-gray-200 py-2 z-50 max-h-80 overflow-y-auto"
                   >
                     {languages.map((lang) => (
                       <button
@@ -423,7 +423,7 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
                           locale === lang.locale ? 'bg-mw-blue-50 text-mw-blue-600' : 'text-mw-gray-700'
                         }`}
                       >
-                        <span className="font-medium text-xs bg-mw-gray-100 px-2 py-0.5 rounded">{lang.code}</span>
+                        <span className="font-medium text-xs bg-mw-gray-100 px-2 py-0.5 rounded-lg">{lang.code}</span>
                         <span>{lang.name}</span>
                         {locale === lang.locale && (
                           <svg className="w-4 h-4 ml-auto text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -540,7 +540,7 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
               onMouseEnter={() => setActiveMegaMenu(activeMegaMenu)}
               onMouseLeave={handleMouseLeave}
             >
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+              <div className="py-8 mw-container">
                 <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
                   {/* Menu Sections */}
                   {megaMenuData[activeMegaMenu as keyof typeof megaMenuData].sections.map(
@@ -676,7 +676,7 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
                             : 'bg-mw-gray-50 text-mw-gray-700 hover:bg-mw-gray-100'
                         }`}
                       >
-                        <span className="font-medium text-xs bg-mw-gray-200 px-1.5 py-0.5 rounded">{lang.code}</span>
+                        <span className="font-medium text-xs bg-mw-gray-200 px-1.5 py-0.5 rounded-lg">{lang.code}</span>
                         <span className="truncate text-xs">{lang.name}</span>
                       </button>
                     ))}

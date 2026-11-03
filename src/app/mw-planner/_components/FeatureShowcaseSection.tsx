@@ -10,14 +10,14 @@ const DASHBOARD_OVERVIEW_IMG = 'https://cdn.sanity.io/images/u10im6di/production
 
 export const FeatureShowcaseSection: React.FC = () => {
   return (
-    <section className="py-14 sm:py-16 lg:py-20 bg-white overflow-hidden border-b border-[#e2e8f0]" id="feature-showcase-section">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-white overflow-hidden border-b border-[#e2e8f0] mw-section" id="feature-showcase-section">
+      <div className="mw-container">
 
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#edf2fe] border border-[#cbd5e1] text-[#062068] text-xs font-bold uppercase tracking-wider mb-4">
             How MW Planner Helps
           </div>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#062068] tracking-tight mb-3">
+          <h2 className="font-extrabold text-[#062068] tracking-tight mb-3 text-3xl lg:text-4xl">
             Make Every Planning Decision Count.
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -80,19 +80,19 @@ export const FeatureShowcaseSection: React.FC = () => {
             </div>
 
             <div className="md:col-span-6">
-              <div className="bg-[#f8f9fc] rounded-xl p-6 sm:p-8 border border-[#e2e8f0] shadow-sm relative flex items-center justify-center">
+              <div className="bg-[#f8f9fc] rounded-2xl p-6 sm:p-8 border border-[#e2e8f0] shadow-sm relative flex items-center justify-center">
                 <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6 w-full max-w-lg">
                   <div className="space-y-3 w-full sm:w-44">
                     <div className="bg-white rounded-lg p-2.5 border border-[#e2e8f0] shadow-xs flex items-center gap-2.5">
-                      <div className="p-1.5 rounded bg-sky-100 text-sky-600"><Layers className="w-3.5 h-3.5" /></div>
+                      <div className="p-1.5 rounded-lg bg-sky-100 text-sky-600"><Layers className="w-3.5 h-3.5" /></div>
                       <span className="text-xs font-semibold text-[#191c1e]">Live Inventory</span>
                     </div>
                     <div className="bg-white rounded-lg p-2.5 border border-[#e2e8f0] shadow-xs flex items-center gap-2.5">
-                      <div className="p-1.5 rounded bg-green-100 text-green-600"><Users className="w-3.5 h-3.5" /></div>
+                      <div className="p-1.5 rounded-lg bg-green-100 text-green-600"><Users className="w-3.5 h-3.5" /></div>
                       <span className="text-xs font-semibold text-[#191c1e]">Audience Data</span>
                     </div>
                     <div className="bg-white rounded-lg p-2.5 border border-[#e2e8f0] shadow-xs flex items-center gap-2.5">
-                      <div className="p-1.5 rounded bg-amber-100 text-amber-600"><TrendingUp className="w-3.5 h-3.5" /></div>
+                      <div className="p-1.5 rounded-lg bg-amber-100 text-amber-600"><TrendingUp className="w-3.5 h-3.5" /></div>
                       <span className="text-xs font-semibold text-[#191c1e]">Forecasting</span>
                     </div>
                   </div>
@@ -104,12 +104,12 @@ export const FeatureShowcaseSection: React.FC = () => {
                   </div>
 
                   <div className="flex-1 w-full">
-                    <div className="bg-white rounded-xl p-4 border border-[#e2e8f0] shadow-md text-center">
+                    <div className="bg-white rounded-2xl p-4 border border-[#e2e8f0] shadow-md text-center">
                       <div className="w-9 h-9 mx-auto rounded-lg bg-[#062068] text-white flex items-center justify-center mb-2">
                         <FileText className="w-4 h-4" />
                       </div>
                       <div className="text-sm font-bold text-[#062068]">Data-Backed Plan</div>
-                      <div className="text-[11px] text-gray-500 mt-0.5">Optimized Media Mix &amp; Rationale</div>
+                      <div className="text-xs text-gray-500 mt-0.5">Optimized Media Mix &amp; Rationale</div>
                     </div>
                   </div>
                 </div>

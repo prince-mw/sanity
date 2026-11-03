@@ -206,7 +206,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                   onClick={onClose}
                   className="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-mw-gray-400 hover:text-mw-gray-600"
                 >
-                  <kbd className="px-2 py-1 text-xs bg-mw-gray-100 rounded">ESC</kbd>
+                  <kbd className="px-2 py-1 text-xs bg-mw-gray-100 rounded-lg">ESC</kbd>
                 </button>
               </div>
 
@@ -236,7 +236,7 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
                         )}
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-medium text-mw-blue-600 bg-mw-blue-50 px-2 py-0.5 rounded">
+                            <span className="text-xs font-medium text-mw-blue-700 bg-mw-blue-50 px-2 py-0.5 rounded-lg">
                               {typeLabels[result._type] ? t(typeLabels[result._type]) : result._type}
                             </span>
                             {result.category && (
@@ -319,12 +319,12 @@ export default function GlobalSearch({ isOpen, onClose }: GlobalSearchProps) {
               <div className="border-t border-mw-gray-100 px-5 py-3 flex items-center justify-between text-xs text-mw-gray-400">
                 <div className="flex items-center gap-4">
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded">↑</kbd>
-                    <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded">↓</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded-lg">↑</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded-lg">↓</kbd>
                     <span className="ml-1">{t('ui.shared.search.navigate')}</span>
                   </span>
                   <span className="flex items-center gap-1">
-                    <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded">Enter</kbd>
+                    <kbd className="px-1.5 py-0.5 bg-mw-gray-100 rounded-lg">Enter</kbd>
                     <span className="ml-1">{t('ui.shared.search.select')}</span>
                   </span>
                 </div>

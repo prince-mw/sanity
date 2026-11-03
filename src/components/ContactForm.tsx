@@ -72,8 +72,8 @@ export default function ContactForm({
   }, [formPermalink]);
 
   return (
-    <section id="contact" className="py-16 bg-gradient-to-br from-mw-gray-50 to-white">
-      <div className="container mx-auto px-6">
+    <section id="contact" className="bg-gradient-to-br from-mw-gray-50 to-white mw-section">
+      <div className="mw-container">
         <div className="max-w-6xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -82,7 +82,7 @@ export default function ContactForm({
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {title}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -102,7 +102,7 @@ export default function ContactForm({
               <div>
                 <div className="space-y-6 mb-8">
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-mw-blue-100 to-indigo-100 rounded-xl flex items-center justify-center">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-mw-blue-100 to-indigo-100 rounded-2xl flex items-center justify-center">
                       <svg className="w-6 h-6 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -117,7 +117,7 @@ export default function ContactForm({
                   </div>
 
                   <div className="flex items-start space-x-4">
-                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-violet-100 to-purple-100 rounded-xl flex items-center justify-center">
+                    <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-violet-100 to-purple-100 rounded-2xl flex items-center justify-center">
                       <svg className="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                       </svg>

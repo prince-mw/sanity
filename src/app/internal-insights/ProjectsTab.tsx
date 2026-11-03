@@ -22,8 +22,8 @@ function PlannedVsLogged({ data }: { data: ProjectsDashboard }) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5">
       <div className="flex flex-wrap gap-4 text-xs text-gray-600 mb-4">
-        <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-[#1E76BB]" />Planned hours</span>
-        <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-[#8FD18F]" />Logged hours</span>
+        <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-lg bg-[#1E76BB]" />Planned hours</span>
+        <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-lg bg-[#8FD18F]" />Logged hours</span>
       </div>
       <ul className="space-y-3">
         {rows.map((p) => (
@@ -53,7 +53,7 @@ function TaskStatusChart({ data }: { data: ProjectsDashboard }) {
     <div className="rounded-2xl border border-gray-200 bg-white p-5">
       <div className="flex flex-wrap gap-4 text-xs text-gray-600 mb-4">
         {TASK_STATUSES.map((s) => (
-          <span key={s} className="inline-flex items-center gap-1.5"><span className={`w-2.5 h-2.5 rounded-sm ${STATUS_COLOR[s]}`} />{STATUS_LABEL[s]}</span>
+          <span key={s} className="inline-flex items-center gap-1.5"><span className={`w-2.5 h-2.5 rounded-lg ${STATUS_COLOR[s]}`} />{STATUS_LABEL[s]}</span>
         ))}
       </div>
       <ul className="space-y-2.5">
@@ -63,9 +63,9 @@ function TaskStatusChart({ data }: { data: ProjectsDashboard }) {
             <li key={p.name} className="grid grid-cols-[110px_1fr] sm:grid-cols-[180px_1fr] items-center gap-3">
               <span className="text-sm text-gray-800 truncate" title={p.name}>{p.name}</span>
               <div className="flex items-center gap-2">
-                <div className="flex h-5 overflow-hidden rounded" style={{ width: `${(total / max) * 100}%` }}>
+                <div className="flex h-5 overflow-hidden rounded-lg" style={{ width: `${(total / max) * 100}%` }}>
                   {TASK_STATUSES.filter((s) => p.tasks[s]).map((s) => (
-                    <div key={s} className={`${STATUS_COLOR[s]} flex items-center justify-center text-[10px] font-semibold text-gray-900`} style={{ width: `${(p.tasks[s] / total) * 100}%` }} title={`${STATUS_LABEL[s]}: ${p.tasks[s]}`}>
+                    <div key={s} className={`${STATUS_COLOR[s]} flex items-center justify-center text-xs font-semibold text-gray-900`} style={{ width: `${(p.tasks[s] / total) * 100}%` }} title={`${STATUS_LABEL[s]}: ${p.tasks[s]}`}>
                       {p.tasks[s] / max > 0.04 ? p.tasks[s] : ''}
                     </div>
                   ))}
@@ -128,7 +128,7 @@ export default function ProjectsTab({ data, statuses }: { data: ProjectsDashboar
 
       <h2 className="text-lg font-bold text-[#062068] mb-3">Details</h2>
       <Details title="Projects" summary={`${data.projects.length} project${data.projects.length === 1 ? '' : 's'} the team planned or logged work on in this period`}>
-        <div className="overflow-x-auto rounded-xl border border-gray-200">
+        <div className="overflow-x-auto rounded-2xl border border-gray-200">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
               <tr><th scope="col" className={TH}>Project</th><th scope="col" className={THR}>Tasks planned</th><th scope="col" className={THR}>Hours logged</th></tr>
@@ -145,7 +145,7 @@ export default function ProjectsTab({ data, statuses }: { data: ProjectsDashboar
         {data.taskLogs.length === 0 ? (
           <p className="text-sm text-gray-500">No time logged in this period.</p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-gray-200">
+          <div className="overflow-x-auto rounded-2xl border border-gray-200">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
                 <tr><th scope="col" className={TH}>Person</th><th scope="col" className={TH}>Task</th><th scope="col" className={TH}>Project</th><th scope="col" className={THR}>Hours</th></tr>

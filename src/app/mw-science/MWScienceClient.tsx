@@ -140,7 +140,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-16 md:py-20 lg:py-24 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden mw-section-lg">
         <div className="absolute inset-0 bg-black/20"></div>
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-violet-400/10 rounded-full blur-3xl animate-pulse"></div>
@@ -148,7 +148,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
           <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-purple-400/10 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Side - Content */}
             <motion.div
@@ -223,7 +223,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                <CTAButton href={product?.ctaLink || '/contact'} className="bg-gradient-to-r from-yellow-400 to-orange-500 text-violet-900 px-8 py-4 rounded-xl font-bold text-lg hover:from-yellow-300 hover:to-orange-400 transition-all shadow-2xl hover:shadow-yellow-500/50 inline-flex items-center gap-2">
+                <CTAButton href={product?.ctaLink || '/contact'} className="bg-gradient-to-r from-yellow-400 to-orange-500 text-violet-900 px-8 py-4 rounded-2xl font-bold text-lg hover:from-yellow-300 hover:to-orange-400 transition-all shadow-2xl hover:shadow-yellow-500/50 inline-flex items-center gap-2">
                   {product?.ctaText || 'Book Demo'}
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -261,7 +261,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
-                      className="text-center p-4 bg-white/5 rounded-xl border border-white/10"
+                      className="text-center p-4 bg-white/5 rounded-2xl border border-white/10"
                     >
                       <div className={`text-3xl md:text-4xl font-bold ${stat.color} mb-1`}>
                         {stat.value}
@@ -312,8 +312,8 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -321,7 +321,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               Advanced Research Capabilities
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -338,7 +338,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
               >
                 <feature.icon className="w-12 h-12 text-violet-600 mb-4" />
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
@@ -354,8 +354,8 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
       </section>
 
       {/* Research Capabilities Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -363,7 +363,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               Comprehensive Research Framework
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -380,7 +380,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-xl"
+                className="bg-gradient-to-br from-gray-50 to-gray-100 p-6 rounded-2xl"
               >
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
                   {category.category}
@@ -400,8 +400,8 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
       </section>
 
       {/* AI Models Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -409,7 +409,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               AI-Powered Prediction Models
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -426,7 +426,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow"
+                className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-shadow"
               >
                 <div className="flex justify-between items-start mb-3">
                   <h3 className="text-lg font-semibold text-gray-900">
@@ -452,8 +452,8 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
       </section>
 
       {/* Insights Dashboard Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -461,7 +461,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              <h2 className="font-bold text-gray-900 mb-6 text-3xl lg:text-4xl">
                 Real-Time Intelligence Dashboard
               </h2>
               <p className="text-xl text-gray-600 mb-8">
@@ -500,7 +500,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
               viewport={{ once: true }}
               className="bg-gradient-to-br from-violet-50 to-purple-100 p-8 rounded-2xl"
             >
-              <div className="bg-white p-6 rounded-xl shadow-lg">
+              <div className="bg-white p-6 rounded-2xl shadow-lg">
                 <h3 className="text-xl font-bold text-gray-900 mb-6">Research Impact Metrics</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
@@ -527,8 +527,8 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
       </section>
 
       {/* Scientific Method Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -536,7 +536,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               Scientific Marketing Methodology
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -577,8 +577,8 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
       </section>
 
       {/* Integrations Section - Don't Replace. Integrate. */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section-lg">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -589,7 +589,7 @@ export default function MWSciencePage({ caseStudies = [], product, partnerLogos 
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
                 <span className="text-blue-600 font-medium text-sm">{integrations.length}+ Integrations</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h2 className="font-bold text-gray-900 mb-6 text-3xl lg:text-4xl">
                 Don&apos;t Replace.
                 <span className="block text-blue-600">Integrate.</span>
               </h2>

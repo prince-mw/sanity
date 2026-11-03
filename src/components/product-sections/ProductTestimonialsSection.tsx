@@ -32,7 +32,7 @@ export default function ProductTestimonialsSection({
   if (testimonials.length === 1) {
     const testimonial = testimonials[0]
     return (
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section className="bg-gradient-to-br from-gray-50 to-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -84,14 +84,14 @@ export default function ProductTestimonialsSection({
 
   // Multiple testimonials - carousel/grid style
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden">
+    <section className="bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 relative overflow-hidden mw-section">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative mw-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -102,7 +102,7 @@ export default function ProductTestimonialsSection({
           <span className="inline-block px-4 py-1 bg-white/10 backdrop-blur-sm text-blue-300 rounded-full text-sm font-medium border border-white/20 mb-4">
             Customer Success
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="font-bold text-white mb-4 text-3xl lg:text-4xl">
             {title}
           </h2>
           {subtitle && (

@@ -27,7 +27,7 @@ const components: PortableTextComponents = {
       </h1>
     ),
     h2: ({ children }) => (
-      <h2 className="text-3xl font-bold text-mw-gray-900 mt-10 mb-5 first:mt-0">
+      <h2 className="font-bold text-mw-gray-900 mt-10 mb-5 first:mt-0 text-3xl lg:text-4xl">
         {children}
       </h2>
     ),
@@ -85,7 +85,7 @@ const components: PortableTextComponents = {
       <em className="italic">{children}</em>
     ),
     code: ({ children }) => (
-      <code className="bg-mw-gray-100 text-mw-gray-800 px-1.5 py-0.5 rounded text-sm font-mono">
+      <code className="bg-mw-gray-100 text-mw-gray-800 px-1.5 py-0.5 rounded-lg text-sm font-mono">
         {children}
       </code>
     ),
@@ -137,7 +137,7 @@ const components: PortableTextComponents = {
             alt={alt}
             width={width}
             height={height}
-            className="w-full h-auto rounded-xl"
+            className="w-full h-auto rounded-2xl"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
           />
           {value.caption && (
@@ -153,7 +153,7 @@ const components: PortableTextComponents = {
         return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }} />;
       }
       return (
-        <pre className="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">
+        <pre className="bg-mw-gray-900 text-mw-gray-100 rounded-2xl p-6 overflow-x-auto my-6">
           <code className="text-sm font-mono">
             {value.code}
           </code>
@@ -171,7 +171,7 @@ const components: PortableTextComponents = {
         );
       }
       return (
-        <pre className="bg-mw-gray-900 text-mw-gray-100 rounded-xl p-6 overflow-x-auto my-6">
+        <pre className="bg-mw-gray-900 text-mw-gray-100 rounded-2xl p-6 overflow-x-auto my-6">
           <div className="flex justify-between items-center mb-4 pb-3 border-b border-mw-gray-700">
             <span className="text-xs text-mw-gray-400 uppercase tracking-wider">
               {value.language || 'code'}
@@ -200,7 +200,7 @@ const components: PortableTextComponents = {
         return (
           <figure className="my-8">
             <video
-              className="w-full rounded-xl"
+              className="w-full rounded-2xl"
               autoPlay
               muted
               preload="auto"
@@ -242,7 +242,7 @@ const components: PortableTextComponents = {
 
       return (
         <figure className="my-8">
-          <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
+          <div className="relative aspect-video rounded-2xl overflow-hidden bg-mw-gray-100">
             <iframe
               src={embedUrl}
               className="absolute inset-0 w-full h-full"
@@ -298,7 +298,7 @@ const components: PortableTextComponents = {
       const layoutClass = value.layout === 'row' ? 'flex flex-wrap justify-center gap-8' : 'grid grid-cols-2 gap-4';
       
       return (
-        <div className={`my-8 p-6 ${style.bg} rounded-xl`}>
+        <div className={`my-8 p-6 ${style.bg} rounded-2xl`}>
           <div className={layoutClass}>
             {value.stats?.map((stat: { _key?: string; value: string; label: string; description?: string }, index: number) => (
               <div key={stat._key || `stat-${index}`} className={value.layout === 'cards' ? 'bg-white/10 rounded-lg p-4 text-center' : 'text-center'}>
@@ -386,7 +386,7 @@ const components: PortableTextComponents = {
                   className="bg-white rounded-2xl border border-mw-gray-100 border-t-4 border-t-mw-blue-600 shadow-sm hover:shadow-lg transition-shadow p-6"
                 >
                   <div className="flex items-center gap-3 mb-5">
-                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-mw-blue-50 text-mw-blue-600 font-bold">
+                    <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-mw-blue-50 text-mw-blue-700 font-bold">
                       {col + 1}
                     </span>
                     <h3 className="text-lg font-bold text-mw-gray-900 leading-snug">{header}</h3>
@@ -505,7 +505,7 @@ const components: PortableTextComponents = {
     testimonialBlock: function PortableTestimonial({ value }) {
       const { t } = useLocale();
       return (
-        <div className="my-8 bg-mw-gray-50 rounded-xl p-6 md:p-8">
+        <div className="my-8 bg-mw-gray-50 rounded-2xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-6">
             {value.avatar?.asset && (
               <div className="flex-shrink-0">

@@ -35,7 +35,7 @@ export function CTABannerSection({
   const { openZohoPopup } = useZohoPopup();
 
   return (
-    <section className={`relative py-10 md:py-16 overflow-hidden ${!backgroundImage ? bgClasses : ''}`}>
+    <section className={`relative overflow-hidden ${!backgroundImage ? bgClasses : ''} mw-section`}>
       {/* Background Image */}
       {backgroundImage && (
         <>
@@ -49,7 +49,7 @@ export function CTABannerSection({
         </>
       )}
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="relative z-10 mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -58,7 +58,7 @@ export function CTABannerSection({
           className="text-center max-w-3xl mx-auto"
         >
           {heading && (
-            <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${isDark || backgroundImage ? 'text-white' : 'text-gray-900'}`}>
+            <h2 className={`font-bold mb-6 ${isDark || backgroundImage ? 'text-white' : 'text-gray-900'} text-3xl lg:text-4xl`}>
               {heading}
             </h2>
           )}

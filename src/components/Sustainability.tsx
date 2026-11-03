@@ -41,7 +41,7 @@ export default function Sustainability() {
       </div>
 
       {/* Content */}
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
+      <div className="relative z-10 h-full flex items-center justify-center mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -61,7 +61,7 @@ export default function Sustainability() {
           </motion.div>
 
           {/* Title */}
-          <h2 className="text-2xl sm:text-3xl font-bold text-white">
+          <h2 className="font-bold text-white text-3xl lg:text-4xl">
             Moving Hearts
           </h2>
 

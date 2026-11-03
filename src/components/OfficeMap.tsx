@@ -160,7 +160,7 @@ export default function OfficeMap({ offices: cmsOffices }: OfficeMapProps) {
   ];
 
   return (
-    <section className="py-20 bg-gradient-to-br from-mw-gray-50 to-white relative overflow-hidden">
+    <section className="bg-gradient-to-br from-mw-gray-50 to-white relative overflow-hidden mw-section">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <svg className="w-full h-full" viewBox="0 0 100 100">
@@ -173,7 +173,7 @@ export default function OfficeMap({ offices: cmsOffices }: OfficeMapProps) {
         </svg>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+      <div className="relative mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -188,7 +188,7 @@ export default function OfficeMap({ offices: cmsOffices }: OfficeMapProps) {
             </svg>
             <span className="text-mw-blue-600 text-sm font-medium">Global Presence</span>
           </div>
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-mw-gray-900 mb-6">
+          <h2 className="font-bold text-mw-gray-900 mb-6 text-3xl lg:text-4xl">
             Worldwide Reach
             <span className="text-mw-blue-600 block">Local Expertise</span>
           </h2>
@@ -206,7 +206,7 @@ export default function OfficeMap({ offices: cmsOffices }: OfficeMapProps) {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="relative mb-16"
         >
-          <div className="bg-white rounded-3xl border border-mw-gray-100 p-8 lg:p-12">
+          <div className="bg-white rounded-2xl border border-mw-gray-100 p-8 lg:p-12">
             <div className="relative w-full h-96 lg:h-[500px] bg-gradient-to-br from-mw-blue-50 to-mw-blue-25 rounded-2xl overflow-hidden">
               {/* Proper World Map SVG */}
               <svg
@@ -311,7 +311,7 @@ export default function OfficeMap({ offices: cmsOffices }: OfficeMapProps) {
 
                   {/* Enhanced Tooltip with Building Image */}
                   <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none" style={{ zIndex: 9999 }}>
-                    <div className="bg-white rounded-xl shadow-2xl border border-mw-gray-100 overflow-hidden" style={{ width: '280px' }}>
+                    <div className="bg-white rounded-2xl shadow-2xl border border-mw-gray-100 overflow-hidden" style={{ width: '280px' }}>
                       {/* Building Image */}
                       <div className="relative h-32 bg-gradient-to-br from-mw-blue-500 to-mw-blue-600 overflow-hidden">
                         <div className="w-full h-full relative overflow-hidden">
@@ -391,7 +391,7 @@ export default function OfficeMap({ offices: cmsOffices }: OfficeMapProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.6 + index * 0.1 }}
-              className="text-center bg-white rounded-xl p-6 border border-mw-gray-100"
+              className="text-center bg-white rounded-2xl p-6 border border-mw-gray-100"
             >
               <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">{stat.number}</div>
               <div className="text-sm text-mw-gray-600 font-medium">{stat.label}</div>
@@ -414,14 +414,14 @@ export default function OfficeMap({ offices: cmsOffices }: OfficeMapProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.8 + index * 0.1 }}
-              className={`bg-white rounded-xl p-6 border transition-all hover:scale-105 ${
+              className={`bg-white rounded-2xl p-6 border transition-all hover:scale-105 ${
                 office.type.includes('HQ') || office.type.includes('Headquarters')
                   ? 'border-mw-blue-200 bg-gradient-to-br from-mw-blue-25 to-white'
                   : 'border-mw-gray-100'
               }`}
             >
               {(office.type.includes('HQ') || office.type.includes('Headquarters')) && (
-                <div className="inline-flex items-center gap-1 px-2 py-1 bg-mw-blue-100 text-mw-blue-600 text-xs font-medium rounded-full mb-3">
+                <div className="inline-flex items-center gap-1 px-2 py-1 bg-mw-blue-100 text-mw-blue-700 text-xs font-medium rounded-full mb-3">
                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                   </svg>

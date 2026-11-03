@@ -30,7 +30,7 @@ function Trend({ data }: { data: Dashboard }) {
           <div key={t.label} className="flex-1 flex flex-col justify-end h-full group relative">
             <div className="w-full bg-slate-200 rounded-t" style={{ height: `${((t.siteSessions - t.locationSessions) / max) * 100}%` }} />
             <div className="w-full bg-[#1E76BB]" style={{ height: `${(t.locationSessions / max) * 100}%` }} />
-            <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block whitespace-nowrap rounded bg-gray-900 px-2 py-1 text-[11px] text-white z-10">
+            <div className="absolute bottom-full mb-1 left-1/2 -translate-x-1/2 hidden group-hover:block whitespace-nowrap rounded-lg bg-gray-900 px-2 py-1 text-xs text-white z-10">
               {label(t.label)}: {nf(t.siteSessions)} site · {nf(t.locationSessions)} locations · {t.locationLeads} leads
             </div>
           </div>
@@ -38,12 +38,12 @@ function Trend({ data }: { data: Dashboard }) {
       </div>
       <div className="flex gap-1 mt-1">
         {data.trend.map((t, i) => (
-          <div key={t.label} className="flex-1 text-center text-[10px] text-gray-400 truncate">{i % showEvery === 0 ? label(t.label) : ''}</div>
+          <div key={t.label} className="flex-1 text-center text-xs text-gray-400 truncate">{i % showEvery === 0 ? label(t.label) : ''}</div>
         ))}
       </div>
       <div className="mt-3 flex flex-wrap gap-4 text-xs text-gray-600">
-        <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-[#1E76BB]" />Location pages</span>
-        <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-sm bg-slate-200" />Rest of site</span>
+        <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-lg bg-[#1E76BB]" />Location pages</span>
+        <span className="inline-flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-lg bg-slate-200" />Rest of site</span>
         <span className="text-gray-400">Raw sessions incl. bots · hover a bar for leads</span>
       </div>
     </div>
@@ -68,7 +68,7 @@ function Scorecard({ pages }: { pages: PageRow[] }) {
         ))}
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search page" className="ml-auto rounded-lg border border-gray-200 px-3 py-1.5 text-sm w-44" />
       </div>
-      <div className="overflow-x-auto rounded-xl border border-gray-200">
+      <div className="overflow-x-auto rounded-2xl border border-gray-200">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
             <tr>
@@ -192,7 +192,7 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
         </Details>
 
         <Details title="Search opportunities (Google Search Console)" summary="Searches where a page ranks #4–20 (striking distance) or top 5 with few clicks (click gap)">
-          <div className="overflow-x-auto rounded-xl border border-gray-200">
+          <div className="overflow-x-auto rounded-2xl border border-gray-200">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
                 <tr><th scope="col" className={TH}>Search</th><th scope="col" className={TH}>Page</th><th scope="col" className={THR}>Impr.</th><th scope="col" className={THR}>Clicks</th><th scope="col" className={THR}>Pos.</th><th scope="col" className={TH}>Type</th></tr>
@@ -205,7 +205,7 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
                     <td className="px-3 py-2 text-right">{nf(o.impressions)}</td>
                     <td className="px-3 py-2 text-right">{nf(o.clicks)}</td>
                     <td className="px-3 py-2 text-right font-semibold">{o.position.toFixed(1)}</td>
-                    <td className="px-3 py-2"><span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${o.type === 'Click gap' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}`}>{o.type}</span></td>
+                    <td className="px-3 py-2"><span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${o.type === 'Click gap' ? 'bg-amber-100 text-amber-800' : 'bg-sky-100 text-sky-800'}`}>{o.type}</span></td>
                   </tr>
                 ))}
               </tbody>
@@ -214,7 +214,7 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
         </Details>
 
         <Details title="Semrush keywords" summary={data.semrushDate ? `Top keywords our location pages rank for · snapshot ${fmtDate(data.semrushDate)}` : 'No Semrush snapshot yet'}>
-          <div className="overflow-x-auto rounded-xl border border-gray-200">
+          <div className="overflow-x-auto rounded-2xl border border-gray-200">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
                 <tr><th scope="col" className={TH}>Keyword</th><th scope="col" className={TH}>Market</th><th scope="col" className={THR}>Position</th><th scope="col" className={THR}>Searches/mo</th><th scope="col" className={THR}>Difficulty</th><th scope="col" className={TH}>Page</th></tr>
@@ -238,7 +238,7 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
         <Details title="Where leads come from" summary="Website leads by market and page, how many came from paid ads, and each Zoho form's GA4 lead event">
           <p className="text-sm text-gray-500 mb-3">All website leads in this period: one card per market (country page and its city pages), plus the site-wide contact and demo forms. &ldquo;Paid&rdquo; = the visit came from paid ads (Google Ads search or display).</p>
           <div className="mb-4"><LeadCards sources={data.leadSources} /></div>
-          <div className="overflow-x-auto rounded-xl border border-gray-200">
+          <div className="overflow-x-auto rounded-2xl border border-gray-200">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
                 <tr><th scope="col" className={TH}>Form event</th><th scope="col" className={TH}>Credited to</th><th scope="col" className={TH}>Matched by</th><th scope="col" className={THR}>Leads</th><th scope="col" className={THR}>Paid</th></tr>

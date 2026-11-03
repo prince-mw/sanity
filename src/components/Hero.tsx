@@ -408,7 +408,7 @@ export default function Hero() {
   }, []);
 
   return (
-    <section className="relative flex items-center justify-center overflow-hidden pt-20" style={{ minHeight: '90vh' }}>
+    <section className="relative flex items-center justify-center overflow-hidden mw-hero-top" style={{ minHeight: '90vh' }}>
       {/* Video Background with fallback gradient */}
       {!videoError ? (
         <video
@@ -435,7 +435,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-black/40" style={{ zIndex: 4 }} />
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center" style={{ zIndex: 10 }}>
+      <div className="relative text-center mw-container" style={{ zIndex: 10 }}>
         {/* Brand Name - Moving Walls */}
         <motion.span 
           initial={{ opacity: 0, y: -20 }}

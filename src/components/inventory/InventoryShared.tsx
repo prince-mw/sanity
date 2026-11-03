@@ -24,7 +24,7 @@ export function SampleBanner({ className = 'mb-5' }: { className?: string }) {
 }
 
 export function SampleTag({ className = '' }: { className?: string }) {
-  return <span className={`inline-block rounded bg-amber-400 px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-amber-950 ${className}`}>Sample</span>
+  return <span className={`inline-block rounded-lg bg-amber-400 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-amber-950 ${className}`}>Sample</span>
 }
 
 function Photo({ site, className = '', sizes = '100vw', priority = false }: { site: PublicSite; className?: string; sizes?: string; priority?: boolean }) {

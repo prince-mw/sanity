@@ -31,9 +31,9 @@ export function InventorySiteClient({ site, nearby, pagedIds }: { site: PublicSi
   return (
     <div className="bg-white text-gray-900">
 
-      <section className={`relative overflow-hidden ${SG_NAVY} text-white pt-24 pb-12 lg:pt-28 lg:pb-16`}>
+      <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           {site.sample && <SampleBanner />}
           <nav aria-label="Breadcrumb" className="mb-5 text-sm text-blue-100/80">
             <Link href="/locations" className="hover:text-white">Locations</Link> ›{' '}
@@ -56,7 +56,7 @@ export function InventorySiteClient({ site, nearby, pagedIds }: { site: PublicSi
               </div>
             </div>
             <div className="lg:col-span-6">
-              <div className="relative aspect-[16/10] overflow-hidden rounded-3xl ring-1 ring-white/15 shadow-2xl bg-white/10">
+              <div className="relative aspect-[16/10] overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-2xl bg-white/10">
                 {site.photos[photo] && <Image src={site.photos[photo]} alt={`${site.name} — ${format} in ${site.areaName}, ${site.cityName}`} fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />}
               </div>
               {site.photos.length > 1 && (
@@ -73,8 +73,8 @@ export function InventorySiteClient({ site, nearby, pagedIds }: { site: PublicSi
         </div>
       </section>
 
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-8">
+      <section className="bg-white mw-section">
+        <div className="grid lg:grid-cols-12 gap-8 mw-container">
           <div className="lg:col-span-7">
             <SgSectionHeading title="Site details" />
             <dl className="divide-y divide-gray-200 rounded-2xl border border-gray-200">
@@ -107,8 +107,8 @@ export function InventorySiteClient({ site, nearby, pagedIds }: { site: PublicSi
       </section>
 
       {site.lat != null && (
-        <section className="py-12 lg:py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-gray-50 mw-section">
+          <div className="mw-container">
             <SgSectionHeading title="Location" intro={site.address ?? undefined} />
             <SitesMap sites={[site]} title={`Map showing ${site.name}`} />
           </div>
@@ -116,8 +116,8 @@ export function InventorySiteClient({ site, nearby, pagedIds }: { site: PublicSi
       )}
 
       {nearby.length > 0 && (
-        <section className="py-12 lg:py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <SgSectionHeading title={`More sites in ${site.areaName}`} />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {nearby.map(s => <SiteCard key={s.id} site={s} linked={paged.has(s.id)} />)}

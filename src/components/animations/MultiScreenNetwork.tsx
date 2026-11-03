@@ -185,10 +185,10 @@ export default function MultiScreenNetwork() {
             />
             
             {/* Main screen */}
-            <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-sm p-0.5 shadow-2xl border border-gray-700">
+            <div className="relative bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg p-0.5 shadow-2xl border border-gray-700">
               {/* Screen content - synced animation */}
               <motion.div
-                className="relative aspect-[16/10] bg-gradient-to-br from-blue-600 via-cyan-500 to-blue-700 rounded-sm overflow-hidden"
+                className="relative aspect-[16/10] bg-gradient-to-br from-blue-600 via-cyan-500 to-blue-700 rounded-lg overflow-hidden"
                 animate={{
                   background: [
                     'linear-gradient(135deg, #2563eb 0%, #06b6d4 50%, #1d4ed8 100%)',
@@ -291,7 +291,7 @@ export default function MultiScreenNetwork() {
               animate={{ opacity: [1, 0.5, 1] }}
               transition={{ duration: 1, repeat: Infinity }}
             />
-            <span className="text-[10px] text-cyan-300 font-semibold tracking-wider">{t('homeVisuals.network.controlCenter')}</span>
+            <span className="text-xs text-cyan-300 font-semibold tracking-wider">{t('homeVisuals.network.controlCenter')}</span>
           </div>
 
           {/* Mini dashboard */}
@@ -299,13 +299,13 @@ export default function MultiScreenNetwork() {
             {['NYC', 'LON', 'SG'].map((city, i) => (
               <motion.div
                 key={city}
-                className="bg-slate-700/50 rounded p-1 text-center"
+                className="bg-slate-700/50 rounded-lg p-1 text-center"
                 animate={{ backgroundColor: ['rgba(51, 65, 85, 0.5)', 'rgba(6, 182, 212, 0.2)', 'rgba(51, 65, 85, 0.5)'] }}
                 transition={{ duration: 2, repeat: Infinity, delay: i * 0.5 }}
               >
                 <div className="text-[8px] text-slate-400">{city}</div>
                 <motion.div
-                  className="text-[10px] text-cyan-400 font-bold"
+                  className="text-xs text-cyan-400 font-bold"
                   animate={{ opacity: [0.7, 1, 0.7] }}
                   transition={{ duration: 1, repeat: Infinity }}
                 >
@@ -327,7 +327,7 @@ export default function MultiScreenNetwork() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </motion.svg>
-            <span className="text-[9px] text-green-400">{t('homeVisuals.network.allSynced')}</span>
+            <span className="text-xs text-green-400">{t('homeVisuals.network.allSynced')}</span>
           </div>
         </div>
       </motion.div>

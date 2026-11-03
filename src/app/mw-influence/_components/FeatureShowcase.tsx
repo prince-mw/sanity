@@ -15,23 +15,23 @@ export const FeatureShowcase: React.FC = () => {
           <div className="text-sm font-semibold tracking-wider uppercase text-[#22d3ee]">
             Platform Capabilities
           </div>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white">
+          <h2 className="font-bold tracking-tight text-white text-3xl lg:text-4xl">
             More Than Allocation,<br className="hidden sm:inline" /> MW Influence Helps You Run Your Network Smarter
           </h2>
         </div>
       </div>
 
       {/* FEATURE 1: Take Manual Work Out of Campaign Operations */}
-      <section id="campaign-operations" className="py-14 sm:py-16 lg:py-20 bg-[#fbf8ff] border-b border-[#e3e1e8]">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="campaign-operations" className="bg-[#fbf8ff] border-b border-[#e3e1e8] mw-section">
+        <div className="mw-container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 text-[#14235d] text-xs font-bold uppercase tracking-wider border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#062068] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>01</span>
                 <span>Automated Workflow</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] leading-tight tracking-tight">
                 Take Manual Work Out of Campaign Operations
               </h3>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -66,8 +66,8 @@ export const FeatureShowcase: React.FC = () => {
       </section>
 
       {/* FEATURE 2: Keep Creative Operations Moving */}
-      <section id="creative-operations" className="py-14 sm:py-16 lg:py-20 bg-white border-b border-[#e3e1e8]">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="creative-operations" className="bg-white border-b border-[#e3e1e8] mw-section">
+        <div className="mw-container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             <div className="lg:col-span-7">
@@ -78,11 +78,11 @@ export const FeatureShowcase: React.FC = () => {
             </div>
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 text-[#14235d] text-xs font-bold uppercase tracking-wider border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#062068] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>02</span>
                 <span>Asset Management</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] leading-tight tracking-tight">
                 Keep Creative Operations Moving
               </h3>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -110,16 +110,16 @@ export const FeatureShowcase: React.FC = () => {
       </section>
 
       {/* FEATURE 3: Deliver Every Campaign With Confidence */}
-      <section id="proof-of-play" className="py-14 sm:py-16 lg:py-20 bg-[#fbf8ff] border-b border-[#e3e1e8]">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="proof-of-play" className="bg-[#fbf8ff] border-b border-[#e3e1e8] mw-section">
+        <div className="mw-container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 text-[#14235d] text-xs font-bold uppercase tracking-wider border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#062068] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>03</span>
                 <span>Verification &amp; Telemetry</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] leading-tight tracking-tight">
                 Deliver Every Campaign With Confidence
               </h3>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -154,20 +154,20 @@ export const FeatureShowcase: React.FC = () => {
       </section>
 
       {/* FEATURE 4: See Where Your Network Can Perform Better */}
-      <section id="network-performance" className="py-14 sm:py-16 lg:py-24 bg-white border-b border-[#e3e1e8] relative overflow-hidden">
+      <section id="network-performance" className="bg-white border-b border-[#e3e1e8] relative overflow-hidden mw-section-lg">
 
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="relative z-10 mw-container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             <div className="lg:col-span-7">
               <div className="bg-[#b9cfe5] rounded-2xl p-[30px] shadow-xl">
-              <div className="bg-white rounded-xl p-5 sm:p-7 border border-gray-200">
+              <div className="bg-white rounded-2xl p-5 sm:p-7 border border-gray-200">
 
                 <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-5">
                   <span className="text-xs font-bold uppercase tracking-wider text-gray-500">
                     Network Performance
                   </span>
-                  <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded font-bold flex items-center gap-1">
+                  <span className="text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 rounded-lg font-bold flex items-center gap-1">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                     Nodes: 120 | Status: Stable
                   </span>
@@ -175,8 +175,8 @@ export const FeatureShowcase: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4 mb-5">
 
-                  <div className="sm:col-span-7 bg-gray-50 rounded-xl p-3.5 border border-gray-200 relative overflow-hidden flex flex-col justify-between">
-                    <div className="text-[10px] font-semibold text-gray-500 mb-2">Global Screen Mesh Interconnect</div>
+                  <div className="sm:col-span-7 bg-gray-50 rounded-2xl p-3.5 border border-gray-200 relative overflow-hidden flex flex-col justify-between">
+                    <div className="text-xs font-semibold text-gray-500 mb-2">Global Screen Mesh Interconnect</div>
 
                     <div className="relative h-32 w-full bg-[#0b162c] rounded-lg p-2 flex items-center justify-center overflow-hidden">
                       <svg className="w-full h-full" viewBox="0 0 200 100">
@@ -195,31 +195,31 @@ export const FeatureShowcase: React.FC = () => {
                         <circle cx="60" cy="70" r="4" fill="#22d3ee" />
                         <circle cx="100" cy="80" r="5" fill="#34d399" />
                       </svg>
-                      <div className="absolute bottom-1 right-2 text-[9px] font-sans text-gray-400">
+                      <div className="absolute bottom-1 right-2 text-xs font-sans text-gray-400">
                         12 Regions Active
                       </div>
                     </div>
                   </div>
 
-                  <div className="sm:col-span-5 bg-gray-50 rounded-xl p-3.5 border border-gray-200 flex flex-col justify-between">
-                    <div className="text-[10px] font-semibold text-gray-500 mb-1">Revenue Opportunity</div>
+                  <div className="sm:col-span-5 bg-gray-50 rounded-2xl p-3.5 border border-gray-200 flex flex-col justify-between">
+                    <div className="text-xs font-semibold text-gray-500 mb-1">Revenue Opportunity</div>
 
                     <div className="h-28 flex items-end justify-between gap-2 pt-2 px-1">
                       <div className="flex-1 flex flex-col items-center gap-1">
                         <div className="w-full bg-blue-400 rounded-t h-12" />
-                        <span className="text-[9px] text-gray-500 font-bold">Q1</span>
+                        <span className="text-xs text-gray-500 font-bold">Q1</span>
                       </div>
                       <div className="flex-1 flex flex-col items-center gap-1">
                         <div className="w-full bg-blue-500 rounded-t h-16" />
-                        <span className="text-[9px] text-gray-500 font-bold">Q2</span>
+                        <span className="text-xs text-gray-500 font-bold">Q2</span>
                       </div>
                       <div className="flex-1 flex flex-col items-center gap-1">
                         <div className="w-full bg-blue-600 rounded-t h-20" />
-                        <span className="text-[9px] text-gray-500 font-bold">Q3</span>
+                        <span className="text-xs text-gray-500 font-bold">Q3</span>
                       </div>
                       <div className="flex-1 flex flex-col items-center gap-1">
                         <div className="w-full bg-gradient-to-t from-[#22d3ee] to-[#34d399] rounded-t h-24 shadow-lg shadow-[#22d3ee]/30" />
-                        <span className="text-[9px] text-[#0f9b76] font-bold">Q4</span>
+                        <span className="text-xs text-[#0f9b76] font-bold">Q4</span>
                       </div>
                     </div>
                   </div>
@@ -228,8 +228,8 @@ export const FeatureShowcase: React.FC = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-4">
 
-                  <div className="sm:col-span-5 bg-gray-50 rounded-xl p-3.5 border border-gray-200 text-center flex flex-col items-center justify-center">
-                    <div className="text-[10px] font-semibold text-gray-500 uppercase mb-2">Inventory Utilization %</div>
+                  <div className="sm:col-span-5 bg-gray-50 rounded-2xl p-3.5 border border-gray-200 text-center flex flex-col items-center justify-center">
+                    <div className="text-xs font-semibold text-gray-500 uppercase mb-2">Inventory Utilization %</div>
 
                     <div className="relative w-24 h-24 flex items-center justify-center">
                       <svg className="w-full h-full -rotate-90" viewBox="0 0 36 36">
@@ -250,16 +250,16 @@ export const FeatureShowcase: React.FC = () => {
                           d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                         />
                       </svg>
-                      <div className="absolute text-xl font-bold text-[#14235d] tracking-tight">
+                      <div className="absolute text-xl font-bold text-[#062068] tracking-tight">
                         78%
                       </div>
                     </div>
                   </div>
 
-                  <div className="sm:col-span-7 bg-gray-50 rounded-xl p-3.5 border border-gray-200 flex flex-col justify-center space-y-2">
-                    <div className="text-[10px] font-semibold text-gray-500 uppercase mb-1">Campaign Delivery</div>
+                  <div className="sm:col-span-7 bg-gray-50 rounded-2xl p-3.5 border border-gray-200 flex flex-col justify-center space-y-2">
+                    <div className="text-xs font-semibold text-gray-500 uppercase mb-1">Campaign Delivery</div>
 
-                    <div className="flex items-center justify-between text-[11px] bg-white p-2 rounded border border-gray-200">
+                    <div className="flex items-center justify-between text-xs bg-white p-2 rounded-lg border border-gray-200">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-emerald-400" />
                         <span className="text-gray-900 font-medium">Campaign A</span>
@@ -267,7 +267,7 @@ export const FeatureShowcase: React.FC = () => {
                       <span className="text-emerald-600 font-bold">95% (On Track)</span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] bg-white p-2 rounded border border-gray-200">
+                    <div className="flex items-center justify-between text-xs bg-white p-2 rounded-lg border border-gray-200">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-amber-400" />
                         <span className="text-gray-900 font-medium">Campaign B</span>
@@ -275,7 +275,7 @@ export const FeatureShowcase: React.FC = () => {
                       <span className="text-amber-600 font-bold">In Progress</span>
                     </div>
 
-                    <div className="flex items-center justify-between text-[11px] bg-white p-2 rounded border border-gray-200">
+                    <div className="flex items-center justify-between text-xs bg-white p-2 rounded-lg border border-gray-200">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-rose-400" />
                         <span className="text-gray-900 font-medium">Campaign C</span>
@@ -291,11 +291,11 @@ export const FeatureShowcase: React.FC = () => {
             </div>
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-blue-50 text-[#14235d] text-xs font-bold uppercase tracking-wider border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#062068] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>04</span>
                 <span>Executive Analytics</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] leading-tight tracking-tight">
                 See Where Your Network Can Perform Better
               </h3>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">

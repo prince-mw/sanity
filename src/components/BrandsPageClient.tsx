@@ -201,7 +201,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section with 3D Globe */}
-      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-700 text-white py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-700 text-white overflow-hidden mw-section-lg">
         <div className="absolute inset-0 bg-black/10"></div>
         
         {/* Animated Background Stars - Fixed positions to avoid hydration mismatch */}
@@ -238,7 +238,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
           ))}
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <motion.div
@@ -395,15 +395,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       </section>
 
       {/* Platform Section */}
-      <section className="py-24 bg-gradient-to-b from-white via-mw-gray-50/50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-b from-white via-mw-gray-50/50 to-white mw-section-lg">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-5xl font-bold text-mw-gray-900 mb-6">
+            <h2 className="font-bold text-mw-gray-900 mb-6 text-3xl lg:text-4xl">
               Plan. Activate. Measure.<br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">All in One Place.</span>
             </h2>
@@ -415,7 +415,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
 
           {/* Top Tabs - Campaigns, Real Time, Measurement */}
           <div className="flex justify-center mb-16 px-4">
-            <div className="inline-flex flex-wrap justify-center border border-mw-gray-200 p-1.5 rounded-xl gap-1">
+            <div className="inline-flex flex-wrap justify-center border border-mw-gray-200 p-1.5 rounded-2xl gap-1">
               {[
                 { id: 'campaigns', name: 'Campaign Creation', icon: (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -583,7 +583,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
             {/* Right - Image */}
             <div className="order-1 lg:order-2 relative">
               <div className="bg-gradient-to-br from-mw-gray-100 to-mw-gray-200 rounded-2xl p-4">
-                <div className="rounded-xl overflow-hidden">
+                <div className="rounded-2xl overflow-hidden">
                   {(() => {
                     const activeFeature = content.platformFeatures.find(f => f.id === activePlatform);
                     if (activeFeature && 'image' in activeFeature && activeFeature.image) {
@@ -622,8 +622,8 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       </section>
 
       {/* Trust Bar */}
-      <section className="py-12 bg-gray-50 border-b overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 border-b overflow-hidden mw-section">
+        <div className="mw-container">
           <p className="text-center text-gray-600 mb-8 font-semibold">{trustBarTitle}</p>
         </div>
         <div className="relative">
@@ -677,15 +677,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       </section>
 
       {/* Problem/Solution Journey Section */}
-      <section className="py-20 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-b from-white to-gray-50 overflow-hidden mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               {journeyTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -985,15 +985,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       </section>
 
       {/* Case Studies Section */}
-      <section className="py-20 bg-white overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white overflow-hidden mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               {caseStudySectionTitle}
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -1160,15 +1160,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       </section>
 
       {/* Platform Integration Section */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               Complete MW Platform Suite
             </h2>
             <p className="text-xl text-mw-gray-600">
@@ -1189,7 +1189,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2" />
               <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2" />
               <div className="relative z-10">
-                <div className="w-14 h-14 rounded-xl bg-white/20 backdrop-blur-sm mb-6 flex items-center justify-center">
+                <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm mb-6 flex items-center justify-center">
                   <svg className="w-7 h-7 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
                   </svg>
@@ -1214,7 +1214,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               whileHover={{ y: -6 }}
               className="bg-white rounded-2xl p-6 shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 border border-mw-blue-100 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 21v-7.5a.75.75 0 01.75-.75h3a.75.75 0 01.75.75V21m-4.5 0H2.36m11.14 0H18m0 0h3.64m-1.39 0V9.349m-16.5 11.65V9.35m0 0a3.001 3.001 0 003.75-.615A2.993 2.993 0 009.75 9.75c.896 0 1.7-.393 2.25-1.016a2.993 2.993 0 002.25 1.016c.896 0 1.7-.393 2.25-1.016A3.001 3.001 0 0021 9.349m-18 0a2.999 2.999 0 01.79-1.89l1.72-1.72A.75.75 0 016.04 5.5h11.92a.75.75 0 01.53.22l1.72 1.72a3 3 0 01.79 1.89" />
                 </svg>
@@ -1238,7 +1238,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               whileHover={{ y: -6 }}
               className="bg-white rounded-2xl p-6 shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 border border-mw-blue-100 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-rose-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-orange-500 to-rose-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
                 </svg>
@@ -1262,7 +1262,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               whileHover={{ y: -6 }}
               className="bg-white rounded-2xl p-6 shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 border border-mw-blue-100 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-500 to-yellow-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-yellow-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                 </svg>
@@ -1285,7 +1285,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               whileHover={{ y: -6 }}
               className="bg-white rounded-2xl p-6 shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 border border-mw-blue-100 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-500 to-violet-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
                 </svg>
@@ -1308,7 +1308,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               whileHover={{ y: -6 }}
               className="bg-white rounded-2xl p-6 shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 border border-mw-blue-100 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-cyan-500 to-blue-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
                 </svg>
@@ -1331,7 +1331,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               whileHover={{ y: -6 }}
               className="bg-white rounded-2xl p-6 shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 border border-mw-blue-100 group"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-mw-blue-500 to-purple-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-mw-blue-500 to-purple-600 mb-5 flex items-center justify-center group-hover:scale-110 transition-transform">
                 <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
                 </svg>
@@ -1353,7 +1353,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       <TestimonialSectionClient testimonials={props.testimonials} />
 
       {/* FAQ Section */}
-      <section className="py-20 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -1361,7 +1361,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t('ui.solutions.faqTitle')}
             </h2>
             <p className="text-xl text-mw-gray-600">

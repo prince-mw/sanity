@@ -25,7 +25,7 @@ const COLUMNS: { key: keyof CampaignTotals; label: string; fmt: (n: number) => s
 
 function CampaignTable({ rows }: { rows: CampaignRow[] }) {
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200">
+    <div className="overflow-x-auto rounded-2xl border border-gray-200">
       <table className="w-full text-sm">
         <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
           <tr>
@@ -79,7 +79,7 @@ export default function CampaignsTab({ data, statuses }: { data: CampaignDashboa
   return (
     <>
       {c.campaigns === 0 && (
-        <p className="mb-6 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
+        <p className="mb-6 rounded-2xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
           No campaigns were sent in this period. The Zoho report covers campaigns sent from {fmtDate(data.coverage.first)} to {fmtDate(data.coverage.last)}; try a longer date range.
         </p>
       )}
@@ -176,7 +176,7 @@ export default function CampaignsTab({ data, statuses }: { data: CampaignDashboa
         {data.emailTraffic.length === 0 ? (
           <p className="text-sm text-gray-500">No email traffic recorded in this period.</p>
         ) : (
-          <div className="overflow-x-auto rounded-xl border border-gray-200">
+          <div className="overflow-x-auto rounded-2xl border border-gray-200">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
                 <tr><th scope="col" className={TH}>utm_campaign</th><th scope="col" className={TH}>Source / medium</th><th scope="col" className={THR}>Visitors</th><th scope="col" className={THR}>Leads</th><th scope="col" className={TH}>Matched campaign</th></tr>

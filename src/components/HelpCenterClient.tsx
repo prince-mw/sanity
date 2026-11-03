@@ -88,8 +88,8 @@ export default function HelpCenterClient({ faqs }: HelpCenterClientProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function HelpCenterClient({ faqs }: HelpCenterClientProps) {
                   placeholder="Search for answers..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full px-6 py-4 pl-14 border border-mw-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent shadow-mw-lg"
+                  className="w-full px-6 py-4 pl-14 border border-mw-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-transparent shadow-mw-lg"
                 />
                 <svg className="absolute left-5 top-1/2 transform -translate-y-1/2 w-5 h-5 text-mw-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -124,8 +124,8 @@ export default function HelpCenterClient({ faqs }: HelpCenterClientProps) {
       </section>
 
       {/* Quick Links */}
-      <section className="py-12 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <div className="grid md:grid-cols-4 gap-6">
             {quickLinks.map((link, index) => (
               <motion.a
@@ -134,7 +134,7 @@ export default function HelpCenterClient({ faqs }: HelpCenterClientProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="flex flex-col items-center text-center p-6 bg-mw-gray-50 rounded-xl hover:bg-mw-blue-50 hover:shadow-mw-md transition-all duration-300 group"
+                className="flex flex-col items-center text-center p-6 bg-mw-gray-50 rounded-2xl hover:bg-mw-blue-50 hover:shadow-mw-md transition-all duration-300 group"
               >
                 <div className="text-mw-blue-600 mb-3">{link.icon}</div>
                 <h3 className="text-lg font-semibold text-mw-gray-900 group-hover:text-mw-blue-600 transition-colors">
@@ -147,8 +147,8 @@ export default function HelpCenterClient({ faqs }: HelpCenterClientProps) {
       </section>
 
       {/* Category Filter */}
-      <section className="py-8 bg-white border-y border-mw-gray-200 sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white border-y border-mw-gray-200 sticky top-20 z-40 mw-section-sm">
+        <div className="mw-container">
           <div className="flex items-center gap-3 overflow-x-auto pb-2">
             {categories.map((category) => (
               <button
@@ -168,10 +168,10 @@ export default function HelpCenterClient({ faqs }: HelpCenterClientProps) {
       </section>
 
       {/* FAQs */}
-      <section className="py-16 bg-mw-gray-50">
+      <section className="bg-mw-gray-50 mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">
+            <h2 className="font-bold text-mw-gray-900 mb-2 text-3xl lg:text-4xl">
               {selectedCategory === "All" ? "Frequently Asked Questions" : `${selectedCategory} Questions`}
             </h2>
             <p className="text-lg text-mw-gray-600">{filteredFAQs.length} articles found</p>
@@ -185,11 +185,11 @@ export default function HelpCenterClient({ faqs }: HelpCenterClientProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.05 }}
-                className="bg-white rounded-xl p-6 shadow-mw-sm hover:shadow-mw-md transition-all duration-300 group"
+                className="bg-white rounded-2xl p-6 shadow-mw-sm hover:shadow-mw-md transition-all duration-300 group"
               >
                 <summary className="flex items-start justify-between cursor-pointer list-none">
                   <div className="flex-1">
-                    <span className="inline-block px-2 py-1 bg-mw-blue-100 text-mw-blue-600 text-xs font-medium rounded mb-2">
+                    <span className="inline-block px-2 py-1 bg-mw-blue-100 text-mw-blue-700 text-xs font-medium rounded-lg mb-2">
                       {faq.category}
                     </span>
                     <h3 className="text-lg font-semibold text-mw-gray-900 group-hover:text-mw-blue-600 transition-colors">
@@ -219,15 +219,15 @@ export default function HelpCenterClient({ faqs }: HelpCenterClientProps) {
       </section>
 
       {/* Contact Support CTA */}
-      <section className="py-20 bg-gradient-to-br from-mw-blue-600 to-mw-blue-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="bg-gradient-to-br from-mw-blue-600 to-mw-blue-800 mw-section">
+        <div className="text-center mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+            <h2 className="font-bold text-white mb-6 text-3xl lg:text-4xl">
               Still Need Help?
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">

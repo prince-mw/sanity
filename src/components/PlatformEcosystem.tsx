@@ -15,7 +15,7 @@ const DataSourceCard = ({ icon, label, index, onHoverStart, onHoverEnd }: { icon
     onMouseEnter={onHoverStart}
     onMouseLeave={onHoverEnd}
   >
-    <div className="flex items-center gap-2 bg-white rounded-md px-3 py-1.5 shadow-sm border border-gray-200 hover:border-cyan-400 hover:shadow-md transition-all cursor-default w-full">
+    <div className="flex items-center gap-2 bg-white rounded-lg px-3 py-1.5 shadow-sm border border-gray-200 hover:border-cyan-400 hover:shadow-md transition-all cursor-default w-full">
       <div className="text-cyan-500 text-sm">{icon}</div>
       <span className="text-xs font-medium text-gray-700 flex-1">{label}</span>
     </div>
@@ -33,7 +33,7 @@ const OutputCard = ({ icon, label, index, onHoverStart, onHoverEnd }: { icon: Re
     onMouseEnter={onHoverStart}
     onMouseLeave={onHoverEnd}
   >
-    <div className="flex items-center gap-2 bg-white rounded-md px-3 py-1.5 shadow-sm border border-gray-200 hover:border-violet-400 hover:shadow-md transition-all cursor-default w-full">
+    <div className="flex items-center gap-2 bg-white rounded-lg px-3 py-1.5 shadow-sm border border-gray-200 hover:border-violet-400 hover:shadow-md transition-all cursor-default w-full">
       <div className="text-sm" style={{ color: '#8B5CF6' }}>{icon}</div>
       <span className="text-xs font-medium text-gray-700 flex-1">{label}</span>
     </div>
@@ -49,7 +49,7 @@ const AIStep = ({ icon, label, index }: { icon: React.ReactNode; label: string; 
     transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
     className="flex flex-col items-center gap-2"
   >
-    <div className="w-14 h-14 rounded-xl bg-white border-2 border-blue-200 flex items-center justify-center text-blue-600 shadow-sm">
+    <div className="w-14 h-14 rounded-2xl bg-white border-2 border-blue-200 flex items-center justify-center text-blue-600 shadow-sm">
       {icon}
     </div>
     <span className="text-xs font-medium text-gray-600">{label}</span>
@@ -69,7 +69,7 @@ const ProductCard = ({ icon, label, href, index }: { icon: React.ReactNode; labe
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ type: "spring", stiffness: 100, damping: 12, delay: 1 + index * 0.08 }}
-      className="relative flex flex-col items-center gap-2 bg-white border border-dashed border-blue-400 rounded-md px-4 py-4 text-gray-800 hover:border-blue-600 hover:bg-blue-50 transition-all hover:scale-105 cursor-pointer overflow-hidden"
+      className="relative flex flex-col items-center gap-2 bg-white border border-dashed border-blue-400 rounded-lg px-4 py-4 text-gray-800 hover:border-blue-600 hover:bg-blue-50 transition-all hover:scale-105 cursor-pointer overflow-hidden"
     >
       {/* Shimmer flash animation */}
       <motion.div
@@ -88,7 +88,7 @@ const ProductCard = ({ icon, label, href, index }: { icon: React.ReactNode; labe
           width: "50%",
         }}
       />
-      <div className="w-10 h-10 rounded-md bg-blue-100 text-blue-600 flex items-center justify-center relative z-10">
+      <div className="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center relative z-10">
         {icon}
       </div>
       <div className="text-center relative z-10">
@@ -155,8 +155,8 @@ export default function PlatformEcosystem() {
   ];
 
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-blue-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-gradient-to-br from-gray-50 via-white to-blue-50 mw-section">
+      <div className="mw-container">
         {/* Header — Editorial Style */}
         <div className="text-center mb-16">
           {/* Badge & Title */}
@@ -169,7 +169,7 @@ export default function PlatformEcosystem() {
             <span className="inline-block text-mw-blue-600 text-sm font-medium uppercase tracking-wider mb-4">
               {t('landingPage.platformEcosystem.badge')}
             </span>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
+            <h2 className="font-bold text-gray-900 mb-6 text-3xl lg:text-4xl">
               {t('landingPage.platformEcosystem.title')}
             </h2>
           </motion.div>
@@ -638,8 +638,8 @@ export default function PlatformEcosystem() {
                   >
                     <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 via-blue-600 to-indigo-700 flex items-center justify-center shadow-2xl border-4 border-white/90 ring-2 ring-blue-400/20">
                       <div className="text-center">
-                        <img src="/assets/logo/MW-logo-web.svg" alt="MW" className="w-10 h-10 mx-auto brightness-0 invert" />
-                        <span className="text-[10px] text-white/90 font-bold mt-0.5 block tracking-wider">{t('homeVisuals.ecosystem.engine')}</span>
+                        <img src="/assets/logo/MW-logo-web.svg" alt="MW" className="w-10 h-10 mx-auto object-contain brightness-0 invert" />
+                        <span className="text-xs text-white/90 font-bold mt-0.5 block tracking-wider">{t('homeVisuals.ecosystem.engine')}</span>
                       </div>
                     </div>
                   </motion.div>
@@ -656,7 +656,7 @@ export default function PlatformEcosystem() {
               >
                 <div className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg">
                   <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
-                    <span className="text-white text-[10px] font-bold">AI</span>
+                    <span className="text-white text-xs font-bold">AI</span>
                   </div>
                   <span className="text-sm font-semibold text-gray-700">MW AI</span>
                   <span className="text-xs text-gray-500">{t('homeVisuals.ecosystem.audienceIntelligence')}</span>
@@ -718,7 +718,7 @@ export default function PlatformEcosystem() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: 1.3 }}
-            className="mt-8 border border-dashed border-gray-300 rounded-md p-6 bg-gray-50"
+            className="mt-8 border border-dashed border-gray-300 rounded-lg p-6 bg-gray-50"
           >
             <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-4">
               {products.map((product, index) => (

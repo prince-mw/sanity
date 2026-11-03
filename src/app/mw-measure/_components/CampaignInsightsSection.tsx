@@ -9,11 +9,11 @@ const DASHBOARD_IMG = 'https://cdn.sanity.io/images/u10im6di/production/88abb9f9
 
 export const CampaignInsightsSection: React.FC = () => {
   return (
-    <section id="deep-campaign-insights" className="bg-white text-slate-900 py-12 sm:py-16 lg:py-20 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="deep-campaign-insights" className="bg-white text-slate-900 relative mw-section">
+      <div className="mw-container">
 
         <div className="text-center mb-10 sm:mb-14">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#14235d]">
+          <h2 className="font-extrabold tracking-tight text-[#062068] text-3xl lg:text-4xl">
             Deep Campaign Insights at Scale
           </h2>
           <p className="mt-3 text-base sm:text-lg text-slate-600 font-normal max-w-2xl mx-auto">
@@ -30,7 +30,7 @@ export const CampaignInsightsSection: React.FC = () => {
                 <LayoutGrid className="w-6 h-6 stroke-[2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight">
                 Understand Campaign Performance
               </h3>
 
@@ -51,11 +51,11 @@ export const CampaignInsightsSection: React.FC = () => {
             </div>
 
             <div className="md:col-span-5 space-y-4 order-1 md:order-2">
-              <div className="w-12 h-12 rounded-full bg-blue-50 border border-blue-200/80 flex items-center justify-center text-blue-600 shadow-sm">
+              <div className="w-12 h-12 rounded-full bg-blue-50 border border-blue-200/80 flex items-center justify-center text-blue-700 shadow-sm">
                 <Activity className="w-6 h-6 stroke-[2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight">
                 Prove Campaign Impact
               </h3>
 
@@ -72,7 +72,7 @@ export const CampaignInsightsSection: React.FC = () => {
                 <Sparkles className="w-6 h-6 stroke-[2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight">
                 Learn and Improve
               </h3>
 
@@ -97,7 +97,7 @@ export const CampaignInsightsSection: React.FC = () => {
                 <Upload className="w-6 h-6 stroke-[2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#14235d] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight">
                 Share Results With Confidence
               </h3>
 

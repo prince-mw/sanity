@@ -189,8 +189,8 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
   };
 
   return (
-    <section className="py-24 bg-white overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-white overflow-hidden mw-section-lg">
+      <div className="mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -201,7 +201,7 @@ export default function TestimonialSection({ testimonials: sanityTestimonials, h
           <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
             {t('landingPage.testimonials.badge')}
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
+          <h2 className="font-bold text-mw-gray-900 mt-4 mb-6 text-3xl lg:text-4xl">
             {t('landingPage.testimonials.title')} <span className="text-mw-blue-600">{t('landingPage.testimonials.titleHighlight')}</span>
           </h2>
           <p className="text-mw-gray-600 max-w-2xl mx-auto text-lg">

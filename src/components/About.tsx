@@ -7,8 +7,8 @@ export default function About() {
   const { t } = useLocale();
   
   return (
-    <section id="about" className="py-24 bg-mw-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="bg-mw-gray-50 mw-section-lg">
+      <div className="mw-container">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           {/* Left - Visual */}
           <motion.div
@@ -48,7 +48,7 @@ export default function About() {
               <motion.div
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 4, repeat: Infinity }}
-                className="absolute top-0 right-1/4 bg-white p-4 rounded-xl shadow-mw-md border border-mw-gray-200"
+                className="absolute top-0 right-1/4 bg-white p-4 rounded-2xl shadow-mw-md border border-mw-gray-200"
               >
                 <div className="text-2xl font-bold text-mw-gray-900">50M+</div>
                 <div className="text-xs text-mw-gray-500">{t('landingPage.about.features.dailyImpressions')}</div>
@@ -57,7 +57,7 @@ export default function About() {
               <motion.div
                 animate={{ y: [0, 20, 0] }}
                 transition={{ duration: 5, repeat: Infinity }}
-                className="absolute bottom-0 left-1/4 bg-white p-4 rounded-xl shadow-mw-md border border-mw-gray-200"
+                className="absolute bottom-0 left-1/4 bg-white p-4 rounded-2xl shadow-mw-md border border-mw-gray-200"
               >
                 <div className="text-2xl font-bold text-mw-gray-900">100+</div>
                 <div className="text-xs text-mw-gray-500">{t('landingPage.about.features.markets')}</div>
@@ -72,7 +72,7 @@ export default function About() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mb-6">
+            <h2 className="font-bold text-mw-gray-900 mb-6 text-3xl lg:text-4xl">
               {t('landingPage.about.title')}
             </h2>
             <p className="text-mw-gray-600 text-lg mb-6">

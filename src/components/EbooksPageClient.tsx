@@ -63,7 +63,7 @@ const EbookCard = ({
   return (
   <motion.div
     variants={staggerItem}
-    className="group bg-white rounded-md overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
+    className="group bg-white rounded-lg overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
   >
     <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
       <img
@@ -181,11 +181,11 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 py-20 md:py-28 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 overflow-hidden mw-section-lg">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="relative mw-container">
           <motion.div initial="hidden" animate="visible" variants={fadeUp} className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
               Mastering the OOH Game
@@ -199,14 +199,14 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
 
       {/* Featured E-Book Section */}
       {featuredEbook && (
-        <section className="py-12 md:py-16">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="mw-section">
+          <div className="mw-container">
             <motion.div
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
               variants={fadeUp}
-              className="relative bg-gradient-to-r from-mw-blue-600 to-mw-blue-800 rounded-3xl overflow-hidden"
+              className="relative bg-gradient-to-r from-mw-blue-600 to-mw-blue-800 rounded-2xl overflow-hidden"
             >
               <div className="absolute inset-0 opacity-10">
                 <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -224,7 +224,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
                   <span className="inline-block bg-white/20 backdrop-blur-sm text-white text-sm font-medium px-4 py-2 rounded-full mb-6">
                     {t('ui.ebooks.featuredEbook')}
                   </span>
-                  <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                  <h2 className="font-bold text-white mb-4 text-3xl lg:text-4xl">
                     {featuredEbook.title}
                   </h2>
                   <p className="text-lg text-white/80 mb-8">
@@ -254,7 +254,7 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
                   </div>
                 </div>
                 <div className="relative">
-                  <div className="aspect-[4/3] rounded-md overflow-hidden shadow-2xl transform lg:translate-x-8 lg:-translate-y-4 rotate-2 hover:rotate-0 transition-transform duration-500 bg-gray-100">
+                  <div className="aspect-[4/3] rounded-lg overflow-hidden shadow-2xl transform lg:translate-x-8 lg:-translate-y-4 rotate-2 hover:rotate-0 transition-transform duration-500 bg-gray-100">
                     <img
                       src={featuredEbook.image}
                       alt={featuredEbook.title}
@@ -272,8 +272,8 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
       )}
 
       {/* Category Filter */}
-      <section className="py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section-sm">
+        <div className="mw-container">
           <motion.div
             initial="hidden"
             whileInView="visible"
@@ -304,8 +304,8 @@ export default function EbooksPageClient({ ebooks }: EbooksPageClientProps) {
       </section>
 
       {/* E-Books Grid */}
-      <section className="py-12 md:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <motion.div
             key={`${activeCategory}-${currentPage}`}
             initial="hidden"

@@ -57,8 +57,8 @@ export default function Services() {
   ];
 
   return (
-    <section id="solutions" className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="solutions" className="bg-white mw-section-lg">
+      <div className="mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -69,7 +69,7 @@ export default function Services() {
           <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
             {t('landingPage.solutions.badge')}
           </span>
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-mw-gray-900 mt-4 mb-6">
+          <h2 className="font-bold text-mw-gray-900 mt-4 mb-6 text-3xl lg:text-4xl">
             {t('landingPage.solutions.title')}
           </h2>
           <p className="text-mw-gray-600 max-w-2xl mx-auto text-lg">

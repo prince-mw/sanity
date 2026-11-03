@@ -29,8 +29,8 @@ export default function CaseStudiesSection({ initialCaseStudies = [] }: CaseStud
   const { t } = useLocale();
 
   return (
-    <section className="py-20 bg-white">
-      <div className="container mx-auto px-6">
+    <section className="bg-white mw-section">
+      <div className="mw-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -39,7 +39,7 @@ export default function CaseStudiesSection({ initialCaseStudies = [] }: CaseStud
           transition={{ duration: 0.6 }}
           className="text-center mb-14"
         >
-          <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+          <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
             {t('landingPage.caseStudiesSection.title')}
           </h2>
           <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">

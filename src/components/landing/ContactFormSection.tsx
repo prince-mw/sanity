@@ -83,8 +83,8 @@ export function ContactFormSection({
   };
 
   return (
-    <section className={`py-10 md:py-16 ${bgClasses}`}>
-      <div className="container mx-auto px-4">
+    <section className={`${bgClasses} mw-section`}>
+      <div className="mw-container">
         <div className="max-w-2xl mx-auto">
           {/* Header */}
           {(heading || subheading) && (
@@ -96,7 +96,7 @@ export function ContactFormSection({
               className="text-center mb-10"
             >
               {heading && (
-                <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textColor}`}>
+                <h2 className={`font-bold mb-4 ${textColor} text-3xl lg:text-4xl`}>
                   {heading}
                 </h2>
               )}
@@ -180,7 +180,7 @@ export function ContactFormSection({
                             required={field.required}
                             checked={formData[field.name || ''] === 'true'}
                             onChange={(e) => handleChange(field.name || '', e.target.checked ? 'true' : 'false')}
-                            className="w-4 h-4 rounded text-mw-blue-600 focus:ring-mw-blue-500"
+                            className="w-4 h-4 rounded-lg text-mw-blue-600 focus:ring-mw-blue-500"
                           />
                           <span className={`text-sm ${isDark ? 'text-white/80' : 'text-gray-600'}`}>
                             {field.labelKey ? t(field.labelKey) : field.label}

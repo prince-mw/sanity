@@ -25,8 +25,8 @@ export function TextBlockSection({
   const textColor = getTextColorClasses(backgroundColor);
 
   return (
-    <section className={`py-10 md:py-16 ${bgClasses}`}>
-      <div className="container mx-auto px-4">
+    <section className={`${bgClasses} mw-section`}>
+      <div className="mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -35,13 +35,13 @@ export function TextBlockSection({
           className={`${widthClasses} ${alignClasses}`}
         >
           {heading && (
-            <h2 className={`text-3xl md:text-4xl font-bold mb-6 ${textColor}`}>
+            <h2 className={`font-bold mb-6 ${textColor} text-3xl lg:text-4xl`}>
               {heading}
             </h2>
           )}
           
           {content && (
-            <div className={`prose prose-lg max-w-none ${backgroundColor === 'dark' || backgroundColor === 'blue' ? 'prose-invert' : ''}`}>
+            <div className={`prose prose-lg mw-measure ${alignment === 'center' ? 'mx-auto' : ''} ${backgroundColor === 'dark' || backgroundColor === 'blue' ? 'prose-invert' : ''}`}>
               <SanityPortableText value={content} />
             </div>
           )}

@@ -68,7 +68,7 @@ export default function ProgrammaticAuctionFlow() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <span className="text-[10px] sm:text-xs font-semibold text-purple-300 uppercase tracking-wider">{t('homeVisuals.auction.title')}</span>
+          <span className="text-xs sm:text-xs font-semibold text-purple-300 uppercase tracking-wider">{t('homeVisuals.auction.title')}</span>
         </motion.div>
 
         {/* Horizontal Flow Line with Steps */}
@@ -135,7 +135,7 @@ export default function ProgrammaticAuctionFlow() {
 
                   {/* Pulse ring */}
                   <motion.div
-                    className="absolute inset-0 rounded-xl border-2 border-white/30"
+                    className="absolute inset-0 rounded-2xl border-2 border-white/30"
                     animate={{ scale: [1, 1.3, 1], opacity: [0.5, 0, 0.5] }}
                     transition={{ duration: 2, repeat: Infinity, delay: index * 0.3 }}
                   />
@@ -143,7 +143,7 @@ export default function ProgrammaticAuctionFlow() {
 
                 {/* Step Label */}
                 <div className="mt-1 sm:mt-2 md:mt-3 text-center">
-                  <span className="text-[7px] sm:text-[9px] md:text-[11px] text-white/80 font-medium whitespace-pre-line leading-tight">
+                  <span className="text-[7px] sm:text-xs md:text-xs text-white/80 font-medium whitespace-pre-line leading-tight">
                     {step.label}
                   </span>
                 </div>
@@ -194,9 +194,9 @@ export default function ProgrammaticAuctionFlow() {
                     </div>
                   </motion.div>
                 )}
-                <div className="text-[6px] sm:text-[8px] md:text-[9px] text-slate-400 uppercase">{bidder.name}</div>
+                <div className="text-[6px] sm:text-[8px] md:text-xs text-slate-400 uppercase">{bidder.name}</div>
                 <motion.div
-                  className={`text-[10px] sm:text-xs md:text-sm font-bold ${bidder.winner ? 'text-green-400' : 'text-white'}`}
+                  className={`text-xs sm:text-xs md:text-sm font-bold ${bidder.winner ? 'text-green-400' : 'text-white'}`}
                   animate={bidder.winner ? { scale: [1, 1.05, 1] } : {}}
                   transition={{ duration: 1, repeat: Infinity }}
                 >
@@ -215,7 +215,7 @@ export default function ProgrammaticAuctionFlow() {
           transition={{ delay: 2 }}
         >
           <div className="text-center">
-            <div className="text-[10px] text-slate-400 uppercase">{t('homeVisuals.auction.fillRate')}</div>
+            <div className="text-xs text-slate-400 uppercase">{t('homeVisuals.auction.fillRate')}</div>
             <motion.div
               className="text-lg font-bold text-cyan-400"
               animate={{ opacity: [0.8, 1, 0.8] }}
@@ -225,11 +225,11 @@ export default function ProgrammaticAuctionFlow() {
             </motion.div>
           </div>
           <div className="text-center">
-            <div className="text-[10px] text-slate-400 uppercase">{t('homeVisuals.auction.responseTime')}</div>
+            <div className="text-xs text-slate-400 uppercase">{t('homeVisuals.auction.responseTime')}</div>
             <div className="text-lg font-bold text-purple-400">&lt;100ms</div>
           </div>
           <div className="text-center">
-            <div className="text-[10px] text-slate-400 uppercase">{t('homeVisuals.auction.dailyAuctions')}</div>
+            <div className="text-xs text-slate-400 uppercase">{t('homeVisuals.auction.dailyAuctions')}</div>
             <motion.div
               className="text-lg font-bold text-green-400"
               animate={{ scale: [1, 1.02, 1] }}

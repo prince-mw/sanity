@@ -100,8 +100,8 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -146,8 +146,8 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
       </section>
 
       {/* Tab Navigation */}
-      <section className="py-8 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white border-b border-mw-gray-200 sticky top-20 z-40 mw-section-sm">
+        <div className="mw-container">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setActiveTab('upcoming')}
@@ -175,16 +175,16 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
 
       {/* Upcoming Webinars */}
       {activeTab === 'upcoming' && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">{t('ui.webinars.upcomingWebinars')}</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-2 text-3xl lg:text-4xl">{t('ui.webinars.upcomingWebinars')}</h2>
               <p className="text-lg text-mw-gray-600">{t('ui.webinars.registerSubtitle')}</p>
             </div>
 
             <div className="space-y-6">
               {upcomingWebinars.length === 0 ? (
-                <div className="flex justify-center py-16 bg-mw-gray-50 rounded-xl">
+                <div className="flex justify-center py-16 bg-mw-gray-50 rounded-2xl">
                   <Image
                     src="https://cdn.sanity.io/images/u10im6di/production/6f8f151d73788605ee99c1ce38efaa1ecf7e4b12-534x300.png"
                     alt={t('ui.webinars.stayTunedAlt')}
@@ -199,7 +199,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white border border-mw-gray-200 rounded-xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
+                  className="bg-white border border-mw-gray-200 rounded-2xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
                 >
                   <div className="grid lg:grid-cols-3 gap-6 p-6">
                     {/* Webinar Image/Preview */}
@@ -269,10 +269,10 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
 
       {/* Past Webinars */}
       {activeTab === 'past' && (
-        <section className="py-16 bg-mw-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 mw-section">
+          <div className="mw-container">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">{t('ui.webinars.pastWebinars')}</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-2 text-3xl lg:text-4xl">{t('ui.webinars.pastWebinars')}</h2>
               <p className="text-lg text-mw-gray-600">{t('ui.webinars.pastSubtitle')}</p>
             </div>
 
@@ -291,7 +291,7 @@ export default function WebinarsPageClient({ upcomingWebinars, pastWebinars }: W
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  className="bg-white border border-mw-gray-200 rounded-xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
+                  className="bg-white border border-mw-gray-200 rounded-2xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
                 >
                   <div className="grid lg:grid-cols-3 gap-6 p-6">
                     {/* Webinar Image/Preview */}

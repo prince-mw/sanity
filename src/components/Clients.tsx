@@ -73,8 +73,8 @@ export default function Clients({ partners, sectionTitle, sectionTitleTranslatio
   const hasCmsPartners = partners && partners.length > 0;
   
   return (
-    <section className="py-16 bg-white border-y border-mw-gray-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-white border-y border-mw-gray-200 mw-section">
+      <div className="mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ export default function Clients({ partners, sectionTitle, sectionTitleTranslatio
           <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
             {t('landingPage.clients.eyebrow')}
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
+          <h2 className="font-bold text-mw-gray-900 mt-4 mb-6 text-3xl lg:text-4xl">
             {title}
           </h2>
           {description && (
@@ -105,10 +105,10 @@ export default function Clients({ partners, sectionTitle, sectionTitleTranslatio
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="relative flex flex-col items-center justify-center p-6 sm:p-8 bg-mw-gray-50 rounded-xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
+              className="relative flex flex-col items-center justify-center p-6 sm:p-8 bg-mw-gray-50 rounded-2xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
             >
               {href && (
-                <Link href={href} className="absolute inset-0 z-10 rounded-xl" aria-label={`${partner.name} × Moving Walls partnership`} />
+                <Link href={href} className="absolute inset-0 z-10 rounded-2xl" aria-label={`${partner.name} × Moving Walls partnership`} />
               )}
               <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                 {partner.logo ? (
@@ -118,7 +118,7 @@ export default function Clients({ partners, sectionTitle, sectionTitleTranslatio
                     className="w-full h-full object-contain"
                   />
                 ) : (
-                  <div className="w-16 h-16 bg-mw-blue-100 rounded-lg flex items-center justify-center text-mw-blue-600 font-bold text-2xl">
+                  <div className="w-16 h-16 bg-mw-blue-100 rounded-lg flex items-center justify-center text-mw-blue-700 font-bold text-2xl">
                     {partner.name.charAt(0)}
                   </div>
                 )}
@@ -141,7 +141,7 @@ export default function Clients({ partners, sectionTitle, sectionTitleTranslatio
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="flex flex-col items-center justify-center p-6 sm:p-8 bg-mw-gray-50 rounded-xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
+              className="flex flex-col items-center justify-center p-6 sm:p-8 bg-mw-gray-50 rounded-2xl border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-mw-md transition-all duration-300 group"
             >
               <div className="w-24 h-24 sm:w-28 sm:h-28 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
                 {client.logo}

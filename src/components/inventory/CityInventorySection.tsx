@@ -20,8 +20,8 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, sites, p
   const paged = new Set(pagedIds)
   return (
     <div id="all-sites">
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           {sample && <SampleBanner className="mb-6" />}
           <SgSectionHeading title={`Advertising areas in ${cityName}`} intro="Pick an area to see every site there." />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -35,8 +35,8 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, sites, p
           </div>
         </div>
       </section>
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={`Every advertising site in ${cityName}`} intro={`${sites.length} sites across ${new Set(sites.map(s => s.areaSlug)).size} areas.`} />
           <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} />
           <div className="mt-10"><SitesMap sites={sites} title={`Map of advertising sites in ${cityName}`} /></div>

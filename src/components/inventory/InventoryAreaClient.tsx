@@ -36,10 +36,10 @@ export function InventoryAreaClient({
     <div className="bg-white text-gray-900">
 
       {/* Hero */}
-      <section className={`relative overflow-hidden ${SG_NAVY} text-white pt-24 pb-12 lg:pt-28 lg:pb-16`}>
+      <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           {sample && <SampleBanner />}
           <nav aria-label="Breadcrumb" className="mb-5 text-sm text-blue-100/80">
             <Link href="/locations" className="hover:text-white">Locations</Link> ›{' '}
@@ -78,7 +78,7 @@ export function InventoryAreaClient({
       </section>
 
       {kind === 'supply' && (
-        <section className="py-12 lg:py-16 bg-white">
+        <section className="bg-white mw-section">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-6">
             <div className="rounded-2xl border border-gray-200 p-6">
               <span className="text-xs font-bold uppercase tracking-wider text-mw-blue-600">For media owners</span>
@@ -98,8 +98,8 @@ export function InventoryAreaClient({
 
       {/* Sites */}
       {sites.length > 0 && (
-        <section className="py-12 lg:py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-gray-50 mw-section">
+          <div className="mw-container">
             <SgSectionHeading title={`Advertising sites in ${areaName}`} intro="Filter by format and venue. Open a site for its details and estimated price." />
             <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} />
             <div className="mt-8"><PriceGate country={countrySlug} ids={sites.map(s => s.id)} names={Object.fromEntries(sites.map(s => [s.id, s.name]))} /></div>
@@ -108,8 +108,8 @@ export function InventoryAreaClient({
       )}
 
       {kind === 'supply' && nearby.length > 0 && (
-        <section className="py-12 lg:py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-gray-50 mw-section">
+          <div className="mw-container">
             <SgSectionHeading title={`Sites near ${areaName}`} />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {nearby.map(s => <SiteCard key={s.id} site={s} linked={paged.has(s.id)} />)}
@@ -120,8 +120,8 @@ export function InventoryAreaClient({
 
       {/* Map */}
       {sites.length > 0 && (
-        <section className="py-12 lg:py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <SgSectionHeading title={`Where the sites are in ${areaName}`} />
             <SitesMap sites={sites} title={`Map of advertising sites in ${areaName}`} />
           </div>
@@ -130,8 +130,8 @@ export function InventoryAreaClient({
 
       {/* Other areas */}
       {otherAreas.length > 0 && (
-        <section className="py-12 lg:py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-gray-50 mw-section">
+          <div className="mw-container">
             <SgSectionHeading title={`More areas in ${cityName}`} />
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <Link href={cityHref} className={`group flex flex-col rounded-2xl ${SG_NAVY} text-white p-5 hover:-translate-y-1 transition-all`}>

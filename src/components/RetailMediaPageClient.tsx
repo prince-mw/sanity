@@ -39,12 +39,12 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
   return (
     <div className="bg-white text-gray-900">
       {/* Hero */}
-      <section className={`relative overflow-hidden ${NAVY} text-white pt-24 pb-12 lg:pt-28 lg:pb-16`}>
+      <section className={`relative overflow-hidden ${NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+        <div className="relative grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mw-container">
           <div className="lg:col-span-7">
             {/* Eyebrow sits inside the H1 so the "Retail Media in Southeast Asia" keyword stays in the page heading */}
             <h1 className="font-bold tracking-tight mb-5">
@@ -70,7 +70,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
           {content.heroStats.length > 0 && (
             <dl className="lg:col-span-5 grid grid-cols-2 gap-3 sm:gap-4">
               {content.heroStats.map((stat) => (
-                <div key={`${stat.value}-${stat.label}`} className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-sm p-4 sm:p-6">
+                <div key={`${stat.value}-${stat.label}`} className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur-sm p-4 sm:p-6">
                   <dt className="sr-only">{stat.label}</dt>
                   <dd>
                     <span className="block text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-cyan-300 to-blue-200 bg-clip-text text-transparent">
@@ -86,10 +86,10 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       </section>
 
       {/* Why in-store */}
-      <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+      <section className="mw-section">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start mw-container">
           <div>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-4">
+            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
               {content.contextHeading}
             </h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
@@ -100,7 +100,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
             <p className="text-xl sm:text-2xl font-bold text-[#062068] mb-6">{content.contextCallout}</p>
             <dl className="grid sm:grid-cols-2 gap-4 mb-6">
               {content.contextStats.map((stat) => (
-                <div key={stat.value} className="rounded-xl bg-white border border-gray-200 p-5">
+                <div key={stat.value} className="rounded-2xl bg-white border border-gray-200 p-5">
                   <dt className="sr-only">{stat.label}</dt>
                   <dd>
                     <span className="block text-3xl sm:text-4xl font-bold text-mw-blue-600">{stat.value}</span>
@@ -115,10 +115,10 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       </section>
 
       {/* Last mile + shopper moments */}
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-4">
+            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
               {content.lastMileHeading}
             </h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
@@ -157,11 +157,11 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       </section>
 
       {/* Approach */}
-      <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
             <Eyebrow>{content.approachEyebrow}</Eyebrow>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-4">
+            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
               {content.approachHeading}
             </h2>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{content.approachIntro}</p>
@@ -191,17 +191,17 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       </section>
 
       {/* How it works */}
-      <section className={`relative overflow-hidden ${NAVY} text-white py-12 lg:py-16`}>
+      <section className={`relative overflow-hidden ${NAVY} text-white mw-section`}>
         <div className="absolute inset-0 bg-dot-pattern opacity-20 pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
             <Eyebrow light>{content.howItWorksEyebrow}</Eyebrow>
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight">{content.howItWorksHeading}</h2>
+            <h2 className="font-bold tracking-tight text-3xl lg:text-4xl">{content.howItWorksHeading}</h2>
           </div>
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
             <ol className="space-y-4">
               {content.howItWorksSteps.map((step, i) => (
-                <li key={step.title} className="flex gap-4 rounded-xl border border-white/15 bg-white/5 p-5">
+                <li key={step.title} className="flex gap-4 rounded-2xl border border-white/15 bg-white/5 p-5">
                   <span className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#062068] font-bold">
                     {i + 1}
                   </span>
@@ -231,10 +231,10 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       </section>
 
       {/* Dynamic creative */}
-      <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-4">
+            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
               {content.creativeHeading}
             </h2>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{content.creativeIntro}</p>
@@ -242,7 +242,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
           <div className="grid md:grid-cols-3 gap-4 lg:gap-6">
             {content.creativeItems.map((item, i) => (
               <div key={item.title} className="rounded-2xl bg-gray-50 border border-gray-200 p-6 lg:p-8">
-                <div className="w-12 h-12 rounded-xl bg-mw-blue-100 text-mw-blue-600 flex items-center justify-center mb-5">
+                <div className="w-12 h-12 rounded-2xl bg-mw-blue-100 text-mw-blue-700 flex items-center justify-center mb-5">
                   {creativeIcons[i % creativeIcons.length]}
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
@@ -254,10 +254,10 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       </section>
 
       {/* Measurement */}
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-4">
+            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
               {content.measurementHeading}
             </h2>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{content.measurementIntro}</p>
@@ -299,9 +299,9 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       </section>
 
       {/* Case study */}
-      <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-8 lg:mb-10">
+      <section className="mw-section">
+        <div className="mw-container">
+          <h2 className="font-bold tracking-tight text-[#062068] mb-8 lg:mb-10 text-3xl lg:text-4xl">
             {content.caseEyebrow}
           </h2>
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -321,7 +321,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
               <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-8">{content.caseBody}</p>
               <dl className="grid grid-cols-2 gap-4">
                 {content.caseStats.map((stat) => (
-                  <div key={stat.label} className="rounded-xl border border-gray-200 p-5">
+                  <div key={stat.label} className="rounded-2xl border border-gray-200 p-5">
                     <dt className="sr-only">{stat.label}</dt>
                     <dd>
                       <span className="block text-3xl sm:text-4xl font-bold text-mw-blue-600">{stat.value}</span>
@@ -345,11 +345,11 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       </section>
 
       {/* Final CTA */}
-      <section className={`relative overflow-hidden ${NAVY} text-white py-12 lg:py-16 text-center`}>
+      <section className={`relative overflow-hidden ${NAVY} text-white text-center mw-section`}>
         <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] max-w-full h-[300px] bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-4">{content.ctaHeading}</h2>
+          <h2 className="font-bold tracking-tight leading-tight mb-4 text-3xl lg:text-4xl">{content.ctaHeading}</h2>
           <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed mb-8">{content.ctaBody}</p>
           <CTAButton
             href="/contact"
@@ -363,9 +363,9 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
 
       {/* FAQ */}
       {content.faqs.length > 0 && (
-        <section className="py-12 lg:py-16">
+        <section className="mw-section">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-8 text-center">
+            <h2 className="font-bold tracking-tight text-[#062068] mb-8 text-center text-3xl lg:text-4xl">
               {content.faqHeading}
             </h2>
             <div className="divide-y divide-gray-200 border-y border-gray-200">

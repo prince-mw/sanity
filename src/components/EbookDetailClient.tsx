@@ -39,12 +39,12 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 py-12 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 overflow-hidden mw-section">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%239C92AC" fill-opacity="0.4"%3E%3Cpath d="M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' }}></div>
         </div>
         
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="relative mw-container">
           {/* Breadcrumb */}
           <nav className="mb-8">
             <ol className="flex items-center gap-2 text-sm text-mw-blue-200">
@@ -131,7 +131,7 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
 
       {/* Body Content Section */}
       {ebook.body && ebook.body.length > 0 && (
-        <section className="py-16 bg-white">
+        <section className="bg-white mw-section">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="prose prose-lg max-w-none prose-headings:text-gray-900 prose-p:text-gray-600 prose-a:text-mw-blue-600 prose-strong:text-gray-900">
               <SanityPortableText value={ebook.body} />
@@ -142,8 +142,8 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
 
       {/* Related E-Books Section */}
       {relatedEbooks.length > 0 && (
-        <section className="py-16 bg-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-gray-50 mw-section">
+          <div className="mw-container">
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-2xl font-bold text-gray-900">{t('ui.ebooks.relatedEbooks')}</h2>
               <Link 
@@ -165,7 +165,7 @@ export default function EbookDetailClient({ ebook, relatedEbooks }: EbookDetailC
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
+                  className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100"
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
                     <img

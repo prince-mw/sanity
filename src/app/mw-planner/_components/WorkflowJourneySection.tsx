@@ -18,9 +18,9 @@ const STEP_VISUALS: Record<string, React.ReactNode> = {
           <FileText className="w-2.5 h-2.5 text-[#38bdf8]" />
           <span className="text-[8px] font-sans text-[#93c5fd] font-bold uppercase tracking-wider">Campaign Brief</span>
         </div>
-        <span className="text-[7px] bg-[#102a6b] text-[#7dd3fc] px-1 py-0.5 rounded font-sans border border-[#1d408f]">NEW</span>
+        <span className="text-[7px] bg-[#102a6b] text-[#7dd3fc] px-1 py-0.5 rounded-lg font-sans border border-[#1d408f]">NEW</span>
       </div>
-      <div className="space-y-1 my-auto bg-[#071330]/90 rounded px-1.5 py-1 border border-[#162b63]">
+      <div className="space-y-1 my-auto bg-[#071330]/90 rounded-lg px-1.5 py-1 border border-[#162b63]">
         <div className="flex items-center justify-between text-[7px]">
           <span className="text-[#889bcc]">Market:</span>
           <span className="text-white font-medium font-sans">NYC Metro</span>
@@ -50,7 +50,7 @@ const STEP_VISUALS: Record<string, React.ReactNode> = {
           <MapPin className="w-2.5 h-2.5 text-[#38bdf8]" />
           <span className="text-[8px] font-sans text-[#93c5fd] font-bold uppercase">Live Sites</span>
         </div>
-        <span className="text-[7px] bg-[#053229] text-emerald-400 px-1 py-0.5 rounded font-sans border border-[#0d594b]">1,245</span>
+        <span className="text-[7px] bg-[#053229] text-emerald-400 px-1 py-0.5 rounded-lg font-sans border border-[#0d594b]">1,245</span>
       </div>
       <div className="relative w-full h-9 my-auto">
         <span className="w-2 h-2 rounded-full bg-[#38bdf8] shadow-[0_0_6px_#38bdf8] absolute top-0.5 left-2 animate-pulse" />
@@ -75,7 +75,7 @@ const STEP_VISUALS: Record<string, React.ReactNode> = {
           <ShieldCheck className="w-2.5 h-2.5 text-[#fbbf24]" />
           <span className="text-[8px] font-bold text-[#fbbf24] uppercase tracking-wide">Affinity</span>
         </div>
-        <span className="text-[7.5px] font-sans font-bold text-emerald-400 bg-[#06322b] px-1.5 py-0.5 rounded border border-[#0d594b]">142 Index</span>
+        <span className="text-[7.5px] font-sans font-bold text-emerald-400 bg-[#06322b] px-1.5 py-0.5 rounded-lg border border-[#0d594b]">142 Index</span>
       </div>
       <div className="space-y-1 my-auto">
         <div className="flex justify-between text-[7px] text-gray-300">
@@ -102,11 +102,11 @@ const STEP_VISUALS: Record<string, React.ReactNode> = {
         <span className="text-[7px] text-emerald-400 font-sans font-bold">+28% ROI</span>
       </div>
       <div className="grid grid-cols-2 gap-1 my-auto">
-        <div className="bg-[#122864] p-1 rounded border border-[#213e8e] text-center">
+        <div className="bg-[#122864] p-1 rounded-lg border border-[#213e8e] text-center">
           <div className="text-[6.5px] text-[#869bd5]">DOOH</div>
           <div className="text-[8px] font-bold text-[#38bdf8]">62%</div>
         </div>
-        <div className="bg-[#122864] p-1 rounded border border-[#213e8e] text-center">
+        <div className="bg-[#122864] p-1 rounded-lg border border-[#213e8e] text-center">
           <div className="text-[6.5px] text-[#869bd5]">Static</div>
           <div className="text-[8px] font-bold text-[#fbbf24]">38%</div>
         </div>
@@ -124,9 +124,9 @@ const STEP_VISUALS: Record<string, React.ReactNode> = {
           <FileText className="w-2.5 h-2.5 text-[#38bdf8]" />
           <span className="text-[8px] font-sans text-[#38bdf8] font-bold uppercase">Proposal</span>
         </div>
-        <span className="text-[7px] bg-[#0369a1] text-white px-1 py-0.5 rounded font-sans">PDF</span>
+        <span className="text-[7px] bg-[#0369a1] text-white px-1 py-0.5 rounded-lg font-sans">PDF</span>
       </div>
-      <div className="bg-[#0b2447] rounded p-1 border border-[#164b7d] my-auto">
+      <div className="bg-[#0b2447] rounded-lg p-1 border border-[#164b7d] my-auto">
         <div className="flex justify-between items-center text-[7px]">
           <span className="text-[#93c5fd]">Est. Reach</span>
           <span className="text-white font-bold font-sans">4.2M</span>
@@ -149,7 +149,7 @@ export const WorkflowJourneySection: React.FC = () => {
 
   return (
     <section
-      className="py-14 sm:py-16 lg:py-20 text-white overflow-hidden border-b border-[#213a85] relative"
+      className="text-white overflow-hidden border-b border-[#213a85] relative mw-section"
       style={{
         background: 'radial-gradient(ellipse at 50% 0%, rgba(71, 90, 162, 0.35), transparent 70%), #132660',
       }}
@@ -157,9 +157,9 @@ export const WorkflowJourneySection: React.FC = () => {
     >
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[350px] bg-[#38bdf8]/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative z-10 mw-container">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-3">
+          <h2 className="font-extrabold tracking-tight leading-tight mb-3 text-3xl lg:text-4xl">
             Your OOH Planning Journey With MW Planner
           </h2>
           <p className="text-base sm:text-lg text-[#b7c4ff] font-normal">
@@ -184,7 +184,7 @@ export const WorkflowJourneySection: React.FC = () => {
                     >
                       <div className="relative mb-3 flex items-center justify-center">
                         <div
-                          className={`w-12 h-12 rounded-xl flex items-center justify-center font-bold text-sm transition-all duration-200 ${
+                          className={`w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-sm transition-all duration-200 ${
                             isActive
                               ? 'bg-[#0a1738] border-2 border-[#fbbf24] text-[#fbbf24] shadow-[0_0_16px_rgba(251,191,36,0.35)] scale-105'
                               : 'bg-[#0c1b44] border border-[#253f8e] text-white group-hover:border-[#38bdf8] group-hover:scale-105'

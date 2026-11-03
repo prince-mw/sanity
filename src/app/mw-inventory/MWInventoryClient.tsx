@@ -45,9 +45,9 @@ export default function MWInventoryClient({ product }: MWInventoryClientProps) {
       />
 
       <section className="pt-2 pb-8 bg-white border-t border-gray-200/70" id="features-section">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+        <div className="mw-container">
           <div className="text-center max-w-3xl mx-auto pt-8 pb-4">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#062068] font-sans">
+            <h2 className="font-bold tracking-tight text-[#062068] font-sans text-3xl lg:text-4xl">
               {product?.featuresTitle || 'Unlock More Value From What You Own.'}
             </h2>
           </div>

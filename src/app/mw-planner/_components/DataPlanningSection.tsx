@@ -18,11 +18,11 @@ const DARK_GRID_STYLE = {
 
 export const DataPlanningSection: React.FC = () => {
   return (
-    <section className="relative py-14 sm:py-16 lg:py-20 bg-[#f8f9fc] overflow-hidden border-b border-[#e2e8f0]" style={BLUEPRINT_GRID_STYLE} id="data-planning-section">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative bg-[#f8f9fc] overflow-hidden border-b border-[#e2e8f0] mw-section" style={BLUEPRINT_GRID_STYLE} id="data-planning-section">
+      <div className="mw-container">
 
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#062068] tracking-tight leading-tight mb-4">
+          <h2 className="font-extrabold text-[#062068] tracking-tight leading-tight mb-4 text-3xl lg:text-4xl">
             Stop Guessing. Start Planning With Data.
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -34,9 +34,9 @@ export const DataPlanningSection: React.FC = () => {
 
           {/* Card 1: Live Inventory */}
           <div className="relative flex flex-col">
-            <div className="bg-[#0e2154] rounded-xl p-5 border border-[#1e3474] flex-1 flex flex-col justify-between">
+            <div className="bg-[#0e2154] rounded-2xl p-5 border border-[#1e3474] flex-1 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] font-bold tracking-widest text-[#93c5fd] uppercase block mb-1">
+                <span className="text-xs font-bold tracking-widest text-[#93c5fd] uppercase block mb-1">
                   Where to Buy
                 </span>
                 <h3 className="text-lg lg:text-xl font-bold text-white mb-1">Live Inventory</h3>
@@ -60,8 +60,8 @@ export const DataPlanningSection: React.FC = () => {
               </div>
 
               <div className="pt-3 border-t border-[#1a2d67] flex items-center justify-between text-xs">
-                <span className="text-[#889bcc] text-[11px]">Filtered Sites</span>
-                <span className="font-sans font-semibold text-white bg-[#142861] px-2 py-0.5 rounded border border-[#233c82]">
+                <span className="text-[#889bcc] text-xs">Filtered Sites</span>
+                <span className="font-sans font-semibold text-white bg-[#142861] px-2 py-0.5 rounded-lg border border-[#233c82]">
                   1,245 available
                 </span>
               </div>
@@ -74,9 +74,9 @@ export const DataPlanningSection: React.FC = () => {
 
           {/* Card 2: Audience Insights */}
           <div className="relative flex flex-col">
-            <div className="bg-[#0e2154] rounded-xl p-5 border border-[#1e3474] flex-1 flex flex-col justify-between">
+            <div className="bg-[#0e2154] rounded-2xl p-5 border border-[#1e3474] flex-1 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] font-bold tracking-widest text-[#93c5fd] uppercase block mb-1">
+                <span className="text-xs font-bold tracking-widest text-[#93c5fd] uppercase block mb-1">
                   Who to Reach
                 </span>
                 <h3 className="text-lg lg:text-xl font-bold text-white mb-1">Audience Insights</h3>
@@ -85,20 +85,20 @@ export const DataPlanningSection: React.FC = () => {
                 <div className="space-y-2.5 mb-4">
                   <div className="bg-[#06122e] rounded-lg p-3 border border-[#192b5e] flex items-center justify-between">
                     <div>
-                      <div className="text-[10px] text-[#889bcc] uppercase font-medium">Target Affix Index</div>
+                      <div className="text-xs text-[#889bcc] uppercase font-medium">Target Affix Index</div>
                       <div className="text-xs text-[#cbd5e1] mt-0.5">High Income Indexing</div>
                     </div>
-                    <div className="text-2xl font-bold text-emerald-400 font-sans bg-[#06322b] px-3 py-1 rounded border border-[#0d594b]">
+                    <div className="text-2xl font-bold text-emerald-400 font-sans bg-[#06322b] px-3 py-1 rounded-lg border border-[#0d594b]">
                       142
                     </div>
                   </div>
 
                   <div className="bg-[#06122e] rounded-lg p-3 border border-[#192b5e] flex items-center justify-between">
                     <div>
-                      <div className="text-[10px] text-[#889bcc] uppercase font-medium">Audience Concentration</div>
+                      <div className="text-xs text-[#889bcc] uppercase font-medium">Audience Concentration</div>
                       <div className="text-xs text-[#cbd5e1] mt-0.5">Prime CBD Mobility</div>
                     </div>
-                    <div className="text-sm font-bold text-emerald-400 bg-[#06322b] px-3 py-1.5 rounded border border-[#0d594b] flex items-center gap-1.5">
+                    <div className="text-sm font-bold text-emerald-400 bg-[#06322b] px-3 py-1.5 rounded-lg border border-[#0d594b] flex items-center gap-1.5">
                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                       High
                     </div>
@@ -107,8 +107,8 @@ export const DataPlanningSection: React.FC = () => {
               </div>
 
               <div className="pt-3 border-t border-[#1a2d67] flex items-center justify-between text-xs">
-                <span className="text-[#889bcc] text-[11px]">Data Source</span>
-                <span className="text-[#93c5fd] font-medium text-[11px]">Telco + GPS Mobility</span>
+                <span className="text-[#889bcc] text-xs">Data Source</span>
+                <span className="text-[#93c5fd] font-medium text-xs">Telco + GPS Mobility</span>
               </div>
             </div>
 
@@ -119,9 +119,9 @@ export const DataPlanningSection: React.FC = () => {
 
           {/* Card 3: Campaign Forecasts */}
           <div className="relative flex flex-col">
-            <div className="bg-[#0e2154] rounded-xl p-5 border border-[#1e3474] flex-1 flex flex-col justify-between">
+            <div className="bg-[#0e2154] rounded-2xl p-5 border border-[#1e3474] flex-1 flex flex-col justify-between">
               <div>
-                <span className="text-[10px] font-bold tracking-widest text-[#93c5fd] uppercase block mb-1">
+                <span className="text-xs font-bold tracking-widest text-[#93c5fd] uppercase block mb-1">
                   What to Expect
                 </span>
                 <h3 className="text-lg lg:text-xl font-bold text-white mb-1">Campaign Forecasts</h3>
@@ -131,8 +131,8 @@ export const DataPlanningSection: React.FC = () => {
                   <div className="absolute inset-0 opacity-30" style={DARK_GRID_STYLE} />
 
                   <div className="flex items-center justify-between z-10">
-                    <span className="text-[9px] font-sans text-[#889bcc] tracking-wider uppercase">Forecasted Reach</span>
-                    <div className="bg-[#453208] text-[#fbbf24] border border-[#78540d] text-[10px] font-bold px-2 py-0.5 rounded font-sans flex items-center gap-1">
+                    <span className="text-xs font-sans text-[#889bcc] tracking-wider uppercase">Forecasted Reach</span>
+                    <div className="bg-[#453208] text-[#fbbf24] border border-[#78540d] text-xs font-bold px-2 py-0.5 rounded-lg font-sans flex items-center gap-1">
                       <TrendingUp className="w-2.5 h-2.5" />
                       <span>+84%</span>
                     </div>
@@ -159,7 +159,7 @@ export const DataPlanningSection: React.FC = () => {
                     </svg>
                   </div>
 
-                  <div className="flex items-center justify-between text-[9px] text-[#7589c7] font-sans z-10 px-1">
+                  <div className="flex items-center justify-between text-xs text-[#7589c7] font-sans z-10 px-1">
                     <span>W1 (1.2M)</span>
                     <span>W2 (2.4M)</span>
                     <span>W3 (3.3M)</span>
@@ -169,7 +169,7 @@ export const DataPlanningSection: React.FC = () => {
               </div>
 
               <div className="pt-3 border-t border-[#1a2d67] flex items-center justify-between text-xs">
-                <span className="text-[#889bcc] text-[11px] font-bold uppercase tracking-wider">Cumulative Reach Curve</span>
+                <span className="text-[#889bcc] text-xs font-bold uppercase tracking-wider">Cumulative Reach Curve</span>
                 <span className="font-sans font-semibold text-[#fbbf24]">4 Weeks</span>
               </div>
             </div>

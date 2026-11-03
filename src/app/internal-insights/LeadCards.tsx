@@ -50,7 +50,7 @@ export default function LeadCards({ sources }: { sources: LeadSource[] }) {
   return (
     <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-3">
       {groups.map((g) => (
-        <div key={g.name} className={`rounded-xl border p-4 ${g.name === SITE_WIDE ? 'border-sky-200 bg-sky-50/50' : 'border-gray-200 bg-white'}`}>
+        <div key={g.name} className={`rounded-2xl border p-4 ${g.name === SITE_WIDE ? 'border-sky-200 bg-sky-50/50' : 'border-gray-200 bg-white'}`}>
           <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">{g.name}</p>
           <p className="mt-1 text-2xl font-bold text-[#062068]">{nf(g.leads)} <span className="text-sm font-semibold">{paidNote(g.paid)}</span></p>
           <ul className="mt-2 space-y-0.5 text-sm">

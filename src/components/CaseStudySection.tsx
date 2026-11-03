@@ -8,8 +8,8 @@ export default function CaseStudySection() {
   const { t } = useLocale();
   
   return (
-    <section id="case-study" className="py-24 bg-mw-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="case-study" className="bg-mw-gray-50 mw-section-lg">
+      <div className="mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -20,7 +20,7 @@ export default function CaseStudySection() {
           <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
             {t('landingPage.caseStudy.badge')}
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4">
+          <h2 className="font-bold text-mw-gray-900 mt-4 text-3xl lg:text-4xl">
             {t('landingPage.caseStudy.title')}
           </h2>
         </motion.div>
@@ -69,7 +69,7 @@ export default function CaseStudySection() {
                 </p>
 
                 {/* Key Results Grid */}
-                <div className="grid sm:grid-cols-3 gap-6 mb-8 p-6 bg-mw-gray-50 rounded-xl">
+                <div className="grid sm:grid-cols-3 gap-6 mb-8 p-6 bg-mw-gray-50 rounded-2xl">
                   <div>
                     <div className="text-3xl font-bold text-mw-blue-600 mb-1">300%</div>
                     <div className="text-sm text-mw-gray-600">{t('landingPage.caseStudy.roasIncrease')}</div>
@@ -95,9 +95,9 @@ export default function CaseStudySection() {
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-mw-gray-500">Powered by</span>
                     <div className="flex gap-1">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded">MW Planner</span>
-                      <span className="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs font-medium rounded">MW Reach</span>
-                      <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded">MW Measure</span>
+                      <span className="px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-lg">MW Planner</span>
+                      <span className="px-2 py-1 bg-indigo-100 text-indigo-700 text-xs font-medium rounded-lg">MW Reach</span>
+                      <span className="px-2 py-1 bg-emerald-100 text-emerald-700 text-xs font-medium rounded-lg">MW Measure</span>
                     </div>
                   </div>
                 </div>

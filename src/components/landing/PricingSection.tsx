@@ -40,8 +40,8 @@ export function PricingSection({
   if (!plans || plans.length === 0) return null;
 
   return (
-    <section className={`py-10 md:py-16 ${bgClasses}`}>
-      <div className="container mx-auto px-4">
+    <section className={`${bgClasses} mw-section`}>
+      <div className="mw-container">
         {/* Header */}
         {(heading || subheading) && (
           <motion.div
@@ -52,7 +52,7 @@ export function PricingSection({
             className="text-center max-w-3xl mx-auto mb-12"
           >
             {heading && (
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textColor}`}>
+              <h2 className={`font-bold mb-4 ${textColor} text-3xl lg:text-4xl`}>
                 {heading}
               </h2>
             )}

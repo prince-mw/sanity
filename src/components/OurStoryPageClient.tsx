@@ -83,8 +83,8 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-20 bg-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -106,8 +106,8 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
       </section>
 
       {/* Mission Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -115,7 +115,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-6">
+              <h2 className="font-bold text-mw-gray-900 mb-6 text-3xl lg:text-4xl">
                 {t("ui.company.about.mission")}
               </h2>
               <p className="text-lg text-mw-gray-600 mb-6 leading-relaxed">
@@ -151,8 +151,8 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
 
 
       {/* Values Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -160,7 +160,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t("ui.company.story.coreValues")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -178,7 +178,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-mw-blue-100 rounded-full text-mw-blue-600 mb-4">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-mw-blue-100 rounded-full text-mw-blue-700 mb-4">
                   {value.icon}
                 </div>
                 <h3 className="text-xl font-bold text-mw-gray-900 mb-3">{value.title}</h3>
@@ -190,8 +190,8 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
       </section>
 
       {/* Future Vision Section */}
-      <section className="py-20 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-r from-mw-blue-600 to-mw-blue-700 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -199,7 +199,7 @@ export default function OurStoryPageClient({ initialData, trustBarStats }: OurSt
             transition={{ duration: 0.6 }}
             className="text-center text-white"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="font-bold mb-6 text-3xl lg:text-4xl">
               {t("ui.company.story.lookingForward")}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">

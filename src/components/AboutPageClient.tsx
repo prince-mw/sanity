@@ -92,7 +92,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 relative overflow-hidden">
+      <section className="pb-20 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 relative overflow-hidden mw-hero-top">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -105,7 +105,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
           </svg>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+        <div className="relative mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -133,8 +133,8 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
       </section>
 
       {/* Who We Are — Cinematic Layout */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -142,7 +142,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             transition={{ duration: 0.6 }}
             className="text-center mb-10"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-6">
+            <h2 className="font-bold text-mw-gray-900 mb-6 text-3xl lg:text-4xl">
               {t("ui.company.about.whoWeAre")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -225,10 +225,10 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.4, delay: 0.3 + index * 0.1 }}
-                className="bg-mw-gray-50 border border-mw-gray-200 rounded-xl p-6 text-center hover:border-mw-blue-200 hover:shadow-sm transition-all duration-300"
+                className="bg-mw-gray-50 border border-mw-gray-200 rounded-2xl p-6 text-center hover:border-mw-blue-200 hover:shadow-sm transition-all duration-300"
               >
               <motion.div 
-                className="inline-flex items-center justify-center w-10 h-10 bg-mw-blue-100 rounded-lg text-mw-blue-600 mb-4"
+                className="inline-flex items-center justify-center w-10 h-10 bg-mw-blue-100 rounded-lg text-mw-blue-700 mb-4"
                 whileHover={{ rotate: 8, scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 300 }}
               >
@@ -271,8 +271,8 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
       </section>
 
       {/* What We Do Section */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -280,7 +280,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t("ui.company.about.coreCapabilities")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -298,9 +298,9 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="bg-white rounded-xl p-6 shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
+                  className="bg-white rounded-2xl p-6 shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
                 >
-                  <div className="inline-flex items-center justify-center w-14 h-14 bg-mw-blue-100 rounded-xl text-mw-blue-600 mb-4">
+                  <div className="inline-flex items-center justify-center w-14 h-14 bg-mw-blue-100 rounded-2xl text-mw-blue-700 mb-4">
                     {capability.icon}
                   </div>
                   <h3 className="text-xl font-bold text-mw-gray-900 mb-3">{capability.title}</h3>
@@ -344,7 +344,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
                 </p>
 
                 {/* Highlighted callout */}
-                <div className="bg-gradient-to-r from-mw-blue-600/20 to-mw-blue-500/10 border border-mw-blue-500/30 rounded-xl p-5">
+                <div className="bg-gradient-to-r from-mw-blue-600/20 to-mw-blue-500/10 border border-mw-blue-500/30 rounded-2xl p-5">
                   <p className="text-lg font-bold text-white">
                     Moving Audiences® changes that reality.
                   </p>
@@ -366,8 +366,8 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
       </section>
 
       {/* Awards & Recognition - Hidden for now
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -375,7 +375,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             transition={{ duration: 0.6 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               Recognition & Awards
             </h2>
             <p className="text-lg text-mw-gray-600">
@@ -391,7 +391,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl p-6 text-center shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
+                className="bg-white rounded-2xl p-6 text-center shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
               >
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-500 rounded-full mb-4">
                   <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -408,8 +408,8 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
       */}
 
       {/* Proudly Associated Section */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -420,7 +420,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
               {t("ui.company.about.associationsLabel")}
             </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
+            <h2 className="font-bold text-mw-gray-900 mt-4 mb-6 text-3xl lg:text-4xl">
               {t("ui.company.about.associationsTitle")}
             </h2>
             <p className="text-mw-gray-600 max-w-2xl mx-auto text-lg">
@@ -451,7 +451,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
                 {[...associations, ...associations].filter((association): association is typeof association & { logo: string } => Boolean(association.logo)).map((association, index) => (
                   <div
                     key={index}
-                    className="flex-shrink-0 w-40 h-20 bg-white rounded-xl border-2 border-mw-gray-200 flex items-center justify-center group hover:border-mw-blue-400 hover:shadow-mw-lg transition-all duration-300 px-4"
+                    className="flex-shrink-0 w-40 h-20 bg-white rounded-2xl border-2 border-mw-gray-200 flex items-center justify-center group hover:border-mw-blue-400 hover:shadow-mw-lg transition-all duration-300 px-4"
                   >
                     <Image
                       src={association.logo}
@@ -471,8 +471,8 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
       </section>
 
       {/* Mission Statement */}
-      <section className="py-20 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-r from-mw-blue-600 to-mw-blue-700 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -480,7 +480,7 @@ export default function AboutPageClient({ initialData }: AboutPageClientProps) {
             transition={{ duration: 0.6 }}
             className="text-center text-white"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="font-bold mb-6 text-3xl lg:text-4xl">
               {t("ui.company.about.mission")}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-8 max-w-4xl mx-auto leading-relaxed">

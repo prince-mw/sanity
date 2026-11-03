@@ -8,7 +8,7 @@ export default function Newsletter() {
   const { t } = useLocale();
 
   return (
-    <section className="py-24 bg-mw-blue-600">
+    <section className="bg-mw-blue-600 mw-section-lg">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="bg-white rounded-2xl p-6 sm:p-8 md:p-12 lg:p-16 shadow-mw-xl">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -19,7 +19,7 @@ export default function Newsletter() {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mb-6 leading-tight">
+              <h2 className="font-bold text-mw-gray-900 mb-6 leading-tight text-3xl lg:text-4xl">
                 {t('newsletter.title')}
                 <span className="block text-mw-blue-600">{t('newsletter.titleHighlight')}</span>
               </h2>

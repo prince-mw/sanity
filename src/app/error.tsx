@@ -56,7 +56,7 @@ export default function Error({
             <summary className="cursor-pointer text-sm font-medium text-mw-gray-700 mb-2">
               Error Details (Dev Only)
             </summary>
-            <pre className="text-xs text-red-600 overflow-auto max-h-40 p-2 bg-white rounded">
+            <pre className="text-xs text-red-600 overflow-auto max-h-40 p-2 bg-white rounded-lg">
               {error.message}
               {error.digest && `\nDigest: ${error.digest}`}
             </pre>

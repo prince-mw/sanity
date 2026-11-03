@@ -49,8 +49,8 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-20 bg-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -69,8 +69,8 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
       </section>
 
       {/* Press Releases Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -78,7 +78,7 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t('ui.news.latestReleasesTitle')}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -102,7 +102,7 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-mw-lg border border-mw-gray-100 overflow-hidden hover:shadow-mw-xl transition-shadow"
+                className="bg-white rounded-2xl shadow-mw-lg border border-mw-gray-100 overflow-hidden hover:shadow-mw-xl transition-shadow"
               >
                 <Link href={release.slug ? `/press-news/${release.slug}` : '#'} className="block">
                 <div className="relative h-48 bg-gradient-to-br from-mw-blue-50 to-mw-blue-100 overflow-hidden">
@@ -165,7 +165,7 @@ export default function PressNewsPageClient({ pressReleases }: PressNewsPageClie
                 
                 <div className="p-6">
                   <div className="flex items-center gap-3 mb-4">
-                    <span className="px-3 py-1 bg-mw-blue-100 text-mw-blue-600 text-xs font-medium rounded-full">
+                    <span className="px-3 py-1 bg-mw-blue-100 text-mw-blue-700 text-xs font-medium rounded-full">
                       {release.category}
                     </span>
                     <span className="text-mw-gray-500 text-sm">{release.date}</span>

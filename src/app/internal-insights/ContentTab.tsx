@@ -10,7 +10,7 @@ const fmtFormat = (f: string) => (/^none$/i.test(f) ? 'text only' : f.toLowerCas
 function PageTable({ rows }: { rows: ContentPage[] }) {
   if (!rows.length) return <p className="text-sm text-gray-500">No readers in this period.</p>
   return (
-    <div className="overflow-x-auto rounded-xl border border-gray-200 bg-white">
+    <div className="overflow-x-auto rounded-2xl border border-gray-200 bg-white">
       <table className="w-full text-sm">
         <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
           <tr>
@@ -61,8 +61,8 @@ const SOCIAL_STYLE: Record<SocialChannel['name'], { accent: string; badge: strin
 
 function SocialStat({ label, value, cur, prev }: { label: string; value: number; cur: number; prev: number }) {
   return (
-    <div className="rounded-xl bg-gray-50 px-3 py-2.5">
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-500 capitalize">{label}</p>
+    <div className="rounded-2xl bg-gray-50 px-3 py-2.5">
+      <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 capitalize">{label}</p>
       <p className="mt-0.5 text-xl font-bold text-[#062068]">{nf(value)}</p>
       <Delta cur={cur} prev={prev} />
     </div>
@@ -79,7 +79,7 @@ function SocialCard({ c }: { c: SocialChannel }) {
       <div className="h-1.5" style={{ background: st.accent }} />
       <div className="p-5 flex flex-col flex-1">
         <div className="flex items-center gap-3 mb-4">
-          <span className={`flex h-10 w-10 items-center justify-center rounded-xl text-white ${st.badge}`}>
+          <span className={`flex h-10 w-10 items-center justify-center rounded-2xl text-white ${st.badge}`}>
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">{st.icon}</svg>
           </span>
           <div className="min-w-0">
@@ -122,11 +122,11 @@ function SocialCard({ c }: { c: SocialChannel }) {
         ) : (
           <ol className="space-y-2.5">
             {c.top.map((t, i) => (
-              <li key={`${t.date}-${i}`} className="flex gap-3 rounded-xl border border-gray-100 p-3 hover:border-gray-200 hover:bg-gray-50 transition-colors">
+              <li key={`${t.date}-${i}`} className="flex gap-3 rounded-2xl border border-gray-100 p-3 hover:border-gray-200 hover:bg-gray-50 transition-colors">
                 <span className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: st.accent }}>{i + 1}</span>
                 <div className="min-w-0">
                   <p className="text-sm text-gray-800 leading-snug line-clamp-3">{t.url ? <a href={t.url} target="_blank" rel="noreferrer" className="hover:text-mw-blue-600">{t.text || '(no text)'}</a> : t.text || '(no text)'}</p>
-                  <div className="mt-1.5 flex flex-wrap gap-1.5 text-[11px]">
+                  <div className="mt-1.5 flex flex-wrap gap-1.5 text-xs">
                     {t.date && <span className="rounded-full bg-gray-100 px-2 py-0.5 text-gray-600">{fmtDate(t.date)}</span>}
                     <span className="rounded-full bg-gray-100 px-2 py-0.5 text-gray-600 capitalize">{fmtFormat(t.format)}</span>
                     <span className="rounded-full bg-gray-100 px-2 py-0.5 text-gray-800 font-semibold">{nf(t.engagements)} engagements</span>
@@ -204,7 +204,7 @@ export default function ContentTab({ data, statuses }: { data: ContentDashboard;
 
       <h2 className="text-lg font-bold text-[#062068] mb-3">Details</h2>
       <Details title="Where readers come from" summary="Readers of blogs and case studies by channel">
-        <div className="overflow-x-auto rounded-xl border border-gray-200">
+        <div className="overflow-x-auto rounded-2xl border border-gray-200">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
               <tr><th scope="col" className={TH}>Channel</th><th scope="col" className={THR}>Blog readers</th><th scope="col" className={THR}>Case study readers</th></tr>
@@ -236,7 +236,7 @@ export default function ContentTab({ data, statuses }: { data: ContentDashboard;
           <p className="text-sm text-gray-500">No ebook forms opened in this period.</p>
         ) : (
           <>
-            <div className="overflow-x-auto rounded-xl border border-gray-200">
+            <div className="overflow-x-auto rounded-2xl border border-gray-200">
               <table className="w-full text-sm">
                 <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
                   <tr><th scope="col" className={TH}>Ebook</th><th scope="col" className={THR}>Opened</th><th scope="col" className={THR}>Downloaded</th><th scope="col" className={THR}>Download rate</th><th scope="col" className={THR}>Previous period</th></tr>

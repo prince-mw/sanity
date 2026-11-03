@@ -112,7 +112,7 @@ function SearchContent() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-12 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
+      <section className="pb-12 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -148,7 +148,7 @@ function SearchContent() {
                 placeholder={t("ui.search.placeholder")}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                className="w-full px-14 py-4 border border-mw-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-mw-blue-500 text-lg"
+                className="w-full px-14 py-4 border border-mw-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mw-blue-500 text-lg"
               />
               <button
                 type="submit"
@@ -183,7 +183,7 @@ function SearchContent() {
       </section>
 
       {/* Results Section */}
-      <section className="py-12">
+      <section className="mw-section">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           {isLoading ? (
             <div className="flex justify-center py-12">
@@ -205,7 +205,7 @@ function SearchContent() {
                   >
                     <Link
                       href={getResultUrl(result)}
-                      className="block bg-white rounded-xl border border-mw-gray-200 overflow-hidden hover:shadow-lg transition-shadow group"
+                      className="block bg-white rounded-2xl border border-mw-gray-200 overflow-hidden hover:shadow-lg transition-shadow group"
                     >
                       {result.image && (
                         <div className="relative h-48 bg-mw-gray-100">
@@ -219,7 +219,7 @@ function SearchContent() {
                       )}
                       <div className="p-5">
                         <div className="flex items-center gap-2 mb-2">
-                          <span className="text-xs font-medium text-mw-blue-600 bg-mw-blue-50 px-2 py-1 rounded">
+                          <span className="text-xs font-medium text-mw-blue-700 bg-mw-blue-50 px-2 py-1 rounded-lg">
                             {typeLabels[result._type] ? t(typeLabels[result._type]) : result._type}
                           </span>
                           {result.date && (

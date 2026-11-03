@@ -218,8 +218,8 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-mw-gray-50 via-white to-mw-blue-25">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-20 bg-gradient-to-br from-mw-gray-50 via-white to-mw-blue-25 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -256,7 +256,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-center bg-white rounded-xl p-6 shadow-mw-sm border border-mw-gray-100"
+                className="text-center bg-white rounded-2xl p-6 shadow-mw-sm border border-mw-gray-100"
               >
                 <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">9+</div>
                 <div className="text-sm text-mw-gray-600">{t("ui.company.journey.statYears")}</div>
@@ -265,7 +265,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="text-center bg-white rounded-xl p-6 shadow-mw-sm border border-mw-gray-100"
+                className="text-center bg-white rounded-2xl p-6 shadow-mw-sm border border-mw-gray-100"
               >
                 <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">1000+</div>
                 <div className="text-sm text-mw-gray-600">{t("ui.company.journey.statPartners")}</div>
@@ -274,7 +274,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-center bg-white rounded-xl p-6 shadow-mw-sm border border-mw-gray-100"
+                className="text-center bg-white rounded-2xl p-6 shadow-mw-sm border border-mw-gray-100"
               >
                 <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">9</div>
                 <div className="text-sm text-mw-gray-600">{t("ui.company.journey.statOffices")}</div>
@@ -283,7 +283,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="text-center bg-white rounded-xl p-6 shadow-mw-sm border border-mw-gray-100"
+                className="text-center bg-white rounded-2xl p-6 shadow-mw-sm border border-mw-gray-100"
               >
                 <div className="text-3xl md:text-4xl font-bold text-mw-blue-600 mb-2">$300M+</div>
                 <div className="text-sm text-mw-gray-600">{t("ui.company.journey.statRevenue")}</div>
@@ -294,8 +294,8 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
       </section>
 
       {/* Interactive Timeline Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white relative overflow-hidden mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -303,7 +303,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t("ui.company.journey.timelineTitle")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -388,8 +388,8 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
       </section>
 
       {/* Growth Phases Section */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -397,7 +397,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t("ui.company.journey.phasesTitle")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -434,7 +434,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
               <div>
                 <div className="flex items-center gap-4 mb-6">
                   <div className="text-2xl font-bold text-mw-blue-600">{growthPhases[activePhase].years}</div>
-                  <div className="px-3 py-1 bg-mw-blue-100 text-mw-blue-600 text-sm font-medium rounded-full">
+                  <div className="px-3 py-1 bg-mw-blue-100 text-mw-blue-700 text-sm font-medium rounded-full">
                     {growthPhases[activePhase].focus}
                   </div>
                 </div>
@@ -465,7 +465,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.3, delay: index * 0.1 }}
-                    className="text-center bg-mw-gray-50 rounded-xl p-6"
+                    className="text-center bg-mw-gray-50 rounded-2xl p-6"
                   >
                     <div className="text-2xl font-bold text-mw-blue-600 mb-2">{metric.value}</div>
                     <div className="text-sm text-mw-gray-600">{metric.label}</div>
@@ -478,8 +478,8 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
       </section>
 
       {/* Global Expansion Map */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -487,7 +487,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t("ui.company.journey.expansionTitle")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -503,7 +503,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl p-6 border border-mw-gray-100 hover:shadow-mw-lg transition-shadow"
+                className="bg-white rounded-2xl p-6 border border-mw-gray-100 hover:shadow-mw-lg transition-shadow"
               >
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-bold text-mw-gray-900">{office.city}</h3>
@@ -529,8 +529,8 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
       </section>
 
       {/* Awards Timeline */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -538,7 +538,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t("ui.company.journey.awardsTitle")}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -554,7 +554,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="flex items-center gap-6 bg-gradient-to-r from-mw-blue-50 to-white border border-mw-gray-100 rounded-xl p-6"
+                className="flex items-center gap-6 bg-gradient-to-r from-mw-blue-50 to-white border border-mw-gray-100 rounded-2xl p-6"
               >
                 <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-500 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
                   🏆
@@ -562,7 +562,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
                 <div className="flex-1">
                   <div className="flex items-center gap-4 mb-1">
                     <h3 className="text-lg font-bold text-mw-gray-900">{award.award}</h3>
-                    <span className="px-2 py-1 bg-mw-blue-100 text-mw-blue-600 text-sm font-medium rounded">{award.year}</span>
+                    <span className="px-2 py-1 bg-mw-blue-100 text-mw-blue-700 text-sm font-medium rounded-lg">{award.year}</span>
                   </div>
                   <p className="text-mw-gray-600">{award.organization}</p>
                 </div>
@@ -573,8 +573,8 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
       </section>
 
       {/* Future Vision */}
-      <section className="py-20 bg-gradient-to-br from-mw-blue-600 via-mw-blue-700 to-mw-blue-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-br from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -582,7 +582,7 @@ export default function OurJourneyPageClient({ initialTimeline, initialPageData 
             transition={{ duration: 0.6 }}
             className="text-center text-white"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="font-bold mb-6 text-3xl lg:text-4xl">
               {t("ui.company.journey.continuesTitle")}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">

@@ -29,7 +29,7 @@ const MEDIA_ICONS: Record<string, string> = {
 
 function MediaIcon({ name }: { name: string }) {
   return (
-    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#61CBF5] via-[#1E76BB] to-[#2A3B8F] text-white flex items-center justify-center shadow-lg shadow-blue-900/20">
+    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#61CBF5] via-[#1E76BB] to-[#2A3B8F] text-white flex items-center justify-center shadow-lg shadow-blue-900/20">
       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.8} d={MEDIA_ICONS[name] || MEDIA_ICONS.billboard} />
       </svg>
@@ -55,11 +55,11 @@ export default function SingaporeLandingClient({
   return (
     <div className="bg-white text-gray-900">
       {/* Hero */}
-      <section className={`relative overflow-hidden ${SG_NAVY} text-white pt-24 pb-12 lg:pt-28 lg:pb-16`}>
+      <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
             <div className="lg:col-span-7">
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-5">{main.h1}</h1>
@@ -87,7 +87,7 @@ export default function SingaporeLandingClient({
             </div>
             <dl className="lg:col-span-5 grid grid-cols-2 gap-3 sm:gap-4">
               {main.heroStats.map((s) => (
-                <div key={s.label} className="rounded-xl border border-white/15 bg-white/5 backdrop-blur-sm p-4 sm:p-6">
+                <div key={s.label} className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur-sm p-4 sm:p-6">
                   <dt className="sr-only">{s.label}</dt>
                   <dd>
                     <span className="block text-2xl sm:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-cyan-300 to-blue-200 bg-clip-text text-transparent">{s.value}</span>
@@ -101,8 +101,8 @@ export default function SingaporeLandingClient({
       </section>
 
       {/* Landscape */}
-      <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={main.landscape.heading} intro={main.landscape.intro} center />
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             {main.landscape.cards.map((c, i) => (
@@ -117,8 +117,8 @@ export default function SingaporeLandingClient({
       </section>
 
       {/* Venue tabs */}
-      <section id="venues" className="py-12 lg:py-16 bg-gray-50 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="venues" className="bg-gray-50 scroll-mt-20 mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={main.venuesHeading} intro={main.venuesIntro} center />
           <div role="tablist" aria-label={t('ui.locations.venueTypes')} className="flex gap-2 overflow-x-auto pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 sm:flex-wrap sm:justify-center">
             {venues.map((v) => {
@@ -132,7 +132,7 @@ export default function SingaporeLandingClient({
                   aria-selected={selected}
                   aria-controls={`panel-${v.slug}`}
                   onClick={() => setActiveVenue(v.slug)}
-                  className={`whitespace-nowrap rounded-xl px-5 py-3 text-sm sm:text-base font-semibold transition-all ${selected ? 'bg-[#062068] text-white shadow-lg' : 'bg-white text-gray-700 border border-gray-200 hover:border-mw-blue-300'}`}
+                  className={`whitespace-nowrap rounded-lg px-5 py-3 text-sm sm:text-base font-semibold transition-all ${selected ? 'bg-[#062068] text-white shadow-lg' : 'bg-white text-gray-700 border border-gray-200 hover:border-mw-blue-300'}`}
                 >
                   {v.tabLabel}
                 </button>
@@ -148,7 +148,7 @@ export default function SingaporeLandingClient({
               id={`panel-${v.slug}`}
               aria-labelledby={`tab-${v.slug}`}
               hidden={activeVenue !== v.slug}
-              className="mt-6 rounded-3xl bg-white border border-gray-200 p-5 sm:p-8 shadow-precision"
+              className="mt-6 rounded-2xl bg-white border border-gray-200 p-5 sm:p-8 shadow-precision"
             >
               <div className="grid lg:grid-cols-12 gap-6 lg:gap-10 items-start">
                 <SgImageBox image={v.image} className="lg:col-span-5 aspect-[16/10] rounded-2xl" sizes="(min-width: 1024px) 40vw, 100vw" />
@@ -167,7 +167,7 @@ export default function SingaporeLandingClient({
                   {v.tabStats.length > 0 && (
                   <dl className="grid grid-cols-3 gap-3 mb-6">
                     {v.tabStats.map((s) => (
-                      <div key={s.label} className="rounded-xl bg-gray-50 border border-gray-100 p-3 sm:p-4">
+                      <div key={s.label} className="rounded-2xl bg-gray-50 border border-gray-100 p-3 sm:p-4">
                         <dt className="sr-only">{s.label}</dt>
                         <dd>
                           <span className="block text-xl sm:text-2xl font-bold text-mw-blue-600">{s.value}</span>
@@ -198,16 +198,16 @@ export default function SingaporeLandingClient({
       </section>
 
       {/* Landmark billboards */}
-      <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={main.landmarksHeading} intro={main.landmarksIntro} center />
           <SgLandmarkCards landmarks={main.landmarks} />
         </div>
       </section>
 
       {/* Media types */}
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={main.mediaTypesHeading} center />
           <div className="grid sm:grid-cols-2 lg:grid-cols-5 gap-4">
             {main.mediaTypes.map((m) => (
@@ -225,26 +225,26 @@ export default function SingaporeLandingClient({
       </section>
 
       {/* Billboard advertising in Singapore */}
-      <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-8 lg:gap-12 items-center">
+      <section className="mw-section">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mw-container">
           <div className="lg:col-span-7">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-5">{main.billboard.heading}</h2>
+            <h2 className="font-bold tracking-tight text-[#062068] mb-5 text-3xl lg:text-4xl">{main.billboard.heading}</h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
               {main.billboard.paragraphs.map((p) => <p key={p}>{p}</p>)}
             </div>
           </div>
           <div className="lg:col-span-5 flex flex-col items-center gap-6">
-            <SgImageBox image={main.billboard.image} className="w-full aspect-[16/9] rounded-3xl shadow-precision-lg" sizes="(min-width: 1024px) 40vw, 100vw" />
+            <SgImageBox image={main.billboard.image} className="w-full aspect-[16/9] rounded-2xl shadow-precision-lg" sizes="(min-width: 1024px) 40vw, 100vw" />
             <SgFormButton onOpen={openForm} variant="dark">{main.billboard.cta}</SgFormButton>
           </div>
         </div>
       </section>
 
       {/* Measurement */}
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+      <section className="bg-gray-50 mw-section">
+        <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start mw-container">
           <div className="lg:col-span-5">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-5">{main.measurement.heading}</h2>
+            <h2 className="font-bold tracking-tight text-[#062068] mb-5 text-3xl lg:text-4xl">{main.measurement.heading}</h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed mb-7">
               {main.measurement.paragraphs.map((p) => <p key={p}>{p}</p>)}
             </div>
@@ -272,9 +272,9 @@ export default function SingaporeLandingClient({
       </section>
 
       {/* Market potential */}
-      <section className="py-12 lg:py-16">
+      <section className="mw-section">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-6 text-center">{main.potential.heading}</h2>
+          <h2 className="font-bold tracking-tight text-[#062068] mb-6 text-center text-3xl lg:text-4xl">{main.potential.heading}</h2>
           <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
             {main.potential.paragraphs.map((p) => <p key={p}>{p}</p>)}
           </div>
@@ -282,8 +282,8 @@ export default function SingaporeLandingClient({
       </section>
 
       {/* Success stories */}
-      <section className="py-12 lg:py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <SgSectionHeading title={main.stories.heading} intro={main.stories.intro} center />
           <div className="grid md:grid-cols-2 gap-6">
             {main.stories.items.map((s) => (

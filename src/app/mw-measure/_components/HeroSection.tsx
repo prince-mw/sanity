@@ -56,14 +56,14 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const renderSubtitle = () => subtitle.replaceAll('MW Measure', 'MW Measure');
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#182b6e] text-white pt-20 sm:pt-16 lg:pt-20 pb-12 lg:pb-16">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#062068] text-white pb-12 lg:pb-16 mw-hero-top">
 
       {/* The right-side ambient glow was removed — it showed through the circle image's
           transparent corners (a circle inscribed in a square always leaves its corners
           transparent), creating a visibly different background shade than the left side. */}
       <div className="absolute top-1/4 left-10 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative z-10 mw-container">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-8 items-center">
 
           <div className="md:col-span-6 space-y-6 sm:space-y-8 text-center md:text-left">
@@ -73,7 +73,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center">
                 <MeasureGeometry size="xs" />
               </div>
-              <span className="font-sans uppercase tracking-wider text-[11px] text-blue-100">
+              <span className="font-sans uppercase tracking-wider text-xs text-blue-100">
                 {badge}
               </span>
             </div>
@@ -89,7 +89,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center md:justify-start gap-4">
               <CTAButton
                 href="/contact"
-                className="inline-flex items-center justify-center px-7 py-3.5 sm:py-4 rounded-xl bg-white text-[#121f56] text-xs sm:text-sm font-bold tracking-wider uppercase shadow-xl shadow-blue-950/40 hover:bg-slate-100 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+                className="inline-flex items-center justify-center px-7 py-3.5 sm:py-4 rounded-2xl bg-white text-[#121f56] text-xs sm:text-sm font-bold tracking-wider uppercase shadow-xl shadow-blue-950/40 hover:bg-slate-100 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
                 id="hero-prove-campaign-btn"
               >
                 <span>{t('ui.products.proveYourCampaign')}</span>

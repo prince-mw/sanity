@@ -2,6 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   Layout guideline (design audit, 4 Nov 2026 — every page measured at
+   375 / 768 / 1440 / 1920px). One page container, three section spacings, one
+   hero offset. Use these instead of hand-picking widths and paddings, or the
+   section edges stop lining up with the header again.
+   ───────────────────────────────────────────────────────────────────────────── */
+@layer components {
+  /* Page container: 1280px max; 16px sides on phones, 24px tablets, 32px laptops+. Matches the header. */
+  .mw-container { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
+
+  /* Section spacing: standard for most sections, large for key moments, compact for strips. */
+  .mw-section { @apply py-12 md:py-16; }
+  .mw-section-lg { @apply py-16 md:py-24; }
+  .mw-section-sm { @apply py-8 md:py-10; }
+
+  /* Hero top: clears the fixed header (56px phone / 64px laptop) plus 48 / 64 / 80px of air. */
+  .mw-hero-top { @apply pt-[104px] md:pt-[120px] lg:pt-36; }
+
+  /* Running text never wider than ~720px (about 70 characters a line). */
+  .mw-measure { max-width: 45rem; }
+
+  /* Buttons: primary, secondary (outline), on-dark; 8px corners, 16px / 600, no capitals. */
+  .mw-btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold normal-case tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600; }
+  .mw-btn-primary { @apply mw-btn bg-blue-600 text-white hover:bg-blue-700; }
+  .mw-btn-secondary { @apply mw-btn border-2 border-blue-600 bg-transparent text-blue-600 hover:bg-blue-50; }
+  .mw-btn-on-dark { @apply mw-btn bg-white text-[#062068] hover:bg-blue-50; }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #111827;

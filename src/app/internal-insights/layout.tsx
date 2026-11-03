@@ -3,7 +3,7 @@ export default function InternalInsightsLayout({ children }: { children: React.R
   return (
     <>
       <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center gap-3 sm:gap-4">
+        <div className="py-3 flex items-center gap-3 sm:gap-4 mw-container">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/assets/logo/MW-logo-web.svg" alt="Moving Walls" className="h-8 sm:h-9 w-auto" />
           <span className="h-7 w-px bg-gray-200" aria-hidden="true" />

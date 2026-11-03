@@ -83,14 +83,14 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 overflow-hidden mw-section">
         {/* Background Elements */}
         <div className="absolute inset-0">
           <div className="absolute top-20 left-10 w-72 h-72 bg-blue-500/20 rounded-full blur-3xl"></div>
           <div className="absolute bottom-10 right-10 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl"></div>
         </div>
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,7 +112,7 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
                 placeholder="Search integrations..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                className="w-full pl-12 pr-4 py-4 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
           </motion.div>
@@ -120,8 +120,8 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
       </section>
 
       {/* Main Content */}
-      <section className="py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar - Categories */}
             <motion.div
@@ -130,7 +130,7 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
               transition={{ duration: 0.5 }}
               className="lg:w-64 flex-shrink-0"
             >
-              <div className="bg-white rounded-xl shadow-sm p-4 sticky top-24">
+              <div className="bg-white rounded-2xl shadow-sm p-4 sticky top-24">
                 <h3 className="font-semibold text-gray-900 mb-4">Categories</h3>
                 <div className="space-y-1">
                   {categories.map((category) => (
@@ -193,11 +193,11 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
                     onClick={() => setSelectedIntegration(integration)}
-                    className="bg-white rounded-xl p-6 shadow-sm hover:shadow-lg transition-all cursor-pointer border border-gray-100 hover:border-blue-200 group"
+                    className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-lg transition-all cursor-pointer border border-gray-100 hover:border-blue-200 group"
                   >
                     {/* Header */}
                     <div className="flex items-start justify-between mb-4">
-                      <div className="w-14 h-14 bg-gray-50 rounded-xl flex items-center justify-center group-hover:bg-blue-50 transition-colors p-2">
+                      <div className="w-14 h-14 bg-gray-50 rounded-2xl flex items-center justify-center group-hover:bg-blue-50 transition-colors p-2">
                         {integration.logo ? (
                           <Image src={integration.logo} alt={integration.name} width={40} height={40} className="object-contain" />
                         ) : (
@@ -225,13 +225,13 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
                       {integration.products.slice(0, 3).map((product) => (
                         <span
                           key={product}
-                          className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded"
+                          className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-lg"
                         >
                           {product}
                         </span>
                       ))}
                       {integration.products.length > 3 && (
-                        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                        <span className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded-lg">
                           +{integration.products.length - 3}
                         </span>
                       )}
@@ -273,7 +273,7 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
             <div className="p-6 border-b bg-gradient-to-r from-gray-50 to-blue-50">
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-white rounded-xl shadow-sm flex items-center justify-center p-2">
+                  <div className="w-16 h-16 bg-white rounded-2xl shadow-sm flex items-center justify-center p-2">
                     {selectedIntegration.logo ? (
                       <Image src={selectedIntegration.logo} alt={selectedIntegration.name} width={48} height={48} className="object-contain" />
                     ) : (
@@ -336,7 +336,7 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
               </div>
 
               {/* API Configuration */}
-              <div className="bg-gray-50 rounded-xl p-4">
+              <div className="bg-gray-50 rounded-2xl p-4">
                 <h3 className="font-semibold text-gray-900 mb-3">API Configuration</h3>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
@@ -392,7 +392,7 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
       )}
 
       {/* CTA Section */}
-      <section className="py-20 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -400,7 +400,7 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               Don't See Your Integration?
             </h2>
             <p className="text-xl text-gray-600 mb-8">
@@ -409,13 +409,13 @@ export default function IntegrationsPageClient({ integrations }: IntegrationsPag
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/contact"
-                className="bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors"
+                className="bg-blue-600 text-white px-8 py-4 rounded-2xl font-semibold hover:bg-blue-700 transition-colors"
               >
                 Request Integration
               </Link>
               <Link
                 href="/api-reference"
-                className="border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:border-gray-300 transition-colors flex items-center justify-center gap-2"
+                className="border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-2xl font-semibold hover:border-gray-300 transition-colors flex items-center justify-center gap-2"
               >
                 <CodeIcon className="w-5 h-5" />
                 Build Custom Integration

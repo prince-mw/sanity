@@ -45,7 +45,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
   return (
     <section
-      className="relative overflow-hidden text-white pt-24 sm:pt-20 lg:pt-24 pb-20 lg:pb-28"
+      className="relative overflow-hidden text-white pb-20 lg:pb-28 mw-hero-top"
       style={{
         background:
           'radial-gradient(circle at 75% 30%, rgba(56, 189, 248, 0.15), transparent 45%), radial-gradient(circle at 25% 60%, rgba(36, 56, 127, 0.4), transparent 50%), #071948',
@@ -55,7 +55,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-[#38bdf8]/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 left-10 w-80 h-80 bg-[#475aa2]/20 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+      <div className="relative mw-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
           <div className="lg:col-span-5 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
@@ -63,7 +63,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
                 <PlannerGeometry className="w-3.5 h-3.5 text-white" />
               </div>
-              <span className="font-sans uppercase tracking-wider text-[11px]">
+              <span className="font-sans uppercase tracking-wider text-xs">
                 {badge}
               </span>
             </div>

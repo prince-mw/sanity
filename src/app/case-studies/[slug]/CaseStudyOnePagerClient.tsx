@@ -90,8 +90,8 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero / one-pager card */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-sm text-mw-gray-500 mb-8">
             <Link href="/case-studies" className="hover:text-mw-blue-600 transition-colors">
@@ -189,7 +189,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
                   {metrics.map((metric, idx) => (
                     <div
                       key={idx}
-                      className="bg-gradient-to-br from-mw-blue-700 to-mw-blue-900 rounded-xl p-6 text-center"
+                      className="bg-gradient-to-br from-mw-blue-700 to-mw-blue-900 rounded-2xl p-6 text-center"
                     >
                       <div className="text-2xl sm:text-3xl font-bold text-white mb-1">{metric.value}</div>
                       <div className="text-xs sm:text-sm text-blue-100">{metric.label}</div>
@@ -203,8 +203,8 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
       </section>
 
       {/* Footer brand bar — mirrors the deck's closing bar */}
-      <section className="bg-gradient-to-r from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 py-5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-wrap items-center justify-between gap-2 text-sm text-white">
+      <section className="bg-gradient-to-r from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 mw-section-sm">
+        <div className="flex flex-wrap items-center justify-between gap-2 text-sm text-white mw-container">
           <span className="font-semibold">
             {caseStudy.brand ? `${caseStudy.brand} × Moving Walls` : "Moving Walls"}
             {caseStudy.country ? ` · ${caseStudy.country}` : ""}
@@ -216,7 +216,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
       </section>
 
       {/* Share Section */}
-      <section className="py-8 border-t border-mw-gray-200">
+      <section className="border-t border-mw-gray-200 mw-section-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -254,7 +254,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                   </svg>
                   {linkCopied && (
-                    <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-mw-gray-900 px-2 py-1 text-xs text-white">
+                    <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-mw-gray-900 px-2 py-1 text-xs text-white">
                       {t("ui.caseStudies.linkCopied")}
                     </span>
                   )}
@@ -276,8 +276,8 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
 
       {/* Related Case Studies */}
       {relatedCaseStudies.length > 0 && (
-        <section className="py-16 bg-mw-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 mw-section">
+          <div className="mw-container">
             <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">{t("ui.caseStudies.relatedCaseStudies")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedCaseStudies.map((related, index) => (
@@ -290,7 +290,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
                 >
                   <Link
                     href={`/case-studies/${related.slug}`}
-                    className="group block bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
+                    className="group block bg-white rounded-2xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
                   >
                     <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative overflow-hidden">
                       {related.featuredImage && (
@@ -319,7 +319,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
       )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -328,7 +328,7 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
             transition={{ duration: 0.8 }}
             className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 rounded-2xl p-8 lg:p-12 text-center"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">{t("ui.caseStudies.similarResultsTitle")}</h2>
+            <h2 className="font-bold text-white mb-4 text-3xl lg:text-4xl">{t("ui.caseStudies.similarResultsTitle")}</h2>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               {t("ui.caseStudies.similarResultsText")}
             </p>

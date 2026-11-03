@@ -14,10 +14,10 @@ export default function PartnersListClient({ intro, partners }: PartnersListClie
   const { t } = useLocale()
   return (
     <div className="bg-white text-gray-900">
-      <section className="relative overflow-hidden bg-[#062068] text-white pt-24 pb-12 lg:pt-28 lg:pb-16">
+      <section className="relative overflow-hidden bg-[#062068] text-white pb-12 lg:pb-16 mw-hero-top">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="max-w-3xl">
             <h1 className="font-bold tracking-tight mb-5">
               <span className="block text-xs sm:text-sm font-semibold uppercase tracking-wider text-cyan-300 mb-3">{intro.eyebrow}</span>
@@ -28,8 +28,8 @@ export default function PartnersListClient({ intro, partners }: PartnersListClie
         </div>
       </section>
 
-      <section className="py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="mw-section">
+        <div className="mw-container">
           <ul className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6">
             {partners.map((partner) => (
               <li key={partner.slug}>

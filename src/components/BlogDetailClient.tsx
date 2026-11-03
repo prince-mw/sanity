@@ -76,7 +76,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -147,7 +147,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
 
       {/* Featured Image */}
       {post.featuredImage && (
-        <section className="py-8">
+        <section className="mw-section-sm">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
@@ -167,7 +167,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
       )}
 
       {/* Content */}
-      <section className="py-12">
+      <section className="mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.article
             initial={{ opacity: 0, y: 20 }}
@@ -196,7 +196,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
 
       {/* Tags */}
       {post.tags && post.tags.length > 0 && (
-        <section className="py-8 border-t border-mw-gray-200">
+        <section className="border-t border-mw-gray-200 mw-section-sm">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-wrap items-center gap-3">
               <span className="text-sm font-medium text-mw-gray-700">{t("ui.blog.tagsLabel")}</span>
@@ -214,7 +214,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
       )}
 
       {/* Share Section */}
-      <section className="py-8 border-t border-mw-gray-200">
+      <section className="border-t border-mw-gray-200 mw-section-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -252,7 +252,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                   </svg>
                   {linkCopied && (
-                    <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-mw-gray-900 px-2 py-1 text-xs text-white">
+                    <span className="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-lg bg-mw-gray-900 px-2 py-1 text-xs text-white">
                       {t("ui.blog.linkCopied")}
                     </span>
                   )}
@@ -274,8 +274,8 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (
-        <section className="py-16 bg-mw-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 mw-section">
+          <div className="mw-container">
             <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">{t("ui.blog.relatedArticles")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedPosts.map((relatedPost, index) => (
@@ -288,7 +288,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
                 >
                   <Link
                     href={`/blog/${relatedPost.slug}`}
-                    className="group block bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
+                    className="group block bg-white rounded-2xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
                   >
                     <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative overflow-hidden">
                       {relatedPost.featuredImage && (
@@ -323,7 +323,7 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
       )}
 
       {/* Newsletter CTA */}
-      <section className="py-16 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -334,12 +334,12 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
           >
             <div className="grid lg:grid-cols-2 gap-8 items-center">
               <div className="text-center lg:text-left">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-mw-blue-100 rounded-xl mb-5">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-mw-blue-100 rounded-2xl mb-5">
                   <svg className="w-6 h-6 text-mw-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">{t("ui.blog.enjoyedTitle")}</h2>
+                <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">{t("ui.blog.enjoyedTitle")}</h2>
                 <p className="text-mw-gray-500 leading-relaxed">
                   {t("ui.blog.enjoyedText")}
                 </p>

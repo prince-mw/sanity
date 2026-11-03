@@ -109,7 +109,7 @@ const portableTextComponents = {
           <img
             src={imageUrl}
             alt={value.alt || ''}
-            className="rounded-xl w-full"
+            className="rounded-2xl w-full"
           />
           {value.caption && (
             <figcaption className="text-center text-sm text-mw-gray-500 mt-2">
@@ -124,7 +124,7 @@ const portableTextComponents = {
       if (value?.videoType === 'file' && value?.videoFileUrl) {
         return (
           <figure className="my-8">
-            <video className="w-full rounded-xl" autoPlay muted preload="auto" playsInline {...getVideoSkipIntroProps(value.startAtSeconds)}>
+            <video className="w-full rounded-2xl" autoPlay muted preload="auto" playsInline {...getVideoSkipIntroProps(value.startAtSeconds)}>
               <source src={value.videoFileUrl} type={value.videoFileMimeType || 'video/mp4'} />
             </video>
             {value.caption && (
@@ -146,7 +146,7 @@ const portableTextComponents = {
       if (!embedUrl) return null
       return (
         <figure className="my-8">
-          <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
+          <div className="relative aspect-video rounded-2xl overflow-hidden bg-mw-gray-100">
             <iframe src={embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title={value.caption || 'Embedded video'} />
           </div>
           {value.caption && (
@@ -160,7 +160,7 @@ const portableTextComponents = {
         return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }} />
       }
       return (
-        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-xl overflow-x-auto text-sm">
+        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-2xl overflow-x-auto text-sm">
           <code>{value.code}</code>
         </pre>
       )
@@ -199,7 +199,7 @@ const portableTextComponents = {
       }
       const style = themeStyles[value.theme] || themeStyles.light
       return (
-        <div className={`my-8 p-6 ${style.bg} rounded-xl`}>
+        <div className={`my-8 p-6 ${style.bg} rounded-2xl`}>
           <div className={value.layout === 'row' ? 'flex flex-wrap justify-center gap-8' : 'grid grid-cols-2 gap-4'}>
             {value.stats?.map((stat: any, i: number) => (
               <div key={stat._key || `stat-${i}`} className="text-center">
@@ -240,7 +240,7 @@ const portableTextComponents = {
     testimonialBlock: ({ value }: any) => {
       const avatarUrl = value.avatar?.asset ? buildSanityImageUrl(value.avatar, 80) : ''
       return (
-        <div className="my-8 bg-mw-gray-50 rounded-xl p-6 md:p-8">
+        <div className="my-8 bg-mw-gray-50 rounded-2xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-6">
             {avatarUrl && <img src={avatarUrl} alt={value.author} width={80} height={80} className="rounded-full flex-shrink-0" />}
             <div className="flex-1">
@@ -342,8 +342,8 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-2 gap-12 items-start">
             {/* Event Info */}
             <motion.div
@@ -460,15 +460,15 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
 
       {/* Speakers Section */}
       {event.speakers && event.speakers.length > 0 && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">{t('ui.events.speakers')}</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-8 text-3xl lg:text-4xl">{t('ui.events.speakers')}</h2>
               
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {event.speakers.map((speaker, index) => (
@@ -478,7 +478,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                     viewport={{ once: true }}
-                    className="bg-mw-gray-50 rounded-xl p-6 border border-mw-gray-200"
+                    className="bg-mw-gray-50 rounded-2xl p-6 border border-mw-gray-200"
                   >
                     <div className="flex items-center gap-4">
                       {speaker.image ? (
@@ -512,7 +512,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
 
       {/* Content Section */}
       {event.content && event.content.length > 0 && (
-        <section className="py-16 bg-mw-gray-50">
+        <section className="bg-mw-gray-50 mw-section">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -521,7 +521,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
               viewport={{ once: true }}
               className="prose prose-lg max-w-none"
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">{t('ui.events.aboutThisEvent')}</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-8 text-3xl lg:text-4xl">{t('ui.events.aboutThisEvent')}</h2>
               <div className="bg-white rounded-2xl p-8 border border-mw-gray-200">
                 <PortableText value={event.content} components={portableTextComponents} />
               </div>
@@ -532,8 +532,8 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
 
       {/* Related Events */}
       {relatedEvents.length > 0 && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -541,7 +541,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
               viewport={{ once: true }}
             >
               <div className="flex items-center justify-between mb-8">
-                <h2 className="text-3xl font-bold text-mw-gray-900">{t('ui.events.moreEvents')}</h2>
+                <h2 className="font-bold text-mw-gray-900 text-3xl lg:text-4xl">{t('ui.events.moreEvents')}</h2>
                 <Link 
                   href="/events"
                   className="text-mw-blue-600 hover:text-mw-blue-700 font-medium transition-colors"
@@ -560,7 +560,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
                     viewport={{ once: true }}
                   >
                     <Link href={`/events/${relEvent.slug}`}>
-                      <div className="bg-white rounded-xl border border-mw-gray-200 overflow-hidden hover:shadow-mw-lg transition-all duration-300 group">
+                      <div className="bg-white rounded-2xl border border-mw-gray-200 overflow-hidden hover:shadow-mw-lg transition-all duration-300 group">
                         <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative overflow-hidden">
                           {relEvent.featuredImage ? (
                             <img 
@@ -603,7 +603,7 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
       )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-br from-mw-gray-900 to-mw-gray-800">
+      <section className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -611,13 +611,13 @@ export default function EventDetailClient({ event, relatedEvents }: Readonly<Eve
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-bold text-white mb-4">{t('ui.events.stayUpdated')}</h2>
+            <h2 className="font-bold text-white mb-4 text-3xl lg:text-4xl">{t('ui.events.stayUpdated')}</h2>
             <p className="text-xl text-mw-gray-300 mb-8">
               {t('ui.events.stayUpdatedText')}
             </p>
             <Link
               href="/events"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white font-semibold rounded-xl hover:bg-mw-blue-700 transition-colors shadow-mw-lg"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white font-semibold rounded-2xl hover:bg-mw-blue-700 transition-colors shadow-mw-lg"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />

@@ -76,7 +76,7 @@ export function HeroSection({
       )}
 
       {/* Content */}
-      <div className={`relative z-10 container mx-auto px-4 py-20 flex flex-col ${containerAlign}`}>
+      <div className={`relative z-10 py-20 flex flex-col ${containerAlign} mw-container`}>
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

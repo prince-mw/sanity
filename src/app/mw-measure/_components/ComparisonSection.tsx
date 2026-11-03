@@ -3,10 +3,10 @@ import { FileText, ArrowRight } from 'lucide-react';
 
 export const ComparisonSection: React.FC = () => {
   return (
-    <section className="bg-white text-slate-900 py-10 sm:py-14 border-b border-slate-100 relative">
+    <section className="bg-white text-slate-900 border-b border-slate-100 relative mw-section">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
 
-        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[#14235d]">
+        <h2 className="font-extrabold tracking-tight text-[#062068] text-3xl lg:text-4xl">
           You Know Your Campaign Ran. <br />
           <span className="text-blue-600">
             But Did It Work?
@@ -25,7 +25,7 @@ export const ComparisonSection: React.FC = () => {
               <FileText className="w-7 h-7 stroke-[1.75]" />
             </div>
 
-            <h3 className="text-lg font-bold text-[#14235d] tracking-tight mb-2">
+            <h3 className="text-lg font-bold text-[#062068] tracking-tight mb-2">
               The Old Way: Delivery
             </h3>
 
@@ -75,7 +75,7 @@ export const ComparisonSection: React.FC = () => {
               </svg>
             </div>
 
-            <h3 className="text-lg font-bold text-[#14235d] tracking-tight mb-2">
+            <h3 className="text-lg font-bold text-[#062068] tracking-tight mb-2">
               The Moving Walls Way: Proof
             </h3>
 

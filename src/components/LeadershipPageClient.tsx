@@ -27,7 +27,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-gray-900 relative overflow-hidden">
+      <section className="pb-20 bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-gray-900 relative overflow-hidden mw-hero-top">
         <div className="absolute inset-0">
           <div className="absolute inset-0 opacity-[0.03]">
             <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -51,7 +51,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
           />
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="relative z-10 mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -76,8 +76,8 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
       </section>
 
       {/* Leadership Team Grid */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t('ui.leadership.executiveLeadership')}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -113,7 +113,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
               >
                 <Link
                   href={`/leadership/${member.slug}`}
-                  className="block bg-white rounded-xl shadow-mw-lg border border-mw-gray-100 overflow-hidden group hover:shadow-mw-xl transition-all"
+                  className="block bg-white rounded-2xl shadow-mw-lg border border-mw-gray-100 overflow-hidden group hover:shadow-mw-xl transition-all"
                 >
                   <div className="relative h-64 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 overflow-hidden">
                     {member.image && member.image !== '/assets/images/team-placeholder.svg' ? (
@@ -157,8 +157,8 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
       </section>
 
       {/* Company Values Section */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -166,7 +166,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {t('ui.leadership.ourValues')}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -179,8 +179,8 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-r from-mw-blue-600 to-mw-blue-700 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -188,7 +188,7 @@ export default function LeadershipPageClient({ leadership }: LeadershipPageClien
             transition={{ duration: 0.6 }}
             className="text-center text-white"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+            <h2 className="font-bold mb-6 text-3xl lg:text-4xl">
               {t('ui.leadership.joinOurTeam')}
             </h2>
             <p className="text-xl text-mw-blue-100 mb-8 max-w-3xl mx-auto leading-relaxed">

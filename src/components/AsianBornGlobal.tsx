@@ -343,8 +343,8 @@ export default function AsianBornGlobal() {
   const { t } = useLocale();
 
   return (
-    <section className="relative py-12 lg:py-20 bg-mw-gray-900 overflow-hidden">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative bg-mw-gray-900 overflow-hidden mw-section">
+      <div className="mw-container">
         <div className="grid lg:grid-cols-2 gap-10 lg:gap-12 items-center">
           {/* Left Side - Content */}
           <div className="order-2 lg:order-1">
@@ -356,7 +356,7 @@ export default function AsianBornGlobal() {
               transition={{ duration: 0.6 }}
               className="mb-6"
             >
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-2">
+              <h2 className="font-bold text-white mb-2 text-3xl lg:text-4xl">
                 {t('landingPage.asianBornGlobal.title')} <span className="text-mw-blue-400">{t('landingPage.asianBornGlobal.titleHighlight')}</span>
               </h2>
               <p className="text-lg lg:text-xl text-gray-200 leading-relaxed">{t('landingPage.asianBornGlobal.description')}</p>

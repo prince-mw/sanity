@@ -79,7 +79,7 @@ export default function ProductHeroSection({
         <div className="absolute inset-0 bg-[url('/assets/images/grid-pattern.svg')] bg-center opacity-10" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20">
+      <div className="relative pt-32 pb-20 mw-container">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[70vh]">
           {/* Left Column - Content */}
           <motion.div

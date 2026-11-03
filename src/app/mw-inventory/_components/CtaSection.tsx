@@ -27,10 +27,10 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
       <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+      <div className="relative mw-container">
         <div className="max-w-3xl mx-auto space-y-6 sm:space-y-8">
 
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white font-sans leading-tight">
+          <h2 className="font-bold tracking-tight text-white font-sans leading-tight text-3xl lg:text-4xl">
             {title}
           </h2>
 

@@ -158,8 +158,8 @@ export default function CaseStudiesListClient({
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -184,8 +184,8 @@ export default function CaseStudiesListClient({
       </section>
 
       {/* Filter & Sort Bar */}
-      <section className="py-6 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white border-b border-mw-gray-200 sticky top-20 z-40 mw-section-sm">
+        <div className="mw-container">
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-3 w-full sm:w-auto">
@@ -232,8 +232,8 @@ export default function CaseStudiesListClient({
 
       {/* Featured Case Study */}
       {selectedCountry === "All" && selectedIndustry === "All" && currentPage === 1 && featuredCase && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -247,7 +247,7 @@ export default function CaseStudiesListClient({
                         <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                         {t("ui.caseStudies.featuredCaseStudy")}
                       </span>
-                      <h2 className="text-3xl lg:text-4xl font-bold mb-4">{featuredCase.title}</h2>
+                      <h2 className="font-bold mb-4 text-3xl lg:text-4xl">{featuredCase.title}</h2>
                       <p className="text-blue-100 text-lg mb-6 line-clamp-3">
                         {featuredCase.challenge || featuredCase.excerpt || getExcerpt(featuredCase.content, 200)}
                       </p>
@@ -259,7 +259,7 @@ export default function CaseStudiesListClient({
                       </div>
                     </div>
                     {featuredCase.featuredImage && (
-                      <div className="relative aspect-video lg:aspect-auto rounded-xl overflow-hidden">
+                      <div className="relative aspect-video lg:aspect-auto rounded-2xl overflow-hidden">
                         <Image
                           src={featuredCase.featuredImage}
                           alt={featuredCase.title}
@@ -277,8 +277,8 @@ export default function CaseStudiesListClient({
       )}
 
       {/* Case Studies Grid */}
-      <section className="py-16 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           {/* Results Count */}
           <div className="flex items-center justify-between mb-8">
             <p className="text-mw-gray-600">
@@ -322,7 +322,7 @@ export default function CaseStudiesListClient({
                     transition={{ duration: 0.5, delay: index * 0.05 }}
                     className="group"
                   >
-                    <Link href={`/case-studies/${caseStudy.slug}`} className="bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 h-full flex flex-col">
+                    <Link href={`/case-studies/${caseStudy.slug}`} className="bg-white rounded-2xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300 h-full flex flex-col">
                       <div className="relative aspect-video overflow-hidden">
                         {caseStudy.featuredImage && (
                           <Image
@@ -399,9 +399,9 @@ export default function CaseStudiesListClient({
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">
+          <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
             {t("ui.caseStudies.ctaTitle")}
           </h2>
           <p className="text-mw-gray-600 mb-8 max-w-2xl mx-auto">
@@ -409,7 +409,7 @@ export default function CaseStudiesListClient({
           </p>
           <CTAButton
             href="/contact"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white rounded-xl hover:bg-mw-blue-700 transition-colors font-medium"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-mw-blue-600 text-white rounded-2xl hover:bg-mw-blue-700 transition-colors font-medium"
           >
             {t("ui.caseStudies.getStarted")}
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -58,8 +58,8 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb */}
-      <section className="pt-28 pb-4 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-4 bg-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <nav className="flex items-center gap-2 text-sm text-mw-gray-600">
             <Link href="/" className="hover:text-mw-blue-600 transition-colors">{t('ui.company.home')}</Link>
             <span>/</span>
@@ -71,8 +71,8 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
       </section>
 
       {/* Hero Section */}
-      <section className="py-12 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -89,7 +89,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
               }`}>
                 {formatLevel(job.level)}
               </span>
-              <span className="px-3 py-1 rounded-full text-sm font-medium bg-mw-blue-100 text-mw-blue-600">
+              <span className="px-3 py-1 rounded-full text-sm font-medium bg-mw-blue-100 text-mw-blue-700">
                 {job.department}
               </span>
             </div>
@@ -147,8 +147,8 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
       </section>
 
       {/* Main Content */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-3 gap-12">
             {/* Left Column - Main Content */}
             <div className="lg:col-span-2 space-y-12">
@@ -252,7 +252,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5 }}
-                  className="bg-mw-gray-50 rounded-xl p-6 border border-mw-gray-100"
+                  className="bg-mw-gray-50 rounded-2xl p-6 border border-mw-gray-100"
                 >
                   <h3 className="text-lg font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.interested')}</h3>
                   <p className="text-mw-gray-600 mb-6">{t('ui.company.careers.interestedText')}</p>
@@ -270,7 +270,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.1 }}
-                  className="bg-white rounded-xl p-6 border border-mw-gray-200 shadow-mw-md"
+                  className="bg-white rounded-2xl p-6 border border-mw-gray-200 shadow-mw-md"
                 >
                   <h3 className="text-lg font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.jobDetails')}</h3>
                   <div className="space-y-4">
@@ -305,7 +305,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="bg-white rounded-xl p-6 border border-mw-gray-200"
+                  className="bg-white rounded-2xl p-6 border border-mw-gray-200"
                 >
                   <h3 className="text-lg font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.shareJob')}</h3>
                   <div className="flex gap-3">
@@ -349,8 +349,8 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
 
       {/* Related Jobs */}
       {relatedJobs.length > 0 && (
-        <section className="py-16 bg-mw-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 mw-section">
+          <div className="mw-container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -358,7 +358,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
               transition={{ duration: 0.5 }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">{t('ui.company.careers.otherOpportunities')}</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">{t('ui.company.careers.otherOpportunities')}</h2>
               <p className="text-lg text-mw-gray-600">{t('ui.company.careers.otherOpportunitiesText')}</p>
             </motion.div>
 
@@ -373,7 +373,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
                 >
                   <Link
                     href={`/careers/${relatedJob.slug}`}
-                    className="block bg-white rounded-xl p-6 shadow-mw-md border border-mw-gray-100 hover:shadow-mw-lg transition-shadow h-full"
+                    className="block bg-white rounded-2xl p-6 shadow-mw-md border border-mw-gray-100 hover:shadow-mw-lg transition-shadow h-full"
                   >
                     <div className="flex items-center gap-2 mb-3">
                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
@@ -425,7 +425,7 @@ export default function JobDetailClient({ job, relatedJobs }: JobDetailClientPro
             className="absolute inset-0 bg-black/50" 
             onClick={() => setApplicationModal({ isOpen: false, formUrl: '' })}
           />
-          <div className="relative bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden">
             <div className="flex items-center justify-between p-4 border-b border-mw-gray-200">
               <h3 className="text-lg font-bold text-mw-gray-900">{t('ui.company.careers.applyFor').replace('{title}', job.title)}</h3>
               <button 

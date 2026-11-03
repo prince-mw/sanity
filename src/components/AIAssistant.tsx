@@ -206,13 +206,13 @@ export default function AIAssistant() {
                   onChange={(e) => setInputValue(e.target.value)}
                   onKeyPress={handleKeyPress}
                   placeholder="Ask me about MW products, pricing, demos..."
-                  className="flex-1 px-3 py-2 border border-mw-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 text-sm"
+                  className="flex-1 px-3 py-2 border border-mw-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-mw-blue-500 focus:border-mw-blue-500 text-sm"
                   disabled={isTyping}
                 />
                 <button
                   onClick={handleSendMessage}
                   disabled={!inputValue.trim() || isTyping}
-                  className="w-10 h-10 bg-mw-blue-600 hover:bg-mw-blue-700 disabled:bg-mw-gray-300 text-white rounded-xl flex items-center justify-center transition-colors"
+                  className="w-10 h-10 bg-mw-blue-600 hover:bg-mw-blue-700 disabled:bg-mw-gray-300 text-white rounded-lg flex items-center justify-center transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />

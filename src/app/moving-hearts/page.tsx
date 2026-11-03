@@ -95,7 +95,7 @@ export default function MovingHeartsPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-rose-50 to-white">
       {/* Hero */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative pb-20 overflow-hidden mw-hero-top">
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
           {[...Array(20)].map((_, i) => (
             <motion.div
@@ -111,7 +111,7 @@ export default function MovingHeartsPage() {
           ))}
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 items-center">
+        <div className="relative z-10 grid lg:grid-cols-2 gap-12 items-center mw-container">
           <div className="text-center lg:text-left">
             <motion.p {...fadeUp} className="text-sm font-semibold tracking-widest uppercase text-rose-600 mb-4">
               Media for a Better World
@@ -137,7 +137,7 @@ export default function MovingHeartsPage() {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="flex justify-center"
           >
-            <div className="bg-white rounded-3xl shadow-xl border border-rose-100 p-8 sm:p-10">
+            <div className="bg-white rounded-2xl shadow-xl border border-rose-100 p-8 sm:p-10">
               <Image src="/assets/moving-hearts/moving-hearts-logo.webp" alt="Moving Hearts logo – Media for a Better World" width={333} height={492} priority className="w-48 sm:w-60 h-auto" />
             </div>
           </motion.div>
@@ -145,9 +145,9 @@ export default function MovingHeartsPage() {
       </section>
 
       {/* Who are we */}
-      <section className="py-20 bg-white">
+      <section className="bg-white mw-section">
         <motion.div {...fadeUp} className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Who Are We?</h2>
+          <h2 className="font-bold text-gray-900 mb-6 text-3xl lg:text-4xl">Who Are We?</h2>
           <p className="text-lg text-gray-600 leading-relaxed mb-4">
             We are change-makers, harmonising philanthropy with dynamic out-of-home (OOH) media owners who share our dedication to creating a better world. Using our advanced tech stack and an innovative approach to digital out-of-home, we illuminate social and humanitarian initiatives.
           </p>
@@ -158,10 +158,10 @@ export default function MovingHeartsPage() {
       </section>
 
       {/* Offerings */}
-      <section className="py-20 bg-gradient-to-b from-white to-rose-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-b from-white to-rose-50 mw-section">
+        <div className="mw-container">
           <motion.div {...fadeUp} className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Elevate Awareness With Our Platform</h2>
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">Elevate Awareness With Our Platform</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Elevate a nonprofit&apos;s mission, attract supporters and boost fundraising through out-of-home media.
             </p>
@@ -183,7 +183,7 @@ export default function MovingHeartsPage() {
                       <HeartIcon className="w-5 h-5 text-rose-500 flex-shrink-0 mt-1" />
                       <div>
                         <p className="font-semibold text-gray-900">{item.title}</p>
-                        <p className="text-gray-600 text-[15px] leading-relaxed">{item.text}</p>
+                        <p className="text-gray-600 text-base leading-relaxed">{item.text}</p>
                       </div>
                     </li>
                   ))}
@@ -205,10 +205,10 @@ export default function MovingHeartsPage() {
       </section>
 
       {/* How it works */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div {...fadeUp} className="text-center mb-14">
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">How It Works</h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Joining Moving Hearts takes just a few clicks. The whole process is automated to show the power and scale of DOOH in this global mission of giving.
             </p>
@@ -225,10 +225,10 @@ export default function MovingHeartsPage() {
       </section>
 
       {/* Causes */}
-      <section className="py-20 bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700">
+      <section className="bg-gradient-to-r from-rose-600 via-pink-600 to-rose-700 mw-section">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeUp} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Causes We Support</h2>
+            <h2 className="font-bold text-white mb-4 text-3xl lg:text-4xl">Causes We Support</h2>
             <p className="text-lg text-white/80 max-w-2xl mx-auto">
               Giving is a language understood everywhere. These are the causes our network puts on screen.
             </p>
@@ -250,10 +250,10 @@ export default function MovingHeartsPage() {
       </section>
 
       {/* Closing */}
-      <section className="py-20 bg-white">
+      <section className="bg-white mw-section">
         <motion.div {...fadeUp} className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <HeartIcon className="w-12 h-12 text-rose-500 mx-auto mb-6" />
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Join the Movement</h2>
+          <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">Join the Movement</h2>
           <p className="text-lg text-gray-600 mb-8">
             At Moving Hearts, we believe compassion transcends boundaries. Whether you&apos;re a nonprofit seeking visibility, a media owner with screen time to give or a donor who wants to make a difference, join us on this journey, wherever you are.
           </p>

@@ -168,8 +168,8 @@ export default function Products() {
   };
 
   return (
-    <section id="products" className="py-24 bg-gradient-to-br from-mw-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="products" className="bg-gradient-to-br from-mw-gray-50 to-white mw-section-lg">
+      <div className="mw-container">
         {/* Header Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -181,7 +181,7 @@ export default function Products() {
           <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
             {t('landingPage.products.badge')}
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
+          <h2 className="font-bold text-mw-gray-900 mt-4 mb-6 text-3xl lg:text-4xl">
             {t('landingPage.products.title')}
           </h2>
           <p className="text-mw-gray-600 text-lg mb-8 max-w-4xl mx-auto">
@@ -225,7 +225,7 @@ export default function Products() {
                     transition={{ duration: 0.4, delay: index * 0.1 }}
                     onMouseEnter={() => setActiveStage(stage.id)}
                     onMouseLeave={() => setActiveStage(null)}
-                    className={`flex flex-col items-center gap-2 p-4 rounded-xl transition-all duration-300 ${
+                    className={`flex flex-col items-center gap-2 p-4 rounded-2xl transition-all duration-300 ${
                       isActive
                         ? 'bg-mw-blue-600 shadow-mw-lg scale-105'
                         : 'bg-white hover:bg-mw-blue-50'
@@ -279,7 +279,7 @@ export default function Products() {
                   <Link href={product.href}>
                     <div className={`relative bg-white rounded-2xl p-8 shadow-mw-lg hover:shadow-mw-xl transition-all duration-300 border ${product.borderColor} overflow-hidden`}>
                       {/* Icon */}
-                      <div className={`mb-4 bg-gradient-to-br ${product.bgColor} inline-flex p-3 rounded-xl text-white`}>{product.icon}</div>
+                      <div className={`mb-4 bg-gradient-to-br ${product.bgColor} inline-flex p-3 rounded-2xl text-white`}>{product.icon}</div>
 
                       {/* Content */}
                       <h3 className="text-2xl font-bold text-mw-gray-900 mb-2">

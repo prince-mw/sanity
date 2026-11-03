@@ -90,7 +90,7 @@ export function SgImageBox({ image, className = '', sizes = '100vw', priority = 
           <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          <span className="text-[11px] font-semibold uppercase tracking-wider">{t('ui.shared.imagePlaceholder')}</span>
+          <span className="text-xs font-semibold uppercase tracking-wider">{t('ui.shared.imagePlaceholder')}</span>
           <span className="text-xs leading-snug max-w-[18rem]">{image.need}</span>
         </div>
       )}
@@ -149,14 +149,14 @@ export function SgFaqList({ faqs, heading: headingProp, bg = 'bg-gray-50' }: { f
   const heading = headingProp === undefined ? t('ui.locations.faqs') : headingProp
   const [open, setOpen] = useState<number | null>(0)
   return (
-    <section className={`py-12 lg:py-16 ${bg}`}>
+    <section className={`${bg} mw-section`}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-8 text-center">{heading}</h2>
+        <h2 className="font-bold tracking-tight text-[#062068] mb-8 text-center text-3xl lg:text-4xl">{heading}</h2>
         <div className="space-y-3">
           {faqs.map((faq, i) => {
             const isOpen = open === i
             return (
-              <div key={faq.question} className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+              <div key={faq.question} className="rounded-2xl border border-gray-200 bg-white overflow-hidden">
                 <h3>
                   <button
                     type="button"
@@ -186,7 +186,7 @@ export function SgFaqList({ faqs, heading: headingProp, bg = 'bg-gray-50' }: { f
 
 export function SgMwScience({ block: mwScienceBlock }: { block: SgScience }) {
   return (
-    <div className={`relative overflow-hidden rounded-3xl ${SG_NAVY} text-white p-6 sm:p-10`}>
+    <div className={`relative overflow-hidden rounded-2xl ${SG_NAVY} text-white p-6 sm:p-10`}>
       <div className="absolute -top-20 -right-20 w-72 h-72 rounded-full bg-[#61CBF5]/20 blur-3xl pointer-events-none" />
       <div className="relative grid lg:grid-cols-12 gap-8">
         <div className="lg:col-span-5">
@@ -221,14 +221,14 @@ export function SgLogoStrip({ section }: { section: SgLogoSection | null }) {
 
 export function SgClosingCta({ heading, body, button, onOpen, showArrow = true }: { heading: string; body: string; button: string; onOpen: () => void; showArrow?: boolean }) {
   return (
-    <section className="py-12 lg:py-16 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className={`relative overflow-hidden rounded-3xl ${SG_NAVY} text-white px-6 py-12 sm:px-12 lg:py-16 text-center`}>
+    <section className="bg-white mw-section">
+      <div className="mw-container">
+        <div className={`relative overflow-hidden rounded-2xl ${SG_NAVY} text-white px-6 py-12 sm:px-12 lg:py-16 text-center`}>
           <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
           <div className="absolute -top-24 -left-24 w-72 h-72 rounded-full bg-[#61CBF5]/25 blur-3xl pointer-events-none" />
           <div className="absolute -bottom-24 -right-24 w-80 h-80 rounded-full bg-[#1E76BB]/40 blur-3xl pointer-events-none" />
           <div className="relative max-w-2xl mx-auto">
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight leading-tight mb-4">{heading}</h2>
+            <h2 className="font-bold tracking-tight leading-tight mb-4 text-3xl lg:text-4xl">{heading}</h2>
             <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed mb-7">{body}</p>
             <SgFormButton onOpen={onOpen} showArrow={showArrow}>{button}</SgFormButton>
           </div>
@@ -267,8 +267,8 @@ export function SgSiteGrid({ sites }: { sites: SgSite[] }) {
       </div>
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" role="tabpanel">
         {visible.map((s) => (
-          <li key={`${s.group}-${s.name}`} className="flex items-start gap-3 rounded-xl border border-gray-200 bg-white p-4 hover:border-mw-blue-200 hover:shadow-precision transition-all">
-            <span className="mt-0.5 w-8 h-8 rounded-lg bg-mw-blue-50 text-mw-blue-600 flex items-center justify-center flex-shrink-0">
+          <li key={`${s.group}-${s.name}`} className="flex items-start gap-3 rounded-2xl border border-gray-200 bg-white p-4 hover:border-mw-blue-200 hover:shadow-precision transition-all">
+            <span className="mt-0.5 w-8 h-8 rounded-lg bg-mw-blue-50 text-mw-blue-700 flex items-center justify-center flex-shrink-0">
               <PinIcon />
             </span>
             <span>

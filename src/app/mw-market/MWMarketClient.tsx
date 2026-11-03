@@ -216,15 +216,15 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
     <div className="min-h-screen bg-white">
 
       {/* HERO SECTION */}
-      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-10 sm:py-12 md:py-16 lg:py-20 overflow-hidden`}>
+      <section className={`relative bg-gradient-to-br ${heroGradient} text-white overflow-hidden mw-section`}>
         <div className="absolute inset-0 bg-black/10" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center mb-6 sm:mb-8">
 
             {/* Left Content */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="order-2 lg:order-1">
               {tagline && (
-                <div className="inline-flex items-center bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md mb-4 sm:mb-6 w-fit">
+                <div className="inline-flex items-center bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg mb-4 sm:mb-6 w-fit">
                   <span className="text-white/90 font-medium text-xs sm:text-sm">{tagline}</span>
                 </div>
               )}
@@ -235,7 +235,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
                 <button
                   type="button"
                   onClick={openFormPopup}
-                  className="bg-white text-blue-900 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2"
+                  className="bg-white text-blue-900 px-5 sm:px-6 py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-blue-50 transition-all shadow-xl inline-flex items-center justify-center gap-2"
                 >
                   {t('ui.products.getStarted')}
                   <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -244,7 +244,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
                   href="https://market.movingwalls.com/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-white/10 text-white border border-white/30 px-5 sm:px-6 py-3 sm:py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
+                  className="bg-white/10 text-white border border-white/30 px-5 sm:px-6 py-3 sm:py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
                 >
                   {t('ui.products.exploreMarketplace')}
                   <ArrowRightIcon className="w-4 h-4 sm:w-5 sm:h-5" />
@@ -254,7 +254,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
 
             {/* Right Image */}
             {heroImageUrl && (
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="bg-white/5 backdrop-blur-md border border-white/20 rounded-md overflow-hidden order-1 lg:order-2">
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.6, delay: 0.2 }} className="bg-white/5 backdrop-blur-md border border-white/20 rounded-lg overflow-hidden order-1 lg:order-2">
                 <Image src={heroImageUrl} alt={heroTitle} width={800} height={500} className="w-full h-auto object-cover" priority />
               </motion.div>
             )}
@@ -264,7 +264,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
           {heroStats.length > 0 && (
             <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
               {heroStats.map((stat, index) => (
-                <motion.div key={`stat-${stat.label}-${index}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-md p-4 sm:p-5 text-center">
+                <motion.div key={`stat-${stat.label}-${index}`} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-lg p-4 sm:p-5 text-center">
                   <div className={`text-2xl sm:text-3xl md:text-4xl font-bold ${heroStatColors[index % heroStatColors.length]} mb-1`}>{stat.value}</div>
                   <div className="text-xs sm:text-sm text-blue-200 font-medium">{stat.label}</div>
                 </motion.div>
@@ -275,13 +275,13 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
       </section>
 
       {/* COMPARISON TABLE */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">{comparisonTitle}</h2>
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">{comparisonTitle}</h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">{comparisonSubtitle}</p>
           </motion.div>
-          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }} className="overflow-hidden rounded-xl border border-gray-200 shadow-lg">
+          <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }} className="overflow-hidden rounded-2xl border border-gray-200 shadow-lg">
             <div className="grid grid-cols-2">
               <div className="bg-gray-100 px-6 py-4 text-center font-bold text-gray-500 text-sm sm:text-base uppercase tracking-wide border-r border-gray-200">The Old Way</div>
               <div className="bg-blue-600 px-6 py-4 text-center font-bold text-white text-sm sm:text-base uppercase tracking-wide">The Moving Walls Way</div>
@@ -300,7 +300,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
             ))}
           </motion.div>
           <motion.div initial={{ opacity: 0, y: 10 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }} viewport={{ once: true }} className="text-center mt-10">
-            <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3.5 rounded-md font-semibold hover:bg-blue-700 transition-colors">
+            <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3.5 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
               See How It Works <ArrowRightIcon className="w-5 h-5" />
             </CTAButton>
           </motion.div>
@@ -308,15 +308,15 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
       </section>
 
       {/* FEATURES GRID */}
-      <section className="py-16 sm:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">{featuresTitle}</h2>
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">{featuresTitle}</h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">{featuresSubtitle}</p>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {features.map((feature, index) => (
-              <motion.div key={feature.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="flex gap-4 p-6 rounded-xl border border-gray-200 hover:border-blue-200 hover:shadow-md transition-all bg-white">
+              <motion.div key={feature.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="flex gap-4 p-6 rounded-2xl border border-gray-200 hover:border-blue-200 hover:shadow-md transition-all bg-white">
                 <div className="flex-shrink-0 w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center">
                   <feature.icon className="w-6 h-6 text-blue-600" />
                 </div>
@@ -331,11 +331,11 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
       </section>
 
       {/* ACCESS THE MARKET */}
-      <section className="py-16 sm:py-20 bg-blue-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-blue-900 text-white mw-section">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">{accessTitle}</h2>
+              <h2 className="font-bold mb-6 text-3xl lg:text-4xl">{accessTitle}</h2>
               <p className="text-lg text-blue-200 mb-8 leading-relaxed">{accessSubtitle}</p>
               <ul className="space-y-4">
                 {accessBullets.map((bullet: string, index: number) => (
@@ -349,7 +349,7 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
             <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                 {getDisplayIntegrations(product?.integrations, partnerLogos).map((integration) => (
-                  <div key={integration.name} className="bg-white rounded-md p-3 flex items-center justify-center h-14">
+                  <div key={integration.name} className="bg-white rounded-lg p-3 flex items-center justify-center h-14">
                     {integration.logo ? (
                       <Image
                         src={integration.logo}
@@ -374,19 +374,19 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
       <TestimonialSectionClient testimonials={testimonials} hideViewAll />
 
       {/* FINAL CTA */}
-      <section className={`relative bg-gradient-to-br ${heroGradient} text-white py-16 sm:py-20 overflow-hidden`}>
+      <section className={`relative bg-gradient-to-br ${heroGradient} text-white overflow-hidden mw-section`}>
         <div className="absolute inset-0 bg-black/10" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-12">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">{finalCtaTitle}</h2>
+            <h2 className="font-bold mb-4 text-3xl lg:text-4xl">{finalCtaTitle}</h2>
             <p className="text-lg sm:text-xl text-blue-200 mb-8 max-w-2xl mx-auto">{finalCtaSubtitle}</p>
-            <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-white text-blue-900 px-8 py-4 rounded-md font-bold text-base sm:text-lg hover:bg-blue-50 transition-colors shadow-xl">
+            <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-white text-blue-900 px-8 py-4 rounded-lg font-bold text-base sm:text-lg hover:bg-blue-50 transition-colors shadow-xl">
               {ctaLabel} <ArrowRightIcon className="w-5 h-5" />
             </CTAButton>
           </motion.div>
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {finalCtaFeatures.map((feature, index) => (
-              <motion.div key={feature.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="bg-white/10 border border-white/20 rounded-xl p-5 sm:p-6">
+              <motion.div key={feature.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: index * 0.1 }} viewport={{ once: true }} className="bg-white/10 border border-white/20 rounded-2xl p-5 sm:p-6">
                 <feature.icon className="w-8 h-8 text-blue-200 mb-3" />
                 <h3 className="font-bold text-white mb-2 text-sm sm:text-base">{feature.title}</h3>
                 <p className="text-blue-200 text-xs sm:text-sm leading-relaxed">{feature.description}</p>

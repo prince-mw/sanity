@@ -97,8 +97,8 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-20 bg-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -143,8 +143,8 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
       </section>
 
       {/* Why Moving Walls Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -152,7 +152,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {benefitsTitle}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -170,7 +170,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center p-6"
               >
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-mw-blue-100 rounded-lg text-mw-blue-600 mb-4">
+                <div className="inline-flex items-center justify-center w-12 h-12 bg-mw-blue-100 rounded-lg text-mw-blue-700 mb-4">
                   {iconMap[benefit.iconName] || iconMap.lightning}
                 </div>
                 <h3 className="text-xl font-bold text-mw-gray-900 mb-3">{benefit.title}</h3>
@@ -182,8 +182,8 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
       </section>
 
       {/* Departments Section */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -191,7 +191,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {departmentsTitle}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-2xl mx-auto">
@@ -222,8 +222,8 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
       </section>
 
       {/* Open Roles Section */}
-      <section id="open-roles" className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="open-roles" className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -231,7 +231,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
             transition={{ duration: 0.6 }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {openPositionsTitle}
             </h2>
             <p className="text-lg text-mw-gray-600 max-w-3xl mx-auto">
@@ -255,7 +255,7 @@ export default function CareersPageClient({ jobs, pageContent, totalOpenings }: 
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                className="bg-white rounded-xl shadow-mw-lg border border-mw-gray-100 p-6 hover:shadow-mw-xl transition-shadow"
+                className="bg-white rounded-2xl shadow-mw-lg border border-mw-gray-100 p-6 hover:shadow-mw-xl transition-shadow"
               >
                 <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
                   <div>

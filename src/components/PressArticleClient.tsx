@@ -74,7 +74,7 @@ const portableTextComponents: PortableTextComponents = {
       if (!imageUrl) return null
       return (
         <figure className="my-8">
-          <img src={imageUrl} alt={value.alt || ''} className="rounded-xl w-full" />
+          <img src={imageUrl} alt={value.alt || ''} className="rounded-2xl w-full" />
           {value.caption && (
             <figcaption className="text-center text-sm text-mw-gray-500 mt-2">{value.caption}</figcaption>
           )}
@@ -86,7 +86,7 @@ const portableTextComponents: PortableTextComponents = {
         return (
           <figure className="my-8">
             <video
-              className="w-full rounded-xl"
+              className="w-full rounded-2xl"
               autoPlay
               muted
               preload="auto"
@@ -113,7 +113,7 @@ const portableTextComponents: PortableTextComponents = {
       if (!embedUrl) return null
       return (
         <figure className="my-8">
-          <div className="relative aspect-video rounded-xl overflow-hidden bg-mw-gray-100">
+          <div className="relative aspect-video rounded-2xl overflow-hidden bg-mw-gray-100">
             <iframe src={embedUrl} className="absolute inset-0 w-full h-full" allowFullScreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title={value.caption || 'Embedded video'} />
           </div>
           {value.caption && (
@@ -127,7 +127,7 @@ const portableTextComponents: PortableTextComponents = {
         return <div className="my-8 html-embed" dangerouslySetInnerHTML={{ __html: sanitizeHtml(value.code) }} />
       }
       return (
-        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-xl overflow-x-auto text-sm">
+        <pre className="my-6 p-4 bg-mw-gray-900 text-mw-gray-100 rounded-2xl overflow-x-auto text-sm">
           <code>{value.code}</code>
         </pre>
       )
@@ -166,7 +166,7 @@ const portableTextComponents: PortableTextComponents = {
       }
       const style = themeStyles[value.theme] || themeStyles.light
       return (
-        <div className={`my-8 p-6 ${style.bg} rounded-xl`}>
+        <div className={`my-8 p-6 ${style.bg} rounded-2xl`}>
           <div className={value.layout === 'row' ? 'flex flex-wrap justify-center gap-8' : 'grid grid-cols-2 gap-4'}>
             {value.stats?.map((stat: any, i: number) => (
               <div key={stat._key || `stat-${i}`} className="text-center">
@@ -207,7 +207,7 @@ const portableTextComponents: PortableTextComponents = {
     testimonialBlock: ({ value }: any) => {
       const avatarUrl = value.avatar?.asset ? buildSanityImageUrl(value.avatar, 80) : ''
       return (
-        <div className="my-8 bg-mw-gray-50 rounded-xl p-6 md:p-8">
+        <div className="my-8 bg-mw-gray-50 rounded-2xl p-6 md:p-8">
           <div className="flex flex-col md:flex-row gap-6">
             {avatarUrl && <img src={avatarUrl} alt={value.author} width={80} height={80} className="rounded-full flex-shrink-0" />}
             <div className="flex-1">
@@ -303,7 +303,7 @@ export default function PressArticleClient({ article }: Readonly<PressArticleCli
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-mw-gray-50">
+      <section className="pb-16 bg-mw-gray-50 mw-hero-top">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -318,7 +318,7 @@ export default function PressArticleClient({ article }: Readonly<PressArticleCli
             </Link>
             
             <div className="flex flex-wrap items-center gap-3 mb-6">
-              <span className="px-3 py-1 bg-mw-blue-100 text-mw-blue-600 text-sm font-medium rounded-full">
+              <span className="px-3 py-1 bg-mw-blue-100 text-mw-blue-700 text-sm font-medium rounded-full">
                 {formatCategory(article.category)}
               </span>
               <span className="text-mw-gray-500">{formatDate(article.publishedAt)}</span>
@@ -336,7 +336,7 @@ export default function PressArticleClient({ article }: Readonly<PressArticleCli
       </section>
 
       {/* Article Content */}
-      <section className="py-16">
+      <section className="mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -346,7 +346,7 @@ export default function PressArticleClient({ article }: Readonly<PressArticleCli
           >
             {/* Featured Image */}
             {featuredImageUrl ? (
-              <div className="relative aspect-video rounded-xl mb-8 overflow-hidden">
+              <div className="relative aspect-video rounded-2xl mb-8 overflow-hidden">
                 <Image
                   src={featuredImageUrl}
                   alt={article.title}
@@ -355,7 +355,7 @@ export default function PressArticleClient({ article }: Readonly<PressArticleCli
                 />
               </div>
             ) : (
-              <div className="relative h-80 bg-gradient-to-br from-mw-blue-50 to-mw-blue-100 rounded-xl mb-8 flex items-center justify-center">
+              <div className="relative h-80 bg-gradient-to-br from-mw-blue-50 to-mw-blue-100 rounded-2xl mb-8 flex items-center justify-center">
                 <div className="text-center">
                   <div className="w-20 h-20 bg-mw-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

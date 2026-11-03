@@ -207,7 +207,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-mw-blue-600 text-white py-16 md:py-20 lg:py-24 overflow-hidden">
+      <section className="relative bg-mw-blue-600 text-white overflow-hidden mw-section-lg">
         <div className="absolute inset-0 bg-black/10"></div>
         <div className="absolute inset-0">
           <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/5 rounded-full blur-3xl animate-pulse"></div>
@@ -215,7 +215,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
           <div className="absolute top-1/2 right-1/4 w-48 h-48 bg-white/5 rounded-full blur-2xl animate-pulse" style={{ animationDelay: '2s' }}></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Side - Content */}
             <motion.div
@@ -241,7 +241,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.6 }}
               >
-                <CTAButton href="/contact" className="bg-white text-mw-blue-600 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl inline-flex items-center gap-2">
+                <CTAButton href="/contact" className="bg-white text-mw-blue-600 px-8 py-4 rounded-2xl font-bold text-lg hover:bg-gray-100 transition-all shadow-2xl inline-flex items-center gap-2">
                   {t('ui.products.bookDemo')}
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -296,8 +296,8 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -305,7 +305,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               Intelligent Campaign Activation
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -323,10 +323,10 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
+                className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all hover:-translate-y-1 border border-gray-100"
               >
                 {/* Icon */}
-                <div className="w-14 h-14 bg-mw-blue-50 rounded-xl flex items-center justify-center mb-4">
+                <div className="w-14 h-14 bg-mw-blue-50 rounded-2xl flex items-center justify-center mb-4">
                   <feature.icon className="w-8 h-8 text-mw-blue-600" />
                 </div>
                 
@@ -344,8 +344,8 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
       </section>
 
       {/* Activation Features Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -353,7 +353,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               OOH {activeMode === 'owners' ? 'Media Owner' : 'Buyer'} Platform
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -365,7 +365,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
 
           {/* Mode Switcher */}
           <div className="flex justify-center mb-12">
-            <div className="bg-gray-100 p-2 rounded-xl flex gap-2">
+            <div className="bg-gray-100 p-2 rounded-2xl flex gap-2">
               <button
                 onClick={() => setActiveMode('owners')}
                 className={`px-8 py-3 rounded-lg font-semibold transition-all ${
@@ -448,7 +448,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                     ) : isFullWidth ? (
                       // Full Width Bottom Card
                       <div className="flex flex-col md:flex-row items-center gap-8">
-                        <div className="w-16 h-16 bg-mw-blue-500 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <div className="w-16 h-16 bg-mw-blue-500 rounded-2xl flex items-center justify-center flex-shrink-0">
                           <feature.icon className="w-8 h-8 text-white" />
                         </div>
                         <div className="flex-1 text-center md:text-left">
@@ -471,7 +471,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                       // Right Stack Cards
                       <div className="h-full flex flex-col">
                         <div className="flex items-start gap-4 mb-4">
-                          <div className="w-12 h-12 bg-mw-blue-600 rounded-xl flex items-center justify-center flex-shrink-0">
+                          <div className="w-12 h-12 bg-mw-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0">
                             <feature.icon className="w-6 h-6 text-white" />
                           </div>
                           <div>
@@ -501,8 +501,8 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
       </section>
 
       {/* Live Data Stream Section */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -510,7 +510,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               Real-Time System Activity
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -540,7 +540,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                   <div className={`w-full md:w-[calc(50%-2rem)] ${index % 2 === 0 ? 'md:pr-8' : 'md:pl-8'}`}>
                     <motion.div
                       whileHover={{ scale: 1.02, y: -2 }}
-                      className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
+                      className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
                     >
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex items-center gap-3">
@@ -629,8 +629,8 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
       </section>
 
       {/* System Status Dashboard - Split Panel with Circular Gauges */}
-      <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-b from-gray-50 to-white mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -638,7 +638,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               Command Center Operations
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -668,7 +668,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
               </div>
 
               {/* Server Rack Node Grid */}
-              <div className="bg-gray-50 rounded-xl p-6 mb-6 border border-gray-200">
+              <div className="bg-gray-50 rounded-2xl p-6 mb-6 border border-gray-200">
                 <div className="flex items-center justify-between mb-4">
                   <span className="text-gray-600 text-xs uppercase tracking-wider font-medium">Infrastructure Nodes</span>
                   <span className="text-gray-500 text-xs">12 Active</span>
@@ -744,7 +744,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="bg-blue-50 rounded-xl p-4 text-center"
+                  className="bg-blue-50 rounded-2xl p-4 text-center"
                 >
                   <div className="text-2xl font-bold text-blue-600">12.8K</div>
                   <div className="text-xs text-gray-600 mt-1">Connections</div>
@@ -754,7 +754,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.2 }}
                   viewport={{ once: true }}
-                  className="bg-purple-50 rounded-xl p-4 text-center"
+                  className="bg-purple-50 rounded-2xl p-4 text-center"
                 >
                   <div className="text-2xl font-bold text-purple-600">2.4TB</div>
                   <div className="text-xs text-gray-600 mt-1">Data Processed</div>
@@ -764,7 +764,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.4, delay: 0.3 }}
                   viewport={{ once: true }}
-                  className="bg-green-50 rounded-xl p-4 text-center"
+                  className="bg-green-50 rounded-2xl p-4 text-center"
                 >
                   <div className="text-2xl font-bold text-green-600">99.97%</div>
                   <div className="text-xs text-gray-600 mt-1">Uptime</div>
@@ -826,9 +826,9 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                               stiffness: 200
                             }}
                             viewport={{ once: true }}
-                            className={`flex-1 h-10 rounded-md ${getHeatColor(value)} cursor-pointer hover:ring-2 hover:ring-offset-1 hover:ring-gray-400 transition-all group relative`}
+                            className={`flex-1 h-10 rounded-lg ${getHeatColor(value)} cursor-pointer hover:ring-2 hover:ring-offset-1 hover:ring-gray-400 transition-all group relative`}
                           >
-                            <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded whitespace-nowrap z-10 transition-opacity">
+                            <div className="opacity-0 group-hover:opacity-100 absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-2 py-1 rounded-lg whitespace-nowrap z-10 transition-opacity">
                               {value}%
                             </div>
                           </motion.div>
@@ -856,11 +856,11 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-500">Performance:</span>
                   <div className="flex items-center gap-1">
-                    <div className="w-4 h-4 rounded bg-red-400" />
-                    <div className="w-4 h-4 rounded bg-orange-400" />
-                    <div className="w-4 h-4 rounded bg-yellow-400" />
-                    <div className="w-4 h-4 rounded bg-green-400" />
-                    <div className="w-4 h-4 rounded bg-green-500" />
+                    <div className="w-4 h-4 rounded-lg bg-red-400" />
+                    <div className="w-4 h-4 rounded-lg bg-orange-400" />
+                    <div className="w-4 h-4 rounded-lg bg-yellow-400" />
+                    <div className="w-4 h-4 rounded-lg bg-green-400" />
+                    <div className="w-4 h-4 rounded-lg bg-green-500" />
                   </div>
                   <span className="text-xs text-gray-400">Low → High</span>
                 </div>
@@ -878,8 +878,8 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
       </section>
 
       {/* Integrations Section - Don't Replace. Integrate. */}
-      <section className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section-lg">
+        <div className="mw-container">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
@@ -890,7 +890,7 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
               <div className="inline-flex items-center gap-2 bg-blue-100 px-4 py-2 rounded-full mb-6">
                 <span className="text-blue-600 font-medium text-sm">50+ Integrations</span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              <h2 className="font-bold text-gray-900 mb-6 text-3xl lg:text-4xl">
                 Don&apos;t Replace.
                 <span className="block text-blue-600">Integrate.</span>
               </h2>
@@ -924,9 +924,9 @@ export default function MWActivate({ caseStudies = [] }: ProductsMWActivateClien
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.4, delay: index * 0.05 }}
                     viewport={{ once: true }}
-                    className="bg-gray-50 rounded-xl p-4 hover:bg-blue-50 hover:shadow-md transition-all text-center group cursor-pointer"
+                    className="bg-gray-50 rounded-2xl p-4 hover:bg-blue-50 hover:shadow-md transition-all text-center group cursor-pointer"
                   >
-                    <div className="w-14 h-14 mx-auto mb-3 bg-white rounded-xl shadow-sm flex items-center justify-center group-hover:shadow-md transition-shadow">
+                    <div className="w-14 h-14 mx-auto mb-3 bg-white rounded-2xl shadow-sm flex items-center justify-center group-hover:shadow-md transition-shadow">
                       {integration.logo}
                     </div>
                     <div className="text-sm font-medium text-gray-700">{integration.name}</div>

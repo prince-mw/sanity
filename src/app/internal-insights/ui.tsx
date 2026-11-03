@@ -39,7 +39,7 @@ export function Delta({ cur, prev, lowerIsBetter = false, points = false }: { cu
 function InfoTip({ text }: { text: string }) {
   return (
     <span className="group relative inline-flex align-middle">
-      <span tabIndex={0} aria-label={text} className="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-gray-300 text-[10px] font-bold normal-case text-gray-400 hover:border-gray-500 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#062068]">i</span>
+      <span tabIndex={0} aria-label={text} className="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-gray-300 text-xs font-bold normal-case text-gray-400 hover:border-gray-500 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#062068]">i</span>
       <span role="tooltip" className="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-60 -translate-x-1/2 rounded-lg bg-gray-900 px-3 py-2 text-xs font-normal normal-case leading-relaxed tracking-normal text-white shadow-lg group-hover:block group-focus-within:block">
         {text}
       </span>
@@ -158,9 +158,9 @@ export function ActionList({ actions, initial, onSaved }: { actions: Action[]; i
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${PRIORITY_STYLE[a.priority]}`}>{a.priority}</span>
-                      <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400">{a.category}</span>
-                      {a.owner && <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-[11px] font-semibold text-indigo-800">Assigned to: {a.owner}</span>}
+                      <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${PRIORITY_STYLE[a.priority]}`}>{a.priority}</span>
+                      <span className="text-xs font-semibold uppercase tracking-wider text-gray-400">{a.category}</span>
+                      {a.owner && <span className="rounded-full bg-indigo-50 px-2 py-0.5 text-xs font-semibold text-indigo-800">Assigned to: {a.owner}</span>}
                     </div>
                     <p className={`mt-1 font-semibold text-gray-900 ${done ? 'line-through' : ''}`}>{a.title}</p>
                   </div>
@@ -172,7 +172,7 @@ export function ActionList({ actions, initial, onSaved }: { actions: Action[]; i
                         disabled={saving === a.id}
                         aria-pressed={st === b.key}
                         onClick={() => st !== b.key && update(a.id, b.key)}
-                        className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors ${st === b.key ? b.on : 'text-gray-500 hover:text-gray-900'}`}
+                        className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-colors ${st === b.key ? b.on : 'text-gray-500 hover:text-gray-900'}`}
                       >
                         {b.label}
                       </button>
@@ -180,7 +180,7 @@ export function ActionList({ actions, initial, onSaved }: { actions: Action[]; i
                   </div>
                 </div>
                 <p className="text-sm text-gray-600 leading-relaxed mt-1">{a.detail}</p>
-                {a.flag && <p className="mt-1.5 inline-flex rounded-md bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">⚑ {a.flag}</p>}
+                {a.flag && <p className="mt-1.5 inline-flex rounded-lg bg-amber-100 px-2 py-0.5 text-xs font-semibold text-amber-900">⚑ {a.flag}</p>}
                 {a.items && a.items.length > 0 && (
                   <details className="mt-2 text-sm">
                     <summary className="cursor-pointer text-xs font-semibold text-mw-blue-600">Show {a.items.length} page{a.items.length > 1 ? 's' : ''}{a.items.some((x) => x.highlight) ? ' (incl. flagged)' : ''}</summary>
@@ -189,7 +189,7 @@ export function ActionList({ actions, initial, onSaved }: { actions: Action[]; i
                         <li key={`${x.label}-${n}`} className="leading-snug">
                           {x.href ? <a href={x.href} target="_blank" rel="noreferrer" className="text-gray-800 hover:text-mw-blue-600">{x.label}</a> : <span className="font-mono text-xs text-gray-700 break-all">{x.label}</span>}
                           {x.note && <span className="block text-xs text-gray-400">{x.note}</span>}
-                          {x.highlight && <span className="mt-1 block rounded-md border border-amber-200 bg-amber-50 px-2 py-1.5 text-xs text-amber-900">⚑ {x.highlight}</span>}
+                          {x.highlight && <span className="mt-1 block rounded-lg border border-amber-200 bg-amber-50 px-2 py-1.5 text-xs text-amber-900">⚑ {x.highlight}</span>}
                         </li>
                       ))}
                     </ul>

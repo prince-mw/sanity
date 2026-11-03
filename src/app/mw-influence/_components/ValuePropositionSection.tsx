@@ -8,11 +8,11 @@ export const ValuePropositionSection: React.FC = () => {
   const [priorityHover, setPriorityHover] = useState<number | null>(null);
 
   return (
-    <section id="value-proposition" className="py-12 sm:py-16 lg:py-20 bg-white text-[#1b1b20]">
-      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="value-proposition" className="bg-white text-[#1b1b20] mw-section">
+      <div className="mw-container">
 
         <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-14">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#14235d] mb-4">
+          <h2 className="font-extrabold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
             Your Inventory Is Limited. Your Demand Isn&apos;t.
           </h2>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -36,8 +36,8 @@ export const ValuePropositionSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-4 text-[#1b1b20] shadow-inner mt-4 border border-gray-100">
-              <div className="text-[11px] font-bold text-center text-gray-700 uppercase tracking-wider mb-3">
+            <div className="bg-white rounded-2xl p-4 text-[#1b1b20] shadow-inner mt-4 border border-gray-100">
+              <div className="text-xs font-bold text-center text-gray-700 uppercase tracking-wider mb-3">
                 OOH Allocation: Fast-Pacing Unit
               </div>
 
@@ -49,10 +49,10 @@ export const ValuePropositionSection: React.FC = () => {
                   </div>
 
                   <div className="text-center">
-                    <span className="text-[10px] font-bold text-white bg-blue-600 px-2 py-0.5 rounded shadow">
+                    <span className="text-xs font-bold text-white bg-blue-600 px-2 py-0.5 rounded-lg shadow">
                       Campaign {activeScreenCreative} Active
                     </span>
-                    <div className="text-[9px] text-[#22d3ee] mt-1 font-medium">
+                    <div className="text-xs text-[#22d3ee] mt-1 font-medium">
                       {activeScreenCreative === 'A' && 'Guaranteed Apex Flight (100% Pacing)'}
                       {activeScreenCreative === 'B' && 'Programmatic High-Bid ($42 CPM)'}
                       {activeScreenCreative === 'C' && 'Direct Booking Luxury Spot'}
@@ -69,7 +69,7 @@ export const ValuePropositionSection: React.FC = () => {
                   <button
                     key={camp}
                     onClick={() => setActiveScreenCreative(camp)}
-                    className={`p-1.5 rounded-lg border text-[10px] transition-all cursor-pointer ${activeScreenCreative === camp ? 'bg-[#0f1d4a] text-white border-[#0f1d4a] font-bold shadow' : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'}`}
+                    className={`p-1.5 rounded-lg border text-xs transition-all cursor-pointer ${activeScreenCreative === camp ? 'bg-[#0f1d4a] text-white border-[#0f1d4a] font-bold shadow' : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'}`}
                   >
                     <div>Camp {camp}</div>
                     <div className="text-[8px] opacity-80 mt-0.5">
@@ -78,7 +78,7 @@ export const ValuePropositionSection: React.FC = () => {
                   </button>
                 ))}
               </div>
-              <div className="text-[9px] text-center text-gray-400 mt-2">
+              <div className="text-xs text-center text-gray-400 mt-2">
                 Click a campaign to test live allocation router
               </div>
             </div>
@@ -95,16 +95,16 @@ export const ValuePropositionSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-4 text-[#1b1b20] shadow-inner mt-4 border border-gray-100">
-              <div className="text-[11px] font-bold text-gray-700 uppercase tracking-wider mb-2.5 flex items-center justify-between">
+            <div className="bg-white rounded-2xl p-4 text-[#1b1b20] shadow-inner mt-4 border border-gray-100">
+              <div className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2.5 flex items-center justify-between">
                 <span>Campaign Priority</span>
-                <span className="text-[9px] text-[#14235d] bg-blue-50 px-1.5 py-0.5 rounded font-semibold">Real-Time Queue</span>
+                <span className="text-xs text-[#062068] bg-blue-50 px-1.5 py-0.5 rounded-lg font-semibold">Real-Time Queue</span>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-gray-200 text-[10px] font-bold text-gray-400 uppercase">
+                    <tr className="border-b border-gray-200 text-xs font-bold text-gray-400 uppercase">
                       <th className="pb-1.5 font-semibold">Campaign</th>
                       <th className="pb-1.5 font-semibold">Priority</th>
                       <th className="pb-1.5 font-semibold text-right">Status</th>
@@ -117,15 +117,15 @@ export const ValuePropositionSection: React.FC = () => {
                       onMouseLeave={() => setPriorityHover(null)}
                       className={`transition-colors ${priorityHover === 1 ? 'bg-blue-50/80' : ''}`}
                     >
-                      <td className="py-2 font-medium text-gray-900 text-[11px]">Guaranteed Launch</td>
-                      <td className="py-2 text-[11px] text-[#14235d] font-semibold">
+                      <td className="py-2 font-medium text-gray-900 text-xs">Guaranteed Launch</td>
+                      <td className="py-2 text-xs text-[#062068] font-semibold">
                         <span className="flex items-center gap-1">
                           <ShieldCheck className="w-3 h-3 text-[#22d3ee]" />
                           <span>Protected</span>
                         </span>
                       </td>
                       <td className="py-2 text-right">
-                        <span className="inline-block bg-[#34d399]/30 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        <span className="inline-block bg-[#34d399]/30 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded-full">
                           Active
                         </span>
                       </td>
@@ -136,15 +136,15 @@ export const ValuePropositionSection: React.FC = () => {
                       onMouseLeave={() => setPriorityHover(null)}
                       className={`transition-colors ${priorityHover === 2 ? 'bg-blue-50/80' : ''}`}
                     >
-                      <td className="py-2 font-medium text-gray-900 text-[11px]">Eligible Growth</td>
-                      <td className="py-2 text-[11px] text-blue-700 font-semibold">
+                      <td className="py-2 font-medium text-gray-900 text-xs">Eligible Growth</td>
+                      <td className="py-2 text-xs text-blue-700 font-semibold">
                         <span className="flex items-center gap-1">
                           <Zap className="w-3 h-3 text-amber-500" />
                           <span>Prioritized</span>
                         </span>
                       </td>
                       <td className="py-2 text-right">
-                        <span className="inline-block bg-[#34d399]/30 text-emerald-800 text-[10px] font-bold px-2 py-0.5 rounded-full">
+                        <span className="inline-block bg-[#34d399]/30 text-emerald-800 text-xs font-bold px-2 py-0.5 rounded-full">
                           Active
                         </span>
                       </td>
@@ -155,10 +155,10 @@ export const ValuePropositionSection: React.FC = () => {
                       onMouseLeave={() => setPriorityHover(null)}
                       className={`transition-colors ${priorityHover === 3 ? 'bg-blue-50/80' : ''}`}
                     >
-                      <td className="py-2 font-medium text-gray-700 text-[11px]">Standard Outreach</td>
-                      <td className="py-2 text-[11px] text-gray-500 font-medium">Normal</td>
+                      <td className="py-2 font-medium text-gray-700 text-xs">Standard Outreach</td>
+                      <td className="py-2 text-xs text-gray-500 font-medium">Normal</td>
                       <td className="py-2 text-right">
-                        <span className="inline-block bg-amber-100 text-amber-800 text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                        <span className="inline-block bg-amber-100 text-amber-800 text-xs font-semibold px-2 py-0.5 rounded-full">
                           Pending
                         </span>
                       </td>
@@ -169,10 +169,10 @@ export const ValuePropositionSection: React.FC = () => {
                       onMouseLeave={() => setPriorityHover(null)}
                       className={`transition-colors ${priorityHover === 4 ? 'bg-blue-50/80' : ''}`}
                     >
-                      <td className="py-2 font-medium text-gray-600 text-[11px]">Seasonal Promo</td>
-                      <td className="py-2 text-[11px] text-gray-400 font-normal">Low</td>
+                      <td className="py-2 font-medium text-gray-600 text-xs">Seasonal Promo</td>
+                      <td className="py-2 text-xs text-gray-400 font-normal">Low</td>
                       <td className="py-2 text-right">
-                        <span className="inline-block bg-gray-100 text-gray-600 text-[10px] font-medium px-2 py-0.5 rounded-full">
+                        <span className="inline-block bg-gray-100 text-gray-600 text-xs font-medium px-2 py-0.5 rounded-full">
                           Draft
                         </span>
                       </td>
@@ -195,7 +195,7 @@ export const ValuePropositionSection: React.FC = () => {
               </p>
             </div>
 
-            <div className="bg-white rounded-xl p-4 text-[#1b1b20] shadow-inner mt-4 border border-gray-100">
+            <div className="bg-white rounded-2xl p-4 text-[#1b1b20] shadow-inner mt-4 border border-gray-100">
 
               <div className="grid grid-cols-2 gap-3 mb-3">
                 <div className="text-center bg-gray-50/90 rounded-lg p-2.5 border border-gray-200">
@@ -212,13 +212,13 @@ export const ValuePropositionSection: React.FC = () => {
                       />
                     ))}
                   </div>
-                  <div className="text-[10px] text-gray-500 font-medium">
+                  <div className="text-xs text-gray-500 font-medium">
                     Available Slots: <span className="font-bold text-gray-700">6/20</span>
                   </div>
                 </div>
 
                 <div className="text-center bg-blue-50/90 rounded-lg p-2.5 border border-blue-200 shadow-sm relative overflow-hidden">
-                  <div className="text-xs font-bold text-[#14235d] mb-2 flex items-center justify-center gap-1">
+                  <div className="text-xs font-bold text-[#062068] mb-2 flex items-center justify-center gap-1">
                     <span>After</span>
                     <Sparkles className="w-3 h-3 text-[#22d3ee]" />
                   </div>
@@ -230,18 +230,18 @@ export const ValuePropositionSection: React.FC = () => {
                       />
                     ))}
                   </div>
-                  <div className="text-[10px] text-[#14235d] font-bold">
+                  <div className="text-xs text-[#062068] font-bold">
                     Allocated Slots: <span className="text-[#1e68e5]">20/20</span>
                   </div>
                 </div>
               </div>
 
               <div className="flex items-center justify-center gap-2 pt-1">
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-[#34d399]/40 px-2 py-0.5 rounded-md">
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 bg-[#34d399]/40 px-2 py-0.5 rounded-lg">
                   <ArrowUpRight className="w-3 h-3 text-emerald-700" />
                   +Utilization Up
                 </span>
-                <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-[#34d399]/40 px-2 py-0.5 rounded-md">
+                <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-800 bg-[#34d399]/40 px-2 py-0.5 rounded-lg">
                   <ArrowUpRight className="w-3 h-3 text-emerald-700" />
                   +Revenue Up
                 </span>

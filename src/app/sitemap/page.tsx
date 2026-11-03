@@ -115,7 +115,7 @@ export default function SitemapPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <section className="relative bg-white border-b border-gray-200 py-12 md:py-16">
+      <section className="relative bg-white border-b border-gray-200 mw-section">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             {/* Icon */}
@@ -146,11 +146,11 @@ export default function SitemapPage() {
       </section>
 
       {/* Sitemap Content */}
-      <section className="py-12 md:py-16">
+      <section className="mw-section">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
             {siteStructure.map((section) => (
-              <div key={section.name} className="bg-white rounded-xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
+              <div key={section.name} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 hover:shadow-md transition-shadow">
                 {/* Section Header */}
                 <div className="flex items-center gap-3 mb-4 pb-4 border-b border-gray-100">
                   <div className="w-2 h-2 rounded-full bg-mw-blue-600"></div>
@@ -193,19 +193,19 @@ export default function SitemapPage() {
           {/* Summary Stats */}
           <div className="mt-12 pt-8 border-t border-gray-200">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="bg-white rounded-2xl border border-gray-200 p-6">
                 <div className="text-3xl font-bold text-mw-blue-600 mb-2">10</div>
                 <div className="text-sm text-gray-600">Main Sections</div>
               </div>
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="bg-white rounded-2xl border border-gray-200 p-6">
                 <div className="text-3xl font-bold text-mw-blue-600 mb-2">7</div>
                 <div className="text-sm text-gray-600">Products</div>
               </div>
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="bg-white rounded-2xl border border-gray-200 p-6">
                 <div className="text-3xl font-bold text-mw-blue-600 mb-2">8</div>
                 <div className="text-sm text-gray-600">Resources</div>
               </div>
-              <div className="bg-white rounded-xl border border-gray-200 p-6">
+              <div className="bg-white rounded-2xl border border-gray-200 p-6">
                 <div className="text-3xl font-bold text-mw-blue-600 mb-2">50+</div>
                 <div className="text-sm text-gray-600">Total Pages</div>
               </div>

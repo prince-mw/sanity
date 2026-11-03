@@ -898,7 +898,7 @@ function SignalFlowStrip() {
         className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full mt-1"
       >
         {COMPASS_FUNCTIONS.map(({ id, Icon, label, body, products }) => (
-          <div key={id} className="bg-mw-gray-50 border border-mw-gray-200 rounded-xl p-5 text-center">
+          <div key={id} className="bg-mw-gray-50 border border-mw-gray-200 rounded-2xl p-5 text-center">
             <Icon className="w-6 h-6 text-mw-blue-600 mx-auto mb-2" />
             <h4 className="text-sm font-bold text-mw-gray-900 mb-1">{label}</h4>
             <p className="text-xs text-mw-gray-500 leading-relaxed">{body}</p>
@@ -907,7 +907,7 @@ function SignalFlowStrip() {
                 {products.map(p => {
                   const GeoIcon = PRODUCT_GEO_ICONS[p]
                   return (
-                    <span key={p} className="inline-flex items-center gap-1 px-2 py-1 sm:px-1.5 sm:py-0.5 rounded-full text-[10px] sm:text-[9px] font-semibold bg-white border border-mw-blue-100 text-mw-blue-700 whitespace-nowrap">
+                    <span key={p} className="inline-flex items-center gap-1 px-2 py-1 sm:px-1.5 sm:py-0.5 rounded-full text-xs sm:text-xs font-semibold bg-white border border-mw-blue-100 text-mw-blue-700 whitespace-nowrap">
                       {GeoIcon && <GeoIcon className="w-3 h-3 sm:w-2.5 sm:h-2.5 shrink-0" />}
                       {p}
                     </span>
@@ -1432,15 +1432,15 @@ function ScienceLabDiagramLivingCore() {
             >
               <div className="relative w-9 h-9">
                 <motion.span
-                  className="absolute inset-0 rounded-xl bg-mw-blue-300"
+                  className="absolute inset-0 rounded-2xl bg-mw-blue-300"
                   animate={{ scale: [1, 1.5, 1], opacity: [0.4, 0, 0.4] }}
                   transition={{ duration: 2.8, repeat: Infinity, ease: 'easeInOut', delay: i * 0.35 }}
                 />
-                <div className="relative w-9 h-9 rounded-xl bg-white border-2 border-mw-blue-200 flex items-center justify-center text-mw-blue-600 shadow-sm">
+                <div className="relative w-9 h-9 rounded-2xl bg-white border-2 border-mw-blue-200 flex items-center justify-center text-mw-blue-600 shadow-sm">
                   <stage.icon className="w-4 h-4" />
                 </div>
               </div>
-              <div className="text-[11px] font-bold text-mw-gray-900 leading-tight">{stage.label}</div>
+              <div className="text-xs font-bold text-mw-gray-900 leading-tight">{stage.label}</div>
             </div>
           )
         })}
@@ -1620,7 +1620,7 @@ function ResearchSolutionsGrid() {
             transition={{ duration: 0.3 }}
             className="bg-white rounded-2xl border border-mw-gray-200 p-6 text-center"
           >
-            <div className={`w-12 h-12 mx-auto rounded-xl flex items-center justify-center mb-4 ${accent.bg} ${accent.text}`}>
+            <div className={`w-12 h-12 mx-auto rounded-2xl flex items-center justify-center mb-4 ${accent.bg} ${accent.text}`}>
               <activeItem.icon className="w-6 h-6" />
             </div>
             <h4 className="text-base font-bold text-mw-gray-900 mb-2 leading-snug">{activeItem.title}</h4>
@@ -1657,7 +1657,7 @@ function ResearchSolutionsGrid() {
                 key={item.title}
                 className="w-full sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-13.333px)] bg-white rounded-2xl border border-mw-gray-200 p-5 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
-                <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 ${accent.bg} ${accent.text}`}>
+                <div className={`w-10 h-10 rounded-2xl flex items-center justify-center mb-4 ${accent.bg} ${accent.text}`}>
                   <item.icon className="w-5 h-5" />
                 </div>
                 <h4 className="text-base font-bold text-mw-gray-900 mb-2 leading-snug">{item.title}</h4>
@@ -1825,7 +1825,7 @@ function MarketCoverageMap() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="relative rounded-3xl bg-gradient-to-b from-mw-blue-950 to-mw-blue-900 px-9 py-6 sm:p-10 shadow-[0_25px_60px_-20px_rgba(15,40,90,0.55)] overflow-hidden"
+        className="relative rounded-2xl bg-gradient-to-b from-mw-blue-950 to-mw-blue-900 px-9 py-6 sm:p-10 shadow-[0_25px_60px_-20px_rgba(15,40,90,0.55)] overflow-hidden"
       >
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(96,165,250,0.18),transparent_60%)]" aria-hidden="true" />
 
@@ -1898,7 +1898,7 @@ function MarketCoverageMap() {
                   return (
                     <div
                       key={m.name}
-                      className="absolute max-w-[92px] whitespace-normal text-center sm:max-w-none sm:whitespace-nowrap sm:text-left rounded-md bg-mw-blue-950/90 px-1.5 py-0.5 text-[11px] sm:text-xs font-bold leading-tight text-white shadow-sm"
+                      className="absolute max-w-[92px] whitespace-normal text-center sm:max-w-none sm:whitespace-nowrap sm:text-left rounded-lg bg-mw-blue-950/90 px-1.5 py-0.5 text-xs sm:text-xs font-bold leading-tight text-white shadow-sm"
                       style={{
                         left: `${(m.labelX / GLOBE_SIZE) * 100}%`,
                         top: `${(m.labelY / GLOBE_SIZE) * 100}%`,
@@ -1931,7 +1931,7 @@ function MarketCoverageMap() {
                 <region.icon className={`w-4 h-4 lg:w-5 lg:h-5 shrink-0 ${isActive ? 'text-white' : region.text}`} />
                 {region.label}
               </span>
-              <span className={`text-[11px] lg:text-xs font-medium ${isActive ? 'text-white/80' : 'text-mw-gray-400'}`}>
+              <span className={`text-xs lg:text-xs font-medium ${isActive ? 'text-white/80' : 'text-mw-gray-400'}`}>
                 {region.countries.length} {region.countries.length === 1 ? 'country' : 'countries'}
               </span>
             </button>
@@ -2146,7 +2146,7 @@ function WhyMWScienceCometFlow() {
                 style={{ animationDuration: '2.5s', animationDelay: `${i * 1.25}s` }}
                 aria-hidden="true"
               />
-              <div className="relative w-14 h-14 flex items-center justify-center bg-mw-blue-100 rounded-2xl text-mw-blue-600">
+              <div className="relative w-14 h-14 flex items-center justify-center bg-mw-blue-100 rounded-2xl text-mw-blue-700">
                 <col.icon className="w-7 h-7" />
               </div>
             </div>
@@ -2167,7 +2167,7 @@ function WhyMWScienceCometFlow() {
             <div className="text-center p-6">
               <div className="relative inline-flex items-center justify-center w-14 h-14 mb-5">
                 <span className="absolute inset-0 rounded-2xl bg-mw-blue-300 animate-ping" style={{ animationDuration: '2.5s' }} aria-hidden="true" />
-                <div className="relative w-14 h-14 flex items-center justify-center bg-mw-blue-100 rounded-2xl text-mw-blue-600">
+                <div className="relative w-14 h-14 flex items-center justify-center bg-mw-blue-100 rounded-2xl text-mw-blue-700">
                   <col.icon className="w-7 h-7" />
                 </div>
               </div>
@@ -2198,12 +2198,12 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
     <div className="min-h-screen bg-white overflow-x-hidden">
 
       {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white pt-24 pb-16 md:pt-28 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white pb-16 overflow-hidden mw-hero-top">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(59,130,246,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(59,130,246,0.06)_1px,transparent_1px)] bg-[size:64px_64px]" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(96,165,250,0.15),transparent_60%)]" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="grid lg:grid-cols-[3fr_2fr] gap-16 items-center">
 
             {/* Left: copy */}
@@ -2240,13 +2240,13 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
               <div className="flex flex-col sm:flex-row gap-4">
                 <CTAButton
                   href={heroCtaLink}
-                  className="inline-flex items-center justify-center gap-2 bg-mw-blue-600 hover:bg-mw-blue-500 text-white px-8 py-4 rounded-xl font-semibold transition-all"
+                  className="inline-flex items-center justify-center gap-2 bg-mw-blue-600 hover:bg-mw-blue-500 text-white px-8 py-4 rounded-2xl font-semibold transition-all"
                 >
                   {heroCtaText}
                 </CTAButton>
                 <a
                   href="#signals"
-                  className="inline-flex items-center justify-center gap-2 border border-white/20 hover:bg-white/5 text-white px-8 py-4 rounded-xl font-medium transition-all"
+                  className="inline-flex items-center justify-center gap-2 border border-white/20 hover:bg-white/5 text-white px-8 py-4 rounded-lg font-medium transition-all"
                 >
                   {t('ui.products.exploreSignals')}
                 </a>
@@ -2268,8 +2268,8 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
       </section>
 
       {/* ── 2. FROM THREADS TO DECISIONS ─────────────────────────────────────── */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
 
           {/* Headline — full width, centered, above both columns */}
           <motion.h2
@@ -2300,8 +2300,8 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
       {/* ── 3. FIVE SIGNALS ─────────────────────────────────────────────────── */}
       {/* bg-mw-blue-50 (not gray-50): higher-contrast background applied
           consistently across all the page's alternating light sections. */}
-      <section id="signals" className="py-16 bg-mw-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="signals" className="bg-mw-blue-50 mw-section">
+        <div className="mw-container">
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2309,7 +2309,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
             viewport={{ once: true }}
             className="mb-8 text-center"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4 tracking-tight">
+            <h2 className="font-bold text-mw-gray-900 mb-4 tracking-tight text-3xl lg:text-4xl">
               5 Signals. 1 Cognitive Compass. Across the entire OOH Journey
             </h2>
             <p className="text-lg text-mw-gray-500">
@@ -2325,8 +2325,8 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
       {/* ── 5. MW SCIENCE LAB ────────────────────────────────────────────────── */}
       {/* bg-white (not gray-50): sections 3+4 merged into one gray-50 section right
           above this one, so this needs the lighter band back to keep them visually separate. */}
-      <section className="py-16 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2335,7 +2335,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
             transition={{ duration: 0.6 }}
             className="text-center mb-14"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight mb-3">MW Science Lab</h2>
+            <h2 className="font-bold text-mw-gray-900 tracking-tight mb-3 text-3xl lg:text-4xl">MW Science Lab</h2>
             <p className="text-lg text-mw-blue-600 font-medium">The research capability within MW Science that uncovers the signals that matter.</p>
           </motion.div>
 
@@ -2377,8 +2377,8 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
       {/* ── 6. RESEARCH SOLUTIONS ────────────────────────────────────────────── */}
       {/* bg-mw-blue-50 (not gray-50): higher-contrast background applied
           consistently across all the page's alternating light sections. */}
-      <section className="py-16 bg-mw-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-blue-50 mw-section">
+        <div className="mw-container">
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2386,7 +2386,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
             viewport={{ once: true }}
             className="text-center mb-10"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight">
+            <h2 className="font-bold text-mw-gray-900 tracking-tight text-3xl lg:text-4xl">
               Solutions Built Around Signals
             </h2>
           </motion.div>
@@ -2399,7 +2399,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
       {/* ── 6b. MARKET COVERAGE ──────────────────────────────────────────────── */}
       {/* Full-width (max-w-[1800px], not the page's usual 7xl): the globe +
           region layout wants real horizontal room to breathe. */}
-      <section className="py-16 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-[1800px] mx-auto px-4 sm:px-6 lg:px-12">
 
           <motion.div
@@ -2409,7 +2409,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
             transition={{ duration: 0.6 }}
             className="text-center mb-14 max-w-4xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 tracking-tight mb-4 text-balance">
+            <h2 className="font-bold text-mw-gray-900 tracking-tight mb-4 text-balance text-3xl lg:text-4xl">
               Powered by Real People. Driven by Human Truth
             </h2>
             <p className="text-mw-gray-600 leading-relaxed">
@@ -2473,8 +2473,8 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
       {/* ── 7. SOCIAL PROOF ──────────────────────────────────────────────────── */}
       {/* bg-mw-blue-50 (not white): alternates against the white Market
           Coverage section above it, consistent with the rest of the page. */}
-      <section className="py-16 bg-mw-blue-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-blue-50 mw-section">
+        <div className="mw-container">
 
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -2482,7 +2482,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
             viewport={{ once: true }}
             className="text-center mb-10"
           >
-            <h2 className="text-3xl font-bold text-mw-gray-900 tracking-tight">Trusted by Industry Leaders</h2>
+            <h2 className="font-bold text-mw-gray-900 tracking-tight text-3xl lg:text-4xl">Trusted by Industry Leaders</h2>
             <p className="text-mw-gray-500 mt-2">Fortune 500 and blue-chip brands across FMCG, telco, retail, aviation, and finance.</p>
           </motion.div>
 
@@ -2493,7 +2493,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
               {[...LOGOS, ...LOGOS].map((name, i) => (
                 <div
                   key={`${name}-${i}`}
-                  className="flex-shrink-0 flex items-center justify-center h-16 w-32 bg-white rounded-xl border border-mw-gray-100 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:shadow-sm transition-all duration-300"
+                  className="flex-shrink-0 flex items-center justify-center h-16 w-32 bg-white rounded-2xl border border-mw-gray-100 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 hover:shadow-sm transition-all duration-300"
                 >
                   <Image
                     src={`/assets/images/ic-customers/${name}.webp`}
@@ -2514,7 +2514,7 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
       </section>
 
       {/* ── 9. FINAL CTA ─────────────────────────────────────────────────────── */}
-      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white py-16 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-indigo-900 text-white overflow-hidden mw-section">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(96,165,250,0.15),transparent_60%)]" />
         <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-400/20 to-transparent" />
 
@@ -2525,13 +2525,13 @@ export default function MWScienceClient({ product }: { product?: SanityProduct |
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-black tracking-tight mb-6">{finalCtaTitle}</h2>
+            <h2 className="font-black tracking-tight mb-6 text-3xl lg:text-4xl">{finalCtaTitle}</h2>
             <p className="text-mw-gray-300 leading-relaxed max-w-2xl mx-auto mb-10">
               {finalCtaSubtitle}
             </p>
             <CTAButton
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-white text-mw-blue-700 hover:bg-mw-blue-50 px-8 py-4 rounded-xl font-semibold transition-all"
+              className="inline-flex items-center justify-center gap-2 bg-white text-mw-blue-700 hover:bg-mw-blue-50 px-8 py-4 rounded-2xl font-semibold transition-all"
             >
               {t('ui.products.speakToScienceExpert')}
             </CTAButton>

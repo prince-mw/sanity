@@ -93,7 +93,7 @@ export function CardErrorBoundary({ children }: { children: ReactNode }) {
   return (
     <ErrorBoundary
       fallback={
-        <div className="bg-mw-gray-100 rounded-xl p-6 flex items-center justify-center min-h-[200px]">
+        <div className="bg-mw-gray-100 rounded-2xl p-6 flex items-center justify-center min-h-[200px]">
           <p className="text-mw-gray-500 text-sm">Content unavailable</p>
         </div>
       }

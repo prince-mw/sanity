@@ -157,7 +157,7 @@ export default function Footer({ content }: FooterProps) {
 
       <div className="relative">
         {/* Main Footer Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="py-12 mw-container">
           {/* Logo & Description - Stacked */}
           <div className="mb-10">
             {/* Logo */}
@@ -181,12 +181,12 @@ export default function Footer({ content }: FooterProps) {
             {navCategories.map((category) => (
               <div key={category.title}>
                 <h4 className="text-white font-bold mb-6 text-lg">{category.title}</h4>
-                <ul className="space-y-3">
+                <ul className="space-y-0 md:space-y-3">
                   {category.links.map((link) => (
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-mw-gray-300 hover:text-white transition-colors flex items-center group"
+                        className="text-mw-gray-300 hover:text-white transition-colors flex items-center group min-h-11 md:min-h-0"
                       >
                         {category.showLocationIcon && (
                           <svg className="w-4 h-4 mr-2 text-mw-blue-400 group-hover:text-mw-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -331,7 +331,7 @@ export default function Footer({ content }: FooterProps) {
               ))}
             </div>
 
-            <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="relative z-10 mw-container">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -363,7 +363,7 @@ export default function Footer({ content }: FooterProps) {
                 </motion.div>
 
                 {/* Title */}
-                <h2 className="text-2xl sm:text-3xl font-bold text-white drop-shadow-lg">
+                <h2 className="font-bold text-white drop-shadow-lg text-3xl lg:text-4xl">
                   {movingHeartsTitle}
                 </h2>
 
@@ -424,7 +424,7 @@ export default function Footer({ content }: FooterProps) {
 
         {/* Bottom Bar */}
         <div className="border-t border-mw-gray-800 bg-mw-gray-900/80 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+          <div className="py-6 mw-container">
             <div className="flex flex-col md:flex-row justify-between items-center gap-4">
               <div className="flex flex-col md:flex-row items-center gap-4 md:gap-8">
                 <p className="text-mw-gray-400 text-sm text-center md:text-left">

@@ -76,8 +76,8 @@ export default function ProductPainPointsSection({
   if (!painPoints || painPoints.length === 0) return null
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white to-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-gradient-to-b from-white to-gray-50 mw-section">
+      <div className="mw-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -88,7 +88,7 @@ export default function ProductPainPointsSection({
           <span className="inline-block px-4 py-1 bg-red-100 text-red-700 rounded-full text-sm font-medium mb-4">
             Pain Points We Solve
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
             {title}
           </h2>
           {subtitle && (
@@ -113,7 +113,7 @@ export default function ProductPainPointsSection({
                 className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <IconComponent className="w-7 h-7 text-white" />
                 </div>
 

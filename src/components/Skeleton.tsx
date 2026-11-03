@@ -33,7 +33,7 @@ export function SkeletonText({
       {Array.from({ length: lines }).map((_, i) => (
         <Skeleton 
           key={i} 
-          className={`h-4 rounded ${i === lines - 1 && lines > 1 ? 'w-3/4' : 'w-full'}`} 
+          className={`h-4 rounded-lg ${i === lines - 1 && lines > 1 ? 'w-3/4' : 'w-full'}`} 
         />
       ))}
     </div>
@@ -43,7 +43,7 @@ export function SkeletonText({
 // Blog card skeleton
 export function BlogCardSkeleton() {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-mw border border-mw-gray-100">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-mw border border-mw-gray-100">
       {/* Image */}
       <Skeleton className="aspect-[16/9] w-full" />
       
@@ -52,12 +52,12 @@ export function BlogCardSkeleton() {
         {/* Category & Date */}
         <div className="flex items-center gap-3">
           <Skeleton className="h-6 w-20 rounded-full" />
-          <Skeleton className="h-4 w-24 rounded" />
+          <Skeleton className="h-4 w-24 rounded-lg" />
         </div>
         
         {/* Title */}
-        <Skeleton className="h-6 w-full rounded" />
-        <Skeleton className="h-6 w-3/4 rounded" />
+        <Skeleton className="h-6 w-full rounded-lg" />
+        <Skeleton className="h-6 w-3/4 rounded-lg" />
         
         {/* Excerpt */}
         <SkeletonText lines={2} />
@@ -66,8 +66,8 @@ export function BlogCardSkeleton() {
         <div className="flex items-center gap-3 pt-2">
           <Skeleton className="w-10 h-10 rounded-full" />
           <div className="flex-1">
-            <Skeleton className="h-4 w-24 rounded mb-1" />
-            <Skeleton className="h-3 w-16 rounded" />
+            <Skeleton className="h-4 w-24 rounded-lg mb-1" />
+            <Skeleton className="h-3 w-16 rounded-lg" />
           </div>
         </div>
       </div>
@@ -78,22 +78,22 @@ export function BlogCardSkeleton() {
 // Case study card skeleton
 export function CaseStudyCardSkeleton() {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-mw border border-mw-gray-100">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-mw border border-mw-gray-100">
       {/* Image */}
       <Skeleton className="aspect-[16/10] w-full" />
       
       {/* Content */}
       <div className="p-6 space-y-4">
         {/* Logo */}
-        <Skeleton className="h-8 w-32 rounded" />
+        <Skeleton className="h-8 w-32 rounded-lg" />
         
         {/* Title */}
-        <Skeleton className="h-6 w-full rounded" />
+        <Skeleton className="h-6 w-full rounded-lg" />
         
         {/* Meta */}
         <div className="flex gap-4">
-          <Skeleton className="h-5 w-20 rounded" />
-          <Skeleton className="h-5 w-24 rounded" />
+          <Skeleton className="h-5 w-20 rounded-lg" />
+          <Skeleton className="h-5 w-24 rounded-lg" />
         </div>
         
         {/* Excerpt */}
@@ -131,38 +131,38 @@ export function BlogDetailSkeleton() {
     <article className="max-w-4xl mx-auto px-4 py-12">
       {/* Breadcrumb */}
       <div className="flex gap-2 mb-8">
-        <Skeleton className="h-4 w-12 rounded" />
-        <Skeleton className="h-4 w-4 rounded" />
-        <Skeleton className="h-4 w-16 rounded" />
-        <Skeleton className="h-4 w-4 rounded" />
-        <Skeleton className="h-4 w-32 rounded" />
+        <Skeleton className="h-4 w-12 rounded-lg" />
+        <Skeleton className="h-4 w-4 rounded-lg" />
+        <Skeleton className="h-4 w-16 rounded-lg" />
+        <Skeleton className="h-4 w-4 rounded-lg" />
+        <Skeleton className="h-4 w-32 rounded-lg" />
       </div>
 
       {/* Header */}
       <header className="mb-8">
         <Skeleton className="h-6 w-24 rounded-full mb-4" />
-        <Skeleton className="h-10 w-full rounded mb-2" />
-        <Skeleton className="h-10 w-3/4 rounded mb-6" />
+        <Skeleton className="h-10 w-full rounded-lg mb-2" />
+        <Skeleton className="h-10 w-3/4 rounded-lg mb-6" />
         
         {/* Meta */}
         <div className="flex items-center gap-4">
           <Skeleton className="w-12 h-12 rounded-full" />
           <div>
-            <Skeleton className="h-4 w-32 rounded mb-1" />
-            <Skeleton className="h-3 w-24 rounded" />
+            <Skeleton className="h-4 w-32 rounded-lg mb-1" />
+            <Skeleton className="h-3 w-24 rounded-lg" />
           </div>
         </div>
       </header>
 
       {/* Featured Image */}
-      <Skeleton className="aspect-[16/9] w-full rounded-xl mb-8" />
+      <Skeleton className="aspect-[16/9] w-full rounded-2xl mb-8" />
 
       {/* Content */}
       <div className="space-y-4">
         <SkeletonText lines={4} />
-        <Skeleton className="h-6 w-2/3 rounded mt-8 mb-4" />
+        <Skeleton className="h-6 w-2/3 rounded-lg mt-8 mb-4" />
         <SkeletonText lines={5} />
-        <Skeleton className="h-6 w-1/2 rounded mt-8 mb-4" />
+        <Skeleton className="h-6 w-1/2 rounded-lg mt-8 mb-4" />
         <SkeletonText lines={3} />
       </div>
     </article>
@@ -173,10 +173,10 @@ export function BlogDetailSkeleton() {
 export function HeroSkeleton() {
   return (
     <div className="relative bg-mw-gray-100 min-h-[60vh] flex items-center">
-      <div className="max-w-7xl mx-auto px-4 py-20 w-full">
+      <div className="py-20 mw-container">
         <div className="max-w-2xl">
-          <Skeleton className="h-12 w-3/4 rounded mb-4" />
-          <Skeleton className="h-12 w-1/2 rounded mb-6" />
+          <Skeleton className="h-12 w-3/4 rounded-lg mb-4" />
+          <Skeleton className="h-12 w-1/2 rounded-lg mb-6" />
           <SkeletonText lines={3} className="mb-8" />
           <div className="flex gap-4">
             <Skeleton className="h-12 w-36 rounded-lg" />
@@ -193,8 +193,8 @@ export function TeamMemberSkeleton() {
   return (
     <div className="text-center">
       <Skeleton className="w-32 h-32 rounded-full mx-auto mb-4" />
-      <Skeleton className="h-5 w-32 rounded mx-auto mb-2" />
-      <Skeleton className="h-4 w-24 rounded mx-auto mb-3" />
+      <Skeleton className="h-5 w-32 rounded-lg mx-auto mb-2" />
+      <Skeleton className="h-4 w-24 rounded-lg mx-auto mb-3" />
       <div className="flex justify-center gap-2">
         <Skeleton className="w-8 h-8 rounded-full" />
         <Skeleton className="w-8 h-8 rounded-full" />
@@ -206,7 +206,7 @@ export function TeamMemberSkeleton() {
 // Event card skeleton
 export function EventCardSkeleton() {
   return (
-    <div className="bg-white rounded-xl overflow-hidden shadow-mw border border-mw-gray-100 p-6">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-mw border border-mw-gray-100 p-6">
       <div className="flex gap-4">
         {/* Date Badge */}
         <div className="flex-shrink-0">
@@ -216,11 +216,11 @@ export function EventCardSkeleton() {
         {/* Content */}
         <div className="flex-1 space-y-3">
           <Skeleton className="h-5 w-20 rounded-full" />
-          <Skeleton className="h-6 w-full rounded" />
-          <Skeleton className="h-4 w-3/4 rounded" />
+          <Skeleton className="h-6 w-full rounded-lg" />
+          <Skeleton className="h-4 w-3/4 rounded-lg" />
           <div className="flex gap-2 pt-2">
-            <Skeleton className="h-4 w-24 rounded" />
-            <Skeleton className="h-4 w-20 rounded" />
+            <Skeleton className="h-4 w-24 rounded-lg" />
+            <Skeleton className="h-4 w-20 rounded-lg" />
           </div>
         </div>
       </div>
@@ -237,10 +237,10 @@ export function SearchResultsSkeleton({ count = 5 }: { count?: number }) {
           <div className="flex gap-4">
             <Skeleton className="w-20 h-20 rounded-lg flex-shrink-0" />
             <div className="flex-1 space-y-2">
-              <Skeleton className="h-4 w-16 rounded" />
-              <Skeleton className="h-5 w-3/4 rounded" />
-              <Skeleton className="h-4 w-full rounded" />
-              <Skeleton className="h-4 w-1/2 rounded" />
+              <Skeleton className="h-4 w-16 rounded-lg" />
+              <Skeleton className="h-5 w-3/4 rounded-lg" />
+              <Skeleton className="h-4 w-full rounded-lg" />
+              <Skeleton className="h-4 w-1/2 rounded-lg" />
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@ export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: nu
       {/* Header */}
       <div className="bg-mw-gray-50 border-b border-mw-gray-200 p-4 flex gap-4">
         {Array.from({ length: cols }).map((_, i) => (
-          <Skeleton key={i} className="h-4 flex-1 rounded" />
+          <Skeleton key={i} className="h-4 flex-1 rounded-lg" />
         ))}
       </div>
       
@@ -269,7 +269,7 @@ export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: nu
           {Array.from({ length: cols }).map((_, colIndex) => (
             <Skeleton 
               key={colIndex} 
-              className={`h-4 flex-1 rounded ${colIndex === 0 ? 'w-1/4' : ''}`} 
+              className={`h-4 flex-1 rounded-lg ${colIndex === 0 ? 'w-1/4' : ''}`} 
             />
           ))}
         </div>
@@ -283,10 +283,10 @@ export function PageLoadingSkeleton() {
   return (
     <div className="min-h-screen">
       <HeroSkeleton />
-      <div className="max-w-7xl mx-auto px-4 py-16">
+      <div className="py-16 mw-container">
         <div className="text-center mb-12">
-          <Skeleton className="h-8 w-64 rounded mx-auto mb-4" />
-          <Skeleton className="h-4 w-96 rounded mx-auto" />
+          <Skeleton className="h-8 w-64 rounded-lg mx-auto mb-4" />
+          <Skeleton className="h-4 w-96 rounded-lg mx-auto" />
         </div>
         <BlogListSkeleton count={3} />
       </div>

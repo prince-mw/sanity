@@ -44,7 +44,7 @@ export default function InsightsShell({ tab, range, period, snapshot, children }
 
   return (
     <div className="bg-gray-50 min-h-screen pt-4 pb-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="mw-container">
         {/* Tabs */}
         <nav className="flex gap-1 overflow-x-auto border-b border-gray-200 mb-5" aria-label="Dashboard sections">
           {TABS.map((t) => (
@@ -82,7 +82,7 @@ export default function InsightsShell({ tab, range, period, snapshot, children }
                       href={`/internal-insights?tab=${tab}&range=${r}`}
                       scroll={false}
                       aria-current={range === r ? 'true' : undefined}
-                      className={`px-2.5 sm:px-3 py-1.5 rounded-md text-xs sm:text-sm font-semibold whitespace-nowrap ${range === r ? 'bg-[#062068] text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap ${range === r ? 'bg-[#062068] text-white' : 'text-gray-600 hover:text-gray-900'}`}
                     >
                       {RANGE_LABELS[r]}
                     </Link>

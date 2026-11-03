@@ -36,11 +36,11 @@ const AUDIENCE_ROLES = [
 export const AudiencesSection: React.FC = () => {
   const { t } = useLocale();
   return (
-    <section id="audiences" className="bg-[#f8fafc] text-slate-900 py-12 sm:py-16 lg:py-20 border-t border-slate-200/80">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="audiences" className="bg-[#f8fafc] text-slate-900 border-t border-slate-200/80 mw-section">
+      <div className="mw-container">
 
         <div className="text-center mb-10 sm:mb-12">
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-[#14235d]">
+          <h2 className="font-extrabold tracking-tight text-[#062068] text-3xl lg:text-4xl">
             Built for Everyone Responsible for OOH Success
           </h2>
         </div>
@@ -60,7 +60,7 @@ export const AudiencesSection: React.FC = () => {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
-                <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#14235d] text-[10px] font-bold shadow-sm">
+                <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#062068] text-xs font-bold shadow-sm">
                   {role.role}
                 </span>
                 <span className="absolute bottom-3 left-3 text-xs font-semibold text-white/95">
@@ -71,7 +71,7 @@ export const AudiencesSection: React.FC = () => {
               <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-bold text-[#14235d] group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl font-bold text-[#062068] group-hover:text-blue-600 transition-colors">
                       {role.title}
                     </h3>
                     <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />

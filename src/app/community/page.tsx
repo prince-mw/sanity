@@ -70,13 +70,13 @@ export default function CommunityLandingPage() {
     <div className="min-h-screen bg-gray-50 text-gray-900 antialiased flex flex-col">
       
       {/* Top Navigation Bar */}
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+      <div className="pt-8 mw-container">
         <Link href="/mw-science" className="text-sm font-medium text-gray-500 hover:text-blue-600 inline-flex items-center gap-1 transition-colors">
           {t("ui.company.community.backToScience")}
         </Link>
       </div>
 
-      <div className="max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-grow">
+      <div className="py-12 flex-grow mw-container">
         
         {/* Exactly Centered Copy Header System */}
         <div className="text-center max-w-3xl mx-auto mb-16 flex flex-col items-center">
@@ -103,7 +103,7 @@ export default function CommunityLandingPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.4, delay: idx * 0.05 }}
-                  className="bg-white p-5 rounded-xl border border-gray-200/80 shadow-sm flex items-start gap-4 hover:border-blue-500/20 hover:shadow-md transition-all duration-300"
+                  className="bg-white p-5 rounded-2xl border border-gray-200/80 shadow-sm flex items-start gap-4 hover:border-blue-500/20 hover:shadow-md transition-all duration-300"
                 >
                   <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0 border border-blue-100">
                     <CommunityIcon type={idx} />
@@ -245,7 +245,7 @@ export default function CommunityLandingPage() {
             <div className="w-full text-center">
               <Link 
                 href="/mw-science" 
-                className="w-full inline-flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-blue-600 bg-white hover:bg-blue-50/50 border border-gray-200 hover:border-blue-200 p-3.5 rounded-xl shadow-sm transition-all duration-200"
+                className="w-full inline-flex items-center justify-center gap-2 text-sm font-semibold text-gray-500 hover:text-blue-600 bg-white hover:bg-blue-50/50 border border-gray-200 hover:border-blue-200 p-3.5 rounded-2xl shadow-sm transition-all duration-200"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />

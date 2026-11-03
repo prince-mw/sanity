@@ -34,8 +34,8 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -81,8 +81,8 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
       </section>
 
       {/* Tab Navigation */}
-      <section className="py-8 bg-white border-b border-mw-gray-200 sticky top-20 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white border-b border-mw-gray-200 sticky top-20 z-40 mw-section-sm">
+        <div className="mw-container">
           <div className="flex items-center gap-4">
             <button
               onClick={() => setActiveTab('upcoming')}
@@ -110,15 +110,15 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
 
       {/* Upcoming Events */}
       {activeTab === 'upcoming' && (
-        <section className="py-16 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">{t('ui.events.upcomingEvents')}</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-2 text-3xl lg:text-4xl">{t('ui.events.upcomingEvents')}</h2>
               <p className="text-lg text-mw-gray-600">{t('ui.events.registerSubtitle')}</p>
             </div>
 
             {upcomingEvents.length === 0 ? (
-              <div className="flex justify-center py-16 bg-mw-gray-50 rounded-xl">
+              <div className="flex justify-center py-16 bg-mw-gray-50 rounded-2xl">
                 <Image
                   src="https://cdn.sanity.io/images/u10im6di/production/6f8f151d73788605ee99c1ce38efaa1ecf7e4b12-534x300.png"
                   alt={t('ui.events.stayTunedAlt')}
@@ -135,7 +135,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="bg-white border border-mw-gray-200 rounded-xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
+                    className="bg-white border border-mw-gray-200 rounded-2xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
                   >
                     <div className="grid lg:grid-cols-3 gap-6 p-6">
                       {/* Event Image/Preview */}
@@ -247,15 +247,15 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
 
       {/* Past Events */}
       {activeTab === 'past' && (
-        <section className="py-16 bg-mw-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 mw-section">
+          <div className="mw-container">
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-2">{t('ui.events.pastEvents')}</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-2 text-3xl lg:text-4xl">{t('ui.events.pastEvents')}</h2>
               <p className="text-lg text-mw-gray-600">{t('ui.events.pastSubtitle')}</p>
             </div>
 
             {pastEvents.length === 0 ? (
-              <div className="text-center py-16 bg-white rounded-xl">
+              <div className="text-center py-16 bg-white rounded-2xl">
                 <svg className="w-16 h-16 text-mw-gray-300 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
@@ -270,7 +270,7 @@ export default function EventsPageClient({ upcomingEvents, pastEvents }: EventsP
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.6, delay: index * 0.1 }}
-                    className="bg-white border border-mw-gray-200 rounded-xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
+                    className="bg-white border border-mw-gray-200 rounded-2xl overflow-hidden hover:shadow-mw-lg transition-all duration-300"
                   >
                     <div className="grid lg:grid-cols-3 gap-6 p-6">
                       {/* Event Image/Preview */}

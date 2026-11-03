@@ -221,7 +221,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
       {!location.hideDefaultHero && (
-      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 py-14 md:py-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 overflow-hidden mw-section">
         <div className="absolute inset-0 bg-black/10"></div>
         
         {/* Animated Background */}
@@ -241,7 +241,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
           ))}
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="relative z-10 mw-container">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Left Content */}
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.8 }}>
@@ -307,7 +307,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               ) : location.stats && location.stats.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4">
                   {location.stats.slice(0, 4).map((stat, index) => (
-                    <div key={index} className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center">
+                    <div key={index} className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center">
                       <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
                       <div className="text-mw-blue-200 text-sm">{stat.label}</div>
                     </div>
@@ -335,8 +335,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* Cities */}
       {cities.length > 0 && (
-        <section className="py-10 md:py-14 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <motion.div
               initial="hidden"
               whileInView="visible"
@@ -344,7 +344,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               variants={fadeUp}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{location.citiesHeading || L.exploreByCity}</h2>
+              <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">{location.citiesHeading || L.exploreByCity}</h2>
               <p className="text-lg text-gray-600">{location.citiesSubheading || L.keyCities(location.name)}</p>
             </motion.div>
 
@@ -396,7 +396,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
           variants={staggerContainer} 
           className="py-8 bg-gray-50 border-b border-gray-200 lg:hidden"
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mw-container">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
               {location.stats.map((stat, index) => (
                 <motion.div key={index} variants={staggerItem} className="text-center">
@@ -411,8 +411,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* High Visibility Billboards */}
       {location.highVisibilityBillboards && location.highVisibilityBillboards.length > 0 && (
-        <section className="py-10 md:py-14 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-white mw-section">
+          <div className="mw-container">
             <motion.div 
               initial="hidden" 
               whileInView="visible" 
@@ -420,7 +420,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               variants={fadeUp}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">{location.billboardsHeading || L.billboardsHeading}</h2>
+              <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">{location.billboardsHeading || L.billboardsHeading}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">{L.billboardsSub}</p>
             </motion.div>
             
@@ -476,9 +476,9 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* Media Types */}
       {location.mediaTypes && location.mediaTypes.length > 0 && (
-        <section className="py-10 md:py-14 bg-white">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.mediaTypesHeading || L.mediaTypes}</h2>
+        <section className="bg-white mw-section">
+          <div className="mw-container">
+            <h2 className="font-bold text-gray-900 mb-8 text-center text-3xl lg:text-4xl">{location.mediaTypesHeading || L.mediaTypes}</h2>
             {/* Flex-wrap rather than grid so an incomplete last row (e.g. 3 formats) is centred */}
             <div className="flex flex-wrap justify-center gap-6">
               {location.mediaTypes.map((media, index) => {
@@ -523,9 +523,9 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* FAQs */}
       {location.faqs && location.faqs.length > 0 && (
-        <section className="py-10 md:py-14 bg-gray-50">
+        <section className="bg-gray-50 mw-section">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">{location.faqsHeading || L.faqs}</h2>
+            <h2 className="font-bold text-gray-900 mb-8 text-center text-3xl lg:text-4xl">{location.faqsHeading || L.faqs}</h2>
             <motion.div 
               initial="hidden" 
               whileInView="visible" 
@@ -552,10 +552,10 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
 
       {/* Other cities in this country (city pages) — internal links between sibling city pages */}
       {pageType === 'city' && relatedCities.length > 0 && (
-        <section className="py-14 md:py-16 bg-mw-gray-50 border-t border-mw-gray-100">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 border-t border-mw-gray-100 mw-section">
+          <div className="mw-container">
             <div className="text-center mb-10">
-              <h2 className="text-3xl font-bold text-gray-900 mb-3">
+              <h2 className="font-bold text-gray-900 mb-3 text-3xl lg:text-4xl">
                 {relatedHeading || L.otherCities(countryName)}
               </h2>
               <p className="text-lg text-gray-600">{L.otherCitiesSub}</p>
@@ -565,7 +565,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                 <Link
                   key={related.href}
                   href={related.href}
-                  className="group w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] bg-white rounded-xl p-6 border border-mw-gray-100 shadow-sm hover:shadow-lg hover:border-mw-blue-200 transition-all"
+                  className="group w-full sm:w-[calc(50%-12px)] lg:w-[calc(25%-18px)] bg-white rounded-2xl p-6 border border-mw-gray-100 shadow-sm hover:shadow-lg hover:border-mw-blue-200 transition-all"
                 >
                   <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-mw-blue-600 transition-colors">{related.city}</h3>
                   {related.description && <p className="text-sm text-gray-600 mb-4">{related.description}</p>}

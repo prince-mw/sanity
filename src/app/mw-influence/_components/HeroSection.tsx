@@ -39,11 +39,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const { t } = useLocale();
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#182b6e] text-white pt-20 sm:pt-16 lg:pt-20 pb-12 lg:pb-16" id="hero-section">
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#182b6e]/40 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#062068] text-white pb-12 lg:pb-16 mw-hero-top" id="hero-section">
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#062068]/40 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#22d3ee]/10 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="relative max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+      <div className="relative mw-container">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
           <div className="lg:col-span-5 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
@@ -51,7 +51,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
               <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
                 <InfluenceGeometry className="w-3 h-3 text-white" />
               </div>
-              <span className="font-sans uppercase tracking-wider text-[11px] text-blue-100">
+              <span className="font-sans uppercase tracking-wider text-xs text-blue-100">
                 {badge}
               </span>
             </div>
@@ -67,7 +67,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="pt-2 text-center lg:text-left">
               <CTAButton
                 href="/contact"
-                className="bg-white hover:bg-gray-100 text-[#14235d] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
+                className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-base px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-see-action-btn"
               >
                 <span>{t('ui.products.seeMwInfluenceInAction')}</span>

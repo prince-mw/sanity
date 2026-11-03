@@ -13,7 +13,7 @@ export default function GlobalCTA() {
   if (pathname === '/' || pathname.startsWith('/locations/') || pathname.startsWith('/partners/') || pathname.startsWith('/internal-insights') || pathname === '/mw-science' || pathname === '/mw-inventory' || pathname === '/mw-measure' || pathname === '/mw-influence' || pathname === '/mw-planner' || pathname === '/race-week-malaysia-singapore' || pathname === '/moving-hearts') return null;
 
   return (
-    <section className="py-16 bg-gradient-to-br from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 relative overflow-hidden">
+    <section className="bg-gradient-to-br from-mw-blue-600 via-mw-blue-700 to-mw-blue-800 relative overflow-hidden mw-section">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-10">
         <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -38,7 +38,7 @@ export default function GlobalCTA() {
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            <h2 className="font-bold text-white mb-4 text-3xl lg:text-4xl">
               {t('ui.shared.globalCta.heading')}
             </h2>
             <p className="text-lg text-blue-100 mb-8 max-w-2xl mx-auto">

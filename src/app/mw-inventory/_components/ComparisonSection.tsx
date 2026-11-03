@@ -28,10 +28,10 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
 
   return (
     <section className={`${compact ? 'py-8 sm:py-10' : 'py-16 sm:py-20'} bg-[#f8f9fa]`} id="comparison-section">
-      <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+      <div className="mw-container">
 
         <div className={`text-center max-w-3xl mx-auto ${compact ? 'mb-8 sm:mb-10' : 'mb-16 sm:mb-20'}`}>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#062068] font-sans">
+          <h2 className="font-bold tracking-tight text-[#062068] font-sans text-3xl lg:text-4xl">
             {title}
           </h2>
         </div>
@@ -44,7 +44,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
               WITHOUT
             </div>
 
-            <div className="w-full bg-[#18295b] rounded-xl p-4 sm:p-8 flex items-center justify-center min-h-[300px] sm:min-h-[340px] shadow-inner relative overflow-hidden">
+            <div className="w-full bg-[#18295b] rounded-2xl p-4 sm:p-8 flex items-center justify-center min-h-[300px] sm:min-h-[340px] shadow-inner relative overflow-hidden">
               <div className="absolute inset-0 bg-dot-pattern opacity-20 pointer-events-none" />
 
               <div className="relative w-64 max-w-full sm:w-72 bg-black rounded-lg p-2.5 shadow-2xl border-2 border-black transform -rotate-1 group-hover:rotate-0 transition-transform duration-300">
@@ -52,7 +52,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                   <div className="w-8 h-2 bg-gray-800 rounded-full" />
                 </div>
 
-                <div className="bg-white rounded p-3 text-left shadow-sm border-2 border-black mt-2 font-mono text-[10px] text-gray-800 space-y-2 select-none">
+                <div className="bg-white rounded-lg p-3 text-left shadow-sm border-2 border-black mt-2 font-mono text-xs text-gray-800 space-y-2 select-none">
                   <div className="border-b-2 border-black pb-1 flex justify-between items-center">
                     <span className="font-bold text-black">Asset</span>
                     <span className="font-bold text-black">Location</span>
@@ -60,7 +60,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                   </div>
 
                   <div className="space-y-1 py-1 border-b border-black">
-                    <div className="flex justify-between items-center text-[9px]">
+                    <div className="flex justify-between items-center text-xs">
                       <span className="font-semibold text-gray-900">Large LED - Times Square</span>
                       <span className="text-gray-700">NY</span>
                       <span className="text-red-600 font-bold line-through">Available?</span>
@@ -71,7 +71,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                   </div>
 
                   <div className="space-y-1 py-1 border-b border-black">
-                    <div className="flex justify-between items-center text-[9px]">
+                    <div className="flex justify-between items-center text-xs">
                       <span className="font-semibold text-gray-900">Subway Panel 05</span>
                       <span className="text-gray-700">London</span>
                       <span className="text-black font-medium">Check spreadsheet</span>
@@ -79,7 +79,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                   </div>
 
                   <div className="space-y-1 py-1 border-b border-black">
-                    <div className="flex justify-between items-center text-[9px]">
+                    <div className="flex justify-between items-center text-xs">
                       <span className="font-semibold text-gray-900">Kiosk Mall West</span>
                       <span className="text-gray-700">LA</span>
                       <span className="text-gray-600">Unconfirmed</span>
@@ -87,14 +87,14 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                   </div>
 
                   <div className="space-y-1 py-1 border-b border-black">
-                    <div className="flex justify-between items-center text-[9px]">
+                    <div className="flex justify-between items-center text-xs">
                       <span className="font-semibold text-gray-900">Highway Billboard 7</span>
                       <span className="text-gray-700">Austin</span>
                       <span className="text-red-600 font-bold">Expired rate</span>
                     </div>
                   </div>
 
-                  <div className="pt-2 text-[8px] text-red-700 bg-red-50 p-1 rounded border border-black">
+                  <div className="pt-2 text-[8px] text-red-700 bg-red-50 p-1 rounded-lg border border-black">
                     * Pending email reply from sales rep (3 days ago)
                   </div>
                 </div>
@@ -115,7 +115,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
               <span>WITH OUR INVENTORY MANAGEMENT SYSTEM</span>
             </div>
 
-            <div className="w-full bg-gradient-to-br from-[#0c1f54] via-[#10276d] to-[#081845] rounded-xl p-4 sm:p-6 flex items-center justify-center min-h-[300px] sm:min-h-[340px] shadow-2xl relative overflow-hidden border border-blue-400/20">
+            <div className="w-full bg-gradient-to-br from-[#0c1f54] via-[#10276d] to-[#081845] rounded-2xl p-4 sm:p-6 flex items-center justify-center min-h-[300px] sm:min-h-[340px] shadow-2xl relative overflow-hidden border border-blue-400/20">
               <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none" />
 
               <div className="w-full bg-[#0b1739]/95 rounded-lg border border-blue-400/30 p-3 shadow-2xl backdrop-blur-md text-left font-sans">
@@ -126,27 +126,27 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                       <div className="w-2 h-2 rounded-full bg-yellow-400" />
                       <div className="w-2 h-2 rounded-full bg-green-400" />
                     </div>
-                    <div className="flex items-center gap-1 text-[11px] font-bold text-white pl-1">
+                    <div className="flex items-center gap-1 text-xs font-bold text-white pl-1">
                       <span>MW</span>
-                      <span className="font-normal text-blue-300 text-[10px]">Inventory</span>
+                      <span className="font-normal text-blue-300 text-xs">Inventory</span>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded bg-blue-950/80 border border-blue-500/30 text-[9px] text-blue-200">
+                  <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-lg bg-blue-950/80 border border-blue-500/30 text-xs text-blue-200">
                     <Search className="w-2.5 h-2.5 text-blue-400" />
                     <span>Search network...</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-12 gap-1 text-[8px] font-bold uppercase tracking-wider text-blue-300/80 px-2 py-1 bg-blue-950/40 rounded">
+                <div className="grid grid-cols-12 gap-1 text-[8px] font-bold uppercase tracking-wider text-blue-300/80 px-2 py-1 bg-blue-950/40 rounded-lg">
                   <div className="col-span-4">ASSET</div>
                   <div className="col-span-3">LOCATION</div>
                   <div className="col-span-2">FORMAT</div>
                   <div className="col-span-3 text-right">AVAILABILITY</div>
                 </div>
 
-                <div className="space-y-1.5 mt-1.5 text-[9px]">
-                  <div className="grid grid-cols-12 gap-1 items-center px-2 py-1 rounded bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                <div className="space-y-1.5 mt-1.5 text-xs">
+                  <div className="grid grid-cols-12 gap-1 items-center px-2 py-1 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                     <div className="col-span-4 font-medium text-white flex items-center gap-1 truncate">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#80f1b9]" />
                       Times Sq. Digital 01
@@ -160,7 +160,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-12 gap-1 items-center px-2 py-1 rounded bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                  <div className="grid grid-cols-12 gap-1 items-center px-2 py-1 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                     <div className="col-span-4 font-medium text-white flex items-center gap-1 truncate">
                       <span className="w-1.5 h-1.5 rounded-full bg-blue-400" />
                       Metro Station Panel 05
@@ -174,7 +174,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-12 gap-1 items-center px-2 py-1 rounded bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                  <div className="grid grid-cols-12 gap-1 items-center px-2 py-1 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                     <div className="col-span-4 font-medium text-white flex items-center gap-1 truncate">
                       <span className="w-1.5 h-1.5 rounded-full bg-[#80f1b9]" />
                       Plaza Walkway Kiosk 02
@@ -188,7 +188,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-12 gap-1 items-center px-2 py-1 rounded bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
+                  <div className="grid grid-cols-12 gap-1 items-center px-2 py-1 rounded-lg bg-white/5 border border-white/5 hover:bg-white/10 transition-colors">
                     <div className="col-span-4 font-medium text-white flex items-center gap-1 truncate">
                       <span className="w-1.5 h-1.5 rounded-full bg-indigo-400" />
                       Tech Hub Screen A
@@ -209,7 +209,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
                     <span>•</span>
                     <span className="text-[#80f1b9]">Zero Conflict Engine</span>
                   </div>
-                  <div className="text-white font-sans bg-blue-900/50 px-1.5 py-0.5 rounded text-[7px]">
+                  <div className="text-white font-sans bg-blue-900/50 px-1.5 py-0.5 rounded-lg text-[7px]">
                     Export CSV / API Sync
                   </div>
                 </div>

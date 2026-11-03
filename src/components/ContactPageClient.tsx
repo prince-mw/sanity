@@ -138,8 +138,8 @@ export default function ContactPageClient({ offices, content }: ContactPageClien
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-mw-blue-50 via-white to-indigo-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="pb-20 bg-gradient-to-br from-mw-blue-50 via-white to-indigo-50 mw-hero-top">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -165,8 +165,8 @@ export default function ContactPageClient({ offices, content }: ContactPageClien
       </section>
 
       {/* Office Locations Section */}
-      <section className="py-20 bg-mw-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-mw-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -174,7 +174,7 @@ export default function ContactPageClient({ offices, content }: ContactPageClien
             transition={{ duration: 0.8 }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
+            <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">
               {officesSectionTitle}
             </h2>
             <p className="text-xl text-mw-gray-600 max-w-2xl mx-auto">
@@ -190,7 +190,7 @@ export default function ContactPageClient({ offices, content }: ContactPageClien
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="bg-white rounded-xl p-6 border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-lg transition-all group"
+                className="bg-white rounded-2xl p-6 border border-mw-gray-200 hover:border-mw-blue-300 hover:shadow-lg transition-all group"
               >
                 <div className="flex items-start justify-between mb-3">
                   <h3 className="text-lg font-bold text-mw-gray-900 group-hover:text-mw-blue-600 transition-colors">

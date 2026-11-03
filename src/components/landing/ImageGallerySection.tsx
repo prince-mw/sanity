@@ -49,8 +49,8 @@ export function ImageGallerySection({
   };
 
   return (
-    <section className={`py-10 md:py-16 ${bgClasses}`}>
-      <div className="container mx-auto px-4">
+    <section className={`${bgClasses} mw-section`}>
+      <div className="mw-container">
         {/* Header */}
         {(heading || subheading) && (
           <motion.div
@@ -61,7 +61,7 @@ export function ImageGallerySection({
             className="text-center max-w-3xl mx-auto mb-12"
           >
             {heading && (
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textColor}`}>
+              <h2 className={`font-bold mb-4 ${textColor} text-3xl lg:text-4xl`}>
                 {heading}
               </h2>
             )}
@@ -83,7 +83,7 @@ export function ImageGallerySection({
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="relative aspect-[4/3] rounded-xl overflow-hidden cursor-pointer group"
+                className="relative aspect-[4/3] rounded-2xl overflow-hidden cursor-pointer group"
                 onClick={() => setSelectedImage(img)}
               >
                 {img.image && (

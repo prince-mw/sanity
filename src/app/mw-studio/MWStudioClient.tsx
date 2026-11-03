@@ -337,12 +337,12 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
     <div className="min-h-screen bg-white">
 
       {/* ─── HERO — same two-column bleed layout and visual as the MW Inventory hero ─── */}
-      <section className="relative overflow-hidden bg-[#062068] text-white pt-24 sm:pt-20 lg:pt-24 pb-20 lg:pb-28" id="hero-section">
+      <section className="relative overflow-hidden bg-[#062068] text-white pb-20 lg:pb-28 mw-hero-top" id="hero-section">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative mw-container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
             <motion.div
@@ -355,7 +355,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
                   <StudioGeoIcon className="w-3 h-3 text-white" />
                 </div>
-                <span className="font-sans uppercase tracking-wider text-[11px]">MW Studio</span>
+                <span className="font-sans uppercase tracking-wider text-xs">MW Studio</span>
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans">
@@ -373,7 +373,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <CTAButton
                   href={product?.ctaLink || '/contact'}
-                  className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-[15px] px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
+                  className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-base px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                   id="hero-lets-connect-btn"
                 >
                   <span>{t('ui.products.letsConnect')}</span>
@@ -381,7 +381,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 {product?.secondaryCta?.text && (
                   <CTAButton
                     href={product.secondaryCta.link || ''}
-                    className="bg-white/10 text-white border border-white/30 px-6 py-3.5 rounded-md font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
+                    className="bg-white/10 text-white border border-white/30 px-6 py-3.5 rounded-lg font-semibold text-sm sm:text-base hover:bg-white/20 transition-all inline-flex items-center justify-center gap-2"
                   >
                     {product.secondaryCta.text}
                   </CTAButton>
@@ -447,10 +447,10 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
       </section>
 
       {/* ─── SECTION 2: THREE MODULES ─────────────────────────────────────────── */}
-      <section className="py-16 sm:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }} className="text-center mb-10">
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">Three Modules. One Complete OOH Business Platform.</h2>
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">Three Modules. One Complete OOH Business Platform.</h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">MW Studio is purpose-built for media owners — integrating three core modules that manage, deliver, and monetise your inventory end to end.</p>
           </motion.div>
 
@@ -460,7 +460,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`px-5 py-3 rounded-md font-semibold text-sm sm:text-base transition-all border ${
+                className={`px-5 py-3 rounded-lg font-semibold text-sm sm:text-base transition-all border ${
                   activeTab === tab.id
                     ? 'bg-blue-600 text-white border-blue-600 shadow-md'
                     : 'bg-white text-gray-600 border-gray-300 hover:border-blue-400 hover:text-blue-600'
@@ -486,9 +486,9 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 <section className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm" id="ims-tab-features-section">
-                  <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12">
+                  <div className="mw-container">
                     <div className="text-center max-w-3xl mx-auto pt-6 sm:pt-8 pb-2">
-                      <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-[#062068] font-sans">
+                      <h2 className="font-bold tracking-tight text-[#062068] font-sans text-3xl lg:text-4xl">
                         Unlock More Value From What You Own.
                       </h2>
                     </div>
@@ -523,7 +523,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                       <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                           {partnerLogos.slice(0, 12).map((integration: { name: string; logo?: string }) => (
-                            <div key={integration.name} className="bg-white rounded-md p-3 flex items-center justify-center h-14">
+                            <div key={integration.name} className="bg-white rounded-lg p-3 flex items-center justify-center h-14">
                               {integration.logo ? (
                                 <img
                                   src={integration.logo}
@@ -555,7 +555,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
               <motion.div key="cms" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }}>
 
                 {/* 2A: Intro + Bullets + Comparison */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 mb-8">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 sm:p-10 mb-8">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">{cmsTitle}</h3>
                   <p className="text-gray-600 leading-relaxed mb-6 max-w-3xl">{cmsSubtitle}</p>
                   <ul className="grid sm:grid-cols-2 gap-3 mb-8">
@@ -566,7 +566,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                       </li>
                     ))}
                   </ul>
-                  <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm mb-6">
+                  <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm mb-6">
                     <div className="grid grid-cols-3">
                       <div className="bg-gray-100 px-4 py-3 text-center font-bold text-gray-500 text-xs sm:text-sm uppercase tracking-wide border-r border-gray-200">Before</div>
                       <div className="bg-blue-600 px-4 py-3 text-center font-bold text-white text-xs sm:text-sm uppercase tracking-wide border-r border-blue-500">After</div>
@@ -591,19 +591,19 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                   <div className="bg-blue-50 border border-blue-200 rounded-lg px-5 py-3 text-sm text-blue-800 font-medium mb-6">
                     Average campaign delivery accuracy improvement: <strong>94% within 30 days of activation</strong>
                   </div>
-                  <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition-colors">
+                  <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors">
                     {t('ui.products.seeHowCmsWorks')} <ArrowRightIcon className="w-4 h-4" />
                   </CTAButton>
                 </div>
 
                 {/* 2B: CMS Feature icon grid */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 mb-8">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 sm:p-10 mb-8">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Complete Control Over What Plays, Where, and When</h3>
                   <p className="text-gray-600 mb-8">Nine powerful capabilities that automate delivery, monitoring, and reporting at any scale.</p>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {cmsFeatures.map((feat, i) => (
                       <motion.div key={feat.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.07 }} viewport={{ once: true }}
-                        className="flex gap-4 p-5 rounded-xl border border-gray-200 hover:border-blue-200 hover:shadow-sm transition-all">
+                        className="flex gap-4 p-5 rounded-2xl border border-gray-200 hover:border-blue-200 hover:shadow-sm transition-all">
                         <div className="flex-shrink-0 w-11 h-11 bg-blue-50 rounded-lg flex items-center justify-center">
                           <feat.icon className="w-6 h-6 text-blue-600" />
                         </div>
@@ -617,7 +617,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 {/* 2C: CMS ecosystem */}
-                <div className="bg-blue-900 text-white rounded-md p-8 sm:p-10 mb-8">
+                <div className="bg-blue-900 text-white rounded-lg p-8 sm:p-10 mb-8">
                   <div className="grid lg:grid-cols-2 gap-10 items-center">
                     <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
                       <h3 className="text-2xl sm:text-3xl font-bold mb-4">Your Screens Are Your Revenue. Keep Every One of Them Working.</h3>
@@ -635,7 +635,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                       <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                           {partnerLogos.slice(0, 12).map((integration: { name: string; logo?: string }) => (
-                            <div key={integration.name} className="bg-white rounded-md p-3 flex items-center justify-center h-14">
+                            <div key={integration.name} className="bg-white rounded-lg p-3 flex items-center justify-center h-14">
                               {integration.logo ? (
                                 <img src={integration.logo} alt={integration.name} className="max-h-8 w-auto object-contain" />
                               ) : (
@@ -654,14 +654,14 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 {/* 2D: Final CTA */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 sm:p-10 text-center">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Run Smarter, Smoother Campaign Delivery</h3>
                   <p className="text-gray-600 mb-6 max-w-2xl mx-auto">Bring all screen operations into one system designed for control, continuity, and real-time execution.</p>
                   <div className="flex flex-col sm:flex-row justify-center gap-3">
-                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition-colors">
+                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors">
                       {t('ui.products.getStarted')} <ArrowRightIcon className="w-4 h-4" />
                     </CTAButton>
-                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 border border-blue-600 text-blue-600 px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-50 transition-colors">
+                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold text-sm hover:bg-blue-50 transition-colors">
                       {t('ui.products.requestCmsDemo')} <ArrowRightIcon className="w-4 h-4" />
                     </CTAButton>
                   </div>
@@ -673,7 +673,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
               <motion.div key="sitebuilder" initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.35 }}>
 
                 {/* 3A: Intro + Bullets + Comparison */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 mb-8">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 sm:p-10 mb-8">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">{sbTitle}</h3>
                   <p className="text-gray-600 leading-relaxed mb-6 max-w-3xl">{sbSubtitle}</p>
                   <ul className="grid sm:grid-cols-2 gap-3 mb-8">
@@ -684,7 +684,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                       </li>
                     ))}
                   </ul>
-                  <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm mb-6">
+                  <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm mb-6">
                     <div className="grid grid-cols-3">
                       <div className="bg-gray-100 px-4 py-3 text-center font-bold text-gray-500 text-xs sm:text-sm uppercase tracking-wide border-r border-gray-200">Before</div>
                       <div className="bg-blue-600 px-4 py-3 text-center font-bold text-white text-xs sm:text-sm uppercase tracking-wide border-r border-blue-500">After</div>
@@ -712,13 +712,13 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 {/* 3B: Sitebuilder Feature icon grid */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 mb-8">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 sm:p-10 mb-8">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">A Connected Business Platform — Not Just a Website</h3>
                   <p className="text-gray-600 mb-8">Eight capabilities that power a professional, always-on OOH commercial platform.</p>
                   <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
                     {sbFeatures.map((feat, i) => (
                       <motion.div key={feat.title} initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: i * 0.07 }} viewport={{ once: true }}
-                        className="p-5 rounded-xl border border-gray-200 hover:border-blue-200 hover:shadow-sm transition-all">
+                        className="p-5 rounded-2xl border border-gray-200 hover:border-blue-200 hover:shadow-sm transition-all">
                         <div className="w-10 h-10 bg-blue-50 rounded-lg flex items-center justify-center mb-3">
                           <feat.icon className="w-5 h-5 text-blue-600" />
                         </div>
@@ -730,7 +730,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 {/* 3C: Flow section */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 mb-8">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 sm:p-10 mb-8">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">You Build the Platform. Your Advertisers Run Their Campaigns on It.</h3>
                   <p className="text-gray-600 mb-8 max-w-3xl">Sitebuilder has two layers — what you do as the media owner, and what your advertisers experience on the published platform.</p>
                   <div className="grid lg:grid-cols-2 gap-8">
@@ -754,7 +754,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                         ))}
                       </div>
                     </div>
-                    <div className="bg-blue-50 rounded-xl p-6">
+                    <div className="bg-blue-50 rounded-2xl p-6">
                       <div className="inline-flex items-center gap-2 bg-blue-600 px-4 py-2 rounded-full mb-6">
                         <StoreIcon className="w-4 h-4 text-white" />
                         <span className="text-white font-semibold text-sm">What Your Advertisers Get</span>
@@ -776,7 +776,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 {/* 3D: Sitebuilder ecosystem */}
-                <div className="bg-blue-900 text-white rounded-md p-8 sm:p-10 mb-8">
+                <div className="bg-blue-900 text-white rounded-lg p-8 sm:p-10 mb-8">
                   <div className="grid lg:grid-cols-2 gap-10 items-center">
                     <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
                       <h3 className="text-2xl sm:text-3xl font-bold mb-4">Your Backend Is Built. Now Give It a Front Door.</h3>
@@ -794,7 +794,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                       <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                           {partnerLogos.slice(0, 12).map((integration: { name: string; logo?: string }) => (
-                            <div key={integration.name} className="bg-white rounded-md p-3 flex items-center justify-center h-14">
+                            <div key={integration.name} className="bg-white rounded-lg p-3 flex items-center justify-center h-14">
                               {integration.logo ? (
                                 <img src={integration.logo} alt={integration.name} className="max-h-8 w-auto object-contain" />
                               ) : (
@@ -813,14 +813,14 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 {/* 3E: Final CTA */}
-                <div className="bg-white rounded-xl border border-gray-200 p-8 sm:p-10 text-center">
+                <div className="bg-white rounded-2xl border border-gray-200 p-8 sm:p-10 text-center">
                   <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">Launch Your Own OOH Storefront Interface</h3>
                   <p className="text-gray-600 mb-6 max-w-2xl mx-auto">Create a branded, always-on buying experience that drives discovery, demand, and direct advertiser engagement.</p>
                   <div className="flex flex-col sm:flex-row justify-center gap-3">
-                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-700 transition-colors">
+                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold text-sm hover:bg-blue-700 transition-colors">
                       {t('ui.products.getStarted')} <ArrowRightIcon className="w-4 h-4" />
                     </CTAButton>
-                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 border border-blue-600 text-blue-600 px-6 py-3 rounded-md font-semibold text-sm hover:bg-blue-50 transition-colors">
+                    <CTAButton href={product?.ctaLink || '/contact'} className="inline-flex items-center justify-center gap-2 border border-blue-600 text-blue-600 px-6 py-3 rounded-lg font-semibold text-sm hover:bg-blue-50 transition-colors">
                       {t('ui.products.requestSitebuilderDemo')} <ArrowRightIcon className="w-4 h-4" />
                     </CTAButton>
                   </div>

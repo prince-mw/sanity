@@ -30,8 +30,8 @@ export default function CustomerLogos() {
   ];
 
   return (
-    <section className="py-20 bg-mw-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-mw-gray-50 mw-section">
+      <div className="mw-container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -42,7 +42,7 @@ export default function CustomerLogos() {
           <span className="text-mw-blue-600 text-sm font-medium uppercase tracking-wider">
             {t('landingPage.customerLogos.title')}
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-mw-gray-900 mt-4 mb-6">
+          <h2 className="font-bold text-mw-gray-900 mt-4 mb-6 text-3xl lg:text-4xl">
             {t('landingPage.customerLogos.title')}
           </h2>
           <div className="text-mw-gray-600 max-w-3xl mx-auto text-lg space-y-3">
@@ -74,7 +74,7 @@ export default function CustomerLogos() {
             {[...customers, ...customers, ...customers].map((customer, index) => (
               <div
                 key={index}
-                className="flex-shrink-0 w-40 h-20 bg-white rounded-xl border-2 border-mw-gray-200 flex items-center justify-center group hover:border-mw-blue-400 hover:shadow-mw-lg transition-all duration-300 px-4"
+                className="flex-shrink-0 w-40 h-20 bg-white rounded-2xl border-2 border-mw-gray-200 flex items-center justify-center group hover:border-mw-blue-400 hover:shadow-mw-lg transition-all duration-300 px-4"
               >
                 <div className="flex items-center justify-center group-hover:scale-110 transition-transform duration-300 h-12 w-full relative">
                   <Image

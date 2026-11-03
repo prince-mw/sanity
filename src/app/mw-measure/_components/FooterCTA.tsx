@@ -8,7 +8,7 @@ import { useLocale } from '@/i18n/LocaleContext';
 export const FooterCTA: React.FC = () => {
   const { t } = useLocale();
   return (
-    <section id="footer-cta" className="bg-[#121f56] text-white py-12 sm:py-16 lg:py-20 relative overflow-hidden border-t border-blue-900/40">
+    <section id="footer-cta" className="bg-[#121f56] text-white relative overflow-hidden border-t border-blue-900/40 mw-section">
 
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -18,10 +18,10 @@ export const FooterCTA: React.FC = () => {
           <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center">
             <MeasureGeometry size="xs" />
           </div>
-          <span className="text-blue-100 font-sans uppercase tracking-wider text-[11px]">Ready for Verifiable Proof?</span>
+          <span className="text-blue-100 font-sans uppercase tracking-wider text-xs">Ready for Verifiable Proof?</span>
         </div>
 
-        <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white">
+        <h2 className="font-extrabold tracking-tight text-white text-3xl lg:text-4xl">
           <span className="block">From Reporting to</span>
           <span className="block mt-3 sm:mt-4 bg-gradient-to-r from-blue-200 via-sky-300 to-cyan-300 bg-clip-text text-transparent">
             Actionable Insights.
@@ -35,7 +35,7 @@ export const FooterCTA: React.FC = () => {
         <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
           <CTAButton
             href="/contact"
-            className="inline-flex items-center justify-center px-8 py-4 rounded-xl bg-white text-[#121f56] text-xs sm:text-sm font-extrabold uppercase tracking-wider shadow-2xl hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+            className="inline-flex items-center justify-center px-8 py-4 rounded-2xl bg-white text-[#121f56] text-xs sm:text-sm font-extrabold uppercase tracking-wider shadow-2xl hover:bg-slate-100 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
             id="footer-cta-see-action-btn"
           >
             <span>{t('ui.products.seeMwMeasureInAction')}</span>

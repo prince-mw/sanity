@@ -91,8 +91,8 @@ export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stori
         : 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3';
 
   return (
-    <section className={`py-10 md:py-14 ${bgClasses}`}>
-      <div className="container mx-auto px-4">
+    <section className={`${bgClasses} mw-section`}>
+      <div className="mw-container">
         {(sectionHeading || sectionSubheading) && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -102,7 +102,7 @@ export function SuccessStoriesSection({ sectionHeading, sectionSubheading, stori
             className="text-center max-w-2xl mx-auto mb-12"
           >
             {sectionHeading && (
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${textColor}`}>{sectionHeading}</h2>
+              <h2 className={`font-bold mb-4 ${textColor} text-3xl lg:text-4xl`}>{sectionHeading}</h2>
             )}
             {sectionSubheading && (
               <p className={`text-lg ${subtextColor}`}>{sectionSubheading}</p>

@@ -51,7 +51,7 @@ export default function TermsAndConditionsPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section - Document Header Style */}
-      <section className="relative bg-white border-b border-gray-200 py-12 md:py-16">
+      <section className="relative bg-white border-b border-gray-200 mw-section">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             {/* Document Icon */}
@@ -79,12 +79,12 @@ export default function TermsAndConditionsPage() {
 
       {/* Main Content with Sidebar TOC */}
       <section className="flex-1">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="py-12 mw-container">
           <div className="lg:flex lg:gap-12">
             
             {/* Table of Contents - Sidebar */}
             <aside className="hidden lg:block lg:w-72 flex-shrink-0">
-              <div className="sticky top-24 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <div className="sticky top-24 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
                 <h3 className="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
                   Table of Contents
                 </h3>
@@ -105,7 +105,7 @@ export default function TermsAndConditionsPage() {
             {/* Main Document Content */}
             <main className="flex-1 min-w-0">
               {/* Mobile TOC */}
-              <div className="lg:hidden mb-8 bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+              <div className="lg:hidden mb-8 bg-white rounded-2xl border border-gray-200 shadow-sm p-6">
                 <details className="group">
                   <summary className="flex items-center justify-between cursor-pointer text-sm font-semibold text-gray-900 uppercase tracking-wider">
                     Table of Contents
@@ -143,7 +143,7 @@ export default function TermsAndConditionsPage() {
                       <p className="text-gray-600 leading-relaxed">
                         In the event of any inconsistency between these Standard Terms and the applicable Agreement, the applicable Agreement shall govern and control.
                       </p>
-                      <div className="bg-mw-blue-50 rounded-xl p-5 border border-mw-blue-100">
+                      <div className="bg-mw-blue-50 rounded-2xl p-5 border border-mw-blue-100">
                         <p className="text-gray-700 leading-relaxed">
                           You can always find the most recent version of these Master Terms and Conditions at <Link href="/terms" className="text-mw-blue-600 hover:underline font-medium">movingwalls.com/terms</Link>. Moving Walls may change these Master Terms and Conditions by posting a new version without notice to You. Use of the Services after such change constitutes acceptance of such changes.
                         </p>
@@ -180,7 +180,7 @@ export default function TermsAndConditionsPage() {
                       
                       <div className="space-y-4">
                         {/* Inventory */}
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Inventory&quot;</h3>
                           <p className="text-gray-600 leading-relaxed mb-4">
                             Means digital out-of-home advertising or mobile advertising inventory, which may be displayed and sold through Moving Walls&apos; Moving Audiences Platform service. The inventory may be one of the following:
@@ -202,49 +202,49 @@ export default function TermsAndConditionsPage() {
                         </div>
 
                         {/* Other Definitions */}
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Creatives&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Means any visual material provided by company for delivery on digital out-of-home media sites or mobile advertising inventory as part of their inventory purchase.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Delivery Reports&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Refers to the record of ad plays or slots played on DOOH inventory or impressions delivered on mobile advertising. This information is passed automatically to Moving Walls&apos; Moving Audiences Platform Service by Moving Walls&apos; supply side platform partners.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Intellectual Property Rights&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Means patent rights, copyright rights (including, but not limited to, rights in visual works and moral rights), trade secret rights, and any other intellectual property rights recognized by the law of each applicable jurisdiction.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Client Licence&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Refers to the subscribed license&apos;s that the Company will get access to for planning, buying, verifying, and analysis. Company will only be able to plan for Active Client License&apos;s. The client license fee is an annual recurring fee billed upfront.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Pitch Proposal&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Refers to a proposal created for a non-licensed client through the Moving Audiences platform. Company must declare the pitch Closed Lost or Closed Won and will at any time get access to create up to 10 such Pitch Proposals. When a Pitch Proposal is marked as Closed Won, an additional Client License will be activated for the specified client from the date when the Pitch Proposal was first created.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Ad Hoc Proposal&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Refers to a proposal created for a non-licenced client that will not be turned into an annual licence. Company can create any number of these and a per campaign proposal fee will be charged.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Platform Fee&quot;</h3>
                           <p className="text-gray-600 leading-relaxed mb-4">
                             Is the fee payable by Company for Moving Walls&apos; Moving Audiences Platform Service. The Platform Fee will be calculated as a certain percentage of the Media Spendings of the Company as set forth in the Moving Walls Order Form based on the services accessed. The &quot;Platform Fee&quot; costs cover the following services:
@@ -268,42 +268,42 @@ export default function TermsAndConditionsPage() {
                           </div>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Marks&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Means a party&apos;s trademarks, trade names, service marks and service names.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Media Spendings&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Means the selling prices for out-of-home advertising inventory booked and delivered by Company via Moving Walls&apos; proprietary platform. The exact amount of the Media Spendings depends on the amount of inventory bought by Company. This includes both Platform Inventory and Company Inventory.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Publisher&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Means provider of OOH and/or DOOH inventory.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Service&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Means each Moving Walls product, platform, or service provided or made accessible to Customer in accordance with an Order Form.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Service Policies&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Means, collectively, all applicable rules, terms, conditions, requirements, technical standards and policies of Moving Walls that are set forth in the Moving Walls&apos; Moving Audiences Platform Service user interface and/or provided by Moving Walls to the Company from time to time.
                           </p>
                         </div>
 
-                        <div className="bg-gray-50 rounded-xl p-6">
+                        <div className="bg-gray-50 rounded-2xl p-6">
                           <h3 className="text-lg font-semibold text-gray-900 mb-3">&quot;Order Form&quot;</h3>
                           <p className="text-gray-600 leading-relaxed">
                             Means an order form, schedule, or other document entered into or accepted by Customer that incorporates these Master Terms and Conditions and that sets forth one or more Service(s) being provided by Moving Walls to Customer and specific terms applicable to each such Service.
@@ -320,7 +320,7 @@ export default function TermsAndConditionsPage() {
                       <h2 className="text-2xl font-bold text-gray-900">Grant of License; Limitations</h2>
                     </div>
                     <div className="pl-11 space-y-6">
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">3.1 Grant of License</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -335,7 +335,7 @@ export default function TermsAndConditionsPage() {
                         </div>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">3.2 Limitations</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -382,7 +382,7 @@ export default function TermsAndConditionsPage() {
                       <h2 className="text-2xl font-bold text-gray-900">Payment Terms; Publisher Expenses</h2>
                     </div>
                     <div className="pl-11 space-y-6">
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">5.1 Client Licence Fee, Platform Fee and Media Spendings Payment, Auction Supply</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -402,7 +402,7 @@ export default function TermsAndConditionsPage() {
                         </div>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">5.2 Late Payments</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -416,14 +416,14 @@ export default function TermsAndConditionsPage() {
                         </div>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">5.3 Taxation</h3>
                         <p className="text-gray-600 leading-relaxed">
                           Except for taxes on Moving Walls&apos;s income, Company shall also be responsible for and shall pay any and all applicable taxes or duties, tariffs or the like applicable to the provision or use of the Moving Walls Service.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">5.4 Inventory Expenses</h3>
                         <p className="text-gray-600 leading-relaxed">
                           It is Moving Walls&apos;s sole responsibility to arrange for and settle payment obligations with any Third Party Platform inventory suppliers. It is the Company&apos;s sole responsibility to arrange for and settle payment obligations with any Third Party Company Inventory Suppliers.
@@ -455,7 +455,7 @@ export default function TermsAndConditionsPage() {
                       <p className="text-gray-600 leading-relaxed">
                         Confidential Information means any non-public information relating to the Moving Walls Service or disclosed to Company by Moving Walls in the course of this Agreement. Company shall use reasonable care to protect Confidential Information of Moving Walls, and shall use Confidential Information only for the purposes of using the Moving Walls Service as permitted by this Agreement.
                       </p>
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h4 className="font-semibold text-gray-800 mb-3">Confidential Information does not include any information that:</h4>
                         <ul className="space-y-2">
                           {[
@@ -484,7 +484,7 @@ export default function TermsAndConditionsPage() {
                       <h2 className="text-2xl font-bold text-gray-900">Company Obligations</h2>
                     </div>
                     <div className="pl-11 space-y-6">
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">8.1 Authority</h3>
                         <p className="text-gray-600 leading-relaxed mb-4">
                           Company hereby represents and warrants that:
@@ -504,14 +504,14 @@ export default function TermsAndConditionsPage() {
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">8.2 Compliance</h3>
                         <p className="text-gray-600 leading-relaxed">
                           The company will comply with any terms and conditions of this Agreement and additional restrictions and/or specifications that may be provided from time to time. The company represents and warrants that its use of the Moving Walls Service will not violate or cause Company to breach any other agreements it may have with third parties. Company shall be solely responsible for its use of the Moving Walls Service hereunder.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">8.3 Acceptable Use</h3>
                         <div className="space-y-4 text-gray-600 leading-relaxed">
                           <p>
@@ -548,7 +548,7 @@ export default function TermsAndConditionsPage() {
                       <p className="text-gray-600 leading-relaxed">
                         Moving Walls will provide the following technical support to Company in connection with its use of the Moving Walls Service:
                       </p>
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <ul className="space-y-3">
                           <li className="flex items-start gap-3 text-gray-600">
                             <span className="flex-shrink-0 w-6 h-6 rounded-full bg-mw-blue-100 flex items-center justify-center text-mw-blue-700 text-xs font-bold">a</span>
@@ -591,28 +591,28 @@ export default function TermsAndConditionsPage() {
                       <h2 className="text-2xl font-bold text-gray-900">Term; Termination</h2>
                     </div>
                     <div className="pl-11 space-y-6">
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">11.1 Term</h3>
                         <p className="text-gray-600 leading-relaxed">
                           This Agreement will begin on the agreed Effective Date and, will renew for additional terms as indicated in the &quot;Order Form&quot; unless either Party provides the other Party with written notice of its intent not to renew the Agreement at least <strong>60 days</strong> prior to the end of the then-current term. Any subscribed Annual Client Licences will also be automatically renewed unless either Party provides the other Party with written notice of its intent not to renew the Agreement at least 60 days prior to the end of the then-current term.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">11.2 Termination for Convenience</h3>
                         <p className="text-gray-600 leading-relaxed">
                           Either party may terminate this Agreement, effective as of the last day of a calendar month, by providing <strong>60 days&apos;</strong> prior notice.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">11.3 Termination for Cause</h3>
                         <p className="text-gray-600 leading-relaxed">
                           Either Party may terminate this Agreement, at any time, in the event that the other Party breaches any material term of this Agreement and fails to cure such breach within <strong>sixty (60) days</strong> following notice thereof from the non-breaching Party.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">11.4 Moving Walls Termination</h3>
                         <p className="text-gray-600 leading-relaxed mb-4">
                           In addition, Moving Walls may terminate this Agreement, at any time, in the event that:
@@ -631,7 +631,7 @@ export default function TermsAndConditionsPage() {
                         </ul>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">11.5 Effects of Termination</h3>
                         <p className="text-gray-600 leading-relaxed mb-4">
                           Upon any termination of the Agreement:
@@ -659,7 +659,7 @@ export default function TermsAndConditionsPage() {
                       <h2 className="text-2xl font-bold text-gray-900">Disclaimer</h2>
                     </div>
                     <div className="pl-11 space-y-4">
-                      <div className="bg-amber-50 border border-amber-200 rounded-xl p-6">
+                      <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
                         <p className="text-amber-800 font-semibold text-lg mb-2">
                           The Moving Walls Service is provided &quot;AS IS&quot; and &quot;AS AVAILABLE&quot;.
                         </p>
@@ -706,14 +706,14 @@ export default function TermsAndConditionsPage() {
                       <h2 className="text-2xl font-bold text-gray-900">General Provisions</h2>
                     </div>
                     <div className="pl-11 space-y-6">
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.1 Notice</h3>
                         <p className="text-gray-600 leading-relaxed">
                           All notices under this Agreement must be in writing (including, without limitation, email) and sent to the attention of the other Party&apos;s contact for notices. Either Party may change its contact for notices, billing contact and/or additional contact by providing notice to the other Party. Notice will be deemed given when delivered.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.2 Governing Law</h3>
                         <div className="bg-mw-blue-50 border border-mw-blue-200 rounded-lg p-4">
                           <p className="text-mw-blue-800 font-medium">
@@ -722,42 +722,42 @@ export default function TermsAndConditionsPage() {
                         </div>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.3 Independent Contractors</h3>
                         <p className="text-gray-600 leading-relaxed">
                           The Parties are independent contractors, and this Agreement does not create an agency, partnership or joint venture.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.4 Assignment</h3>
                         <p className="text-gray-600 leading-relaxed">
                           The company may not assign or transfer any part of this Agreement without the written consent of Moving Walls.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.5 Integration; Waiver</h3>
                         <p className="text-gray-600 leading-relaxed">
                           This Agreement is the Parties&apos; entire Agreement relating to its subject and supersedes any prior or contemporaneous Agreements on that subject. All amendments hereto must be executed by both Parties and expressly state that they are amending this Agreement. Failure to enforce any provision of this Agreement will not constitute a waiver. If any provision of the Agreement is found unenforceable, it and any related provisions will be interpreted to best accomplish the unenforceable provision&apos;s essential purpose. Nothing in this Agreement will limit a Party&apos;s ability to seek equitable relief.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.6 Force Majeure</h3>
                         <p className="text-gray-600 leading-relaxed">
                           Neither Party will be liable for any acts or omissions resulting from circumstances or causes beyond its reasonable control. Without limiting the generality of the foregoing, and notwithstanding anything to the contrary in this Agreement, Moving Walls does not guarantee any Moving Walls Service will be operable at all times or during any down time caused by outages to any public Internet backbones, networks or servers, any failures of equipment, systems or local access services, or for previously scheduled maintenance.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.7 Restriction on Resale</h3>
                         <p className="text-gray-600 leading-relaxed">
                           The company may not resell any Moving Walls Service, it being understood and agreed that Company&apos;s use of the Moving Walls Service hereunder on behalf of advertisers and agencies that Company is authorized to act on behalf of in order to deliver advertising campaigns via the Moving Walls Service will not be deemed a breach of this Section.
                         </p>
                       </div>
 
-                      <div className="bg-gray-50 rounded-xl p-6">
+                      <div className="bg-gray-50 rounded-2xl p-6">
                         <h3 className="text-lg font-semibold text-gray-900 mb-3">14.8 Counterparts</h3>
                         <p className="text-gray-600 leading-relaxed">
                           The Parties may execute this Agreement in counterparts, including facsimile, PDF and other electronic copies, which taken together will constitute one instrument.
@@ -778,7 +778,7 @@ export default function TermsAndConditionsPage() {
                       <p className="mt-2 text-gray-600">If you have any questions about these Terms &amp; Conditions, please contact us.</p>
                     </div>
 
-                    <div className="bg-gradient-to-br from-mw-blue-50 to-mw-blue-100/50 rounded-xl p-6 border border-mw-blue-200">
+                    <div className="bg-gradient-to-br from-mw-blue-50 to-mw-blue-100/50 rounded-2xl p-6 border border-mw-blue-200">
                       <div className="flex items-start gap-4">
                         <div className="w-12 h-12 rounded-full bg-mw-blue-500 flex items-center justify-center flex-shrink-0">
                           <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

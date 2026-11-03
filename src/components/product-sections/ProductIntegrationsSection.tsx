@@ -38,8 +38,8 @@ export default function ProductIntegrationsSection({
   const categories = Object.keys(groupedIntegrations)
 
   return (
-    <section className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-white mw-section">
+      <div className="mw-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -50,7 +50,7 @@ export default function ProductIntegrationsSection({
           <span className="inline-block px-4 py-1 bg-purple-100 text-purple-700 rounded-full text-sm font-medium mb-4">
             Integrations
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
             {title}
           </h2>
           {subtitle && (
@@ -137,7 +137,7 @@ function IntegrationCard({
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.05 }}
-      className="group relative bg-white rounded-xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col items-center justify-center min-h-[120px]"
+      className="group relative bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 flex flex-col items-center justify-center min-h-[120px]"
     >
       {integration.logo ? (
         <div className="relative w-16 h-16 mb-3 group-hover:scale-110 transition-transform">
@@ -160,7 +160,7 @@ function IntegrationCard({
       </span>
 
       {/* Hover Glow Effect */}
-      <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 transition-all duration-300" />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-blue-500/0 to-purple-500/0 group-hover:from-blue-500/5 group-hover:to-purple-500/5 transition-all duration-300" />
     </motion.div>
   )
 }

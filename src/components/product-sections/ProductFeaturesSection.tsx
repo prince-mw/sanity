@@ -81,8 +81,8 @@ export default function ProductFeaturesSection({
   // Alternating layout with images
   if (layout === 'alternating') {
     return (
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white mw-section">
+        <div className="mw-container">
           {/* Section Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -93,7 +93,7 @@ export default function ProductFeaturesSection({
             <span className="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-4">
               Platform Features
             </span>
-            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
               {title}
             </h2>
             {subtitle && (
@@ -120,7 +120,7 @@ export default function ProductFeaturesSection({
                 >
                   {/* Content */}
                   <div className={isReversed ? 'lg:order-2' : ''}>
-                    <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-6">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-6">
                       <IconComponent className="w-7 h-7 text-white" />
                     </div>
                     <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-4">
@@ -170,8 +170,8 @@ export default function ProductFeaturesSection({
   const gridCols = layout === '2-col' ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3'
 
   return (
-    <section className="py-20 bg-gradient-to-b from-gray-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="bg-gradient-to-b from-gray-50 to-white mw-section">
+      <div className="mw-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -182,7 +182,7 @@ export default function ProductFeaturesSection({
           <span className="inline-block px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-4">
             Platform Features
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">
             {title}
           </h2>
           {subtitle && (
@@ -207,7 +207,7 @@ export default function ProductFeaturesSection({
                 className="group relative bg-white rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100"
               >
                 {/* Icon */}
-                <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                   <IconComponent className="w-7 h-7 text-white" />
                 </div>
 

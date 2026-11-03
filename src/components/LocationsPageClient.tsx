@@ -125,7 +125,7 @@ export default function LocationsPageClient({ initialLocations }: LocationsPageC
   return (
     <main className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 pt-32 pb-20 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 pb-20 overflow-hidden mw-hero-top">
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -138,7 +138,7 @@ export default function LocationsPageClient({ initialLocations }: LocationsPageC
           </svg>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="relative z-10 mw-container">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -166,7 +166,7 @@ export default function LocationsPageClient({ initialLocations }: LocationsPageC
                 <motion.div
                   key={stat.label}
                   variants={staggerItem}
-                  className="bg-white/10 backdrop-blur-sm rounded-xl p-6 text-center"
+                  className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 text-center"
                 >
                   <div className="text-3xl md:text-4xl font-bold text-white mb-1">{stat.value}</div>
                   <div className="text-mw-blue-200 text-sm">{stat.label}</div>
@@ -178,8 +178,8 @@ export default function LocationsPageClient({ initialLocations }: LocationsPageC
       </section>
 
       {/* Locations Grid */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gray-50 mw-section">
+        <div className="mw-container">
           <motion.div
             initial="hidden"
             whileInView="visible"

@@ -108,7 +108,7 @@ export function FormFieldRenderer({ field, value, onChange, error }: FormFieldRe
                         : currentValues.filter((v) => v !== option)
                       onChange(field.zohoFieldName, updated.join(', '))
                     }}
-                    className="w-4 h-4 text-blue-500 rounded focus:ring-blue-500"
+                    className="w-4 h-4 text-blue-500 rounded-lg focus:ring-blue-500"
                   />
                   <span className="text-sm">{option}</span>
                 </label>

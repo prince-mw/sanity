@@ -75,7 +75,7 @@ function PostTable({ posts }: { posts: BlogAudit['posts'] }) {
         ))}
         <input id="blog-audit-search" value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search title or search term" aria-label="Search posts" className="ml-auto rounded-lg border border-gray-200 px-3 py-1.5 text-sm w-56 max-w-full" />
       </div>
-      <div className="overflow-x-auto rounded-xl border border-gray-200 max-h-[70vh]">
+      <div className="overflow-x-auto rounded-2xl border border-gray-200 max-h-[70vh]">
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500 sticky top-0">
             <tr>
@@ -173,7 +173,7 @@ export default function BlogTab({ data, statuses }: { data: BlogAudit; statuses:
 
       {/* Buyer questions */}
       <Section id="blog-questions" title="Buyer questions: missing page or weak page?" intro="The questions buyers ask before choosing a DOOH partner, who wins each today, and where we stand." meta={`${data.questions.length} questions`}>
-        <div className="overflow-x-auto rounded-xl border border-gray-200">
+        <div className="overflow-x-auto rounded-2xl border border-gray-200">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
               <tr><th scope="col" className={TH}>Buyer question</th><th scope="col" className={TH}>Monthly searches</th><th scope="col" className={TH}>Wins today</th><th scope="col" className={TH}>Our best page</th><th scope="col" className={TH}>Diagnosis</th><th scope="col" className={TH}>Fix</th></tr>

@@ -55,7 +55,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-gray-900 relative overflow-hidden">
+      <section className="pb-20 bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-gray-900 relative overflow-hidden mw-hero-top">
         {/* Background elements */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 opacity-[0.03]">
@@ -70,7 +70,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="relative z-10 mw-container">
           {/* Back Link */}
           <motion.div
             initial={{ opacity: 0, y: -10 }}
@@ -178,7 +178,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
       </section>
 
       {/* Bio Section */}
-      <section className="py-20 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -186,7 +186,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl font-bold text-mw-gray-900 mb-8">{t('ui.leadership.aboutName').replace('{name}', member.name.split(' ')[0])}</h2>
+            <h2 className="font-bold text-mw-gray-900 mb-8 text-3xl lg:text-4xl">{t('ui.leadership.aboutName').replace('{name}', member.name.split(' ')[0])}</h2>
             {member.fullBio ? (
               <div 
                 className="prose prose-lg max-w-none text-mw-gray-600"
@@ -205,8 +205,8 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
 
       {/* Other Team Members */}
       {otherMembers.length > 0 && (
-        <section className="py-20 bg-mw-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 mw-section">
+          <div className="mw-container">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -214,7 +214,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
               transition={{ duration: 0.6 }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl font-bold text-mw-gray-900 mb-4">{t('ui.leadership.otherTeamMembers')}</h2>
+              <h2 className="font-bold text-mw-gray-900 mb-4 text-3xl lg:text-4xl">{t('ui.leadership.otherTeamMembers')}</h2>
               <p className="text-lg text-mw-gray-600">{t('ui.leadership.otherTeamMembersText')}</p>
             </motion.div>
 
@@ -229,7 +229,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
                 >
                   <Link 
                     href={`/leadership/${otherMember.slug}`}
-                    className="block bg-white rounded-xl shadow-mw-md border border-mw-gray-100 overflow-hidden group hover:shadow-mw-xl transition-all"
+                    className="block bg-white rounded-2xl shadow-mw-md border border-mw-gray-100 overflow-hidden group hover:shadow-mw-xl transition-all"
                   >
                     {/* Photo */}
                     <div className="relative h-48 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 overflow-hidden">
@@ -280,15 +280,15 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
       )}
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-mw-blue-600 to-mw-blue-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="bg-gradient-to-r from-mw-blue-600 to-mw-blue-700 mw-section">
+        <div className="text-center mw-container">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            <h2 className="font-bold text-white mb-6 text-3xl lg:text-4xl">
               {t('ui.leadership.joinOurTeam')}
             </h2>
             <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
@@ -296,7 +296,7 @@ export default function LeadershipDetailClient({ initialMember, initialOtherMemb
             </p>
             <Link
               href="/careers"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-mw-blue-600 font-medium rounded-xl hover:bg-mw-gray-100 transition-colors shadow-lg"
+              className="inline-flex items-center gap-2 px-8 py-4 bg-white text-mw-blue-600 font-medium rounded-2xl hover:bg-mw-gray-100 transition-colors shadow-lg"
             >
               {t('ui.leadership.viewOpenPositions')}
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

@@ -37,7 +37,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="pt-32 pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50">
+      <section className="pb-16 bg-gradient-to-br from-mw-blue-50 via-white to-mw-gray-50 mw-hero-top">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -102,7 +102,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
 
       {/* Featured Image */}
       {caseStudy.featuredImage && (
-        <section className="py-8">
+        <section className="mw-section-sm">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, scale: 0.98 }}
@@ -122,7 +122,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
       )}
 
       {/* Content */}
-      <section className="py-12">
+      <section className="mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Key Metrics */}
           {caseStudy.metrics && caseStudy.metrics.length > 0 && (
@@ -133,7 +133,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
               className="mb-12 grid grid-cols-2 md:grid-cols-4 gap-4"
             >
               {caseStudy.metrics.map((metric, idx) => (
-                <div key={idx} className="bg-mw-blue-50 rounded-xl p-6 text-center">
+                <div key={idx} className="bg-mw-blue-50 rounded-2xl p-6 text-center">
                   <div className="text-3xl font-bold text-mw-blue-600 mb-2">{metric.value}</div>
                   <div className="text-sm text-mw-gray-600">{metric.label}</div>
                 </div>
@@ -172,7 +172,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
       </section>
 
       {/* Back & Share Section */}
-      <section className="py-8 border-t border-mw-gray-200">
+      <section className="border-t border-mw-gray-200 mw-section-sm">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div className="flex items-center gap-3">
@@ -205,8 +205,8 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
 
       {/* Related Case Studies */}
       {relatedCaseStudies.length > 0 && (
-        <section className="py-16 bg-mw-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <section className="bg-mw-gray-50 mw-section">
+          <div className="mw-container">
             <h2 className="text-2xl font-bold text-mw-gray-900 mb-8">{t("ui.caseStudies.relatedCaseStudies")}</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedCaseStudies.map((related, index) => (
@@ -219,7 +219,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
                 >
                   <Link
                     href={`/case-studies/${related.slug}`}
-                    className="group block bg-white rounded-xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
+                    className="group block bg-white rounded-2xl overflow-hidden shadow-mw-sm hover:shadow-mw-lg transition-all duration-300"
                   >
                     <div className="aspect-video bg-gradient-to-br from-mw-blue-500 to-mw-blue-700 relative overflow-hidden">
                       {related.featuredImage && (
@@ -254,7 +254,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
       )}
 
       {/* CTA Section */}
-      <section className="py-16 bg-white">
+      <section className="bg-white mw-section">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -263,7 +263,7 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
             transition={{ duration: 0.8 }}
             className="bg-gradient-to-br from-mw-gray-900 to-mw-gray-800 rounded-2xl p-8 lg:p-12 text-center"
           >
-            <h2 className="text-3xl font-bold text-white mb-4">{t("ui.caseStudies.similarResultsTitle")}</h2>
+            <h2 className="font-bold text-white mb-4 text-3xl lg:text-4xl">{t("ui.caseStudies.similarResultsTitle")}</h2>
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               {t("ui.caseStudies.similarResultsText")}
             </p>

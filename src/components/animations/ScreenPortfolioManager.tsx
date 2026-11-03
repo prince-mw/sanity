@@ -178,7 +178,7 @@ export default function ScreenPortfolioManager() {
 
                 {/* Header with icon */}
                 <div className="flex items-center gap-1.5 mb-1.5">
-                  <div className="w-6 h-6 rounded-md bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center">
+                  <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-blue-500/30 to-purple-500/30 flex items-center justify-center">
                     {format.icon === 'billboard' && (
                       <svg className="w-3 h-3 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6z" />
@@ -201,27 +201,27 @@ export default function ScreenPortfolioManager() {
                     )}
                   </div>
                   <div>
-                    <div className="text-[8px] sm:text-[9px] text-white font-semibold whitespace-pre-line leading-tight">{format.type}</div>
+                    <div className="text-[8px] sm:text-xs text-white font-semibold whitespace-pre-line leading-tight">{format.type}</div>
                     <div className={`text-[6px] sm:text-[7px] ${status.text} uppercase font-medium`}>{t(`homeVisuals.portfolio.status.${format.status}`)}</div>
                   </div>
                 </div>
 
                 {/* Stats */}
                 <div className="grid grid-cols-2 gap-1.5">
-                  <div className="bg-slate-700/30 rounded px-1.5 py-0.5">
+                  <div className="bg-slate-700/30 rounded-lg px-1.5 py-0.5">
                     <div className="text-[5px] sm:text-[6px] text-slate-400 uppercase">{t('homeVisuals.portfolio.impressions')}</div>
                     <motion.div
-                      className="text-[8px] sm:text-[10px] font-bold text-white"
+                      className="text-[8px] sm:text-xs font-bold text-white"
                       animate={{ opacity: [0.8, 1, 0.8] }}
                       transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
                     >
                       {format.impressions}
                     </motion.div>
                   </div>
-                  <div className="bg-slate-700/30 rounded px-1.5 py-0.5">
+                  <div className="bg-slate-700/30 rounded-lg px-1.5 py-0.5">
                     <div className="text-[5px] sm:text-[6px] text-slate-400 uppercase">{t('homeVisuals.portfolio.revenue')}</div>
                     <motion.div
-                      className="text-[8px] sm:text-[10px] font-bold text-green-400"
+                      className="text-[8px] sm:text-xs font-bold text-green-400"
                       animate={{ scale: [1, 1.02, 1] }}
                       transition={{ duration: 1.5, repeat: Infinity, delay: index * 0.3 }}
                     >
@@ -243,9 +243,9 @@ export default function ScreenPortfolioManager() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 0.5 }}
       >
-        <div className="relative bg-gradient-to-r from-slate-800/95 via-blue-900/95 to-slate-800/95 backdrop-blur-md rounded-xl p-3 border border-blue-500/30 shadow-2xl">
+        <div className="relative bg-gradient-to-r from-slate-800/95 via-blue-900/95 to-slate-800/95 backdrop-blur-md rounded-2xl p-3 border border-blue-500/30 shadow-2xl">
           {/* Glow effect */}
-          <div className="absolute inset-0 rounded-xl bg-blue-500/10 animate-pulse" />
+          <div className="absolute inset-0 rounded-2xl bg-blue-500/10 animate-pulse" />
           
           {/* Header */}
           <div className="relative flex items-center justify-between mb-2 pb-1.5 border-b border-slate-700/50">
@@ -255,7 +255,7 @@ export default function ScreenPortfolioManager() {
                 animate={{ opacity: [1, 0.5, 1] }}
                 transition={{ duration: 1, repeat: Infinity }}
               />
-              <span className="text-[9px] text-blue-300 font-semibold uppercase tracking-wider">{t('homeVisuals.portfolio.hub')}</span>
+              <span className="text-xs text-blue-300 font-semibold uppercase tracking-wider">{t('homeVisuals.portfolio.hub')}</span>
             </div>
             <div className="flex gap-1">
               <div className="w-1.5 h-1.5 rounded-full bg-red-400" />

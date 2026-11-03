@@ -77,14 +77,14 @@ export default function ProductHowItWorksSection({
   if (!steps || steps.length === 0) return null
 
   return (
-    <section className="py-20 bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden">
+    <section className="bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-900 relative overflow-hidden mw-section">
       {/* Background Effects */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 -left-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-indigo-500/10 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative mw-container">
         {/* Section Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -95,7 +95,7 @@ export default function ProductHowItWorksSection({
           <span className="inline-block px-4 py-1 bg-white/10 backdrop-blur-sm text-blue-300 rounded-full text-sm font-medium border border-white/20 mb-4">
             Simple Process
           </span>
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+          <h2 className="font-bold text-white mb-4 text-3xl lg:text-4xl">
             {title}
           </h2>
           {subtitle && (
@@ -150,7 +150,7 @@ export default function ProductHowItWorksSection({
                       whileInView={{ opacity: 1, scale: 1 }}
                       viewport={{ once: true }}
                       transition={{ delay: index * 0.15 + 0.2 }}
-                      className="mt-6 rounded-xl overflow-hidden shadow-xl border border-white/10"
+                      className="mt-6 rounded-2xl overflow-hidden shadow-xl border border-white/10"
                     >
                       <Image
                         src={step.image}
