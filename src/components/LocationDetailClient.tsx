@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, type ReactNode } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
@@ -131,6 +131,8 @@ interface LocationDetailClientProps {
   countryName?: string
   /** Overrides the default "Explore Other Cities in <country>" heading */
   relatedHeading?: string
+  /** Rendered straight after the hero, before any CMS section (city pages: the inventory finder). */
+  afterHero?: ReactNode
   /** Language of the template's fixed labels (translated location pages pass 'zh') */
   lang?: 'en' | 'zh'
 }
@@ -179,7 +181,7 @@ const LABELS = {
   },
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en' }: LocationDetailClientProps) {
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en', afterHero }: LocationDetailClientProps) {
   const { t } = useLocale()
   const location = initialData
   // Spanish/Portuguese pages (americas-es, americas-pt) keep their template labels in the page's own
@@ -333,6 +335,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
         </div>
       </section>
       )}
+
+      {afterHero}
 
       {/* CMS Sections - After Hero */}
       {sectionsPosition === 'after-hero' && cmsSections}
@@ -583,7 +587,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               ))}
             </div>
             <div className="text-center mt-10">
-              <Link href={backHref} className="inline-flex items-center gap-2 font-semibold text-mw-blue-600 hover:text-mw-blue-700">
+              <Link href={backHref} className="mw-tap inline-flex items-center gap-2 font-semibold text-mw-blue-600 hover:text-mw-blue-700">
                 {L.viewAll(backLabel, countryName)}
               </Link>
             </div>

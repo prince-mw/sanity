@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { PublicSite } from '@/lib/inventory/types'
+import { BrandMap, type MapPin } from './BrandMap'
 
 export const MY_CONTACT_FORM =
   'https://forms.zohopublic.com/movingwallsholdingpteltd/form/MalaysiaContact/formperma/9-GOVijT9HZ4uHR9214Y08-UQX1HA8mAzZSjfcDMMeY'
@@ -66,51 +67,80 @@ export function SiteCard({ site, linked }: { site: PublicSite; linked: boolean }
     : <div className={cls}>{body}</div>
 }
 
-/** Every site, filterable by format and venue type. Sites without a photo are listed but not linked. */
-export function SiteGrid({ sites, hasPage }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean }) {
+const pinOf = (s: PublicSite, linked: boolean): MapPin | null =>
+  s.lat == null || s.lng == null ? null : {
+    id: s.id, lat: s.lat, lng: s.lng, title: s.name,
+    subtitle: [s.displayFormat ?? s.format, s.areaName].filter(Boolean).join(' · '),
+    href: linked ? sitePath(s) : undefined,
+  }
+
+/**
+ * The inventory finder: Format / Venue filters, the site cards and the branded
+ * map, all driven by one filter state, so the pins always match the cards.
+ * Desktop: cards left, map right (stays in view). Phone/tablet: List / Map switch.
+ */
+export function SiteGrid({ sites, hasPage, mapTitle }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string }) {
   const formats = useMemo(() => Array.from(new Set(sites.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [sites])
   const venues = useMemo(() => Array.from(new Set(sites.map(s => s.venueType).filter(Boolean) as string[])).sort(), [sites])
   const [format, setFormat] = useState('All')
   const [venue, setVenue] = useState('All')
-  const shown = sites.filter(s =>
-    (format === 'All' || (s.displayFormat ?? s.format ?? 'Other') === format) && (venue === 'All' || s.venueType === venue))
+  const [active, setActive] = useState<string | null>(null)
+  const [view, setView] = useState<'list' | 'map'>('list')
+  const shown = useMemo(() => sites.filter(s =>
+    (format === 'All' || (s.displayFormat ?? s.format ?? 'Other') === format) && (venue === 'All' || s.venueType === venue)), [sites, format, venue])
+  const pins = useMemo(() => shown.map(s => pinOf(s, hasPage(s))).filter(Boolean) as MapPin[], [shown, hasPage])
+  const pick = (id: string) => {
+    setActive(id)
+    document.getElementById(`site-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+  }
   const chip = (on: boolean) =>
-    `rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-mw-blue-200'}`
+    `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-mw-blue-200'}`
+  const tab = (on: boolean) => `mw-tap flex-1 rounded-full px-4 py-1.5 text-sm font-semibold ${on ? 'bg-[#062068] text-white' : 'text-gray-700'}`
   return (
     <div>
-      <div className="flex flex-col gap-3 mb-6">
+      <div className="flex flex-col gap-3 mb-5">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-semibold text-gray-500 mr-1">Format</span>
-          {['All', ...formats].map(f => <button key={f} type="button" onClick={() => setFormat(f)} className={chip(format === f)}>{f}</button>)}
+          {['All', ...formats].map(f => <button key={f} type="button" aria-pressed={format === f} onClick={() => { setFormat(f); setActive(null) }} className={chip(format === f)}>{f}</button>)}
         </div>
         {venues.length > 1 && (
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-sm font-semibold text-gray-500 mr-1">Venue</span>
-            {['All', ...venues].map(v => <button key={v} type="button" onClick={() => setVenue(v)} className={chip(venue === v)}>{v}</button>)}
+            {['All', ...venues].map(v => <button key={v} type="button" aria-pressed={venue === v} onClick={() => { setVenue(v); setActive(null) }} className={chip(venue === v)}>{v}</button>)}
           </div>
         )}
       </div>
-      <p className="text-sm text-gray-500 mb-4">{shown.length} of {sites.length} sites</p>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {shown.map(s => <SiteCard key={s.id} site={s} linked={hasPage(s)} />)}
+      <div className="flex items-center justify-between gap-4 mb-4">
+        <p className="text-sm text-gray-500" aria-live="polite">{shown.length} of {sites.length} sites{pins.length < shown.length ? ` · ${pins.length} on the map` : ''}</p>
+        <div className="lg:hidden flex w-48 rounded-full border border-gray-200 bg-white p-1" role="group" aria-label="Show sites as">
+          <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')} className={tab(view === 'list')}>List</button>
+          <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')} className={tab(view === 'map')}>Map</button>
+        </div>
+      </div>
+      {/* Phone/tablet: map first (short in List view, tall in Map view). Desktop: cards left, map right. */}
+      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-6 items-start">
+        <div className="lg:order-2 lg:sticky lg:top-28">
+          <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
+            className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} lg:h-[calc(100vh-9rem)] lg:max-h-[760px]`} />
+        </div>
+        <div className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} lg:order-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-5`}>
+          {shown.map(s => (
+            <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}
+              className={`scroll-mt-28 rounded-2xl transition-shadow ${active === s.id ? 'ring-2 ring-mw-blue-500 ring-offset-2' : ''}`}>
+              <SiteCard site={s} linked={hasPage(s)} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   )
 }
 
-/** A map from OpenStreetMap — no key needed. One pin for a site; a box around an area's sites. */
+/** One site's location on the branded map. */
 export function SitesMap({ sites, title }: { sites: PublicSite[]; title: string }) {
-  const pts = sites.filter(s => s.lat != null && s.lng != null) as (PublicSite & { lat: number; lng: number })[]
-  if (!pts.length) return null
-  const lats = pts.map(p => p.lat), lngs = pts.map(p => p.lng)
-  const pad = 0.006
-  const bbox = [Math.min(...lngs) - pad, Math.min(...lats) - pad, Math.max(...lngs) + pad, Math.max(...lats) + pad].map(n => n.toFixed(5)).join(',')
-  const marker = pts.length === 1 ? `&marker=${pts[0].lat},${pts[0].lng}` : ''
-  return (
-    <div className="overflow-hidden rounded-2xl border border-gray-200">
-      <iframe title={title} className="w-full h-72 sm:h-96" loading="lazy" src={`https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik${marker}`} />
-    </div>
-  )
+  const pins = sites.map(s => pinOf(s, false)).filter(Boolean) as MapPin[]
+  if (!pins.length) return null
+  return <BrandMap pins={pins} activeId={pins.length === 1 ? pins[0].id : null} title={title} className="h-72 sm:h-96" />
 }
 
 /** Rif's wording (26 Oct 2026), shown with every price. */

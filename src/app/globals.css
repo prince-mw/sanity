@@ -380,3 +380,9 @@ select {
 .anim-data-rain { animation: dataRainTravel 3s linear infinite; }
 .anim-border-breath { animation: borderNeonBreath 4s ease-in-out infinite; }
 .anim-facet-shimmer { animation: facetShimmer 5s ease-in-out infinite; }
+
+/* Map controls (MapLibre): 44px buttons on touch screens. Outside any layer so it beats MapLibre's own CSS. */
+@media (pointer: coarse) {
+  .maplibregl-ctrl-group button { width: 44px; height: 44px; }
+  .maplibregl-ctrl-attrib-button { width: 44px; height: 44px; }
+}

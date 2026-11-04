@@ -111,18 +111,18 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         relatedCities={relatedCities}
         countryName={city.country?.country || undefined}
         relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || undefined}
+        afterHero={inventory.length > 0 ? (
+          <CityInventorySection key="inventory"
+            cityName={city.city || citySlug}
+            citySlug={citySlug}
+            countrySlug={slug}
+            sites={inventory}
+            pagedIds={inventory.filter(siteHasPage).map(s => s.id)}
+            areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
+            sample={usingSample()}
+          />
+        ) : null}
       />
-      {inventory.length > 0 && (
-        <CityInventorySection
-          cityName={city.city || citySlug}
-          citySlug={citySlug}
-          countrySlug={slug}
-          sites={inventory}
-          pagedIds={inventory.filter(siteHasPage).map(s => s.id)}
-          areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
-          sample={usingSample()}
-        />
-      )}
     </>
   )
 }

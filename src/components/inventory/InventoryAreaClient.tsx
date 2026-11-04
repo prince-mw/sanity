@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useZohoPopup } from '../ZohoPopupProvider'
 import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
-import { SiteGrid, SitesMap, PriceGate, SampleBanner, SiteCard, areaPath, MY_CONTACT_FORM } from './InventoryShared'
+import { SiteGrid, PriceGate, SampleBanner, SiteCard, areaPath, MY_CONTACT_FORM } from './InventoryShared'
 
 export type AreaLink = { name: string; slug: string; kind: 'buyer' | 'supply'; count: number }
 
@@ -100,8 +100,8 @@ export function InventoryAreaClient({
       {sites.length > 0 && (
         <section className="bg-gray-50 mw-section">
           <div className="mw-container">
-            <SgSectionHeading title={`Advertising sites in ${areaName}`} intro="Filter by format and venue. Open a site for its details and estimated price." />
-            <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} />
+            <SgSectionHeading title={`Advertising sites in ${areaName}`} intro="Filter by format and venue. Tap a pin or open a site for its details and estimated price." />
+            <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} mapTitle={`Map of advertising sites in ${areaName}`} />
             <div className="mt-8"><PriceGate country={countrySlug} ids={sites.map(s => s.id)} names={Object.fromEntries(sites.map(s => [s.id, s.name]))} /></div>
           </div>
         </section>
@@ -114,16 +114,6 @@ export function InventoryAreaClient({
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {nearby.map(s => <SiteCard key={s.id} site={s} linked={paged.has(s.id)} />)}
             </div>
-          </div>
-        </section>
-      )}
-
-      {/* Map */}
-      {sites.length > 0 && (
-        <section className="bg-white mw-section">
-          <div className="mw-container">
-            <SgSectionHeading title={`Where the sites are in ${areaName}`} />
-            <SitesMap sites={sites} title={`Map of advertising sites in ${areaName}`} />
           </div>
         </section>
       )}
