@@ -3,17 +3,21 @@ import {
   INSIGHTS_COOKIE,
   INSIGHTS_COOKIE_MAX_AGE,
   clearFailures,
+  googleSignIn,
   passwordMatches,
   recordFailure,
   sessionToken,
   throttled,
 } from '@/lib/insights/auth'
 
-// POST { password } → sets the session cookie. DELETE → signs out.
+// POST { password } → sets the session cookie (only while Google sign-in isn't set up). DELETE → signs out.
 
 const noindex = { 'X-Robots-Tag': 'noindex, nofollow', 'Cache-Control': 'no-store' }
 
 export async function POST(req: NextRequest) {
+  if (await googleSignIn()) {
+    return NextResponse.json({ ok: false, error: 'Use “Sign in with Google”.' }, { status: 403, headers: noindex })
+  }
   const ip = req.headers.get('x-forwarded-for')?.split(',')[0].trim() || 'unknown'
   if (throttled(ip)) {
     return NextResponse.json({ ok: false, error: 'Too many attempts. Try again in 15 minutes.' }, { status: 429, headers: noindex })

@@ -84,7 +84,7 @@ export default function ProjectsTab({ data, statuses }: { data: ProjectsDashboar
   const c = data.current
   const p = data.previous
   const partial = data.range.startsWith('this')
-  const prevLabel = data.range.endsWith('week') ? 'last week' : data.range.endsWith('month') ? 'last month' : 'last year'
+  const prevLabel = data.range.includes('_') ? 'previous period' : data.range.endsWith('week') ? 'last week' : data.range.endsWith('month') ? 'last month' : 'last year'
 
   return (
     <>

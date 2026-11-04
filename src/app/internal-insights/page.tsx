@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
-import { isAuthed } from '@/lib/insights/auth'
+import { currentUser, googleSignIn } from '@/lib/insights/auth'
 import { getDashboard } from '@/lib/insights/data'
 import { getActionStatuses } from '@/lib/insights/actions'
-import { DEFAULT_RANGE, RANGE_KEYS, calendarPeriods, periods, type RangeKey } from '@/lib/insights/ranges'
+import { calendarPeriods, parseRange, periods, type RangeKey } from '@/lib/insights/ranges'
 import { DEFAULT_TAB, TABS, type TabKey } from '@/lib/insights/tabs'
 import { isInsightsConfigured } from '@/lib/insights/google'
 import InsightsLogin from './InsightsLogin'
@@ -100,15 +100,16 @@ async function BlogSection() {
   }
 }
 
-export default async function InternalInsightsPage({ searchParams }: { searchParams: Promise<{ range?: string; tab?: string }> }) {
-  if (!(await isAuthed())) return <InsightsLogin />
-
+export default async function InternalInsightsPage({ searchParams }: { searchParams: Promise<{ range?: string; tab?: string; signin?: string }> }) {
   const params = await searchParams
-  const range: RangeKey = RANGE_KEYS.includes(params.range as RangeKey) ? (params.range as RangeKey) : DEFAULT_RANGE
+  const user = await currentUser()
+  if (user === null) return <InsightsLogin google={!!(await googleSignIn())} signinError={params.signin} />
+
+  const range: RangeKey = parseRange(params.range)
   const tab: TabKey = TABS.some((t) => t.key === params.tab) ? (params.tab as TabKey) : DEFAULT_TAB
 
   return (
-    <InsightsShell tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)} snapshot={tab === 'blog' ? 'Snapshot audit · 30 Oct 2026 · data 29 Oct 2025 – 29 Oct 2026' : undefined}>
+    <InsightsShell user={user} tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)} snapshot={tab === 'blog' ? 'Snapshot audit · 30 Oct 2026 · data 29 Oct 2025 – 29 Oct 2026' : undefined}>
       {tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
     </InsightsShell>
   )

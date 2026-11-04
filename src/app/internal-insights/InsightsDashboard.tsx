@@ -16,7 +16,8 @@ const STATUS_STYLE: Record<Status, string> = {
 }
 
 function Trend({ data }: { data: Dashboard }) {
-  const yearly = data.range === 'this-year' || data.range === 'last-year'
+  // Long ranges are charted by month (yyyymm), others by day (yyyymmdd)
+  const yearly = data.trend[0]?.label.length === 6
   const label = (k: string) =>
     yearly
       ? new Date(Date.UTC(+k.slice(0, 4), +k.slice(4, 6) - 1, 1)).toLocaleDateString('en-GB', { month: 'short', timeZone: 'UTC' })

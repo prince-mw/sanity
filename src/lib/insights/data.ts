@@ -3,7 +3,7 @@ import { unstable_cache } from 'next/cache'
 import { ga4Report, gscQuery } from './google'
 import { getSemrushSnapshot } from './config'
 import { actionId } from './actions'
-import { periods, type RangeKey } from './ranges'
+import { isLongRange, periods, type RangeKey } from './ranges'
 import { getReferrerName } from '@/lib/referrerName'
 export type { RangeKey } from './ranges'
 
@@ -235,7 +235,7 @@ async function build(range: RangeKey): Promise<Dashboard> {
     { startDate: p.prevStart, endDate: p.prevEnd, name: 'prev' },
   ]
   const leadFilter = { filter: { fieldName: 'eventName', stringFilter: { matchType: 'BEGINS_WITH', value: 'generate_lead' } } }
-  const trendDim = range === 'this-year' || range === 'last-year' ? 'yearMonth' : 'date'
+  const trendDim = isLongRange(range) ? 'yearMonth' : 'date'
   const locFilter = { filter: { fieldName: 'landingPage', stringFilter: { matchType: 'BEGINS_WITH', value: '/locations/' } } }
 
   const [byPageChannel, botRows, aiRows, leadRows, trendAll, trendLoc, trendLeads, gscSite, gscPages, gscPageQueries, semrush, citySlugs] =
