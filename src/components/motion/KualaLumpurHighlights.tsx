@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView, useReducedMotion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Building2, BusFront, CarTaxiFront, Flag, Landmark, Mountain, Palette, RadioTower,
   Route, Shirt, ShoppingBag, Sparkles, TrainFront, TramFront, type LucideIcon,
@@ -9,6 +9,8 @@ import {
 import { MW } from "./brand";
 import { Kicker } from "./BrandBits";
 import { KL_MAP } from "./kl-map";
+import { fitBox, spreadPins } from "./kit/geometry";
+import { useNarrow, useSvgScale } from "./kit/useSvgScale";
 
 // Summary of the Market Landscape paragraph on Kuala Lumpur: the attractions
 // it names (pinned on a map of KL), its festivals, and how people get around.
@@ -25,16 +27,11 @@ const ICONS: Record<string, LucideIcon> = {
   museum: Landmark,
 };
 
-// The city-centre places sit within ~40 units of each other, so their pins are
-// fanned out and joined to the true spot by a short line.
-const FAN: Record<string, [number, number]> = {
-  petronas: [16, -22],
-  "kl-tower": [-6, -34],
-  "bukit-bintang": [26, 14],
-  merdeka: [-34, -10],
-  iamm: [-36, 10],
-  museum: [-12, 34],
-};
+// Pins are a fixed size on screen (PIN_PX) and are pushed apart automatically
+// (kit/geometry spreadPins), joined to their true spot by a short line.
+const PIN_PX = 12;      // pin radius in screen pixels
+const PIN_GAP_PX = 6;   // space between two pins
+const NUM_PX = 13;      // pin number size
 
 const EVENTS: { name: string; Icon: LucideIcon }[] = [
   { name: "Thaipusam Festival", Icon: Sparkles },
@@ -74,17 +71,18 @@ export function KualaLumpurHighlights() {
     return () => clearInterval(t);
   }, [inView, held, reduce, places.length]);
 
-  // On phones the full district is ~1.5 screens tall and mostly empty, so the
-  // map is cropped to the part with the pins.
-  const [narrow, setNarrow] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 639px)");
-    const on = () => setNarrow(mq.matches);
-    on();
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-  const view = narrow ? "70 30 340 360" : `0 0 ${W} ${H}`;
+  // The map frames itself around the pins: no hand-picked crop, so no pin is
+  // cut off and no corner is left empty. Squarer on phones.
+  const narrow = useNarrow();
+  const svgRef = useRef<SVGSVGElement>(null);
+  const anchors = useMemo(() => places.map(p => ({ x: p.x, y: p.y })), [places]);
+  const box = useMemo(
+    () => fitBox(anchors, { pad: 55, aspect: narrow ? 0.95 : 0.85, bounds: { x: 0, y: 0, w: W, h: H } }),
+    [anchors, narrow, W, H],
+  );
+  const u = 1 / useSvgScale(svgRef, box.w); // drawing units per screen pixel
+  const pins = useMemo(() => spreadPins(anchors, (2 * PIN_PX + PIN_GAP_PX) * u), [anchors, u]);
+  const view = `${box.x} ${box.y} ${box.w} ${box.h}`;
 
   const cur = places[active];
   const hold = (i: number) => ({
@@ -104,9 +102,10 @@ export function KualaLumpurHighlights() {
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] gap-10 items-start">
         {/* Map of KL with the places pinned */}
-        <motion.svg initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} viewBox={view} className="w-full h-auto max-w-[460px] mx-auto" aria-hidden="true">
+        <div className="mx-auto w-full max-w-[460px]">
+        <motion.svg ref={svgRef} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} viewBox={view} className="w-full h-auto" aria-hidden="true">
           <defs>
-            <clipPath id="kl-frame"><rect width={W} height={H} rx="24" /></clipPath>
+            <clipPath id="kl-frame"><rect x={box.x} y={box.y} width={box.w} height={box.h} rx={16 * u} /></clipPath>
             <linearGradient id="kl-land" x1="0" y1="0" x2="1" y2="1">
               <stop offset="0" stopColor={MW.ice} />
               <stop offset="1" stopColor={MW.sky} stopOpacity="0.5" />
@@ -124,13 +123,12 @@ export function KualaLumpurHighlights() {
               strokeLinejoin="round"
               variants={{ hidden: { pathLength: 0, fillOpacity: 0 }, show: { pathLength: 1, fillOpacity: 1, transition: { pathLength: { duration: 1.4 }, fillOpacity: { delay: 0.8, duration: 0.8 } } } }}
             />
-            <text x={W - 20} y={H - 22} textAnchor="end" fontSize="15" fontWeight="600" fill={MW.blue} opacity="0.7">Kuala Lumpur</text>
           </g>
 
           {places.map((p, i) => {
             const on = i === active;
-            const [dx, dy] = FAN[p.id] ?? [0, 0];
-            const x = p.x + dx, y = p.y + dy;
+            const { x, y } = pins[i];
+            const moved = Math.hypot(x - p.x, y - p.y) > 0.5;
             return (
               <motion.g
                 key={p.id}
@@ -138,34 +136,31 @@ export function KualaLumpurHighlights() {
                 style={{ cursor: "pointer" }}
                 {...hold(i)}
               >
-                {(dx || dy) ? <line x1={p.x} y1={p.y} x2={x} y2={y} stroke={MW.navy} strokeWidth="1.2" opacity="0.6" /> : null}
-                <circle cx={p.x} cy={p.y} r="2.5" fill={MW.navy} />
+                {moved ? <line x1={p.x} y1={p.y} x2={x} y2={y} stroke={MW.navy} strokeWidth={1.2 * u} opacity="0.6" /> : null}
+                <circle cx={p.x} cy={p.y} r={2.5 * u} fill={MW.navy} />
                 {on && !reduce && (
                   <motion.circle
                     cx={x} cy={y} fill={MW.sun}
-                    initial={{ r: 9, opacity: 0.6 }}
-                    animate={{ r: 26, opacity: 0 }}
+                    initial={{ r: PIN_PX * 0.8 * u, opacity: 0.6 }}
+                    animate={{ r: PIN_PX * 2.2 * u, opacity: 0 }}
                     transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
                   />
                 )}
-                <circle cx={x} cy={y} r={on ? 13 : 11.5} fill={on ? MW.blue : MW.navy} stroke="#fff" strokeWidth="2.5" />
-                <text x={x} y={y + 4.5} textAnchor="middle" fontSize={13} fontWeight="700" fill="#fff">{i + 1}</text>
+                <circle cx={x} cy={y} r={(on ? PIN_PX + 1 : PIN_PX) * u} fill={on ? MW.blue : MW.navy} stroke="#fff" strokeWidth={2.5 * u} />
+                <text x={x} y={y + NUM_PX * 0.35 * u} textAnchor="middle" fontSize={NUM_PX * u} fontWeight="700" fill="#fff">{i + 1}</text>
               </motion.g>
             );
           })}
-
-          {/* Name of the place in focus */}
-          <motion.g key={cur.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} pointerEvents="none">
-            <text
-              x={cur.x + (FAN[cur.id]?.[0] ?? 0) + (cur.x > W * 0.5 ? -18 : 18)} y={cur.y + (FAN[cur.id]?.[1] ?? 0) - 16}
-              textAnchor={cur.x > W * 0.5 ? "end" : "start"}
-              fontSize="19" fontWeight="700" fill={MW.navy}
-              style={{ paintOrder: "stroke", stroke: "rgba(255,255,255,0.92)", strokeWidth: 6 }}
-            >
-              {cur.name}
-            </text>
-          </motion.g>
         </motion.svg>
+        {/* Name of the place in focus: under the map, normal text size, never on top of a pin */}
+        <div className="mt-3 flex min-h-[44px] items-center justify-center gap-2 text-center" aria-hidden="true">
+          <motion.div key={cur.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }} className="flex items-center gap-2">
+            <span className="inline-flex h-6 w-6 items-center justify-center rounded-full text-xs font-bold text-white" style={{ background: MW.blue }}>{active + 1}</span>
+            <strong className="text-base" style={{ color: MW.navy }}>{cur.name}</strong>
+            <span className="text-sm" style={{ color: MW.body }}>· Kuala Lumpur</span>
+          </motion.div>
+        </div>
+        </div>
 
         <div className="space-y-6">
           {/* Places, numbered as on the map */}
