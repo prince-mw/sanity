@@ -28,7 +28,7 @@ export function MalaysiaMarketMap() {
   const [kx, ky] = cities.kl;
   return (
     <figure
-      className="w-full max-w-[560px] mx-auto md:pt-2"
+      className="w-full"
       aria-label="Map of Malaysia's key advertising cities: Kuala Lumpur, Penang, Johor Bahru and Kota Kinabalu. Bukit Bintang has heavy daily foot traffic, George Town is a UNESCO World Heritage Site, and the Klang Valley includes Petaling Jaya, Shah Alam and Subang Jaya."
     >
       <Kicker>Where the audiences are</Kicker>
@@ -99,8 +99,8 @@ export function MalaysiaMarketMap() {
               )}
               <circle cx={x} cy={y} r={capital ? 7 : 5.5} fill={capital ? MW.blue : MW.navy} stroke="#fff" strokeWidth="2" />
               <text
-                x={x + c.dx} y={y + 7} textAnchor={c.anchor}
-                fontSize="21" fontWeight={capital ? 700 : 600} fill={MW.navy}
+                x={x + c.dx} y={y + 5} textAnchor={c.anchor}
+                className="text-[21px] md:text-[12px]" fontWeight={capital ? 700 : 600} fill={MW.navy}
                 style={{ paintOrder: "stroke", stroke: "rgba(255,255,255,0.85)", strokeWidth: 4 }}
               >
                 {c.name}

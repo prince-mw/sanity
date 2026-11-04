@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { MalaysiaAtAGlance } from "./MalaysiaAtAGlance";
+import { KlangValleyAtAGlance } from "./KlangValleyAtAGlance";
 import { MalaysiaMarketMap } from "./MalaysiaMarketMap";
 
 // Motion graphics per location page, keyed by the CMS section heading.
@@ -9,7 +9,7 @@ import { MalaysiaMarketMap } from "./MalaysiaMarketMap";
 
 const GRAPHICS: Record<string, Record<string, () => ReactNode>> = {
   malaysia: {
-    "digital billboard advertising malaysia": () => <MalaysiaAtAGlance />,
+    "digital billboard advertising malaysia": () => <KlangValleyAtAGlance />,
     "market landscape": () => <MalaysiaMarketMap />,
   },
 };
