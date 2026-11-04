@@ -56,7 +56,7 @@ function brandStyle(): Promise<StyleSpecification> {
  */
 type PlaceKind = 'mall' | 'transit' | 'landmark' | 'food'
 const PLACES: { kind: PlaceKind; label: string; bg: string; fg: string; minzoom: number; filter: FilterSpecification; glyph: string; fill?: boolean }[] = [
-  { kind: 'mall', label: 'Shopping malls', bg: MW.sun, fg: MW.navy, minzoom: 12,
+  { kind: 'mall', label: 'Shopping malls', bg: MW.navy, fg: '#FFFFFF', minzoom: 12,
     filter: ['==', ['get', 'subclass'], 'mall'],
     glyph: 'M7 9.5h10l-.9 9.5H7.9z M9.6 9.5V8a2.4 2.4 0 0 1 4.8 0v1.5' },
   { kind: 'transit', label: 'Train stations', bg: MW.sky, fg: MW.navy, minzoom: 12.5,
@@ -146,16 +146,16 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
           }
           m.addSource('sites', { type: 'geojson', data: toGeoJSON(pinsRef.current), cluster: true, clusterRadius: 36, clusterMaxZoom: 14 })
           m.addLayer({ id: 'cluster', type: 'circle', source: 'sites', filter: ['has', 'point_count'],
-            paint: { 'circle-color': MW.blue, 'circle-radius': ['step', ['get', 'point_count'], 16, 10, 20, 50, 26], 'circle-stroke-color': '#FFFFFF', 'circle-stroke-width': 3 } })
+            paint: { 'circle-color': MW.sun, 'circle-radius': ['step', ['get', 'point_count'], 16, 10, 20, 50, 26], 'circle-stroke-color': MW.navy, 'circle-stroke-width': 2.5 } })
           m.addLayer({ id: 'cluster-count', type: 'symbol', source: 'sites', filter: ['has', 'point_count'],
             layout: { 'text-field': ['get', 'point_count_abbreviated'], 'text-font': ['Noto Sans Bold'], 'text-size': 13, 'text-allow-overlap': true },
-            paint: { 'text-color': '#FFFFFF' } })
+            paint: { 'text-color': MW.navy } })
           m.addLayer({ id: 'pin-halo', type: 'circle', source: 'sites', filter: ['==', ['get', 'id'], '__none__'],
-            paint: { 'circle-color': MW.sun, 'circle-opacity': 0.45, 'circle-radius': 20 } })
+            paint: { 'circle-color': MW.navy, 'circle-opacity': 0.18, 'circle-radius': 20 } })
           m.addLayer({ id: 'pin', type: 'circle', source: 'sites', filter: ['!', ['has', 'point_count']],
-            paint: { 'circle-color': MW.navy, 'circle-radius': 9, 'circle-stroke-color': '#FFFFFF', 'circle-stroke-width': 3 } })
+            paint: { 'circle-color': MW.sun, 'circle-radius': 9, 'circle-stroke-color': MW.navy, 'circle-stroke-width': 2.5 } })
           m.addLayer({ id: 'pin-active', type: 'circle', source: 'sites', filter: ['==', ['get', 'id'], '__none__'],
-            paint: { 'circle-color': MW.blue, 'circle-radius': 11, 'circle-stroke-color': '#FFFFFF', 'circle-stroke-width': 3 } })
+            paint: { 'circle-color': MW.sun, 'circle-radius': 12, 'circle-stroke-color': MW.navy, 'circle-stroke-width': 3.5 } })
 
           for (const id of ['pin', 'pin-active', 'cluster']) {
             m.on('mouseenter', id, () => { m.getCanvas().style.cursor = 'pointer' })
