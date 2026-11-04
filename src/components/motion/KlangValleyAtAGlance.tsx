@@ -64,16 +64,13 @@ export function KlangValleyAtAGlance() {
       <div className="mt-6 grid grid-cols-1 xl:grid-cols-[1.15fr_1fr] gap-6 items-center">
         {/* Map: each district filled with dots in its own mix */}
         <div className="relative">
-          <svg viewBox={`-6 -6 ${W + 12} ${H + 12}`} className="w-full h-auto max-w-[520px] mx-auto overflow-visible" aria-hidden="true">
+          <motion.svg initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} viewBox={`-6 -6 ${W + 12} ${H + 12}`} className="w-full h-auto max-w-[520px] mx-auto overflow-visible" aria-hidden="true">
             {districts.map((d, i) => {
               const on = i === active;
               return (
                 <motion.g
                   key={d.id}
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: 0.2 + i * 0.15, duration: 0.6 }}
+                  variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { delay: 0.2 + i * 0.15, duration: 0.6 } } }}
                   onMouseEnter={() => { setActive(i); setHeld(true); }}
                   onMouseLeave={() => setHeld(false)}
                   style={{ cursor: "pointer" }}
@@ -90,15 +87,12 @@ export function KlangValleyAtAGlance() {
                     stroke={on ? MW.navy : MW.sky}
                     strokeWidth={on ? 3 : 1.2}
                     strokeLinejoin="round"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.15, duration: 1.2 }}
+                    variants={{ hidden: { pathLength: 0 }, show: { pathLength: 1, transition: { delay: i * 0.15, duration: 1.2 } } }}
                   />
                 </motion.g>
               );
             })}
-          </svg>
+          </motion.svg>
           {/* The district in focus, named under the map so it never covers the dots */}
           <motion.div key={cur.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
             className="mt-2 text-center text-sm" style={{ color: MW.body }} aria-hidden="true">

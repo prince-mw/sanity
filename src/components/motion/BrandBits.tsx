@@ -9,19 +9,16 @@ import { CHEVRON, MW, WAVE, WAVE_OUTLINE } from "./brand";
 export function Chevron({ size = 22, color = MW.blue }: { size?: number; color?: string }) {
   const h = (size / CHEVRON.w) * CHEVRON.h;
   return (
-    <svg width={size} height={h} viewBox={`0 0 ${CHEVRON.w} ${CHEVRON.h}`} aria-hidden="true">
+    <motion.svg initial="hidden" whileInView="show" viewport={{ once: true }} width={size} height={h} viewBox={`0 0 ${CHEVRON.w} ${CHEVRON.h}`} aria-hidden="true">
       {CHEVRON.ds.map((d, i) => (
         <motion.path
           key={i}
           d={d}
           fill={color}
-          initial={{ opacity: 0, x: -6 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: i * 0.12, duration: 0.4 }}
+          variants={{ hidden: { opacity: 0, x: -6 }, show: { opacity: 1, x: 0, transition: { delay: i * 0.12, duration: 0.4 } } }}
         />
       ))}
-    </svg>
+    </motion.svg>
   );
 }
 

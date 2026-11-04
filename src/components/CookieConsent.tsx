@@ -124,19 +124,19 @@ export default function CookieConsent() {
                       <div className="flex items-center gap-2 flex-shrink-0">
                         <button
                           onClick={() => setShowSettings(true)}
-                          className="px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                          className="mw-tap px-3 py-1.5 text-xs font-medium text-gray-600 hover:text-gray-800 transition-colors"
                         >
                           {t('cookieConsent.settings')}
                         </button>
                         <button
                           onClick={handleRejectAll}
-                          className="px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                          className="mw-tap px-3 py-1.5 text-xs font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                         >
                           {t('cookieConsent.reject')}
                         </button>
                         <button
                           onClick={handleAcceptAll}
-                          className="px-4 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                          className="mw-tap px-4 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
                         >
                           {t('cookieConsent.acceptAll')}
                         </button>
@@ -150,7 +150,7 @@ export default function CookieConsent() {
                       <h3 className="text-sm font-semibold text-gray-900">{t('cookieConsent.settingsTitle')}</h3>
                       <button
                         onClick={() => setShowSettings(false)}
-                        className="text-gray-400 hover:text-gray-600 transition-colors"
+                        className="mw-tap text-gray-400 hover:text-gray-600 transition-colors"
                       >
                         <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -168,7 +168,7 @@ export default function CookieConsent() {
                       {/* Functional */}
                       <button
                         onClick={() => togglePreference('functional')}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        className={`mw-tap flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                           preferences.functional ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'
                         }`}
                       >
@@ -179,7 +179,7 @@ export default function CookieConsent() {
                       {/* Analytics */}
                       <button
                         onClick={() => togglePreference('analytics')}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        className={`mw-tap flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                           preferences.analytics ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'
                         }`}
                       >
@@ -190,7 +190,7 @@ export default function CookieConsent() {
                       {/* Marketing */}
                       <button
                         onClick={() => togglePreference('marketing')}
-                        className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
+                        className={`mw-tap flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                           preferences.marketing ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-600'
                         }`}
                       >
@@ -203,19 +203,19 @@ export default function CookieConsent() {
                     <div className="flex items-center gap-2 pt-3 border-t border-gray-100">
                       <button
                         onClick={handleRejectAll}
-                        className="flex-1 px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
+                        className="mw-tap flex-1 px-5 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors"
                       >
                         {t('cookieConsent.rejectAll')}
                       </button>
                       <button
                         onClick={handleSavePreferences}
-                        className="flex-1 px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                        className="mw-tap flex-1 px-5 py-2.5 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
                       >
                         {t('cookieConsent.savePreferences')}
                       </button>
                       <button
                         onClick={handleAcceptAll}
-                        className="flex-1 px-5 py-2.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+                        className="mw-tap flex-1 px-5 py-2.5 text-sm font-medium text-white bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
                       >
                         {t('cookieConsent.acceptAll')}
                       </button>

@@ -33,7 +33,7 @@ export function MalaysiaMarketMap() {
     >
       <Kicker>Where the audiences are</Kicker>
 
-      <svg viewBox={`0 0 ${W} ${H + 20}`} className="mt-5 w-full h-auto overflow-visible" aria-hidden="true">
+      <motion.svg initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} viewBox={`0 0 ${W} ${H + 20}`} className="mt-5 w-full h-auto overflow-visible" aria-hidden="true">
         <defs>
           <linearGradient id="mw-land" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stopColor={MW.ice} />
@@ -46,10 +46,7 @@ export function MalaysiaMarketMap() {
           stroke={MW.sky}
           strokeWidth="1.2"
           strokeLinejoin="round"
-          initial={{ pathLength: 0, fillOpacity: 0 }}
-          whileInView={{ pathLength: 1, fillOpacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ pathLength: { duration: 1, ease: "easeInOut" }, fillOpacity: { delay: 0.4, duration: 0.6 } }}
+          variants={{ hidden: { pathLength: 0, fillOpacity: 0 }, show: { pathLength: 1, fillOpacity: 1, transition: { pathLength: { duration: 1, ease: "easeInOut" }, fillOpacity: { delay: 0.4, duration: 0.6 } } } }}
           fill="url(#mw-land)"
         />
 
@@ -71,10 +68,7 @@ export function MalaysiaMarketMap() {
               stroke={MW.blue}
               strokeWidth="1.4"
               strokeDasharray="4 5"
-              initial={{ pathLength: 0, opacity: 0 }}
-              whileInView={{ pathLength: 1, opacity: 0.8 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.7 + i * 0.15, duration: 0.7 }}
+              variants={{ hidden: { pathLength: 0, opacity: 0 }, show: { pathLength: 1, opacity: 0.8, transition: { delay: 0.7 + i * 0.15, duration: 0.7 } } }}
             />
           );
         })}
@@ -85,10 +79,7 @@ export function MalaysiaMarketMap() {
           return (
             <motion.g
               key={c.id}
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.4 + i * 0.12, duration: 0.4 }}
+              variants={{ hidden: { opacity: 0, y: -10 }, show: { opacity: 1, y: 0, transition: { delay: 0.4 + i * 0.12, duration: 0.4 } } }}
             >
               {!reduce && (
                 <motion.circle
@@ -108,7 +99,7 @@ export function MalaysiaMarketMap() {
             </motion.g>
           );
         })}
-      </svg>
+      </motion.svg>
 
       <div className="mt-6 grid gap-3 sm:grid-cols-3">
         {FACTS.map((f, i) => (

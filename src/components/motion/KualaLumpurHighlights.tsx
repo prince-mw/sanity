@@ -104,7 +104,7 @@ export function KualaLumpurHighlights() {
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] gap-10 items-start">
         {/* Map of KL with the places pinned */}
-        <svg viewBox={view} className="w-full h-auto max-w-[460px] mx-auto" aria-hidden="true">
+        <motion.svg initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} viewBox={view} className="w-full h-auto max-w-[460px] mx-auto" aria-hidden="true">
           <defs>
             <clipPath id="kl-frame"><rect width={W} height={H} rx="24" /></clipPath>
             <linearGradient id="kl-land" x1="0" y1="0" x2="1" y2="1">
@@ -122,10 +122,7 @@ export function KualaLumpurHighlights() {
               stroke={MW.sky}
               strokeWidth="2"
               strokeLinejoin="round"
-              initial={{ pathLength: 0, fillOpacity: 0 }}
-              whileInView={{ pathLength: 1, fillOpacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ pathLength: { duration: 1.4 }, fillOpacity: { delay: 0.8, duration: 0.8 } }}
+              variants={{ hidden: { pathLength: 0, fillOpacity: 0 }, show: { pathLength: 1, fillOpacity: 1, transition: { pathLength: { duration: 1.4 }, fillOpacity: { delay: 0.8, duration: 0.8 } } } }}
             />
             <text x={W - 20} y={H - 22} textAnchor="end" fontSize="15" fontWeight="600" fill={MW.blue} opacity="0.7">Kuala Lumpur</text>
           </g>
@@ -137,10 +134,7 @@ export function KualaLumpurHighlights() {
             return (
               <motion.g
                 key={p.id}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.5 + i * 0.08, duration: 0.4 }}
+                variants={{ hidden: { opacity: 0 }, show: { opacity: 1, transition: { delay: 0.5 + i * 0.08, duration: 0.4 } } }}
                 style={{ cursor: "pointer" }}
                 {...hold(i)}
               >
@@ -171,7 +165,7 @@ export function KualaLumpurHighlights() {
               {cur.name}
             </text>
           </motion.g>
-        </svg>
+        </motion.svg>
 
         <div className="space-y-6">
           {/* Places, numbered as on the map */}
