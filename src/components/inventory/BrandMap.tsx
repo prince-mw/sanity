@@ -49,6 +49,41 @@ function brandStyle(): Promise<StyleSpecification> {
   return stylePromise
 }
 
+/**
+ * Nearby places that make a spot good for advertising, drawn from the same
+ * OpenStreetMap tiles (OpenMapTiles `poi` layer), so they work in every country
+ * with no extra data source. Pins are drawn on top of them.
+ */
+type PlaceKind = 'mall' | 'transit' | 'landmark' | 'food'
+const PLACES: { kind: PlaceKind; label: string; bg: string; fg: string; minzoom: number; filter: FilterSpecification; glyph: string; fill?: boolean }[] = [
+  { kind: 'mall', label: 'Shopping malls', bg: MW.sun, fg: MW.navy, minzoom: 12,
+    filter: ['==', ['get', 'subclass'], 'mall'],
+    glyph: 'M7 9.5h10l-.9 9.5H7.9z M9.6 9.5V8a2.4 2.4 0 0 1 4.8 0v1.5' },
+  { kind: 'transit', label: 'Train stations', bg: MW.sky, fg: MW.navy, minzoom: 12.5,
+    filter: ['all', ['==', ['get', 'class'], 'railway'], ['==', ['get', 'subclass'], 'station']],
+    glyph: 'M8.5 5.5h7a2 2 0 0 1 2 2v6.5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V7.5a2 2 0 0 1 2-2z M6.5 10.5h11 M9.5 16l-2 3 M14.5 16l2 3' },
+  { kind: 'landmark', label: 'Landmarks', bg: MW.blue, fg: '#FFFFFF', minzoom: 13, fill: true,
+    filter: ['all', ['match', ['get', 'class'], ['attraction', 'museum', 'stadium', 'theatre'], true, false], ['<=', ['get', 'rank'], 20]],
+    glyph: 'M12 5.5l2 4.1 4.5.6-3.3 3.1.8 4.5-4-2.2-4 2.2.8-4.5-3.3-3.1 4.5-.6z' },
+  { kind: 'food', label: 'Food & dining', bg: '#FFFFFF', fg: MW.blue, minzoom: 15,
+    filter: ['match', ['get', 'class'], ['restaurant', 'fast_food', 'cafe'], true, false],
+    glyph: 'M8.5 5.5v4.5a1.8 1.8 0 0 0 1.8 1.8v7 M10.3 5.5v4 M12.1 5.5v4.5a1.8 1.8 0 0 1-1.8 1.8 M16 5.5c-1.4.9-2 2.8-2 5.5h2v7.5' },
+]
+
+/** A round brand-coloured icon (28px, drawn at 2x) for MapLibre's addImage. */
+function placeIcon(bg: string, fg: string, glyph: string, fill = false) {
+  const r = 2, size = 28, c = document.createElement('canvas')
+  c.width = c.height = size * r
+  const g = c.getContext('2d')!
+  g.scale(r, r)
+  g.beginPath(); g.arc(14, 14, 12, 0, Math.PI * 2); g.fillStyle = bg; g.fill()
+  g.lineWidth = 2; g.strokeStyle = bg === '#FFFFFF' ? MW.blue : '#FFFFFF'; g.stroke()
+  g.translate(2, 2); g.lineWidth = 1.8; g.lineCap = 'round'; g.lineJoin = 'round'
+  const p = new Path2D(glyph)
+  if (fill) { g.fillStyle = fg; g.fill(p) } else { g.strokeStyle = fg; g.stroke(p) }
+  return { width: c.width, height: c.height, data: new Uint8Array(g.getImageData(0, 0, c.width, c.height).data.buffer) }
+}
+
 /** Narrow maps and touch screens start with the credits as the (i) button: the open credits' links are too small to tap and cover pins. */
 const narrowOrTouch = (el: HTMLElement) => el.clientWidth < 640 || window.matchMedia('(pointer: coarse)').matches
 
@@ -74,6 +109,7 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
   clickRef.current = onPinClick
   const [ready, setReady] = useState(false)
   const [failed, setFailed] = useState(false)
+  const [hiddenPlaces, setHiddenPlaces] = useState<PlaceKind[]>([])
 
   // Create the map once.
   useEffect(() => {
@@ -94,6 +130,19 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
         m.on('load', () => {
           // Narrow maps: credits start as the (i) button so they don't cover pins; wide maps show them in full.
           if (box.current && narrowOrTouch(box.current)) box.current.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show')
+          // Nearby places first, so the site pins always draw on top of them.
+          for (const pl of PLACES) {
+            m.addImage(`place-${pl.kind}`, placeIcon(pl.bg, pl.fg, pl.glyph, pl.fill), { pixelRatio: 2 })
+            m.addLayer({ id: `place-${pl.kind}`, type: 'symbol', source: 'openmaptiles', 'source-layer': 'poi', minzoom: pl.minzoom, filter: pl.filter,
+              layout: {
+                'icon-image': `place-${pl.kind}`, 'icon-size': 1, 'icon-padding': 4,
+                // Names only once zoomed in, never covering another label.
+                'text-field': ['step', ['zoom'], '', 14.5, ['coalesce', ['get', 'name:latin'], ['get', 'name']]],
+                'text-font': ['Noto Sans Regular'], 'text-size': 12, 'text-anchor': 'top', 'text-offset': [0, 1.2],
+                'text-max-width': 9, 'text-optional': true, 'symbol-sort-key': ['get', 'rank'],
+              },
+              paint: { 'text-color': MW.navy, 'text-halo-color': '#FFFFFF', 'text-halo-width': 1.5 } })
+          }
           m.addSource('sites', { type: 'geojson', data: toGeoJSON(pinsRef.current), cluster: true, clusterRadius: 36, clusterMaxZoom: 14 })
           m.addLayer({ id: 'cluster', type: 'circle', source: 'sites', filter: ['has', 'point_count'],
             paint: { 'circle-color': MW.blue, 'circle-radius': ['step', ['get', 'point_count'], 16, 10, 20, 50, 26], 'circle-stroke-color': '#FFFFFF', 'circle-stroke-width': 3 } })
@@ -129,6 +178,13 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
     })()
     return () => { dead = true; map.current?.remove(); map.current = null }
   }, [])
+
+  // Show / hide each kind of nearby place.
+  useEffect(() => {
+    const m = map.current
+    if (!ready || !m) return
+    for (const pl of PLACES) m.setLayoutProperty(`place-${pl.kind}`, 'visibility', hiddenPlaces.includes(pl.kind) ? 'none' : 'visible')
+  }, [hiddenPlaces, ready])
 
   // Pins follow the filters: replace the data and fit the view to them.
   useEffect(() => {
@@ -167,14 +223,36 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
     if (!b.contains([p.lng, p.lat])) m.easeTo({ center: [p.lng, p.lat] })
   }, [activeId, pins, ready])
 
+  const togglePlace = (k: PlaceKind) => setHiddenPlaces(h => h.includes(k) ? h.filter(x => x !== k) : [...h, k])
   return (
-    <div className={`relative overflow-hidden rounded-2xl border border-mw-blue-100 bg-[#F6FAFD] ${className}`} role="region" aria-label={title}>
-      {/* MapLibre's own CSS sets .maplibregl-map to position:relative, so size the box explicitly. */}
-      <div ref={box} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
-      {failed && (
-        <p className="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-gray-500">
-          The map can&apos;t load on this device. Every site is listed with its address.
-        </p>
+    <div>
+      <div className={`relative overflow-hidden rounded-2xl border border-mw-blue-100 bg-[#F6FAFD] ${className}`} role="region" aria-label={title}>
+        {/* MapLibre's own CSS sets .maplibregl-map to position:relative, so size the box explicitly. */}
+        <div ref={box} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }} />
+        {failed && (
+          <p className="absolute inset-0 flex items-center justify-center p-6 text-center text-sm text-gray-500">
+            The map can&apos;t load on this device. Every site is listed with its address.
+          </p>
+        )}
+      </div>
+      {!failed && (
+        <div className="mt-3 flex flex-wrap items-center gap-2" role="group" aria-label="Nearby places on the map">
+          <span className="text-sm font-semibold text-gray-500 mr-1">Nearby</span>
+          {PLACES.map(pl => {
+            const on = !hiddenPlaces.includes(pl.kind)
+            return (
+              <button key={pl.kind} type="button" aria-pressed={on} onClick={() => togglePlace(pl.kind)}
+                className={`mw-tap inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors ${on ? 'border-mw-blue-200 bg-white text-gray-800' : 'border-gray-200 bg-gray-50 text-gray-400'}`}>
+                <svg width="20" height="20" viewBox="0 0 28 28" aria-hidden="true" className={on ? '' : 'opacity-40'}>
+                  <circle cx="14" cy="14" r="12" fill={pl.bg} stroke={pl.bg === '#FFFFFF' ? MW.blue : 'none'} strokeWidth="2" />
+                  <path d={pl.glyph} transform="translate(2 2)" fill={pl.fill ? pl.fg : 'none'} stroke={pl.fill ? 'none' : pl.fg} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                {pl.label}
+              </button>
+            )
+          })}
+          <span className="text-xs text-gray-500">Zoom in for names and places to eat</span>
+        </div>
       )}
     </div>
   )

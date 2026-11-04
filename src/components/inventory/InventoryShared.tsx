@@ -77,7 +77,7 @@ const pinOf = (s: PublicSite, linked: boolean): MapPin | null =>
 /**
  * The inventory finder: Format / Venue filters, the site cards and the branded
  * map, all driven by one filter state, so the pins always match the cards.
- * Desktop: cards left, map right (stays in view). Phone/tablet: List / Map switch.
+ * Map on top, cards below at every size. Phone/tablet: List / Map switch.
  */
 export function SiteGrid({ sites, hasPage, mapTitle }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string }) {
   const formats = useMemo(() => Array.from(new Set(sites.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [sites])
@@ -90,8 +90,8 @@ export function SiteGrid({ sites, hasPage, mapTitle }: { sites: PublicSite[]; ha
     (format === 'All' || (s.displayFormat ?? s.format ?? 'Other') === format) && (venue === 'All' || s.venueType === venue)), [sites, format, venue])
   const pins = useMemo(() => shown.map(s => pinOf(s, hasPage(s))).filter(Boolean) as MapPin[], [shown, hasPage])
   const pick = (id: string) => {
+    // Highlight the pin and its card; the map's label card links to the site, so the page doesn't jump away from the map.
     setActive(id)
-    document.getElementById(`site-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   }
   const chip = (on: boolean) =>
     `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-mw-blue-200'}`
@@ -117,13 +117,11 @@ export function SiteGrid({ sites, hasPage, mapTitle }: { sites: PublicSite[]; ha
           <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')} className={tab(view === 'map')}>Map</button>
         </div>
       </div>
-      {/* Phone/tablet: map first (short in List view, tall in Map view). Desktop: cards left, map right. */}
-      <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] xl:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-6 items-start">
-        <div className="lg:order-2 lg:sticky lg:top-28">
-          <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
-            className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} lg:h-[calc(100vh-9rem)] lg:max-h-[760px]`} />
-        </div>
-        <div className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} lg:order-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-5`}>
+      {/* Map on top at every size (Rif, 4 Nov: no empty column beside a long list), site cards below. */}
+      <div className="flex flex-col gap-6">
+        <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
+          className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} lg:h-[480px]`} />
+        <div className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} sm:grid-cols-2 lg:grid-cols-3 gap-5`}>
           {shown.map(s => (
             <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}
               className={`scroll-mt-28 rounded-2xl transition-shadow ${active === s.id ? 'ring-2 ring-mw-blue-500 ring-offset-2' : ''}`}>
