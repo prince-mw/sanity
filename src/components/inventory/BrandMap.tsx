@@ -63,7 +63,7 @@ const PLACES: { kind: PlaceKind; label: string; bg: string; fg: string; minzoom:
     filter: ['all', ['==', ['get', 'class'], 'railway'], ['==', ['get', 'subclass'], 'station']],
     glyph: 'M8.5 5.5h7a2 2 0 0 1 2 2v6.5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V7.5a2 2 0 0 1 2-2z M6.5 10.5h11 M9.5 16l-2 3 M14.5 16l2 3' },
   { kind: 'landmark', label: 'Landmarks', bg: MW.blue, fg: '#FFFFFF', minzoom: 13, fill: true,
-    filter: ['all', ['match', ['get', 'class'], ['attraction', 'museum', 'stadium', 'theatre'], true, false], ['<=', ['get', 'rank'], 20]],
+    filter: ['all', ['match', ['get', 'class'], ['attraction', 'museum', 'stadium', 'theatre'], true, false], ['<=', ['coalesce', ['get', 'rank'], 99], 20]],
     glyph: 'M12 5.5l2 4.1 4.5.6-3.3 3.1.8 4.5-4-2.2-4 2.2.8-4.5-3.3-3.1 4.5-.6z' },
   { kind: 'food', label: 'Food & dining', bg: '#FFFFFF', fg: MW.blue, minzoom: 15,
     filter: ['match', ['get', 'class'], ['restaurant', 'fast_food', 'cafe'], true, false],
@@ -110,6 +110,7 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
   const [ready, setReady] = useState(false)
   const [failed, setFailed] = useState(false)
   const [hiddenPlaces, setHiddenPlaces] = useState<PlaceKind[]>([])
+  const [zoom, setZoom] = useState(0)
 
   // Create the map once.
   useEffect(() => {
@@ -139,7 +140,7 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
                 // Names only once zoomed in, never covering another label.
                 'text-field': ['step', ['zoom'], '', 14.5, ['coalesce', ['get', 'name:latin'], ['get', 'name']]],
                 'text-font': ['Noto Sans Regular'], 'text-size': 12, 'text-anchor': 'top', 'text-offset': [0, 1.2],
-                'text-max-width': 9, 'text-optional': true, 'symbol-sort-key': ['get', 'rank'],
+                'text-max-width': 9, 'text-optional': true, 'symbol-sort-key': ['coalesce', ['get', 'rank'], 99],
               },
               paint: { 'text-color': MW.navy, 'text-halo-color': '#FFFFFF', 'text-halo-width': 1.5 } })
           }
@@ -170,6 +171,9 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
             const id = e.features?.[0]?.properties?.id as string | undefined
             if (id) clickRef.current?.(id)
           })
+          // The map data only carries places from zoom 12; the hint under the map follows the zoom.
+          setZoom(m.getZoom())
+          m.on('zoomend', () => setZoom(m.getZoom()))
           setReady(true)
         })
       } catch {
@@ -251,7 +255,7 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
               </button>
             )
           })}
-          <span className="text-xs text-gray-500">Zoom in for names and places to eat</span>
+          <span className="text-xs text-gray-500" aria-live="polite">{zoom < 12 ? 'Zoom in on the map to see nearby malls, stations and landmarks' : zoom < 15 ? 'Zoom in closer for names and places to eat' : ''}</span>
         </div>
       )}
     </div>
