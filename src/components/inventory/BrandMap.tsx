@@ -49,6 +49,9 @@ function brandStyle(): Promise<StyleSpecification> {
   return stylePromise
 }
 
+/** Narrow maps and touch screens start with the credits as the (i) button: the open credits' links are too small to tap and cover pins. */
+const narrowOrTouch = (el: HTMLElement) => el.clientWidth < 640 || window.matchMedia('(pointer: coarse)').matches
+
 const toGeoJSON = (pins: MapPin[]) => ({
   type: 'FeatureCollection' as const,
   features: pins.map(p => ({ type: 'Feature' as const, properties: { id: p.id }, geometry: { type: 'Point' as const, coordinates: [p.lng, p.lat] } })),
@@ -81,7 +84,7 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
         if (dead || !box.current) return
         lib.current = ml
         const m = new ml.Map({
-          container: box.current, style, attributionControl: { compact: (box.current.clientWidth < 640) },
+          container: box.current, style, attributionControl: { compact: narrowOrTouch(box.current) },
           center: [101.69, 3.14], zoom: 11, cooperativeGestures: true, dragRotate: false, pitchWithRotate: false,
         })
         m.touchZoomRotate.disableRotation()
@@ -90,7 +93,7 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
         m.on('error', e => { if (!m.loaded() && /webgl/i.test(String(e.error?.message))) setFailed(true) })
         m.on('load', () => {
           // Narrow maps: credits start as the (i) button so they don't cover pins; wide maps show them in full.
-          if (box.current && box.current.clientWidth < 640) box.current.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show')
+          if (box.current && narrowOrTouch(box.current)) box.current.querySelector('.maplibregl-ctrl-attrib')?.classList.remove('maplibregl-compact-show')
           m.addSource('sites', { type: 'geojson', data: toGeoJSON(pinsRef.current), cluster: true, clusterRadius: 36, clusterMaxZoom: 14 })
           m.addLayer({ id: 'cluster', type: 'circle', source: 'sites', filter: ['has', 'point_count'],
             paint: { 'circle-color': MW.blue, 'circle-radius': ['step', ['get', 'point_count'], 16, 10, 20, 50, 26], 'circle-stroke-color': '#FFFFFF', 'circle-stroke-width': 3 } })

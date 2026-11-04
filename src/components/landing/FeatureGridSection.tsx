@@ -38,13 +38,13 @@ export function FeatureGridSection({
 
   const gridCols = {
     2: 'md:grid-cols-2',
-    3: 'md:grid-cols-3',
+    3: 'sm:grid-cols-2 lg:grid-cols-3',
     4: 'md:grid-cols-2 lg:grid-cols-4',
   };
 
   const gridImageSizes = {
     2: '(min-width: 768px) 50vw, 100vw',
-    3: '(min-width: 768px) 33vw, 100vw',
+    3: '(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw',
     4: '(min-width: 1024px) 25vw, (min-width: 768px) 50vw, 100vw',
   };
 
@@ -105,7 +105,8 @@ export function FeatureGridSection({
                   className="rounded-2xl overflow-hidden"
                 >
                   {feature.icon ? (
-                    <div className="group relative h-72 sm:h-80">
+                    // Card grows with its text: a fixed height made long text spill off the top on tablets.
+                    <div className="group relative flex min-h-72 sm:min-h-80 flex-col justify-end">
                       <Image
                         src={feature.icon}
                         alt={feature.title || t('ui.shared.alt.featureImage')}
@@ -114,7 +115,7 @@ export function FeatureGridSection({
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-                      <div className="absolute inset-0 flex flex-col justify-end p-6">
+                      <div className="relative flex flex-col justify-end p-6 pt-24">
                         {feature.title && renderTitle('text-white')}
                         {feature.description && (
                           <p className="text-white/90">{feature.description}</p>
@@ -123,7 +124,7 @@ export function FeatureGridSection({
                     </div>
                   ) : (
                     <div
-                      className={`h-72 sm:h-80 flex flex-col justify-center p-6 ${backgroundColor === 'white' ? 'bg-gray-50 hover:bg-gray-100' : backgroundColor === 'gray' ? 'bg-white hover:shadow-lg' : 'bg-white/10 hover:bg-white/20'} transition-all`}
+                      className={`min-h-72 sm:min-h-80 flex flex-col justify-center p-6 ${backgroundColor === 'white' ? 'bg-gray-50 hover:bg-gray-100' : backgroundColor === 'gray' ? 'bg-white hover:shadow-lg' : 'bg-white/10 hover:bg-white/20'} transition-all`}
                     >
                       {feature.title && renderTitle(textColor)}
                       {feature.description && (
