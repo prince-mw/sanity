@@ -128,7 +128,7 @@ export function MalaysiaMarketMap() {
       </div>
 
       <div className="mt-6">
-        <WaveBand />
+        <WaveBand units={24} />
       </div>
     </figure>
   );

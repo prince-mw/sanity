@@ -2,18 +2,21 @@
 
 import { createContext, useContext, type ReactNode } from "react";
 
-// Lets a page supply a motion graphic for a CMS section by its heading,
-// without changing the section's content in Sanity. Sections that get one
-// show it in place of their image (or beside their text, for a text block).
+// Lets a page supply motion graphics for a CMS section by its heading,
+// without changing the section's content in Sanity. A two-column section
+// shows the first one in place of its image; a text block slots each one in
+// after the given number of paragraphs.
 
-type Lookup = (heading?: string) => ReactNode | null;
+export type GraphicSlot = { after: number; node: ReactNode };
 
-const SectionGraphicContext = createContext<Lookup>(() => null);
+type Lookup = (heading?: string) => GraphicSlot[];
+
+const SectionGraphicContext = createContext<Lookup>(() => []);
 
 export function SectionGraphicProvider({ lookup, children }: { lookup: Lookup; children: ReactNode }) {
   return <SectionGraphicContext.Provider value={lookup}>{children}</SectionGraphicContext.Provider>;
 }
 
-export function useSectionGraphic(heading?: string): ReactNode | null {
+export function useSectionGraphics(heading?: string): GraphicSlot[] {
   return useContext(SectionGraphicContext)(heading);
 }

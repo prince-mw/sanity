@@ -1,14 +1,17 @@
 "use client";
 
+import { Fragment } from "react";
 import { motion } from "framer-motion";
-import { getBackgroundClasses, getAlignmentClasses, getMaxWidthClasses, getTextColorClasses, type BackgroundColor, type Alignment, type MaxWidth } from "./utils";
+import { getBackgroundClasses, getTextColorClasses, type BackgroundColor, type Alignment, type MaxWidth } from "./utils";
 import SanityPortableText from "@/components/SanityPortableText";
-import { useSectionGraphic } from "./SectionGraphic";
+import { useSectionGraphics } from "./SectionGraphic";
+import { TIER_CLASSES, textChars, widthTier } from "./measure";
 
 interface TextBlockSectionProps {
   heading?: string;
   content?: any;
   alignment?: Alignment;
+  /** Kept for the CMS schema; the width now comes from the text itself (see measure.ts). */
   maxWidth?: MaxWidth;
   backgroundColor?: BackgroundColor;
 }
@@ -17,56 +20,58 @@ export function TextBlockSection({
   heading,
   content,
   alignment = 'left',
-  maxWidth = 'medium',
   backgroundColor = 'white',
 }: TextBlockSectionProps) {
   const bgClasses = getBackgroundClasses(backgroundColor);
-  const alignClasses = getAlignmentClasses(alignment);
-  const widthClasses = getMaxWidthClasses(maxWidth);
   const textColor = getTextColorClasses(backgroundColor);
-  const graphic = useSectionGraphic(heading);
+  const slots = useSectionGraphics(heading);
+  const tier = widthTier(textChars(content) + (heading?.length ?? 0));
+  const { box, prose } = TIER_CLASSES[tier];
+  const invert = backgroundColor === 'dark' || backgroundColor === 'blue' ? 'prose-invert' : '';
+  // Only a short, CTA-like block may centre its lines; longer text reads left-aligned.
+  const centreText = tier === 'short' && alignment === 'center';
+
+  // Split the text where each graphic slots in.
+  const blocks: any[] = Array.isArray(content) ? content : [];
+  const cuts = [...new Set(slots.map(s => Math.min(s.after, blocks.length)))].sort((a, b) => a - b);
+  const chunks = Array.isArray(content)
+    ? [0, ...cuts].map((from, i) => ({ from, to: cuts[i] ?? blocks.length }))
+    : [];
 
   return (
     <section className={`${bgClasses} mw-section`}>
       <div className="mw-container">
-        {graphic ? (
-          // One centred column; the graphic sits after the first paragraph so a
-          // long text never leaves an empty column beside it.
-          <div className="mx-auto max-w-3xl">
-            {heading && <h2 className={`font-bold mb-8 text-center ${textColor} text-3xl lg:text-4xl`}>{heading}</h2>}
-            {content && (
-              <div className={`prose prose-lg max-w-none ${backgroundColor === 'dark' || backgroundColor === 'blue' ? 'prose-invert' : ''}`}>
-                <SanityPortableText value={Array.isArray(content) ? content.slice(0, 1) : content} />
-              </div>
-            )}
-            <div className="my-12 md:-mx-16 lg:-mx-24">{graphic}</div>
-            {Array.isArray(content) && content.length > 1 && (
-              <div className={`prose prose-lg max-w-none ${backgroundColor === 'dark' || backgroundColor === 'blue' ? 'prose-invert' : ''}`}>
-                <SanityPortableText value={content.slice(1)} />
-              </div>
-            )}
-          </div>
-        ) : (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className={`${widthClasses} ${alignClasses}`}
-          >
-            {heading && (
-              <h2 className={`font-bold mb-6 ${textColor} text-3xl lg:text-4xl`}>
-                {heading}
-              </h2>
-            )}
-            
-            {content && (
-              <div className={`prose prose-lg mw-measure ${alignment === 'center' ? 'mx-auto' : ''} ${backgroundColor === 'dark' || backgroundColor === 'blue' ? 'prose-invert' : ''}`}>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className={`mx-auto ${box}`}
+        >
+          {heading && (
+            <h2 className={`font-bold mb-8 text-center ${textColor} text-3xl lg:text-4xl`}>{heading}</h2>
+          )}
+          {Array.isArray(content) ? (
+            chunks.map(({ from, to }, i) => (
+              <Fragment key={from}>
+                {to > from && (
+                  <div className={`prose ${prose} max-w-none ${centreText ? 'text-center' : ''} ${invert}`}>
+                    <SanityPortableText value={blocks.slice(from, to)} />
+                  </div>
+                )}
+                {(i < cuts.length ? slots.filter(s => Math.min(s.after, blocks.length) === cuts[i]) : []).map((s, k) => (
+                  <div key={k} className="my-14 md:-mx-16 lg:-mx-28">{s.node}</div>
+                ))}
+              </Fragment>
+            ))
+          ) : (
+            content && (
+              <div className={`prose ${prose} max-w-none ${centreText ? 'text-center' : ''} ${invert}`}>
                 <SanityPortableText value={content} />
               </div>
-            )}
-          </motion.div>
-        )}
+            )
+          )}
+        </motion.div>
       </div>
     </section>
   );

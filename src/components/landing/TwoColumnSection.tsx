@@ -7,7 +7,7 @@ import { useLocale } from "@/i18n/LocaleContext";
 import { getBackgroundClasses, getButtonClasses, type BackgroundColor } from "./utils";
 import SanityPortableText from "@/components/SanityPortableText";
 import { useZohoPopup, isZohoFormUrl } from "../ZohoPopupProvider";
-import { useSectionGraphic } from "./SectionGraphic";
+import { useSectionGraphics } from "./SectionGraphic";
 
 interface TwoColumnSectionProps {
   heading?: string;
@@ -35,7 +35,7 @@ export function TwoColumnSection({
   const bgClasses = getBackgroundClasses(backgroundColor);
   const isDark = backgroundColor === 'dark' || backgroundColor === 'blue' || backgroundColor === 'gradient';
   const { openZohoPopup } = useZohoPopup();
-  const graphic = useSectionGraphic(heading);
+  const graphic = useSectionGraphics(heading)[0]?.node ?? null;
 
   const cta = ctaText && ctaLink ? (
     isZohoFormUrl(ctaLink) ? (
