@@ -61,10 +61,10 @@ export function KlangValleyAtAGlance() {
         ))}
       </div>
 
-      <div className="mt-6 grid grid-cols-1 sm:grid-cols-[1.15fr_1fr] gap-6 items-center">
-        {/* Map: each district striped by its own mix */}
+      <div className="mt-6 grid grid-cols-1 xl:grid-cols-[1.15fr_1fr] gap-6 items-center">
+        {/* Map: each district filled with dots in its own mix */}
         <div className="relative">
-          <svg viewBox={`-6 -6 ${W + 12} ${H + 12}`} className="w-full h-auto overflow-visible" aria-hidden="true">
+          <svg viewBox={`-6 -6 ${W + 12} ${H + 12}`} className="w-full h-auto max-w-[520px] mx-auto overflow-visible" aria-hidden="true">
             {districts.map((d, i) => {
               const on = i === active;
               return (
@@ -98,26 +98,16 @@ export function KlangValleyAtAGlance() {
                 </motion.g>
               );
             })}
-            {/* Active district label */}
-            <motion.g key={cur.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.35 }} pointerEvents="none">
-              <text
-                x={cur.cx} y={cur.cy} textAnchor="middle" fontSize="30" fontWeight="700" fill={MW.navy}
-                style={{ paintOrder: "stroke", stroke: "rgba(255,255,255,0.92)", strokeWidth: 7 }}
-              >
-                {cur.name}
-              </text>
-              <text
-                x={cur.cx} y={cur.cy + 30} textAnchor="middle" fontSize="23" fontWeight="600" fill={MW.body}
-                style={{ paintOrder: "stroke", stroke: "rgba(255,255,255,0.92)", strokeWidth: 6 }}
-              >
-                {fmtPop(cur.total)} people
-              </text>
-            </motion.g>
           </svg>
+          {/* The district in focus, named under the map so it never covers the dots */}
+          <motion.div key={cur.id} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}
+            className="mt-2 text-center text-sm" style={{ color: MW.body }} aria-hidden="true">
+            <strong style={{ color: MW.navy }}>{cur.name}</strong> · {fmtPop(cur.total)} people
+          </motion.div>
         </div>
 
         {/* District mixes */}
-        <ul className="space-y-3">
+        <ul className="grid grid-cols-2 gap-x-4 gap-y-2 xl:grid-cols-1 xl:gap-y-3">
           {districts.map((d, i) => (
             <li key={d.id}>
               <button
@@ -143,7 +133,7 @@ export function KlangValleyAtAGlance() {
                       initial={{ width: 0 }}
                       whileInView={{ width: `${d.mix[g.key]}%` }}
                       viewport={{ once: true }}
-                      transition={{ delay: 0.6 + i * 0.1 + gi * 0.05, duration: 0.7, ease: "easeOut" }}
+                      transition={{ delay: 0.1 + gi * 0.05, duration: 0.6, ease: "easeOut" }}
                     />
                   ))}
                 </div>
@@ -162,7 +152,7 @@ export function KlangValleyAtAGlance() {
           </div>
         ))}
       </div>
-      <p className="mt-4 text-sm" style={{ color: MW.body }}>
+      <p className="mt-4 max-w-[60ch] text-sm" style={{ color: MW.body }}>
         One campaign across the Klang Valley reaches every one of these communities, in the area that drives a large share of the nation&apos;s GDP.
       </p>
       <p className="mt-2 text-xs" style={{ color: MW.faint }}>

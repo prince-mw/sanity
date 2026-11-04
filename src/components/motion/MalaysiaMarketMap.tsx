@@ -49,7 +49,7 @@ export function MalaysiaMarketMap() {
           initial={{ pathLength: 0, fillOpacity: 0 }}
           whileInView={{ pathLength: 1, fillOpacity: 1 }}
           viewport={{ once: true }}
-          transition={{ pathLength: { duration: 1.6, ease: "easeInOut" }, fillOpacity: { delay: 1, duration: 0.8 } }}
+          transition={{ pathLength: { duration: 1, ease: "easeInOut" }, fillOpacity: { delay: 0.4, duration: 0.6 } }}
           fill="url(#mw-land)"
         />
 
@@ -74,7 +74,7 @@ export function MalaysiaMarketMap() {
               initial={{ pathLength: 0, opacity: 0 }}
               whileInView={{ pathLength: 1, opacity: 0.8 }}
               viewport={{ once: true }}
-              transition={{ delay: 1.6 + i * 0.25, duration: 0.9 }}
+              transition={{ delay: 0.7 + i * 0.15, duration: 0.7 }}
             />
           );
         })}
@@ -88,7 +88,7 @@ export function MalaysiaMarketMap() {
               initial={{ opacity: 0, y: -10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: 1.3 + i * 0.25, duration: 0.5 }}
+              transition={{ delay: 0.4 + i * 0.12, duration: 0.4 }}
             >
               {!reduce && (
                 <motion.circle
@@ -100,7 +100,7 @@ export function MalaysiaMarketMap() {
               <circle cx={x} cy={y} r={capital ? 7 : 5.5} fill={capital ? MW.blue : MW.navy} stroke="#fff" strokeWidth="2" />
               <text
                 x={x + c.dx} y={y + 5} textAnchor={c.anchor}
-                className="text-[21px] md:text-[12px]" fontWeight={capital ? 700 : 600} fill={MW.navy}
+                className="text-[23px] md:text-[13px]" fontWeight={capital ? 700 : 600} fill={MW.navy}
                 style={{ paintOrder: "stroke", stroke: "rgba(255,255,255,0.85)", strokeWidth: 4 }}
               >
                 {c.name}
@@ -117,7 +117,7 @@ export function MalaysiaMarketMap() {
             initial={{ opacity: 0, y: 16 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 2.4 + i * 0.2, duration: 0.5 }}
+            transition={{ delay: 0.1 + i * 0.08, duration: 0.5 }}
             className="rounded-2xl border p-4"
             style={{ borderColor: MW.ice }}
           >

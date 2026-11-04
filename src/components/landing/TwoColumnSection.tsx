@@ -52,7 +52,7 @@ export function TwoColumnSection({
   return (
     <section className={`${bgClasses} mw-section`}>
       <div className="mw-container">
-        <div className={`grid grid-cols-1 md:grid-cols-2 gap-12 [&>*]:min-w-0 ${graphic ? "items-start" : "items-center"} ${imagePosition === 'left' ? 'md:grid-flow-dense' : ''}`}>
+        <div className={`grid grid-cols-1 ${graphic ? "lg:grid-cols-2 items-start" : "md:grid-cols-2 items-center"} gap-12 [&>*]:min-w-0 ${imagePosition === 'left' ? 'md:grid-flow-dense' : ''}`}>
           {/* Content */}
           <motion.div
             initial={{ opacity: 0, x: imagePosition === 'left' ? 30 : -30 }}
@@ -82,7 +82,7 @@ export function TwoColumnSection({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className={`${imagePosition === 'left' ? 'md:col-start-1 md:row-start-1' : ''} ${graphic ? 'md:sticky md:top-28' : ''}`}
+            className={`${imagePosition === 'left' ? 'md:col-start-1 md:row-start-1' : ''} ${graphic ? 'lg:sticky lg:top-28' : ''}`}
           >
             {graphic}
             {!graphic && image && (

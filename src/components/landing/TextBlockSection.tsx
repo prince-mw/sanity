@@ -60,7 +60,7 @@ export function TextBlockSection({
                   </div>
                 )}
                 {(i < cuts.length ? slots.filter(s => Math.min(s.after, blocks.length) === cuts[i]) : []).map((s, k) => (
-                  <div key={k} className="my-14 md:-mx-16 lg:-mx-28">{s.node}</div>
+                  <div key={k} className="my-14 xl:-mx-24">{s.node}</div>
                 ))}
               </Fragment>
             ))

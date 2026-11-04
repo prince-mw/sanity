@@ -181,12 +181,12 @@ export default function Footer({ content }: FooterProps) {
             {navCategories.map((category) => (
               <div key={category.title}>
                 <h4 className="text-white font-bold mb-6 text-lg">{category.title}</h4>
-                <ul className="space-y-0 md:space-y-3">
+                <ul className="space-y-3 [@media(pointer:coarse)]:space-y-0">
                   {category.links.map((link) => (
                     <li key={link.name}>
                       <Link
                         href={link.href}
-                        className="text-mw-gray-300 hover:text-white transition-colors flex items-center group min-h-11 md:min-h-0"
+                        className="text-mw-gray-300 hover:text-white transition-colors flex items-center group mw-tap !justify-start"
                       >
                         {category.showLocationIcon && (
                           <svg className="w-4 h-4 mr-2 text-mw-blue-400 group-hover:text-mw-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -432,13 +432,13 @@ export default function Footer({ content }: FooterProps) {
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 md:gap-6 text-sm">
                   {legalLinks.map((link) => (
-                    <Link key={link.href} href={link.href} className="text-mw-gray-400 hover:text-white transition-colors">
+                    <Link key={link.href} href={link.href} className="text-mw-gray-400 hover:text-white transition-colors mw-tap">
                       {link.label}
                     </Link>
                   ))}
                   <button 
                     onClick={openCookieSettings}
-                    className="text-mw-gray-400 hover:text-white transition-colors"
+                    className="text-mw-gray-400 hover:text-white transition-colors mw-tap"
                   >
                     {t('footer.cookies')}
                   </button>
@@ -454,7 +454,7 @@ export default function Footer({ content }: FooterProps) {
                       href={social.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-8 h-8 bg-mw-gray-800 hover:bg-mw-blue-600 rounded-lg flex items-center justify-center text-mw-gray-400 hover:text-white transition-all duration-200"
+                      className="w-8 h-8 bg-mw-gray-800 hover:bg-mw-blue-600 rounded-lg flex items-center justify-center text-mw-gray-400 hover:text-white transition-all duration-200 mw-tap"
                       aria-label={social.platform}
                     >
                       {socialIconMap[social.platform] || null}

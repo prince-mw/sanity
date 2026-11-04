@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
@@ -245,7 +245,13 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
   
   // Use the locale context
   const { locale, setLocale, localeNames, localeCodes, locales, t } = useLocale();
-  const { openZohoPopup, currentPageFormUrl } = useZohoPopup();
+  const { openZohoPopup, currentPageFormUrl: pageFormUrl } = useZohoPopup();
+  // The page sets its form URL in an effect, which can land before this header
+  // hydrates (slow phones). Use it only after mount so the first client render
+  // matches the server's link, avoiding a hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const currentPageFormUrl = mounted ? pageFormUrl : null;
   const pathname = usePathname();
   const router = useRouter();
 
@@ -443,7 +449,7 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.45 }}
-              className="p-2 text-mw-gray-600 hover:text-mw-blue-600 hover:bg-mw-gray-50 rounded-lg transition-colors duration-200"
+              className="p-2 text-mw-gray-600 hover:text-mw-blue-600 hover:bg-mw-gray-50 rounded-lg transition-colors duration-200 mw-tap"
               aria-label={t('nav.openSearch')}
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -488,7 +494,7 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
             {/* Mobile Search Button */}
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="p-2 text-mw-gray-600 hover:text-mw-blue-600"
+              className="p-2 text-mw-gray-600 hover:text-mw-blue-600 mw-tap"
               aria-label={t('nav.openSearch')}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -498,7 +504,7 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
 
             {/* Mobile Menu Button */}
             <button
-              className="p-2 text-mw-gray-600 hover:text-mw-blue-600"
+              className="p-2 text-mw-gray-600 hover:text-mw-blue-600 mw-tap"
               onClick={() => setIsOpen(!isOpen)}
               aria-label={isOpen ? t('nav.closeMenu') : t('nav.openMenu')}
             >

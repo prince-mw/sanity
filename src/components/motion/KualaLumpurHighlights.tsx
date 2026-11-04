@@ -56,7 +56,7 @@ const rise = (i: number) => ({
   initial: { opacity: 0, y: 16 },
   whileInView: { opacity: 1, y: 0 },
   viewport: { once: true },
-  transition: { delay: 0.2 + i * 0.12, duration: 0.5 },
+  transition: { delay: 0.1 + i * 0.08, duration: 0.5 },
 });
 
 export function KualaLumpurHighlights() {
@@ -73,6 +73,18 @@ export function KualaLumpurHighlights() {
     const t = setInterval(() => setActive(a => (a + 1) % places.length), 2400);
     return () => clearInterval(t);
   }, [inView, held, reduce, places.length]);
+
+  // On phones the full district is ~1.5 screens tall and mostly empty, so the
+  // map is cropped to the part with the pins.
+  const [narrow, setNarrow] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const on = () => setNarrow(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  const view = narrow ? "70 30 340 360" : `0 0 ${W} ${H}`;
 
   const cur = places[active];
   const hold = (i: number) => ({
@@ -92,7 +104,7 @@ export function KualaLumpurHighlights() {
 
       <div className="mt-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] gap-10 items-start">
         {/* Map of KL with the places pinned */}
-        <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-auto max-w-[460px] mx-auto" aria-hidden="true">
+        <svg viewBox={view} className="w-full h-auto max-w-[460px] mx-auto" aria-hidden="true">
           <defs>
             <clipPath id="kl-frame"><rect width={W} height={H} rx="24" /></clipPath>
             <linearGradient id="kl-land" x1="0" y1="0" x2="1" y2="1">
@@ -128,7 +140,7 @@ export function KualaLumpurHighlights() {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 1 + i * 0.12, duration: 0.4 }}
+                transition={{ delay: 0.5 + i * 0.08, duration: 0.4 }}
                 style={{ cursor: "pointer" }}
                 {...hold(i)}
               >
@@ -142,8 +154,8 @@ export function KualaLumpurHighlights() {
                     transition={{ duration: 1.6, repeat: Infinity, ease: "easeOut" }}
                   />
                 )}
-                <circle cx={x} cy={y} r={on ? 12 : 10} fill={on ? MW.blue : MW.navy} stroke="#fff" strokeWidth="2.5" />
-                <text x={x} y={y + 4} textAnchor="middle" fontSize={on ? 12 : 11} fontWeight="700" fill="#fff">{i + 1}</text>
+                <circle cx={x} cy={y} r={on ? 13 : 11.5} fill={on ? MW.blue : MW.navy} stroke="#fff" strokeWidth="2.5" />
+                <text x={x} y={y + 4.5} textAnchor="middle" fontSize={13} fontWeight="700" fill="#fff">{i + 1}</text>
               </motion.g>
             );
           })}
@@ -204,7 +216,7 @@ export function KualaLumpurHighlights() {
                   initial={{ opacity: 0, scale: 0.9 }}
                   whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }}
-                  transition={{ delay: 0.5 + i * 0.12, duration: 0.4 }}
+                  transition={{ delay: 0.1 + i * 0.08, duration: 0.4 }}
                   className="flex items-center gap-3 rounded-lg p-3 sm:flex-col sm:items-start"
                   style={{ background: "rgba(191,231,251,0.3)" }}
                 >
