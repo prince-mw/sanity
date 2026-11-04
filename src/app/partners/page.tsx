@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getAllPartnerPages } from '@/sanity/lib/fetch';
+import { draftMode } from 'next/headers';
 import { partnersIndexContent } from '@/data/partners';
 import PartnersListClient from '@/components/PartnersListClient';
 
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
 };
 
 export default async function PartnersPage() {
-  const partners = await getAllPartnerPages();
+  const { isEnabled: isPreview } = await draftMode();
+  const partners = await getAllPartnerPages(isPreview);
   return <PartnersListClient intro={partnersIndexContent} partners={partners} />;
 }

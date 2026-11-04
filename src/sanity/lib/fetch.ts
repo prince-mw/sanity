@@ -3739,27 +3739,27 @@ const partnerPageProjection = `{
   metaTitle, metaDescription
 }`
 
-export async function getAllPartnerPages(): Promise<PartnerPageContent[]> {
-  const result = await safeFetch<{ docs: PartnerPageContent[]; total: number } | null>(
-    `{
+export async function getAllPartnerPages(preview: boolean = false): Promise<PartnerPageContent[]> {
+  const query = `{
       "docs": *[_type == "partnerPage" && isPublished != false && defined(slug.current)] | order(coalesce(order, 999) asc, name asc) ${partnerPageProjection},
       "total": count(*[_type == "partnerPage"])
-    }`,
-    undefined,
-    null
-  )
+    }`
+  // Preview mode lists draft partner pages too (draft-aware `previewClient`).
+  const result = preview
+    ? await previewClient.fetch<{ docs: PartnerPageContent[]; total: number }>(query).catch(() => null)
+    : await safeFetch<{ docs: PartnerPageContent[]; total: number } | null>(query, undefined, null)
   return result && result.total > 0 ? result.docs : defaultPartners
 }
 
-export async function getPartnerPageBySlug(slug: string): Promise<PartnerPageContent | null> {
-  const result = await safeFetch<{ doc: PartnerPageContent | null; total: number } | null>(
-    `{
+export async function getPartnerPageBySlug(slug: string, preview: boolean = false): Promise<PartnerPageContent | null> {
+  const query = `{
       "doc": *[_type == "partnerPage" && slug.current == $slug && isPublished != false][0] ${partnerPageProjection},
       "total": count(*[_type == "partnerPage"])
-    }`,
-    { slug },
-    null
-  )
+    }`
+  // Preview mode needs the draft-aware `previewClient` (same pattern as getLocationBySlug).
+  const result = preview
+    ? await previewClient.fetch<{ doc: PartnerPageContent | null; total: number }>(query, { slug }).catch(() => null)
+    : await safeFetch<{ doc: PartnerPageContent | null; total: number } | null>(query, { slug }, null)
   const doc = result?.doc
   if (doc) return { ...doc, heroParagraphs: doc.heroParagraphs || [], sections: doc.sections || [] }
   // Only fall back to the bundled defaults when the CMS has no partner pages at all (or is
@@ -3978,7 +3978,7 @@ export interface ClientPartnersContent {
   partners: ClientPartner[]
 }
 
-export async function getClientPartnersContent(): Promise<ClientPartnersContent | null> {
+export async function getClientPartnersContent(preview: boolean = false): Promise<ClientPartnersContent | null> {
   try {
     const query = `
       *[_type == "clientPartners" && _id == "clientPartners"][0] {
@@ -3994,6 +3994,8 @@ export async function getClientPartnersContent(): Promise<ClientPartnersContent 
         }
       }
     `
+    // Preview mode shows a draft of the homepage Technology Partners list
+    if (preview) return previewClient.fetch(query)
     return safeFetch(query)
   } catch (error) {
     console.error('Error fetching client partners content:', error)

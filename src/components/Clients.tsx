@@ -95,7 +95,7 @@ export default function Clients({ partners, sectionTitle, sectionTitleTranslatio
           )}
         </motion.div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
           {hasCmsPartners ? partners.map((partner, index) => {
             const href = findPartnerHref(partner.name, partnerPages);
             return (

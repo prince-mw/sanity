@@ -35,6 +35,7 @@ export async function GET(request: NextRequest) {
     product: '',
     landingPage: '/lp',
     location: '/locations',
+    partnerPage: '/partners',
   }
 
   const basePath = typeToPath[type] || ''

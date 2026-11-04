@@ -17,6 +17,7 @@ const ContactForm = dynamic(() => import("../components/ContactForm"));
 import { getPageSeo, getSanityImageUrl, getAllCaseStudies, SanityCaseStudy, getTrustBarContent, getContactZohoForm, getClientPartnersContent, getAllPartnerPages } from "@/sanity/lib/fetch";
 
 import { getRequestLocale } from "@/i18n/serverLocale";
+import { draftMode } from "next/headers";
 import ja from "../../messages/ja.json";
 import ko from "../../messages/ko.json";
 import id from "../../messages/id.json";
@@ -60,12 +61,13 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Home() {
+  const { isEnabled: isPreview } = await draftMode();
   const [caseStudiesData, trustBarContent, contactForm, clientPartnersContent, partnerPages] = await Promise.all([
     getAllCaseStudies().catch(() => null),
     getTrustBarContent(),
     getContactZohoForm(),
-    getClientPartnersContent(),
-    getAllPartnerPages(),
+    getClientPartnersContent(isPreview),
+    getAllPartnerPages(isPreview),
   ]);
 
   const caseStudies: SanityCaseStudy[] = caseStudiesData?.slice(0, 4) || [];

@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { draftMode } from 'next/headers';
 import { getPartnerPageBySlug } from '@/sanity/lib/fetch';
 import PartnerDetailClient from '@/components/PartnerDetailClient';
 
@@ -27,7 +28,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PartnerPage({ params }: Props) {
   const { slug } = await params;
-  const partner = await getPartnerPageBySlug(slug);
+  const { isEnabled: isPreview } = await draftMode();
+  const partner = await getPartnerPageBySlug(slug, isPreview);
   if (!partner) notFound();
 
   const breadcrumbJsonLd = {
