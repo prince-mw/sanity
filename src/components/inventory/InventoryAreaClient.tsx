@@ -41,10 +41,10 @@ export function InventoryAreaClient({
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="relative mw-container">
           {sample && <SampleBanner />}
-          <nav aria-label="Breadcrumb" className="mb-5 text-sm text-blue-100/80">
-            <Link href="/locations" className="hover:text-white">Locations</Link> ›{' '}
-            <Link href={`/locations/${countrySlug}`} className="hover:text-white">{countryName}</Link> ›{' '}
-            <Link href={cityHref} className="hover:text-white">{cityName}</Link> › <span className="text-white">{areaName}</span>
+          <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-x-1.5 text-sm text-blue-100/80">
+            <Link href="/locations" className="mw-tap !justify-start hover:text-white">Locations</Link> <span aria-hidden="true">›</span>
+            <Link href={`/locations/${countrySlug}`} className="mw-tap !justify-start hover:text-white">{countryName}</Link> <span aria-hidden="true">›</span>
+            <Link href={cityHref} className="mw-tap !justify-start hover:text-white">{cityName}</Link> <span aria-hidden="true">›</span> <span className="text-white">{areaName}</span>
           </nav>
           {kind === 'buyer' ? (
             <>

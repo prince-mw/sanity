@@ -68,7 +68,7 @@ export function MalaysiaMarketMap() {
               stroke={MW.blue}
               strokeWidth="1.4"
               strokeDasharray="4 5"
-              variants={{ hidden: { pathLength: 0, opacity: 0 }, show: { pathLength: 1, opacity: 0.8, transition: { delay: 0.7 + i * 0.15, duration: 0.7 } } }}
+              variants={{ hidden: { pathLength: 0, opacity: 0 }, show: { pathLength: 1, opacity: 0.8, transition: { delay: 0.3 + i * 0.08, duration: 0.5 } } }}
             />
           );
         })}
@@ -79,7 +79,7 @@ export function MalaysiaMarketMap() {
           return (
             <motion.g
               key={c.id}
-              variants={{ hidden: { opacity: 0, y: -10 }, show: { opacity: 1, y: 0, transition: { delay: 0.4 + i * 0.12, duration: 0.4 } } }}
+              variants={{ hidden: { opacity: 0, y: -10 }, show: { opacity: 1, y: 0, transition: { delay: 0.15 + i * 0.06, duration: 0.35 } } }}
             >
               {!reduce && (
                 <motion.circle

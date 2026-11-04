@@ -35,11 +35,11 @@ export function InventorySiteClient({ site, nearby, pagedIds }: { site: PublicSi
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="relative mw-container">
           {site.sample && <SampleBanner />}
-          <nav aria-label="Breadcrumb" className="mb-5 text-sm text-blue-100/80">
-            <Link href="/locations" className="hover:text-white">Locations</Link> ›{' '}
-            <Link href={`/locations/${site.countrySlug}`} className="hover:text-white">{site.countryName}</Link> ›{' '}
-            <Link href={`/locations/${site.countrySlug}/${site.citySlug}`} className="hover:text-white">{site.cityName}</Link> ›{' '}
-            <Link href={areaHref} className="hover:text-white">{site.areaName}</Link> › <span className="text-white">{site.name}</span>
+          <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-x-1.5 text-sm text-blue-100/80">
+            <Link href="/locations" className="mw-tap !justify-start hover:text-white">Locations</Link> <span aria-hidden="true">›</span>
+            <Link href={`/locations/${site.countrySlug}`} className="mw-tap !justify-start hover:text-white">{site.countryName}</Link> <span aria-hidden="true">›</span>
+            <Link href={`/locations/${site.countrySlug}/${site.citySlug}`} className="mw-tap !justify-start hover:text-white">{site.cityName}</Link> <span aria-hidden="true">›</span>
+            <Link href={areaHref} className="mw-tap !justify-start hover:text-white">{site.areaName}</Link> <span aria-hidden="true">›</span> <span className="text-white">{site.name}</span>
           </nav>
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-6">
