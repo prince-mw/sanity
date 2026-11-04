@@ -9,8 +9,9 @@
    section edges stop lining up with the header again.
    ───────────────────────────────────────────────────────────────────────────── */
 @layer components {
-  /* Page container: 1600px max; 16px sides on phones, 24px tablets, 32px laptops+. Matches the header. */
-  .mw-container { @apply mx-auto w-full max-w-[1600px] px-4 sm:px-6 lg:px-8; }
+  /* Page container: 1280px max (same as live movingwalls.com); 16px sides on phones, 24px tablets, 32px laptops+. Matches the header.
+     4 Nov 2026: back from 1600px. Rif had judged widths with Chrome zoomed out; at 100% zoom 1600px sat too close to the screen edges. */
+  .mw-container { @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8; }
 
   /* Section spacing: standard for most sections, large for key moments, compact for strips. */
   .mw-section { @apply py-12 md:py-16; }
