@@ -125,13 +125,14 @@ const nextConfig: NextConfig = {
           },
         ],
       },
-      // Sitemap & robots.txt - Cache for 1 day
+      // Sitemap & robots.txt - short CDN cache. A 1-day max-age let CloudFront keep serving an old
+      // sitemap for a day or more after a publish, even though the Sanity webhook refreshes it.
       {
         source: '/(sitemap.xml|robots.txt)',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=86400, stale-while-revalidate=43200',
+            value: 'public, max-age=0, s-maxage=600, must-revalidate',
           },
         ],
       },
