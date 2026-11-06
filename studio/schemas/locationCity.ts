@@ -76,6 +76,13 @@ export default defineType({
       description: 'Custom H1 heading for the hero section. Leave empty to use the default "OOH Advertising in {City}" template.',
     }),
     defineField({
+      name: 'heroSubtitle',
+      title: 'Hero Subtitle',
+      type: 'string',
+      group: 'basic',
+      description: 'Optional line shown in smaller text directly under the hero heading.',
+    }),
+    defineField({
       name: 'heroImage',
       title: 'Hero Image',
       type: 'image',

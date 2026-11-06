@@ -255,6 +255,11 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                   </>
                 )}
               </h1>
+              {location.heroSubtitle && (
+                <p className="-mt-2 mb-6 text-xl md:text-2xl font-semibold text-mw-blue-100 leading-snug max-w-xl">
+                  {location.heroSubtitle}
+                </p>
+              )}
               
               <p className="text-lg md:text-xl text-mw-blue-100 max-w-xl mb-8 leading-relaxed whitespace-pre-line">
                 {location.description}

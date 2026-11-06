@@ -1891,6 +1891,7 @@ export interface SanityLocationCity {
   city: string
   slug: { current: string }
   heroTitle?: string
+  heroSubtitle?: string
   heroImage?: any
   ctaButtonText?: string
   showAllLocationsButton?: boolean
@@ -1926,6 +1927,7 @@ const locationCityProjection = `
   city,
   slug,
   heroTitle,
+  heroSubtitle,
   heroImage,
   ctaButtonText,
   showAllLocationsButton,
@@ -2043,6 +2045,7 @@ export function transformCityFull(city: SanityLocationCity): LocationData {
     city: city.country?.country || '',
     description: city.fullDescription || city.description || '',
     heroTitle: city.heroTitle || '',
+    heroSubtitle: city.heroSubtitle || '',
     heroImage: getSanityImageUrl(city.heroImage, { width: 1200 }) || '',
     ctaButtonText: city.ctaButtonText || '',
     showAllLocationsButton: city.showAllLocationsButton !== false,
