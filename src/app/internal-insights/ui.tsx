@@ -13,6 +13,8 @@ export interface Action { id: string; priority: Priority; category: string; titl
 
 export const nf = (n: number) => Math.round(n).toLocaleString('en-US')
 export const pct = (n: number, d = 1) => `${(n * 100).toFixed(d)}%`
+/** $1.89M, $442k, $9,515 */
+export const usd = (n: number) => (n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e5 ? `$${Math.round(n / 1000)}k` : `$${nf(n)}`)
 export const fmtDate = (s: string) => new Date(s + 'T00:00:00Z').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' })
 
 export const PRIORITY_STYLE: Record<Priority, string> = {

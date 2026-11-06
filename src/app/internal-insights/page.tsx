@@ -19,6 +19,8 @@ import { getBlogAudit } from '@/lib/insights/blogAudit'
 import BlogTab from './BlogTab'
 import { getLeadsDashboard } from '@/lib/insights/leads'
 import LeadsTab from './LeadsTab'
+import { buildOverview } from '@/lib/insights/overview'
+import OverviewTab from './OverviewTab'
 
 // Internal, password-protected performance dashboard. Not in the sitemap, not linked anywhere,
 // and noindex (meta tag here + X-Robots-Tag header in next.config.ts). Deliberately NOT listed
@@ -90,6 +92,26 @@ async function LeadsSection({ range }: { range: RangeKey }) {
   }
 }
 
+async function OverviewSection({ range }: { range: RangeKey }) {
+  const safe = <T,>(p: Promise<T>) => p.catch(() => null)
+  const [google, zoho] = await Promise.all([isInsightsConfigured(), isZohoConfigured()])
+  // Google data in parallel; the Zoho-based tabs one after another, as Zoho rate-limits bursts of calls
+  const zohoData = async () => {
+    if (!zoho) return { leads: null, campaigns: null, content: null }
+    const leads = await safe(getLeadsDashboard(range))
+    const campaigns = await safe(getCampaignDashboard(range))
+    const content = await safe(getContentDashboard(range))
+    return { leads, campaigns, content }
+  }
+  const [site, z, blog, statuses] = await Promise.all([
+    google ? safe(getDashboard(range)) : null,
+    zohoData(),
+    safe(getBlogAudit()),
+    getActionStatuses().catch(() => ({})),
+  ])
+  return <OverviewTab data={buildOverview({ site, ...z, blog, statuses })} range={range} />
+}
+
 async function BlogSection() {
   try {
     const [data, statuses] = await Promise.all([getBlogAudit(), getActionStatuses()])
@@ -110,7 +132,7 @@ export default async function InternalInsightsPage({ searchParams }: { searchPar
 
   return (
     <InsightsShell user={user} tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)} snapshot={tab === 'blog' ? 'Snapshot audit · 30 Oct 2026 · data 29 Oct 2025 – 29 Oct 2026' : undefined}>
-      {tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
+      {tab === 'overview' ? <OverviewSection range={range} /> : tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
     </InsightsShell>
   )
 }

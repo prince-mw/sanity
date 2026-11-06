@@ -3,11 +3,8 @@
 // Leads & Deals tab: CRM leads and the deals they became, from the marketing team's Zoho Analytics report.
 import type { BreakdownRow, Channel, LeadsDashboard } from '@/lib/insights/leads'
 import type { LeadSource } from '@/lib/insights/data'
-import { Delta, Details, Kpi, TH, THR, fmtDate, nf, pct } from './ui'
+import { Delta, Details, Kpi, TH, THR, fmtDate, nf, pct, usd } from './ui'
 import LeadCards from './LeadCards'
-
-/** $1.89M, $442k, $9,515 */
-const usd = (n: number) => (n >= 1e6 ? `$${(n / 1e6).toFixed(2)}M` : n >= 1e5 ? `$${Math.round(n / 1000)}k` : `$${nf(n)}`)
 
 const STAGE_STYLE: Record<string, string> = {
   'Closed Won': 'bg-emerald-100 text-emerald-800',
