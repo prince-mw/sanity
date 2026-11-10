@@ -1,9 +1,9 @@
 'use client'
 
-// "Adjust the screen": the visitor drags the four corners (and, for a bowed
-// screen, the edge midpoints) over the site photo when the automatic
-// placement is off. Released corners snap onto the real edge in the pixels.
-// Only their own mock-up changes; nothing is written anywhere.
+// "Fit the ad to the screen": the handles sit on the rendered mock-up itself
+// (passed in as children), so dragging a corner moves the ad live. Released
+// corners snap onto the real screen edge in the photo's pixels (read through
+// the proxy). Only this visitor's mock-up changes; nothing is written anywhere.
 
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { faceOutline, type Face } from '@/lib/mockup/compose'
@@ -11,7 +11,7 @@ import { snapQuad } from '@/lib/mockup/snap'
 
 const mid = (a: [number, number], b: [number, number]): [number, number] => [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2]
 
-export function CornerEditor({ photo, face, onChange }: { photo: string; face: Face; onChange: (f: Face) => void }) {
+export function CornerEditor({ photo, face, onChange, children }: { photo: string; face: Face; onChange: (f: Face) => void; children: React.ReactNode }) {
   const [size, setSize] = useState<[number, number]>([800, 450])
   const [curved, setCurved] = useState(!!face.edges)
   const [six, setSix] = useState(!!face.seam)
@@ -68,23 +68,22 @@ export function CornerEditor({ photo, face, onChange }: { photo: string; face: F
   )
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
-      <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm">
-        <span className="text-gray-700">Drag the yellow dots onto the corners of the screen (they snap to the edge when you let go). Pink dots mark where two panels meet.</span>
-        <span className="flex flex-wrap items-center gap-3">
-          <label className="flex items-center gap-1 text-gray-700"><input type="checkbox" checked={curved} disabled={six} onChange={e => { setCurved(e.target.checked); onChange({ ...face, edges: e.target.checked ? edges : null }) }} style={{ appearance: 'auto' }} /> curved screen</label>
-          <label className="flex items-center gap-1 text-gray-700"><input type="checkbox" checked={six} onChange={e => { setSix(e.target.checked); if (e.target.checked) setCurved(false); onChange({ ...face, edges: null, seam: e.target.checked ? seam : null }) }} style={{ appearance: 'auto' }} /> 6 points (bent screen)</label>
-        </span>
-      </div>
+    <div>
       <div ref={box} className="relative select-none">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={photo} alt="" className="block w-full rounded-lg" draggable={false} />
+        {children}
         <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 h-full w-full" style={{ touchAction: 'none' }}>
-          <polygon points={outline.map(p => p.join(',')).join(' ')} fill="rgba(0,255,0,0.18)" stroke="#0f0" strokeWidth={Math.max(1.5, W / 500)} />
+          <polygon points={outline.map(p => p.join(',')).join(' ')} fill="none" stroke="#00ff44" strokeWidth={Math.max(1.5, W / 500)} strokeDasharray={`${W / 80} ${W / 120}`} />
           {face.corners.map((p, i) => handle(p, '#ffee00', 'c', i))}
           {curved && !six && edges.map((p, i) => handle(p, '#4fc3f7', 'e', i))}
           {six && seam.map((p, i) => handle(p, '#ff7ab6', 's', i))}
         </svg>
+      </div>
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-sm">
+        <span className="text-gray-600">Drag the yellow dots onto the screen's corners; they snap to the edge when you let go.</span>
+        <span className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-1 text-gray-700"><input type="checkbox" checked={curved} disabled={six} onChange={e => { setCurved(e.target.checked); onChange({ ...face, edges: e.target.checked ? edges : null }) }} style={{ appearance: 'auto' }} /> curved screen</label>
+          <label className="flex items-center gap-1 text-gray-700"><input type="checkbox" checked={six} onChange={e => { setSix(e.target.checked); if (e.target.checked) setCurved(false); onChange({ ...face, edges: null, seam: e.target.checked ? seam : null }) }} style={{ appearance: 'auto' }} /> bent screen (6 points)</label>
+        </span>
       </div>
     </div>
   )

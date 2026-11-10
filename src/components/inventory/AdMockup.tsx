@@ -218,7 +218,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
 
       {/* Preview */}
       <div className="lg:col-span-7">
-        <div className="relative overflow-hidden rounded-2xl bg-gray-100 ring-1 ring-gray-200" style={{ aspectRatio: siteImg && faceCorners ? `${siteImg.width} / ${siteImg.height}` : `${aspect}` }}>
+        <div className="relative overflow-hidden rounded-2xl bg-gray-100 ring-1 ring-gray-200" style={unlocked && adjusting && face ? undefined : { aspectRatio: siteImg && faceCorners ? `${siteImg.width} / ${siteImg.height}` : `${aspect}` }}>
           {preview && !unlocked && access.state !== 'loading' && (
             // the ad is drawn but hidden until they register (or they used their one mock-up elsewhere)
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/70 p-6 text-center backdrop-blur-md">
@@ -237,7 +237,13 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
               )}
             </div>
           )}
-          {preview ? (
+          {preview && unlocked && adjusting && face && site.photos[0] ? (
+            // the points sit on the mock-up itself; dragging re-renders it live
+            <CornerEditor photo={site.photos[0]} face={face} onChange={setFaceOverride}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={preview} alt={`Preview of your ad on ${site.name}`} className="block h-auto w-full" draggable={false} />
+            </CornerEditor>
+          ) : preview ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={preview} alt={`Preview of your ad on ${site.name}`} className={`h-full w-full object-contain ${unlocked ? '' : 'blur-xl scale-105'}`} />
           ) : (
@@ -254,11 +260,10 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
               className={`mw-tap flex w-full items-center gap-3 rounded-xl px-5 py-4 text-left text-white shadow-lg transition-colors ${adjusting ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#062068] hover:bg-[#0a2a8a]'}`}>
               <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/15">{adjusting ? <Check className="h-5 w-5" aria-hidden="true" /> : <Move className="h-5 w-5" aria-hidden="true" />}</span>
               <span className="flex-1">
-                <span className="block text-base font-bold">{adjusting ? 'Looks right — save the fit' : 'Fit the ad to the screen'}</span>
-                <span className="block text-sm text-white/80">{adjusting ? 'The preview above shows the result. Press when the ad sits exactly on the screen.' : 'Drag the corners until the ad sits exactly on the screen. The preview updates as you go.'}</span>
+                <span className="block text-base font-bold">{adjusting ? 'Looks right — preview without the points' : 'Fit the ad to the screen'}</span>
+                <span className="block text-sm text-white/80">{adjusting ? 'Press when the ad sits exactly on the screen.' : 'Shows the corner points on your mock-up; drag them and the ad follows.'}</span>
               </span>
             </button>
-            {adjusting && <div className="mt-3"><CornerEditor photo={site.photos[0]} face={face} onChange={setFaceOverride} /></div>}
           </div>
         )}
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
