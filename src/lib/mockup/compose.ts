@@ -11,10 +11,30 @@ export type Template = 'band' | 'split' | 'poster'
 export type CreativeInput = {
   width: number; height: number
   photo: HTMLImageElement | null
-  logo: HTMLImageElement | null
+  logo: HTMLImageElement | HTMLCanvasElement | null   // an uploaded logo, or a wordmark drawn from the brand name
   tagline: string
   accent: string           // hex, sampled from the logo
   template: Template
+}
+
+/**
+ * A wordmark for a brand with no logo file: the name set bold and spaced, in
+ * the colour the ad's text uses, on a transparent canvas. It then takes the
+ * logo's place in every layout.
+ */
+export function wordmark(name: string, color: string): HTMLCanvasElement {
+  const text = name.trim().toUpperCase()
+  const c = document.createElement('canvas')
+  const g = c.getContext('2d')!
+  const size = 120
+  g.font = `800 ${size}px Poppins, "Segoe UI", Arial, sans-serif`
+  const spacing = Math.round(size * 0.08)
+  const w = Math.ceil([...text].reduce((acc, ch) => acc + g.measureText(ch).width + spacing, 0)) + spacing
+  c.width = Math.max(10, w); c.height = Math.round(size * 1.3)
+  g.font = `800 ${size}px Poppins, "Segoe UI", Arial, sans-serif`; g.textBaseline = 'middle'; g.fillStyle = color
+  let x = spacing / 2
+  for (const ch of text) { g.fillText(ch, x, c.height / 2); x += g.measureText(ch).width + spacing }
+  return c
 }
 
 export function loadImage(src: string): Promise<HTMLImageElement> {
@@ -55,7 +75,7 @@ function cover(g: CanvasRenderingContext2D, img: HTMLImageElement, x: number, y:
   g.drawImage(img, x + (w - dw) / 2, y + (h - dh) / 2, dw, dh)
 }
 
-function contain(g: CanvasRenderingContext2D, img: HTMLImageElement, x: number, y: number, w: number, h: number, align: 'left' | 'right' | 'center' = 'center') {
+function contain(g: CanvasRenderingContext2D, img: HTMLImageElement | HTMLCanvasElement, x: number, y: number, w: number, h: number, align: 'left' | 'right' | 'center' = 'center') {
   const s = Math.min(w / img.width, h / img.height)
   const dw = img.width * s, dh = img.height * s
   const dx = align === 'left' ? x : align === 'right' ? x + w - dw : x + (w - dw) / 2

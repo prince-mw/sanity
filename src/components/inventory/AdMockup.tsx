@@ -12,7 +12,7 @@ import { Upload, Image as ImageIcon, Palette, RefreshCw } from 'lucide-react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import type { Face } from '@/lib/mockup/compose'
-import { aspectFromSize, faceAspect, composeOnSite, drawCreative, loadImage, sampleAccent, type Template } from '@/lib/mockup/compose'
+import { aspectFromSize, faceAspect, composeOnSite, drawCreative, loadImage, sampleAccent, wordmark, type Template } from '@/lib/mockup/compose'
 import { LeadForm } from '../forms/LeadForm'
 
 type StockPhoto = { id: number; src: string; thumb: string; alt: string; credit: string; creditUrl: string }
@@ -26,6 +26,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   const faceCorners = content.faceCorners
   const face: Face | null = useMemo(() => faceCorners ? { corners: faceCorners, edges: content.faceEdges ?? null, kind: content.faceKind ?? (/led|digital|screen|panel|gantry/i.test(`${site.displayFormat} ${site.format}`) ? 'led' : 'print') } : null, [faceCorners, content.faceEdges, content.faceKind, site])
   const [logo, setLogo] = useState<HTMLImageElement | null>(null)
+  const [brand, setBrand] = useState('')
   const [logoName, setLogoName] = useState<string | null>(null)
   const [tagline, setTagline] = useState('')
   const [industry, setIndustry] = useState('')
@@ -46,7 +47,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   // The creative takes the shape of the face in the photo, so it fills it exactly; the site's size is the fallback.
   const aspect = useMemo(() => siteImg && faceCorners ? faceAspect(faceCorners, siteImg.width, siteImg.height)
     : aspectFromSize(site.size, /unipole|portrait|panel|kiosk/i.test(`${site.displayFormat} ${site.format}`) ? 0.6 : 2), [site, siteImg, faceCorners])
-  const ready = !!tagline.trim() || !!logo
+  const ready = !!tagline.trim() || !!logo || !!brand.trim()
 
   // The site photo, once
   useEffect(() => {
@@ -94,7 +95,10 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
     try {
       const W = 1200, H = Math.round(1200 / aspect)
       const creative = creativeRef.current ?? (creativeRef.current = document.createElement('canvas'))
-      drawCreative(creative, { width: W, height: Math.max(300, Math.min(H, 2000)), photo: photoImg, logo, tagline: tagline.trim() || ' ', accent, template })
+      // no logo file: the brand name becomes the wordmark, in the colour the layout's text uses
+      const dark = (() => { const n = parseInt(accent.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255 < 0.5 })()
+      const mark = logo ?? (brand.trim() ? wordmark(brand, template === 'poster' && photoImg ? '#ffffff' : dark ? '#ffffff' : '#111111') : null)
+      drawCreative(creative, { width: W, height: Math.max(300, Math.min(H, 2000)), photo: photoImg, logo: mark, tagline: tagline.trim() || ' ', accent, template })
       let out: HTMLCanvasElement
       if (siteImg && face) out = composeOnSite(siteImg, creative, face)
       else { out = document.createElement('canvas'); out.width = creative.width; out.height = creative.height; out.getContext('2d')!.drawImage(creative, 0, 0) }
@@ -105,7 +109,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
       setError('Your browser could not build the preview. Try Chrome or Safari on a laptop.')
       console.error(e)
     }
-  }, [ready, aspect, photoImg, logo, tagline, accent, template, siteImg, face])
+  }, [ready, aspect, photoImg, logo, brand, tagline, accent, template, siteImg, face])
   useEffect(() => { const t = setTimeout(render, 150); return () => clearTimeout(t) }, [render])
 
   const download = () => {
@@ -135,6 +139,13 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
             <input type="file" accept="image/png,image/svg+xml,image/jpeg,image/webp" className="sr-only" onChange={e => onLogo(e.target.files?.[0])} />
           </label>
           <p className="mt-1 text-xs text-gray-500">Stays on your device until you download.</p>
+          {!logo && (
+            <label className="mt-3 block">
+              <span className="text-sm font-semibold text-gray-700">No logo? Type your brand name</span>
+              <input value={brand} onChange={e => setBrand(e.target.value.slice(0, 30))} placeholder="e.g. Jaosamut" className={input} />
+              <span className="mt-1 block text-xs text-gray-500">We'll set it as a wordmark where the logo would go.</span>
+            </label>
+          )}
         </div>
 
         <div>
