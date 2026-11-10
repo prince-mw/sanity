@@ -71,7 +71,7 @@ function builtIn(text: string, industry: string): Photo[] {
   const hay = `${industry} ${text}`
   const hit = BUILT_IN.filter(b => b.words.test(hay)).flatMap(b => b.photos)
   const rest = BUILT_IN.flatMap(b => b.photos).filter(p => !hit.includes(p))
-  return [...hit, ...rest].slice(0, 8)
+  return [...hit, ...rest].slice(0, 3) // three photos + 'No photo' = one row of four
 }
 
 export async function POST(req: NextRequest) {
@@ -99,6 +99,6 @@ Which would work as the background of this ad? Reply with the numbers of up to 4
     60,
   )
   const picks = verdict.toLowerCase().includes('none') ? [] : (verdict.match(/\d+/g) ?? []).map(n => unique[Number(n) - 1]).filter(Boolean)
-  const photos = (picks.length ? picks : unique.slice(0, 4)).slice(0, 4)
+  const photos = (picks.length ? picks : unique.slice(0, 3)).slice(0, 3)
   return NextResponse.json({ photos, screened: picks.length > 0 })
 }

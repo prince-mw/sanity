@@ -183,7 +183,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
           {photos.length > 0 && (
             <ul className="mt-3 grid grid-cols-4 gap-2">
               <li><button type="button" onClick={() => pickPhoto(null)} aria-pressed={photoId === null} className={`mw-tap flex aspect-[4/3] w-full items-center justify-center rounded-lg border-2 text-xs font-semibold ${photoId === null ? 'border-[#062068]' : 'border-gray-200'}`} style={{ background: accent, color: '#fff' }}>No photo</button></li>
-              {photos.map(p => (
+              {photos.slice(0, 3).map(p => (
                 <li key={p.id}>
                   <button type="button" onClick={() => pickPhoto(p)} aria-pressed={photoId === p.id} title={p.alt} className={`mw-tap block aspect-[4/3] w-full overflow-hidden rounded-lg border-2 ${photoId === p.id ? 'border-[#062068]' : 'border-gray-200'}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
