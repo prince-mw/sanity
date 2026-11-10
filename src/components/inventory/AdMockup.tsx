@@ -252,14 +252,14 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
           )}
         </div>
         {/* The fit: the one control that makes or breaks the mock-up, so it is the main action under the preview */}
-        {preview && face && site.photos[0] && access.state !== 'loading' && access.state !== 'other' && (
+        {unlocked && face && site.photos[0] && (
           <div className="mt-4">
-            <button type="button" onClick={() => (unlocked ? setAdjusting(a => !a) : setFormOpen(true))} aria-expanded={unlocked && adjusting}
-              className={`mw-tap flex w-full items-center gap-3 rounded-xl px-5 py-4 text-left text-white shadow-lg transition-colors ${unlocked && adjusting ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#062068] hover:bg-[#0a2a8a]'}`}>
-              <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/15">{unlocked && adjusting ? <Check className="h-5 w-5" aria-hidden="true" /> : <Move className="h-5 w-5" aria-hidden="true" />}</span>
+            <button type="button" onClick={() => setAdjusting(a => !a)} aria-expanded={adjusting}
+              className={`mw-tap flex w-full items-center gap-3 rounded-xl px-5 py-4 text-left text-white shadow-lg transition-colors ${adjusting ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#062068] hover:bg-[#0a2a8a]'}`}>
+              <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/15">{adjusting ? <Check className="h-5 w-5" aria-hidden="true" /> : <Move className="h-5 w-5" aria-hidden="true" />}</span>
               <span className="flex-1">
-                <span className="block text-base font-bold">{unlocked && adjusting ? 'Looks right — preview without the points' : 'Fit the ad to the screen'}</span>
-                <span className="block text-sm text-white/80">{unlocked && adjusting ? 'Press when the ad sits exactly on the screen.' : 'Shows the corner points on your mock-up; drag them and the ad follows.'}</span>
+                <span className="block text-base font-bold">{adjusting ? 'Looks right — preview without the points' : 'Fit the ad to the screen'}</span>
+                <span className="block text-sm text-white/80">{adjusting ? 'Press when the ad sits exactly on the screen.' : 'Shows the corner points on your mock-up; drag them and the ad follows.'}</span>
               </span>
             </button>
           </div>
