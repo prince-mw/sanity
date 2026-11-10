@@ -55,8 +55,6 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
     fetch(`/api/mockup/access?site=${encodeURIComponent(site.id)}`).then(r => r.json()).then(j => setAccess({ state: j.state, siteName: j.siteName, owner: j.owner, tester: !!j.tester })).catch(() => setAccess({ state: 'none' }))
   }, [site.id])
   const unlocked = access.state === 'this'
-  const openedOnce = useRef(false)
-  useEffect(() => { if (unlocked && preview && face && !openedOnce.current) { openedOnce.current = true; setAdjusting(true) } }, [unlocked, preview, face])
   const cleanRef = useRef<string | null>(null)
   const creativeRef = useRef<HTMLCanvasElement | null>(null)
 
