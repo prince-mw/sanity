@@ -9,6 +9,8 @@
 import { safeFetch } from '@/sanity/lib/fetch'
 import { urlFor } from '@/sanity/lib/client'
 import { SITE_CONTENT_SAMPLE } from '@/data/site-content-sample'
+import { writeClient } from '@/sanity/lib/client'
+import { detectFace, faceDetectionAvailable } from '@/lib/mockup/face'
 import type { PublicSite } from './types'
 
 export type PersonaIcon = 'commuter' | 'shopper' | 'tourist' | 'office' | 'family' | 'student' | 'nightlife' | 'traveller' | 'driver' | 'resident'
@@ -32,7 +34,7 @@ const EMPTY: SiteContent = { description: null, personas: [], faceCorners: null,
 const relatedFields = `title, "slug": slug.current, excerpt, featuredImage, publishedAt, _id`
 
 const docQuery = `*[_type == "siteContent" && siteId == $siteId && hidden != true][0]{
-  description, personas, faceCorners, faceEdges, faceKind,
+  _id, description, personas, faceCorners, faceEdges, faceKind,
   "posts": relatedPosts[]{ score, reason, "doc": post->{ ${relatedFields} } },
   "caseStudies": relatedCaseStudies[]{ score, reason, "doc": caseStudy->{ ${relatedFields} } }
 }`
@@ -58,6 +60,7 @@ function item(kind: RelatedItem['kind'], d: any, score: number, reason: string):
 export async function getSiteContent(site: PublicSite): Promise<SiteContent> {
   const doc = await safeFetch<any>(docQuery, { siteId: site.id }, null)
   if (doc) {
+    if (!(Array.isArray(doc.faceCorners) && doc.faceCorners.length === 4) && site.photos[0]) doc.faceCorners = await locateFace(site, doc._id)
     return {
       description: doc.description ?? null,
       personas: doc.personas ?? [],
@@ -71,6 +74,7 @@ export async function getSiteContent(site: PublicSite): Promise<SiteContent> {
   }
   // No document yet: preview copy + the live floor of the related rule.
   const sample = SITE_CONTENT_SAMPLE[site.id]
+  const located = !sample?.faceCorners && site.photos[0] ? await locateFace(site, null) : null
   const params = { country: `${site.countryName}*`, city: `${site.cityName}*`, area: `${site.areaName}*`, max: 4 }
   const [posts, cases] = await Promise.all([
     safeFetch<any[]>(liveRelatedQuery('blogPost'), params, []),
@@ -81,12 +85,31 @@ export async function getSiteContent(site: PublicSite): Promise<SiteContent> {
     ...EMPTY,
     description: sample?.description ?? site.description ?? null,
     personas: sample?.personas ?? [],
-    faceCorners: sample?.faceCorners ?? null,
+    faceCorners: sample?.faceCorners ?? (located ? located.map(p => [p.x, p.y] as [number, number]) : null),
     faceEdges: sample?.faceEdges ?? null,
     faceKind: sample?.faceKind ?? null,
     posts: (posts ?? []).map(d => item('post', d, 70, reason)).filter(Boolean) as RelatedItem[],
     caseStudies: (cases ?? []).map(d => item('caseStudy', d, 70, reason)).filter(Boolean) as RelatedItem[],
   }
+}
+
+/**
+ * Locate the screen in the site's photo once (Claude Sonnet + edge snap, see
+ * mockup/face.ts) and keep it in the siteContent document, so it never runs
+ * again for that photo. Returns the stored shape, or null when no key/no face.
+ */
+async function locateFace(site: PublicSite, docId: string | null): Promise<{ x: number; y: number }[] | null> {
+  if (!faceDetectionAvailable()) return null
+  const corners = await detectFace(site.photos[0])
+  if (!corners) return null
+  const pts = corners.map(([x, y]) => ({ _type: 'pt', _key: Math.random().toString(36).slice(2, 10), x, y }))
+  if (process.env.SANITY_API_TOKEN) {
+    try {
+      if (docId) await writeClient.patch(docId).set({ faceCorners: pts }).commit()
+      else await writeClient.create({ _type: 'siteContent', siteId: site.id, siteName: site.name, faceCorners: pts, generatedAt: new Date().toISOString() })
+    } catch (e) { console.error('[siteContent] could not store face corners', e) }
+  }
+  return pts
 }
 
 /** Similar sites, no AI: same city + same format first, then the same area, nearest first. */

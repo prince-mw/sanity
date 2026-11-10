@@ -17,7 +17,6 @@ const nextConfig: NextConfig = {
     ZOHO_API_URL: process.env.ZOHO_API_URL,
     PEXELS_API_KEY: process.env.PEXELS_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
-    ADMIN_KEY: process.env.ADMIN_KEY,
   },
 
   /* Performance Optimizations */

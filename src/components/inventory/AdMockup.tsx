@@ -8,12 +8,13 @@
 // is never uploaded unless they submit the form.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Upload, Image as ImageIcon, Palette, RefreshCw } from 'lucide-react'
+import { Upload, Image as ImageIcon, Palette, RefreshCw, Move } from 'lucide-react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import type { Face } from '@/lib/mockup/compose'
 import { aspectFromSize, faceAspect, composeOnSite, drawCreative, loadImage, sampleAccent, wordmark, type Template } from '@/lib/mockup/compose'
 import { LeadForm } from '../forms/LeadForm'
+import { CornerEditor } from './CornerEditor'
 
 type StockPhoto = { id: number; src: string; thumb: string; alt: string; credit: string; creditUrl: string }
 
@@ -24,7 +25,11 @@ const INDUSTRIES = ['Retail', 'Food & beverage', 'Property', 'Automotive', 'Fina
 
 export function AdMockup({ site, content }: { site: PublicSite; content: Pick<SiteContent, 'faceCorners' | 'faceEdges' | 'faceKind'> }) {
   const faceCorners = content.faceCorners
-  const face: Face | null = useMemo(() => faceCorners ? { corners: faceCorners, edges: content.faceEdges ?? null, kind: content.faceKind ?? (/led|digital|screen|panel|gantry/i.test(`${site.displayFormat} ${site.format}`) ? 'led' : 'print') } : null, [faceCorners, content.faceEdges, content.faceKind, site])
+  const initialFace: Face | null = useMemo(() => faceCorners ? { corners: faceCorners, edges: content.faceEdges ?? null, kind: content.faceKind ?? (/led|digital|screen|panel|gantry/i.test(`${site.displayFormat} ${site.format}`) ? 'led' : 'print') } : null, [faceCorners, content.faceEdges, content.faceKind, site])
+  // the visitor may nudge the corners for their own mock-up
+  const [faceOverride, setFaceOverride] = useState<Face | null>(null)
+  const [adjusting, setAdjusting] = useState(false)
+  const face = faceOverride ?? initialFace
   const [logo, setLogo] = useState<HTMLImageElement | null>(null)
   const [brand, setBrand] = useState('')
   const [logoName, setLogoName] = useState<string | null>(null)
@@ -208,7 +213,15 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
             </div>
           )}
         </div>
-        <p className="mt-3 text-xs text-gray-500">{faceCorners ? 'A preview of how your creative would look on this site. Final artwork is produced to the site’s specifications.' : 'Shown as a flat creative: the billboard face for this photo has not been marked yet.'}</p>
+        <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-xs text-gray-500">{face ? 'A preview of how your creative would look on this site. Final artwork is produced to the site’s specifications.' : 'Shown as a flat creative: the screen in this photo has not been located yet.'}</p>
+          {face && site.photos[0] && (
+            <button type="button" onClick={() => setAdjusting(a => !a)} className="mw-tap inline-flex items-center gap-1.5 self-start rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-semibold text-gray-700 hover:border-mw-blue-400">
+              <Move className="h-4 w-4" aria-hidden="true" /> {adjusting ? 'Done adjusting' : 'Not quite on the screen? Adjust'}
+            </button>
+          )}
+        </div>
+        {adjusting && face && site.photos[0] && <div className="mt-3"><CornerEditor photo={site.photos[0]} face={face} onChange={setFaceOverride} /></div>}
       </div>
 
       <LeadForm open={formOpen} onClose={() => setFormOpen(false)} onSuccess={download} purpose="mockup-download" siteId={site.id} siteName={site.name}
