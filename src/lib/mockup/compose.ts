@@ -171,6 +171,7 @@ export type Face = {
   corners: Quad                       // TL, TR, BR, BL as fractions of the photo
   edges?: [number, number][] | null   // optional midpoints of the top, right, bottom, left edges (fractions) for curved screens
   kind?: 'led' | 'print'              // emissive screen or printed surface; decides glow vs. shading
+  seam?: [number, number][] | null    // six-point mode: midpoints of the top and bottom edges where two panels meet (bent screens)
 }
 
 const MESH = 24 // cells per side: fine enough that each cell's affine mapping is invisible
@@ -208,6 +209,13 @@ function glSetup() {
  */
 export function facePoint(face: Face, u: number, v: number, W: number, H: number): [number, number] {
   const quad = face.corners.map(([x, y]) => [x * W, y * H]) as Quad
+  // six points: two flat panels meeting at a seam; the left half of the creative goes on the left panel
+  if (face.seam && face.seam.length === 2) {
+    const [tm, bm] = face.seam.map(([x, y]) => [x * W, y * H]) as [number, number][]
+    const [tl, tr, br, bl] = quad
+    const left: Quad = [tl, tm, bm, bl], right: Quad = [tm, tr, br, bm]
+    return u < 0.5 ? project(squareToQuad(left), u * 2, v) : project(squareToQuad(right), (u - 0.5) * 2, v)
+  }
   const Hm = squareToQuad(quad)
   const [bx, by] = project(Hm, u, v)
   if (!face.edges || face.edges.length !== 4) return [bx, by]
@@ -376,9 +384,12 @@ export function watermark(c: HTMLCanvasElement, label = 'PREVIEW · movingwalls.
 /** Width/height of the face as it appears in the photo (average of the opposite edges), so the creative fits it. */
 export function faceAspect(faceIn: Face | Quad, photoW: number, photoH: number): number {
   const face = Array.isArray(faceIn) ? faceIn as Quad : faceIn.corners
+  const seam = Array.isArray(faceIn) ? null : faceIn.seam
   const d = (a: [number, number], b: [number, number]) => Math.hypot((a[0] - b[0]) * photoW, (a[1] - b[1]) * photoH)
   const [tl, tr, br, bl] = face as [[number, number], [number, number], [number, number], [number, number]]
-  const w = (d(tl, tr) + d(bl, br)) / 2, h = (d(tl, bl) + d(tr, br)) / 2
+  // a bent screen's width is the two panels added up, not the straight line across
+  const w = seam && seam.length === 2 ? (d(tl, seam[0]) + d(seam[0], tr) + d(bl, seam[1]) + d(seam[1], br)) / 2 : (d(tl, tr) + d(bl, br)) / 2
+  const h = (d(tl, bl) + d(tr, br)) / 2
   return h > 0 ? Math.max(0.3, Math.min(5, w / h)) : 2
 }
 

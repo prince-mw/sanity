@@ -14,13 +14,15 @@ const mid = (a: [number, number], b: [number, number]): [number, number] => [(a[
 export function CornerEditor({ photo, face, onChange }: { photo: string; face: Face; onChange: (f: Face) => void }) {
   const [size, setSize] = useState<[number, number]>([800, 450])
   const [curved, setCurved] = useState(!!face.edges)
+  const [six, setSix] = useState(!!face.seam)
   const box = useRef<HTMLDivElement>(null)
   const pixels = useRef<ImageData | null>(null)
-  const drag = useRef<{ kind: 'c' | 'e'; i: number } | null>(null)
+  const drag = useRef<{ kind: 'c' | 'e' | 's'; i: number } | null>(null)
   const faceRef = useRef(face); faceRef.current = face
   const W = size[0], H = size[1]
   const edges = face.edges ?? [mid(face.corners[0], face.corners[1]), mid(face.corners[1], face.corners[2]), mid(face.corners[2], face.corners[3]), mid(face.corners[3], face.corners[0])]
-  const outline = useMemo(() => faceOutline({ ...face, edges: curved ? edges : null }, W, H, 32), [face, edges, curved, W, H])
+  const seam = face.seam ?? [mid(face.corners[0], face.corners[1]), mid(face.corners[3], face.corners[2])]
+  const outline = useMemo(() => faceOutline({ ...face, edges: curved && !six ? edges : null, seam: six ? seam : null }, W, H, 32), [face, edges, seam, curved, six, W, H])
 
   // the photo's pixels, through the same-origin proxy, for snapping
   useEffect(() => {
@@ -38,7 +40,10 @@ export function CornerEditor({ photo, face, onChange }: { photo: string; face: F
       if (!drag.current) return
       const p = toFrac(e), f = faceRef.current
       if (drag.current.kind === 'c') onChange({ ...f, corners: f.corners.map((q, i) => (i === drag.current!.i ? p : q)) })
-      else {
+      else if (drag.current.kind === 's') {
+        const cur = f.seam ?? [mid(f.corners[0], f.corners[1]), mid(f.corners[3], f.corners[2])]
+        onChange({ ...f, seam: cur.map((q, i) => (i === drag.current!.i ? p : q)) })
+      } else {
         const cur = f.edges ?? [mid(f.corners[0], f.corners[1]), mid(f.corners[1], f.corners[2]), mid(f.corners[2], f.corners[3]), mid(f.corners[3], f.corners[0])]
         onChange({ ...f, edges: cur.map((q, i) => (i === drag.current!.i ? p : q)) })
       }
@@ -55,7 +60,7 @@ export function CornerEditor({ photo, face, onChange }: { photo: string; face: F
     return () => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up) }
   }, [onChange])
 
-  const handle = (p: [number, number], color: string, kind: 'c' | 'e', i: number) => (
+  const handle = (p: [number, number], color: string, kind: 'c' | 'e' | 's', i: number) => (
     <g key={`${kind}${i}`} transform={`translate(${p[0] * W} ${p[1] * H})`} style={{ cursor: 'grab', touchAction: 'none' }}
       onPointerDown={e => { e.preventDefault(); drag.current = { kind, i } }}>
       <circle r={Math.max(10, W / 60)} fill={color} fillOpacity={0.85} stroke="#000" strokeWidth={1.5} />
@@ -65,8 +70,11 @@ export function CornerEditor({ photo, face, onChange }: { photo: string; face: F
   return (
     <div className="rounded-xl border border-gray-200 bg-gray-50 p-3">
       <div className="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm">
-        <span className="text-gray-700">Drag the yellow dots onto the corners of the screen. They snap to the edge when you let go.</span>
-        <label className="flex items-center gap-1 text-gray-700"><input type="checkbox" checked={curved} onChange={e => { setCurved(e.target.checked); onChange({ ...face, edges: e.target.checked ? edges : null }) }} style={{ appearance: 'auto' }} /> curved screen</label>
+        <span className="text-gray-700">Drag the yellow dots onto the corners of the screen (they snap to the edge when you let go). Pink dots mark where two panels meet.</span>
+        <span className="flex flex-wrap items-center gap-3">
+          <label className="flex items-center gap-1 text-gray-700"><input type="checkbox" checked={curved} disabled={six} onChange={e => { setCurved(e.target.checked); onChange({ ...face, edges: e.target.checked ? edges : null }) }} style={{ appearance: 'auto' }} /> curved screen</label>
+          <label className="flex items-center gap-1 text-gray-700"><input type="checkbox" checked={six} onChange={e => { setSix(e.target.checked); if (e.target.checked) setCurved(false); onChange({ ...face, edges: null, seam: e.target.checked ? seam : null }) }} style={{ appearance: 'auto' }} /> 6 points (bent screen)</label>
+        </span>
       </div>
       <div ref={box} className="relative select-none">
         {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -74,7 +82,8 @@ export function CornerEditor({ photo, face, onChange }: { photo: string; face: F
         <svg viewBox={`0 0 ${W} ${H}`} className="absolute inset-0 h-full w-full" style={{ touchAction: 'none' }}>
           <polygon points={outline.map(p => p.join(',')).join(' ')} fill="rgba(0,255,0,0.18)" stroke="#0f0" strokeWidth={Math.max(1.5, W / 500)} />
           {face.corners.map((p, i) => handle(p, '#ffee00', 'c', i))}
-          {curved && edges.map((p, i) => handle(p, '#4fc3f7', 'e', i))}
+          {curved && !six && edges.map((p, i) => handle(p, '#4fc3f7', 'e', i))}
+          {six && seam.map((p, i) => handle(p, '#ff7ab6', 's', i))}
         </svg>
       </div>
     </div>
