@@ -78,7 +78,7 @@ export function CornerEditor({ photo, face, onChange, children }: { photo: strin
           {six && seam.map((p, i) => handle(p, '#ff7ab6', 's', i))}
         </svg>
       </div>
-      <div className="mt-2 flex flex-wrap items-center justify-between gap-2 text-sm">
+      <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 px-4 py-3 text-sm">
         <span className="text-gray-600">Drag the yellow dots onto the screen's corners; they snap to the edge when you let go.</span>
         <span className="flex flex-wrap items-center gap-3">
           <label className="flex items-center gap-1 text-gray-700"><input type="checkbox" checked={curved} disabled={six} onChange={e => { setCurved(e.target.checked); onChange({ ...face, edges: e.target.checked ? edges : null }) }} style={{ appearance: 'auto' }} /> curved screen</label>

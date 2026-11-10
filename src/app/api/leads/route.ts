@@ -110,9 +110,12 @@ export async function POST(req: NextRequest) {
   }
   if (docId) await writeClient.patch(docId).set({ crmId: crmId ?? undefined, crmError: crmError ?? undefined }).commit().catch(() => {})
 
-  if (!docId && !crmId) return NextResponse.json({ error: 'We could not save your details. Please email us instead.' }, { status: 502 })
+  // Nothing could be saved (CRM not connected, Sanity token can't write): never block the
+  // visitor over our back end. Log it loudly so the submission can be recovered from the logs.
+  if (!docId && !crmId) console.error('[leads] NOT SAVED — fix the Sanity token / CRM keys:', JSON.stringify({ purpose, name, email, company, country, siteId, siteName, pageUrl, utm, message, crmError }))
+  if (!docId && !crmId && purpose !== 'mockup') return NextResponse.json({ error: 'We could not save your details. Please email us instead.' }, { status: 502 })
 
-  const res = NextResponse.json({ ok: true, owner, leadId: crmId })
+  const res = NextResponse.json({ ok: true, owner, leadId: crmId, saved: !!(docId || crmId) })
   if (purpose === 'mockup') res.cookies.set(grantCookie({ email, siteId, siteName, leadId: crmId, owner, at: Date.now() }))
   return res
 }
