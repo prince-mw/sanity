@@ -1,14 +1,16 @@
 import 'server-only'
 
-// Zoho CRM, server side only: creates a Lead from the website's own form and
-// attaches the ad mock-up to it. Auth is a "self client" refresh token (made
-// once at api-console.zoho.com with scope ZohoCRM.modules.leads.CREATE and
-// ZohoCRM.modules.attachments.CREATE); the access token is refreshed here and
-// kept in memory. Nothing in this file reaches the browser.
+// Zoho CRM, server side only: creates a Lead from the website's own form,
+// attaches the ad mock-up to it and reads back the owner the CRM assigned.
+// Auth is a "self client" refresh token (made once at api-console.zoho.com
+// with scopes ZohoCRM.modules.leads.ALL and ZohoCRM.modules.attachments.CREATE);
+// the access token is refreshed here and kept in memory. Nothing in this
+// file reaches the browser.
 //
 // Env (Amplify, staging first): ZOHO_CRM_CLIENT_ID, ZOHO_CRM_CLIENT_SECRET,
 // ZOHO_CRM_REFRESH_TOKEN, optional ZOHO_ACCOUNTS_URL / ZOHO_API_URL for a
-// non-US data centre (e.g. https://accounts.zoho.in, https://www.zohoapis.in).
+// non-US data centre (e.g. https://accounts.zoho.in, https://www.zohoapis.in),
+// optional ZOHO_LEAD_RULE_ID (a Lead Assignment Rule id to apply on create).
 
 const ACCOUNTS = (process.env.ZOHO_ACCOUNTS_URL ?? 'https://accounts.zoho.com').replace(/\/$/, '')
 const API = (process.env.ZOHO_API_URL ?? 'https://www.zohoapis.com').replace(/\/$/, '')
@@ -33,14 +35,25 @@ async function accessToken(): Promise<string> {
   return cached.token
 }
 
+async function api(path: string, init: RequestInit): Promise<{ ok: boolean; status: number; json: any }> {
+  const r = await fetch(`${API}/crm/v8${path}`, { ...init, cache: 'no-store', headers: { Authorization: `Zoho-oauthtoken ${await accessToken()}`, ...(init.headers ?? {}) } })
+  return { ok: r.ok, status: r.status, json: await r.json().catch(() => ({})) }
+}
+
 export type LeadInput = {
   name: string; email: string; company?: string; country?: string; phone?: string
   description: string
   pageUrl?: string
   utm?: Partial<Record<'source' | 'medium' | 'campaign' | 'term' | 'content' | 'gclid' | 'fbclid', string>>
+  /** Optional custom fields (e.g. Mockup_Site, Mockup_URL). Dropped one by one if the CRM doesn't have them yet. */
+  extra?: Record<string, string | undefined>
 }
 
-/** Creates the lead. Returns the Zoho record id. */
+/**
+ * Creates the lead. Fields the CRM rejects (an unknown custom field, a country
+ * spelling not in the picklist) are dropped and the create is retried, so a
+ * lead is never lost to a missing field. Returns the Zoho record id.
+ */
 export async function createLead(input: LeadInput): Promise<string> {
   const [first, ...rest] = input.name.trim().split(/\s+/)
   const last = rest.join(' ') || first // Last_Name is mandatory in this CRM
@@ -57,34 +70,50 @@ export async function createLead(input: LeadInput): Promise<string> {
     UTM_Source: input.utm?.source, UTM_Medium: input.utm?.medium, UTM_Term: input.utm?.term,
     UTM_Content: input.utm?.content, UTM_GCLID: input.utm?.gclid, UTM_FBCLID: input.utm?.fbclid,
     Country1: input.country || undefined,
+    ...Object.fromEntries(Object.entries(input.extra ?? {}).filter(([, v]) => v)),
   }
-  const post = async (data: Record<string, unknown>) => {
-    const r = await fetch(`${API}/crm/v8/Leads`, {
-      method: 'POST', cache: 'no-store',
-      headers: { Authorization: `Zoho-oauthtoken ${await accessToken()}`, 'content-type': 'application/json' },
-      body: JSON.stringify({ data: [data] }),
-    })
-    return { ok: r.ok, json: await r.json().catch(() => ({})) }
+  const rule = process.env.ZOHO_LEAD_RULE_ID
+  const post = (data: Record<string, unknown>) =>
+    api('/Leads', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ data: [data], ...(rule ? { lar_id: rule } : {}) }) })
+
+  let data = { ...record }
+  for (let attempt = 0; attempt < 6; attempt++) {
+    const res = await post(data)
+    const row = res.json?.data?.[0]
+    if (res.ok && row?.code === 'SUCCESS') return String(row.details.id)
+    // Zoho names the field it didn't like: drop it and try again
+    const bad: string | undefined = row?.details?.api_name
+    if (bad && bad in data) { delete data[bad]; if (bad === 'Country1') data.Description = `${input.description}\nCountry (as typed): ${input.country ?? '-'}`; continue }
+    throw new Error(`Zoho lead create failed: ${JSON.stringify(row ?? res.json).slice(0, 300)}`)
   }
-  let res = await post(record)
-  // Country1 is a picklist: an unknown spelling is rejected, so try once without it.
-  if (!res.ok || res.json?.data?.[0]?.code !== 'SUCCESS') {
-    const { Country1, ...without } = record
-    res = await post({ ...without, Description: `${input.description}\nCountry (as typed): ${Country1 ?? '-'}` })
+  throw new Error('Zoho lead create failed after retries')
+}
+
+/** Updates fields on a lead; unknown fields are dropped the same way. */
+export async function updateLead(id: string, fields: Record<string, string | undefined>): Promise<void> {
+  let data: Record<string, unknown> = Object.fromEntries(Object.entries(fields).filter(([, v]) => v))
+  for (let attempt = 0; attempt < 4 && Object.keys(data).length; attempt++) {
+    const res = await api(`/Leads/${id}`, { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ data: [data] }) })
+    const row = res.json?.data?.[0]
+    if (res.ok && row?.code === 'SUCCESS') return
+    const bad: string | undefined = row?.details?.api_name
+    if (bad && bad in data) { delete data[bad]; continue }
+    throw new Error(`Zoho lead update failed: ${JSON.stringify(row ?? res.json).slice(0, 300)}`)
   }
-  const row = res.json?.data?.[0]
-  if (!res.ok || row?.code !== 'SUCCESS') throw new Error(`Zoho lead create failed: ${JSON.stringify(row ?? res.json).slice(0, 300)}`)
-  return String(row.details.id)
+}
+
+/** The owner the CRM assigned (name and email), for the "your contact" message. */
+export async function getLeadOwner(id: string): Promise<{ name: string; email: string | null } | null> {
+  const res = await api(`/Leads/${id}?fields=Owner`, { method: 'GET' })
+  const owner = res.json?.data?.[0]?.Owner
+  if (!owner?.name) return null
+  return { name: String(owner.name), email: owner.email ? String(owner.email) : null }
 }
 
 /** Attaches a file (e.g. the mock-up PNG) to the lead. */
 export async function attachToLead(leadId: string, file: { name: string; type: string; bytes: Uint8Array }): Promise<void> {
   const fd = new FormData()
   fd.append('file', new Blob([Buffer.from(file.bytes)], { type: file.type }), file.name)
-  const r = await fetch(`${API}/crm/v8/Leads/${leadId}/Attachments`, {
-    method: 'POST', cache: 'no-store',
-    headers: { Authorization: `Zoho-oauthtoken ${await accessToken()}` },
-    body: fd,
-  })
-  if (!r.ok) throw new Error(`Zoho attachment failed: ${r.status}`)
+  const res = await api(`/Leads/${leadId}/Attachments`, { method: 'POST', body: fd })
+  if (!res.ok) throw new Error(`Zoho attachment failed: ${res.status}`)
 }

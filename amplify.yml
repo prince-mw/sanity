@@ -16,6 +16,9 @@ frontend:
         - echo "ZOHO_CRM_REFRESH_TOKEN=$ZOHO_CRM_REFRESH_TOKEN" >> .env.production
         - echo "ZOHO_ACCOUNTS_URL=$ZOHO_ACCOUNTS_URL" >> .env.production
         - echo "ZOHO_API_URL=$ZOHO_API_URL" >> .env.production
+        - echo "ZOHO_LEAD_RULE_ID=$ZOHO_LEAD_RULE_ID" >> .env.production
+        - echo "MOCKUP_COOKIE_SECRET=$MOCKUP_COOKIE_SECRET" >> .env.production
+        - echo "MOCKUP_TESTER_KEY=$MOCKUP_TESTER_KEY" >> .env.production
         - echo "PEXELS_API_KEY=$PEXELS_API_KEY" >> .env.production
         - echo "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY" >> .env.production
         - echo "NEXT_PUBLIC_SANITY_PROJECT_ID=$NEXT_PUBLIC_SANITY_PROJECT_ID" >> .env.production

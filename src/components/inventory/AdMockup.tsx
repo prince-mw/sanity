@@ -8,12 +8,12 @@
 // is never uploaded unless they submit the form.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Upload, Image as ImageIcon, Palette, RefreshCw, Move } from 'lucide-react'
+import { Upload, Image as ImageIcon, Palette, RefreshCw, Move, Lock, Mail, Send } from 'lucide-react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import type { Face } from '@/lib/mockup/compose'
 import { aspectFromSize, faceAspect, composeOnSite, drawCreative, loadImage, sampleAccent, wordmark, type Template } from '@/lib/mockup/compose'
-import { LeadForm } from '../forms/LeadForm'
+import { LeadForm, type LeadResult } from '../forms/LeadForm'
 import { CornerEditor } from './CornerEditor'
 
 type StockPhoto = { id: number; src: string; thumb: string; alt: string; credit: string; creditUrl: string }
@@ -46,6 +46,15 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   const [preview, setPreview] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [formOpen, setFormOpen] = useState(false)
+  // One mock-up per person: 'loading' → 'none' (not registered) | 'this' (this site unlocked) | 'other' (used on another site)
+  type Owner = { name: string; email: string | null } | null
+  const [access, setAccess] = useState<{ state: 'loading' | 'none' | 'this' | 'other'; siteName?: string; owner?: Owner; tester?: boolean }>({ state: 'loading' })
+  const [thanks, setThanks] = useState<{ owner: Owner } | null>(null)
+  const [sent, setSent] = useState<'idle' | 'sending' | 'done' | 'failed'>('idle')
+  useEffect(() => {
+    fetch(`/api/mockup/access?site=${encodeURIComponent(site.id)}`).then(r => r.json()).then(j => setAccess({ state: j.state, siteName: j.siteName, owner: j.owner, tester: !!j.tester })).catch(() => setAccess({ state: 'none' }))
+  }, [site.id])
+  const unlocked = access.state === 'this'
   const cleanRef = useRef<string | null>(null)
   const creativeRef = useRef<HTMLCanvasElement | null>(null)
 
@@ -117,10 +126,15 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   }, [ready, aspect, photoImg, logo, brand, tagline, accent, template, siteImg, face])
   useEffect(() => { const t = setTimeout(render, 150); return () => clearTimeout(t) }, [render])
 
-  const download = () => {
-    const url = cleanRef.current
-    if (!url) return
-    const a = document.createElement('a'); a.href = url; a.download = `ad-mockup-${site.slug}.png`; a.click()
+  const registered = (r: LeadResult & { tester?: boolean }) => {
+    setAccess({ state: 'this', siteName: site.name, owner: r.owner ?? null, tester: !!r.tester })
+    if (!r.tester) setThanks({ owner: r.owner ?? null })
+  }
+  const sendUpdate = async () => {
+    if (!cleanRef.current) return
+    setSent('sending')
+    const r = await fetch('/api/mockup/update', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ siteId: site.id, mockup: cleanRef.current }) }).catch(() => null)
+    setSent(r?.ok ? 'done' : 'failed')
   }
 
   const input = 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-mw-blue-500 focus:outline-none'
@@ -203,9 +217,27 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
       {/* Preview */}
       <div className="lg:col-span-7">
         <div className="relative overflow-hidden rounded-2xl bg-gray-100 ring-1 ring-gray-200" style={{ aspectRatio: siteImg && faceCorners ? `${siteImg.width} / ${siteImg.height}` : `${aspect}` }}>
+          {preview && !unlocked && access.state !== 'loading' && (
+            // the ad is drawn but hidden until they register (or they used their one mock-up elsewhere)
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/70 p-6 text-center backdrop-blur-md">
+              <Lock className="mb-3 h-8 w-8 text-[#062068]" aria-hidden="true" />
+              {access.state === 'other' ? (
+                <>
+                  <p className="max-w-sm text-sm font-semibold text-gray-900">You've already made a mock-up for {access.siteName}.</p>
+                  <p className="mt-1 max-w-sm text-sm text-gray-600">Want to see your ad on {site.name} too? {access.owner?.name ? <>{access.owner.name} can do that for you{access.owner.email ? <>: <a className="underline" href={`mailto:${access.owner.email}`}>{access.owner.email}</a></> : '.'}</> : 'Our team can do that for you.'}</p>
+                </>
+              ) : (
+                <>
+                  <p className="max-w-sm text-sm font-semibold text-gray-900">Your ad is ready to see on {site.name}.</p>
+                  <p className="mt-1 max-w-sm text-sm text-gray-600">Register once and we'll show it here, email it to you, and put you in touch with the person who can book this site.</p>
+                  <button type="button" onClick={() => setFormOpen(true)} className="mw-tap mt-4 inline-flex items-center gap-2 rounded-lg bg-[#062068] px-5 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Show my mock-up</button>
+                </>
+              )}
+            </div>
+          )}
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={preview} alt={`Preview of your ad on ${site.name}`} className="h-full w-full object-contain" />
+            <img src={preview} alt={`Preview of your ad on ${site.name}`} className={`h-full w-full object-contain ${unlocked ? '' : 'blur-xl scale-105'}`} />
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-gray-500">
               <ImageIcon className="mb-3 h-10 w-10 text-gray-300" aria-hidden="true" />
@@ -215,19 +247,38 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         </div>
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-gray-500">{face ? 'A preview of how your creative would look on this site. Final artwork is produced to the site’s specifications.' : 'Shown as a flat creative: the screen in this photo has not been located yet.'}</p>
-          {face && site.photos[0] && (
+          {access.tester && <span className="self-start rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-amber-900">Tester mode · no leads created</span>}
+          {unlocked && preview && !access.tester && (
+            <button type="button" onClick={sendUpdate} disabled={sent === 'sending'} className="mw-tap inline-flex items-center gap-1.5 self-start rounded-lg bg-[#062068] px-3 py-1.5 text-sm font-semibold text-white hover:bg-[#0a2a8a] disabled:opacity-50">
+              <Send className="h-4 w-4" aria-hidden="true" /> {sent === 'sending' ? 'Sending…' : sent === 'done' ? 'Sent to our team' : sent === 'failed' ? 'Could not send — try again' : 'Send this version to our team'}
+            </button>
+          )}
+          {unlocked && face && site.photos[0] && (
             <button type="button" onClick={() => setAdjusting(a => !a)} className="mw-tap inline-flex items-center gap-1.5 self-start rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-semibold text-gray-700 hover:border-mw-blue-400">
               <Move className="h-4 w-4" aria-hidden="true" /> {adjusting ? 'Done adjusting' : 'Not quite on the screen? Adjust'}
             </button>
           )}
         </div>
-        {adjusting && face && site.photos[0] && <div className="mt-3"><CornerEditor photo={site.photos[0]} face={face} onChange={setFaceOverride} /></div>}
+        {unlocked && adjusting && face && site.photos[0] && <div className="mt-3"><CornerEditor photo={site.photos[0]} face={face} onChange={setFaceOverride} /></div>}
       </div>
 
-      <LeadForm open={formOpen} onClose={() => setFormOpen(false)} onSuccess={download} purpose="mockup-download" siteId={site.id} siteName={site.name}
-        mockupDataUrl={cleanRef.current} title="Download your mock-up"
-        intro={<>We’ll send the clean file to your screen now and keep a copy for our team, so we can quote <strong>{site.name}</strong> for you.</>}
-        submitLabel="Get my mock-up" />
+      <LeadForm open={formOpen} onClose={() => setFormOpen(false)} onSuccess={registered} closeOnSuccess purpose="mockup" siteId={site.id} siteName={site.name}
+        onAlreadyUsed={info => setAccess({ state: 'other', siteName: info.siteName, owner: info.owner ?? null })}
+        mockupDataUrl={cleanRef.current} title="See your ad on this screen"
+        intro={<>One registration shows you your ad on <strong>{site.name}</strong>, emails it to you, and connects you with the person who books this site.</>}
+        submitLabel="Show my mock-up" />
+
+      {thanks && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="mockup-thanks-title" onClick={e => { if (e.target === e.currentTarget) setThanks(null) }}>
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-mw-blue-50 text-[#062068]"><Mail className="h-6 w-6" aria-hidden="true" /></span>
+            <h2 id="mockup-thanks-title" className="text-xl font-bold text-[#062068]">Check your inbox</h2>
+            <p className="mt-2 text-gray-700">Your mock-up on {site.name} is unlocked below and on its way to your email{thanks.owner?.name ? <>, together with a note from <strong>{thanks.owner.name}</strong>{thanks.owner.email ? <> ({thanks.owner.email})</> : null}, who looks after this site</> : ''}.</p>
+            <p className="mt-2 text-sm text-gray-600">Keep editing as much as you like; press "Send this version to our team" when you're happy with one.</p>
+            <button type="button" onClick={() => setThanks(null)} className="mw-tap mt-5 w-full rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Back to my mock-up</button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
