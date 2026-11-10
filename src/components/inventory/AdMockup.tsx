@@ -8,7 +8,7 @@
 // is never uploaded unless they submit the form.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Upload, Image as ImageIcon, Palette, RefreshCw, Move, Lock, Mail, Send } from 'lucide-react'
+import { Upload, Image as ImageIcon, Palette, RefreshCw, Move, Lock, Mail, Send, Check } from 'lucide-react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import type { Face } from '@/lib/mockup/compose'
@@ -55,6 +55,8 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
     fetch(`/api/mockup/access?site=${encodeURIComponent(site.id)}`).then(r => r.json()).then(j => setAccess({ state: j.state, siteName: j.siteName, owner: j.owner, tester: !!j.tester })).catch(() => setAccess({ state: 'none' }))
   }, [site.id])
   const unlocked = access.state === 'this'
+  const openedOnce = useRef(false)
+  useEffect(() => { if (unlocked && preview && face && !openedOnce.current) { openedOnce.current = true; setAdjusting(true) } }, [unlocked, preview, face])
   const cleanRef = useRef<string | null>(null)
   const creativeRef = useRef<HTMLCanvasElement | null>(null)
 
@@ -245,21 +247,28 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
             </div>
           )}
         </div>
+        {/* The fit: the one control that makes or breaks the mock-up, so it is the main action under the preview */}
+        {unlocked && face && site.photos[0] && (
+          <div className="mt-4">
+            <button type="button" onClick={() => setAdjusting(a => !a)} aria-expanded={adjusting}
+              className={`mw-tap flex w-full items-center gap-3 rounded-xl px-5 py-4 text-left text-white shadow-lg transition-colors ${adjusting ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#062068] hover:bg-[#0a2a8a]'}`}>
+              <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/15">{adjusting ? <Check className="h-5 w-5" aria-hidden="true" /> : <Move className="h-5 w-5" aria-hidden="true" />}</span>
+              <span className="flex-1">
+                <span className="block text-base font-bold">{adjusting ? 'Looks right — save the fit' : 'Fit the ad to the screen'}</span>
+                <span className="block text-sm text-white/80">{adjusting ? 'The preview above shows the result. Press when the ad sits exactly on the screen.' : 'Drag the corners until the ad sits exactly on the screen. The preview updates as you go.'}</span>
+              </span>
+            </button>
+            {adjusting && <div className="mt-3"><CornerEditor photo={site.photos[0]} face={face} onChange={setFaceOverride} /></div>}
+          </div>
+        )}
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-gray-500">{face ? 'A preview of how your creative would look on this site. Final artwork is produced to the site’s specifications.' : 'Shown as a flat creative: the screen in this photo has not been located yet.'}</p>
-          {access.tester && <span className="self-start rounded-full bg-amber-100 px-2.5 py-1 text-xs font-bold uppercase tracking-wider text-amber-900">Tester mode · no leads created</span>}
           {unlocked && preview && !access.tester && (
-            <button type="button" onClick={sendUpdate} disabled={sent === 'sending'} className="mw-tap inline-flex items-center gap-1.5 self-start rounded-lg bg-[#062068] px-3 py-1.5 text-sm font-semibold text-white hover:bg-[#0a2a8a] disabled:opacity-50">
+            <button type="button" onClick={sendUpdate} disabled={sent === 'sending'} className="mw-tap inline-flex items-center gap-1.5 self-start rounded-lg border border-[#062068] px-3 py-1.5 text-sm font-semibold text-[#062068] hover:bg-mw-blue-50 disabled:opacity-50">
               <Send className="h-4 w-4" aria-hidden="true" /> {sent === 'sending' ? 'Sending…' : sent === 'done' ? 'Sent to our team' : sent === 'failed' ? 'Could not send — try again' : 'Send this version to our team'}
             </button>
           )}
-          {unlocked && face && site.photos[0] && (
-            <button type="button" onClick={() => setAdjusting(a => !a)} className="mw-tap inline-flex items-center gap-1.5 self-start rounded-lg border border-gray-300 px-3 py-1.5 text-sm font-semibold text-gray-700 hover:border-mw-blue-400">
-              <Move className="h-4 w-4" aria-hidden="true" /> {adjusting ? 'Done adjusting' : 'Not quite on the screen? Adjust'}
-            </button>
-          )}
         </div>
-        {unlocked && adjusting && face && site.photos[0] && <div className="mt-3"><CornerEditor photo={site.photos[0]} face={face} onChange={setFaceOverride} /></div>}
       </div>
 
       <LeadForm open={formOpen} onClose={() => setFormOpen(false)} onSuccess={registered} closeOnSuccess purpose="mockup" siteId={site.id} siteName={site.name}

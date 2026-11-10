@@ -124,7 +124,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
       {site.photos[0] && (
         <section className="bg-white mw-section">
           <div className="mw-container">
-            <SgSectionHeading title="See your ad here" intro={`Add your logo and a line, and see how your campaign would look on ${site.name}. Free preview; download the clean file and our team will quote it for you.`} />
+            <SgSectionHeading title="See your ad here" intro={`Add your logo and a line, and see how your campaign would look on ${site.name}. Register once to see it on the screen; we'll email it to you and put you in touch with the person who books this site.`} />
             <AdMockup site={site} content={content} />
           </div>
         </section>
