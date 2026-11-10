@@ -22,23 +22,23 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
   const format = site.displayFormat ?? site.format ?? 'Outdoor advertising'
   const description = content.description ?? site.description
 
+  // Shown in the hero as a spec strip. Format is the eyebrow and the address
+  // heads the Location section, so neither repeats here (Rif, 10 Nov 2026).
   const specs: [string, string | null][] = [
-    ['Format', format],
-    ['Type', site.format],
+    ['Type', site.format && site.format !== format ? site.format : null],
     ['Size', site.size],
     ['Illuminated', site.illuminated == null ? null : site.illuminated ? 'Yes' : 'No'],
     ['Venue', site.venueType],
     ['Spot length', site.digital?.spotSeconds ? `${site.digital.spotSeconds} seconds` : null],
     ['Spots per loop', site.digital?.spotsPerLoop ? String(site.digital.spotsPerLoop) : null],
     ['Loop length', site.digital?.loopSeconds ? `${site.digital.loopSeconds} seconds` : null],
-    ['Address', site.address],
-  ]
+  ].filter(([, v]) => v) as [string, string][]
   const hasAudienceFigures = !!(site.audience?.impressions || site.audience?.reach)
 
   return (
     <div className="bg-white text-gray-900">
 
-      {/* Hero: photo, name, format, the description */}
+      {/* Hero: photo, name, format, the description, the specs and the price */}
       <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="relative mw-container">
@@ -57,9 +57,20 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
               </div>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3">{site.name}</h1>
               <p className="text-lg text-blue-100/90 mb-4">{site.areaName}, {site.cityName}</p>
-              {description && <p className="text-base lg:text-lg text-blue-50/90 leading-relaxed mb-7 max-w-[60ch]">{description}</p>}
-              <div className="flex flex-col sm:flex-row gap-3">
+              {description && <p className="text-base lg:text-lg text-blue-50/90 leading-relaxed mb-6 max-w-[60ch]">{description}</p>}
+              {specs.length > 0 && (
+                <dl className="mb-7 grid grid-cols-2 sm:grid-cols-3 gap-2 max-w-[60ch]">
+                  {specs.map(([k, v]) => (
+                    <div key={k} className="rounded-lg bg-white/10 ring-1 ring-white/15 px-3 py-2">
+                      <dt className="text-[11px] font-semibold uppercase tracking-wider text-blue-100/70">{k}</dt>
+                      <dd className="text-sm font-semibold text-white">{v}</dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 <SgFormButton onOpen={enquire} showArrow={false}>Enquire about this site</SgFormButton>
+                <PriceGate country={site.countrySlug} ids={[site.id]} />
                 <Link href={areaHref} className="mw-tap inline-flex items-center justify-center border-2 border-white/40 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">More sites in {site.areaName}</Link>
               </div>
             </div>
@@ -94,29 +105,8 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
         </section>
       )}
 
-      {/* Site details + price */}
-      <section className="bg-gray-50 mw-section">
-        <div className="grid lg:grid-cols-12 gap-8 mw-container">
-          <div className="lg:col-span-7">
-            <SgSectionHeading title="Site details" />
-            <dl className="divide-y divide-gray-200 rounded-2xl border border-gray-200">
-              {specs.filter(([, v]) => v).map(([k, v]) => (
-                <div key={k} className="grid grid-cols-3 gap-4 px-5 py-3">
-                  <dt className="text-sm font-semibold text-gray-500">{k}</dt>
-                  <dd className="col-span-2 text-gray-900">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-          <div className="lg:col-span-5">
-            <SgSectionHeading title="Price" as="h3" />
-            <PriceGate country={site.countrySlug} ids={[site.id]} />
-          </div>
-        </div>
-      </section>
-
       {site.lat != null && (
-        <section className="bg-white mw-section">
+        <section className="bg-gray-50 mw-section">
           <div className="mw-container">
             <SgSectionHeading title="Location" intro={site.address ?? undefined} />
             <SitesMap sites={[site]} title={`Map showing ${site.name}`} />
@@ -124,7 +114,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
         </section>
       )}
 
-      <RelatedContent cityName={site.cityName} countryName={site.countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-gray-50" video={MARKET_VIDEOS[site.countrySlug]} />
+      <RelatedContent cityName={site.cityName} countryName={site.countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" video={MARKET_VIDEOS[site.countrySlug]} />
 
       {similar.length > 0 && (
         <section className="bg-white mw-section">
