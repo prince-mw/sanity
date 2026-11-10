@@ -1,5 +1,7 @@
 import 'server-only'
 import { createHash, randomBytes } from 'node:crypto'
+import { promises as fs } from 'node:fs'
+import path from 'node:path'
 import { writeClient } from '@/sanity/lib/client'
 import { sitesFor } from '@/lib/inventory/source'
 import type { PublicSite } from '@/lib/inventory/types'
@@ -16,6 +18,15 @@ import type { Brief, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersio
 //   Proposal_Status  picklist   Registered | Sent | Updated | Approved | Changes requested
 //   Proposal_Note    text       the latest change request
 export const CRM_FIELDS = { url: 'Proposal_URL', status: 'Proposal_Status', note: 'Proposal_Note' } as const
+
+// Development only: PROPOSAL_STORE=file keeps proposals as JSON files under
+// .proposals-dev/ (git-ignored) so the flow can be tried on a machine whose
+// Sanity token cannot create documents. Never used in production.
+const useFile = () => process.env.PROPOSAL_STORE === 'file' && process.env.NODE_ENV !== 'production'
+const FILE_DIR = path.join(process.cwd(), '.proposals-dev')
+const fileOf = (id: string) => path.join(FILE_DIR, `${id.replace(/[^A-Za-z0-9_-]/g, '')}.json`)
+async function fileRead(docId: string): Promise<ProposalDoc | null> { try { return JSON.parse(await fs.readFile(fileOf(docId), 'utf8')) } catch { return null } }
+async function fileWrite(doc: ProposalDoc) { await fs.mkdir(FILE_DIR, { recursive: true }); await fs.writeFile(fileOf(doc._id), JSON.stringify(doc, null, 2)) }
 
 export const newShareId = () => randomBytes(9).toString('base64url')      // 12 chars, 72 bits
 export const newEditToken = () => randomBytes(24).toString('base64url')   // 32 chars
@@ -56,6 +67,7 @@ const norm = (d: ProposalDoc | null): ProposalDoc | null => d ? {
 
 export async function getProposalByShareId(shareId: string): Promise<ProposalDoc | null> {
   if (!/^[A-Za-z0-9_-]{8,32}$/.test(shareId)) return null
+  if (useFile()) return norm(await fileRead(`proposal-${shareId}`))
   const d = await writeClient.fetch<ProposalDoc | null>(`*[_type == "proposal" && shareId == $shareId][0]{ ${DOC_FIELDS} }`, { shareId })
   return norm(d)
 }
@@ -71,6 +83,7 @@ export async function createProposal(input: {
     titleLine: titleLineFor(input.brief), creator: input.creator, leadId: input.leadId, brief: input.brief,
     currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], approvedAt: null, createdAt: now, updatedAt: now,
   }
+  if (useFile()) { const d = { ...doc, _id: `proposal-${doc.shareId}` } as ProposalDoc; await fileWrite(d); return { doc: norm(d) as ProposalDoc, editToken } }
   const created = await writeClient.create(doc)
   return { doc: norm({ ...doc, _id: created._id } as ProposalDoc) as ProposalDoc, editToken }
 }
@@ -81,6 +94,7 @@ const withKeys = (v: ProposalVersion) => ({ _key: `v${v.n}`, ...v, sites: v.site
 /** Appends a version, makes it current, and sets the status back to sent (the list changed). */
 export async function appendVersion(docId: string, version: Omit<ProposalVersion, 'n' | 'createdAt'>, nextN: number): Promise<ProposalVersion> {
   const v: ProposalVersion = { n: nextN, createdAt: new Date().toISOString(), ...version }
+  if (useFile()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, versions: [...(d.versions ?? []), v], currentVersion: nextN, status: 'sent', updatedAt: v.createdAt, approvedAt: null }); return v }
   await writeClient.patch(docId).setIfMissing({ versions: [] }).append('versions', [withKeys(v)])
     .set({ currentVersion: nextN, status: 'sent', updatedAt: v.createdAt, approvedAt: null }).commit()
   return v
@@ -88,6 +102,11 @@ export async function appendVersion(docId: string, version: Omit<ProposalVersion
 
 export async function setStatus(docId: string, status: ProposalStatus, extra?: { message?: string }): Promise<void> {
   const now = new Date().toISOString()
+  if (useFile()) {
+    const d = await fileRead(docId)
+    if (d) await fileWrite({ ...d, status, updatedAt: now, approvedAt: status === 'approved' ? now : d.approvedAt, changeRequests: status === 'changes-requested' ? [...(d.changeRequests ?? []), { at: now, message: extra?.message ?? '' }] : d.changeRequests })
+    return
+  }
   let p = writeClient.patch(docId).set({ status, updatedAt: now })
   if (status === 'approved') p = p.set({ approvedAt: now })
   if (status === 'changes-requested') p = p.setIfMissing({ changeRequests: [] }).append('changeRequests', [{ _key: `cr-${Date.now()}`, at: now, message: extra?.message ?? '' }])
@@ -95,6 +114,7 @@ export async function setStatus(docId: string, status: ProposalStatus, extra?: {
 }
 
 export async function setCrm(docId: string, fields: { leadId?: string | null; crmError?: string | null }): Promise<void> {
+  if (useFile()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, ...fields }); return }
   await writeClient.patch(docId).set(fields).commit()
 }
 

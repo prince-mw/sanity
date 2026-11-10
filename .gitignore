@@ -43,3 +43,6 @@ studio/node_modules
 
 # migration script backups
 scripts/*-backup-*.json
+
+# instant-proposal dev store (PROPOSAL_STORE=file)
+.proposals-dev/

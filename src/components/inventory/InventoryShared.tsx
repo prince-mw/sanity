@@ -3,7 +3,7 @@
 // Inventory pages: shared pieces. Same look as the Singapore venue pages
 // (navy hero, rounded cards, mw-blue accents), so the new pages sit in the site.
 
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { PublicSite } from '@/lib/inventory/types'
@@ -143,97 +143,4 @@ export function SitesMap({ sites, title }: { sites: PublicSite[]; title: string 
   const pins = sites.map(s => pinOf(s, false)).filter(Boolean) as MapPin[]
   if (!pins.length) return null
   return <BrandMap pins={pins} activeId={pins.length === 1 ? pins[0].id : null} title={title} className="h-72 sm:h-96" />
-}
-
-/** Rif's wording (26 Oct 2026), shown with every price. */
-export const PRICE_NOTE =
-  'This is an estimate only, not an exact price. The exact price depends on many factors, such as campaign duration, spots per loop, spots per day and your campaign requirements.'
-
-type Quote = { siteId: string; currency: string; daily: number | null; monthly: number | null }
-
-/**
- * Estimated prices, behind a newsletter sign-up. Prices are never in the page:
- * they load from /api/inventory/prices only after /api/inventory/unlock has set
- * the signed cookie, so search engines never see them.
- */
-export function PriceGate({ country, ids, names, compact = false }: { country: string; ids: string[]; names?: Record<string, string>; compact?: boolean }) {
-  const [quotes, setQuotes] = useState<Quote[] | null>(null)
-  const [open, setOpen] = useState(false)
-  const [busy, setBusy] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-
-  const load = async () => {
-    const r = await fetch(`/api/inventory/prices?country=${encodeURIComponent(country)}&ids=${ids.map(encodeURIComponent).join(',')}`)
-    if (!r.ok) return
-    const j = await r.json()
-    if (!j.locked) setQuotes(j.quotes ?? [])
-  }
-  useEffect(() => { load() }, []) // already signed up on an earlier page? show prices straight away
-
-  const submit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setBusy(true); setError(null)
-    const f = new FormData(e.currentTarget)
-    const r = await fetch('/api/inventory/unlock', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(Object.fromEntries(f)) })
-    setBusy(false)
-    if (!r.ok) { setError((await r.json().catch(() => ({})))?.error ?? 'Something went wrong. Please try again.'); return }
-    setOpen(false)
-    await load()
-  }
-
-  const money = (q: Quote, n: number | null) => (n == null ? '—' : `${q.currency} ${n.toLocaleString('en-US')}`)
-
-  if (quotes) {
-    return (
-      <div className="rounded-2xl border border-mw-blue-100 bg-mw-blue-50/40 p-5">
-        <p className="text-sm font-bold text-[#062068] mb-3">Estimated price</p>
-        {quotes.length ? (
-          <ul className="space-y-1 text-gray-800">
-            {quotes.map(q => (
-              <li key={q.siteId} className="flex flex-wrap gap-x-6">
-                {names?.[q.siteId] && <span className="font-semibold min-w-[16rem]">{names[q.siteId]}</span>}
-                <span>From {money(q, q.daily)} / day</span>
-                <span>From {money(q, q.monthly)} / month</span>
-              </li>
-            ))}
-          </ul>
-        ) : <p className="text-gray-600">No estimate available for this site yet — ask our team.</p>}
-        <p className="mt-3 text-xs text-gray-500 leading-relaxed">{PRICE_NOTE}</p>
-      </div>
-    )
-  }
-
-  return (
-    <div>
-      <button type="button" onClick={() => setOpen(true)} className={`inline-flex items-center justify-center rounded-lg font-semibold transition-all ${compact ? 'px-4 py-2 text-sm' : 'px-6 py-3'} bg-white text-[#062068] border-2 border-[#062068] hover:bg-mw-blue-50`}>
-        See estimated price
-      </button>
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-label="Sign up to see estimated prices">
-          <form onSubmit={submit} className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-            <h2 className="text-xl font-bold text-[#062068]">See estimated prices</h2>
-            <p className="mt-1 text-sm text-gray-600">Sign up for Moving Walls news and you will see estimated prices on every site.</p>
-            <div className="mt-4 space-y-3">
-              {[['name', 'Name', 'text'], ['email', 'Work email', 'email'], ['company', 'Company', 'text'], ['country', 'Country', 'text']].map(([n, l, t]) => (
-                <label key={n} className="block">
-                  <span className="text-sm font-semibold text-gray-700">{l}</span>
-                  <input name={n} type={t} required className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-base focus:border-mw-blue-500 focus:outline-none" />
-                </label>
-              ))}
-              <label className="flex items-start gap-2 text-sm text-gray-600">
-                <input name="consent" type="checkbox" required className="mt-1 h-4 w-4 flex-shrink-0 appearance-auto accent-[#062068]" style={{ appearance: 'auto' }} />
-                <span>Yes, send me Moving Walls news. I can unsubscribe at any time.</span>
-              </label>
-            </div>
-            {error && <p className="mt-3 text-sm text-red-600">{error}</p>}
-            <p className="mt-3 text-xs text-gray-500">{PRICE_NOTE}</p>
-            <div className="mt-5 flex gap-3">
-              <button type="submit" disabled={busy} className="flex-1 rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a] disabled:opacity-60">{busy ? 'Signing up…' : 'Show prices'}</button>
-              <button type="button" onClick={() => setOpen(false)} className="rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700">Cancel</button>
-            </div>
-          </form>
-        </div>
-      )}
-    </div>
-  )
 }

@@ -5,8 +5,8 @@
 // Pages only ever receive PublicSite — owners and prices stay on the server.
 
 import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '@/data/inventory-sample'
-import { isPublishable, toPublicSite, toPriceQuote, areaPages, type AreaPage } from './normalize'
-import type { InventoryRecord, PublicSite, PriceQuote } from './types'
+import { isPublishable, toPublicSite, areaPages, type AreaPage } from './normalize'
+import type { InventoryRecord, PublicSite } from './types'
 
 export const usingSample = () => !process.env.INVENTORY_API_KEY
 
@@ -41,11 +41,3 @@ export async function areasFor(countrySlug: string, citySlug: string): Promise<A
   return areaPages(await sitesFor(countrySlug, citySlug), FAMOUS_AREAS[`${countrySlug}/${citySlug}`] ?? [])
 }
 
-/** Prices, server-side only — called by /api/inventory/prices after the sign-up check. */
-export async function pricesFor(countrySlug: string, ids: string[]): Promise<PriceQuote[]> {
-  const want = new Set(ids)
-  return (await records(countrySlug))
-    .filter(r => want.has(r.id) && isPublishable(r))
-    .map(toPriceQuote)
-    .filter((p): p is PriceQuote => !!p)
-}

@@ -79,7 +79,7 @@ export async function pickSites(brief: Brief, candidates: PublicSite[], pinnedId
   const n = Math.min(Math.max(brief.targetSites || 5, pinned.length, 2), candidates.length)
   const fallback = () => rulesPick(brief, candidates, pinned, n)
   const key = process.env.ANTHROPIC_API_KEY
-  if (!key || candidates.length === 0) return fallback()
+  if (!key || candidates.length === 0) { console.warn(`[proposal/pick] rules: ${key ? 'no candidates' : 'no ANTHROPIC_API_KEY'}`); return fallback() }
 
   const memoKey = JSON.stringify([brief, pinned, candidates.map(s => s.id)])
   const hit = memo.get(memoKey)
@@ -121,7 +121,7 @@ export async function pickSites(brief: Brief, candidates: PublicSite[], pinnedId
     const j = await r.json().catch(() => null)
     const text: string = j?.content?.[0]?.text ?? ''
     const m = /\{[\s\S]*\}/.exec(text)
-    if (!m) return fallback()
+    if (!m) { console.warn('[proposal/pick] rules: no JSON in answer', text.slice(0, 200)); return fallback() }
     const out = JSON.parse(m[0]) as { summary?: unknown; sites?: { id?: unknown; reason?: unknown }[] }
     const seen = new Set<string>()
     const sites: VersionSite[] = []
@@ -136,13 +136,13 @@ export async function pickSites(brief: Brief, candidates: PublicSite[], pinnedId
       seen.add(id); sites.push({ siteId: id, siteName: s.name, reason, order: sites.length })
     }
     for (const x of sites) if (!x.reason) x.reason = templateReason(brief, byId.get(x.siteId)!)
-    if (sites.length < Math.min(2, n)) return fallback()
+    if (sites.length < Math.min(2, n)) { console.warn('[proposal/pick] rules: too few valid ids', out.sites?.length); return fallback() }
     const summary = String(out.summary ?? '').trim().slice(0, 700) || templateSummary(brief, sites.map(x => byId.get(x.siteId)!))
     const pick: Pick = { source: 'claude', summary, sites }
     memo.set(memoKey, { at: Date.now(), pick })
     return pick
   } catch (e) {
-    console.error('[proposal/pick] failed', (e as Error).name)
+    console.error('[proposal/pick] rules: call failed', (e as Error).name, (e as Error).message)
     return fallback()
   } finally { clearTimeout(timer) }
 }
