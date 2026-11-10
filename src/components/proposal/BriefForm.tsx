@@ -109,7 +109,7 @@ export function BriefForm({ markets, formats }: Props) {
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 {OBJECTIVES.map(o => (
                   <button key={o.id} type="button" onClick={() => setObjective(o.id)} aria-pressed={objective === o.id}
-                    className={`mw-tap rounded-xl border p-4 text-left transition-colors ${objective === o.id ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-200 bg-white hover:border-[#062068]'}`}>
+                    className={`mw-tap flex-col !items-start !justify-start rounded-xl border p-4 text-left transition-colors ${objective === o.id ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-200 bg-white hover:border-[#062068]'}`}>
                     <span className="block font-bold">{o.label}</span>
                     <span className={`block text-sm ${objective === o.id ? 'text-blue-100/90' : 'text-gray-600'}`}>{o.hint}</span>
                   </button>
