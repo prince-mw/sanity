@@ -21,7 +21,10 @@ export const testerKeyOk = (key: string | null | undefined) => {
 }
 export const testerGrant = (email = 'tester@movingwalls.com'): MockupGrant => ({ email, siteId: '*', siteName: 'any site', leadId: null, owner: null, at: Date.now(), tester: true })
 
-const secret = () => process.env.MOCKUP_COOKIE_SECRET || process.env.SANITY_WEBHOOK_SECRET || (process.env.NODE_ENV === 'development' ? 'dev-only-secret' : '')
+// Signing key: the dedicated secret, else any server-only secret the build always has
+// (staging once shipped with none set, so every grant failed to decode and the
+// registration form reopened on each submit, 11 Nov 2026).
+const secret = () => process.env.MOCKUP_COOKIE_SECRET || process.env.SANITY_WEBHOOK_SECRET || process.env.SANITY_API_TOKEN || (process.env.NODE_ENV === 'development' ? 'dev-only-secret' : '')
 
 function sign(payload: string): string {
   return createHmac('sha256', secret()).update(payload).digest('base64url')
