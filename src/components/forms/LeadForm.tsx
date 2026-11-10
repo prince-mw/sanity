@@ -8,7 +8,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { getUTMCookies } from '@/lib/utmCookies'
 
-export type LeadPurpose = 'enquiry' | 'mockup'
+export type LeadPurpose = 'enquiry' | 'mockup' | 'proposal'
 export type LeadResult = { ok: true; owner?: { name: string; email: string | null } | null; leadId?: string | null }
 
 type Props = {
@@ -72,13 +72,13 @@ export function LeadForm({ open, onClose, onSuccess, onAlreadyUsed, closeOnSucce
     if (r && r.status === 409 && j?.error === 'already-used') { onAlreadyUsed?.({ siteName: j.siteName, owner: j.owner }); onClose(); return }
     if (!r || !r.ok) { setError(j?.error ?? 'Something went wrong. Please try again or email us.'); return }
     // Conversion events: they only reach Google when the production analytics config is loaded (nothing on staging).
-    track('generate_lead', { lead_purpose: purpose, site_id: siteId, site_name: siteName, currency: 'MYR', value: purpose === 'mockup' ? 20 : 50 })
+    track('generate_lead', { lead_purpose: purpose, site_id: siteId, site_name: siteName, currency: 'MYR', value: purpose === 'mockup' ? 20 : purpose === 'proposal' ? 30 : 50 })
     if (purpose === 'mockup') track('page_view', { page_location: `${location.origin}/mockup/thank-you`, page_title: 'Mock-up registered' })
     if (closeOnSuccess) onClose(); else setDone(true)
     onSuccess?.(j ?? { ok: true })
   }
 
-  const heading = title ?? (purpose === 'mockup' ? 'See your ad on this screen' : `Enquire about ${siteName ?? 'this site'}`)
+  const heading = title ?? (purpose === 'mockup' ? 'See your ad on this screen' : purpose === 'proposal' ? 'Register once to build proposals' : `Enquire about ${siteName ?? 'this site'}`)
   const field = (name: string, label: string, type = 'text', required = true, extra: Record<string, unknown> = {}) => (
     <label key={name} className="block">
       <span className="text-sm font-semibold text-gray-700">{label}{required ? '' : <span className="font-normal text-gray-400"> (optional)</span>}</span>
@@ -94,7 +94,7 @@ export function LeadForm({ open, onClose, onSuccess, onAlreadyUsed, closeOnSucce
           <div>
             <h2 id="lead-form-title" className="text-xl font-bold text-[#062068]">Thank you</h2>
             <p className="mt-2 text-gray-700">
-              {purpose === 'mockup' ? 'Your mock-up is on its way to your inbox.' : 'Our Malaysia team will reply within one working day.'}
+              {purpose === 'mockup' ? 'Your mock-up is on its way to your inbox.' : purpose === 'proposal' ? 'You can now build proposals.' : 'Our Malaysia team will reply within one working day.'}
             </p>
             <button type="button" onClick={onClose} className="mw-tap mt-5 w-full rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Close</button>
           </div>
@@ -113,6 +113,12 @@ export function LeadForm({ open, onClose, onSuccess, onAlreadyUsed, closeOnSucce
                   <textarea name="message" rows={3} placeholder="Dates, budget, what you want to achieve" className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-mw-blue-500 focus:outline-none" />
                 </label>
               )}
+              {purpose === 'proposal' && (
+                <label className="flex items-start gap-2 text-sm text-gray-600">
+                  <input name="consent" type="checkbox" required className="mt-1 h-4 w-4 flex-shrink-0 appearance-auto accent-[#062068]" style={{ appearance: 'auto' }} />
+                  <span>Yes, Moving Walls may contact me about this proposal and send me outdoor advertising news. I can unsubscribe at any time.</span>
+                </label>
+              )}
               {/* honeypot: hidden from people, filled by bots */}
               <div className="absolute -left-[9999px] top-0" aria-hidden="true"><label>Website<input name="website" tabIndex={-1} autoComplete="off" /></label></div>
             </div>
@@ -120,7 +126,7 @@ export function LeadForm({ open, onClose, onSuccess, onAlreadyUsed, closeOnSucce
             <p className="mt-3 text-xs text-gray-500">By sending this you agree to be contacted by Moving Walls about outdoor advertising. We never share your details.</p>
             <div className="mt-5 flex gap-3">
               <button type="submit" disabled={busy} className="mw-tap flex-1 rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a] disabled:opacity-60">
-                {busy ? 'Sending…' : submitLabel ?? (purpose === 'mockup' ? 'Show my mock-up' : 'Send enquiry')}
+                {busy ? 'Sending…' : submitLabel ?? (purpose === 'mockup' ? 'Show my mock-up' : purpose === 'proposal' ? 'Build my proposal' : 'Send enquiry')}
               </button>
               <button type="button" onClick={onClose} className="mw-tap rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700">Cancel</button>
             </div>

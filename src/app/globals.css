@@ -292,7 +292,18 @@ select {
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
+
+  /* Instant proposal pages (/proposals): the page is the deck. */
+  .proposal-page .print-only { display: block !important; }
+  .proposal-page .break-inside-avoid { break-inside: avoid; page-break-inside: avoid; }
+  .proposal-page .mw-section { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+  .proposal-page .print-hero { background: #ffffff !important; color: #062068 !important; padding-top: 1rem; }
+  .proposal-page .print-hero * { color: #062068 !important; }
+  body:has(.proposal-page) :is(header, footer, main > section:last-of-type:not(.proposal-page *), [class*='z-[9999]']) { display: none !important; }
+  body:has(.proposal-page) main { padding-top: 0 !important; }
 }
+
+.print-only { display: none; }
 
 /* MW Inventory page — background patterns, shadows, and ambient screen-matrix animations */
 .bg-dot-pattern {

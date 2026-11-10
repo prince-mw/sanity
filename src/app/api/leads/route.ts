@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { writeClient } from '@/sanity/lib/client'
 import { createLead, attachToLead, crmConfigured, getLeadOwner } from '@/lib/zoho-crm'
 import { grantCookie, readGrant, isStaffEmail, testerGrant } from '@/lib/mockup/access'
+import { readProposalGrant, proposalCookie, testerProposalGrant } from '@/lib/proposal/access'
 
 // The website's own lead form (replaces Zoho Forms on the inventory pages).
 //   1. validate + spam checks
@@ -17,13 +18,14 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 const MAX_MOCKUP_BYTES = 4 * 1024 * 1024
-const PURPOSES = new Set(['enquiry', 'mockup'])
+const PURPOSES = new Set(['enquiry', 'mockup', 'proposal'])
 
 type Body = {
   name?: string; email?: string; company?: string; country?: string; phone?: string; message?: string
   purpose?: string; siteId?: string; siteName?: string; pageUrl?: string
   utm?: Record<string, string>
   mockup?: string            // data:image/png;base64,...
+  consent?: string | boolean // proposal registration: the newsletter + contact consent
   website?: string           // honeypot: must stay empty
   startedAt?: number         // when the form opened; bots submit instantly
 }
@@ -41,6 +43,16 @@ export async function POST(req: NextRequest) {
   if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return NextResponse.json({ error: 'Please enter your name and a valid email.' }, { status: 400 })
   if (str(b.website)) return NextResponse.json({ ok: true }) // honeypot filled: pretend success, store nothing
   if (typeof b.startedAt === 'number' && Date.now() - b.startedAt < 2500) return NextResponse.json({ ok: true })
+
+  // Proposal registration: one person, one lead; staff get a tester grant and no lead.
+  if (purpose === 'proposal') {
+    if (!company || !country) return NextResponse.json({ error: 'Please add your company and country.' }, { status: 400 })
+    if (!(b.consent === true || b.consent === 'on' || b.consent === 'true')) return NextResponse.json({ error: 'Please tick the consent box.' }, { status: 400 })
+    const g = await readProposalGrant()
+    if (g?.tester) return NextResponse.json({ ok: true, owner: null, leadId: null, tester: true })
+    if (isStaffEmail(email)) { const res = NextResponse.json({ ok: true, owner: null, leadId: null, tester: true }); res.cookies.set(proposalCookie(testerProposalGrant(email))); return res }
+    if (g && g.email === email) { const res = NextResponse.json({ ok: true, owner: g.owner, leadId: g.leadId }); res.cookies.set(proposalCookie({ ...g, at: Date.now() })); return res }
+  }
 
   // One mock-up per person: a visitor already registered for another site is sent to sales.
   if (purpose === 'mockup') {
@@ -88,7 +100,7 @@ export async function POST(req: NextRequest) {
   }
 
   const description = [
-    `Website form: ${purpose === 'mockup' ? 'ad mock-up' : 'enquiry'}${siteName ? ` for ${siteName}` : ''}`,
+    `Website form: ${purpose === 'mockup' ? 'ad mock-up' : purpose === 'proposal' ? 'instant proposal registration' : 'enquiry'}${siteName ? ` for ${siteName}` : ''}`,
     pageUrl && `Page: ${pageUrl}`,
     mockupUrl && `Mock-up image: ${mockupUrl}`,
     message && `Message: ${message}`,
@@ -98,7 +110,7 @@ export async function POST(req: NextRequest) {
   let crmId: string | null = null, crmError: string | null = null, owner: { name: string; email: string | null } | null = null
   if (crmConfigured()) {
     try {
-      crmId = await createLead({ name, email, company, country, phone, description, pageUrl, utm, extra: { Mockup_Site: siteName || undefined } }) // Mockup_URL is set on "Send to our team" — that's what the CRM email fires on
+      crmId = await createLead({ name, email, company, country, phone, description, pageUrl, utm, extra: { Mockup_Site: siteName || undefined, Proposal_Status: purpose === 'proposal' ? 'Registered' : undefined } }) // Mockup_URL is set on "Send to our team" — that's what the CRM email fires on
       if (mockup) await attachToLead(crmId, { name: `ad-mockup-${siteId || 'site'}-draft.png`, type: mockup.type, bytes: mockup.bytes }).catch(e => console.error('[leads] attachment failed', e))
       owner = await getLeadOwner(crmId).catch(() => null)
     } catch (e) {
@@ -117,5 +129,6 @@ export async function POST(req: NextRequest) {
 
   const res = NextResponse.json({ ok: true, owner, leadId: crmId, saved: !!(docId || crmId) })
   if (purpose === 'mockup') res.cookies.set(grantCookie({ email, siteId, siteName, leadId: crmId, owner, at: Date.now() }))
+  if (purpose === 'proposal') res.cookies.set(proposalCookie({ email, name, company, country, leadId: crmId, owner, proposals: [], at: Date.now() }))
   return res
 }
