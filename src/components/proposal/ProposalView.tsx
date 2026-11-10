@@ -194,7 +194,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
                 <li key={v.n} className={v.n === version.n ? 'font-semibold text-gray-900' : ''}>v{v.n} · {fmtDate(v.createdAt)} · {v.sites.length} sites{v.n === version.n ? ' · current' : ''}</li>
               ))}
             </ul>
-            <p className="mt-4 text-xs text-gray-500">Site photos, formats and audience figures are shown as published by the media owner; availability and final placements are confirmed by Moving Walls before booking.</p>
+            <p className="mt-4 max-w-3xl text-xs text-gray-500">Site photos, formats and audience figures are shown as published by the media owner; availability and final placements are confirmed by Moving Walls before booking.</p>
           </div>
         </section>
       )}
