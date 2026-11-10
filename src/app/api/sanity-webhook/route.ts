@@ -69,6 +69,7 @@ const typeToPath: Record<string, string[]> = {
   office: ['/locations', '/'],
   location: ['/locations', '/'],
   locationCity: ['/locations', '/'],
+  siteContent: ['/locations'],
   redirectSettings: ['/'],
   megaMenu: ['/'],
   analyticsConfig: ['/'],

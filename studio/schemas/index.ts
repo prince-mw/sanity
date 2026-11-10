@@ -12,6 +12,8 @@ import ebook from './ebook'
 import blockContent from './blockContent'
 import location from './location'
 import locationCity from './locationCity'
+import siteContent from './siteContent'
+import leadSubmission from './leadSubmission'
 import product from './product'
 import companyPage from './companyPage'
 import timelineEvent from './timelineEvent'
@@ -77,6 +79,8 @@ export const schemaTypes = [
   ebook,
   location,
   locationCity,
+  siteContent,
+  leadSubmission,
   product,
   companyPage,
   timelineEvent,

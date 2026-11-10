@@ -10,6 +10,13 @@ const nextConfig: NextConfig = {
     SANITY_API_TOKEN: process.env.SANITY_API_TOKEN,
     SANITY_API_READ_TOKEN: process.env.SANITY_API_READ_TOKEN,
     SANITY_PREVIEW_SECRET: process.env.SANITY_PREVIEW_SECRET,
+    ZOHO_CRM_CLIENT_ID: process.env.ZOHO_CRM_CLIENT_ID,
+    ZOHO_CRM_CLIENT_SECRET: process.env.ZOHO_CRM_CLIENT_SECRET,
+    ZOHO_CRM_REFRESH_TOKEN: process.env.ZOHO_CRM_REFRESH_TOKEN,
+    ZOHO_ACCOUNTS_URL: process.env.ZOHO_ACCOUNTS_URL,
+    ZOHO_API_URL: process.env.ZOHO_API_URL,
+    PEXELS_API_KEY: process.env.PEXELS_API_KEY,
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
   },
 
   /* Performance Optimizations */

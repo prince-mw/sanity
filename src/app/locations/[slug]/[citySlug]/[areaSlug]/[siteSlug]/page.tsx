@@ -2,6 +2,7 @@ import { Metadata } from 'next'
 import { notFound, permanentRedirect } from 'next/navigation'
 import { sitesFor, usingSample } from '@/lib/inventory/source'
 import { siteHasPage } from '@/lib/inventory/normalize'
+import { getSiteContent, similarSites } from '@/lib/inventory/siteContent'
 import { InventorySiteClient } from '@/components/inventory/InventorySiteClient'
 
 // Site page: one billboard or screen. Only sites with a photo get one; a site
@@ -23,7 +24,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!site) return {}
   const format = site.displayFormat ?? site.format ?? 'Billboard'
   const title = `${site.name} — ${format} in ${site.areaName}, ${site.cityName} | Moving Walls`
-  const description = `${format}${site.size ? `, ${site.size}` : ''} at ${site.address ?? `${site.areaName}, ${site.cityName}`}. See the site details and location, and get an estimated price.`
+  const content = await getSiteContent(site)
+  const description = content.description
+    ? content.description.slice(0, 155).replace(/\s+\S*$/, '') + '…'
+    : `${format}${site.size ? `, ${site.size}` : ''} at ${site.address ?? `${site.areaName}, ${site.cityName}`}. See the site details and location, and get an estimated price.`
   const url = `https://www.movingwalls.com/locations/${p.slug}/${p.citySlug}/${p.areaSlug}/${p.siteSlug}`
   return {
     title, description,
@@ -43,7 +47,7 @@ export default async function SitePage({ params }: Props) {
   }
   if (!siteHasPage(site)) permanentRedirect(`/locations/${p.slug}/${p.citySlug}/${p.areaSlug}`)
 
-  const nearby = sites.filter(s => s.areaSlug === site.areaSlug && s.id !== site.id).slice(0, 6)
+  const [content, similar] = [await getSiteContent(site), similarSites(site, sites)]
   const url = `https://www.movingwalls.com/locations/${p.slug}/${p.citySlug}/${p.areaSlug}/${p.siteSlug}`
   const jsonLd = [
     {
@@ -66,7 +70,7 @@ export default async function SitePage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <InventorySiteClient site={site} nearby={nearby} pagedIds={nearby.filter(siteHasPage).map(s => s.id)} />
+      <InventorySiteClient site={site} content={content} similar={similar} pagedIds={similar.filter(siteHasPage).map(s => s.id)} />
     </>
   )
 }

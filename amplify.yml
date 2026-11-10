@@ -10,6 +10,14 @@ frontend:
         - echo "SANITY_API_TOKEN=$SANITY_API_TOKEN" >> .env.production
         - echo "SANITY_API_READ_TOKEN=$SANITY_API_READ_TOKEN" >> .env.production
         - echo "SANITY_PREVIEW_SECRET=$SANITY_PREVIEW_SECRET" >> .env.production
+        # Website lead form → Zoho CRM, and the ad mock-up's stock photos. Server-side only.
+        - echo "ZOHO_CRM_CLIENT_ID=$ZOHO_CRM_CLIENT_ID" >> .env.production
+        - echo "ZOHO_CRM_CLIENT_SECRET=$ZOHO_CRM_CLIENT_SECRET" >> .env.production
+        - echo "ZOHO_CRM_REFRESH_TOKEN=$ZOHO_CRM_REFRESH_TOKEN" >> .env.production
+        - echo "ZOHO_ACCOUNTS_URL=$ZOHO_ACCOUNTS_URL" >> .env.production
+        - echo "ZOHO_API_URL=$ZOHO_API_URL" >> .env.production
+        - echo "PEXELS_API_KEY=$PEXELS_API_KEY" >> .env.production
+        - echo "ANTHROPIC_API_KEY=$ANTHROPIC_API_KEY" >> .env.production
         - echo "NEXT_PUBLIC_SANITY_PROJECT_ID=$NEXT_PUBLIC_SANITY_PROJECT_ID" >> .env.production
         - echo "NEXT_PUBLIC_SANITY_DATASET=$NEXT_PUBLIC_SANITY_DATASET" >> .env.production
         # Inventory pages preview (sample data) on the staging branch only — no effect on main/production.
