@@ -14,6 +14,7 @@ import location from './location'
 import locationCity from './locationCity'
 import siteContent from './siteContent'
 import leadSubmission from './leadSubmission'
+import proposal from './proposal'
 import product from './product'
 import companyPage from './companyPage'
 import timelineEvent from './timelineEvent'
@@ -81,6 +82,7 @@ export const schemaTypes = [
   locationCity,
   siteContent,
   leadSubmission,
+  proposal,
   product,
   companyPage,
   timelineEvent,
