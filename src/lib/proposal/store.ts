@@ -19,10 +19,11 @@ import type { Brief, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersio
 //   Proposal_Note    text       the latest change request
 export const CRM_FIELDS = { url: 'Proposal_URL', status: 'Proposal_Status', note: 'Proposal_Note' } as const
 
-// Development only: PROPOSAL_STORE=file keeps proposals as JSON files under
+// Local only: PROPOSAL_STORE=file keeps proposals as JSON files under
 // .proposals-dev/ (git-ignored) so the flow can be tried on a machine whose
-// Sanity token cannot create documents. Never used in production.
-const useFile = () => process.env.PROPOSAL_STORE === 'file' && process.env.NODE_ENV !== 'production'
+// Sanity token cannot create documents, including a private audit build.
+// The variable is never set on Amplify, so staging and production use Sanity.
+const useFile = () => process.env.PROPOSAL_STORE === 'file'
 const FILE_DIR = path.join(process.cwd(), '.proposals-dev')
 const fileOf = (id: string) => path.join(FILE_DIR, `${id.replace(/[^A-Za-z0-9_-]/g, '')}.json`)
 async function fileRead(docId: string): Promise<ProposalDoc | null> { try { return JSON.parse(await fs.readFile(fileOf(docId), 'utf8')) } catch { return null } }
