@@ -8,7 +8,7 @@
 // is never uploaded unless they submit the form.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Upload, Image as ImageIcon, Palette, RefreshCw, Move, Lock, Mail, Send, Check } from 'lucide-react'
+import { Upload, Image as ImageIcon, Palette, RefreshCw, Move, Lock, Mail, Send, Check, Unlock } from 'lucide-react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import type { Face } from '@/lib/mockup/compose'
@@ -51,6 +51,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   const [access, setAccess] = useState<{ state: 'loading' | 'none' | 'this' | 'other'; siteName?: string; owner?: Owner; tester?: boolean }>({ state: 'loading' })
   const [thanks, setThanks] = useState<{ owner: Owner } | null>(null)
   const [sent, setSent] = useState<'idle' | 'sending' | 'done' | 'failed'>('idle')
+  const [sentPopup, setSentPopup] = useState(false)
   useEffect(() => {
     fetch(`/api/mockup/access?site=${encodeURIComponent(site.id)}`).then(r => r.json()).then(j => setAccess({ state: j.state, siteName: j.siteName, owner: j.owner, tester: !!j.tester })).catch(() => setAccess({ state: 'none' }))
   }, [site.id])
@@ -135,6 +136,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
     setSent('sending')
     const r = await fetch('/api/mockup/update', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ siteId: site.id, mockup: cleanRef.current }) }).catch(() => null)
     setSent(r?.ok ? 'done' : 'failed')
+    if (r?.ok) setSentPopup(true)
   }
 
   const input = 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-mw-blue-500 focus:outline-none'
@@ -266,12 +268,17 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         )}
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-gray-500">{face ? 'A preview of how your creative would look on this site. Final artwork is produced to the site’s specifications.' : 'Shown as a flat creative: the screen in this photo has not been located yet.'}</p>
-          {unlocked && preview && !access.tester && (
-            <button type="button" onClick={sendUpdate} disabled={sent === 'sending'} className="mw-tap inline-flex items-center gap-1.5 self-start rounded-lg border border-[#062068] px-3 py-1.5 text-sm font-semibold text-[#062068] hover:bg-mw-blue-50 disabled:opacity-50">
-              <Send className="h-4 w-4" aria-hidden="true" /> {sent === 'sending' ? 'Sending…' : sent === 'done' ? 'Sent to our team' : sent === 'failed' ? 'Could not send — try again' : 'Send this version to our team'}
-            </button>
-          )}
         </div>
+        {unlocked && preview && (
+          <button type="button" onClick={sendUpdate} disabled={sent === 'sending'} aria-live="polite"
+            className="mw-tap mt-3 flex w-full items-center gap-3 rounded-xl border-2 border-[#062068] bg-white px-5 py-4 text-left text-[#062068] transition-colors hover:bg-mw-blue-50 disabled:opacity-60">
+            <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-mw-blue-50"><Send className="h-5 w-5" aria-hidden="true" /></span>
+            <span className="flex-1">
+              <span className="block text-base font-bold">{sent === 'sending' ? 'Sending…' : sent === 'done' ? 'Sent — check your inbox' : sent === 'failed' ? 'Could not send — try again' : 'Send to our team'}</span>
+              <span className="block text-sm text-[#062068]/70">{sent === 'done' ? 'You can keep editing and send a new version any time.' : 'We email you this exact version, with the details of the person who books this site.'}</span>
+            </span>
+          </button>
+        )}
       </div>
 
       <LeadForm open={formOpen} onClose={() => setFormOpen(false)} onSuccess={registered} closeOnSuccess purpose="mockup" siteId={site.id} siteName={site.name}
@@ -283,11 +290,26 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
       {thanks && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="mockup-thanks-title" onClick={e => { if (e.target === e.currentTarget) setThanks(null) }}>
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
+            <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><Unlock className="h-6 w-6" aria-hidden="true" /></span>
+            <h2 id="mockup-thanks-title" className="text-xl font-bold text-[#062068]">Your mock-up is unlocked</h2>
+            <p className="mt-2 text-gray-700">See your ad on {site.name} below. Change the words, logo, photo or layout as often as you like.</p>
+            <ol className="mt-4 space-y-3 text-sm text-gray-700">
+              <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#062068] text-xs font-bold text-white">1</span><span>Use <strong>Fit the ad to the screen</strong> if the ad isn't sitting exactly on the screen.</span></li>
+              <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#062068] text-xs font-bold text-white">2</span><span>When you're happy, press <strong>Send to our team</strong>: we email you that version{thanks.owner?.name ? <> together with the details of <strong>{thanks.owner.name}</strong>, who books this site</> : <> with the details of the person who books this site</>}.</span></li>
+            </ol>
+            <button type="button" onClick={() => setThanks(null)} className="mw-tap mt-5 w-full rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Show me my ad</button>
+          </div>
+        </div>
+      )}
+
+      {sentPopup && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="mockup-sent-title" onClick={e => { if (e.target === e.currentTarget) setSentPopup(false) }}>
+          <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-mw-blue-50 text-[#062068]"><Mail className="h-6 w-6" aria-hidden="true" /></span>
-            <h2 id="mockup-thanks-title" className="text-xl font-bold text-[#062068]">Check your inbox</h2>
-            <p className="mt-2 text-gray-700">Your mock-up on {site.name} is unlocked below and on its way to your email{thanks.owner?.name ? <>, together with a note from <strong>{thanks.owner.name}</strong>{thanks.owner.email ? <> ({thanks.owner.email})</> : null}, who looks after this site</> : ''}.</p>
-            <p className="mt-2 text-sm text-gray-600">Keep editing as much as you like; press "Send this version to our team" when you're happy with one.</p>
-            <button type="button" onClick={() => setThanks(null)} className="mw-tap mt-5 w-full rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Back to my mock-up</button>
+            <h2 id="mockup-sent-title" className="text-xl font-bold text-[#062068]">Sent — check your inbox</h2>
+            <p className="mt-2 text-gray-700">This version of your ad on {site.name} is on its way to your email{access.owner?.name ? <>, together with a note from <strong>{access.owner.name}</strong>{access.owner.email ? <> ({access.owner.email})</> : null}, who looks after this site</> : ', with the details of the person who books this site'}.</p>
+            <p className="mt-2 text-sm text-gray-600">Changed your mind? Keep editing and send again.</p>
+            <button type="button" onClick={() => setSentPopup(false)} className="mw-tap mt-5 w-full rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Done</button>
           </div>
         </div>
       )}

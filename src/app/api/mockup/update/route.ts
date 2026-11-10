@@ -3,8 +3,10 @@ import { writeClient } from '@/sanity/lib/client'
 import { attachToLead, crmConfigured, updateLead } from '@/lib/zoho-crm'
 import { readGrant } from '@/lib/mockup/access'
 
-// "Send my updated mock-up": a registered visitor changed their ad and wants
-// the new version on their lead. Needs the grant cookie for this site.
+// "Send to our team": the version the visitor chose goes on their lead — a new
+// attachment plus Mock-up URL, which is the field the CRM's email workflow
+// fires on (Rif, 11 Nov: the email carries the chosen version, not the first draft).
+// Needs the grant cookie for this site.
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -31,8 +33,8 @@ export async function POST(req: NextRequest) {
   }
   if (crmConfigured() && g.leadId) {
     try {
-      await attachToLead(g.leadId, { name: `ad-mockup-${g.siteId}-v2.png`, type: m[1], bytes })
-      await updateLead(g.leadId, { Mockup_URL: url ?? undefined })
+      await attachToLead(g.leadId, { name: `ad-mockup-${g.siteId}-sent-${Date.now()}.png`, type: m[1], bytes })
+      await updateLead(g.leadId, { Mockup_URL: url ?? undefined, Description: `Mock-up sent by the visitor on ${new Date().toISOString().slice(0, 16).replace('T', ' ')} UTC${url ? `: ${url}` : ''}` })
     } catch (e) { console.error('[mockup/update] CRM', e) }
   }
   return NextResponse.json({ ok: true })

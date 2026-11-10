@@ -98,8 +98,8 @@ export async function POST(req: NextRequest) {
   let crmId: string | null = null, crmError: string | null = null, owner: { name: string; email: string | null } | null = null
   if (crmConfigured()) {
     try {
-      crmId = await createLead({ name, email, company, country, phone, description, pageUrl, utm, extra: { Mockup_Site: siteName || undefined, Mockup_URL: mockupUrl ?? undefined } })
-      if (mockup) await attachToLead(crmId, { name: `ad-mockup-${siteId || 'site'}.png`, type: mockup.type, bytes: mockup.bytes }).catch(e => console.error('[leads] attachment failed', e))
+      crmId = await createLead({ name, email, company, country, phone, description, pageUrl, utm, extra: { Mockup_Site: siteName || undefined } }) // Mockup_URL is set on "Send to our team" — that's what the CRM email fires on
+      if (mockup) await attachToLead(crmId, { name: `ad-mockup-${siteId || 'site'}-draft.png`, type: mockup.type, bytes: mockup.bytes }).catch(e => console.error('[leads] attachment failed', e))
       owner = await getLeadOwner(crmId).catch(() => null)
     } catch (e) {
       crmError = String((e as Error).message ?? e).slice(0, 300)
