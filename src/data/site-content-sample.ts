@@ -9,7 +9,7 @@ type Entry = { description: string; personas: Persona[]; faceCorners?: FaceCorne
 
 export const SITE_CONTENT_SAMPLE: Record<string, Entry> = {
   'real-menara-tan-tan': {
-    faceCorners: [[0.479, 0.073], [0.75, 0.056], [0.746, 0.485], [0.481, 0.457]],
+    faceCorners: [[0.479, 0.07], [0.751, 0.054], [0.748, 0.496], [0.481, 0.468]],
     description:
       'A roadside LED on Jalan Tun Razak at Menara Tan & Tan, one of the main roads linking KLCC with Ampang and the city centre. Traffic here builds twice a day: office commuters into the Golden Triangle in the morning and the slow crawl out in the evening, when a digital screen gets its longest looks. The site sits among office towers, the Royal Selangor Golf Club and the hotels along Jalan Tun Razak, a short drive from the Petronas Twin Towers and Suria KLCC. Day-parted creative suits it well: a breakfast message for the inbound crowd, an after-work offer for the outbound one.',
     personas: [
