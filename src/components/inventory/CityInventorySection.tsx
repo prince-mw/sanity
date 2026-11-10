@@ -8,8 +8,10 @@ import { SgSectionHeading } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
 import { SiteGrid, SampleBanner, areaPath } from './InventoryShared'
 import type { AreaLink } from './InventoryAreaClient'
+import { AudienceSection, RelatedContent } from './ContentBlocks'
+import type { PlaceContent } from '@/lib/inventory/placeContent'
 
-export function CityInventorySection({ cityName, citySlug, countrySlug, sites, pagedIds, areas, sample }: {
+export function CityInventorySection({ cityName, citySlug, countrySlug, countryName, sites, pagedIds, areas, sample, content }: {
   cityName: string
   citySlug: string
   countrySlug: string
@@ -17,11 +19,23 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, sites, p
   pagedIds: string[]
   areas: AreaLink[]
   sample: boolean
+  countryName: string
+  content: PlaceContent
 }) {
   const paged = new Set(pagedIds)
   const areaCount = new Set(sites.map(s => s.areaSlug)).size
   return (
     <div id="all-sites">
+      {content.description && (
+        <section className="bg-white mw-section">
+          <div className="mw-container">
+            <div className="mx-auto max-w-[60rem]">
+              <SgSectionHeading title={`Outdoor advertising in ${cityName}`} />
+              <p className="text-lg leading-relaxed text-gray-700">{content.description}</p>
+            </div>
+          </div>
+        </section>
+      )}
       <section className="bg-gray-50 mw-section">
         <div className="mw-container">
           {sample && <SampleBanner className="mb-6" />}
@@ -45,6 +59,8 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, sites, p
           </div>
         </section>
       )}
+      <AudienceSection placeName={cityName} personas={content.personas} />
+      <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" />
     </div>
   )
 }

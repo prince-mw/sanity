@@ -1,15 +1,18 @@
 'use client'
 
 import Link from 'next/link'
-import { useZohoPopup } from '../ZohoPopupProvider'
+import { useState } from 'react'
+import { LeadForm } from '../forms/LeadForm'
+import { AudienceSection, RelatedContent } from './ContentBlocks'
+import type { PlaceContent } from '@/lib/inventory/placeContent'
 import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
-import { SiteGrid, PriceGate, SampleBanner, SiteCard, areaPath, MY_CONTACT_FORM } from './InventoryShared'
+import { SiteGrid, PriceGate, SampleBanner, SiteCard, areaPath } from './InventoryShared'
 
 export type AreaLink = { name: string; slug: string; kind: 'buyer' | 'supply'; count: number }
 
 export function InventoryAreaClient({
-  kind, areaName, cityName, citySlug, countryName, countrySlug, sites, pagedIds, nearby, otherAreas, sample,
+  kind, areaName, cityName, citySlug, countryName, countrySlug, sites, pagedIds, nearby, otherAreas, sample, content,
 }: {
   kind: 'buyer' | 'supply'
   areaName: string
@@ -24,9 +27,11 @@ export function InventoryAreaClient({
   nearby: PublicSite[]
   otherAreas: AreaLink[]
   sample: boolean
+  content: PlaceContent
 }) {
-  const { openZohoPopup } = useZohoPopup()
-  const contact = (title: string) => () => openZohoPopup(MY_CONTACT_FORM, title)
+  // The site's own form (not Zoho Forms): one modal, the title says what it's for
+  const [form, setForm] = useState<string | null>(null)
+  const contact = (title: string) => () => setForm(title)
   const paged = new Set(pagedIds)
   const formats = new Set(sites.map(s => s.displayFormat ?? s.format).filter(Boolean)).size
   const digital = sites.filter(s => s.digital).length
@@ -50,8 +55,8 @@ export function InventoryAreaClient({
             <>
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3">Billboard &amp; Digital Screen Advertising in {areaName}, {cityName}</h1>
               <p className="text-lg sm:text-xl font-semibold text-cyan-300 mb-5">{sites.length} sites you can book in {areaName}, programmatically or direct.</p>
-              <p className="max-w-3xl text-base sm:text-lg text-blue-100/90 leading-relaxed mb-7">
-                {areaName} is one of {cityName}&apos;s busiest commercial districts — shoppers, office workers and visitors pass through it every day and night. Every site below shows its format, size and location; sign up to see estimated prices.
+              <p className="max-w-[60ch] text-base sm:text-lg text-blue-100/90 leading-relaxed mb-7">
+                {content.description ?? `Every site below shows its format, size and location; sign up to see estimated prices.`}
               </p>
               <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/20 max-w-xl">
                 {[[String(sites.length), 'Sites'], [String(formats), 'Formats'], [String(digital), 'Digital screens']].map(([v, l]) => (
@@ -96,6 +101,8 @@ export function InventoryAreaClient({
         </section>
       )}
 
+      <AudienceSection placeName={areaName} personas={content.personas} bg="bg-white" />
+
       {/* Sites */}
       {sites.length > 0 && (
         <section className="bg-gray-50 mw-section">
@@ -117,6 +124,8 @@ export function InventoryAreaClient({
           </div>
         </section>
       )}
+
+      <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" />
 
       {/* Other areas */}
       {otherAreas.length > 0 && (
@@ -146,6 +155,8 @@ export function InventoryAreaClient({
         onOpen={contact(`Contact our Malaysia team`)}
         showArrow={false}
       />
+      <LeadForm open={!!form} onClose={() => setForm(null)} purpose="enquiry" siteName={`${areaName}, ${cityName}`} title={form ?? undefined}
+        intro={<>Tell us what you have in mind for <strong>{areaName}</strong>. Our {countryName} team replies within one working day.</>} />
     </div>
   )
 }

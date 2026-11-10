@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { areasFor, sitesFor, usingSample } from '@/lib/inventory/source'
 import { siteHasPage } from '@/lib/inventory/normalize'
 import { InventoryAreaClient } from '@/components/inventory/InventoryAreaClient'
+import { getPlaceContent } from '@/lib/inventory/placeContent'
 
 // Area page: every site in one area of a city, from the Inventory API.
 // Famous areas with fewer than 3 sites become "media owners wanted" pages.
@@ -47,6 +48,7 @@ export default async function AreaPage({ params }: Props) {
   const first = citySites[0]
   const nearby = area.kind === 'supply' ? citySites.filter(s => s.areaSlug !== area.slug).slice(0, 6) : []
   const shown = [...area.sites, ...nearby]
+  const content = await getPlaceContent({ kind: 'area', countrySlug: slug, countryName: first.countryName, citySlug, cityName: first.cityName, areaSlug, areaName: area.name })
   const url = `https://www.movingwalls.com/locations/${slug}/${citySlug}/${areaSlug}`
   const breadcrumb = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -67,6 +69,7 @@ export default async function AreaPage({ params }: Props) {
         citySlug={citySlug}
         countryName={first.countryName}
         countrySlug={slug}
+        content={content}
         sites={area.sites}
         pagedIds={shown.filter(siteHasPage).map(s => s.id)}
         nearby={nearby}

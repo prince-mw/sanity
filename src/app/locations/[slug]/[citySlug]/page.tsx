@@ -9,6 +9,7 @@ import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLan
 import { areasFor, sitesFor, usingSample } from '@/lib/inventory/source'
 import { siteHasPage } from '@/lib/inventory/normalize'
 import { CityInventorySection } from '@/components/inventory/CityInventorySection'
+import { getPlaceContent } from '@/lib/inventory/placeContent'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
   const { slug, citySlug } = await params
@@ -85,6 +86,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
   // Inventory from the Inventory API (sample until the key is set): only cities that have some.
   const [inventory, inventoryAreas] = await Promise.all([sitesFor(slug, citySlug), areasFor(slug, citySlug)])
+  const placeContent = inventory.length > 0 ? await getPlaceContent({ kind: 'city', countrySlug: slug, countryName: city.country?.country || slug, citySlug, cityName: city.city || citySlug }) : null
 
   const locationJsonLd = buildLocationJsonLd({
     countrySlug: slug,
@@ -116,6 +118,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             cityName={city.city || citySlug}
             citySlug={citySlug}
             countrySlug={slug}
+            countryName={city.country?.country || slug}
+            content={placeContent!}
             sites={inventory}
             pagedIds={inventory.filter(siteHasPage).map(s => s.id)}
             areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}

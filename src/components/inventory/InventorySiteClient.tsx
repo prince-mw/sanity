@@ -3,20 +3,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import {
-  Briefcase, Car, GraduationCap, Home, Moon, Plane, ShoppingBag, TrainFront, Users, Camera, type LucideIcon,
-} from 'lucide-react'
 import { LeadForm } from '../forms/LeadForm'
 import { AdMockup } from './AdMockup'
 import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
-import type { SiteContent, Persona, RelatedItem } from '@/lib/inventory/siteContent'
+import type { SiteContent } from '@/lib/inventory/siteContent'
+import { AudienceSection, RelatedContent } from './ContentBlocks'
 import { SitesMap, PriceGate, SampleBanner, SampleTag, SiteCard, areaPath } from './InventoryShared'
-
-const PERSONA_ICONS: Record<Persona['icon'], LucideIcon> = {
-  commuter: TrainFront, shopper: ShoppingBag, tourist: Camera, office: Briefcase, family: Users,
-  student: GraduationCap, nightlife: Moon, traveller: Plane, driver: Car, resident: Home,
-}
 
 export function InventorySiteClient({ site, content, similar, pagedIds }: { site: PublicSite; content: SiteContent; similar: PublicSite[]; pagedIds: string[] }) {
   // The site's own lead form (not Zoho Forms): GA4 sees the conversion, the lead still reaches Zoho CRM.
@@ -87,38 +80,8 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
         </div>
       </section>
 
-      {/* Who you reach here: personas + the published figures */}
-      {(content.personas.length > 0 || hasAudienceFigures) && (
-        <section className="bg-gray-50 mw-section">
-          <div className="mw-container">
-            <SgSectionHeading title="Who you reach here" intro={`The people who pass ${site.name} and when — so you can match your creative to the moment.`} />
-            {hasAudienceFigures && (
-              <dl className="mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-gray-200 sm:max-w-md">
-                {site.audience?.reach && <div className="bg-white p-5"><dt className="text-xs font-semibold uppercase tracking-wider text-gray-500">Monthly reach</dt><dd className="mt-1 text-3xl font-bold text-[#062068]">{site.audience.reach}</dd></div>}
-                {site.audience?.impressions && <div className="bg-white p-5"><dt className="text-xs font-semibold uppercase tracking-wider text-gray-500">Monthly impressions</dt><dd className="mt-1 text-3xl font-bold text-[#062068]">{site.audience.impressions}</dd></div>}
-              </dl>
-            )}
-            {content.personas.length > 0 && (
-              <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
-                {content.personas.map(p => {
-                  const Icon = PERSONA_ICONS[p.icon] ?? Users
-                  return (
-                    <li key={p.name} className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6">
-                      <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-mw-blue-50 text-[#062068]"><Icon className="h-6 w-6" aria-hidden="true" /></span>
-                      <h3 className="text-lg font-bold text-gray-900">{p.name}</h3>
-                      <p className="mt-1 text-sm text-gray-600 leading-relaxed">{p.who}</p>
-                      <dl className="mt-4 space-y-2 text-sm">
-                        <div><dt className="font-semibold text-gray-500">When</dt><dd className="text-gray-800">{p.when}</dd></div>
-                        <div><dt className="font-semibold text-gray-500">Why it works</dt><dd className="text-gray-800">{p.why}</dd></div>
-                      </dl>
-                    </li>
-                  )
-                })}
-              </ul>
-            )}
-          </div>
-        </section>
-      )}
+      <AudienceSection placeName={site.name} personas={content.personas}
+        figures={hasAudienceFigures ? [site.audience?.reach && { label: 'Monthly reach', value: site.audience.reach }, site.audience?.impressions && { label: 'Monthly impressions', value: site.audience.impressions }].filter(Boolean) as { label: string; value: string }[] : undefined} />
 
       {/* See your ad here: the mock-up tool */}
       {site.photos[0] && (
@@ -160,12 +123,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
         </section>
       )}
 
-      {content.caseStudies.length > 0 && (
-        <RelatedSection title="Case studies from this market" intro={`Campaigns that ran in ${site.cityName} and ${site.countryName}.`} items={content.caseStudies} bg="bg-gray-50" />
-      )}
-      {content.posts.length > 0 && (
-        <RelatedSection title={`Reading on OOH in ${site.countryName}`} intro="Articles about advertising in this market." items={content.posts} bg="bg-white" />
-      )}
+      <RelatedContent cityName={site.cityName} countryName={site.countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-gray-50" />
 
       {similar.length > 0 && (
         <section className="bg-white mw-section">
@@ -182,32 +140,5 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
       <LeadForm open={formOpen} onClose={() => setFormOpen(false)} purpose="enquiry" siteId={site.id} siteName={site.name}
         intro={<>Tell us your dates and audience for <strong>{site.name}</strong>. Our Malaysia team replies within one working day.</>} />
     </div>
-  )
-}
-
-function RelatedSection({ title, intro, items, bg }: { title: string; intro: string; items: RelatedItem[]; bg: string }) {
-  return (
-    <section className={`${bg} mw-section`}>
-      <div className="mw-container">
-        <SgSectionHeading title={title} intro={intro} />
-        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map(it => (
-            <li key={it.id}>
-              <Link href={it.href} className="group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all hover:-translate-y-1 hover:border-mw-blue-200 hover:shadow-precision-lg">
-                <div className="relative aspect-[16/10] bg-gray-100">
-                  {it.image && <Image src={it.image} alt="" fill sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />}
-                </div>
-                <div className="flex flex-1 flex-col p-5">
-                  <span className="mb-1 text-xs font-bold uppercase tracking-wider text-mw-blue-600">{it.kind === 'post' ? 'Article' : 'Case study'}</span>
-                  <h3 className="font-bold leading-snug text-gray-900">{it.title}</h3>
-                  {it.excerpt && <p className="mt-2 text-sm text-gray-600 line-clamp-3">{it.excerpt}</p>}
-                  <span className="mt-auto pt-4 text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068]">Read more →</span>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
   )
 }
