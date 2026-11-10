@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const content = await getSiteContent(site)
   const description = content.description
     ? content.description.slice(0, 155).replace(/\s+\S*$/, '') + '…'
-    : `${format}${site.size ? `, ${site.size}` : ''} at ${site.address ?? `${site.areaName}, ${site.cityName}`}. See the site details and location, and get an estimated price.`
+    : `${format}${site.size ? `, ${site.size}` : ''} at ${site.address ?? `${site.areaName}, ${site.cityName}`}. See the site details and location, and add it to an instant proposal.`
   const url = `https://www.movingwalls.com/locations/${p.slug}/${p.citySlug}/${p.areaSlug}/${p.siteSlug}`
   return {
     title, description,

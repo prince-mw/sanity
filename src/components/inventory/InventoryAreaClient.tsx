@@ -8,7 +8,7 @@ import type { PlaceContent } from '@/lib/inventory/placeContent'
 import { MARKET_VIDEOS } from '@/data/market-videos'
 import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
-import { SiteGrid, PriceGate, SampleBanner, SiteCard, areaPath } from './InventoryShared'
+import { SiteGrid, SampleBanner, SiteCard, areaPath } from './InventoryShared'
 
 export type AreaLink = { name: string; slug: string; kind: 'buyer' | 'supply'; count: number }
 
@@ -57,7 +57,7 @@ export function InventoryAreaClient({
               <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3">Billboard &amp; Digital Screen Advertising in {areaName}, {cityName}</h1>
               <p className="text-lg sm:text-xl font-semibold text-cyan-300 mb-5">{sites.length} sites you can book in {areaName}, programmatically or direct.</p>
               <p className="max-w-[60ch] text-base sm:text-lg text-blue-100/90 leading-relaxed mb-7">
-                {content.description ?? `Every site below shows its format, size and location; sign up to see estimated prices.`}
+                {content.description ?? `Every site below shows its format, size and location; add the ones you like to an instant proposal.`}
               </p>
               <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/20 max-w-xl">
                 {[[String(sites.length), 'Sites'], [String(formats), 'Formats'], [String(digital), 'Digital screens']].map(([v, l]) => (
@@ -108,9 +108,8 @@ export function InventoryAreaClient({
       {sites.length > 0 && (
         <section className="bg-gray-50 mw-section">
           <div className="mw-container">
-            <SgSectionHeading title={`Advertising sites in ${areaName}`} intro="Filter by format and venue. Tap a pin or open a site for its details and estimated price." />
+            <SgSectionHeading title={`Advertising sites in ${areaName}`} intro="Filter by format and venue. Tap a pin or open a site for its details, and add sites to your proposal." />
             <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} mapTitle={`Map of advertising sites in ${areaName}`} />
-            <div className="mt-8"><PriceGate country={countrySlug} ids={sites.map(s => s.id)} names={Object.fromEntries(sites.map(s => [s.id, s.name]))} /></div>
           </div>
         </section>
       )}

@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? `Billboard Advertising in ${d.area.name}, ${city} | ${d.area.sites.length} Sites | Moving Walls`
     : `Outdoor Advertising in ${d.area.name}, ${city} | Moving Walls`
   const description = d.area.kind === 'buyer'
-    ? `Book ${d.area.sites.length} billboards and digital screens in ${d.area.name}, ${city}. See formats, sizes and locations, and get estimated prices.`
+    ? `Book ${d.area.sites.length} billboards and digital screens in ${d.area.name}, ${city}. See formats, sizes and locations, and build an instant proposal.`
     : `Advertise in ${d.area.name}, ${city}, or list your billboards and screens there with Moving Walls.`
   const url = `https://www.movingwalls.com/locations/${slug}/${citySlug}/${areaSlug}`
   return {

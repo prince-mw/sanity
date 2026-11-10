@@ -8,6 +8,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { PublicSite } from '@/lib/inventory/types'
 import { BrandMap, type MapPin } from './BrandMap'
+import { AddToProposalButton } from '../proposal/AddToProposalButton'
 
 export const MY_CONTACT_FORM =
   'https://forms.zohopublic.com/movingwallsholdingpteltd/form/MalaysiaContact/formperma/9-GOVijT9HZ4uHR9214Y08-UQX1HA8mAzZSjfcDMMeY'
@@ -41,7 +42,7 @@ function Photo({ site, className = '', sizes = '100vw', priority = false }: { si
   )
 }
 
-export function SiteCard({ site, linked }: { site: PublicSite; linked: boolean }) {
+export function SiteCard({ site, linked, addable = true }: { site: PublicSite; linked: boolean; addable?: boolean }) {
   const body = (
     <>
       <Photo site={site} className="aspect-[16/10]" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
@@ -57,7 +58,10 @@ export function SiteCard({ site, linked }: { site: PublicSite; linked: boolean }
           {site.venueType && <div><dt className="sr-only">Venue</dt><dd>{site.venueType}</dd></div>}
           {site.audience?.impressions && <div><dt className="sr-only">Monthly impressions</dt><dd>{site.audience.impressions} impressions / mo</dd></div>}
         </dl>
-        {linked && <span className="mt-auto pt-4 text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068]">View site details →</span>}
+        <div className="mt-auto flex items-center justify-between gap-3 pt-4">
+          {linked ? <span className="text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068]">View site details →</span> : <span />}
+          {addable && <AddToProposalButton site={site} variant="card" />}
+        </div>
       </div>
     </>
   )

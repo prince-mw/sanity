@@ -16,6 +16,7 @@ import { type Locale } from "@/i18n/config";
 import { getRequestLocale } from "@/i18n/serverLocale";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
 import { ZohoPopupProvider } from "@/components/ZohoPopupProvider";
+import { ShortlistProvider } from "@/lib/proposal/shortlist";
 import { getAllActiveZohoForms, getFooterContent, getAnalyticsConfig } from "@/sanity/lib/fetch";
 import "./globals.css";
 
@@ -205,6 +206,7 @@ export default async function RootLayout({
         <LocaleProvider initialLocale={initialLocale}>
           <FormPopupProvider forms={allForms}>
             <ZohoPopupProvider>
+             <ShortlistProvider>
               {/* HeaderWrapper is an async Server Component (fetches the mega menu from Sanity).
                   It gets its own Suspense boundary, isolated from {children}, so that a page
                   segment's notFound()/redirect() can still set the correct response status —
@@ -218,6 +220,7 @@ export default async function RootLayout({
               </main>
               <GlobalCTA />
               <Footer content={footerContent} />
+             </ShortlistProvider>
             </ZohoPopupProvider>
           </FormPopupProvider>
           <ScrollToTop />

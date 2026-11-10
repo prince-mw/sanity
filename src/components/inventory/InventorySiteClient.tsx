@@ -10,7 +10,8 @@ import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
 import { MARKET_VIDEOS } from '@/data/market-videos'
-import { SitesMap, PriceGate, SampleBanner, SampleTag, SiteCard, areaPath } from './InventoryShared'
+import { SitesMap, SampleBanner, SampleTag, SiteCard, areaPath } from './InventoryShared'
+import { AddToProposalButton } from '../proposal/AddToProposalButton'
 
 export function InventorySiteClient({ site, content, similar, pagedIds }: { site: PublicSite; content: SiteContent; similar: PublicSite[]; pagedIds: string[] }) {
   // The site's own lead form (not Zoho Forms): GA4 sees the conversion, the lead still reaches Zoho CRM.
@@ -38,7 +39,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
   return (
     <div className="bg-white text-gray-900">
 
-      {/* Hero: photo, name, format, the description, the specs and the price */}
+      {/* Hero: photo, name, format, the description, the specs, add-to-proposal */}
       <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="relative mw-container">
@@ -70,7 +71,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
               )}
               <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
                 <SgFormButton onOpen={enquire} showArrow={false}>Enquire about this site</SgFormButton>
-                <PriceGate country={site.countrySlug} ids={[site.id]} />
+                <AddToProposalButton site={site} variant="hero" />
                 <Link href={areaHref} className="mw-tap inline-flex items-center justify-center border-2 border-white/40 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">More sites in {site.areaName}</Link>
               </div>
             </div>
