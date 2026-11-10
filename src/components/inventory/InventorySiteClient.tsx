@@ -63,7 +63,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
                 <dl className="mb-7 grid grid-cols-2 sm:grid-cols-3 gap-2 max-w-[60ch]">
                   {specs.map(([k, v]) => (
                     <div key={k} className="rounded-lg bg-white/10 ring-1 ring-white/15 px-3 py-2">
-                      <dt className="text-[11px] font-semibold uppercase tracking-wider text-blue-100/70">{k}</dt>
+                      <dt className="text-xs font-semibold uppercase tracking-wider text-blue-100/70">{k}</dt>
                       <dd className="text-sm font-semibold text-white">{v}</dd>
                     </div>
                   ))}

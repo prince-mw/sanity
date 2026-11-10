@@ -87,7 +87,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
             <dl className="lg:col-span-5 grid grid-cols-2 gap-3">
               {facts.filter(([, v]) => v).map(([k, v]) => (
                 <div key={k} className={`rounded-xl border border-gray-200 p-3 ${k === 'Audience' ? 'col-span-2' : ''}`}>
-                  <dt className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">{k}</dt>
+                  <dt className="text-xs font-semibold uppercase tracking-wider text-gray-500">{k}</dt>
                   <dd className="mt-0.5 text-sm font-semibold text-gray-900">{v}</dd>
                 </div>
               ))}
@@ -107,7 +107,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
                   <SiteCard site={s} linked={paged.has(s.id)} addable={false} />
                 </div>
                 <div className="-mt-2 rounded-b-2xl border border-t-0 border-mw-blue-100 bg-mw-blue-50/50 px-5 pb-4 pt-5">
-                  <p className="text-[11px] font-semibold uppercase tracking-wider text-mw-blue-600">Why this site</p>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-mw-blue-600">Why this site</p>
                   <p className="mt-1 text-sm text-gray-800">{s.reason}</p>
                   {s.audience?.reach && <p className="mt-2 text-xs text-gray-500">Monthly reach {s.audience.reach}{s.audience.impressions ? ` · impressions ${s.audience.impressions}` : ''}</p>}
                   {!s.audience?.reach && !s.audience?.impressions && <p className="mt-2 text-xs text-gray-500">Audience figures not yet published for this site.</p>}
@@ -205,7 +205,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
 function Stat({ label, value, note }: { label: string; value: string; note?: string }) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5">
-      <p className="text-[11px] font-semibold uppercase tracking-wider text-gray-500">{label}</p>
+      <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">{label}</p>
       <p className="mt-1 text-3xl font-bold text-[#062068]">{value}</p>
       {note && <p className="mt-1 text-xs text-gray-500">{note}</p>}
     </div>
