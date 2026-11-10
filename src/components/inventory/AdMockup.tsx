@@ -8,10 +8,10 @@
 // is never uploaded unless they submit the form.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Upload, Download, Image as ImageIcon, Palette, RefreshCw } from 'lucide-react'
+import { Upload, Image as ImageIcon, Palette, RefreshCw } from 'lucide-react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { FaceCorners } from '@/lib/inventory/siteContent'
-import { aspectFromSize, composeOnSite, drawCreative, loadImage, sampleAccent, watermark, type Template } from '@/lib/mockup/compose'
+import { aspectFromSize, faceAspect, composeOnSite, drawCreative, loadImage, sampleAccent, type Template } from '@/lib/mockup/compose'
 import { LeadForm } from '../forms/LeadForm'
 
 type StockPhoto = { id: number; src: string; thumb: string; alt: string; credit: string; creditUrl: string }
@@ -40,7 +40,9 @@ export function AdMockup({ site, faceCorners }: { site: PublicSite; faceCorners:
   const cleanRef = useRef<string | null>(null)
   const creativeRef = useRef<HTMLCanvasElement | null>(null)
 
-  const aspect = useMemo(() => aspectFromSize(site.size, /unipole|portrait|panel|kiosk/i.test(`${site.displayFormat} ${site.format}`) ? 0.6 : 2), [site])
+  // The creative takes the shape of the face in the photo, so it fills it exactly; the site's size is the fallback.
+  const aspect = useMemo(() => siteImg && faceCorners ? faceAspect(faceCorners, siteImg.width, siteImg.height)
+    : aspectFromSize(site.size, /unipole|portrait|panel|kiosk/i.test(`${site.displayFormat} ${site.format}`) ? 0.6 : 2), [site, siteImg, faceCorners])
   const ready = !!tagline.trim() || !!logo
 
   // The site photo, once
@@ -71,6 +73,12 @@ export function AdMockup({ site, faceCorners }: { site: PublicSite; faceCorners:
     } finally { setSearching(false) }
   }
 
+  const onOwnPhoto = async (file: File | undefined) => {
+    if (!file) return
+    if (file.size > 8 * 1024 * 1024) { setError('Please use a photo under 8 MB.'); return }
+    try { setPhotoImg(await loadImage(URL.createObjectURL(file))); setPhotoId(-1); setError(null) } catch { setError('That file could not be read as an image.') }
+  }
+
   const pickPhoto = async (p: StockPhoto | null) => {
     setPhotoId(p?.id ?? null)
     if (!p) { setPhotoImg(null); return }
@@ -88,8 +96,7 @@ export function AdMockup({ site, faceCorners }: { site: PublicSite; faceCorners:
       if (siteImg && faceCorners) out = composeOnSite(siteImg, creative, faceCorners)
       else { out = document.createElement('canvas'); out.width = creative.width; out.height = creative.height; out.getContext('2d')!.drawImage(creative, 0, 0) }
       cleanRef.current = out.toDataURL('image/png')
-      watermark(out)
-      setPreview(out.toDataURL('image/jpeg', 0.85))
+      setPreview(out.toDataURL('image/jpeg', 0.9))
       setError(null)
     } catch (e) {
       setError('Your browser could not build the preview. Try Chrome or Safari on a laptop.')
@@ -151,7 +158,11 @@ export function AdMockup({ site, faceCorners }: { site: PublicSite; faceCorners:
               ))}
             </ul>
           )}
-          {photos.length > 0 && photoId != null && (
+          <label className="mt-2 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#062068] hover:underline">
+            <Upload className="h-4 w-4" aria-hidden="true" /> or upload your own photo
+            <input type="file" accept="image/*" className="sr-only" onChange={e => onOwnPhoto(e.target.files?.[0])} />
+          </label>
+          {photos.length > 0 && photoId != null && photoId !== -1 && (
             <p className="mt-1 text-xs text-gray-500">Photo by {photos.find(p => p.id === photoId)?.credit} on <a className="underline" href={photos.find(p => p.id === photoId)?.creditUrl} target="_blank" rel="noopener">Pexels</a></p>
           )}
         </div>
@@ -183,12 +194,7 @@ export function AdMockup({ site, faceCorners }: { site: PublicSite; faceCorners:
             </div>
           )}
         </div>
-        <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-xs text-gray-500">{faceCorners ? 'A preview of how your creative would look on this site. Final artwork is produced to the site’s specifications.' : 'Shown as a flat creative: the billboard face for this photo has not been marked yet.'}</p>
-          <button type="button" disabled={!preview} onClick={() => setFormOpen(true)} className="mw-tap inline-flex items-center justify-center gap-2 rounded-lg bg-[#062068] px-5 py-2.5 font-semibold text-white hover:bg-[#0a2a8a] disabled:opacity-50">
-            <Download className="h-4 w-4" aria-hidden="true" /> Download without watermark
-          </button>
-        </div>
+        <p className="mt-3 text-xs text-gray-500">{faceCorners ? 'A preview of how your creative would look on this site. Final artwork is produced to the site’s specifications.' : 'Shown as a flat creative: the billboard face for this photo has not been marked yet.'}</p>
       </div>
 
       <LeadForm open={formOpen} onClose={() => setFormOpen(false)} onSuccess={download} purpose="mockup-download" siteId={site.id} siteName={site.name}

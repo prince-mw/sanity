@@ -39,7 +39,7 @@ export function sampleAccent(logo: HTMLImageElement): string {
     if (A < 128 || max > 235 && min > 215 || max - min < 25) continue // skip transparent, white, grey
     r += R; gg += G; b += B; n++
   }
-  if (!n) return '#1B1E2B'
+  if (n < 20) return '#0F766E' // white or line-art logo: a neutral deep teal, the visitor can change it
   const hex = (v: number) => Math.round(v / n).toString(16).padStart(2, '0')
   return `#${hex(r)}${hex(gg)}${hex(b)}`
 }
@@ -94,9 +94,9 @@ export function drawCreative(c: HTMLCanvasElement, input: CreativeInput) {
     if (landscape) g.fillRect(pw, 0, W - pw, H); else g.fillRect(0, ph, W, H - ph)
     const bx = landscape ? pw + pad : pad, by = landscape ? pad : ph + pad
     const bw = landscape ? W - pw - pad * 2 : W - pad * 2, bh = landscape ? H - pad * 2 : H - ph - pad * 2
-    if (logo) contain(g, logo, bx, by, bw, Math.round(bh * 0.28), 'left')
+    if (logo) contain(g, logo, bx, by, bw, Math.round(bh * 0.32), 'left')
     g.fillStyle = text; g.textBaseline = 'top'
-    const size = Math.round(Math.min(bw / 9, bh * 0.16)); g.font = font(size)
+    const size = Math.round(Math.min(bw / 7.5, bh * 0.2)); g.font = font(size)
     const lines = wrap(g, tagline, bw).slice(0, 4)
     const top = by + Math.round(bh * 0.4)
     lines.forEach((l, i) => g.fillText(l, bx, top + i * size * 1.2))
@@ -105,13 +105,14 @@ export function drawCreative(c: HTMLCanvasElement, input: CreativeInput) {
 
   if (template === 'poster' || !photo) {
     // big words on the photo (darkened) or on the accent colour
-    if (photo) { cover(g, photo, 0, 0, W, H); g.fillStyle = 'rgba(0,0,0,0.45)'; g.fillRect(0, 0, W, H) } else bg()
+    if (photo) { cover(g, photo, 0, 0, W, H); g.fillStyle = 'rgba(0,0,0,0.45)'; g.fillRect(0, 0, W, H) }
+    else { bg(); const gr = g.createLinearGradient(0, 0, W, H); gr.addColorStop(0, 'rgba(255,255,255,0.16)'); gr.addColorStop(1, 'rgba(0,0,0,0.22)'); g.fillStyle = gr; g.fillRect(0, 0, W, H) }
     const tc = photo ? '#ffffff' : text
     g.fillStyle = tc; g.textAlign = 'center'; g.textBaseline = 'middle'
-    const size = Math.round(Math.min(W / 10, H * 0.18)); g.font = font(size)
+    const size = Math.round(Math.min(W / 8.5, H * 0.2)); g.font = font(size)
     const lines = wrap(g, tagline, W - pad * 2).slice(0, 4)
     const total = lines.length * size * 1.2
-    const logoH = logo ? Math.round(H * 0.18) : 0
+    const logoH = logo ? Math.round(H * 0.26) : 0
     const start = (H - total - logoH - (logo ? pad / 2 : 0)) / 2
     lines.forEach((l, i) => g.fillText(l, W / 2, start + i * size * 1.2 + size * 0.6))
     if (logo) contain(g, logo, pad, start + total + pad / 2, W - pad * 2, logoH, 'center')
@@ -119,17 +120,31 @@ export function drawCreative(c: HTMLCanvasElement, input: CreativeInput) {
     return
   }
 
-  // 'band': full photo, accent band along the bottom with words left, logo right
+  // 'band': photo on top, accent band below with big words and the logo.
+  // Billboard type is read at distance, so the band and the words are large.
   cover(g, photo, 0, 0, W, H)
-  const bandH = Math.round(H * (landscape ? 0.3 : 0.24))
+  const bandH = Math.round(H * (landscape ? 0.4 : 0.42))
   g.fillStyle = accent; g.fillRect(0, H - bandH, W, bandH)
-  const logoW = logo ? Math.round(W * 0.22) : 0
   g.fillStyle = text; g.textBaseline = 'middle'
-  const size = Math.round(Math.min(bandH * 0.34, (W - logoW - pad * 3) / 14)); g.font = font(size)
-  const lines = wrap(g, tagline, W - logoW - pad * 3).slice(0, 2)
-  const cy = H - bandH / 2
-  lines.forEach((l, i) => g.fillText(l, pad, cy + (i - (lines.length - 1) / 2) * size * 1.2))
-  if (logo) contain(g, logo, W - pad - logoW, H - bandH + pad / 2, logoW, bandH - pad, 'right')
+  if (landscape) {
+    const logoW = logo ? Math.round(W * 0.36) : 0
+    const textW = W - logoW - pad * (logo ? 3 : 2)
+    const size = Math.round(Math.min(bandH * 0.42, textW / 11)); g.font = font(size)
+    const lines = wrap(g, tagline, textW).slice(0, 2)
+    const cy = H - bandH / 2
+    lines.forEach((l, i) => g.fillText(l, pad, cy + (i - (lines.length - 1) / 2) * size * 1.15))
+    if (logo) contain(g, logo, W - pad - logoW, H - bandH + pad * 0.8, logoW, bandH - pad * 1.6, 'right')
+  } else {
+    const logoH = logo ? Math.round(bandH * 0.3) : 0
+    const textH = bandH - logoH - pad * (logo ? 2.2 : 1.6)
+    const size = Math.round(Math.min(textH / 2.4, (W - pad * 2) / 9)); g.font = font(size)
+    g.textAlign = 'center'
+    const lines = wrap(g, tagline, W - pad * 2).slice(0, 3)
+    const top = H - bandH + pad * 0.8
+    lines.forEach((l, i) => g.fillText(l, W / 2, top + size * 0.6 + i * size * 1.15))
+    if (logo) contain(g, logo, pad, H - pad * 0.8 - logoH, W - pad * 2, logoH, 'center')
+    g.textAlign = 'start'
+  }
 }
 
 let glCache: { canvas: HTMLCanvasElement; gl: WebGLRenderingContext; prog: WebGLProgram; buf: WebGLBuffer; tex: WebGLTexture } | null = null
@@ -190,6 +205,14 @@ export function watermark(c: HTMLCanvasElement, label = 'PREVIEW · movingwalls.
   g.translate(c.width / 2, c.height / 2); g.rotate(-Math.PI / 9)
   for (const dy of [-1.6, 0, 1.6]) { g.strokeText(label, 0, dy * size * 1.6); g.fillText(label, 0, dy * size * 1.6) }
   g.restore()
+}
+
+/** Width/height of the face as it appears in the photo (average of the opposite edges), so the creative fits it. */
+export function faceAspect(face: Quad, photoW: number, photoH: number): number {
+  const d = (a: [number, number], b: [number, number]) => Math.hypot((a[0] - b[0]) * photoW, (a[1] - b[1]) * photoH)
+  const [tl, tr, br, bl] = face as [[number, number], [number, number], [number, number], [number, number]]
+  const w = (d(tl, tr) + d(bl, br)) / 2, h = (d(tl, bl) + d(tr, br)) / 2
+  return h > 0 ? Math.max(0.3, Math.min(5, w / h)) : 2
 }
 
 /** "12m × 6m" → 2 ; falls back to the format's usual shape. */

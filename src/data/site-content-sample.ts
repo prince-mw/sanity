@@ -20,7 +20,7 @@ export const SITE_CONTENT_SAMPLE: Record<string, Entry> = {
     ],
   },
   'real-duta-park': {
-    faceCorners: [[0.352, 0.138], [0.515, 0.129], [0.512, 0.596], [0.355, 0.596]],
+    faceCorners: [[0.344, 0.136], [0.515, 0.128], [0.513, 0.598], [0.347, 0.599]],
     description:
       'A highway unipole facing traffic from Dutamas and Selayang heading into Kuala Lumpur, near the Duta interchange where the Sprint Highway, Jalan Duta and the North–South Expressway link meet. This is one of the busiest approaches to the city from the north-west, carrying daily commuters from Segambut, Kepong, Selayang and Mont Kiara. A unipole here is seen head-on at motorway speed, so bold, short creative with one message works best. The site is close to Publika and Mont Kiara’s residential towers, and to the government offices and embassies around Jalan Duta.',
     personas: [
