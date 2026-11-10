@@ -4,6 +4,7 @@ import type { GraphicSlot } from "../landing/SectionGraphic";
 import { KlangValleyAtAGlance } from "./KlangValleyAtAGlance";
 import { KualaLumpurHighlights } from "./KualaLumpurHighlights";
 import { MalaysiaMarketMap } from "./MalaysiaMarketMap";
+import { KualaLumpurLandscape } from "./KualaLumpurLandscape";
 
 // Motion graphics per location page, keyed by the CMS section heading.
 // `after` is how many paragraphs come before the graphic (text blocks only;
@@ -17,6 +18,10 @@ const GRAPHICS: Record<string, Record<string, () => GraphicSlot[]>> = {
       { after: 1, node: <MalaysiaMarketMap /> },
       { after: 3, node: <KualaLumpurHighlights /> },
     ],
+  },
+  // city page (the lookup receives the city slug)
+  "kuala-lumpur": {
+    "market landscape": () => [{ after: 1, node: <KualaLumpurLandscape /> }],
   },
 };
 

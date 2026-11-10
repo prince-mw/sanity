@@ -10,11 +10,12 @@ import { urlFor } from '@/sanity/lib/client'
 import { PLACE_CONTENT_SAMPLE } from '@/data/place-content-sample'
 import type { Persona, RelatedItem } from './siteContent'
 
-export type PlaceContent = { description: string | null; personas: Persona[]; posts: RelatedItem[]; caseStudies: RelatedItem[]; fromSanity: boolean }
+export type Highlight = { icon: 'shopping' | 'road' | 'rail' | 'tower' | 'landmark' | 'mall' | 'airport' | 'park'; title: string; text: string }
+export type PlaceContent = { description: string | null; highlights: Highlight[]; personas: Persona[]; posts: RelatedItem[]; caseStudies: RelatedItem[]; fromSanity: boolean }
 
 const relatedFields = `title, "slug": slug.current, excerpt, featuredImage, publishedAt, _id`
 const docQuery = `*[_type == "siteContent" && siteId == $key && hidden != true][0]{
-  description, personas,
+  description, highlights, personas,
   "posts": relatedPosts[]{ score, reason, "doc": post->{ ${relatedFields} } },
   "caseStudies": relatedCaseStudies[]{ score, reason, "doc": caseStudy->{ ${relatedFields} } }
 }`
@@ -34,7 +35,7 @@ export async function getPlaceContent(p: { kind: 'city' | 'area'; countrySlug: s
   const doc = await safeFetch<any>(docQuery, { key }, null)
   if (doc) {
     return {
-      description: doc.description ?? null, personas: doc.personas ?? [],
+      description: doc.description ?? null, highlights: doc.highlights ?? [], personas: doc.personas ?? [],
       posts: (doc.posts ?? []).map((r: any) => item('post', r.doc, r.score ?? 0, r.reason ?? '')).filter(Boolean),
       caseStudies: (doc.caseStudies ?? []).map((r: any) => item('caseStudy', r.doc, r.score ?? 0, r.reason ?? '')).filter(Boolean),
       fromSanity: true,
@@ -42,14 +43,14 @@ export async function getPlaceContent(p: { kind: 'city' | 'area'; countrySlug: s
   }
   const sample = PLACE_CONTENT_SAMPLE[key]
   const place = p.kind === 'area' && p.areaName ? p.areaName : p.cityName
-  const params = { country: `${p.countryName}*`, place: `${place}*`, max: 4 }
+  const params = { country: `${p.countryName}*`, place: `${place}*`, max: 12 } // more than shown: "View more" reveals the rest
   const [posts, cases] = await Promise.all([
     safeFetch<any[]>(liveQuery('blogPost'), params, []),
-    safeFetch<any[]>(liveQuery('caseStudy'), { ...params, max: 3 }, []),
+    safeFetch<any[]>(liveQuery('caseStudy'), { ...params, max: 9 }, []),
   ])
   const reason = `Names ${p.countryName} and ${place}`
   return {
-    description: sample?.description ?? null, personas: sample?.personas ?? [],
+    description: sample?.description ?? null, highlights: sample?.highlights ?? [], personas: sample?.personas ?? [],
     posts: (posts ?? []).map(d => item('post', d, 70, reason)).filter(Boolean) as RelatedItem[],
     caseStudies: (cases ?? []).map(d => item('caseStudy', d, 70, reason)).filter(Boolean) as RelatedItem[],
     fromSanity: false,

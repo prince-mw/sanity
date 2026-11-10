@@ -221,7 +221,8 @@ export function BrandMap({ pins, activeId = null, onPinClick, title, className =
     if (p.href) (t as HTMLAnchorElement).href = p.href
     el.appendChild(t)
     if (p.subtitle) { const s = document.createElement('span'); s.textContent = p.subtitle; s.className = 'block text-xs text-[#4A5468] mt-0.5'; el.appendChild(s) }
-    popup.current = new lib.current.Popup({ closeButton: false, offset: 16, maxWidth: '240px', className: 'mw-map-popup' })
+    // focusAfterOpen is on by default: focusing the popup made the browser scroll the page to the map every time a card was hovered
+    popup.current = new lib.current.Popup({ closeButton: false, offset: 16, maxWidth: '240px', className: 'mw-map-popup', focusAfterOpen: false })
       .setLngLat([p.lng, p.lat]).setDOMContent(el).addTo(m)
     const b = m.getBounds()
     if (!b.contains([p.lng, p.lat])) m.easeTo({ center: [p.lng, p.lat] })

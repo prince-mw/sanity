@@ -75,10 +75,10 @@ export async function getSiteContent(site: PublicSite): Promise<SiteContent> {
   // No document yet: preview copy + the live floor of the related rule.
   const sample = SITE_CONTENT_SAMPLE[site.id]
   const located = !sample?.faceCorners && site.photos[0] ? await locateFace(site, null) : null
-  const params = { country: `${site.countryName}*`, city: `${site.cityName}*`, area: `${site.areaName}*`, max: 4 }
+  const params = { country: `${site.countryName}*`, city: `${site.cityName}*`, area: `${site.areaName}*`, max: 12 }
   const [posts, cases] = await Promise.all([
     safeFetch<any[]>(liveRelatedQuery('blogPost'), params, []),
-    safeFetch<any[]>(liveRelatedQuery('caseStudy'), { ...params, max: 3 }, []),
+    safeFetch<any[]>(liveRelatedQuery('caseStudy'), { ...params, max: 9 }, []),
   ])
   const reason = `Names ${site.countryName} and ${site.cityName}`
   return {

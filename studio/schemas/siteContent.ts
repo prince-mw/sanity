@@ -14,6 +14,13 @@ export default defineType({
     defineField({ name: 'hidden', title: 'Hide this copy on the website', type: 'boolean', initialValue: false }),
     defineField({ name: 'description', title: 'Description', type: 'text', rows: 5, description: '90–140 words. Only facts from the site record and its surroundings.' }),
     defineField({
+      name: 'highlights', title: 'Highlights (the description as icon cards; city/area pages)', type: 'array',
+      of: [{ type: 'object', name: 'highlight', fields: [
+        defineField({ name: 'icon', type: 'string', options: { list: ['shopping', 'road', 'rail', 'tower', 'landmark', 'mall', 'airport', 'park'] } }),
+        defineField({ name: 'title', type: 'string' }), defineField({ name: 'text', type: 'string' }),
+      ], preview: { select: { title: 'title', subtitle: 'text' } } }],
+    }),
+    defineField({
       name: 'personas', title: 'Who you reach here', type: 'array',
       of: [{
         type: 'object', name: 'persona',

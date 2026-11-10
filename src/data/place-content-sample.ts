@@ -4,11 +4,19 @@
 // Facts only: what each place is, who passes, when. No figures.
 
 import type { Persona } from '@/lib/inventory/siteContent'
+import type { Highlight } from '@/lib/inventory/placeContent'
 
-type Entry = { description: string; personas: Persona[] }
+type Entry = { description: string; highlights?: Highlight[]; personas: Persona[] }
 
 export const PLACE_CONTENT_SAMPLE: Record<string, Entry> = {
   'city:malaysia/kuala-lumpur': {
+    // the description, as cards (every section needs a visual — Rif, 11 Nov)
+    highlights: [
+      { icon: 'shopping', title: 'The Golden Triangle', text: 'Bukit Bintang and KLCC hold the malls, hotels and office towers where shoppers, visitors and office workers meet all day.' },
+      { icon: 'road', title: 'The roads in and out', text: 'Jalan Tun Razak, Jalan Ampang and the Federal Highway carry the daily traffic between the city and the suburbs, twice a day.' },
+      { icon: 'rail', title: 'Rail through the centre', text: 'LRT, MRT and Monorail lines thread the centre, with KL Sentral as the hub for commuters and airport travellers.' },
+      { icon: 'tower', title: 'New districts', text: 'TRX and Bangsar South add offices and residences every year — a growing business audience.' },
+    ],
     description:
       'Kuala Lumpur is where Malaysia’s commuters, shoppers and visitors meet. The Golden Triangle (Bukit Bintang and KLCC) holds the malls, hotels and office towers; Jalan Tun Razak, Jalan Ampang and the Federal Highway carry the daily traffic in and out; LRT, MRT and Monorail lines thread through the centre with KL Sentral as the hub; and newer districts like TRX and Bangsar South are adding offices and residences every year. Outdoor advertising here reaches a dense, mixed audience many times a day: on the drive in, on the platform, at the mall entrance and on the walk between them.',
     personas: [

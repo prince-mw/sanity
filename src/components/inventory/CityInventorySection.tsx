@@ -9,7 +9,12 @@ import type { PublicSite } from '@/lib/inventory/types'
 import { SiteGrid, SampleBanner, areaPath } from './InventoryShared'
 import type { AreaLink } from './InventoryAreaClient'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
-import type { PlaceContent } from '@/lib/inventory/placeContent'
+import type { PlaceContent, Highlight } from '@/lib/inventory/placeContent'
+import { IconStoryCards } from '../motion/kit/IconStoryCards'
+import { MARKET_VIDEOS } from '@/data/market-videos'
+import { ShoppingBag, Route, TrainFront, Building2, Landmark, Store, Plane, Trees, type LucideIcon } from 'lucide-react'
+
+const HIGHLIGHT_ICONS: Record<Highlight['icon'], LucideIcon> = { shopping: ShoppingBag, road: Route, rail: TrainFront, tower: Building2, landmark: Landmark, mall: Store, airport: Plane, park: Trees }
 
 export function CityInventorySection({ cityName, citySlug, countrySlug, countryName, sites, pagedIds, areas, sample, content }: {
   cityName: string
@@ -26,13 +31,13 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
   const areaCount = new Set(sites.map(s => s.areaSlug)).size
   return (
     <div id="all-sites">
-      {content.description && (
+      {(content.highlights.length > 0 || content.description) && (
         <section className="bg-white mw-section">
           <div className="mw-container">
-            <div className="mx-auto max-w-[60rem]">
-              <SgSectionHeading title={`Outdoor advertising in ${cityName}`} />
-              <p className="text-lg leading-relaxed text-gray-700">{content.description}</p>
-            </div>
+            <SgSectionHeading title={`Outdoor advertising in ${cityName}`} intro={content.highlights.length ? undefined : content.description ?? undefined} />
+            {content.highlights.length > 0 && (
+              <IconStoryCards kicker={`Where ${cityName} moves`} cards={content.highlights.map(h => ({ icon: HIGHLIGHT_ICONS[h.icon] ?? Landmark, title: h.title, text: h.text }))} />
+            )}
           </div>
         </section>
       )}
@@ -60,7 +65,7 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
         </section>
       )}
       <AudienceSection placeName={cityName} personas={content.personas} />
-      <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" />
+      <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" video={MARKET_VIDEOS[countrySlug]} />
     </div>
   )
 }

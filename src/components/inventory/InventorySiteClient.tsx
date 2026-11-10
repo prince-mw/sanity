@@ -9,6 +9,7 @@ import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../Singap
 import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
+import { MARKET_VIDEOS } from '@/data/market-videos'
 import { SitesMap, PriceGate, SampleBanner, SampleTag, SiteCard, areaPath } from './InventoryShared'
 
 export function InventorySiteClient({ site, content, similar, pagedIds }: { site: PublicSite; content: SiteContent; similar: PublicSite[]; pagedIds: string[] }) {
@@ -123,7 +124,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
         </section>
       )}
 
-      <RelatedContent cityName={site.cityName} countryName={site.countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-gray-50" />
+      <RelatedContent cityName={site.cityName} countryName={site.countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-gray-50" video={MARKET_VIDEOS[site.countrySlug]} />
 
       {similar.length > 0 && (
         <section className="bg-white mw-section">
