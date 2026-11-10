@@ -14,22 +14,25 @@ import type { PublicSite } from './types'
 export type PersonaIcon = 'commuter' | 'shopper' | 'tourist' | 'office' | 'family' | 'student' | 'nightlife' | 'traveller' | 'driver' | 'resident'
 export type Persona = { name: string; icon: PersonaIcon; who: string; when: string; why: string }
 export type FaceCorners = [number, number][] // 4 × [x, y] as fractions of the photo
+export type FaceEdges = [number, number][]   // midpoints of top, right, bottom, left edges (curved screens)
 export type RelatedItem = { kind: 'post' | 'caseStudy'; id: string; title: string; href: string; image: string | null; excerpt: string | null; publishedAt: string | null; score: number; reason: string }
 export type SiteContent = {
   description: string | null
   personas: Persona[]
   faceCorners: FaceCorners | null
+  faceEdges: FaceEdges | null
+  faceKind: 'led' | 'print' | null
   posts: RelatedItem[]
   caseStudies: RelatedItem[]
   fromSanity: boolean
 }
 
-const EMPTY: SiteContent = { description: null, personas: [], faceCorners: null, posts: [], caseStudies: [], fromSanity: false }
+const EMPTY: SiteContent = { description: null, personas: [], faceCorners: null, faceEdges: null, faceKind: null, posts: [], caseStudies: [], fromSanity: false }
 
 const relatedFields = `title, "slug": slug.current, excerpt, featuredImage, publishedAt, _id`
 
 const docQuery = `*[_type == "siteContent" && siteId == $siteId && hidden != true][0]{
-  description, personas, faceCorners,
+  description, personas, faceCorners, faceEdges, faceKind,
   "posts": relatedPosts[]{ score, reason, "doc": post->{ ${relatedFields} } },
   "caseStudies": relatedCaseStudies[]{ score, reason, "doc": caseStudy->{ ${relatedFields} } }
 }`
@@ -59,6 +62,8 @@ export async function getSiteContent(site: PublicSite): Promise<SiteContent> {
       description: doc.description ?? null,
       personas: doc.personas ?? [],
       faceCorners: Array.isArray(doc.faceCorners) && doc.faceCorners.length === 4 ? doc.faceCorners.map((p: any) => [p.x, p.y]) : null,
+      faceEdges: Array.isArray(doc.faceEdges) && doc.faceEdges.length === 4 ? doc.faceEdges.map((p: any) => [p.x, p.y]) : null,
+      faceKind: doc.faceKind ?? null,
       posts: (doc.posts ?? []).map((r: any) => item('post', r.doc, r.score ?? 0, r.reason ?? '')).filter(Boolean),
       caseStudies: (doc.caseStudies ?? []).map((r: any) => item('caseStudy', r.doc, r.score ?? 0, r.reason ?? '')).filter(Boolean),
       fromSanity: true,
@@ -77,6 +82,8 @@ export async function getSiteContent(site: PublicSite): Promise<SiteContent> {
     description: sample?.description ?? site.description ?? null,
     personas: sample?.personas ?? [],
     faceCorners: sample?.faceCorners ?? null,
+    faceEdges: sample?.faceEdges ?? null,
+    faceKind: sample?.faceKind ?? null,
     posts: (posts ?? []).map(d => item('post', d, 70, reason)).filter(Boolean) as RelatedItem[],
     caseStudies: (cases ?? []).map(d => item('caseStudy', d, 70, reason)).filter(Boolean) as RelatedItem[],
   }

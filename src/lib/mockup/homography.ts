@@ -37,7 +37,12 @@ export function project(H: number[], u: number, v: number): [number, number] {
   return [x / w, y / w]
 }
 
-/** Clip-space vertex data for a WebGL warp: xy in clip space, texcoord (u·w, v·w, w). */
+/**
+ * Clip-space vertex data for a WebGL warp: xy in clip space, texcoord (u·q, v·q, q).
+ * q is the homogeneous weight of the INVERSE map (screen → texture): at corner i,
+ * H(u_i, v_i, 1) = w_i · (x_i, y_i, 1), so H⁻¹(x_i, y_i, 1) = (u_i, v_i, 1) / w_i and
+ * q_i = 1 / w_i. Using w_i itself (an earlier bug) skews the image towards the far edge.
+ */
 export function warpVertices(quad: Quad, width: number, height: number): Float32Array {
   const H = squareToQuad(quad)
   const uv: [number, number][] = [[0, 0], [1, 0], [1, 1], [0, 1]]
@@ -45,8 +50,23 @@ export function warpVertices(quad: Quad, width: number, height: number): Float32
   for (let i = 0; i < 4; i++) {
     const [u, v] = uv[i]
     const [, , w] = apply(H, u, v)
+    const q = 1 / w
     const [px, py] = quad[i]
-    out.push((px / width) * 2 - 1, 1 - (py / height) * 2, u * w, v * w, w)
+    out.push((px / width) * 2 - 1, 1 - (py / height) * 2, u * q, v * q, q)
   }
   return new Float32Array(out)
+}
+
+/** Inverse of a 3×3 (row-major). */
+export function invert(H: number[]): number[] {
+  const [a, b, c, d, e, f, g, h, i] = H
+  const A = e * i - f * h, B = -(d * i - f * g), C = d * h - e * g
+  const det = a * A + b * B + c * C
+  return [A, -(b * i - c * h), b * f - c * e, B, a * i - c * g, -(a * f - c * d), C, -(a * h - b * g), a * e - b * d].map(v => v / det)
+}
+
+/** Texture point (u, v) for a photo point (x, y): the inverse map, with the divide. */
+export function unproject(H: number[], x: number, y: number): [number, number] {
+  const [u, v, q] = apply(invert(H), x, y)
+  return [u / q, v / q]
 }

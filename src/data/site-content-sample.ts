@@ -3,9 +3,9 @@
 // site record (format, venue, address) and what stands around it; no figures
 // beyond those already on the page. Keyed by the Inventory record id.
 
-import type { Persona, FaceCorners } from '@/lib/inventory/siteContent'
+import type { Persona, FaceCorners, FaceEdges } from '@/lib/inventory/siteContent'
 
-type Entry = { description: string; personas: Persona[]; faceCorners?: FaceCorners }
+type Entry = { description: string; personas: Persona[]; faceCorners?: FaceCorners; faceEdges?: FaceEdges; faceKind?: 'led' | 'print' }
 
 export const SITE_CONTENT_SAMPLE: Record<string, Entry> = {
   'real-menara-tan-tan': {
@@ -43,6 +43,7 @@ export const SITE_CONTENT_SAMPLE: Record<string, Entry> = {
   },
   'sample-bb-01': {
     faceCorners: [[0.147, 0.243], [0.77, 0.306], [0.797, 0.781], [0.139, 0.81]],
+    faceEdges: [[0.458, 0.252], [0.79, 0.545], [0.468, 0.788], [0.14, 0.53]], // the screen's top edge bows upward
     description:
       'A roadside LED on Jalan Bukit Bintang, in the middle of Kuala Lumpur’s busiest shopping and entertainment street. Pavilion KL, Lot 10, Fahrenheit 88 and the Bukit Bintang MRT and Monorail interchange are all within a few minutes’ walk, and the pavements are full from late morning until past midnight. The screen is seen by slow-moving traffic and by the crowds crossing between the malls, so it works for retail launches, food and beverage, entertainment and tourism campaigns that want to be seen at the moment people are out to spend.',
     personas: [
@@ -63,6 +64,7 @@ export const SITE_CONTENT_SAMPLE: Record<string, Entry> = {
     ],
   },
   'sample-bb-03': {
+    faceKind: 'print',
     faceCorners: [[0.406, 0.033], [0.556, 0.033], [0.55, 0.412], [0.406, 0.423]],
     description:
       'A static unipole on Jalan Imbi, catching traffic heading into the Golden Triangle from the Tun Razak side. Jalan Imbi links Berjaya Times Square and the Imbi food streets with Bukit Bintang and TRX, and it is a regular route for taxis and ride-hailing cars dropping visitors at the malls and hotels. A large static face gives a brand continuous presence on one of the main approaches to the city’s shopping district.',
@@ -73,6 +75,7 @@ export const SITE_CONTENT_SAMPLE: Record<string, Entry> = {
     ],
   },
   'sample-bb-04': {
+    faceKind: 'print',
     faceCorners: [[0.362, 0.267], [0.45, 0.262], [0.45, 0.54], [0.362, 0.544]],
     description:
       'A wall-mounted LED on Changkat Bukit Bintang, the dining and nightlife strip behind the main shopping street. The road is lined with restaurants, bars and cafés and is largely pedestrian in the evening, so the screen is watched by people walking slowly, choosing where to eat and drink. It suits beverage, entertainment and lifestyle campaigns, and evening-only schedules make the most of it.',
@@ -94,6 +97,7 @@ export const SITE_CONTENT_SAMPLE: Record<string, Entry> = {
     ],
   },
   'sample-klcc-02': {
+    faceKind: 'print',
     faceCorners: [[0.081, 0.177], [0.2, 0.2], [0.2, 0.48], [0.081, 0.487]],
     description:
       'An indoor digital panel on the concourse of Suria KLCC, at the foot of the Petronas Twin Towers. The concourse links the mall’s shops, the KLCC LRT station and the walkways to the convention centre and the park, so it carries office workers, shoppers and tourists all day. At eye level and close to the shops, the panel suits retail offers, product launches and campaigns with a QR code or a short call to action.',

@@ -10,7 +10,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Upload, Image as ImageIcon, Palette, RefreshCw } from 'lucide-react'
 import type { PublicSite } from '@/lib/inventory/types'
-import type { FaceCorners } from '@/lib/inventory/siteContent'
+import type { SiteContent } from '@/lib/inventory/siteContent'
+import type { Face } from '@/lib/mockup/compose'
 import { aspectFromSize, faceAspect, composeOnSite, drawCreative, loadImage, sampleAccent, type Template } from '@/lib/mockup/compose'
 import { LeadForm } from '../forms/LeadForm'
 
@@ -21,7 +22,9 @@ const TEMPLATES: { id: Template; label: string }[] = [
 ]
 const INDUSTRIES = ['Retail', 'Food & beverage', 'Property', 'Automotive', 'Finance', 'Telco & tech', 'Travel', 'Beauty', 'Entertainment', 'Education', 'Healthcare', 'Other']
 
-export function AdMockup({ site, faceCorners }: { site: PublicSite; faceCorners: FaceCorners | null }) {
+export function AdMockup({ site, content }: { site: PublicSite; content: Pick<SiteContent, 'faceCorners' | 'faceEdges' | 'faceKind'> }) {
+  const faceCorners = content.faceCorners
+  const face: Face | null = useMemo(() => faceCorners ? { corners: faceCorners, edges: content.faceEdges ?? null, kind: content.faceKind ?? (/led|digital|screen|panel|gantry/i.test(`${site.displayFormat} ${site.format}`) ? 'led' : 'print') } : null, [faceCorners, content.faceEdges, content.faceKind, site])
   const [logo, setLogo] = useState<HTMLImageElement | null>(null)
   const [logoName, setLogoName] = useState<string | null>(null)
   const [tagline, setTagline] = useState('')
@@ -93,7 +96,7 @@ export function AdMockup({ site, faceCorners }: { site: PublicSite; faceCorners:
       const creative = creativeRef.current ?? (creativeRef.current = document.createElement('canvas'))
       drawCreative(creative, { width: W, height: Math.max(300, Math.min(H, 2000)), photo: photoImg, logo, tagline: tagline.trim() || ' ', accent, template })
       let out: HTMLCanvasElement
-      if (siteImg && faceCorners) out = composeOnSite(siteImg, creative, faceCorners)
+      if (siteImg && face) out = composeOnSite(siteImg, creative, face)
       else { out = document.createElement('canvas'); out.width = creative.width; out.height = creative.height; out.getContext('2d')!.drawImage(creative, 0, 0) }
       cleanRef.current = out.toDataURL('image/png')
       setPreview(out.toDataURL('image/jpeg', 0.9))
@@ -102,7 +105,7 @@ export function AdMockup({ site, faceCorners }: { site: PublicSite; faceCorners:
       setError('Your browser could not build the preview. Try Chrome or Safari on a laptop.')
       console.error(e)
     }
-  }, [ready, aspect, photoImg, logo, tagline, accent, template, siteImg, faceCorners])
+  }, [ready, aspect, photoImg, logo, tagline, accent, template, siteImg, face])
   useEffect(() => { const t = setTimeout(render, 150); return () => clearTimeout(t) }, [render])
 
   const download = () => {

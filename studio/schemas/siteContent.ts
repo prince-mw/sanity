@@ -34,6 +34,12 @@ export default defineType({
       validation: Rule => Rule.max(4),
     }),
     defineField({
+      name: 'faceEdges', title: 'Edge midpoints (top, right, bottom, left; 0–1) for curved screens', type: 'array',
+      of: [{ type: 'object', name: 'pt', fields: [{ name: 'x', type: 'number' }, { name: 'y', type: 'number' }] }],
+      validation: Rule => Rule.max(4),
+    }),
+    defineField({ name: 'faceKind', title: 'Surface', type: 'string', options: { list: ['led', 'print'] }, description: 'LED/digital screens glow; printed faces catch the light.' }),
+    defineField({
       name: 'relatedPosts', title: 'Related articles', type: 'array',
       of: [{
         type: 'object', name: 'relatedPost',

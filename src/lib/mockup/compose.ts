@@ -4,7 +4,7 @@
 // watermarked for the preview. The clean version is produced the same way
 // without the watermark, only after the lead form succeeds.
 
-import { warpVertices, type Quad } from './homography'
+import { squareToQuad, project, type Quad } from './homography'
 
 export type Template = 'band' | 'split' | 'poster'
 
@@ -147,53 +147,199 @@ export function drawCreative(c: HTMLCanvasElement, input: CreativeInput) {
   }
 }
 
-let glCache: { canvas: HTMLCanvasElement; gl: WebGLRenderingContext; prog: WebGLProgram; buf: WebGLBuffer; tex: WebGLTexture } | null = null
+export type Face = {
+  corners: Quad                       // TL, TR, BR, BL as fractions of the photo
+  edges?: [number, number][] | null   // optional midpoints of the top, right, bottom, left edges (fractions) for curved screens
+  kind?: 'led' | 'print'              // emissive screen or printed surface; decides glow vs. shading
+}
+
+const MESH = 24 // cells per side: fine enough that each cell's affine mapping is invisible
+
+let glCache: { canvas: HTMLCanvasElement; gl: WebGLRenderingContext; prog: WebGLProgram; vbuf: WebGLBuffer; ibuf: WebGLBuffer; tex: WebGLTexture; light: WebGLTexture } | null = null
 
 function glSetup() {
   if (glCache) return glCache
   const canvas = document.createElement('canvas')
-  const gl = canvas.getContext('webgl', { premultipliedAlpha: true, preserveDrawingBuffer: true })
+  const gl = canvas.getContext('webgl', { premultipliedAlpha: true, preserveDrawingBuffer: true, antialias: true })
   if (!gl) throw new Error('WebGL unavailable')
-  const vs = `attribute vec2 p; attribute vec3 t; varying vec3 v; void main(){ v = t; gl_Position = vec4(p, 0.0, 1.0); }`
-  const fs = `precision mediump float; uniform sampler2D s; varying vec3 v; void main(){ gl_FragColor = texture2D(s, v.xy / v.z); }`
-  const sh = (type: number, src: string) => { const h = gl.createShader(type)!; gl.shaderSource(h, src); gl.compileShader(h); return h }
+  const vs = `attribute vec2 p; attribute vec2 t; varying vec2 v; void main(){ v = t; gl_Position = vec4(p, 0.0, 1.0); }`
+  // creative × lighting map, with the edge feathered over ~1 photo pixel (uPx = uv units per pixel)
+  const fs = `precision mediump float; uniform sampler2D s; uniform sampler2D l; uniform vec2 uPx; uniform float uLight; varying vec2 v;
+    void main(){
+      vec4 c = texture2D(s, v);
+      float lm = texture2D(l, v).r * 2.0;
+      c.rgb *= mix(1.0, lm, uLight);
+      float e = min(min(v.x, 1.0 - v.x) / uPx.x, min(v.y, 1.0 - v.y) / uPx.y);
+      c *= clamp(e + 0.5, 0.0, 1.0);
+      gl_FragColor = c;
+    }`
+  const sh = (type: number, src: string) => { const h = gl.createShader(type)!; gl.shaderSource(h, src); gl.compileShader(h); if (!gl.getShaderParameter(h, gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(h) || 'shader'); return h }
   const prog = gl.createProgram()!
   gl.attachShader(prog, sh(gl.VERTEX_SHADER, vs)); gl.attachShader(prog, sh(gl.FRAGMENT_SHADER, fs)); gl.linkProgram(prog)
-  const buf = gl.createBuffer()!, tex = gl.createTexture()!
-  glCache = { canvas, gl, prog, buf, tex }
+  glCache = { canvas, gl, prog, vbuf: gl.createBuffer()!, ibuf: gl.createBuffer()!, tex: gl.createTexture()!, light: gl.createTexture()! }
   return glCache
 }
 
 /**
- * The site photo with the creative warped onto `face` (fractions of the photo).
- * Returns a 2D canvas you can watermark and export.
+ * Photo-space point for (u, v) on the face: the homography (perspective) plus a
+ * quadratic bulge on any edge whose midpoint was dragged off the straight line,
+ * so curved LED screens are followed. Pure maths, used by the renderer and the
+ * marking tool's overlay alike.
  */
-export function composeOnSite(photo: HTMLImageElement, creative: HTMLCanvasElement, face: Quad, maxWidth = 1600): HTMLCanvasElement {
+export function facePoint(face: Face, u: number, v: number, W: number, H: number): [number, number] {
+  const quad = face.corners.map(([x, y]) => [x * W, y * H]) as Quad
+  const Hm = squareToQuad(quad)
+  const [bx, by] = project(Hm, u, v)
+  if (!face.edges || face.edges.length !== 4) return [bx, by]
+  // bulge of each edge = given midpoint − straight (perspective) midpoint
+  const mids: [number, number][] = [[0.5, 0], [1, 0.5], [0.5, 1], [0, 0.5]]
+  let ox = 0, oy = 0
+  face.edges.forEach((m, k) => {
+    if (!m) return
+    const [sx, sy] = project(Hm, mids[k][0], mids[k][1])
+    const dx = m[0] * W - sx, dy = m[1] * H - sy
+    const along = k % 2 === 0 ? 4 * u * (1 - u) : 4 * v * (1 - v)       // 0 at the ends, 1 at the middle of the edge
+    const across = k === 0 ? 1 - v : k === 1 ? u : k === 2 ? v : 1 - u  // fades towards the opposite edge
+    ox += dx * along * across; oy += dy * along * across
+  })
+  return [bx + ox, by + oy]
+}
+
+/** Mesh vertices (clip xy + uv) and triangle indices for the face. */
+function faceMesh(face: Face, W: number, H: number) {
+  const verts: number[] = [], idx: number[] = []
+  for (let j = 0; j <= MESH; j++) for (let i = 0; i <= MESH; i++) {
+    const u = i / MESH, v = j / MESH
+    const [x, y] = facePoint(face, u, v, W, H)
+    verts.push((x / W) * 2 - 1, 1 - (y / H) * 2, u, v)
+  }
+  for (let j = 0; j < MESH; j++) for (let i = 0; i < MESH; i++) {
+    const a = j * (MESH + 1) + i, b = a + 1, c = a + MESH + 1, d = c + 1
+    idx.push(a, b, c, b, d, c)
+  }
+  return { verts: new Float32Array(verts), idx: new Uint16Array(idx) }
+}
+
+/**
+ * Lighting map of the face, read from the photo itself: the luminance of the
+ * existing screen, warped flat and blurred until its old content is gone and
+ * only the light stays (glare, hotspot, vignette, dirt). Stored 0..255 for 0..2.
+ */
+function lightingMap(photo: HTMLImageElement, face: Face, W: number, H: number, n = 32): { data: Uint8Array; size: number } {
+  const c = document.createElement('canvas'); c.width = W; c.height = H
+  const g = c.getContext('2d', { willReadFrequently: true })!; g.drawImage(photo, 0, 0, W, H)
+  const px = g.getImageData(0, 0, W, H).data
+  const lum = new Float32Array(n * n)
+  for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+    const [x, y] = facePoint(face, (i + 0.5) / n, (j + 0.5) / n, W, H)
+    const xi = Math.min(W - 1, Math.max(0, Math.round(x))), yi = Math.min(H - 1, Math.max(0, Math.round(y)))
+    const o = (yi * W + xi) * 4
+    lum[j * n + i] = 0.299 * px[o] + 0.587 * px[o + 1] + 0.114 * px[o + 2]
+  }
+  // blur hard (box, several passes) so text and pictures of the old ad vanish and only the light field remains
+  let a = lum, b = new Float32Array(n * n)
+  for (let pass = 0; pass < 6; pass++) {
+    for (let j = 0; j < n; j++) for (let i = 0; i < n; i++) {
+      let sum = 0, cnt = 0
+      for (let dj = -2; dj <= 2; dj++) for (let di = -2; di <= 2; di++) {
+        const ii = i + di, jj = j + dj
+        if (ii < 0 || jj < 0 || ii >= n || jj >= n) continue
+        sum += a[jj * n + ii]; cnt++
+      }
+      b[j * n + i] = sum / cnt
+    }
+    ;[a, b] = [b, a]
+  }
+  let mean = 0; for (let k = 0; k < a.length; k++) mean += a[k]; mean /= a.length || 1
+  const data = new Uint8Array(n * n)
+  for (let k = 0; k < a.length; k++) {
+    const ratio = mean > 0 ? a[k] / mean : 1                 // 1 = average light of the screen
+    data[k] = Math.round(Math.min(2, Math.max(0, ratio)) * 127.5) // 0..2 → 0..255 (shader doubles it back)
+  }
+  return { data, size: n }
+}
+
+const isLed = (face: Face) => (face.kind ?? 'led') === 'led'
+
+/**
+ * The site photo with the creative on its face: perspective (+ curved edges),
+ * the photo's own lighting, feathered edges, softness and grain matched to the
+ * photo, and the glow an LED throws on its surroundings. All deterministic —
+ * nothing here can change the creative's content.
+ */
+export function composeOnSite(photo: HTMLImageElement, creative: HTMLCanvasElement, faceIn: Face | Quad, maxWidth = 1600): HTMLCanvasElement {
+  const face: Face = Array.isArray(faceIn) ? { corners: faceIn as Quad } : faceIn
   const scale = Math.min(1, maxWidth / photo.width)
   const W = Math.round(photo.width * scale), H = Math.round(photo.height * scale)
   const out = document.createElement('canvas'); out.width = W; out.height = H
   const g = out.getContext('2d')!
   g.drawImage(photo, 0, 0, W, H)
 
-  const { canvas, gl, prog, buf, tex } = glSetup()
+  // 1. warp with lighting and feathered edges (WebGL)
+  const { canvas, gl, prog, vbuf, ibuf, tex, light } = glSetup()
   canvas.width = W; canvas.height = H
   gl.viewport(0, 0, W, H); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT)
   gl.useProgram(prog)
-  gl.bindBuffer(gl.ARRAY_BUFFER, buf)
-  gl.bufferData(gl.ARRAY_BUFFER, warpVertices(face.map(([x, y]) => [x * W, y * H]) as Quad, W, H), gl.STATIC_DRAW)
+  const mesh = faceMesh(face, W, H)
+  gl.bindBuffer(gl.ARRAY_BUFFER, vbuf); gl.bufferData(gl.ARRAY_BUFFER, mesh.verts, gl.STATIC_DRAW)
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, ibuf); gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, mesh.idx, gl.STATIC_DRAW)
   const p = gl.getAttribLocation(prog, 'p'), t = gl.getAttribLocation(prog, 't')
-  gl.enableVertexAttribArray(p); gl.vertexAttribPointer(p, 2, gl.FLOAT, false, 20, 0)
-  gl.enableVertexAttribArray(t); gl.vertexAttribPointer(t, 3, gl.FLOAT, false, 20, 8)
-  gl.bindTexture(gl.TEXTURE_2D, tex)
-  gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, creative)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
-  gl.drawArrays(gl.TRIANGLE_FAN, 0, 4)
+  gl.enableVertexAttribArray(p); gl.vertexAttribPointer(p, 2, gl.FLOAT, false, 16, 0)
+  gl.enableVertexAttribArray(t); gl.vertexAttribPointer(t, 2, gl.FLOAT, false, 16, 8)
+  const setTex = (unit: number, handle: WebGLTexture, name: string) => {
+    gl.activeTexture(gl.TEXTURE0 + unit); gl.bindTexture(gl.TEXTURE_2D, handle)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE)
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR)
+    gl.uniform1i(gl.getUniformLocation(prog, name), unit)
+  }
+  setTex(0, tex, 's'); gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, creative)
+  const lm = lightingMap(photo, face, W, H)
+  setTex(1, light, 'l'); gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1)
+  gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE, lm.size, lm.size, 0, gl.LUMINANCE, gl.UNSIGNED_BYTE, lm.data)
+  // uv units per photo pixel, from the face's size on the photo
+  const [tl, tr, , bl] = face.corners
+  const faceW = Math.hypot((tr[0] - tl[0]) * W, (tr[1] - tl[1]) * H), faceH = Math.hypot((bl[0] - tl[0]) * W, (bl[1] - tl[1]) * H)
+  gl.uniform2f(gl.getUniformLocation(prog, 'uPx'), 1 / Math.max(1, faceW), 1 / Math.max(1, faceH))
+  gl.uniform1f(gl.getUniformLocation(prog, 'uLight'), isLed(face) ? 0.45 : 0.8) // screens emit their own light, print catches it
+  gl.drawElements(gl.TRIANGLES, mesh.idx.length, gl.UNSIGNED_SHORT, 0)
 
-  // a touch of the photo's light so the ad sits "in" the scene
-  g.drawImage(canvas, 0, 0)
-  g.save(); g.globalCompositeOperation = 'multiply'; g.globalAlpha = 0.08; g.drawImage(photo, 0, 0, W, H); g.restore()
+  // 2. the warped ad, softened to the photo's sharpness
+  const softness = Math.max(0.3, Math.min(1.2, faceW / 600)) // bigger faces in the photo are sharper
+  g.save(); g.filter = `blur(${softness.toFixed(2)}px)`; g.drawImage(canvas, 0, 0); g.restore()
+
+  // 3. an LED throws light around itself: a wide, faint, screen-blended copy
+  if (isLed(face)) {
+    g.save(); g.globalCompositeOperation = 'screen'; g.globalAlpha = 0.22
+    g.filter = `blur(${Math.round(Math.max(6, faceW / 40))}px)`; g.drawImage(canvas, 0, 0); g.restore()
+  }
+
+  // 4. grain, matched to the photo, only on the face
+  const grain = grainTile()
+  g.save(); g.beginPath()
+  const outline = faceOutline(face, W, H); outline.forEach(([x, y], k) => (k ? g.lineTo(x, y) : g.moveTo(x, y))); g.closePath(); g.clip()
+  g.globalCompositeOperation = 'overlay'; g.globalAlpha = 0.18
+  for (let y = 0; y < H; y += grain.height) for (let x = 0; x < W; x += grain.width) g.drawImage(grain, x, y)
+  g.restore()
   return out
+}
+
+/** Points around the face (follows curved edges), for clipping and overlays. */
+export function faceOutline(face: Face, W: number, H: number, n = 24): [number, number][] {
+  const pts: [number, number][] = []
+  for (let i = 0; i < n; i++) pts.push(facePoint(face, i / n, 0, W, H))
+  for (let i = 0; i < n; i++) pts.push(facePoint(face, 1, i / n, W, H))
+  for (let i = 0; i < n; i++) pts.push(facePoint(face, 1 - i / n, 1, W, H))
+  for (let i = 0; i < n; i++) pts.push(facePoint(face, 0, 1 - i / n, W, H))
+  return pts
+}
+
+let grainCache: HTMLCanvasElement | null = null
+function grainTile(size = 128): HTMLCanvasElement {
+  if (grainCache) return grainCache
+  const c = document.createElement('canvas'); c.width = size; c.height = size
+  const g = c.getContext('2d')!; const img = g.createImageData(size, size)
+  for (let i = 0; i < img.data.length; i += 4) { const v = 96 + Math.random() * 64; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255 }
+  g.putImageData(img, 0, 0); grainCache = c; return c
 }
 
 export function watermark(c: HTMLCanvasElement, label = 'PREVIEW · movingwalls.com') {
@@ -208,7 +354,8 @@ export function watermark(c: HTMLCanvasElement, label = 'PREVIEW · movingwalls.
 }
 
 /** Width/height of the face as it appears in the photo (average of the opposite edges), so the creative fits it. */
-export function faceAspect(face: Quad, photoW: number, photoH: number): number {
+export function faceAspect(faceIn: Face | Quad, photoW: number, photoH: number): number {
+  const face = Array.isArray(faceIn) ? faceIn as Quad : faceIn.corners
   const d = (a: [number, number], b: [number, number]) => Math.hypot((a[0] - b[0]) * photoW, (a[1] - b[1]) * photoH)
   const [tl, tr, br, bl] = face as [[number, number], [number, number], [number, number], [number, number]]
   const w = (d(tl, tr) + d(bl, br)) / 2, h = (d(tl, bl) + d(tr, br)) / 2
