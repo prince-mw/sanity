@@ -57,7 +57,7 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
                 <Link key={a.slug} href={areaPath(countrySlug, citySlug, a.slug)} className="group flex flex-col rounded-2xl border border-gray-200 bg-white p-5 hover:-translate-y-1 hover:border-mw-blue-200 hover:shadow-precision-lg transition-all">
                   <span className="text-xs font-bold uppercase tracking-wider text-mw-blue-600">{a.kind === 'buyer' ? `${a.count} sites` : a.count ? `${a.count} site${a.count === 1 ? '' : 's'} · growing` : 'Growing'}</span>
                   <span className="mt-2 text-lg font-bold text-gray-900">{a.name}</span>
-                  <span className="mt-3 text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068]">Explore {a.name} →</span>
+                  <span className="mt-3 text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb]">Explore {a.name} →</span>
                 </Link>
               ))}
             </div>

@@ -27,7 +27,7 @@ function ChannelCards({ data, channel }: { data: LeadsDashboard; channel: Exclud
   const open = data.openPipeline[channel]
   return (
     <section className="mb-8" aria-label={CHANNEL_INFO[channel].title}>
-      <h2 className="text-lg font-bold text-[#062068]">{CHANNEL_INFO[channel].title}</h2>
+      <h2 className="text-lg font-bold text-[#2563eb]">{CHANNEL_INFO[channel].title}</h2>
       <p className="text-sm text-gray-500 mb-3">{CHANNEL_INFO[channel].sub}</p>
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
         <Kpi label="Leads" value={nf(c.leads)} cur={c.leads} prev={p.leads} note={channel === 'Inbound' ? `${nf(c.fromForms)} from website forms` : undefined} info="New leads created in the CRM in this period. All the other numbers here are about these leads." />
@@ -90,7 +90,7 @@ export default function LeadsTab({ data, websiteLeads }: { data: LeadsDashboard;
 
       {/* Deals by stage */}
       <section className="mb-8">
-        <h2 className="text-lg font-bold text-[#062068] mb-1">Where this period&apos;s deals are now</h2>
+        <h2 className="text-lg font-bold text-[#2563eb] mb-1">Where this period&apos;s deals are now</h2>
         <p className="text-sm text-gray-500 mb-3">Deals from this period&apos;s leads, by their current stage.</p>
         {data.stages.length === 0 ? (
           <p className="rounded-2xl border border-gray-200 bg-white p-5 text-sm text-gray-500">No deals created in this period.</p>
@@ -126,7 +126,7 @@ export default function LeadsTab({ data, websiteLeads }: { data: LeadsDashboard;
       {/* Website leads by page, from GA4 (the CRM doesn't have the page) */}
       {websiteLeads && (
         <section className="mb-8">
-          <h2 className="text-lg font-bold text-[#062068] mb-1">Website leads by market and city</h2>
+          <h2 className="text-lg font-bold text-[#2563eb] mb-1">Website leads by market and city</h2>
           <p className="text-sm text-gray-500 mb-3">Every website form fill in this period, credited to the page it was sent from (the page name on the form, &ldquo;referrername&rdquo;), from Google Analytics. &ldquo;Paid&rdquo; = the visit came from Google Ads. Leads only: deals can&apos;t be split by city page until the page name is saved on the CRM lead.</p>
           <LeadCards sources={websiteLeads} />
         </section>
@@ -135,18 +135,18 @@ export default function LeadsTab({ data, websiteLeads }: { data: LeadsDashboard;
       {/* Inbound breakdowns */}
       <section className="grid lg:grid-cols-2 gap-4 mb-8">
         <div>
-          <h2 className="text-lg font-bold text-[#062068] mb-1">Inbound by website form</h2>
+          <h2 className="text-lg font-bold text-[#2563eb] mb-1">Inbound by website form</h2>
           <p className="text-sm text-gray-500 mb-3">CRM leads that came through a website form, by form, with their deals. City pages use their country&apos;s form, so cities are in the cards above.</p>
           <div className="rounded-2xl border border-gray-200 bg-white p-3"><BreakdownTable rows={data.byForm} label="Form" top={Infinity} /></div>
         </div>
         <div>
-          <h2 className="text-lg font-bold text-[#062068] mb-1">Inbound by market</h2>
+          <h2 className="text-lg font-bold text-[#2563eb] mb-1">Inbound by market</h2>
           <p className="text-sm text-gray-500 mb-3">The lead&apos;s operating country in the CRM.</p>
           <div className="rounded-2xl border border-gray-200 bg-white p-3"><BreakdownTable rows={data.byMarket} label="Market" /></div>
         </div>
       </section>
 
-      <h2 className="text-lg font-bold text-[#062068] mb-3">Details</h2>
+      <h2 className="text-lg font-bold text-[#2563eb] mb-3">Details</h2>
       <Details title="Deals in this period" summary={`${data.deals.length} deals from this period's leads, largest first`}>
         {data.deals.length === 0 ? (
           <p className="text-sm text-gray-500">No deals in this period.</p>

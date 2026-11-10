@@ -31,7 +31,7 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
       <div className="mw-container">
 
         <div className={`text-center max-w-3xl mx-auto ${compact ? 'mb-8 sm:mb-10' : 'mb-16 sm:mb-20'}`}>
-          <h2 className="font-bold tracking-tight text-[#062068] font-sans text-3xl lg:text-4xl">
+          <h2 className="font-bold tracking-tight text-[#2563eb] font-sans text-3xl lg:text-4xl">
             {title}
           </h2>
         </div>
@@ -109,9 +109,9 @@ export const ComparisonSection: React.FC<ComparisonSectionProps> = ({
           </div>
 
           {/* Card 2: WITH MW INVENTORY */}
-          <div className="bg-white rounded-2xl border border-gray-200/80 p-6 sm:p-8 shadow-precision flex flex-col items-center text-center group hover:border-[#062068]/30 transition-all">
-            <div className="text-xs font-bold uppercase tracking-widest text-[#062068] mb-6 font-sans flex items-center gap-1.5 justify-center">
-              <Sparkles className="w-3.5 h-3.5 text-[#062068]" />
+          <div className="bg-white rounded-2xl border border-gray-200/80 p-6 sm:p-8 shadow-precision flex flex-col items-center text-center group hover:border-[#2563eb]/30 transition-all">
+            <div className="text-xs font-bold uppercase tracking-widest text-[#2563eb] mb-6 font-sans flex items-center gap-1.5 justify-center">
+              <Sparkles className="w-3.5 h-3.5 text-[#2563eb]" />
               <span>WITH OUR INVENTORY MANAGEMENT SYSTEM</span>
             </div>
 

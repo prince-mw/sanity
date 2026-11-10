@@ -106,11 +106,11 @@ export default function ProjectsTab({ data, statuses }: { data: ProjectsDashboar
 
       <section className="grid lg:grid-cols-2 gap-4 mb-8">
         <div>
-          <h2 className="text-lg font-bold text-[#062068] mb-3">Planned vs logged hours</h2>
+          <h2 className="text-lg font-bold text-[#2563eb] mb-3">Planned vs logged hours</h2>
           <PlannedVsLogged data={data} />
         </div>
         <div>
-          <h2 className="text-lg font-bold text-[#062068] mb-3">Tasks &amp; status</h2>
+          <h2 className="text-lg font-bold text-[#2563eb] mb-3">Tasks &amp; status</h2>
           <TaskStatusChart data={data} />
         </div>
       </section>
@@ -121,12 +121,12 @@ export default function ProjectsTab({ data, statuses }: { data: ProjectsDashboar
       </section>
 
       <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 mb-8">
-        <h2 className="text-lg font-bold text-[#062068]">→ Action items</h2>
+        <h2 className="text-lg font-bold text-[#2563eb]">→ Action items</h2>
         <p className="text-sm text-gray-500 mb-4">Based on overdue, on-hold and time-logging gaps in Zoho Projects.</p>
         <ActionList actions={data.actions} initial={statuses} />
       </section>
 
-      <h2 className="text-lg font-bold text-[#062068] mb-3">Details</h2>
+      <h2 className="text-lg font-bold text-[#2563eb] mb-3">Details</h2>
       <Details title="Projects" summary={`${data.projects.length} project${data.projects.length === 1 ? '' : 's'} the team planned or logged work on in this period`}>
         <div className="overflow-x-auto rounded-2xl border border-gray-200">
           <table className="w-full text-sm">

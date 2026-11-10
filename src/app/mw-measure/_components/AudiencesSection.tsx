@@ -40,7 +40,7 @@ export const AudiencesSection: React.FC = () => {
       <div className="mw-container">
 
         <div className="text-center mb-10 sm:mb-12">
-          <h2 className="font-extrabold tracking-tight text-[#062068] text-3xl lg:text-4xl">
+          <h2 className="font-extrabold tracking-tight text-[#2563eb] text-3xl lg:text-4xl">
             Built for Everyone Responsible for OOH Success
           </h2>
         </div>
@@ -60,7 +60,7 @@ export const AudiencesSection: React.FC = () => {
                   className="object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent"></div>
-                <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#062068] text-xs font-bold shadow-sm">
+                <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full bg-white/95 backdrop-blur-sm text-[#2563eb] text-xs font-bold shadow-sm">
                   {role.role}
                 </span>
                 <span className="absolute bottom-3 left-3 text-xs font-semibold text-white/95">
@@ -71,7 +71,7 @@ export const AudiencesSection: React.FC = () => {
               <div className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-xl font-bold text-[#062068] group-hover:text-blue-600 transition-colors">
+                    <h3 className="text-xl font-bold text-[#2563eb] group-hover:text-blue-600 transition-colors">
                       {role.title}
                     </h3>
                     <ArrowUpRight className="w-4 h-4 text-slate-400 group-hover:text-blue-600 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />

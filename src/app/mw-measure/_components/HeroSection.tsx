@@ -56,7 +56,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
   const renderSubtitle = () => subtitle.replaceAll('MW Measure', 'MW Measure');
 
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#062068] text-white pb-12 lg:pb-16 mw-hero-top">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#2563eb] text-white pb-12 lg:pb-16 mw-hero-top">
 
       {/* The right-side ambient glow was removed — it showed through the circle image's
           transparent corners (a circle inscribed in a square always leaves its corners

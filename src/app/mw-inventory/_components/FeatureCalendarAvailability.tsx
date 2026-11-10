@@ -29,7 +29,7 @@ export const FeatureCalendarAvailability: React.FC<FeatureCalendarAvailabilityPr
         </div>
 
         <div className="lg:col-span-5 space-y-6 order-1 lg:order-2">
-          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#062068] font-sans">
+          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#2563eb] font-sans">
             {title}
           </h3>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed font-normal">

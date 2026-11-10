@@ -39,7 +39,7 @@ export function Delta({ cur, prev, lowerIsBetter = false, points = false }: { cu
 function InfoTip({ text }: { text: string }) {
   return (
     <span className="group relative inline-flex align-middle">
-      <span tabIndex={0} aria-label={text} className="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-gray-300 text-xs font-bold normal-case text-gray-400 hover:border-gray-500 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#062068]">i</span>
+      <span tabIndex={0} aria-label={text} className="inline-flex h-4 w-4 cursor-help items-center justify-center rounded-full border border-gray-300 text-xs font-bold normal-case text-gray-400 hover:border-gray-500 hover:text-gray-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#2563eb]">i</span>
       <span role="tooltip" className="pointer-events-none absolute left-1/2 top-full z-30 mt-2 hidden w-60 -translate-x-1/2 rounded-lg bg-gray-900 px-3 py-2 text-xs font-normal normal-case leading-relaxed tracking-normal text-white shadow-lg group-hover:block group-focus-within:block">
         {text}
       </span>
@@ -51,7 +51,7 @@ export function Kpi({ label, value, cur, prev, share, note, info, lowerIsBetter,
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5">
       <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-gray-500">{label}{info && <InfoTip text={info} />}</p>
-      <p className="mt-2 text-3xl font-bold text-[#062068]">{value}</p>
+      <p className="mt-2 text-3xl font-bold text-[#2563eb]">{value}</p>
       <div className="mt-1 flex flex-wrap items-center gap-x-2">
         {!hideDelta && <Delta cur={cur} prev={prev} lowerIsBetter={lowerIsBetter} points={points} />}
         {share && <span className="text-xs text-gray-400">· {share} of whole site</span>}
@@ -151,7 +151,7 @@ export function ActionList({ actions, initial, onSaved }: { actions: Action[]; i
           const done = st === 'done'
           return (
             <li key={a.id} className={`flex gap-4 py-4 first:pt-0 last:pb-0 ${done ? 'opacity-60' : ''}`}>
-              <span className={`w-7 h-7 rounded-full text-white text-sm font-bold flex items-center justify-center flex-shrink-0 ${done ? 'bg-emerald-600' : 'bg-[#062068]'}`}>
+              <span className={`w-7 h-7 rounded-full text-white text-sm font-bold flex items-center justify-center flex-shrink-0 ${done ? 'bg-emerald-600' : 'bg-[#2563eb]'}`}>
                 {done ? '✓' : i + 1}
               </span>
               <div className="min-w-0 flex-1">

@@ -6,7 +6,7 @@ import Link from 'next/link'
 import { CTAButton } from '@/components/CTAButton'
 import type { RetailMediaContent } from '@/data/retail-media-page'
 
-const NAVY = 'bg-[#062068]'
+const NAVY = 'bg-[#2563eb]'
 
 const ArrowIcon = ({ className = 'w-5 h-5' }: { className?: string }) => (
   <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -60,7 +60,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
             </p>
             <CTAButton
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-white text-[#062068] px-7 py-3.5 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all shadow-precision-lg active:scale-[0.98]"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#2563eb] px-7 py-3.5 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all shadow-precision-lg active:scale-[0.98]"
             >
               {content.heroCtaText}
               <ArrowIcon />
@@ -89,7 +89,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       <section className="mw-section">
         <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start mw-container">
           <div>
-            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-4 text-3xl lg:text-4xl">
               {content.contextHeading}
             </h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
@@ -97,7 +97,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
             </div>
           </div>
           <div className="rounded-2xl bg-gray-50 border border-gray-200 p-6 sm:p-8 lg:p-10">
-            <p className="text-xl sm:text-2xl font-bold text-[#062068] mb-6">{content.contextCallout}</p>
+            <p className="text-xl sm:text-2xl font-bold text-[#2563eb] mb-6">{content.contextCallout}</p>
             <dl className="grid sm:grid-cols-2 gap-4 mb-6">
               {content.contextStats.map((stat) => (
                 <div key={stat.value} className="rounded-2xl bg-white border border-gray-200 p-5">
@@ -118,7 +118,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       <section className="bg-gray-50 mw-section">
         <div className="mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
-            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-4 text-3xl lg:text-4xl">
               {content.lastMileHeading}
             </h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
@@ -134,7 +134,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
                   <span className={`flex items-center justify-center w-9 h-9 rounded-full ${NAVY} text-white text-sm font-bold`}>
                     {i + 1}
                   </span>
-                  <span className="text-lg font-bold text-[#062068]">{moment.stage}</span>
+                  <span className="text-lg font-bold text-[#2563eb]">{moment.stage}</span>
                 </div>
                 <dl className="space-y-4 text-sm">
                   <div>
@@ -161,7 +161,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
         <div className="mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
             <Eyebrow>{content.approachEyebrow}</Eyebrow>
-            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-4 text-3xl lg:text-4xl">
               {content.approachHeading}
             </h2>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{content.approachIntro}</p>
@@ -202,7 +202,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
             <ol className="space-y-4">
               {content.howItWorksSteps.map((step, i) => (
                 <li key={step.title} className="flex gap-4 rounded-2xl border border-white/15 bg-white/5 p-5">
-                  <span className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#062068] font-bold">
+                  <span className="flex-shrink-0 flex items-center justify-center w-10 h-10 rounded-full bg-white text-[#2563eb] font-bold">
                     {i + 1}
                   </span>
                   <div>
@@ -234,7 +234,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       <section className="mw-section">
         <div className="mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
-            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-4 text-3xl lg:text-4xl">
               {content.creativeHeading}
             </h2>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{content.creativeIntro}</p>
@@ -257,7 +257,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       <section className="bg-gray-50 mw-section">
         <div className="mw-container">
           <div className="max-w-3xl mb-8 lg:mb-10">
-            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-4 text-3xl lg:text-4xl">
               {content.measurementHeading}
             </h2>
             <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{content.measurementIntro}</p>
@@ -276,7 +276,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
               <tbody className="divide-y divide-gray-200">
                 {content.measurementLayers.map((row) => (
                   <tr key={row.layer}>
-                    <th scope="row" className="px-6 py-5 font-bold text-[#062068] align-top">{row.layer}</th>
+                    <th scope="row" className="px-6 py-5 font-bold text-[#2563eb] align-top">{row.layer}</th>
                     <td className="px-6 py-5 font-semibold text-gray-900 align-top">{row.question}</td>
                     <td className="px-6 py-5 text-gray-600 leading-relaxed align-top">{row.method}</td>
                   </tr>
@@ -289,7 +289,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
           <div className="md:hidden space-y-4">
             {content.measurementLayers.map((row) => (
               <div key={row.layer} className="rounded-2xl bg-white border border-gray-200 p-5">
-                <p className="font-bold text-[#062068]">{row.layer}</p>
+                <p className="font-bold text-[#2563eb]">{row.layer}</p>
                 <p className="mt-2 font-semibold text-gray-900">{row.question}</p>
                 <p className="mt-2 text-gray-600 leading-relaxed text-sm">{row.method}</p>
               </div>
@@ -301,7 +301,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       {/* Case study */}
       <section className="mw-section">
         <div className="mw-container">
-          <h2 className="font-bold tracking-tight text-[#062068] mb-8 lg:mb-10 text-3xl lg:text-4xl">
+          <h2 className="font-bold tracking-tight text-[#2563eb] mb-8 lg:mb-10 text-3xl lg:text-4xl">
             {content.caseEyebrow}
           </h2>
           <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
@@ -353,7 +353,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
           <p className="text-base sm:text-lg text-blue-100/90 leading-relaxed mb-8">{content.ctaBody}</p>
           <CTAButton
             href="/contact"
-            className="inline-flex items-center justify-center gap-2 bg-white text-[#062068] px-8 py-3.5 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all shadow-precision-lg active:scale-[0.98]"
+            className="inline-flex items-center justify-center gap-2 bg-white text-[#2563eb] px-8 py-3.5 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all shadow-precision-lg active:scale-[0.98]"
           >
             {content.ctaButtonText}
             <ArrowIcon />
@@ -365,7 +365,7 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
       {content.faqs.length > 0 && (
         <section className="mw-section">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="font-bold tracking-tight text-[#062068] mb-8 text-center text-3xl lg:text-4xl">
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-8 text-center text-3xl lg:text-4xl">
               {content.faqHeading}
             </h2>
             <div className="divide-y divide-gray-200 border-y border-gray-200">

@@ -32,7 +32,7 @@ export const AudienceCardsSection: React.FC = () => {
     <section className="bg-[#f8f9fc] border-b border-[#e2e8f0] mw-section" id="audience-cards-section">
       <div className="mw-container">
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="font-extrabold text-[#062068] tracking-tight mb-3 text-3xl lg:text-4xl">
+          <h2 className="font-extrabold text-[#2563eb] tracking-tight mb-3 text-3xl lg:text-4xl">
             Built for Those Who Build OOH Plans
           </h2>
         </div>
@@ -59,7 +59,7 @@ export const AudienceCardsSection: React.FC = () => {
                   <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{card.description}</p>
 
                   <div className="bg-[#f8f9fc] rounded-lg p-4 border border-[#e2e8f0] space-y-2.5">
-                    <div className="text-xs font-bold text-[#062068] uppercase tracking-wider">{card.toolkitLabel}</div>
+                    <div className="text-xs font-bold text-[#2563eb] uppercase tracking-wider">{card.toolkitLabel}</div>
                     <div className="space-y-2 text-xs sm:text-sm text-[#191c1e]">
                       {card.highlights.map((item) => (
                         <div key={item} className="flex items-center gap-2.5">
@@ -73,7 +73,7 @@ export const AudienceCardsSection: React.FC = () => {
               </div>
 
               <div className="px-6 sm:px-7 pb-6">
-                <div className="w-full py-3 rounded-lg bg-[#edf2fe] group-hover:bg-[#dde1ff] text-[#062068] text-xs font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-2">
+                <div className="w-full py-3 rounded-lg bg-[#edf2fe] group-hover:bg-[#dde1ff] text-[#2563eb] text-xs font-bold tracking-wide uppercase transition-all duration-200 flex items-center justify-center gap-2">
                   <span>{t('ui.products.exploreMore')}</span>
                   <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                 </div>

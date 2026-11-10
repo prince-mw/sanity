@@ -31,7 +31,7 @@ export default async function EditProposalPage({ params, searchParams }: Props) 
           <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Instant proposal</span>
           <h1 className="mt-2 text-3xl font-bold">This link belongs to the person who created the proposal.</h1>
           <p className="mt-3 text-blue-100/90">Open the edit link from the device you built it on, or ask the person who shared it with you to make the change. You can still read the proposal.</p>
-          <Link href={`/proposals/${shareId}`} className="mw-tap mt-6 inline-flex rounded-lg bg-white px-5 py-2.5 font-semibold text-[#062068]">View the proposal</Link>
+          <Link href={`/proposals/${shareId}`} className="mw-tap mt-6 inline-flex rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb]">View the proposal</Link>
         </div>
       </div>
     )

@@ -59,7 +59,7 @@ export function SiteCard({ site, linked, addable = true }: { site: PublicSite; l
           {site.audience?.impressions && <div><dt className="sr-only">Monthly impressions</dt><dd>{site.audience.impressions} impressions / mo</dd></div>}
         </dl>
         <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-          {linked ? <span className="text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068]">View site details →</span> : <span />}
+          {linked ? <span className="text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb]">View site details →</span> : <span />}
           {addable && <AddToProposalButton site={site} variant="card" />}
         </div>
       </div>
@@ -98,8 +98,8 @@ export function SiteGrid({ sites, hasPage, mapTitle }: { sites: PublicSite[]; ha
     setActive(id)
   }
   const chip = (on: boolean) =>
-    `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-mw-blue-200'}`
-  const tab = (on: boolean) => `mw-tap flex-1 rounded-full px-4 py-1.5 text-sm font-semibold ${on ? 'bg-[#062068] text-white' : 'text-gray-700'}`
+    `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-mw-blue-200'}`
+  const tab = (on: boolean) => `mw-tap flex-1 rounded-full px-4 py-1.5 text-sm font-semibold ${on ? 'bg-[#2563eb] text-white' : 'text-gray-700'}`
   return (
     <div>
       <div className="flex flex-col gap-3 mb-5">

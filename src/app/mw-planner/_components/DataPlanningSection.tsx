@@ -22,7 +22,7 @@ export const DataPlanningSection: React.FC = () => {
       <div className="mw-container">
 
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="font-extrabold text-[#062068] tracking-tight leading-tight mb-4 text-3xl lg:text-4xl">
+          <h2 className="font-extrabold text-[#2563eb] tracking-tight leading-tight mb-4 text-3xl lg:text-4xl">
             Stop Guessing. Start Planning With Data.
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">

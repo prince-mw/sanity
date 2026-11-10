@@ -41,7 +41,7 @@ export const FooterCTA: React.FC = () => {
 
         <CTAButton
           href="/contact"
-          className="inline-flex items-center gap-2.5 px-8 py-4 rounded-lg bg-white hover:bg-[#f1f4f9] text-[#062068] font-bold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
+          className="inline-flex items-center gap-2.5 px-8 py-4 rounded-lg bg-white hover:bg-[#f1f4f9] text-[#2563eb] font-bold text-sm sm:text-base shadow-xl hover:shadow-2xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
           id="footer-cta-see-planner-btn"
         >
           <span>{t('ui.products.seeMwPlannerInAction')}</span>

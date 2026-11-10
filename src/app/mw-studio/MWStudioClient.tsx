@@ -337,7 +337,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
     <div className="min-h-screen bg-white">
 
       {/* ─── HERO — same two-column bleed layout and visual as the MW Inventory hero ─── */}
-      <section className="relative overflow-hidden bg-[#062068] text-white pb-20 lg:pb-28 mw-hero-top" id="hero-section">
+      <section className="relative overflow-hidden bg-[#2563eb] text-white pb-20 lg:pb-28 mw-hero-top" id="hero-section">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#4859a7]/20 rounded-full blur-3xl pointer-events-none" />
@@ -373,7 +373,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
               <div className="pt-2 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <CTAButton
                   href={product?.ctaLink || '/contact'}
-                  className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-base px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
+                  className="bg-white hover:bg-gray-100 text-[#2563eb] font-semibold text-base px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                   id="hero-lets-connect-btn"
                 >
                   <span>{t('ui.products.letsConnect')}</span>
@@ -488,7 +488,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 <section className="bg-white rounded-2xl overflow-hidden border border-gray-200 shadow-sm" id="ims-tab-features-section">
                   <div className="mw-container">
                     <div className="text-center max-w-3xl mx-auto pt-6 sm:pt-8 pb-2">
-                      <h2 className="font-bold tracking-tight text-[#062068] font-sans text-3xl lg:text-4xl">
+                      <h2 className="font-bold tracking-tight text-[#2563eb] font-sans text-3xl lg:text-4xl">
                         Unlock More Value From What You Own.
                       </h2>
                     </div>

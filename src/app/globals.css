@@ -41,7 +41,7 @@
   .mw-btn { @apply inline-flex items-center justify-center gap-2 rounded-lg px-6 py-3 text-base font-semibold normal-case tracking-normal transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-600; }
   .mw-btn-primary { @apply mw-btn bg-blue-600 text-white hover:bg-blue-700; }
   .mw-btn-secondary { @apply mw-btn border-2 border-blue-600 bg-transparent text-blue-600 hover:bg-blue-50; }
-  .mw-btn-on-dark { @apply mw-btn bg-white text-[#062068] hover:bg-blue-50; }
+  .mw-btn-on-dark { @apply mw-btn bg-white text-[#2563eb] hover:bg-blue-50; }
 }
 
 :root {
@@ -297,8 +297,8 @@ select {
   .proposal-page .print-only { display: block !important; }
   .proposal-page .break-inside-avoid { break-inside: avoid; page-break-inside: avoid; }
   .proposal-page .mw-section { padding-top: 1.5rem; padding-bottom: 1.5rem; }
-  .proposal-page .print-hero { background: #ffffff !important; color: #062068 !important; padding-top: 1rem; }
-  .proposal-page .print-hero * { color: #062068 !important; }
+  .proposal-page .print-hero { background: #ffffff !important; color: #2563eb !important; padding-top: 1rem; }
+  .proposal-page .print-hero * { color: #2563eb !important; }
   body:has(.proposal-page) :is(header, footer, main > section:last-of-type:not(.proposal-page *), [class*='z-[9999]']) { display: none !important; }
   body:has(.proposal-page) main { padding-top: 0 !important; }
 }

@@ -20,7 +20,7 @@ import type { Objective } from '@/lib/proposal/types'
 type Props = { markets: Market[]; formats: Record<string, string[]> }
 
 const input = 'mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2.5 text-base text-gray-900 focus:border-mw-blue-500 focus:outline-none'
-const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#062068]'}`
+const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`
 
 export function BriefForm({ markets, formats }: Props) {
   const router = useRouter()
@@ -85,7 +85,7 @@ export function BriefForm({ markets, formats }: Props) {
         <div className="mw-container grid gap-10 lg:grid-cols-12">
           <form className="lg:col-span-7 space-y-7" onSubmit={e => { e.preventDefault(); submit('brief') }}>
             <fieldset>
-              <legend className="text-lg font-bold text-[#062068]">Where and when</legend>
+              <legend className="text-lg font-bold text-[#2563eb]">Where and when</legend>
               <div className="mt-3 grid gap-4 sm:grid-cols-3">
                 <label className="block sm:col-span-1"><span className="text-sm font-semibold text-gray-700">Market</span>
                   <select value={market} onChange={e => setMarket(e.target.value)} className={input}>
@@ -105,11 +105,11 @@ export function BriefForm({ markets, formats }: Props) {
             </fieldset>
 
             <fieldset>
-              <legend className="text-lg font-bold text-[#062068]">What it is for</legend>
+              <legend className="text-lg font-bold text-[#2563eb]">What it is for</legend>
               <div className="mt-3 grid gap-3 sm:grid-cols-2">
                 {OBJECTIVES.map(o => (
                   <button key={o.id} type="button" onClick={() => setObjective(o.id)} aria-pressed={objective === o.id}
-                    className={`mw-tap flex-col !items-start !justify-start rounded-xl border p-4 text-left transition-colors ${objective === o.id ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-200 bg-white hover:border-[#062068]'}`}>
+                    className={`mw-tap flex-col !items-start !justify-start rounded-xl border p-4 text-left transition-colors ${objective === o.id ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-200 bg-white hover:border-[#2563eb]'}`}>
                     <span className="block font-bold">{o.label}</span>
                     <span className={`block text-sm ${objective === o.id ? 'text-blue-100/90' : 'text-gray-600'}`}>{o.hint}</span>
                   </button>
@@ -126,7 +126,7 @@ export function BriefForm({ markets, formats }: Props) {
             </fieldset>
 
             <fieldset>
-              <legend className="text-lg font-bold text-[#062068]">Size of the plan</legend>
+              <legend className="text-lg font-bold text-[#2563eb]">Size of the plan</legend>
               <p className="mt-1 text-sm text-gray-600">The budget band only sizes the site list. It is never shown on the proposal.</p>
               <div className="mt-3 grid gap-4 sm:grid-cols-2">
                 <label className="block"><span className="text-sm font-semibold text-gray-700">Budget band</span>
@@ -150,7 +150,7 @@ export function BriefForm({ markets, formats }: Props) {
 
             {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
             <div className="flex flex-col sm:flex-row gap-3">
-              <button type="submit" disabled={busy !== null} className="mw-tap inline-flex items-center justify-center rounded-lg bg-[#062068] px-6 py-3 font-semibold text-white hover:bg-[#0a2a8a] disabled:opacity-60">
+              <button type="submit" disabled={busy !== null} className="mw-tap inline-flex items-center justify-center rounded-lg bg-[#2563eb] px-6 py-3 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-60">
                 {busy === 'brief' ? 'Matching sites…' : 'Generate my proposal'}
               </button>
               <p className="self-center text-sm text-gray-500">{busy === 'brief' ? 'This takes about 15 seconds.' : 'No sales call needed. Our team confirms availability after.'}</p>
@@ -159,7 +159,7 @@ export function BriefForm({ markets, formats }: Props) {
 
           <aside className="lg:col-span-5">
             <div className="rounded-2xl border border-gray-200 bg-white p-5">
-              <h2 className="text-lg font-bold text-[#062068]">Sites you shortlisted</h2>
+              <h2 className="text-lg font-bold text-[#2563eb]">Sites you shortlisted</h2>
               {!ready || shortlistHere.length === 0 ? (
                 <p className="mt-2 text-sm text-gray-600">None yet. Browse <Link href={`/locations/${countrySlug}/${citySlug}`} className="font-semibold text-mw-blue-600 hover:underline">the sites in {markets.find(m => m.countrySlug === countrySlug)?.cities.find(c => c.slug === citySlug)?.name}</Link> and tap “Add to proposal” on any you like. They are always kept in the plan.</p>
               ) : (
@@ -174,14 +174,14 @@ export function BriefForm({ markets, formats }: Props) {
                       </li>
                     ))}
                   </ul>
-                  <button type="button" onClick={() => submit('shortlist')} disabled={busy !== null} className="mw-tap mt-4 w-full rounded-lg border-2 border-[#062068] bg-white px-4 py-2.5 font-semibold text-[#062068] hover:bg-mw-blue-50 disabled:opacity-60">
+                  <button type="button" onClick={() => submit('shortlist')} disabled={busy !== null} className="mw-tap mt-4 w-full rounded-lg border-2 border-[#2563eb] bg-white px-4 py-2.5 font-semibold text-[#2563eb] hover:bg-mw-blue-50 disabled:opacity-60">
                     {busy === 'shortlist' ? 'Building…' : `Build from these ${shortlistHere.length} sites only`}
                   </button>
                 </>
               )}
             </div>
             <div className="mt-5 rounded-2xl border border-gray-200 bg-white p-5 text-sm text-gray-600">
-              <h3 className="font-bold text-[#062068]">What you get</h3>
+              <h3 className="font-bold text-[#2563eb]">What you get</h3>
               <ul className="mt-2 list-disc space-y-1 pl-5">
                 <li>A proposal page with every site’s photo, format, area, audience figures and why it was picked.</li>
                 <li>A private link to share with your client, and a print view.</li>

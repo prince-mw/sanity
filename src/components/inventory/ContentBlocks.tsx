@@ -23,7 +23,7 @@ export function PersonaGrid({ personas }: { personas: Persona[] }) {
         const Icon = PERSONA_ICONS[p.icon] ?? Users
         return (
           <li key={p.name} className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6">
-            <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-mw-blue-50 text-[#062068]"><Icon className="h-6 w-6" aria-hidden="true" /></span>
+            <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-mw-blue-50 text-[#2563eb]"><Icon className="h-6 w-6" aria-hidden="true" /></span>
             <h3 className="text-lg font-bold text-gray-900">{p.name}</h3>
             <p className="mt-1 text-sm text-gray-600 leading-relaxed">{p.who}</p>
             <dl className="mt-4 space-y-2 text-sm">
@@ -48,7 +48,7 @@ export function AudienceSection({ placeName, personas, figures, bg = 'bg-gray-50
         {hasFigures && (
           <dl className="mb-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-gray-200 sm:max-w-md">
             {figures!.map(f => (
-              <div key={f.label} className="bg-white p-5"><dt className="text-xs font-semibold uppercase tracking-wider text-gray-500">{f.label}</dt><dd className="mt-1 text-3xl font-bold text-[#062068]">{f.value}</dd></div>
+              <div key={f.label} className="bg-white p-5"><dt className="text-xs font-semibold uppercase tracking-wider text-gray-500">{f.label}</dt><dd className="mt-1 text-3xl font-bold text-[#2563eb]">{f.value}</dd></div>
             ))}
           </dl>
         )}
@@ -85,7 +85,7 @@ function RelatedCard({ it }: { it: RelatedItem }) {
         <span className="mb-1 text-xs font-bold uppercase tracking-wider text-mw-blue-600">{it.kind === 'post' ? 'Article' : 'Case study'}</span>
         <h3 className="font-bold leading-snug text-gray-900">{it.title}</h3>
         {it.excerpt && <p className="mt-2 text-sm text-gray-600 line-clamp-3">{it.excerpt}</p>}
-        <span className="mt-auto pt-4 text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068]">Read more →</span>
+        <span className="mt-auto pt-4 text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb]">Read more →</span>
       </div>
     </Link>
   )
@@ -117,7 +117,7 @@ export function RelatedSection({ title, intro, items, bg, limit = 3, allHref, al
         )}
         <div className="mt-6 flex flex-wrap items-center gap-3">
           {rest > 0 && (
-            <button type="button" onClick={() => setOpen(true)} className="mw-tap inline-flex items-center rounded-lg bg-[#062068] px-5 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">
+            <button type="button" onClick={() => setOpen(true)} className="mw-tap inline-flex items-center rounded-lg bg-[#2563eb] px-5 py-2.5 font-semibold text-white hover:bg-[#1d4ed8]">
               View {rest} more {rest === 1 ? (items[0].kind === 'post' ? 'article' : 'case study') : (items[0].kind === 'post' ? 'articles' : 'case studies')} from this market
             </button>
           )}

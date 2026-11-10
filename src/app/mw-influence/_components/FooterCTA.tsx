@@ -24,7 +24,7 @@ export const FooterCTA: React.FC = () => {
         <div className="pt-4">
           <CTAButton
             href="/contact"
-            className="inline-flex items-center justify-center bg-white hover:bg-gray-100 text-[#062068] text-sm sm:text-base font-semibold px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
+            className="inline-flex items-center justify-center bg-white hover:bg-gray-100 text-[#2563eb] text-sm sm:text-base font-semibold px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
             id="footer-cta-get-in-touch-btn"
           >
             <span>{t('ui.products.getInTouch')}</span>

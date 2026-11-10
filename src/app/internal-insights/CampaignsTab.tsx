@@ -106,7 +106,7 @@ export default function CampaignsTab({ data, statuses }: { data: CampaignDashboa
 
       {/* By market */}
       <section className="mb-8">
-        <h2 className="text-lg font-bold text-[#062068] mb-3">By market</h2>
+        <h2 className="text-lg font-bold text-[#2563eb] mb-3">By market</h2>
         <div className="overflow-x-auto rounded-2xl border border-gray-200 bg-white">
           <table className="w-full text-sm">
             <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
@@ -163,12 +163,12 @@ export default function CampaignsTab({ data, statuses }: { data: CampaignDashboa
 
       {/* Actions */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 mb-8">
-        <h2 className="text-lg font-bold text-[#062068]">→ Action items</h2>
+        <h2 className="text-lg font-bold text-[#2563eb]">→ Action items</h2>
         <p className="text-sm text-gray-500 mb-4">Based on the issue flags in the Zoho report and website results from Google Analytics.</p>
         <ActionList actions={data.actions} initial={statuses} />
       </section>
 
-      <h2 className="text-lg font-bold text-[#062068] mb-3">Details</h2>
+      <h2 className="text-lg font-bold text-[#2563eb] mb-3">Details</h2>
       <Details title="All campaigns" summary={`${data.campaigns.length} campaigns sent in this period, newest first, with the Zoho report's feedback`}>
         {data.campaigns.length ? <CampaignTable rows={data.campaigns} /> : <p className="text-sm text-gray-500">No campaigns in this period.</p>}
       </Details>

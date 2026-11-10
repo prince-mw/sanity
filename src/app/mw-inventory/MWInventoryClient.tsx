@@ -27,7 +27,7 @@ export default function MWInventoryClient({ product }: MWInventoryClientProps) {
   const [step1, step2, step3, step4] = steps;
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] text-[#191c1d] antialiased selection:bg-[#062068] selection:text-white font-sans">
+    <div className="min-h-screen bg-[#f8f9fa] text-[#191c1d] antialiased selection:bg-[#2563eb] selection:text-white font-sans">
       {/* Hero's CTA button keeps its own hardcoded copy ("See MW Studio In Action") —
           product.ctaText/ctaLink is the single shared field already used to drive the
           Final CTA's "Get in Touch" button below, so wiring both to it would make them
@@ -47,7 +47,7 @@ export default function MWInventoryClient({ product }: MWInventoryClientProps) {
       <section className="pt-2 pb-8 bg-white border-t border-gray-200/70" id="features-section">
         <div className="mw-container">
           <div className="text-center max-w-3xl mx-auto pt-8 pb-4">
-            <h2 className="font-bold tracking-tight text-[#062068] font-sans text-3xl lg:text-4xl">
+            <h2 className="font-bold tracking-tight text-[#2563eb] font-sans text-3xl lg:text-4xl">
               {product?.featuresTitle || 'Unlock More Value From What You Own.'}
             </h2>
           </div>

@@ -73,7 +73,7 @@ export default function SingaporeVenueClient({
                   <div key={s.label} className="bg-white p-3 sm:p-4 text-center">
                     <dt className="sr-only">{s.label}</dt>
                     <dd>
-                      <span className="block text-lg sm:text-2xl font-bold text-[#062068]">{s.value}</span>
+                      <span className="block text-lg sm:text-2xl font-bold text-[#2563eb]">{s.value}</span>
                       <span className="block text-xs sm:text-xs text-gray-500 leading-tight">{s.label}</span>
                     </dd>
                   </div>
@@ -149,7 +149,7 @@ export default function SingaporeVenueClient({
         <div className="mw-container">
           <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 mb-10">
             <div className="lg:col-span-5">
-              <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">Why Choose Moving Walls?</h2>
+              <h2 className="font-bold tracking-tight text-[#2563eb] mb-4 text-3xl lg:text-4xl">Why Choose Moving Walls?</h2>
               <div className="space-y-3 text-gray-600 text-base sm:text-lg leading-relaxed">
                 {venue.whyChooseLead.map((p) => <p key={p}>{p}</p>)}
               </div>
@@ -197,7 +197,7 @@ export default function SingaporeVenueClient({
               >
                 <span className="text-xs font-bold uppercase tracking-wider text-mw-blue-600">{v.tabLabel}</span>
                 <span className="mt-2 font-bold text-gray-900 flex-1">{v.breadcrumbLabel} in Singapore</span>
-                <span className="mt-4 text-sm font-semibold text-mw-blue-600 group-hover:text-[#062068] transition-colors">{t('ui.locations.exploreShort')}</span>
+                <span className="mt-4 text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb] transition-colors">{t('ui.locations.exploreShort')}</span>
               </Link>
             ))}
           </div>

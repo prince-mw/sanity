@@ -62,9 +62,9 @@ function Scorecard({ pages }: { pages: PageRow[] }) {
   return (
     <>
       <div className="flex flex-wrap items-center gap-2 mb-3">
-        <button type="button" onClick={() => setStatus('All')} className={`rounded-full px-3 py-1 text-xs font-semibold ${status === 'All' ? 'bg-[#062068] text-white' : 'bg-white border border-gray-200 text-gray-700'}`}>All {pages.length}</button>
+        <button type="button" onClick={() => setStatus('All')} className={`rounded-full px-3 py-1 text-xs font-semibold ${status === 'All' ? 'bg-[#2563eb] text-white' : 'bg-white border border-gray-200 text-gray-700'}`}>All {pages.length}</button>
         {(Object.keys(STATUS_STYLE) as Status[]).filter((k) => counts.get(k)).map((k) => (
-          <button key={k} type="button" onClick={() => setStatus(k)} className={`rounded-full px-3 py-1 text-xs font-semibold ${status === k ? 'ring-2 ring-[#062068]' : ''} ${STATUS_STYLE[k]}`}>{k} {counts.get(k)}</button>
+          <button key={k} type="button" onClick={() => setStatus(k)} className={`rounded-full px-3 py-1 text-xs font-semibold ${status === k ? 'ring-2 ring-[#2563eb]' : ''} ${STATUS_STYLE[k]}`}>{k} {counts.get(k)}</button>
         ))}
         <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="Search page" className="ml-auto rounded-lg border border-gray-200 px-3 py-1.5 text-sm w-44" />
       </div>
@@ -144,7 +144,7 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
 
         {/* Whole site vs location pages */}
         <section className="mb-6">
-          <h2 className="text-lg font-bold text-[#062068] mb-3">Whole site vs location pages</h2>
+          <h2 className="text-lg font-bold text-[#2563eb] mb-3">Whole site vs location pages</h2>
           <div className="overflow-x-auto rounded-2xl border border-gray-200 bg-white">
             <table className="w-full text-sm">
               <thead className="bg-gray-50 text-xs uppercase tracking-wider text-gray-500">
@@ -173,19 +173,19 @@ export default function InsightsDashboard({ data, statuses }: { data: Dashboard;
 
         {/* Actions */}
         <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 mb-6">
-          <h2 className="text-lg font-bold text-[#062068] mb-1">→ Action items</h2>
+          <h2 className="text-lg font-bold text-[#2563eb] mb-1">→ Action items</h2>
           <p className="text-sm text-gray-500 mb-1">Most valuable first, based on leads, search demand (Semrush) and Google data.</p>
           <ActionList actions={data.actions} initial={statuses} />
         </section>
 
         {/* Trend */}
         <section className="mb-8">
-          <h2 className="text-lg font-bold text-[#062068] mb-3">Traffic over time</h2>
+          <h2 className="text-lg font-bold text-[#2563eb] mb-3">Traffic over time</h2>
           <Trend data={data} />
         </section>
 
         {/* Details */}
-        <h2 className="text-lg font-bold text-[#062068] mb-3">Details</h2>
+        <h2 className="text-lg font-bold text-[#2563eb] mb-3">Details</h2>
 
         <Details title="Page scorecard" summary={`${data.pages.length} location pages: visits, leads, Google clicks and Semrush keyword, each vs the previous period`}>
           <Scorecard pages={data.pages} />

@@ -16,7 +16,7 @@ import type { ProposalView as View, ProposalStatus } from '@/lib/proposal/types'
 
 const STATUS: Record<ProposalStatus, { label: string; cls: string }> = {
   draft: { label: 'Draft', cls: 'bg-white/15 text-white' },
-  sent: { label: 'For your review', cls: 'bg-cyan-300 text-[#062068]' },
+  sent: { label: 'For your review', cls: 'bg-cyan-300 text-[#2563eb]' },
   approved: { label: 'Approved', cls: 'bg-emerald-300 text-emerald-950' },
   'changes-requested': { label: 'Changes requested', cls: 'bg-amber-300 text-amber-950' },
 }
@@ -72,7 +72,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
           <h1 className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight">{doc.titleLine}</h1>
           <p className="mt-3 text-lg text-blue-100/90">Prepared for {doc.creator.company} by Moving Walls · {fmtDate(version.createdAt)}</p>
           <div className="no-print mt-6 flex flex-wrap gap-3">
-            <button type="button" onClick={() => window.print()} className="mw-tap inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 font-semibold text-[#062068] hover:bg-cyan-50"><Printer className="h-4 w-4" aria-hidden="true" /> Print</button>
+            <button type="button" onClick={() => window.print()} className="mw-tap inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50"><Printer className="h-4 w-4" aria-hidden="true" /> Print</button>
             <button type="button" onClick={copy} className="mw-tap inline-flex items-center gap-2 rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10"><Link2 className="h-4 w-4" aria-hidden="true" /> {copied ? 'Link copied' : 'Copy link'}</button>
             {canEdit && <Link href={`/proposals/${doc.shareId}/edit`} className="mw-tap inline-flex items-center gap-2 rounded-lg border-2 border-cyan-300 px-5 py-2.5 font-semibold text-cyan-300 hover:bg-cyan-300/10"><Pencil className="h-4 w-4" aria-hidden="true" /> Edit proposal</Link>}
           </div>
@@ -103,7 +103,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
             {sites.map((s, i) => (
               <li key={s.id} className="flex flex-col break-inside-avoid">
                 <div className="relative">
-                  <span className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[#062068] text-sm font-bold text-white">{i + 1}</span>
+                  <span className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[#2563eb] text-sm font-bold text-white">{i + 1}</span>
                   <SiteCard site={s} linked={paged.has(s.id)} addable={false} />
                 </div>
                 <div className="-mt-2 rounded-b-2xl border border-t-0 border-mw-blue-100 bg-mw-blue-50/50 px-5 pb-4 pt-5">
@@ -147,7 +147,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
                 ['Go live', 'Campaign starts on your date, with play reports for digital sites.'],
               ].map(([h, b], i) => (
                 <li key={h} className="flex gap-4">
-                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#062068] text-sm font-bold text-white">{i + 1}</span>
+                  <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#2563eb] text-sm font-bold text-white">{i + 1}</span>
                   <div><p className="font-bold text-gray-900">{h}</p><p className="text-sm text-gray-600">{b}</p></div>
                 </li>
               ))}
@@ -174,7 +174,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
                       <label className="block text-sm font-semibold">What should change?
                         <textarea value={message} onChange={e => setMessage(e.target.value)} required maxLength={1000} rows={4} placeholder="e.g. Swap the mall sites for roadside, and start two weeks later" className="mt-1 w-full rounded-lg border border-white/30 bg-white/10 px-3 py-2 text-white placeholder:text-blue-100/60 focus:border-cyan-300 focus:outline-none" />
                       </label>
-                      <button type="submit" disabled={busy} className="mw-tap mt-3 w-full rounded-lg bg-cyan-300 px-4 py-2.5 font-semibold text-[#062068] hover:bg-cyan-200 disabled:opacity-60">{busy ? 'Sending…' : 'Send request'}</button>
+                      <button type="submit" disabled={busy} className="mw-tap mt-3 w-full rounded-lg bg-cyan-300 px-4 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-200 disabled:opacity-60">{busy ? 'Sending…' : 'Send request'}</button>
                     </form>
                   )}
                 </>
@@ -206,7 +206,7 @@ function Stat({ label, value, note }: { label: string; value: string; note?: str
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5">
       <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">{label}</p>
-      <p className="mt-1 text-3xl font-bold text-[#062068]">{value}</p>
+      <p className="mt-1 text-3xl font-bold text-[#2563eb]">{value}</p>
       {note && <p className="mt-1 text-xs text-gray-500">{note}</p>}
     </div>
   )

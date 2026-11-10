@@ -63,7 +63,7 @@ function SocialStat({ label, value, cur, prev }: { label: string; value: number;
   return (
     <div className="rounded-2xl bg-gray-50 px-3 py-2.5">
       <p className="text-xs font-semibold uppercase tracking-wider text-gray-500 capitalize">{label}</p>
-      <p className="mt-0.5 text-xl font-bold text-[#062068]">{nf(value)}</p>
+      <p className="mt-0.5 text-xl font-bold text-[#2563eb]">{nf(value)}</p>
       <Delta cur={cur} prev={prev} />
     </div>
   )
@@ -83,7 +83,7 @@ function SocialCard({ c }: { c: SocialChannel }) {
             <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor" aria-hidden="true">{st.icon}</svg>
           </span>
           <div className="min-w-0">
-            <h3 className="text-base font-bold text-[#062068] leading-tight">{c.name}</h3>
+            <h3 className="text-base font-bold text-[#2563eb] leading-tight">{c.name}</h3>
             <p className="text-xs text-gray-500">
               {c.followers !== null ? <>{nf(c.followers)} {c.followersLabel}</> : 'Page posts'}
               {rate > 0 && <> · <b className="text-gray-700">{pct(rate, 1)}</b> {rateLabel}</>}
@@ -180,29 +180,29 @@ export default function ContentTab({ data, statuses }: { data: ContentDashboard;
       </section>
 
       <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 mb-8">
-        <h2 className="text-lg font-bold text-[#062068]">→ Action items</h2>
+        <h2 className="text-lg font-bold text-[#2563eb]">→ Action items</h2>
         <p className="text-sm text-gray-500 mb-4">Based on readers, enquiries and social engagement in this period.</p>
         <ActionList actions={data.actions} initial={statuses} />
       </section>
 
       <section className="mb-8">
-        <h2 className="text-lg font-bold text-[#062068] mb-3">Top blogs</h2>
+        <h2 className="text-lg font-bold text-[#2563eb] mb-3">Top blogs</h2>
         <PageTable rows={data.blogs} />
       </section>
       <section className="mb-8">
-        <h2 className="text-lg font-bold text-[#062068] mb-3">Top case studies</h2>
+        <h2 className="text-lg font-bold text-[#2563eb] mb-3">Top case studies</h2>
         <PageTable rows={data.caseStudies} />
       </section>
 
       <section className="mb-8">
-        <h2 className="text-lg font-bold text-[#062068] mb-1">Social media</h2>
+        <h2 className="text-lg font-bold text-[#2563eb] mb-1">Social media</h2>
         <p className="text-sm text-gray-500 mb-3">Posts published in this period on each company page, with their reach and engagement vs the previous period.</p>
         <div className="grid lg:grid-cols-3 gap-4 items-start">
           {data.social.map((s) => <SocialCard key={s.name} c={s} />)}
         </div>
       </section>
 
-      <h2 className="text-lg font-bold text-[#062068] mb-3">Details</h2>
+      <h2 className="text-lg font-bold text-[#2563eb] mb-3">Details</h2>
       <Details title="Where readers come from" summary="Readers of blogs and case studies by channel">
         <div className="overflow-x-auto rounded-2xl border border-gray-200">
           <table className="w-full text-sm">

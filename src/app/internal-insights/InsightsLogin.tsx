@@ -27,7 +27,7 @@ export default function InsightsLogin() {
   return (
     <div className="min-h-[80vh] flex items-center justify-center px-4 py-16 bg-gray-50">
       <form onSubmit={submit} className="w-full max-w-sm rounded-2xl bg-white border border-gray-200 shadow-precision-lg p-8">
-        <div className="w-12 h-12 rounded-2xl bg-[#062068] text-white flex items-center justify-center mb-5">
+        <div className="w-12 h-12 rounded-2xl bg-[#2563eb] text-white flex items-center justify-center mb-5">
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
           </svg>
@@ -49,7 +49,7 @@ export default function InsightsLogin() {
         <button
           type="submit"
           disabled={busy || !password}
-          className="mt-5 w-full rounded-lg bg-[#062068] text-white font-semibold py-3 hover:bg-[#0a2a85] disabled:opacity-50 transition-colors"
+          className="mt-5 w-full rounded-lg bg-[#2563eb] text-white font-semibold py-3 hover:bg-[#1d4ed8] disabled:opacity-50 transition-colors"
         >
           {busy ? 'Checking…' : 'Unlock'}
         </button>

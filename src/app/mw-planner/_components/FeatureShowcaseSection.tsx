@@ -14,10 +14,10 @@ export const FeatureShowcaseSection: React.FC = () => {
       <div className="mw-container">
 
         <div className="text-center max-w-3xl mx-auto mb-14 sm:mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#edf2fe] border border-[#cbd5e1] text-[#062068] text-xs font-bold uppercase tracking-wider mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#edf2fe] border border-[#cbd5e1] text-[#2563eb] text-xs font-bold uppercase tracking-wider mb-4">
             How MW Planner Helps
           </div>
-          <h2 className="font-extrabold text-[#062068] tracking-tight mb-3 text-3xl lg:text-4xl">
+          <h2 className="font-extrabold text-[#2563eb] tracking-tight mb-3 text-3xl lg:text-4xl">
             Make Every Planning Decision Count.
           </h2>
           <p className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
@@ -31,7 +31,7 @@ export const FeatureShowcaseSection: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16 items-center">
             <div className="md:col-span-6 space-y-4">
               <div className="text-xs font-bold text-blue-500 tracking-wider uppercase">01 / Audience Intelligence</div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] tracking-tight leading-snug">
                 Build Plans Around Your Audience
               </h3>
               <p className="text-base text-gray-600 leading-relaxed">
@@ -58,7 +58,7 @@ export const FeatureShowcaseSection: React.FC = () => {
 
             <div className="md:col-span-6 space-y-4 order-1 md:order-2">
               <div className="text-xs font-bold text-emerald-600 tracking-wider uppercase">02 / Budget Optimisation</div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] tracking-tight leading-snug">
                 Make Better Use of Your Budget
               </h3>
               <p className="text-base text-gray-600 leading-relaxed">
@@ -71,7 +71,7 @@ export const FeatureShowcaseSection: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-16 items-center">
             <div className="md:col-span-6 space-y-4">
               <div className="text-xs font-bold text-indigo-500 tracking-wider uppercase">03 / Automated Planning</div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] tracking-tight leading-snug">
                 Turn Data Into Recommendations
               </h3>
               <p className="text-base text-gray-600 leading-relaxed">
@@ -98,17 +98,17 @@ export const FeatureShowcaseSection: React.FC = () => {
                   </div>
 
                   <div className="flex items-center justify-center py-2 sm:py-0">
-                    <div className="w-11 h-11 rounded-full bg-[#062068] text-white flex items-center justify-center shadow-md">
+                    <div className="w-11 h-11 rounded-full bg-[#2563eb] text-white flex items-center justify-center shadow-md">
                       <ChevronRight className="w-6 h-6 stroke-[2.5]" />
                     </div>
                   </div>
 
                   <div className="flex-1 w-full">
                     <div className="bg-white rounded-2xl p-4 border border-[#e2e8f0] shadow-md text-center">
-                      <div className="w-9 h-9 mx-auto rounded-lg bg-[#062068] text-white flex items-center justify-center mb-2">
+                      <div className="w-9 h-9 mx-auto rounded-lg bg-[#2563eb] text-white flex items-center justify-center mb-2">
                         <FileText className="w-4 h-4" />
                       </div>
-                      <div className="text-sm font-bold text-[#062068]">Data-Backed Plan</div>
+                      <div className="text-sm font-bold text-[#2563eb]">Data-Backed Plan</div>
                       <div className="text-xs text-gray-500 mt-0.5">Optimized Media Mix &amp; Rationale</div>
                     </div>
                   </div>
@@ -128,7 +128,7 @@ export const FeatureShowcaseSection: React.FC = () => {
 
             <div className="md:col-span-6 space-y-4 order-1 md:order-2">
               <div className="text-xs font-bold text-amber-500 tracking-wider uppercase">04 / Stakeholder Approval</div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight leading-snug">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] tracking-tight leading-snug">
                 Present Plans With Confidence
               </h3>
               <p className="text-base text-gray-600 leading-relaxed">

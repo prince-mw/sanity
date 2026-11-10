@@ -6,7 +6,7 @@ import { CTAButton } from '@/components/CTAButton'
 import { useLocale } from '@/i18n/LocaleContext'
 import type { PartnerIconName, PartnerPageContent, PartnerSection } from '@/data/partners'
 
-const NAVY = 'bg-[#062068]'
+const NAVY = 'bg-[#2563eb]'
 // Moving Walls logo gradient (#61CBF5 → #1E76BB → #2A3B8F)
 const BRAND_GRADIENT = 'bg-gradient-to-br from-[#61CBF5] via-[#1E76BB] to-[#2A3B8F]'
 
@@ -100,12 +100,12 @@ function DisplayIllustration() {
           <div className={`relative aspect-video rounded-lg overflow-hidden ${BRAND_GRADIENT}`}>
             <div className="absolute -right-6 -top-6 w-28 h-28 rounded-full bg-white/20" />
             <div className="absolute right-6 bottom-5 w-16 h-16 rounded-full bg-white/90 shadow-lg flex items-center justify-center">
-              <span className="text-[#062068] text-sm font-extrabold">-30%</span>
+              <span className="text-[#2563eb] text-sm font-extrabold">-30%</span>
             </div>
             <div className="absolute left-4 top-4 space-y-2">
               <div className="h-2.5 w-24 rounded-full bg-white/90" />
               <div className="h-2.5 w-16 rounded-full bg-white/60" />
-              <div className="mt-3 inline-flex rounded-lg bg-white px-2 py-1 text-xs font-bold text-[#062068]">SHOP NOW</div>
+              <div className="mt-3 inline-flex rounded-lg bg-white px-2 py-1 text-xs font-bold text-[#2563eb]">SHOP NOW</div>
             </div>
             <div className="absolute left-3 bottom-3 flex items-center gap-1 rounded-full bg-black/30 px-2 py-0.5">
               <span className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
@@ -156,7 +156,7 @@ function ScreenNetworkIllustration() {
               <div className="h-2.5 w-3/4 rounded-full bg-gray-800" />
               <div className="h-2 w-full rounded-full bg-gray-300" />
               <div className="h-2 w-5/6 rounded-full bg-gray-300" />
-              <div className="mt-3 inline-flex rounded-lg bg-[#062068] px-2 py-1 text-xs font-bold text-white">THIS WEEK</div>
+              <div className="mt-3 inline-flex rounded-lg bg-[#2563eb] px-2 py-1 text-xs font-bold text-white">THIS WEEK</div>
             </div>
             <div className="absolute left-3 bottom-3 rounded-full bg-black/40 px-2 py-0.5 text-xs font-semibold text-white">10:00 – 14:00</div>
           </div>
@@ -177,10 +177,10 @@ function ScreenNetworkIllustration() {
             </div>
             <div className="absolute inset-x-0 bottom-10 flex justify-center">
               <div className="w-14 h-14 rounded-full bg-white/90 shadow-lg flex items-center justify-center">
-                <span className="text-[#062068] text-xs font-extrabold">NEW</span>
+                <span className="text-[#2563eb] text-xs font-extrabold">NEW</span>
               </div>
             </div>
-            <div className="absolute left-2 bottom-2 rounded-lg bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-[#062068]">AD</div>
+            <div className="absolute left-2 bottom-2 rounded-lg bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-[#2563eb]">AD</div>
           </div>
         </div>
         <div className="mx-auto h-4 w-6 rounded-b bg-gray-800" />
@@ -190,7 +190,7 @@ function ScreenNetworkIllustration() {
       {/* Programmatic chip */}
       <div className="absolute left-[30%] bottom-[9%] inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 shadow-xl">
         <span className="w-2 h-2 rounded-full bg-emerald-500 motion-safe:animate-pulse" />
-        <span className="text-xs font-bold text-[#062068]">Direct + programmatic</span>
+        <span className="text-xs font-bold text-[#2563eb]">Direct + programmatic</span>
       </div>
     </div>
   )
@@ -222,7 +222,7 @@ function MediaPlayerIllustration() {
                 <div className="h-2 w-20 rounded-full bg-white/90" />
                 <div className="h-2 w-12 rounded-full bg-white/60" />
               </div>
-              <div className="absolute left-2 bottom-2 rounded-lg bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-[#062068]">AD</div>
+              <div className="absolute left-2 bottom-2 rounded-lg bg-white/90 px-1.5 py-0.5 text-[8px] font-bold text-[#2563eb]">AD</div>
             </div>
           </div>
         </div>
@@ -247,7 +247,7 @@ function MediaPlayerIllustration() {
               {[0, 1, 2, 3].map((i) => <span key={i} className="w-0.5 h-3 rounded-full bg-white/20" />)}
             </div>
           </div>
-          <div className="mt-3 rounded-lg bg-white px-1.5 py-1 text-center text-xs sm:text-xs leading-tight font-bold text-[#062068]">Moving Walls app</div>
+          <div className="mt-3 rounded-lg bg-white px-1.5 py-1 text-center text-xs sm:text-xs leading-tight font-bold text-[#2563eb]">Moving Walls app</div>
         </div>
         <span className="mt-2 block text-center text-xs font-semibold uppercase tracking-wider text-cyan-200">Media player</span>
       </div>
@@ -285,7 +285,7 @@ function SectionBlock({ section, index, partner }: { section: PartnerSection; in
               {section.buttonText && (
                 <CTAButton
                   href="/contact"
-                  className="mt-7 inline-flex items-center justify-center gap-2 bg-white text-[#062068] px-8 py-3.5 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all shadow-precision-lg active:scale-[0.98]"
+                  className="mt-7 inline-flex items-center justify-center gap-2 bg-white text-[#2563eb] px-8 py-3.5 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all shadow-precision-lg active:scale-[0.98]"
                 >
                   {section.buttonText}
                   <ArrowIcon />
@@ -303,7 +303,7 @@ function SectionBlock({ section, index, partner }: { section: PartnerSection; in
       <section className={`${bg} mw-section`}>
         <div className="mw-container">
           <div className="max-w-3xl mx-auto text-center mb-8 lg:mb-10">
-            <h2 className="font-bold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">{section.heading}</h2>
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-4 text-3xl lg:text-4xl">{section.heading}</h2>
             {section.intro && <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{section.intro}</p>}
           </div>
           <div className={`grid gap-4 lg:gap-6 ${CARD_COLS[Math.min(section.cards?.length || 3, 4)] || CARD_COLS[3]}`}>
@@ -329,13 +329,13 @@ function SectionBlock({ section, index, partner }: { section: PartnerSection; in
       <div className="grid lg:grid-cols-12 gap-6 lg:gap-12 items-start mw-container">
         <div className="lg:col-span-5 lg:sticky lg:top-28">
           <div className="mb-5"><IconBadge name={section.icon} size="lg" /></div>
-          <h2 className="font-bold tracking-tight text-[#062068] text-3xl lg:text-4xl">{section.heading}</h2>
+          <h2 className="font-bold tracking-tight text-[#2563eb] text-3xl lg:text-4xl">{section.heading}</h2>
         </div>
         <div className="lg:col-span-7 space-y-4 text-base sm:text-lg leading-relaxed">
           {section.intro && <p className="text-xl text-gray-900 font-medium leading-snug">{section.intro}</p>}
           {section.paragraphs?.map((p) => <p key={p} className="text-gray-600">{p}</p>)}
           {section.callout && (
-            <div className="relative mt-2 overflow-hidden rounded-2xl bg-[#062068] p-5 sm:p-6 text-white shadow-lg">
+            <div className="relative mt-2 overflow-hidden rounded-2xl bg-[#2563eb] p-5 sm:p-6 text-white shadow-lg">
               <div className="absolute -right-10 -top-10 w-32 h-32 rounded-full bg-[#61CBF5]/25 blur-2xl" />
               <div className="relative flex gap-4">
                 <div className="w-9 h-9 rounded-lg bg-white/15 text-cyan-300 flex items-center justify-center flex-shrink-0">
@@ -399,7 +399,7 @@ export default function PartnerDetailClient({ partner }: { partner: PartnerPageC
               {partner.heroCtaText && (
                 <CTAButton
                   href="/contact"
-                  className="inline-flex items-center justify-center gap-2 bg-white text-[#062068] px-7 py-3.5 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all shadow-precision-lg active:scale-[0.98]"
+                  className="inline-flex items-center justify-center gap-2 bg-white text-[#2563eb] px-7 py-3.5 rounded-lg font-semibold text-base hover:bg-gray-100 transition-all shadow-precision-lg active:scale-[0.98]"
                 >
                   {partner.heroCtaText}
                   <ArrowIcon />

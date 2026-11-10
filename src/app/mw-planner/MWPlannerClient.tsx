@@ -16,7 +16,7 @@ interface MWPlannerClientProps {
 
 export default function MWPlannerClient({ product }: MWPlannerClientProps) {
   return (
-    <div className="min-h-screen bg-white text-[#191c1e] antialiased selection:bg-[#062068] selection:text-white font-sans">
+    <div className="min-h-screen bg-white text-[#191c1e] antialiased selection:bg-[#2563eb] selection:text-white font-sans">
       <HeroSection
         badge={product?.heroBadge || undefined}
         title={product?.heroTitle || undefined}

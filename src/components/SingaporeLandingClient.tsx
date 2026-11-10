@@ -132,7 +132,7 @@ export default function SingaporeLandingClient({
                   aria-selected={selected}
                   aria-controls={`panel-${v.slug}`}
                   onClick={() => setActiveVenue(v.slug)}
-                  className={`whitespace-nowrap rounded-lg px-5 py-3 text-sm sm:text-base font-semibold transition-all ${selected ? 'bg-[#062068] text-white shadow-lg' : 'bg-white text-gray-700 border border-gray-200 hover:border-mw-blue-300'}`}
+                  className={`whitespace-nowrap rounded-lg px-5 py-3 text-sm sm:text-base font-semibold transition-all ${selected ? 'bg-[#2563eb] text-white shadow-lg' : 'bg-white text-gray-700 border border-gray-200 hover:border-mw-blue-300'}`}
                 >
                   {v.tabLabel}
                 </button>
@@ -184,7 +184,7 @@ export default function SingaporeLandingClient({
                     </SgFormButton>
                     <Link
                       href={`${SG_BASE_PATH}/${v.slug}`}
-                      className="inline-flex w-full sm:w-auto items-center justify-center whitespace-nowrap rounded-lg border-2 border-[#062068] px-4 py-2 text-sm font-semibold text-[#062068] hover:bg-[#062068] hover:text-white transition-all"
+                      className="inline-flex w-full sm:w-auto items-center justify-center whitespace-nowrap rounded-lg border-2 border-[#2563eb] px-4 py-2 text-sm font-semibold text-[#2563eb] hover:bg-[#2563eb] hover:text-white transition-all"
                     >
                       Explore {v.breadcrumbLabel}
                     </Link>
@@ -228,7 +228,7 @@ export default function SingaporeLandingClient({
       <section className="mw-section">
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-center mw-container">
           <div className="lg:col-span-7">
-            <h2 className="font-bold tracking-tight text-[#062068] mb-5 text-3xl lg:text-4xl">{main.billboard.heading}</h2>
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-5 text-3xl lg:text-4xl">{main.billboard.heading}</h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
               {main.billboard.paragraphs.map((p) => <p key={p}>{p}</p>)}
             </div>
@@ -244,7 +244,7 @@ export default function SingaporeLandingClient({
       <section className="bg-gray-50 mw-section">
         <div className="grid lg:grid-cols-12 gap-8 lg:gap-12 items-start mw-container">
           <div className="lg:col-span-5">
-            <h2 className="font-bold tracking-tight text-[#062068] mb-5 text-3xl lg:text-4xl">{main.measurement.heading}</h2>
+            <h2 className="font-bold tracking-tight text-[#2563eb] mb-5 text-3xl lg:text-4xl">{main.measurement.heading}</h2>
             <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed mb-7">
               {main.measurement.paragraphs.map((p) => <p key={p}>{p}</p>)}
             </div>
@@ -274,7 +274,7 @@ export default function SingaporeLandingClient({
       {/* Market potential */}
       <section className="mw-section">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="font-bold tracking-tight text-[#062068] mb-6 text-center text-3xl lg:text-4xl">{main.potential.heading}</h2>
+          <h2 className="font-bold tracking-tight text-[#2563eb] mb-6 text-center text-3xl lg:text-4xl">{main.potential.heading}</h2>
           <div className="space-y-4 text-gray-600 text-base sm:text-lg leading-relaxed">
             {main.potential.paragraphs.map((p) => <p key={p}>{p}</p>)}
           </div>

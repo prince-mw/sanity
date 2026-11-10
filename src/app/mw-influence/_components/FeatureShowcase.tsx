@@ -27,11 +27,11 @@ export const FeatureShowcase: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#062068] text-xs font-bold uppercase tracking-wider border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#2563eb] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>01</span>
                 <span>Automated Workflow</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] leading-tight tracking-tight">
                 Take Manual Work Out of Campaign Operations
               </h3>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -78,11 +78,11 @@ export const FeatureShowcase: React.FC = () => {
             </div>
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#062068] text-xs font-bold uppercase tracking-wider border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#2563eb] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>02</span>
                 <span>Asset Management</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] leading-tight tracking-tight">
                 Keep Creative Operations Moving
               </h3>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -115,11 +115,11 @@ export const FeatureShowcase: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#062068] text-xs font-bold uppercase tracking-wider border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#2563eb] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>03</span>
                 <span>Verification &amp; Telemetry</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] leading-tight tracking-tight">
                 Deliver Every Campaign With Confidence
               </h3>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -250,7 +250,7 @@ export const FeatureShowcase: React.FC = () => {
                           d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831"
                         />
                       </svg>
-                      <div className="absolute text-xl font-bold text-[#062068] tracking-tight">
+                      <div className="absolute text-xl font-bold text-[#2563eb] tracking-tight">
                         78%
                       </div>
                     </div>
@@ -291,11 +291,11 @@ export const FeatureShowcase: React.FC = () => {
             </div>
 
             <div className="lg:col-span-5 space-y-5">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#062068] text-xs font-bold uppercase tracking-wider border border-blue-100">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-blue-50 text-[#2563eb] text-xs font-bold uppercase tracking-wider border border-blue-100">
                 <span>04</span>
                 <span>Executive Analytics</span>
               </div>
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] leading-tight tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] leading-tight tracking-tight">
                 See Where Your Network Can Perform Better
               </h3>
               <p className="text-base sm:text-lg text-gray-600 leading-relaxed">

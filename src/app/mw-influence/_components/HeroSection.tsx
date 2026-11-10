@@ -39,8 +39,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 }) => {
   const { t } = useLocale();
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#062068] text-white pb-12 lg:pb-16 mw-hero-top" id="hero-section">
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#062068]/40 rounded-full blur-3xl pointer-events-none" />
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#0f1d4a] via-[#13245d] to-[#2563eb] text-white pb-12 lg:pb-16 mw-hero-top" id="hero-section">
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#2563eb]/40 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-10 right-10 w-[500px] h-[500px] bg-[#22d3ee]/10 rounded-full blur-3xl pointer-events-none" />
 
       <div className="relative mw-container">
@@ -67,7 +67,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             <div className="pt-2 text-center lg:text-left">
               <CTAButton
                 href="/contact"
-                className="bg-white hover:bg-gray-100 text-[#062068] font-semibold text-base px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
+                className="bg-white hover:bg-gray-100 text-[#2563eb] font-semibold text-base px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 inline-flex items-center justify-center cursor-pointer active:scale-[0.98]"
                 id="hero-see-action-btn"
               >
                 <span>{t('ui.products.seeMwInfluenceInAction')}</span>

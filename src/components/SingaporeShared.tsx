@@ -8,7 +8,7 @@ import { useLocale } from '@/i18n/LocaleContext'
 import { LandingPageRenderer } from './landing'
 import { type SgFaq, type SgImage, type SgLandmark, type SgScience, type SgSite } from '@/data/singapore'
 
-export const SG_NAVY = 'bg-[#062068]'
+export const SG_NAVY = 'bg-[#2563eb]'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type SgLogoSection = any
@@ -61,8 +61,8 @@ export function SgFormButton({
   className?: string
 }) {
   const styles = {
-    light: 'bg-white text-[#062068] hover:bg-gray-100 shadow-precision-lg',
-    dark: 'bg-[#062068] text-white hover:bg-[#0a2a85] shadow-precision',
+    light: 'bg-white text-[#2563eb] hover:bg-gray-100 shadow-precision-lg',
+    dark: 'bg-[#2563eb] text-white hover:bg-[#1d4ed8] shadow-precision',
     outline: 'border-2 border-white/40 text-white hover:bg-white/10',
   }[variant]
   const size = compact ? 'px-4 py-2.5 text-sm whitespace-nowrap' : 'gap-2 px-6 py-3.5 text-base'
@@ -101,7 +101,7 @@ export function SgImageBox({ image, className = '', sizes = '100vw', priority = 
 export function SgSectionHeading({ title, intro, center = false, as: Tag = 'h2' }: { title: string; intro?: string; center?: boolean; as?: 'h2' | 'h3' }) {
   return (
     <div className={`mb-8 lg:mb-10 ${center ? 'max-w-5xl mx-auto text-center' : 'max-w-3xl'}`}>
-      <Tag className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#062068] mb-4">{title}</Tag>
+      <Tag className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-[#2563eb] mb-4">{title}</Tag>
       {intro && <p className="text-gray-600 text-base sm:text-lg leading-relaxed">{intro}</p>}
     </div>
   )
@@ -151,7 +151,7 @@ export function SgFaqList({ faqs, heading: headingProp, bg = 'bg-gray-50' }: { f
   return (
     <section className={`${bg} mw-section`}>
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="font-bold tracking-tight text-[#062068] mb-8 text-center text-3xl lg:text-4xl">{heading}</h2>
+        <h2 className="font-bold tracking-tight text-[#2563eb] mb-8 text-center text-3xl lg:text-4xl">{heading}</h2>
         <div className="space-y-3">
           {faqs.map((faq, i) => {
             const isOpen = open === i
@@ -258,7 +258,7 @@ export function SgSiteGrid({ sites }: { sites: SgSite[] }) {
               role="tab"
               aria-selected={selected}
               onClick={() => setActive(g)}
-              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${selected ? 'bg-[#062068] text-white shadow-lg' : 'bg-white text-gray-700 border border-gray-200 hover:border-mw-blue-300'}`}
+              className={`rounded-full px-4 py-2 text-sm font-semibold transition-colors ${selected ? 'bg-[#2563eb] text-white shadow-lg' : 'bg-white text-gray-700 border border-gray-200 hover:border-mw-blue-300'}`}
             >
               {g} <span className={selected ? 'text-blue-200' : 'text-gray-400'}>{count}</span>
             </button>

@@ -52,7 +52,7 @@ export default function InsightsShell({ tab, range, period, snapshot, children }
               key={t.key}
               href={`/internal-insights?tab=${t.key}&range=${range}`}
               aria-current={tab === t.key ? 'page' : undefined}
-              className={`-mb-px whitespace-nowrap border-b-2 px-3 sm:px-4 py-2.5 text-sm font-semibold ${tab === t.key ? 'border-[#062068] text-[#062068]' : 'border-transparent text-gray-500 hover:text-gray-900'}`}
+              className={`-mb-px whitespace-nowrap border-b-2 px-3 sm:px-4 py-2.5 text-sm font-semibold ${tab === t.key ? 'border-[#2563eb] text-[#2563eb]' : 'border-transparent text-gray-500 hover:text-gray-900'}`}
             >
               {t.label}
             </Link>
@@ -82,7 +82,7 @@ export default function InsightsShell({ tab, range, period, snapshot, children }
                       href={`/internal-insights?tab=${tab}&range=${r}`}
                       scroll={false}
                       aria-current={range === r ? 'true' : undefined}
-                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap ${range === r ? 'bg-[#062068] text-white' : 'text-gray-600 hover:text-gray-900'}`}
+                      className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-xs sm:text-sm font-semibold whitespace-nowrap ${range === r ? 'bg-[#2563eb] text-white' : 'text-gray-600 hover:text-gray-900'}`}
                     >
                       {RANGE_LABELS[r]}
                     </Link>

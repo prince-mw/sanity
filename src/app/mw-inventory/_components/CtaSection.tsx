@@ -23,7 +23,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
 }) => {
   const { t } = useLocale();
   return (
-    <section className={`relative overflow-hidden bg-[#062068] text-white ${compact ? 'py-10 sm:py-12' : 'py-16 sm:py-20 lg:py-24'} text-center`} id="cta-section">
+    <section className={`relative overflow-hidden bg-[#2563eb] text-white ${compact ? 'py-10 sm:py-12' : 'py-16 sm:py-20 lg:py-24'} text-center`} id="cta-section">
       <div className="absolute inset-0 bg-dot-pattern opacity-30 pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
 
@@ -41,7 +41,7 @@ export const CtaSection: React.FC<CtaSectionProps> = ({
           <div className="pt-4">
             <CTAButton
               href={ctaLink}
-              className="inline-flex items-center justify-center bg-white hover:bg-gray-100 text-[#062068] text-sm sm:text-base font-semibold px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
+              className="inline-flex items-center justify-center bg-white hover:bg-gray-100 text-[#2563eb] text-sm sm:text-base font-semibold px-8 py-3.5 rounded-lg shadow-precision-lg hover:shadow-xl transition-all duration-200 cursor-pointer active:scale-[0.98]"
               id="cta-get-in-touch-btn"
             >
               <span>{ctaText ?? t('ui.products.getInTouch')}</span>

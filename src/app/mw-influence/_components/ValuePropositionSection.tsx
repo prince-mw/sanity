@@ -12,7 +12,7 @@ export const ValuePropositionSection: React.FC = () => {
       <div className="mw-container">
 
         <div className="text-center max-w-4xl mx-auto mb-10 sm:mb-14">
-          <h2 className="font-extrabold tracking-tight text-[#062068] mb-4 text-3xl lg:text-4xl">
+          <h2 className="font-extrabold tracking-tight text-[#2563eb] mb-4 text-3xl lg:text-4xl">
             Your Inventory Is Limited. Your Demand Isn&apos;t.
           </h2>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed">
@@ -98,7 +98,7 @@ export const ValuePropositionSection: React.FC = () => {
             <div className="bg-white rounded-2xl p-4 text-[#1b1b20] shadow-inner mt-4 border border-gray-100">
               <div className="text-xs font-bold text-gray-700 uppercase tracking-wider mb-2.5 flex items-center justify-between">
                 <span>Campaign Priority</span>
-                <span className="text-xs text-[#062068] bg-blue-50 px-1.5 py-0.5 rounded-lg font-semibold">Real-Time Queue</span>
+                <span className="text-xs text-[#2563eb] bg-blue-50 px-1.5 py-0.5 rounded-lg font-semibold">Real-Time Queue</span>
               </div>
 
               <div className="overflow-x-auto">
@@ -118,7 +118,7 @@ export const ValuePropositionSection: React.FC = () => {
                       className={`transition-colors ${priorityHover === 1 ? 'bg-blue-50/80' : ''}`}
                     >
                       <td className="py-2 font-medium text-gray-900 text-xs">Guaranteed Launch</td>
-                      <td className="py-2 text-xs text-[#062068] font-semibold">
+                      <td className="py-2 text-xs text-[#2563eb] font-semibold">
                         <span className="flex items-center gap-1">
                           <ShieldCheck className="w-3 h-3 text-[#22d3ee]" />
                           <span>Protected</span>
@@ -218,7 +218,7 @@ export const ValuePropositionSection: React.FC = () => {
                 </div>
 
                 <div className="text-center bg-blue-50/90 rounded-lg p-2.5 border border-blue-200 shadow-sm relative overflow-hidden">
-                  <div className="text-xs font-bold text-[#062068] mb-2 flex items-center justify-center gap-1">
+                  <div className="text-xs font-bold text-[#2563eb] mb-2 flex items-center justify-center gap-1">
                     <span>After</span>
                     <Sparkles className="w-3 h-3 text-[#22d3ee]" />
                   </div>
@@ -230,7 +230,7 @@ export const ValuePropositionSection: React.FC = () => {
                       />
                     ))}
                   </div>
-                  <div className="text-xs text-[#062068] font-bold">
+                  <div className="text-xs text-[#2563eb] font-bold">
                     Allocated Slots: <span className="text-[#1e68e5]">20/20</span>
                   </div>
                 </div>

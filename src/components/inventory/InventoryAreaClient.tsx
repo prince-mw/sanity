@@ -61,7 +61,7 @@ export function InventoryAreaClient({
               </p>
               <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/20 max-w-xl">
                 {[[String(sites.length), 'Sites'], [String(formats), 'Formats'], [String(digital), 'Digital screens']].map(([v, l]) => (
-                  <div key={l} className="bg-[#0a2a7a] p-4 text-center">
+                  <div key={l} className="bg-[#1d4ed8] p-4 text-center">
                     <dt className="sr-only">{l}</dt>
                     <dd><span className="block text-2xl font-bold">{v}</span><span className="block text-xs text-blue-100/80">{l}</span></dd>
                   </div>
@@ -88,13 +88,13 @@ export function InventoryAreaClient({
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-6">
             <div className="rounded-2xl border border-gray-200 p-6">
               <span className="text-xs font-bold uppercase tracking-wider text-mw-blue-600">For media owners</span>
-              <h2 className="mt-2 text-2xl font-bold text-[#062068]">Own billboards or screens in {areaName}?</h2>
+              <h2 className="mt-2 text-2xl font-bold text-[#2563eb]">Own billboards or screens in {areaName}?</h2>
               <p className="mt-3 text-gray-600 leading-relaxed">Brands search for advertising in {areaName} every month, and Moving Walls doesn&apos;t have enough sites here to offer them. List your inventory with us and reach those buyers — programmatic and direct, with reporting included.</p>
               <div className="mt-5"><SgFormButton onOpen={contact(`List your screens in ${areaName}`)} variant="dark" showArrow={false}>List your inventory</SgFormButton></div>
             </div>
             <div className="rounded-2xl border border-gray-200 p-6 bg-gray-50" id="nearby">
               <span className="text-xs font-bold uppercase tracking-wider text-mw-blue-600">For advertisers</span>
-              <h2 className="mt-2 text-2xl font-bold text-[#062068]">Reach {areaName} from nearby sites</h2>
+              <h2 className="mt-2 text-2xl font-bold text-[#2563eb]">Reach {areaName} from nearby sites</h2>
               <p className="mt-3 text-gray-600 leading-relaxed">Until we list more sites in {areaName}, these are the closest places you can book in {cityName}. Our team can also plan around {areaName} for you.</p>
               <div className="mt-5"><SgFormButton onOpen={contact(`Advertise near ${areaName}`)} variant="dark" showArrow={false}>Talk to our team</SgFormButton></div>
             </div>

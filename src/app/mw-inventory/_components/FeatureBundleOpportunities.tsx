@@ -46,11 +46,11 @@ export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProp
                   <line x1="200" y1="120" x2="80" y2="195" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />
                   <line x1="200" y1="120" x2="320" y2="195" stroke="#cbd5e1" strokeWidth="2" strokeDasharray="4 4" />
 
-                  <circle cx="200" cy="120" r="16" fill="#062068" opacity="0.1" />
-                  <circle cx="200" cy="120" r="6" fill="#062068" />
+                  <circle cx="200" cy="120" r="16" fill="#2563eb" opacity="0.1" />
+                  <circle cx="200" cy="120" r="6" fill="#2563eb" />
                 </svg>
 
-                <div className="absolute z-10 w-10 h-10 rounded-full bg-[#062068] text-white flex items-center justify-center shadow-lg border-2 border-white">
+                <div className="absolute z-10 w-10 h-10 rounded-full bg-[#2563eb] text-white flex items-center justify-center shadow-lg border-2 border-white">
                   <Share2 className="w-4 h-4 text-[#80f1b9]" />
                 </div>
 
@@ -71,7 +71,7 @@ export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProp
                       }`}
                     >
                       <div className="flex flex-col items-center">
-                        <div className="w-10 h-10 rounded-lg bg-blue-50 border border-blue-200 text-[#062068] flex items-center justify-center shadow-sm">
+                        <div className="w-10 h-10 rounded-lg bg-blue-50 border border-blue-200 text-[#2563eb] flex items-center justify-center shadow-sm">
                           <Tv className="w-5 h-5" />
                         </div>
                         <span className="mt-1.5 text-xs font-medium text-gray-800 text-center whitespace-nowrap bg-white/90 px-2 py-0.5 rounded-lg shadow-xs border border-gray-200">
@@ -108,7 +108,7 @@ export const FeatureBundleOpportunities: React.FC<FeatureBundleOpportunitiesProp
         </div>
 
         <div className="lg:col-span-5 space-y-6 order-1 lg:order-2">
-          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#062068] font-sans">
+          <h3 className="text-2xl sm:text-3xl font-bold tracking-tight text-[#2563eb] font-sans">
             {title}
           </h3>
           <p className="text-base sm:text-lg text-gray-600 leading-relaxed font-normal">

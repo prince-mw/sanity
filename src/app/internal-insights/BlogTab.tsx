@@ -28,7 +28,7 @@ function Progress({ done, wip, total }: { done: number; wip: number; total: numb
 }
 
 /** A collapsible section card (closed by default; the progress links open it) */
-function Section({ id, title, note, meta, intro, tone = 'text-[#062068]', children }: { id: string; title: string; note?: string; meta?: string; intro?: string; tone?: string; children: React.ReactNode }) {
+function Section({ id, title, note, meta, intro, tone = 'text-[#2563eb]', children }: { id: string; title: string; note?: string; meta?: string; intro?: string; tone?: string; children: React.ReactNode }) {
   return (
     <details id={id} className="group rounded-2xl border border-gray-200 bg-white mb-4 scroll-mt-24 open:shadow-sm">
       <summary className="flex cursor-pointer list-none items-start justify-between gap-4 p-5 sm:px-6">
@@ -69,7 +69,7 @@ function PostTable({ posts }: { posts: BlogAudit['posts'] }) {
     <>
       <div className="flex flex-wrap items-center gap-2 mb-3">
         {['All', ...groups.keys()].map((g) => (
-          <button key={g} type="button" onClick={() => setFilter(g)} className={`rounded-full px-3 py-1 text-xs font-semibold ${filter === g ? 'bg-[#062068] text-white' : g === 'All' ? 'bg-white border border-gray-200 text-gray-700' : GROUP_STYLE[g]}`}>
+          <button key={g} type="button" onClick={() => setFilter(g)} className={`rounded-full px-3 py-1 text-xs font-semibold ${filter === g ? 'bg-[#2563eb] text-white' : g === 'All' ? 'bg-white border border-gray-200 text-gray-700' : GROUP_STYLE[g]}`}>
             {g} {g === 'All' ? posts.length : groups.get(g)}
           </button>
         ))}
@@ -127,7 +127,7 @@ export default function BlogTab({ data, statuses }: { data: BlogAudit; statuses:
       {/* Progress */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 sm:p-6 mb-6" aria-label="Progress">
         <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3">
-          <h2 className="text-lg font-bold text-[#062068]">Progress</h2>
+          <h2 className="text-lg font-bold text-[#2563eb]">Progress</h2>
           <p className="text-sm text-gray-600"><b className="text-gray-900">{count(all, 'done')}</b> done · <b className="text-gray-900">{count(all, 'wip')}</b> in progress · {all.length - count(all, 'done') - count(all, 'wip')} not started</p>
         </div>
         <Progress done={count(all, 'done')} wip={count(all, 'wip')} total={all.length} />
@@ -147,7 +147,7 @@ export default function BlogTab({ data, statuses }: { data: BlogAudit; statuses:
       <section className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-8" aria-label="Audit headline numbers">
         {data.stats.map((s) => (
           <div key={s.label} className="rounded-2xl border border-gray-200 bg-white p-5">
-            <p className="text-3xl font-bold text-[#062068]">{s.value}</p>
+            <p className="text-3xl font-bold text-[#2563eb]">{s.value}</p>
             <p className="mt-1 text-xs text-gray-500">{s.label}</p>
             {s.prevLabel && (
               <p className="mt-1.5 flex flex-wrap items-center gap-x-1.5 text-xs text-gray-400">
@@ -205,7 +205,7 @@ export default function BlogTab({ data, statuses }: { data: BlogAudit; statuses:
         </Section>
       ))}
 
-      <h2 className="text-lg font-bold text-[#062068] mb-3 mt-8">Details</h2>
+      <h2 className="text-lg font-bold text-[#2563eb] mb-3 mt-8">Details</h2>
       <Details title="All blog posts with their recommended action" summary={`${data.posts.length} posts · last 12 months of Google clicks, impressions, position and AI-assistant visits`}>
         <PostTable posts={data.posts} />
       </Details>

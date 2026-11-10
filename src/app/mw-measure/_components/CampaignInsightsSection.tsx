@@ -13,7 +13,7 @@ export const CampaignInsightsSection: React.FC = () => {
       <div className="mw-container">
 
         <div className="text-center mb-10 sm:mb-14">
-          <h2 className="font-extrabold tracking-tight text-[#062068] text-3xl lg:text-4xl">
+          <h2 className="font-extrabold tracking-tight text-[#2563eb] text-3xl lg:text-4xl">
             Deep Campaign Insights at Scale
           </h2>
           <p className="mt-3 text-base sm:text-lg text-slate-600 font-normal max-w-2xl mx-auto">
@@ -30,7 +30,7 @@ export const CampaignInsightsSection: React.FC = () => {
                 <LayoutGrid className="w-6 h-6 stroke-[2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] tracking-tight">
                 Understand Campaign Performance
               </h3>
 
@@ -55,7 +55,7 @@ export const CampaignInsightsSection: React.FC = () => {
                 <Activity className="w-6 h-6 stroke-[2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] tracking-tight">
                 Prove Campaign Impact
               </h3>
 
@@ -72,7 +72,7 @@ export const CampaignInsightsSection: React.FC = () => {
                 <Sparkles className="w-6 h-6 stroke-[2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] tracking-tight">
                 Learn and Improve
               </h3>
 
@@ -97,7 +97,7 @@ export const CampaignInsightsSection: React.FC = () => {
                 <Upload className="w-6 h-6 stroke-[2]" />
               </div>
 
-              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#062068] tracking-tight">
+              <h3 className="text-2xl sm:text-3xl font-extrabold text-[#2563eb] tracking-tight">
                 Share Results With Confidence
               </h3>
 

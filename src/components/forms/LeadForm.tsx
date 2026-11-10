@@ -92,15 +92,15 @@ export function LeadForm({ open, onClose, onSuccess, onAlreadyUsed, closeOnSucce
       <div className="w-full sm:max-w-md max-h-[92vh] overflow-y-auto rounded-t-2xl sm:rounded-2xl bg-white p-6 shadow-2xl">
         {done ? (
           <div>
-            <h2 id="lead-form-title" className="text-xl font-bold text-[#062068]">Thank you</h2>
+            <h2 id="lead-form-title" className="text-xl font-bold text-[#2563eb]">Thank you</h2>
             <p className="mt-2 text-gray-700">
               {purpose === 'mockup' ? 'Your mock-up is on its way to your inbox.' : purpose === 'proposal' ? 'You can now build proposals.' : 'Our Malaysia team will reply within one working day.'}
             </p>
-            <button type="button" onClick={onClose} className="mw-tap mt-5 w-full rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Close</button>
+            <button type="button" onClick={onClose} className="mw-tap mt-5 w-full rounded-lg bg-[#2563eb] px-4 py-2.5 font-semibold text-white hover:bg-[#1d4ed8]">Close</button>
           </div>
         ) : (
           <form onSubmit={submit}>
-            <h2 id="lead-form-title" className="text-xl font-bold text-[#062068]">{heading}</h2>
+            <h2 id="lead-form-title" className="text-xl font-bold text-[#2563eb]">{heading}</h2>
             {intro && <div className="mt-1 text-sm text-gray-600">{intro}</div>}
             <div className="mt-4 space-y-3">
               {field('name', 'Name')}
@@ -115,7 +115,7 @@ export function LeadForm({ open, onClose, onSuccess, onAlreadyUsed, closeOnSucce
               )}
               {purpose === 'proposal' && (
                 <label className="flex items-start gap-2 text-sm text-gray-600">
-                  <input name="consent" type="checkbox" required className="mt-1 h-4 w-4 flex-shrink-0 appearance-auto accent-[#062068]" style={{ appearance: 'auto' }} />
+                  <input name="consent" type="checkbox" required className="mt-1 h-4 w-4 flex-shrink-0 appearance-auto accent-[#2563eb]" style={{ appearance: 'auto' }} />
                   <span>Yes, Moving Walls may contact me about this proposal and send me outdoor advertising news. I can unsubscribe at any time.</span>
                 </label>
               )}
@@ -125,7 +125,7 @@ export function LeadForm({ open, onClose, onSuccess, onAlreadyUsed, closeOnSucce
             {error && <p className="mt-3 text-sm text-red-600" role="alert">{error}</p>}
             <p className="mt-3 text-xs text-gray-500">By sending this you agree to be contacted by Moving Walls about outdoor advertising. We never share your details.</p>
             <div className="mt-5 flex gap-3">
-              <button type="submit" disabled={busy} className="mw-tap flex-1 rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a] disabled:opacity-60">
+              <button type="submit" disabled={busy} className="mw-tap flex-1 rounded-lg bg-[#2563eb] px-4 py-2.5 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-60">
                 {busy ? 'Sending…' : submitLabel ?? (purpose === 'mockup' ? 'Show my mock-up' : purpose === 'proposal' ? 'Build my proposal' : 'Send enquiry')}
               </button>
               <button type="button" onClick={onClose} className="mw-tap rounded-lg border border-gray-300 px-4 py-2.5 font-semibold text-gray-700">Cancel</button>

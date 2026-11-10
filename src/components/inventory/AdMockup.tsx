@@ -140,7 +140,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   }
 
   const input = 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-mw-blue-500 focus:outline-none'
-  const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold ${on ? 'border-[#062068] bg-[#062068] text-white' : 'border-gray-200 bg-white text-gray-700'}`
+  const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-200 bg-white text-gray-700'}`
 
   return (
     <div className="grid gap-8 lg:grid-cols-12">
@@ -155,7 +155,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         <div>
           <span className="text-sm font-semibold text-gray-700">Your logo</span>
           <label className="mt-1 flex cursor-pointer items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 px-4 py-4 hover:border-mw-blue-400">
-            <Upload className="h-5 w-5 flex-shrink-0 text-[#062068]" aria-hidden="true" />
+            <Upload className="h-5 w-5 flex-shrink-0 text-[#2563eb]" aria-hidden="true" />
             <span className="text-sm text-gray-700">{logoName ? logoName : 'Upload a PNG, SVG or JPG (under 2 MB)'}</span>
             <input type="file" accept="image/png,image/svg+xml,image/jpeg,image/webp" className="sr-only" onChange={e => onLogo(e.target.files?.[0])} />
           </label>
@@ -176,16 +176,16 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
               <option value="">Industry…</option>
               {INDUSTRIES.map(i => <option key={i}>{i}</option>)}
             </select>
-            <button type="button" onClick={findPhotos} disabled={searching || (!tagline.trim() && !industry)} className="mw-tap inline-flex items-center gap-2 rounded-lg bg-[#062068] px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">
+            <button type="button" onClick={findPhotos} disabled={searching || (!tagline.trim() && !industry)} className="mw-tap inline-flex items-center gap-2 rounded-lg bg-[#2563eb] px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">
               {searching ? <RefreshCw className="h-4 w-4 animate-spin" aria-hidden="true" /> : <ImageIcon className="h-4 w-4" aria-hidden="true" />} Find photos
             </button>
           </div>
           {photos.length > 0 && (
             <ul className="mt-3 grid grid-cols-4 gap-2">
-              <li><button type="button" onClick={() => pickPhoto(null)} aria-pressed={photoId === null} className={`mw-tap flex aspect-[4/3] w-full items-center justify-center rounded-lg border-2 text-xs font-semibold ${photoId === null ? 'border-[#062068]' : 'border-gray-200'}`} style={{ background: accent, color: '#fff' }}>No photo</button></li>
+              <li><button type="button" onClick={() => pickPhoto(null)} aria-pressed={photoId === null} className={`mw-tap flex aspect-[4/3] w-full items-center justify-center rounded-lg border-2 text-xs font-semibold ${photoId === null ? 'border-[#2563eb]' : 'border-gray-200'}`} style={{ background: accent, color: '#fff' }}>No photo</button></li>
               {photos.slice(0, 3).map(p => (
                 <li key={p.id}>
-                  <button type="button" onClick={() => pickPhoto(p)} aria-pressed={photoId === p.id} title={p.alt} className={`mw-tap block aspect-[4/3] w-full overflow-hidden rounded-lg border-2 ${photoId === p.id ? 'border-[#062068]' : 'border-gray-200'}`}>
+                  <button type="button" onClick={() => pickPhoto(p)} aria-pressed={photoId === p.id} title={p.alt} className={`mw-tap block aspect-[4/3] w-full overflow-hidden rounded-lg border-2 ${photoId === p.id ? 'border-[#2563eb]' : 'border-gray-200'}`}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={p.thumb} alt={p.alt} className="h-full w-full object-cover" />
                   </button>
@@ -193,7 +193,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
               ))}
             </ul>
           )}
-          <label className="mt-2 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#062068] hover:underline">
+          <label className="mt-2 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-[#2563eb] hover:underline">
             <Upload className="h-4 w-4" aria-hidden="true" /> or upload your own photo
             <input type="file" accept="image/*" className="sr-only" onChange={e => onOwnPhoto(e.target.files?.[0])} />
           </label>
@@ -208,7 +208,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         </div>
 
         <label className="flex items-center gap-3">
-          <Palette className="h-5 w-5 text-[#062068]" aria-hidden="true" />
+          <Palette className="h-5 w-5 text-[#2563eb]" aria-hidden="true" />
           <span className="text-sm font-semibold text-gray-700">Colour</span>
           <input type="color" value={accent} onChange={e => { setAccent(e.target.value); setCustomAccent(true) }} className="mw-tap h-10 w-14 cursor-pointer rounded border border-gray-300 bg-white p-1" aria-label="Accent colour" />
           <span className="text-xs text-gray-500">{customAccent ? 'Your pick' : logo ? 'Taken from your logo' : 'Default'}</span>
@@ -222,7 +222,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
           {preview && !unlocked && access.state !== 'loading' && (
             // the ad is drawn but hidden until they register (or they used their one mock-up elsewhere)
             <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-white/70 p-6 text-center backdrop-blur-md">
-              <Lock className="mb-3 h-8 w-8 text-[#062068]" aria-hidden="true" />
+              <Lock className="mb-3 h-8 w-8 text-[#2563eb]" aria-hidden="true" />
               {access.state === 'other' ? (
                 <>
                   <p className="max-w-sm text-sm font-semibold text-gray-900">You've already made a mock-up for {access.siteName}.</p>
@@ -232,7 +232,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
                 <>
                   <p className="max-w-sm text-sm font-semibold text-gray-900">Your ad is ready to see on {site.name}.</p>
                   <p className="mt-1 max-w-sm text-sm text-gray-600">Register once and we'll show it here, email it to you, and put you in touch with the person who can book this site.</p>
-                  <button type="button" onClick={() => setFormOpen(true)} className="mw-tap mt-4 inline-flex items-center gap-2 rounded-lg bg-[#062068] px-5 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Show my mock-up</button>
+                  <button type="button" onClick={() => setFormOpen(true)} className="mw-tap mt-4 inline-flex items-center gap-2 rounded-lg bg-[#2563eb] px-5 py-2.5 font-semibold text-white hover:bg-[#1d4ed8]">Show my mock-up</button>
                 </>
               )}
             </div>
@@ -257,7 +257,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         {unlocked && face && site.photos[0] && (
           <div className="mt-4">
             <button type="button" onClick={() => setAdjusting(a => !a)} aria-expanded={adjusting}
-              className={`mw-tap flex w-full items-center gap-3 rounded-xl px-5 py-4 text-left text-white shadow-lg transition-colors ${adjusting ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#062068] hover:bg-[#0a2a8a]'}`}>
+              className={`mw-tap flex w-full items-center gap-3 rounded-xl px-5 py-4 text-left text-white shadow-lg transition-colors ${adjusting ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-[#2563eb] hover:bg-[#1d4ed8]'}`}>
               <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-white/15">{adjusting ? <Check className="h-5 w-5" aria-hidden="true" /> : <Move className="h-5 w-5" aria-hidden="true" />}</span>
               <span className="flex-1">
                 <span className="block text-base font-bold">{adjusting ? 'Looks right — preview without the points' : 'Fit the ad to the screen'}</span>
@@ -271,11 +271,11 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         </div>
         {unlocked && preview && (
           <button type="button" onClick={sendUpdate} disabled={sent === 'sending'} aria-live="polite"
-            className="mw-tap mt-3 flex w-full items-center gap-3 rounded-xl border-2 border-[#062068] bg-white px-5 py-4 text-left text-[#062068] transition-colors hover:bg-mw-blue-50 disabled:opacity-60">
+            className="mw-tap mt-3 flex w-full items-center gap-3 rounded-xl border-2 border-[#2563eb] bg-white px-5 py-4 text-left text-[#2563eb] transition-colors hover:bg-mw-blue-50 disabled:opacity-60">
             <span className="inline-flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-mw-blue-50"><Send className="h-5 w-5" aria-hidden="true" /></span>
             <span className="flex-1">
               <span className="block text-base font-bold">{sent === 'sending' ? 'Sending…' : sent === 'done' ? 'Sent — check your inbox' : sent === 'failed' ? 'Could not send — try again' : 'Send to our team'}</span>
-              <span className="block text-sm text-[#062068]/70">{sent === 'done' ? 'You can keep editing and send a new version any time.' : 'We email you this exact version, with the details of the person who books this site.'}</span>
+              <span className="block text-sm text-[#2563eb]/70">{sent === 'done' ? 'You can keep editing and send a new version any time.' : 'We email you this exact version, with the details of the person who books this site.'}</span>
             </span>
           </button>
         )}
@@ -291,13 +291,13 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="mockup-thanks-title" onClick={e => { if (e.target === e.currentTarget) setThanks(null) }}>
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
             <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-50 text-emerald-700"><Unlock className="h-6 w-6" aria-hidden="true" /></span>
-            <h2 id="mockup-thanks-title" className="text-xl font-bold text-[#062068]">Your mock-up is unlocked</h2>
+            <h2 id="mockup-thanks-title" className="text-xl font-bold text-[#2563eb]">Your mock-up is unlocked</h2>
             <p className="mt-2 text-gray-700">See your ad on {site.name} below. Change the words, logo, photo or layout as often as you like.</p>
             <ol className="mt-4 space-y-3 text-sm text-gray-700">
-              <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#062068] text-xs font-bold text-white">1</span><span>Use <strong>Fit the ad to the screen</strong> if the ad isn't sitting exactly on the screen.</span></li>
-              <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#062068] text-xs font-bold text-white">2</span><span>When you're happy, press <strong>Send to our team</strong>: we email you that version{thanks.owner?.name ? <> together with the details of <strong>{thanks.owner.name}</strong>, who books this site</> : <> with the details of the person who books this site</>}.</span></li>
+              <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white">1</span><span>Use <strong>Fit the ad to the screen</strong> if the ad isn't sitting exactly on the screen.</span></li>
+              <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white">2</span><span>When you're happy, press <strong>Send to our team</strong>: we email you that version{thanks.owner?.name ? <> together with the details of <strong>{thanks.owner.name}</strong>, who books this site</> : <> with the details of the person who books this site</>}.</span></li>
             </ol>
-            <button type="button" onClick={() => setThanks(null)} className="mw-tap mt-5 w-full rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Show me my ad</button>
+            <button type="button" onClick={() => setThanks(null)} className="mw-tap mt-5 w-full rounded-lg bg-[#2563eb] px-4 py-2.5 font-semibold text-white hover:bg-[#1d4ed8]">Show me my ad</button>
           </div>
         </div>
       )}
@@ -305,11 +305,11 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
       {sentPopup && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/50 p-4" role="dialog" aria-modal="true" aria-labelledby="mockup-sent-title" onClick={e => { if (e.target === e.currentTarget) setSentPopup(false) }}>
           <div className="w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl">
-            <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-mw-blue-50 text-[#062068]"><Mail className="h-6 w-6" aria-hidden="true" /></span>
-            <h2 id="mockup-sent-title" className="text-xl font-bold text-[#062068]">Sent — check your inbox</h2>
+            <span className="mb-3 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-mw-blue-50 text-[#2563eb]"><Mail className="h-6 w-6" aria-hidden="true" /></span>
+            <h2 id="mockup-sent-title" className="text-xl font-bold text-[#2563eb]">Sent — check your inbox</h2>
             <p className="mt-2 text-gray-700">This version of your ad on {site.name} is on its way to your email{access.owner?.name ? <>, together with a note from <strong>{access.owner.name}</strong>{access.owner.email ? <> ({access.owner.email})</> : null}, who looks after this site</> : ', with the details of the person who books this site'}.</p>
             <p className="mt-2 text-sm text-gray-600">Changed your mind? Keep editing and send again.</p>
-            <button type="button" onClick={() => setSentPopup(false)} className="mw-tap mt-5 w-full rounded-lg bg-[#062068] px-4 py-2.5 font-semibold text-white hover:bg-[#0a2a8a]">Done</button>
+            <button type="button" onClick={() => setSentPopup(false)} className="mw-tap mt-5 w-full rounded-lg bg-[#2563eb] px-4 py-2.5 font-semibold text-white hover:bg-[#1d4ed8]">Done</button>
           </div>
         </div>
       )}
