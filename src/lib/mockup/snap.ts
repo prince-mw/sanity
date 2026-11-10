@@ -91,7 +91,7 @@ export function snapQuad(px: Px, quad: QuadPx, band = 8, samples = 48): { quad: 
     }
     // 2. the edge's character: the sign most of the strongest candidates share
     let plus = 0, minus = 0
-    for (const sm of perSample) { const top = sm.cands.slice().sort((p, q) => q.m - p.m)[0]; if (top) (top.sign > 0 ? plus++ : minus++) }
+    for (const sm of perSample) { const top = sm.cands.slice().sort((p, q) => q.m - p.m)[0]; if (top) { if (top.sign > 0) plus++; else minus++ } }
     const sign = plus >= minus ? 1 : -1
     // 3. per sample: among candidates of that sign and at least half the strongest's strength, the one nearest the proposal
     const hits: [number, number][] = []
