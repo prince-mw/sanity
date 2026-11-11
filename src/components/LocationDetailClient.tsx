@@ -9,12 +9,9 @@ import { CTAButton } from './CTAButton'
 import { LandingPageRenderer } from './landing'
 import { SectionGraphicProvider } from './landing/SectionGraphic'
 import { locationGraphicLookup } from './motion/locationGraphics'
-import { Chevron } from './motion/BrandBits'
 
-// Brand accents (Rif, 11 Nov 2026): subtle and elegant, blue stays the main colour, red is left out.
-// A thin bar in one of the guide's supporting colours on each card, cycling sky, sunburst, emerald.
-const ACCENT_BARS = ['border-t-[3px] border-t-[#66C9F3]', 'border-t-[3px] border-t-[#FEDA24]', 'border-t-[3px] border-t-[#6DDF6A]']
-const ACCENT_HOVER = ['hover:bg-[#F3F9FE]', 'hover:bg-[#FFFBEA]', 'hover:bg-[#F1FAF1]']
+// The site's own colour language (Rif, 11 Nov 2026): gradient icon tiles as on the Brands and Solutions pages.
+const ICON_TILES = ['from-cyan-500 to-blue-600', 'from-emerald-500 to-teal-600', 'from-orange-500 to-rose-600', 'from-amber-500 to-yellow-600', 'from-indigo-500 to-violet-600', 'from-mw-blue-500 to-purple-600']
 import { useZohoPopup } from './ZohoPopupProvider'
 import { useLocale } from '@/i18n/LocaleContext'
 import { messagesMap, getMessage } from '@/i18n/messages'
@@ -192,8 +189,6 @@ const LABELS = {
 }
 
 export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en', afterHero, sectionsOverride, accents = false }: LocationDetailClientProps) {
-  const bar = (i: number) => accents ? ACCENT_BARS[i % ACCENT_BARS.length] : ''
-  const mark = accents ? <span className="mb-3 flex justify-center"><Chevron size={34} color="#FEDA24" /></span> : null
   const { t } = useLocale()
   const location = initialData
   // Spanish/Portuguese pages (americas-es, americas-pt) keep their template labels in the page's own
@@ -364,7 +359,6 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               variants={fadeUp}
               className="text-center mb-12"
             >
-              {mark}
               <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">{location.citiesHeading || L.exploreByCity}</h2>
               <p className="text-lg text-gray-600">{location.citiesSubheading || L.keyCities(location.name)}</p>
             </motion.div>
@@ -393,7 +387,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                         />
                       </div>
                     )}
-                    <div className={`p-6 ${bar(index)}`}>
+                    <div className="p-6">
                       <h3 className="text-xl font-bold text-gray-900 mb-2">{city.city}</h3>
                       {city.description && <p className="text-gray-600 text-sm mb-4">{city.description}</p>}
                       {city.billboards && city.billboards !== '0' && (
@@ -441,7 +435,6 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               variants={fadeUp}
               className="text-center mb-12"
             >
-              {mark}
               <h2 className="font-bold text-gray-900 mb-4 text-3xl lg:text-4xl">{location.billboardsHeading || L.billboardsHeading}</h2>
               <p className="text-lg text-gray-600 max-w-2xl mx-auto">{L.billboardsSub}</p>
             </motion.div>
@@ -468,7 +461,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                       />
                     </div>
                   )}
-                  <div className={`p-6 ${bar(index)}`}>
+                  <div className="p-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-2">{billboard.name}</h3>
                     <div className="flex items-center gap-2 text-gray-500 text-sm mb-4">
                       {Icons.location}
@@ -500,21 +493,20 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
       {location.mediaTypes && location.mediaTypes.length > 0 && (
         <section className="bg-white mw-section">
           <div className="mw-container">
-            {mark}
-              <h2 className="font-bold text-gray-900 mb-8 text-center text-3xl lg:text-4xl">{location.mediaTypesHeading || L.mediaTypes}</h2>
+            <h2 className="font-bold text-gray-900 mb-8 text-center text-3xl lg:text-4xl">{location.mediaTypesHeading || L.mediaTypes}</h2>
             {/* Flex-wrap rather than grid so an incomplete last row (e.g. 3 formats) is centred */}
             <div className="flex flex-wrap justify-center gap-6">
               {location.mediaTypes.map((media, index) => {
                 const cardContent = (
                   <>
-                    <div className="mb-4">
+                    <div className={accents ? `mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${ICON_TILES[index % ICON_TILES.length]} transition-transform group-hover:scale-110 [&_svg]:h-6 [&_svg]:w-6 [&_svg]:text-white` : 'mb-4'}>
                       {mediaTypeIcons[media.icon] || mediaTypeIcons.digital}
                     </div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-2">{media.name}</h3>
                     <p className="text-gray-600">{media.description}</p>
                   </>
                 );
-                const cardClassName = `h-full bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all ${accents ? `${bar(index)} ${ACCENT_HOVER[index % ACCENT_HOVER.length]}` : ''}`;
+                const cardClassName = accents ? 'group h-full bg-white rounded-2xl p-6 shadow-mw-lg border border-mw-blue-100 hover:shadow-mw-xl hover:-translate-y-1 transition-all duration-300' : 'h-full bg-white rounded-xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow';
                 return (
                   <motion.div
                     key={index}
@@ -548,8 +540,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
       {location.faqs && location.faqs.length > 0 && (
         <section className="bg-gray-50 mw-section">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            {mark}
-              <h2 className="font-bold text-gray-900 mb-8 text-center text-3xl lg:text-4xl">{location.faqsHeading || L.faqs}</h2>
+            <h2 className="font-bold text-gray-900 mb-8 text-center text-3xl lg:text-4xl">{location.faqsHeading || L.faqs}</h2>
             <motion.div 
               initial="hidden" 
               whileInView="visible" 
