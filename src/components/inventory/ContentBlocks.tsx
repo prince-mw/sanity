@@ -111,7 +111,7 @@ export function RelatedSection({ title, intro, items, bg, limit = 3, allHref, al
             <MarketVideo video={video} />
           </div>
         ) : (
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="grid gap-5 md:grid-cols-3">
             {shown.map(it => <li key={it.id}><RelatedCard it={it} /></li>)}
           </ul>
         )}

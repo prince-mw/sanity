@@ -84,7 +84,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
                   {keyFacts.map(f => (
                     <div key={f.label} className="flex items-center gap-3 rounded-xl bg-white/10 px-4 py-3 ring-1 ring-white/15">
                       <f.icon className="h-5 w-5 flex-shrink-0 text-cyan-300" aria-hidden="true" />
-                      <div className="min-w-0"><dt className="text-xs font-semibold uppercase tracking-wider text-blue-100/70">{f.label}</dt><dd className="truncate text-lg font-bold text-white">{f.value}</dd></div>
+                      <div className="min-w-0"><dt className="text-xs font-semibold uppercase tracking-wider text-blue-100/70">{f.label}</dt><dd className="text-lg font-bold leading-snug text-white">{f.value}</dd></div>
                     </div>
                   ))}
                 </dl>
@@ -190,7 +190,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
         <section className="bg-white mw-section">
           <div className="mw-container">
             <SgSectionHeading title="Pairs well with" intro={`Other ${lc(format)} sites and nearby inventory in ${site.cityName}. Add two or three to one proposal to cover more of the city.`} />
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className={`grid gap-5 ${similar.length === 1 ? 'max-w-md' : similar.length === 2 ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3'}`}>
               {similar.map(s => <SiteCard key={s.id} site={s} linked={paged.has(s.id)} action={
                 // Same pair as the city finder: one row, equal height, Details outlined, Add to proposal the lead CTA.
                 <span className="grid w-full grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-2">
