@@ -35,17 +35,19 @@ const TAIL_ORDER = ['imageGallery', 'logoCarousel', 'successStories', 'ctaBanner
 const blocksOf = (s: TemplateSection | undefined) => (s && Array.isArray(s.content) && s.content.length > 0 ? (s.content as unknown[]) : null)
 
 export function guideFor(countrySlug: string, countryName: string, sections: TemplateSection[]): GuideTopic[] {
-  const draft = COUNTRY_GUIDE_DRAFTS[countrySlug] ?? {}
+  // A written guide wins over the page-builder text (Rif, 11 Nov 2026); countries
+  // without one still get their first two topics from the CMS blocks by role.
+  const draft = COUNTRY_GUIDE_DRAFTS[countrySlug]
   const cms: Partial<Record<TopicId, unknown[] | null>> = {
     digital: blocksOf(sections.find(s => s._type === 'twoColumn')),
     audiences: blocksOf(sections.find(s => s._type === 'textBlock')),
   }
-  const drafts: Partial<Record<TopicId, string[] | undefined>> = { formats: draft.formats, buying: draft.buying, seasons: draft.seasons }
+  const written: Partial<Record<TopicId, string[] | undefined>> = draft ? { digital: draft.digital, audiences: draft.audiences.intro, formats: draft.formats.intro, buying: draft.buying, seasons: draft.seasons } : {}
   return TOPIC_ORDER.map((id): GuideTopic | null => {
-    const blocks = cms[id] ?? null
-    const paragraphs = drafts[id]?.length ? drafts[id]! : null
+    const paragraphs = written[id]?.length ? written[id]! : null
+    const blocks = paragraphs ? null : cms[id] ?? null
     if (!blocks && !paragraphs) return null
-    return { id, heading: TOPIC_HEADINGS[id](countryName), blocks, paragraphs: blocks ? null : paragraphs, source: blocks ? 'cms' : 'draft' }
+    return { id, heading: TOPIC_HEADINGS[id](countryName), blocks, paragraphs, source: paragraphs ? 'draft' : 'cms' }
   }).filter((t): t is GuideTopic => !!t)
 }
 
@@ -96,7 +98,7 @@ export function templateReport(input: { location: { heroTitle?: string; descript
     { slot: 'Cities', ok: cities.length > 0, note: `${cities.length} city pages` },
     { slot: 'Featured sites', ok: (l.highVisibilityBillboards?.length ?? 0) > 0, note: `${l.highVisibilityBillboards?.length ?? 0} in the CMS` },
     { slot: 'Media types', ok: (l.mediaTypes?.length ?? 0) > 0, note: '' },
-    ...TOPIC_ORDER.map(id => ({ slot: `Guide · ${id}`, ok: !!topic(id), note: topic(id) ? (topic(id)!.source === 'draft' ? 'draft copy, needs approval' : 'from the CMS') : 'no text' })),
+    ...TOPIC_ORDER.map(id => ({ slot: `Guide · ${id}`, ok: !!topic(id), note: topic(id) ? (topic(id)!.source === 'draft' ? 'written guide, awaiting approval' : 'from the CMS') : 'no text' })),
     { slot: 'Inventory data (visuals)', ok: data.sites > 0, note: data.sites > 0 ? `${data.sites} sites in ${data.cities.length} cities` : 'no inventory: the data visuals hide' },
     { slot: 'Gallery', ok: has('imageGallery'), note: '' },
     { slot: 'Client logos', ok: has('logoCarousel'), note: '' },

@@ -45,7 +45,7 @@ export default async function CountryTemplatePreview({ params, searchParams }: {
         lang={getLocationPageLang(slug)}
         afterHero={showPromo ? <ProposalPromo variant="band" market={countryName} /> : null}
         sectionsOverride={<>
-          <CountryGuide country={countryName} countrySlug={slug} topics={topics} data={data} moments={COUNTRY_GUIDE_DRAFTS[slug]?.moments ?? []} proposalHref={showPromo ? '/proposals/new' : null} />
+          <CountryGuide country={countryName} countrySlug={slug} topics={topics} data={data} draft={COUNTRY_GUIDE_DRAFTS[slug] ?? null} cityLinks={Object.fromEntries(cities.map(c => [c.city.trim().toLowerCase(), c.href]))} proposalHref={showPromo ? '/proposals/new' : null} />
           <LandingPageRenderer sections={tailSections(sections)} />
         </>}
       />
