@@ -24,9 +24,10 @@ interface CaseStudy {
 interface CaseStudyDetailClientProps {
   caseStudy: CaseStudy;
   relatedCaseStudies: CaseStudy[];
+  promo?: React.ReactNode;
 }
 
-export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }: CaseStudyDetailClientProps) {
+export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies, promo }: CaseStudyDetailClientProps) {
   const { t } = useLocale();
   const getExcerpt = (content: string, maxLength: number = 150) => {
     const text = content.replace(/<[^>]+>/g, '').trim();
@@ -202,6 +203,8 @@ export default function CaseStudyDetailClient({ caseStudy, relatedCaseStudies }:
           </div>
         </div>
       </section>
+
+      {promo}
 
       {/* Related Case Studies */}
       {relatedCaseStudies.length > 0 && (

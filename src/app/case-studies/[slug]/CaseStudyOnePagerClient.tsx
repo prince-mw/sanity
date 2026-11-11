@@ -29,6 +29,7 @@ interface CaseStudy {
 interface CaseStudyOnePagerClientProps {
   caseStudy: CaseStudy;
   relatedCaseStudies: CaseStudy[];
+  promo?: React.ReactNode;
 }
 
 // Badge value -> translation key (ui.caseStudies.badges.*)
@@ -43,7 +44,7 @@ const BADGE_LABEL_KEYS: Record<string, string> = {
 // Matches the deck: most badges are MW blue, Retail Media & Data and Partnership are orange/red.
 const WARM_BADGES = new Set(["retail-media-data", "partnership"]);
 
-export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies }: CaseStudyOnePagerClientProps) {
+export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies, promo }: CaseStudyOnePagerClientProps) {
   const { t } = useLocale();
   const [linkCopied, setLinkCopied] = useState(false);
   const badgeKey = caseStudy.categoryBadge && BADGE_LABEL_KEYS[caseStudy.categoryBadge];
@@ -273,6 +274,8 @@ export default function CaseStudyOnePagerClient({ caseStudy, relatedCaseStudies 
           </div>
         </div>
       </section>
+
+      {promo}
 
       {/* Related Case Studies */}
       {relatedCaseStudies.length > 0 && (

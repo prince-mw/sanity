@@ -2,6 +2,8 @@ import { Metadata } from 'next';
 import { getAudiencePage, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch';
 import { getFeaturedTestimonials } from '@/sanity/lib/queries';
 import AgenciesPageClient from '@/components/AgenciesPageClient';
+import { ProposalPromo } from '@/components/proposal/ProposalPromo';
+import { promoEnabled } from '@/lib/proposal/promo';
 
 export async function generateMetadata(): Promise<Metadata> {
   const [pageData, seoData] = await Promise.all([
@@ -107,7 +109,7 @@ export default async function AgenciesPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <AgenciesPageClient {...clientProps} />
+      <AgenciesPageClient {...clientProps} promo={promoEnabled() ? <ProposalPromo variant="band" /> : null} />
     </>
   );
 }

@@ -1,5 +1,6 @@
 import Header, { SanityMegaMenuData } from "./Header";
 import { getMegaMenu, getBlogLanguageGroups, BlogLanguageGroups } from "@/sanity/lib/queries";
+import { promoEnabled } from "@/lib/proposal/promo";
 
 // Server Component wrapper for Header that fetches Sanity mega menu data
 export default async function HeaderWrapper() {
@@ -20,5 +21,5 @@ export default async function HeaderWrapper() {
     // Language switcher just won't redirect to a translated sibling for any blog post
   }
 
-  return <Header sanityMenuData={sanityMenuData} blogLanguageGroups={blogLanguageGroups} />;
+  return <Header sanityMenuData={sanityMenuData} blogLanguageGroups={blogLanguageGroups} showProposal={promoEnabled()} />;
 }

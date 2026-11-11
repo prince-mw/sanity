@@ -6,6 +6,8 @@ import AsianBornGlobal from "../components/AsianBornGlobal";
 import Services from "../components/Services";
 import Clients from "../components/Clients";
 import TestimonialSection from "../components/TestimonialSection";
+import { ProposalPromo } from "../components/proposal/ProposalPromo";
+import { promoEnabled } from "@/lib/proposal/promo";
 
 // Lazy-load below-fold client components to reduce initial bundle size and TBT
 const PlatformEcosystem = dynamic(() => import("../components/PlatformEcosystem"));
@@ -74,6 +76,7 @@ export default async function Home() {
     <>
       <Hero />
       <TrustBar stats={trustBarContent?.stats} />
+      {promoEnabled() && <ProposalPromo variant="home" />}
       <AsianBornGlobal />
       <Services />
       <PlatformEcosystem />

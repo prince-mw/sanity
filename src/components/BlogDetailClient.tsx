@@ -39,12 +39,13 @@ interface RelatedBlogPost {
 interface BlogDetailClientProps {
   post: BlogPost;
   relatedPosts: RelatedBlogPost[];
+  promo?: React.ReactNode;
 }
 
 const isSupportedBlogLocale = (value?: string): value is Locale =>
   value === "en" || value === "zh";
 
-export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClientProps) {
+export default function BlogDetailClient({ post, relatedPosts, promo }: BlogDetailClientProps) {
   const { locale, setLocale, t } = useLocale();
   const [linkCopied, setLinkCopied] = useState(false);
 
@@ -271,6 +272,8 @@ export default function BlogDetailClient({ post, relatedPosts }: BlogDetailClien
           </div>
         </div>
       </section>
+
+      {promo}
 
       {/* Related Posts */}
       {relatedPosts.length > 0 && (

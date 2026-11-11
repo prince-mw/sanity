@@ -6,6 +6,8 @@ import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
 import { getBlogLanguageGroups, BlogLanguageGroups } from "@/sanity/lib/queries";
 import { extractFaqJsonLd } from "@/lib/faqJsonLd";
 import BlogDetailClient from "@/components/BlogDetailClient";
+import { ProposalPromo } from "@/components/proposal/ProposalPromo";
+import { promoMarketFor } from "@/lib/proposal/promo";
 
 export const revalidate = 3600;
 
@@ -153,7 +155,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <BlogDetailClient post={post} relatedPosts={relatedPosts} />
+      <BlogDetailClient post={post} relatedPosts={relatedPosts} promo={(() => { const m = promoMarketFor(post.title, post.excerpt, post.content, ...(post.tags ?? [])); return m ? <ProposalPromo variant="card" market={m} /> : null })()} />
     </>
   );
 }

@@ -443,3 +443,15 @@ select {
 .offer-art .oa-pin2{transform-origin:center bottom;animation:oa-drop 4s ease-out infinite}
 @keyframes oa-drop{0%,30%{transform:translateY(-30px);opacity:0}45%,90%{transform:translateY(0);opacity:1}100%{opacity:0}}
 @media (prefers-reduced-motion: reduce){.offer-art *{animation:none!important;opacity:1;stroke-dashoffset:0}}
+
+/* Instant-proposal flow drawing (ProposalPromo.tsx): three steps light up in turn. */
+.pp-art .pp-step{animation:pp-step 6s ease-in-out infinite;opacity:.45}
+.pp-art .pp-step-2{animation-delay:2s}.pp-art .pp-step-3{animation-delay:4s}
+@keyframes pp-step{0%{opacity:.45;transform:translateY(0)}8%,30%{opacity:1;transform:translateY(-4px)}40%,100%{opacity:.45;transform:translateY(0)}}
+.pp-art .pp-arrow{stroke-dasharray:40;stroke-dashoffset:40;animation:pp-arrow 6s ease-in-out infinite}
+.pp-art .pp-arrow-2{animation-delay:2s}
+@keyframes pp-arrow{0%,25%{stroke-dashoffset:40}35%,100%{stroke-dashoffset:0}}
+.pp-art .pp-site{transform-box:fill-box;transform-origin:center;animation:pp-site 6s ease-out infinite;animation-delay:2.2s}
+.pp-art .pp-site:nth-child(2){animation-delay:2.4s}.pp-art .pp-site:nth-child(3){animation-delay:2.6s}.pp-art .pp-site:nth-child(4){animation-delay:2.8s}
+@keyframes pp-site{0%,2%{transform:scale(.6)}8%,100%{transform:scale(1)}}
+@media (prefers-reduced-motion: reduce){.pp-art *{animation:none!important;opacity:1;stroke-dashoffset:0}}

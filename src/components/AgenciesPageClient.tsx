@@ -10,6 +10,7 @@ import { useLocale } from '@/i18n/LocaleContext'
 
 // Types for CMS-managed content
 interface AgenciesPageProps {
+  promo?: React.ReactNode;
   title?: string;
   titleHighlight?: string;
   subtitle?: string;
@@ -119,6 +120,7 @@ const defaultContent = {
 };
 
 export default function AgenciesPageClient(props: AgenciesPageProps) {
+  const { promo } = props;
   const { t } = useLocale();
 
   // Merge props with defaults
@@ -388,6 +390,8 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
           </div>
         </div>
       </section>
+
+      {promo}
 
       {/* Platform Section */}
       <section className="bg-white mw-section">

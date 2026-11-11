@@ -234,9 +234,10 @@ const navLinkKeys = [
 interface HeaderProps {
   sanityMenuData?: SanityMegaMenuData | null;
   blogLanguageGroups?: BlogLanguageGroups;
+  showProposal?: boolean;
 }
 
-export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderProps) {
+export default function Header({ sanityMenuData, blogLanguageGroups, showProposal = false }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeMegaMenu, setActiveMegaMenu] = useState<string | null>(null);
   const [mobileExpandedMenu, setMobileExpandedMenu] = useState<string | null>(null);
@@ -457,6 +458,11 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
               </svg>
             </motion.button>
 
+            {showProposal && (
+              <Link href="/proposals/new" className="px-5 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 inline-block border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50">
+                Instant proposal
+              </Link>
+            )}
             {/* CTA Button - uses Sanity data if available */}
             {(ctaButton?.enabled !== false) && (
               <motion.div
@@ -697,6 +703,11 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
                   </button>
                 </div>
 
+                {showProposal && (
+                  <Link href="/proposals/new" className="block w-full px-6 py-2 rounded-lg text-sm font-semibold transition-colors duration-200 mt-4 text-center border-2 border-mw-blue-600 text-mw-blue-600 hover:bg-mw-blue-50">
+                    Instant proposal
+                  </Link>
+                )}
                 {/* Mobile CTA Button */}
                 {(ctaButton?.enabled !== false) && (
                   currentPageFormUrl ? (

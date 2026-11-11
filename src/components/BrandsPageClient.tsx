@@ -10,6 +10,7 @@ import { useLocale } from '@/i18n/LocaleContext'
 
 // Types for CMS-managed content
 interface BrandsPageProps {
+  promo?: React.ReactNode;
   title?: string;
   titleHighlight?: string;
   subtitle?: string;
@@ -132,6 +133,7 @@ const defaultContent = {
 };
 
 export default function BrandsPageClient(props: BrandsPageProps) {
+  const { promo } = props;
   const { t } = useLocale()
   // Merge props with defaults
   const content = {
@@ -393,6 +395,8 @@ export default function BrandsPageClient(props: BrandsPageProps) {
           </div>
         </div>
       </section>
+
+      {promo}
 
       {/* Platform Section */}
       <section className="bg-gradient-to-b from-white via-mw-gray-50/50 to-white mw-section-lg">

@@ -6,6 +6,9 @@ import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transform
 import { getStaticLocationData, STATIC_LOCATION_SLUGS, LocationData } from '@/data/staticLocationData'
 import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLanguageGroups'
 import { buildLocationJsonLd } from '@/lib/locationSchema'
+import { ProposalPromo } from '@/components/proposal/ProposalPromo'
+import { marketOf } from '@/lib/proposal/markets'
+import { promoEnabled } from '@/lib/proposal/promo'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -108,7 +111,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
             dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
           />
         )}
-        <LocationDetailClient initialData={locationData} cities={cities} pageType="country" lang={getLocationPageLang(slug)} />
+        <LocationDetailClient initialData={locationData} cities={cities} pageType="country" lang={getLocationPageLang(slug)} afterHero={promoEnabled() && marketOf(slug) ? <ProposalPromo variant="band" market={marketOf(slug)!.countryName} /> : null} />
       </>
     )
   }
@@ -128,7 +131,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
             dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
           />
         )}
-        <LocationDetailClient initialData={staticData} pageType="country" />
+        <LocationDetailClient initialData={staticData} pageType="country" afterHero={promoEnabled() && marketOf(slug) ? <ProposalPromo variant="band" market={marketOf(slug)!.countryName} /> : null} />
       </>
     )
   }

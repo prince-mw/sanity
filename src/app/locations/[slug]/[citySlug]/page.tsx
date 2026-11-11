@@ -9,6 +9,7 @@ import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLan
 import { areasFor, sitesFor, usingSample } from '@/lib/inventory/source'
 import { siteHasPage } from '@/lib/inventory/normalize'
 import { CityInventorySection } from '@/components/inventory/CityInventorySection'
+import { ProposalPromo } from '@/components/proposal/ProposalPromo'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
@@ -113,7 +114,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         relatedCities={relatedCities}
         countryName={city.country?.country || undefined}
         relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || undefined}
-        afterHero={inventory.length > 0 ? (
+        afterHero={inventory.length > 0 ? (<>
+          <ProposalPromo key="promo" variant="band" market={city.country?.country || slug} place={city.city || citySlug} />
           <CityInventorySection key="inventory"
             cityName={city.city || citySlug}
             citySlug={citySlug}
@@ -125,7 +127,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
             sample={usingSample()}
           />
-        ) : null}
+        </>) : null}
       />
     </>
   )

@@ -6,6 +6,8 @@ import { caseStudies as staticCaseStudies } from "@/data/case-studies";
 import { extractFaqJsonLd } from "@/lib/faqJsonLd";
 import CaseStudyDetailClient from "./CaseStudyDetailClient";
 import CaseStudyOnePagerClient from "./CaseStudyOnePagerClient";
+import { ProposalPromo } from "@/components/proposal/ProposalPromo";
+import { promoMarketFor } from "@/lib/proposal/promo";
 
 export const revalidate = 3600;
 
@@ -120,6 +122,9 @@ export default async function CaseStudyPage({ params }: PageProps) {
     notFound();
   }
 
+  const promoMarket = promoMarketFor(caseStudy.title, caseStudy.country, (caseStudy as { excerpt?: string }).excerpt, caseStudy.content);
+  const promo = promoMarket ? <ProposalPromo variant="card" market={promoMarket} /> : null;
+
   const faqScript = faqJsonLd && (
     <script
       type="application/ld+json"
@@ -133,7 +138,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
     return (
       <>
         {faqScript}
-        <CaseStudyOnePagerClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />
+        <CaseStudyOnePagerClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} promo={promo} />
       </>
     );
   }
@@ -141,7 +146,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
   return (
     <>
       {faqScript}
-      <CaseStudyDetailClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} />
+      <CaseStudyDetailClient caseStudy={caseStudy} relatedCaseStudies={relatedCaseStudies} promo={promo} />
     </>
   );
 }
