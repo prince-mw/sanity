@@ -5,49 +5,42 @@
 // instead of prose beside an empty column. Visuals are generated from data,
 // never drawn per country. No hooks here, so a server page renders it directly.
 //
-// Colour (`tone`): the site blue stays the main colour and the page stays
-// light. The brand guide's three accent families — Sunburst, Emerald Wave,
-// Crimson Blend — are "supporting accents" for small elements, so they tint
-// panels, top bars, tags and hover states, never large areas.
-//   none — white / off-white / blue only
-//   a    — each topic owns one accent; its panels and cards carry a light tint
-//   b    — white at rest; colour arrives on hover, a different accent per card
-//   c    — a coloured top bar on every card, tinted panels, tint on hover
+// Colour (`tone`), settled with Rif on 11 Nov 2026 — subtle and elegant:
+// the site blue stays the main colour and the page stays light. The brand
+// guide's supporting accents appear only as small things: a thin bar on each
+// card (cycling sky, Sunburst, Emerald Wave), soft tags, a pale tint on hover,
+// the yellow chevron before headings and one quiet wave band. Red is left out.
+//   none  — white / off-white / blue only
+//   brand — the treatment above
 
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 import SanityPortableText from '@/components/SanityPortableText'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
+import { Chevron, WaveBand } from '../motion/BrandBits'
 import type { GuideTopic, MarketData, TopicId } from '@/lib/location/countryTemplate'
 import type { GuideDraft, GuideMoment } from '@/data/country-guide-drafts'
 
-export type Tone = 'none' | 'a' | 'b' | 'c'
-type AccentId = 'sky' | 'sun' | 'emerald' | 'crimson'
-// Full class strings (Tailwind only keeps classes it can read whole). Tints are the guide's colours at ~10%.
-const AC: Record<AccentId, { tint: string; line: string; ink: string; bar: string; hov: string; chip: string; fill: string }> = {
-  sky: { tint: 'bg-[#EEF7FE]', line: 'border-[#BFE7FB]', ink: 'text-[#2554A2]', bar: 'border-t-[#66C9F3]', hov: 'hover:bg-[#EEF7FE] hover:border-[#66C9F3]', chip: 'bg-[#DDF1FD] text-[#1F4788]', fill: 'bg-[#2563eb] text-white' },
-  sun: { tint: 'bg-[#FFF9E0]', line: 'border-[#FBE58A]', ink: 'text-[#8A5200]', bar: 'border-t-[#FEDA24]', hov: 'hover:bg-[#FFF9E0] hover:border-[#F5B922]', chip: 'bg-[#FFF1B8] text-[#7A4A00]', fill: 'bg-[#FEDA24] text-[#1B1E2B]' },
-  emerald: { tint: 'bg-[#ECF9EC]', line: 'border-[#BDEBBB]', ink: 'text-[#25534A]', bar: 'border-t-[#6DDF6A]', hov: 'hover:bg-[#ECF9EC] hover:border-[#6DDF6A]', chip: 'bg-[#D6F3D5] text-[#25534A]', fill: 'bg-[#3E9B5A] text-white' },
-  crimson: { tint: 'bg-[#FDEEED]', line: 'border-[#F6C1BF]', ink: 'text-[#871A1C]', bar: 'border-t-[#E03A36]', hov: 'hover:bg-[#FDEEED] hover:border-[#E03A36]', chip: 'bg-[#FBDAD8] text-[#871A1C]', fill: 'bg-[#E03A36] text-white' },
-}
-const TOPIC_ACCENT: Record<TopicId, AccentId> = { digital: 'sky', audiences: 'sun', formats: 'emerald', buying: 'sky', seasons: 'crimson' }
-const CYCLE: AccentId[] = ['sky', 'sun', 'emerald', 'crimson']
+export type Tone = 'none' | 'brand'
+// Full class strings (Tailwind only keeps classes it can read whole). Tints are the guide's colours at about 8%.
+const CYCLE = [
+  { bar: 'border-t-[3px] border-t-[#66C9F3]', hov: 'hover:bg-[#F3F9FE]', chip: 'bg-[#E6F4FD] text-[#1F4788]' },
+  { bar: 'border-t-[3px] border-t-[#FEDA24]', hov: 'hover:bg-[#FFFBEA]', chip: 'bg-[#FFF4C7] text-[#7A4A00]' },
+  { bar: 'border-t-[3px] border-t-[#6DDF6A]', hov: 'hover:bg-[#F1FAF1]', chip: 'bg-[#DDF4DC] text-[#25534A]' },
+]
 
-/** Every colour decision in one place, so a tone is a rule and not a per-element choice. */
+/** Every colour decision in one place, so the tone is a rule and not a per-element choice. */
 function look(tone: Tone) {
-  const tinted = tone === 'a' || tone === 'c'
+  const on = tone === 'brand'
   return {
-    panel: (t: TopicId) => `rounded-2xl border p-5 sm:p-6 ${tinted ? `${AC[TOPIC_ACCENT[t]].tint} ${AC[TOPIC_ACCENT[t]].line}` : 'border-gray-200 bg-gray-50'} ${tone === 'b' ? `border-t-4 ${AC[TOPIC_ACCENT[t]].bar}` : ''}`,
-    label: (t: TopicId) => `text-xs font-bold uppercase tracking-wider ${tinted ? AC[TOPIC_ACCENT[t]].ink : 'text-[#2563eb]'}`,
-    card: (t: TopicId, i: number, rest: 'white' | 'soft') => {
-      const own = AC[TOPIC_ACCENT[t]], turn = AC[CYCLE[i % CYCLE.length]]
-      if (tone === 'a') return `border ${own.tint} ${own.line}`
-      if (tone === 'b') return `border border-gray-200 bg-white transition-colors duration-200 ${turn.hov}`
-      if (tone === 'c') return `border border-gray-200 border-t-4 ${turn.bar} bg-white transition-colors duration-200 ${turn.hov}`
-      return `border border-gray-200 ${rest === 'white' ? 'bg-white' : 'bg-gray-50'}`
-    },
-    chip: (t: TopicId, i: number) => tone === 'a' ? `bg-white/80 ${AC[TOPIC_ACCENT[t]].ink}` : tone === 'c' ? AC[CYCLE[i % CYCLE.length]].chip : 'bg-gray-100 text-gray-700',
-    fill: (t: TopicId) => tinted ? AC[TOPIC_ACCENT[t]].fill : 'bg-[#2563eb] text-white',
+    on,
+    panel: (_t: TopicId) => `rounded-2xl border p-5 sm:p-6 ${on ? 'border-[#D6ECFB] bg-[#F3F9FE]' : 'border-gray-200 bg-gray-50'}`,
+    label: (_t: TopicId) => 'text-xs font-bold uppercase tracking-wider text-[#2563eb]',
+    card: (_t: TopicId, i: number, rest: 'white' | 'soft') => on
+      ? `border border-gray-200 bg-white transition-all duration-200 hover:shadow-md ${CYCLE[i % CYCLE.length].bar} ${CYCLE[i % CYCLE.length].hov}`
+      : `border border-gray-200 ${rest === 'white' ? 'bg-white' : 'bg-gray-50'}`,
+    chip: (_t: TopicId, i: number) => on ? CYCLE[i % CYCLE.length].chip : 'bg-gray-100 text-gray-700',
+    fill: (_t: TopicId) => 'bg-[#2563eb] text-white',
   }
 }
 type Look = ReturnType<typeof look>
@@ -133,7 +126,7 @@ function FormatsTopic({ t, list, data, lk }: { t: GuideTopic; list: { name: stri
   return (
     <>
       <div className="max-w-3xl">
-        <h3 className="text-2xl font-bold tracking-tight text-gray-900">{t.heading}</h3>
+        <h3 className="flex items-start gap-3 text-2xl font-bold tracking-tight text-gray-900">{lk.on && <span className="mt-2.5 flex-shrink-0"><Chevron size={26} color="#FEDA24" /></span>}<span>{t.heading}</span></h3>
         <Text t={t} />
       </div>
       <ul className={`mt-8 grid gap-4 sm:grid-cols-2 ${cols}`}>
@@ -160,7 +153,7 @@ function CitiesTopic({ t, draft, data, country, countrySlug, cityLinks, lk }: { 
     <>
       <div className={pins.length ? 'grid items-start gap-8 lg:grid-cols-12 lg:gap-12' : ''}>
         <div className={pins.length ? 'lg:col-span-5' : 'max-w-3xl'}>
-          <h3 className="text-2xl font-bold tracking-tight text-gray-900">{t.heading}</h3>
+          <h3 className="flex items-start gap-3 text-2xl font-bold tracking-tight text-gray-900">{lk.on && <span className="mt-2.5 flex-shrink-0"><Chevron size={26} color="#FEDA24" /></span>}<span>{t.heading}</span></h3>
           <Text t={t} />
         </div>
         {pins.length > 0 && <div className="lg:col-span-7"><BrandMap pins={pins} title={`Map of the cities to advertise in, ${country}`} className="h-72 sm:h-80 lg:h-[360px]" /></div>}
@@ -204,7 +197,7 @@ export function CountryGuide({ country, countrySlug, topics, data, draft = null,
   return (
     <section className="bg-white mw-section" aria-labelledby="country-guide-title">
       <div className="mw-container">
-        <p className="text-xs font-bold uppercase tracking-wider text-[#2563eb]">Market guide</p>
+        <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#2563eb]">{lk.on && <Chevron size={24} color="#FEDA24" />}Market guide</p>
         <h2 id="country-guide-title" className="mt-2 text-3xl font-bold tracking-tight text-gray-900 lg:text-4xl">Out-of-home advertising in {country}</h2>
         <nav aria-label="In this guide" className="mt-6 flex flex-wrap gap-2">
           {topics.map(t => <a key={t.id} href={`#guide-${t.id}`} className="mw-tap rounded-full border border-gray-300 bg-white px-4 py-1.5 text-sm font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]">{t.heading.split(':')[0]}</a>)}
@@ -226,7 +219,7 @@ export function CountryGuide({ country, countrySlug, topics, data, draft = null,
             <article key={t.id} id={`guide-${t.id}`} className="mt-12 scroll-mt-28 border-t border-gray-200 pt-12">
               <div className={v ? 'grid items-start gap-8 lg:grid-cols-12 lg:gap-12' : ''}>
                 <div className={v ? `lg:col-span-7 ${right ? '' : 'lg:order-2'}` : 'max-w-3xl'}>
-                  <h3 className="text-2xl font-bold tracking-tight text-gray-900">{t.heading}</h3>
+                  <h3 className="flex items-start gap-3 text-2xl font-bold tracking-tight text-gray-900">{lk.on && <span className="mt-2.5 flex-shrink-0"><Chevron size={26} color="#FEDA24" /></span>}<span>{t.heading}</span></h3>
                   <Text t={t} />
                 </div>
                 {v && <div className={`lg:col-span-5 ${right ? '' : 'lg:order-1'}`}>{v}</div>}
@@ -235,6 +228,7 @@ export function CountryGuide({ country, countrySlug, topics, data, draft = null,
           )
         })}
       </div>
+      {lk.on && <div className="mw-container mt-14 opacity-30"><WaveBand height={14} units={24} /></div>}
     </section>
   )
 }

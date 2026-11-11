@@ -24,8 +24,9 @@ export default async function CountryTemplatePreview({ params, searchParams }: {
   if (!inventoryEnabled()) notFound()
   const { slug } = await params
   const { check, tone: toneParam } = await searchParams
-  const tone: Tone = toneParam === 'a' || toneParam === 'b' || toneParam === 'c' ? toneParam : 'none'
-  const TONES: [Tone, string][] = [['none', 'Current'], ['a', 'A · Tinted by topic'], ['b', 'B · Colour on hover'], ['c', 'C · Colour bars and tints']]
+  // Brand colours are the default now; ?tone=none shows the plain version for comparison.
+  const tone: Tone = toneParam === 'none' ? 'none' : 'brand'
+  const TONES: [Tone, string][] = [['brand', 'Brand colours'], ['none', 'Plain']]
   const sanityLocation = await getLocationBySlug(slug, false)
   if (!sanityLocation) notFound()
 
@@ -45,6 +46,7 @@ export default async function CountryTemplatePreview({ params, searchParams }: {
         initialData={{ ...location, sectionsPosition: 'before-faqs' }}
         cities={cities}
         pageType="country"
+        accents={tone === 'brand'}
         lang={getLocationPageLang(slug)}
         afterHero={showPromo ? <ProposalPromo variant="band" market={countryName} /> : null}
         sectionsOverride={<>
@@ -52,7 +54,7 @@ export default async function CountryTemplatePreview({ params, searchParams }: {
           <div className="border-y border-gray-200 bg-white">
             <div className="mw-container flex flex-wrap items-center gap-2 py-3">
               <span className="mr-1 text-sm font-semibold text-gray-500">Colour option</span>
-              {TONES.map(([id, name]) => <Link key={id} href={`/locations/${slug}/template-preview${id === 'none' ? '' : `?tone=${id}`}#country-guide-title`} scroll={false} className={`mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold ${tone === id ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`}>{name}</Link>)}
+              {TONES.map(([id, name]) => <Link key={id} href={`/locations/${slug}/template-preview${id === 'brand' ? '' : `?tone=${id}`}#country-guide-title`} scroll={false} className={`mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold ${tone === id ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`}>{name}</Link>)}
             </div>
           </div>
           <CountryGuide country={countryName} countrySlug={slug} topics={topics} data={data} draft={COUNTRY_GUIDE_DRAFTS[slug] ?? null} cityLinks={Object.fromEntries(cities.map(c => [c.city.trim().toLowerCase(), c.href]))} proposalHref={showPromo ? '/proposals/new' : null} tone={tone} />
