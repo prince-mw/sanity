@@ -64,6 +64,7 @@ export type ProposalDoc = {
   shown: { options: string[]; postApproval: string[] }             // what the client sees: at most 2 before approval, at most 2 after (ids of suggestions, add-ons, 'smaller' | 'larger', city slugs)
   derivedFrom: string | null                                       // the shareId this proposal was started from
   creative: Creative | null                                        // the client's creative for the mock-ups
+  owner: { name: string; email: string; market: string | null; fallback: boolean } | null   // the market lead for the country (staff/people.ts), stamped at creation
   approvedAt: string | null
   createdAt: string
   updatedAt: string

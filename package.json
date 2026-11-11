@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-sdk/client-ses": "^3.1166.0",
     "@portabletext/react": "^6.0.3",
     "@sanity/client": "^7.17.0",
     "@sanity/image-url": "^2.0.3",

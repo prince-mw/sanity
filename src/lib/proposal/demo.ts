@@ -42,7 +42,7 @@ export async function buildDemoView(cities: string[] = ['kuala-lumpur'], opts: {
     _id: 'proposal-demo', shareId: DEMO_SHARE_ID, editTokenHash: '', status: opts.approved ? 'approved' : 'sent', titleLine: titleLineFor(brief),
     creator: { name: '', email: '', company: 'Example Beauty Co.', country: 'Malaysia' }, leadId: null, brief,
     currentVersion: 1, versions: [v1], changeRequests: [], cityRequests: [], participants: [],
-    shown: { options: [], postApproval: [] }, derivedFrom: null, creative: opts.creative === false ? null : DEMO_CREATIVE,
+    shown: { options: [], postApproval: [] }, derivedFrom: null, creative: opts.creative === false ? null : DEMO_CREATIVE, owner: null,
     approvedAt: opts.approved ? now : null, createdAt: now, updatedAt: now,
   }
   return resolveSites(doc)

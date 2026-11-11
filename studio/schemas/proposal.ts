@@ -66,6 +66,9 @@ export default defineType({
       { name: 'fit', type: 'string', description: 'letterbox | fill' },
       { name: 'by', type: 'string', description: 'staff | client' }, { name: 'byName', type: 'string' }, { name: 'at', type: 'datetime' },
     ] }),
+    defineField({ name: 'owner', type: 'object', description: 'The market lead for the country, stamped at creation', fields: [
+      { name: 'name', type: 'string' }, { name: 'email', type: 'string' }, { name: 'market', type: 'string' }, { name: 'fallback', type: 'boolean' },
+    ] }),
     defineField({ name: 'approvedAt', type: 'datetime' }),
     defineField({ name: 'createdAt', type: 'datetime' }),
     defineField({ name: 'updatedAt', type: 'datetime' }),

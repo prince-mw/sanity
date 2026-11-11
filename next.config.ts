@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
     ZOHO_LEAD_RULE_ID: process.env.ZOHO_LEAD_RULE_ID,
     MOCKUP_COOKIE_SECRET: process.env.MOCKUP_COOKIE_SECRET,
     MOCKUP_TESTER_KEY: process.env.MOCKUP_TESTER_KEY,
+    STAFF_MAIL_FROM: process.env.STAFF_MAIL_FROM,
+    STAFF_MAIL_REGION: process.env.STAFF_MAIL_REGION,
     PEXELS_API_KEY: process.env.PEXELS_API_KEY,
     ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
   },

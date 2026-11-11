@@ -9,6 +9,7 @@ import type { PublicSite } from '@/lib/inventory/types'
 import { OBJECTIVES, marketOf, cityOf, citiesLabel } from './markets'
 import { ensureMarkets } from './marketsData'
 import { buildTiers, buildSuggestions } from './tiers'
+import { ownerForCountry } from '@/lib/staff/people'
 import type { AudienceGroup, Brief, CityGroup, Creative, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersion, ProposalView, SiteFace, Suggestion, Tier, VersionSite } from './types'
 
 // Proposals live in Sanity as `proposal` documents (studio/schemas/proposal.ts),
@@ -98,11 +99,11 @@ const AUDIENCE_LABELS: Record<string, string> = {
   family: 'Families', nightlife: 'Evening and nightlife crowd',
 }
 
-const DOC_FIELDS = `_id, shareId, editTokenHash, status, titleLine, creator, leadId, crmError, brief, currentVersion, versions, changeRequests, cityRequests, participants, shown, derivedFrom, creative, approvedAt, createdAt, updatedAt`
+const DOC_FIELDS = `_id, shareId, editTokenHash, status, titleLine, creator, leadId, crmError, brief, currentVersion, versions, changeRequests, cityRequests, participants, shown, derivedFrom, creative, owner, approvedAt, createdAt, updatedAt`
 
 const norm = (d: ProposalDoc | null): ProposalDoc | null => d ? {
   ...d, versions: d.versions ?? [], changeRequests: d.changeRequests ?? [], cityRequests: d.cityRequests ?? [], participants: d.participants ?? [], leadId: d.leadId ?? null, approvedAt: d.approvedAt ?? null,
-  shown: { options: d.shown?.options ?? [], postApproval: d.shown?.postApproval ?? [] }, derivedFrom: d.derivedFrom ?? null, creative: d.creative ?? null,
+  shown: { options: d.shown?.options ?? [], postApproval: d.shown?.postApproval ?? [] }, derivedFrom: d.derivedFrom ?? null, creative: d.creative ?? null, owner: d.owner ?? null,
   brief: { ...d.brief, formats: d.brief?.formats ?? [], audience: d.brief?.audience ?? '', industry: d.brief?.industry ?? '',
     cities: d.brief?.cities?.length ? d.brief.cities : [d.brief?.citySlug].filter(Boolean) as string[], countryWide: !!d.brief?.countryWide },
 } : null
@@ -124,7 +125,7 @@ export async function createProposal(input: {
     _type: 'proposal', shareId: newShareId(), editTokenHash: hashToken(editToken), status: 'sent' as ProposalStatus,
     titleLine: titleLineFor(input.brief), creator: input.creator, leadId: input.leadId, brief: input.brief,
     currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], cityRequests: [], participants: [], shown: { options: [], postApproval: [] }, derivedFrom: input.derivedFrom ?? null,
-    creative: null, approvedAt: null, createdAt: now, updatedAt: now,
+    creative: null, owner: ownerForCountry(input.brief.countrySlug), approvedAt: null, createdAt: now, updatedAt: now,
   }
   if (fileStore()) { const d = { ...doc, _id: `proposal-${doc.shareId}` } as ProposalDoc; await fileWrite(d); return { doc: norm(d) as ProposalDoc, editToken } }
   const created = await writeClient.create(doc)
@@ -188,6 +189,19 @@ export async function listProposalsFor(email: string, shareIds: string[]): Promi
     return docs.filter(d => d.creator?.email === email || shareIds.includes(d.shareId)).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
   }
   return writeClient.fetch(`*[_type == "proposal" && (creator.email == $email || shareId in $ids)] | order(updatedAt desc)[0...100]{ _id, shareId, titleLine, status, currentVersion, createdAt, updatedAt, derivedFrom, brief }`, { email, ids: shareIds })
+}
+
+/** Every proposal, newest first, for the staff dashboard (owners missing on older documents are filled from the country). */
+export async function listAllProposals(): Promise<ProposalDoc[]> {
+  let docs: ProposalDoc[]
+  if (fileStore()) {
+    let names: string[] = []
+    try { names = (await fs.readdir(FILE_DIR)).filter(n => n.endsWith('.json')) } catch { return [] }
+    docs = (await Promise.all(names.map(n => fileRead(n.replace(/\.json$/, ''))))).filter((d): d is ProposalDoc => !!d)
+  } else {
+    docs = await writeClient.fetch<ProposalDoc[]>(`*[_type == "proposal"] | order(createdAt desc)[0...500]{ ${DOC_FIELDS} }`)
+  }
+  return docs.map(d => norm(d) as ProposalDoc).map(d => ({ ...d, owner: d.owner ?? ownerForCountry(d.brief.countrySlug) })).sort((a, b) => b.createdAt.localeCompare(a.createdAt))
 }
 
 /** A longer run chosen from a suggestion: the brief's duration changes, the investment follows. */

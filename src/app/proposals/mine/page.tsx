@@ -5,6 +5,7 @@ import { readProposalGrant } from '@/lib/proposal/access'
 import { listProposalsFor } from '@/lib/proposal/store'
 import { citiesLabel } from '@/lib/proposal/markets'
 import { SG_NAVY } from '@/components/SingaporeShared'
+import { readStaff } from '@/lib/staff/auth'
 
 // Every proposal this person created, with status and versions.
 export const dynamic = 'force-dynamic'
@@ -17,6 +18,7 @@ export default async function MyProposalsPage() {
   await ensureMarkets()
   const grant = await readProposalGrant()
   const list = grant ? await listProposalsFor(grant.email, grant.proposals) : []
+  const staff = await readStaff()
   return (
     <div className="bg-white text-gray-900">
       <section className={`${SG_NAVY} text-white mw-hero-top pb-10`}>
@@ -24,7 +26,7 @@ export default async function MyProposalsPage() {
           <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Instant proposal</span>
           <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Your proposals</h1>
           <p className="mt-3 max-w-[60ch] text-blue-100/90">{grant ? `Everything built by ${grant.name || grant.email}. Open one to edit it or copy its client link.` : 'Register once on the proposal form and your proposals appear here.'}</p>
-          <div className="mt-6"><Link href="/proposals/new" className="mw-tap inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">Build a new proposal</Link></div>
+          <div className="mt-6 flex flex-wrap gap-3"><Link href="/proposals/new" className="mw-tap inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">Build a new proposal</Link>{staff && <Link href="/staff/proposals" className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">Team dashboard: all proposals</Link>}</div>
         </div>
       </section>
       <section className="bg-gray-50 mw-section">
