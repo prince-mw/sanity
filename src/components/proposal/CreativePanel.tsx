@@ -44,8 +44,10 @@ async function fileToDataUrl(file: File, kind: 'logo' | 'image' | 'video'): Prom
   return { url: kind === 'logo' ? c.toDataURL('image/png') : c.toDataURL('image/jpeg', 0.9), width: w, height: h }
 }
 
-export function CreativePanel({ site, face, initial, who, onSave, saving = false, note }: {
+export function CreativePanel({ site, face, initial, who, onSave, saving = false, note, videoOk = true }: {
   site: PublicSite; face: SiteFace | null | undefined; initial: Creative | null; who: 'staff' | 'client'
+  /** false when every site in the plan is a printed board: images only */
+  videoOk?: boolean
   onSave: (payload: CreativePayload) => Promise<boolean>; saving?: boolean; note?: string | null
 }) {
   const [mode, setMode] = useState<Creative['mode']>(initial?.mode ?? 'make')
@@ -82,6 +84,7 @@ export function CreativePanel({ site, face, initial, who, onSave, saving = false
     if (!file) return
     const video = file.type.startsWith('video/')
     setInfo(null)
+    if (video && !videoOk) { setError('Every site in this plan is a printed board, so they show still images. Upload an image instead.'); return }
     if (video && file.size > MAX_VIDEO_IN_MB * 1024 * 1024) { setError(`Please use a video under ${MAX_VIDEO_IN_MB} MB.`); return }
     if (!video && file.size > 15 * 1024 * 1024) { setError('Please use an image under 15 MB.'); return }
     if (video && file.size > MAX_VIDEO_BYTES) {
@@ -135,12 +138,12 @@ export function CreativePanel({ site, face, initial, who, onSave, saving = false
         ) : (
           <>
             <div className="rounded-xl border border-mw-blue-100 bg-mw-blue-50/60 p-4">
-              <p className="flex items-start gap-2 text-sm text-gray-800"><Ruler className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#2563eb]" aria-hidden="true" /><span>{specSentence(spec, site.name)} Every other site in the plan is fitted from this file too.</span></p>
+              <p className="flex items-start gap-2 text-sm text-gray-800"><Ruler className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#2563eb]" aria-hidden="true" /><span>{videoOk ? specSentence(spec, site.name) : specSentence(spec, site.name).replace('an image or video', 'an image')} Every other site in the plan is fitted from this file too{videoOk ? '; printed boards show a still from a video' : ''}.</span></p>
             </div>
             <label className="flex cursor-pointer items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 px-4 py-4 hover:border-mw-blue-400">
               <Upload className="h-5 w-5 flex-shrink-0 text-[#2563eb]" aria-hidden="true" />
-              <span className="text-sm text-gray-700">{own?.name || 'Upload an image (under 15 MB) or a video (MP4, MOV or WebM; large files are shrunk for the proposal)'}</span>
-              <input type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm,video/quicktime" className="sr-only" onChange={e => onOwn(e.target.files?.[0])} />
+              <span className="text-sm text-gray-700">{own?.name || (videoOk ? 'Upload an image (under 15 MB) or a video (MP4, MOV or WebM; large files are shrunk for the proposal)' : 'Upload an image (under 15 MB). The sites in this plan are printed boards, so no video.')}</span>
+              <input type="file" accept={videoOk ? 'image/png,image/jpeg,image/webp,video/mp4,video/webm,video/quicktime' : 'image/png,image/jpeg,image/webp'} className="sr-only" onChange={e => onOwn(e.target.files?.[0])} />
             </label>
             {info && <p className="text-sm text-emerald-700">{info}</p>}
             {fitInfo && (
@@ -159,7 +162,7 @@ export function CreativePanel({ site, face, initial, who, onSave, saving = false
       </div>
       <div className="lg:col-span-7">
         <SiteMockup site={site} face={face} creative={draft} play download={false} />
-        <p className="mt-2 text-xs text-gray-500">Previewed on {site.name}, the lead site. {who === 'staff' ? 'The client page opens with this on the lead site; every site shows it once they approve.' : 'Once saved, every site in your plan shows it.'}</p>
+        <p className="mt-2 text-xs text-gray-500">Previewed on {site.name}, the lead site. {who === 'staff' ? 'Your plan page shows this on the lead site; every site shows it once the plan is approved.' : 'Once saved, every site in your plan shows it.'}</p>
       </div>
     </div>
   )

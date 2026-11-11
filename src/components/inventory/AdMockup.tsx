@@ -16,7 +16,7 @@ import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import type { Face } from '@/lib/mockup/compose'
 import { aspectFromSize, faceAspect, composeOnSite, drawCreative, drawOwnCreative, loadImage, mediaSize, sampleAccent, wordmark, type Media, type Template } from '@/lib/mockup/compose'
-import { creativeSpec, fitReport, specSentence, templatePng, type Fit } from '@/lib/mockup/spec'
+import { creativeSpec, fitReport, isDigitalSite, specSentence, templatePng, type Fit } from '@/lib/mockup/spec'
 import { LeadForm, type LeadResult } from '../forms/LeadForm'
 import { CornerEditor } from './CornerEditor'
 
@@ -61,6 +61,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   const [recording, setRecording] = useState(false)
   const liveRef = useRef<HTMLCanvasElement | null>(null)
   const isVideo = !!own && 'videoWidth' in own // duck-typed: HTMLVideoElement does not exist during the server render
+  const videoOk = isDigitalSite(site) // a printed board takes an image only
   // One mock-up per person: 'loading' → 'none' (not registered) | 'this' (this site unlocked) | 'other' (used on another site)
   type Owner = { name: string; email: string | null } | null
   const [access, setAccess] = useState<{ state: 'loading' | 'none' | 'this' | 'other'; siteName?: string; owner?: Owner; tester?: boolean }>({ state: 'loading' })
@@ -124,6 +125,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
     if (own && 'videoWidth' in own) { (own as HTMLVideoElement).pause(); (own as HTMLVideoElement).src = '' }
     const url = URL.createObjectURL(file)
     if (file.type.startsWith('video/')) {
+      if (!videoOk) { setError(`${site.name} is a printed board, so it shows a still image. Upload an image instead.`); return }
       if (file.size > MAX_VIDEO_MB * 1024 * 1024) { setError(`Please use a video under ${MAX_VIDEO_MB} MB.`); return }
       const v = document.createElement('video')
       v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto'; v.src = url
@@ -250,13 +252,13 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         {mode === 'own' && (
           <div className="space-y-4">
             <div className="rounded-xl border border-mw-blue-100 bg-mw-blue-50/60 p-4">
-              <p className="flex items-start gap-2 text-sm text-gray-800"><Ruler className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#2563eb]" aria-hidden="true" /><span>{specSentence(spec, site.name)}</span></p>
+              <p className="flex items-start gap-2 text-sm text-gray-800"><Ruler className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#2563eb]" aria-hidden="true" /><span>{videoOk ? specSentence(spec, site.name) : specSentence(spec, site.name).replace('an image or video', 'an image').replace('Upload an image or video', 'Upload an image')}</span></p>
               <button type="button" onClick={downloadTemplate} className="mw-tap mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#2563eb] hover:underline"><Download className="h-4 w-4" aria-hidden="true" /> Download a blank template ({spec.width} × {spec.height} px)</button>
             </div>
             <label className="flex cursor-pointer items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 px-4 py-4 hover:border-mw-blue-400">
               <Upload className="h-5 w-5 flex-shrink-0 text-[#2563eb]" aria-hidden="true" />
-              <span className="text-sm text-gray-700">{ownName ?? `Upload an image (under ${MAX_IMAGE_MB} MB) or a video (MP4/WebM, under ${MAX_VIDEO_S} s and ${MAX_VIDEO_MB} MB)`}</span>
-              <input type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm,video/quicktime" className="sr-only" onChange={e => onOwnCreative(e.target.files?.[0])} />
+              <span className="text-sm text-gray-700">{ownName ?? (videoOk ? `Upload an image (under ${MAX_IMAGE_MB} MB) or a video (MP4/WebM, under ${MAX_VIDEO_S} s and ${MAX_VIDEO_MB} MB)` : `Upload an image (under ${MAX_IMAGE_MB} MB). This is a printed board, so no video.`)}</span>
+              <input type="file" accept={videoOk ? 'image/png,image/jpeg,image/webp,video/mp4,video/webm,video/quicktime' : 'image/png,image/jpeg,image/webp'} className="sr-only" onChange={e => onOwnCreative(e.target.files?.[0])} />
             </label>
             {fitInfo && (
               <div>

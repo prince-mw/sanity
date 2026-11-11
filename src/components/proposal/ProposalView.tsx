@@ -23,6 +23,7 @@ import { OfferArt, artFor } from './OfferArt'
 import { IdentitySheet, loadIdentity, type Identity } from './IdentitySheet'
 import { SiteMockup } from './SiteMockup'
 import { CreativePanel, type CreativePayload } from './CreativePanel'
+import { isDigitalSite } from '@/lib/mockup/spec'
 import type { ProposalView as View, ProposalStatus, TierId, Creative } from '@/lib/proposal/types'
 import type { SiteSpecs } from '@/lib/inventory/types'
 
@@ -314,7 +315,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
             </div>
             {(creativeOpen || !creative) && (
               <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 no-print sm:p-6">
-                <CreativePanel site={lead} face={faces[lead.id]} initial={creative} who="client" onSave={saveCreative} saving={savingCreative} note={creativeNote} />
+                <CreativePanel site={lead} face={faces[lead.id]} initial={creative} who="client" onSave={saveCreative} saving={savingCreative} note={creativeNote} videoOk={sites.some(isDigitalSite)} />
                 {creative && <button type="button" onClick={() => setCreativeOpen(false)} className="mw-tap mt-4 text-sm font-semibold text-gray-600 hover:underline">Keep the current creative</button>}
               </div>
             )}

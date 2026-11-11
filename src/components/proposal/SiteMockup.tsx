@@ -33,7 +33,7 @@ export function SiteMockup({ site, face, creative, play = true, download = false
       </div>
       {(caption || download) && (
         <figcaption className="mt-2 flex items-start justify-between gap-3">
-          {caption && <span className="min-w-0 text-sm"><span className="block truncate font-semibold text-gray-900">{site.name}</span><span className="block truncate text-xs text-gray-500">{m.face ? [site.displayFormat ?? site.format, site.areaName].filter(Boolean).join(' · ') : 'Screen not yet marked on this photo; shown flat'}</span></span>}
+          {caption && <span className="min-w-0 text-sm"><span className="block truncate font-semibold text-gray-900">{site.name}</span><span className="block truncate text-xs text-gray-500">{!m.face ? 'Screen not yet marked on this photo; shown flat' : m.stillFromVideo ? 'Printed board: a still from your video' : [site.displayFormat ?? site.format, site.areaName].filter(Boolean).join(' · ')}</span></span>}
           {download && m.still && <button type="button" onClick={save} className="mw-tap inline-flex flex-shrink-0 items-center gap-1.5 rounded-lg border border-gray-300 px-3 py-1.5 text-xs font-semibold text-gray-700 hover:border-mw-blue-400"><Download className="h-3.5 w-3.5" aria-hidden="true" /> PNG</button>}
         </figcaption>
       )}

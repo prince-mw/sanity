@@ -10,7 +10,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { Creative, SiteFace } from '@/lib/proposal/types'
 import { aspectFromSize, composeOnSite, drawCreative, drawOwnCreative, faceAspect, loadImage, wordmark, type Face, type Media } from './compose'
-import { creativeSpec, type CreativeSpec } from './spec'
+import { creativeSpec, isDigitalSite, type CreativeSpec } from './spec'
 
 const proxied = (u: string) => u.startsWith('data:') || u.startsWith('blob:') ? u : `/api/mockup/photo?u=${encodeURIComponent(u)}`
 
@@ -84,7 +84,9 @@ export function useSiteMockup(site: PublicSite, siteFace: SiteFace | null | unde
   useEffect(() => { setStill(render()) }, [creative, assets, siteImg, face, spec, aspect]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const isVideo = !!assets?.own && 'videoWidth' in assets.own
-  const live = play && isVideo && !!siteImg && !!face
+  const digital = isDigitalSite(site)
+  // a printed board shows the video's first frame as a still
+  const live = play && isVideo && digital && !!siteImg && !!face
   useEffect(() => {
     if (!live || !creative || !assets?.own || !siteImg || !face) return
     const v = assets.own as HTMLVideoElement
@@ -108,5 +110,5 @@ export function useSiteMockup(site: PublicSite, siteFace: SiteFace | null | unde
     return () => { stop = true; cancelAnimationFrame(raf) }
   }, [live, creative, assets, siteImg, face, spec, aspect])
 
-  return { still, live, liveRef, error, spec, face, ready: !!siteImg && !!assets, png: () => render('png') }
+  return { still, live, liveRef, error, spec, face, ready: !!siteImg && !!assets, png: () => render('png'), stillFromVideo: isVideo && !digital }
 }

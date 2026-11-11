@@ -20,6 +20,7 @@ import { SampleTag, SiteGrid } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import { SiteDetailsDialog, type SiteInsights } from './SiteDetailsDialog'
 import { CreativePanel, type CreativePayload } from './CreativePanel'
+import { isDigitalSite } from '@/lib/mockup/spec'
 import { useShortlist } from '@/lib/proposal/shortlist'
 import { OBJECTIVES, DURATIONS, BUDGET_BANDS, cityNameOf as nameOfSlug, marketOf, type Market } from '@/lib/proposal/markets'
 import { ADDONS } from '@/lib/proposal/addons'
@@ -30,7 +31,9 @@ import type { ProposalView as View, Objective, Creative } from '@/lib/proposal/t
 type Row = { siteId: string; reason: string }
 type TabId = 'plan' | 'sites' | 'brief' | 'creative' | 'client'
 // Round 7 (Rif, 11 Nov 2026): tabs named by what the user does; the client-options tab is staff-only (visitors get the automatic rule in lib/proposal/shown.ts).
-const TABS: { id: TabId; label: string; staff?: boolean }[] = [{ id: 'plan', label: 'Plan' }, { id: 'sites', label: 'Browse sites' }, { id: 'brief', label: 'Plan with AI' }, { id: 'creative', label: 'Client creative' }, { id: 'client', label: 'What the client sees', staff: true }]
+// 11 Nov 2026 (Rif): the person in the editor is the client, so no "what the client sees" tab and no
+// "client" wording; the options shown on the plan page come from the automatic rule (lib/proposal/shown.ts).
+const TABS: { id: TabId; label: string; staff?: boolean }[] = [{ id: 'plan', label: 'Plan' }, { id: 'sites', label: 'Browse sites' }, { id: 'brief', label: 'Plan with AI' }, { id: 'creative', label: 'Your creative' }]
 const input = 'mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-mw-blue-500 focus:outline-none'
 const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
@@ -123,7 +126,7 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
     if (demo) { setCreativeNote('Saved (demo: this page only).'); return true }
     const j = await call(`/api/proposals/${doc.shareId}/creative`, { creative: payload.creative }, 'creative')
     if (!j?.creative) { setCreativeNote(error ?? 'Could not save.'); return false }
-    setCreative(j.creative as Creative); setCreativeNote('Saved. The client page opens with it on the lead site.'); return true
+    setCreative(j.creative as Creative); setCreativeNote('Saved. Your plan page shows it on the lead site.'); return true
   }
   const saveShown = async () => { if (demo) { setShownSaved(true); setNote('Saved (demo: this page only).'); return } if (await call(`/api/proposals/${doc.shareId}/settings`, { shown }, 'shown')) { setShownSaved(true); setNote('Saved. The client page shows only what is switched on.') } }
   const planCity = async (slug: string) => {
@@ -166,8 +169,8 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
             </p>
           )}
           <div className="mt-5 flex flex-wrap gap-3">
-            <Link href={`/proposals/${doc.shareId}`} className="mw-tap inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">View as the client sees it</Link>
-            <button type="button" onClick={copy} className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">{copied ? 'Link copied' : 'Copy client link'}</button>
+            <Link href={`/proposals/${doc.shareId}`} className="mw-tap inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">Review your plan before approving</Link>
+            <button type="button" onClick={copy} className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">{copied ? 'Link copied' : 'Copy the plan link to share'}</button>
             <Link href="/proposals/mine" className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">Your proposals</Link>
           </div>
           <div role="tablist" aria-label="Editor" className="mt-6 flex gap-1 overflow-x-auto border-b border-white/15">
@@ -182,7 +185,7 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
       {/* Plan */}
       <section id="edit-plan" role="tabpanel" aria-labelledby="edittab-plan" className={`bg-gray-50 mw-section ${tab === 'plan' ? '' : 'hidden'}`}>
         <div className="mw-container">
-          <SgSectionHeading title="Sites in this proposal" intro="Reorder or remove sites; the line under each is what the client reads. The summary above is written from the brief; change the brief on its tab. Publish when you are done." />
+          <SgSectionHeading title="Sites in this proposal" intro="Reorder or remove sites; the line under each is what the plan page shows. The summary above is written from the brief; change the brief on its tab. Publish when you are done." />
           <div className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-7">
               {cityGroups.map(g => (
@@ -210,7 +213,7 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
                             </div>
                           </div>
                           {editing === r.siteId ? (
-                            <label className="mt-2 block"><span className="text-xs font-semibold text-gray-500">Why this site, as the client reads it</span>
+                            <label className="mt-2 block"><span className="text-xs font-semibold text-gray-500">Why this site (shown on the plan)</span>
                               <input autoFocus value={r.reason} maxLength={200} placeholder="One line" onBlur={() => setEditing(null)} onKeyDown={e => { if (e.key === 'Enter' || e.key === 'Escape') setEditing(null) }} onChange={e => setRows(x => x.map(y => y.siteId === r.siteId ? { ...y, reason: e.target.value } : y))} className={input} />
                             </label>
                           ) : (
@@ -255,7 +258,7 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
                       {more.map(c => <button key={c.slug} type="button" disabled={busy !== null} onClick={() => planCity(c.slug)} className="mw-tap inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#2563eb] px-3 py-2 text-sm font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-60"><Plus className="h-4 w-4" aria-hidden="true" />{busy === `plan-${c.slug}` ? 'Planning…' : `Plan ${c.name}`}</button>)}
                       {onRequest.map(c => <button key={c.slug} type="button" disabled={requested.includes(c.slug) || busy === `city-${c.slug}`} onClick={() => requestCity(c.slug)} className="mw-tap inline-flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#2563eb] disabled:opacity-60">{requested.includes(c.slug) ? `${c.name} · requested` : `Request ${c.name}`}</button>)}
                     </div>
-                    {requested.length > 0 && <p className="mt-3 text-xs text-gray-600">A planner builds requested cities by hand; they appear as their own group and the client sees them as “requested”.</p>}
+                    {requested.length > 0 && <p className="mt-3 text-xs text-gray-600">A planner builds requested cities by hand; they appear as their own group and they show on the plan as “requested”.</p>}
                   </div>
                 ) })()}
                 <div className="p-5">
@@ -409,12 +412,12 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
       {/* The client's creative for the mock-ups: sales pre-fills it; the client sees it on the lead site before approval and on every site after */}
       <section id="edit-creative" role="tabpanel" aria-labelledby="edittab-creative" className={`bg-gray-50 mw-section ${tab === 'creative' ? '' : 'hidden'}`}>
         <div className="mw-container">
-          <SgSectionHeading title="Client creative" intro="Their logo and a line, or their finished image or video. The client page then opens with it on the lead site; once they approve, every site in the plan is mocked up with it and they can swap in their own file. Saved on its own, separate from the plan versions." />
+          <SgSectionHeading title="Your creative" intro="Your logo and a line, or your finished image or video. Your plan page then shows it on the lead site, and once you approve, every site in the plan is mocked up with it. Printed boards show still images only. Saved on its own, separate from the plan versions." />
           {leadSite ? (
-            <CreativePanel key={creative?.at ?? 'none'} site={leadSite} face={view.faces[leadSite.id]} initial={creative} who="staff" onSave={saveCreative} saving={busy === 'creative'} note={creativeNote} />
+            <CreativePanel key={creative?.at ?? 'none'} site={leadSite} face={view.faces[leadSite.id]} initial={creative} who="staff" onSave={saveCreative} saving={busy === 'creative'} note={creativeNote} videoOk={view.sites.some(isDigitalSite)} />
           ) : <p className="text-gray-600">Add at least one site to the plan first.</p>}
           {creative && !demo && (
-            <button type="button" onClick={async () => { const r = await fetch(`/api/proposals/${doc.shareId}/creative`, { method: 'DELETE' }).catch(() => null); if (r?.ok) { setCreative(null); setCreativeNote('Removed. The client page shows no mock-ups until a creative is added.') } else setCreativeNote('Could not remove it. Please try again.') }} className="mw-tap mt-6 text-sm font-semibold text-gray-600 hover:underline">Remove the creative</button>
+            <button type="button" onClick={async () => { const r = await fetch(`/api/proposals/${doc.shareId}/creative`, { method: 'DELETE' }).catch(() => null); if (r?.ok) { setCreative(null); setCreativeNote('Removed. The plan shows no mock-ups until a creative is added.') } else setCreativeNote('Could not remove it. Please try again.') }} className="mw-tap mt-6 text-sm font-semibold text-gray-600 hover:underline">Remove the creative</button>
           )}
           {error && tab === 'creative' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
         </div>
@@ -425,7 +428,7 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
         <div className="mw-container flex flex-wrap items-center justify-between gap-3 py-3">
           <p className="text-sm text-gray-600"><span className="font-semibold text-gray-900">v{version.n}</span> · {dirty ? 'unpublished changes' : 'no changes yet'}{rows.length === 0 ? ' · keep at least one site' : ''}</p>
           <div className="flex gap-2">
-            <Link href={`/proposals/${doc.shareId}`} className="mw-tap inline-flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:border-[#2563eb]">Client view</Link>
+            <Link href={`/proposals/${doc.shareId}`} className="mw-tap inline-flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:border-[#2563eb]">See the plan</Link>
             <button type="button" onClick={publish} disabled={busy !== null || rows.length === 0 || !dirty} className="mw-tap inline-flex items-center rounded-lg bg-[#2563eb] px-5 py-2 text-sm font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{busy === 'publish' ? 'Publishing…' : `Publish as v${version.n + 1}`}</button>
           </div>
         </div>

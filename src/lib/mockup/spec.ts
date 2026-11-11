@@ -8,6 +8,15 @@
 // real screen would, or cropped to fill when the visitor asks for that.
 
 import type { Face } from './compose'
+import type { PublicSite } from '@/lib/inventory/types'
+
+/**
+ * Digital screens play video; traditional (printed) boards show a still only
+ * (Rif, 11 Nov 2026). Digital = the record has digital specs or video formats,
+ * or the format says LED/digital/screen.
+ */
+export const isDigitalSite = (s: Pick<PublicSite, 'digital' | 'format' | 'displayFormat' | 'specs'>) =>
+  !!s.digital || !!s.specs?.videoFormats?.length || /\b(led|digital|screen|dooh)\b/i.test(`${s.format ?? ''} ${s.displayFormat ?? ''}`)
 import { faceAspect, aspectFromSize } from './compose'
 
 export type SpecSource = 'resolution' | 'size' | 'photo' | 'format'
