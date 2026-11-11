@@ -163,7 +163,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
 
       {/* See your ad here: the mock-up tool */}
       {site.photos[0] && (
-        <section className="bg-white mw-section">
+        <section id="see-your-ad" className="bg-white mw-section scroll-mt-20">
           <div className="mw-container">
             <SgSectionHeading title="See your ad here" intro={`Add your logo and a line, and see how your campaign would look on ${site.name}. Register once to see it on the screen; we'll email it to you and put you in touch with the person who books this site.`} />
             <AdMockup site={site} content={content} />
@@ -176,7 +176,11 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
           <div className="mw-container">
             <SgSectionHeading title={`Where ${site.name} is`} intro={site.address ?? `${site.areaName}, ${site.cityName}`} />
             <SitesMap sites={[site]} title={`Map showing ${site.name}`} />
-            <p className="mt-4 text-sm text-gray-600">More sites nearby: <Link href={areaHref} className="font-semibold text-[#2563eb] hover:underline">advertising in {site.areaName}</Link> · <Link href={`/locations/${site.countrySlug}/${site.citySlug}`} className="font-semibold text-[#2563eb] hover:underline">all of {site.cityName}</Link></p>
+            <div className="mt-5 flex flex-wrap items-center gap-3">
+              <span className="text-sm font-semibold text-gray-600">More sites nearby</span>
+              <Link href={areaHref} className="mw-tap inline-flex items-center rounded-full border-2 border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]">Advertising in {site.areaName}</Link>
+              <Link href={`/locations/${site.countrySlug}/${site.citySlug}`} className="mw-tap inline-flex items-center rounded-full border-2 border-gray-300 bg-white px-4 py-2 text-sm font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]">All of {site.cityName}</Link>
+            </div>
           </div>
         </section>
       )}

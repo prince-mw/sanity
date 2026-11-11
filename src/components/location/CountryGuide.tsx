@@ -121,7 +121,7 @@ function Seasons({ moments, lk }: { moments: GuideMoment[]; lk: Look }) {
           <div key={m.name}>
             <p className="text-sm font-semibold text-gray-900">{m.name}{m.note && <span className="font-normal text-gray-500"> · {m.note}</span>}</p>
             <div className="mt-1.5 grid grid-cols-12 gap-1" role="img" aria-label={`${m.name}: ${m.months.map(x => MONTH_NAMES[x - 1]).join(', ')}`}>
-              {MONTHS.map((l, i) => <span key={i} className={`flex h-7 items-center justify-center rounded text-[11px] font-semibold ${m.months.includes(i + 1) ? 'bg-[#2563eb] text-white' : lk.on ? 'bg-mw-blue-50 text-gray-400' : 'bg-white text-gray-400'}`}>{l}</span>)}
+              {MONTHS.map((l, i) => <span key={i} className={`flex h-7 items-center justify-center rounded text-xs font-semibold ${m.months.includes(i + 1) ? 'bg-[#2563eb] text-white' : lk.on ? 'bg-mw-blue-50 text-gray-400' : 'bg-white text-gray-400'}`}>{l}</span>)}
             </div>
           </div>
         ))}
