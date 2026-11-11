@@ -15,7 +15,9 @@ export const MARKETS: Market[] = []
 export function setMarkets(list: Market[]) { MARKETS.splice(0, MARKETS.length, ...list) }
 
 /** "kuala-lumpur" -> "Kuala Lumpur": only a fallback until the registry is loaded. */
-export const nameFromSlug = (slug: string) => slug.split('-').filter(Boolean).map(w => w[0].toUpperCase() + w.slice(1)).join(' ')
+// Short words are initialisms ("uae" -> "UAE", "usa" -> "USA", "kl" -> "KL"), except a few real words.
+const SMALL_WORDS = new Set(['and', 'of', 'the', 'bay', 'new', 'old'])
+export const nameFromSlug = (slug: string) => slug.split('-').filter(Boolean).map(w => w.length <= 3 && !SMALL_WORDS.has(w) ? w.toUpperCase() : w[0].toUpperCase() + w.slice(1)).join(' ')
 
 export const BUDGET_BANDS: { id: string; label: string; targetSites: number }[] = [
   { id: 'low', label: 'Under RM50k', targetSites: 3 },

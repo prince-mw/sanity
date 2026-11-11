@@ -30,5 +30,6 @@ setMarkets([{ countrySlug: 'malaysia', countryName: 'Malaysia', cities: [{ slug:
 check(marketFor('malaysia', 'kuala-lumpur')?.city.available === true && marketFor('malaysia', 'ipoh')?.city.available === false && marketFor('malaysia', 'langkawi') === null, 'KL has inventory, Ipoh is on request, unknown cities do not resolve')
 check(marketOf('vietnam')?.countryName === 'Vietnam' && marketOf('vietnam')?.cities.length === 0, 'every country is a market, even before the registry knows it')
 check(cityNameOf('malaysia', 'johor-bahru') === 'Johor Bahru', 'an unknown city still gets a readable name')
+check(marketOf('uae')?.countryName === 'UAE' && cityNameOf('malaysia', 'kota-bharu') === 'Kota Bharu', 'initialisms stay upper case, words stay words')
 
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')
