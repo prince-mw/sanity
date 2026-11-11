@@ -117,9 +117,12 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
       {(description || overview || specs.length > 0) && (
         <section className="bg-white mw-section" aria-labelledby="site-about">
           <div className="mw-container">
-            <p className="text-xs font-bold uppercase tracking-wider text-[#2563eb]">About this site</p>
-            <h2 id="site-about" className="mt-2 text-3xl font-bold tracking-tight text-gray-900">{format} advertising on {site.name}</h2>
-            {(description || overview) && <div className="prose mt-4 max-w-3xl text-gray-700">{[...(description ? description.split(/\n{2,}/) : []), ...(overview ? [overview] : [])].map((p, i) => <p key={i}>{p}</p>)}</div>}
+            {/* One block centred on the page (Rif, 11 Nov 2026); the paragraphs stay left-aligned for reading. */}
+            <div className="mx-auto max-w-3xl">
+            <p className="text-center text-xs font-bold uppercase tracking-wider text-[#2563eb]">About this site</p>
+            <h2 id="site-about" className="mt-2 text-center text-3xl font-bold tracking-tight text-gray-900">{format} advertising on {site.name}</h2>
+            {(description || overview) && <div className="prose mt-6 max-w-none text-gray-700">{[...(description ? description.split(/\n{2,}/) : []), ...(overview ? [overview] : [])].map((p, i) => <p key={i}>{p}</p>)}</div>}
+            </div>
             {specs.length > 0 && (
               <div className="mt-10 rounded-2xl border-2 border-mw-blue-200 bg-gradient-to-br from-mw-blue-50 to-cyan-100 p-6 shadow-lg sm:p-8">
                 <div className="flex items-center gap-3">
