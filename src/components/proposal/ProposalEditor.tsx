@@ -375,40 +375,6 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
         </div>
       </section>
 
-      {/* What the client sees */}
-      <section id="edit-client" role="tabpanel" aria-labelledby="edittab-client" className={`bg-gray-50 mw-section ${tab === 'client' ? '' : 'hidden'}`}>
-        <div className="mw-container">
-          <SgSectionHeading title="What the client sees" intro={`Everything is off until you switch it on. The client page shows at most ${MAX_SHOWN} options before they approve (under the plan, as 'Options from your planner') and at most ${MAX_SHOWN} offers after they approve ('While we confirm availability'). Anything else switched on sits behind a 'More options' link.`} />
-          <div className="mb-6 rounded-2xl border border-mw-blue-100 bg-mw-blue-50/40 p-4 text-sm text-gray-700">
-            <p className="font-semibold text-gray-900">{overridden ? 'This proposal is overridden by hand.' : 'Automatic: smallest ask first, picked from the brief.'}</p>
-            <p className="mt-1">Before approval: {auto.options.map(titleOf).join(' · ') || 'nothing'}. After approval: {auto.postApproval.map(titleOf).join(' · ') || 'nothing'}.{overridden ? ' Switch everything off to go back to the automatic pick.' : ' Switch options on below to override it for this client only.'}</p>
-          </div>
-          <div className="mb-6 rounded-2xl border border-mw-blue-100 bg-white p-4 text-sm">
-            <p><span className="font-semibold text-gray-700">Before approval the client sees:</span> {shown.options.length ? shown.options.map(titleOf).join(' · ') : <span className="text-gray-500">nothing extra</span>}</p>
-            <p className="mt-1"><span className="font-semibold text-gray-700">After approval:</span> {shown.postApproval.length ? shown.postApproval.map(titleOf).join(' · ') : <span className="text-gray-500">nothing extra</span>}</p>
-          </div>
-          <div className="overflow-x-auto rounded-2xl border border-gray-200 bg-white">
-            <table className="w-full text-sm">
-              <thead><tr className="border-b border-gray-200 text-left text-xs font-semibold uppercase tracking-wider text-gray-500"><th className="px-4 py-3">Option</th><th className="px-2 py-3 text-center">Before approval</th><th className="px-2 py-3 text-center">After approval</th></tr></thead>
-              <tbody>
-                {candidatesForClient.map(c => (
-                  <tr key={c.id} className="border-b border-gray-100 last:border-0">
-                    <td className="px-4 py-3"><span className="mr-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-600">{c.group}</span><span className="font-semibold text-gray-900">{c.title}</span><p className="mt-0.5 text-xs text-gray-500">{c.detail}</p></td>
-                    <td className="px-2 py-2 text-center"><Switch on={shown.options.includes(c.id)} label={`Show "${c.title}" before approval`} onChange={() => flip('options', c.id)} /></td>
-                    <td className="px-2 py-2 text-center"><Switch on={shown.postApproval.includes(c.id)} label={`Offer "${c.title}" after approval`} onChange={() => flip('postApproval', c.id)} /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <button type="button" onClick={saveShown} disabled={busy !== null || shownSaved} className="mw-tap inline-flex items-center rounded-lg bg-[#2563eb] px-6 py-3 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{busy === 'shown' ? 'Saving…' : 'Save what the client sees'}</button>
-            <span className="text-sm text-gray-500">{note ?? (shownSaved ? 'Saved.' : 'Unsaved switches.')}</span>
-          </div>
-          {error && tab === 'client' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
-        </div>
-      </section>
-
       {/* The client's creative for the mock-ups: sales pre-fills it; the client sees it on the lead site before approval and on every site after */}
       <section id="edit-creative" role="tabpanel" aria-labelledby="edittab-creative" className={`bg-gray-50 mw-section ${tab === 'creative' ? '' : 'hidden'}`}>
         <div className="mw-container">
