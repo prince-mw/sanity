@@ -399,7 +399,8 @@ select {
 @media (pointer: coarse) {
   /* Doubled class: MapLibre's stylesheet loads after ours with the same specificity. */
   .maplibregl-map .maplibregl-ctrl-group button { width: 44px; height: 44px; }
-  .maplibregl-map .maplibregl-ctrl-attrib-button { width: 44px; height: 44px; }
+  /* One centred icon: at 44px MapLibre's icon tiled into four (audit, 12 Nov 2026). */
+  .maplibregl-map .maplibregl-ctrl-attrib-button { width: 44px; height: 44px; background-repeat: no-repeat; background-position: center; }
 }
 
 /* Proposal offer drawings (OfferArt.tsx): looping SVG, brand colours, CSS only. */
