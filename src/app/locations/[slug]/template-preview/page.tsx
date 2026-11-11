@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
 import { LandingPageRenderer } from '@/components/landing'
-import { CountryGuide } from '@/components/location/CountryGuide'
+import Link from 'next/link'
+import { CountryGuide, type Tone } from '@/components/location/CountryGuide'
 import { ProposalPromo } from '@/components/proposal/ProposalPromo'
 import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transformCityForList } from '@/sanity/lib/fetch'
 import { getLocationPageLang } from '@/lib/locationLanguageGroups'
@@ -19,10 +20,12 @@ import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Country template preview | Moving Walls', robots: { index: false, follow: false } }
 
-export default async function CountryTemplatePreview({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ check?: string }> }) {
+export default async function CountryTemplatePreview({ params, searchParams }: { params: Promise<{ slug: string }>; searchParams: Promise<{ check?: string; tone?: string }> }) {
   if (!inventoryEnabled()) notFound()
   const { slug } = await params
-  const { check } = await searchParams
+  const { check, tone: toneParam } = await searchParams
+  const tone: Tone = toneParam === 'a' || toneParam === 'b' || toneParam === 'c' ? toneParam : 'none'
+  const TONES: [Tone, string][] = [['none', 'Current'], ['a', 'A · Tinted by topic'], ['b', 'B · Colour on hover'], ['c', 'C · Colour bars and tints']]
   const sanityLocation = await getLocationBySlug(slug, false)
   if (!sanityLocation) notFound()
 
@@ -45,7 +48,14 @@ export default async function CountryTemplatePreview({ params, searchParams }: {
         lang={getLocationPageLang(slug)}
         afterHero={showPromo ? <ProposalPromo variant="band" market={countryName} /> : null}
         sectionsOverride={<>
-          <CountryGuide country={countryName} countrySlug={slug} topics={topics} data={data} draft={COUNTRY_GUIDE_DRAFTS[slug] ?? null} cityLinks={Object.fromEntries(cities.map(c => [c.city.trim().toLowerCase(), c.href]))} proposalHref={showPromo ? '/proposals/new' : null} />
+          {/* Review control, preview page only: switch the guide's colour treatment. */}
+          <div className="border-y border-gray-200 bg-white">
+            <div className="mw-container flex flex-wrap items-center gap-2 py-3">
+              <span className="mr-1 text-sm font-semibold text-gray-500">Colour option</span>
+              {TONES.map(([id, name]) => <Link key={id} href={`/locations/${slug}/template-preview${id === 'none' ? '' : `?tone=${id}`}#country-guide-title`} scroll={false} className={`mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold ${tone === id ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`}>{name}</Link>)}
+            </div>
+          </div>
+          <CountryGuide country={countryName} countrySlug={slug} topics={topics} data={data} draft={COUNTRY_GUIDE_DRAFTS[slug] ?? null} cityLinks={Object.fromEntries(cities.map(c => [c.city.trim().toLowerCase(), c.href]))} proposalHref={showPromo ? '/proposals/new' : null} tone={tone} />
           <LandingPageRenderer sections={tailSections(sections)} />
         </>}
       />
