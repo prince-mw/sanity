@@ -91,7 +91,7 @@ const DOC_FIELDS = `_id, shareId, editTokenHash, status, titleLine, creator, lea
 
 const norm = (d: ProposalDoc | null): ProposalDoc | null => d ? {
   ...d, versions: d.versions ?? [], changeRequests: d.changeRequests ?? [], cityRequests: d.cityRequests ?? [], participants: d.participants ?? [], leadId: d.leadId ?? null, approvedAt: d.approvedAt ?? null,
-  hidden: { suggestions: d.hidden?.suggestions ?? [], addons: d.hidden?.addons ?? [] }, derivedFrom: d.derivedFrom ?? null,
+  shown: { options: d.shown?.options ?? [], postApproval: d.shown?.postApproval ?? [] }, derivedFrom: d.derivedFrom ?? null,
   brief: { ...d.brief, formats: d.brief?.formats ?? [], audience: d.brief?.audience ?? '', industry: d.brief?.industry ?? '',
     cities: d.brief?.cities?.length ? d.brief.cities : [d.brief?.citySlug].filter(Boolean) as string[], countryWide: !!d.brief?.countryWide },
 } : null
@@ -112,7 +112,7 @@ export async function createProposal(input: {
   const doc = {
     _type: 'proposal', shareId: newShareId(), editTokenHash: hashToken(editToken), status: 'sent' as ProposalStatus,
     titleLine: titleLineFor(input.brief), creator: input.creator, leadId: input.leadId, brief: input.brief,
-    currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], cityRequests: [], participants: [], hidden: { suggestions: [], addons: [] }, derivedFrom: input.derivedFrom ?? null,
+    currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], cityRequests: [], participants: [], shown: { options: [], postApproval: [] }, derivedFrom: input.derivedFrom ?? null,
     approvedAt: null, createdAt: now, updatedAt: now,
   }
   if (fileStore()) { const d = { ...doc, _id: `proposal-${doc.shareId}` } as ProposalDoc; await fileWrite(d); return { doc: norm(d) as ProposalDoc, editToken } }
@@ -161,11 +161,11 @@ export async function addParticipant(docId: string, p: { name: string; email: st
   await writeClient.patch(docId).setIfMissing({ participants: [] }).append('participants', [item]).set({ updatedAt: now }).commit()
 }
 
-/** The creator chooses which suggestions and add-ons the client sees. */
-export async function setHidden(docId: string, hidden: { suggestions: string[]; addons: string[] }): Promise<void> {
+/** The creator chooses what the client sees: at most two options before approval, at most two offers after. */
+export async function setShown(docId: string, shown: { options: string[]; postApproval: string[] }): Promise<void> {
   const now = new Date().toISOString()
-  if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, hidden, updatedAt: now }); return }
-  await writeClient.patch(docId).set({ hidden, updatedAt: now }).commit()
+  if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, shown, updatedAt: now }); return }
+  await writeClient.patch(docId).set({ shown, updatedAt: now }).commit()
 }
 
 /** Every proposal this person created: by the shareIds on their cookie and by their email. Newest first. */

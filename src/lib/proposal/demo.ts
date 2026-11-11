@@ -27,7 +27,7 @@ export async function buildDemoView(): Promise<ProposalView | null> {
   const doc: ProposalDoc = {
     _id: 'proposal-demo', shareId: DEMO_SHARE_ID, editTokenHash: '', status: 'sent', titleLine: titleLineFor(BRIEF),
     creator: { name: '', email: '', company: 'Example Beauty Co.', country: 'Malaysia' }, leadId: null, brief: BRIEF,
-    currentVersion: 1, versions: [v1], changeRequests: [], cityRequests: [], participants: [], hidden: { suggestions: [], addons: [] }, derivedFrom: null, approvedAt: null, createdAt: now, updatedAt: now,
+    currentVersion: 1, versions: [v1], changeRequests: [], cityRequests: [], participants: [], shown: { options: ['moment-cover-the-shopping-moment', 'larger'], postApproval: ['measure', 'weeks-8'] }, derivedFrom: null, approvedAt: null, createdAt: now, updatedAt: now,
   }
   return resolveSites(doc)
 }

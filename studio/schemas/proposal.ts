@@ -52,8 +52,8 @@ export default defineType({
     defineField({ name: 'participants', type: 'array', description: 'People other than the creator who acted on the link (the second lead)', of: [{ type: 'object', name: 'proposalParticipant', fields: [
       { name: 'name', type: 'string' }, { name: 'email', type: 'string' }, { name: 'at', type: 'datetime' }, { name: 'action', type: 'string' },
     ] }] }),
-    defineField({ name: 'hidden', type: 'object', description: 'What the creator keeps off the client page', fields: [
-      { name: 'suggestions', type: 'array', of: [{ type: 'string' }] }, { name: 'addons', type: 'array', of: [{ type: 'string' }] },
+    defineField({ name: 'shown', type: 'object', description: 'What the client sees: at most 2 options before approval, 2 offers after', fields: [
+      { name: 'options', type: 'array', of: [{ type: 'string' }] }, { name: 'postApproval', type: 'array', of: [{ type: 'string' }] },
     ] }),
     defineField({ name: 'derivedFrom', type: 'string', description: 'The shareId this proposal was started from' }),
     defineField({ name: 'approvedAt', type: 'datetime' }),

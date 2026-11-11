@@ -43,7 +43,7 @@ export type ProposalDoc = {
   changeRequests: { at: string; message: string }[]
   cityRequests: { at: string; citySlug: string; by?: string }[]   // cities asked for that have no inventory yet
   participants: Participant[]
-  hidden: { suggestions: string[]; addons: string[] }               // what the creator keeps off the client page
+  shown: { options: string[]; postApproval: string[] }             // what the client sees: at most 2 before approval, at most 2 after (ids of suggestions, add-ons, 'smaller' | 'larger', city slugs)
   derivedFrom: string | null                                       // the shareId this proposal was started from
   approvedAt: string | null
   createdAt: string

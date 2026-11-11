@@ -73,7 +73,7 @@ export function buildSuggestions(brief: Brief, current: VersionSite[], candidate
   }
 
   if ((brief.durationWeeks ?? 4) <= 4) {
-    out.push({ id: 'weeks-8', kind: 'frequency', title: 'Run 8 weeks instead of 4', body: 'The same sites, twice as long: the same people see the message about twice as often, which is what moves recall and intent.', siteIds: [], reasons: {}, weeks: 8 })
+    out.push({ id: 'run-8-weeks', kind: 'frequency', title: 'Run 8 weeks instead of 4', body: 'The same sites, twice as long: the same people see the message about twice as often, which is what moves recall and intent.', siteIds: [], reasons: {}, weeks: 8 })
   }
 
   if (planSites.length && !planSites.some(s => s.digital)) {

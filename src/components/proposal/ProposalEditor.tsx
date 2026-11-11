@@ -1,19 +1,16 @@
 'use client'
 
-// The creator's editor (Rif, 11 Nov 2026):
-//   1. Sites in this proposal — grouped by city, reorder / remove, the reason
-//      as text with an Edit link, publish a version.
-//   2. Add sites — the full location-page browser: country and city chips
-//      (on-request cities ask the team), format and venue filters, map, cards.
-//   3. What the client can add — tiers preview, suggestions and add-ons with
-//      "show to client" switches.
-//   4. Change the brief — update this proposal (new version) or start a new
-//      proposal from the brief (new link, this one untouched).
+// The creator's editor (round 3, Rif, 11 Nov 2026): four tabs, one task each,
+// and a sticky publish bar.
+//   Plan                 — grouped by city, reorder / remove, the reason as text with Edit, the summary
+//   Add sites            — the location-page browser: country and city chips, format and venue filters, map, cards
+//   Brief                — update this proposal (new version) or start a new proposal from the brief (new link)
+//   What the client sees — everything off by default; at most 2 options before approval, 2 offers after
 // The demo editor renders all of it; nothing is saved there.
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { ArrowDown, ArrowUp, Check, Plus, X } from 'lucide-react'
 import { SG_NAVY, SgSectionHeading } from '../SingaporeShared'
@@ -25,21 +22,25 @@ import type { PublicSite } from '@/lib/inventory/types'
 import type { ProposalView as View, Objective } from '@/lib/proposal/types'
 
 type Row = { siteId: string; reason: string }
+type TabId = 'plan' | 'sites' | 'brief' | 'client'
+const TABS: { id: TabId; label: string }[] = [{ id: 'plan', label: 'Plan' }, { id: 'sites', label: 'Add sites' }, { id: 'brief', label: 'Brief' }, { id: 'client', label: 'What the client sees' }]
 const input = 'mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-mw-blue-500 focus:outline-none'
 const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
+const MAX_SHOWN = 2
 
 export function ProposalEditor({ view, candidates, demo = false }: { view: View; candidates: PublicSite[]; demo?: boolean }) {
   const router = useRouter()
   const { doc, version, tiers, suggestions, cities } = view
   const market = marketOf(doc.brief.countrySlug)
   const byId = useMemo(() => new Map(candidates.map(s => [s.id, s])), [candidates])
+  const [tab, setTab] = useState<TabId>('plan')
   const [rows, setRows] = useState<Row[]>(view.sites.map(s => ({ siteId: s.id, reason: s.reason })))
   const [editing, setEditing] = useState<string | null>(null)
   const [summary, setSummary] = useState(version.summary)
   const [city, setCity] = useState<string>('all')
-  const [hidden, setHidden] = useState(doc.hidden ?? { suggestions: [], addons: [] })
-  const [hiddenSaved, setHiddenSaved] = useState(true)
+  const [shown, setShown] = useState(doc.shown ?? { options: [], postApproval: [] })
+  const [shownSaved, setShownSaved] = useState(true)
   const [objective, setObjective] = useState<Objective | null>(doc.brief.objective)
   const [audience, setAudience] = useState(doc.brief.audience)
   const [industry, setIndustry] = useState(doc.brief.industry)
@@ -55,6 +56,13 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
   const [copied, setCopied] = useState(false)
   const [requested, setRequested] = useState<string[]>(doc.cityRequests.map(r => r.citySlug))
   const { items: shortlist } = useShortlist()
+
+  useEffect(() => {
+    const fromHash = () => { const h = location.hash.replace('#', '') as TabId; if (TABS.some(t => t.id === h)) setTab(h) }
+    fromHash(); window.addEventListener('hashchange', fromHash)
+    return () => window.removeEventListener('hashchange', fromHash)
+  }, [])
+  const pickTab = (id: TabId) => { setTab(id); history.replaceState(null, '', `#${id}`); setError(null); setNote(null) }
 
   const inPlan = new Set(rows.map(r => r.siteId))
   const cityGroups = Array.from(new Set(rows.map(r => byId.get(r.siteId)?.citySlug).filter(Boolean) as string[])).map(slug => ({ slug, name: cityNameOf(doc.brief.countrySlug, slug), count: rows.filter(r => byId.get(r.siteId)?.citySlug === slug).length }))
@@ -81,29 +89,50 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
   const briefPatch = () => ({ objective, audience, industry, durationWeeks: duration, budgetBand: budget, targetSites: count, cities: briefCities, countryWide })
   const rerun = async () => { if (await call(`/api/proposals/${doc.shareId}/versions`, { rerun: true, pinnedIds: keepSites ? rows.map(r => r.siteId) : [], brief: briefPatch() }, 'rerun')) toClient() }
   const fork = async () => { const j = await call(`/api/proposals/${doc.shareId}/fork`, { brief: briefPatch(), keepSites }, 'fork'); if (j?.shareId) router.push(`/proposals/${j.shareId}/edit`) }
-  const saveHidden = async () => { if (await call(`/api/proposals/${doc.shareId}/settings`, { hidden }, 'hidden')) { setHiddenSaved(true); setNote('Saved. The client page shows only what is switched on.') } }
+  const saveShown = async () => { if (demo) { setShownSaved(true); setNote('Saved (demo: this page only).'); return } if (await call(`/api/proposals/${doc.shareId}/settings`, { shown }, 'shown')) { setShownSaved(true); setNote('Saved. The client page shows only what is switched on.') } }
   const requestCity = async (slug: string) => { if (demo) { setRequested(r => [...r, slug]); return } if (await call(`/api/proposals/${doc.shareId}/request-city`, { citySlug: slug }, `city-${slug}`)) setRequested(r => [...r, slug]) }
   const copy = async () => { try { await navigator.clipboard.writeText(`${location.origin}/proposals/${doc.shareId}`); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* no clipboard */ } }
-  const flip = (kind: 'suggestions' | 'addons', id: string) => { setHidden(h => ({ ...h, [kind]: h[kind].includes(id) ? h[kind].filter(x => x !== id) : [...h[kind], id] })); setHiddenSaved(false) }
+
+  // What the client sees: an allow-list with a cap of 2 per list.
+  const flip = (list: 'options' | 'postApproval', id: string) => {
+    const has = shown[list].includes(id)
+    if (!has && shown[list].length >= MAX_SHOWN) { setNote(`At most ${MAX_SHOWN} ${list === 'options' ? 'options before approval' : 'offers after approval'}. Switch one off first.`); return }
+    setNote(null); setShownSaved(false)
+    setShown({ ...shown, [list]: has ? shown[list].filter(x => x !== id) : [...shown[list], id] })
+  }
+  type Candidate = { id: string; group: string; title: string; detail: string }
+  const candidatesForClient: Candidate[] = [
+    ...(['smaller', 'larger'] as const).map((id): Candidate | null => { const t = tiers.find(x => x.id === (id === 'smaller' ? 'essentials' : 'full')); return t && !t.current ? { id: id as string, group: 'Plan size', title: id === 'smaller' ? `A smaller plan · ${t.totals.sites} sites` : `A larger plan · ${t.totals.sites} sites`, detail: `${t.totals.reach != null ? `${num(t.totals.reach)} reach` : 'reach as published'}${t.totals.investment ? ` · ${t.totals.investment.currency} ${num(t.totals.investment.low)} – ${num(t.totals.investment.high)}` : ''}` } : null }).filter((x): x is Candidate => !!x),
+    ...suggestions.map(s => ({ id: s.id, group: 'Suggestion', title: s.title, detail: s.body })),
+    ...ADDONS.map(a => ({ id: a.id, group: 'Add-on', title: `${a.title}${a.product ? ` · ${a.product}` : ''}`, detail: a.benefit })),
+    ...cities.filter(c => c.sites === 0).map(c => ({ id: c.slug, group: 'City', title: `Run it in ${c.name} too`, detail: c.available ? 'Adds the city as its own group' : 'No inventory yet: becomes a request to the team' })),
+  ]
+  const titleOf = (id: string) => candidatesForClient.find(c => c.id === id)?.title ?? id
 
   return (
-    <div className="bg-white text-gray-900">
-      <section className={`${SG_NAVY} text-white mw-hero-top pb-8`}>
+    <div className="bg-white text-gray-900 pb-24">
+      <section className={`${SG_NAVY} text-white mw-hero-top pb-6`}>
         <div className="mw-container">
           <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Editing · currently v{version.n}</span>
-          <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">{doc.titleLine}</h1>
-          <div className="mt-5 flex flex-wrap gap-3">
+          <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">{doc.titleLine}</h1>
+          <div className="mt-4 flex flex-wrap gap-3">
             <Link href={`/proposals/${doc.shareId}`} className="mw-tap inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">View as the client sees it</Link>
             <button type="button" onClick={copy} className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">{copied ? 'Link copied' : 'Copy client link'}</button>
             <Link href="/proposals/mine" className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">Your proposals</Link>
           </div>
+          <div role="tablist" aria-label="Editor" className="mt-6 flex gap-1 overflow-x-auto border-b border-white/15">
+            {TABS.map(t => (
+              <button key={t.id} role="tab" aria-selected={tab === t.id} aria-controls={`edit-${t.id}`} id={`edittab-${t.id}`} onClick={() => pickTab(t.id)}
+                className={`mw-tap -mb-px whitespace-nowrap border-b-2 px-4 py-3 text-sm font-semibold ${tab === t.id ? 'border-cyan-300 text-white' : 'border-transparent text-blue-100/80 hover:text-white'}`}>{t.label}</button>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* 1. The plan */}
-      <section className="bg-gray-50 mw-section">
+      {/* Plan */}
+      <section id="edit-plan" role="tabpanel" aria-labelledby="edittab-plan" className={`bg-gray-50 mw-section ${tab === 'plan' ? '' : 'hidden'}`}>
         <div className="mw-container">
-          <SgSectionHeading title="Sites in this proposal" intro="Reorder or remove sites; the line under each is what the client reads. Publishing makes a new version at the same link; older versions stay listed." />
+          <SgSectionHeading title="Sites in this proposal" intro="Reorder or remove sites; the line under each is what the client reads. Publish when you are done; older versions stay listed." />
           <div className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-8">
               {cityGroups.map(g => (
@@ -150,12 +179,8 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
             </div>
             <div className="lg:col-span-4">
               <label className="block"><span className="text-sm font-semibold text-gray-700">Campaign summary</span>
-                <textarea value={summary} onChange={e => setSummary(e.target.value)} rows={7} maxLength={700} className={input} />
+                <textarea value={summary} onChange={e => setSummary(e.target.value)} rows={8} maxLength={700} className={input} />
               </label>
-              <div className="mt-5 flex flex-col gap-3">
-                <button type="button" onClick={publish} disabled={busy !== null || rows.length === 0 || !dirty} className="mw-tap inline-flex items-center justify-center rounded-lg bg-[#2563eb] px-6 py-3 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{busy === 'publish' ? 'Publishing…' : `Publish as v${version.n + 1}`}</button>
-                <span className="text-sm text-gray-500">{dirty ? 'Unpublished changes.' : 'No changes yet.'}</span>
-              </div>
               <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 text-sm text-gray-600">
                 <h3 className="font-bold text-[#2563eb]">Versions</h3>
                 <ul className="mt-2 space-y-1">
@@ -165,14 +190,14 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
               </div>
             </div>
           </div>
-          {error && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
+          {error && tab === 'plan' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
         </div>
       </section>
 
-      {/* 2. Add sites: the location-page browser */}
-      <section className="bg-white mw-section">
+      {/* Add sites */}
+      <section id="edit-sites" role="tabpanel" aria-labelledby="edittab-sites" className={`bg-white mw-section ${tab === 'sites' ? '' : 'hidden'}`}>
         <div className="mw-container">
-          <SgSectionHeading title="Add sites" intro="Browse the market the way the location pages do. Add a site and it joins the plan above; publish when you are done." />
+          <SgSectionHeading title="Add sites" intro="Browse the market the way the location pages do. Add a site and it joins the plan; publish from the bar below when you are done." />
           <div className="mb-5 flex flex-wrap items-center gap-2">
             <span className="mr-1 text-sm font-semibold text-gray-500">{market?.countryName ?? 'Country'}</span>
             <button type="button" aria-pressed={city === 'all'} onClick={() => setCity('all')} className={chip(city === 'all')}>All cities</button>
@@ -180,6 +205,7 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
               ? <button key={c.slug} type="button" aria-pressed={city === c.slug} onClick={() => setCity(c.slug)} className={chip(city === c.slug)}>{c.name}</button>
               : <button key={c.slug} type="button" disabled={requested.includes(c.slug) || busy === `city-${c.slug}`} onClick={() => requestCity(c.slug)} className={`${chip(false)} disabled:opacity-60`}>{requested.includes(c.slug) ? `${c.name} · requested` : `${c.name} · request`}</button>)}
           </div>
+          {requested.length > 0 && <p className="mb-5 text-sm text-gray-600"><span className="font-semibold">Requested:</span> {requested.map(s => cityNameOf(doc.brief.countrySlug, s)).join(', ')} — a planner builds these by hand and they appear in the plan as their own city group. The client sees them as “requested” too.</p>}
           {quick.length > 0 && (
             <div className="mb-5 rounded-2xl border border-mw-blue-100 bg-mw-blue-50/40 p-4">
               <p className="text-xs font-semibold uppercase tracking-wider text-mw-blue-600">From your shortlist</p>
@@ -190,64 +216,18 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
               </ul>
             </div>
           )}
-          <SiteGrid sites={browse} hasPage={() => false} mapTitle={`Map of sites in ${city === 'all' ? (market?.countryName ?? 'the market') : cityNameOf(doc.brief.countrySlug, city)}`}
+          {tab === 'sites' && <SiteGrid sites={browse} hasPage={() => false} mapTitle={`Map of sites in ${city === 'all' ? (market?.countryName ?? 'the market') : cityNameOf(doc.brief.countrySlug, city)}`}
             renderAction={s => { const on = inPlan.has(s.id); return (
               <button type="button" onClick={() => toggle(s)} aria-pressed={on} className={`mw-tap inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]'}`}>
                 {on ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Plus className="h-3.5 w-3.5" aria-hidden="true" />}{on ? 'In the plan' : 'Add to plan'}
               </button>
-            ) }} />
-          {cities.some(c => c.requested) && <p className="mt-4 text-xs text-gray-500">Requested: {cities.filter(c => c.requested).map(c => c.name).join(', ')} — the team builds these by hand.</p>}
+            ) }} />}
+          {error && tab === 'sites' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
         </div>
       </section>
 
-      {/* 3. What the client can add */}
-      <section className="bg-gray-50 mw-section">
-        <div className="mw-container">
-          <SgSectionHeading title="What the client can add" intro="The client page offers three sizes of the plan, suggestions built from what it lacks, more cities, and add-ons. Switch off anything you do not want this client to see." />
-          <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-gray-500">Plan sizes (always shown)</h3>
-          <ul className="mb-8 grid gap-4 sm:grid-cols-3">
-            {tiers.map(t => (
-              <li key={t.id} className={`rounded-2xl border p-4 ${t.current ? 'border-[#2563eb] bg-white' : 'border-gray-200 bg-white'}`}>
-                <p className="text-xs font-bold uppercase tracking-wider text-mw-blue-600">{t.label}{t.current ? ' · current' : ''}</p>
-                <p className="mt-1 text-2xl font-bold">{t.totals.sites} {t.totals.sites === 1 ? 'site' : 'sites'}</p>
-                <p className="text-sm text-gray-600">{t.totals.reach != null ? `${num(t.totals.reach)} reach` : 'Reach as published'}{t.totals.investment ? ` · ${t.totals.investment.currency} ${num(t.totals.investment.low)} – ${num(t.totals.investment.high)}` : ''}</p>
-              </li>
-            ))}
-          </ul>
-          <div className="grid gap-8 lg:grid-cols-2">
-            <div>
-              <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-gray-500">Suggestions</h3>
-              {suggestions.length === 0 && <p className="text-sm text-gray-600">Nothing to suggest: the plan already covers the brief.</p>}
-              <ul className="space-y-3">
-                {suggestions.map(sg => { const on = !hidden.suggestions.includes(sg.id); return (
-                  <li key={sg.id} className="flex items-start justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-4">
-                    <div className="min-w-0"><p className="font-bold">{sg.title}</p><p className="mt-1 text-sm text-gray-600">{sg.body}</p></div>
-                    <Switch on={on} label={`Show "${sg.title}" to the client`} onChange={() => flip('suggestions', sg.id)} />
-                  </li>
-                ) })}
-              </ul>
-            </div>
-            <div>
-              <h3 className="mb-3 text-sm font-bold uppercase tracking-wider text-gray-500">Add-ons</h3>
-              <ul className="space-y-3">
-                {ADDONS.map(a => { const on = !hidden.addons.includes(a.id); return (
-                  <li key={a.id} className="flex items-start justify-between gap-4 rounded-2xl border border-gray-200 bg-white p-4">
-                    <div className="min-w-0"><p className="font-bold">{a.title}{a.product ? <span className="font-normal text-gray-500"> · {a.product}</span> : ''}</p><p className="mt-1 text-sm text-gray-600">{a.benefit}</p></div>
-                    <Switch on={on} label={`Show "${a.title}" to the client`} onChange={() => flip('addons', a.id)} />
-                  </li>
-                ) })}
-              </ul>
-            </div>
-          </div>
-          <div className="mt-6 flex flex-wrap items-center gap-3">
-            <button type="button" onClick={saveHidden} disabled={busy !== null || hiddenSaved} className="mw-tap inline-flex items-center rounded-lg bg-[#2563eb] px-6 py-3 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{busy === 'hidden' ? 'Saving…' : 'Save what the client sees'}</button>
-            <span className="text-sm text-gray-500">{note ?? (hiddenSaved ? 'Saved.' : 'Unsaved switches.')}</span>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. Change the brief */}
-      <section className="bg-white mw-section">
+      {/* Brief */}
+      <section id="edit-brief" role="tabpanel" aria-labelledby="edittab-brief" className={`bg-white mw-section ${tab === 'brief' ? '' : 'hidden'}`}>
         <div className="mw-container">
           <SgSectionHeading title="Change the brief" intro="Two ways to use a new brief. Update this proposal: the plan is picked again and published as the next version at the same link, with every earlier version still listed. Start a new proposal: a separate link built for the new brief, and this one stays exactly as it is." />
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -295,18 +275,61 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
             <button type="button" onClick={rerun} disabled={busy !== null} className="mw-tap inline-flex items-center justify-center rounded-lg bg-[#2563eb] px-6 py-3 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{busy === 'rerun' ? 'Picking sites…' : `Update this proposal (publish as v${version.n + 1})`}</button>
             <button type="button" onClick={fork} disabled={busy !== null} className="mw-tap inline-flex items-center justify-center rounded-lg border-2 border-[#2563eb] bg-white px-6 py-3 font-semibold text-[#2563eb] hover:bg-mw-blue-50 disabled:opacity-50">{busy === 'fork' ? 'Building…' : 'Start a new proposal from this brief'}</button>
           </div>
-          {error && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
+          {error && tab === 'brief' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
         </div>
       </section>
+
+      {/* What the client sees */}
+      <section id="edit-client" role="tabpanel" aria-labelledby="edittab-client" className={`bg-gray-50 mw-section ${tab === 'client' ? '' : 'hidden'}`}>
+        <div className="mw-container">
+          <SgSectionHeading title="What the client sees" intro={`Everything is off until you switch it on. The client page shows at most ${MAX_SHOWN} options before they approve (under the plan, as 'Options from your planner') and at most ${MAX_SHOWN} offers after they approve ('While we confirm availability'). Anything else switched on sits behind a 'More options' link.`} />
+          <div className="mb-6 rounded-2xl border border-mw-blue-100 bg-white p-4 text-sm">
+            <p><span className="font-semibold text-gray-700">Before approval the client sees:</span> {shown.options.length ? shown.options.map(titleOf).join(' · ') : <span className="text-gray-500">nothing extra</span>}</p>
+            <p className="mt-1"><span className="font-semibold text-gray-700">After approval:</span> {shown.postApproval.length ? shown.postApproval.map(titleOf).join(' · ') : <span className="text-gray-500">nothing extra</span>}</p>
+          </div>
+          <div className="overflow-x-auto rounded-2xl border border-gray-200 bg-white">
+            <table className="w-full text-sm">
+              <thead><tr className="border-b border-gray-200 text-left text-xs font-semibold uppercase tracking-wider text-gray-500"><th className="px-4 py-3">Option</th><th className="px-2 py-3 text-center">Before approval</th><th className="px-2 py-3 text-center">After approval</th></tr></thead>
+              <tbody>
+                {candidatesForClient.map(c => (
+                  <tr key={c.id} className="border-b border-gray-100 last:border-0">
+                    <td className="px-4 py-3"><span className="mr-2 rounded-full bg-gray-100 px-2 py-0.5 text-xs font-semibold text-gray-600">{c.group}</span><span className="font-semibold text-gray-900">{c.title}</span><p className="mt-0.5 text-xs text-gray-500">{c.detail}</p></td>
+                    <td className="px-2 py-2 text-center"><Switch on={shown.options.includes(c.id)} label={`Show "${c.title}" before approval`} onChange={() => flip('options', c.id)} /></td>
+                    <td className="px-2 py-2 text-center"><Switch on={shown.postApproval.includes(c.id)} label={`Offer "${c.title}" after approval`} onChange={() => flip('postApproval', c.id)} /></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-6 flex flex-wrap items-center gap-3">
+            <button type="button" onClick={saveShown} disabled={busy !== null || shownSaved} className="mw-tap inline-flex items-center rounded-lg bg-[#2563eb] px-6 py-3 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{busy === 'shown' ? 'Saving…' : 'Save what the client sees'}</button>
+            <span className="text-sm text-gray-500">{note ?? (shownSaved ? 'Saved.' : 'Unsaved switches.')}</span>
+          </div>
+          {error && tab === 'client' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
+        </div>
+      </section>
+
+      {/* Sticky publish bar */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-gray-200 bg-white/95 backdrop-blur">
+        <div className="mw-container flex flex-wrap items-center justify-between gap-3 py-3">
+          <p className="text-sm text-gray-600"><span className="font-semibold text-gray-900">v{version.n}</span> · {dirty ? 'unpublished changes' : 'no changes yet'}{rows.length === 0 ? ' · keep at least one site' : ''}</p>
+          <div className="flex gap-2">
+            <Link href={`/proposals/${doc.shareId}`} className="mw-tap inline-flex items-center rounded-lg border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:border-[#2563eb]">Client view</Link>
+            <button type="button" onClick={publish} disabled={busy !== null || rows.length === 0 || !dirty} className="mw-tap inline-flex items-center rounded-lg bg-[#2563eb] px-5 py-2 text-sm font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{busy === 'publish' ? 'Publishing…' : `Publish as v${version.n + 1}`}</button>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
 
+/** A switch with a 44px tap area around a 48×28 track; the knob moves, the track changes colour. */
 function Switch({ on, label, onChange }: { on: boolean; label: string; onChange: () => void }) {
   return (
-    <button type="button" role="switch" aria-checked={on} aria-label={label} onClick={onChange}
-      className={`mw-tap relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-colors ${on ? 'bg-[#2563eb]' : 'bg-gray-300'}`}>
-      <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${on ? 'translate-x-6' : 'translate-x-1'}`} />
+    <button type="button" role="switch" aria-checked={on} aria-label={label} onClick={onChange} className="inline-flex h-11 w-14 flex-shrink-0 items-center justify-center">
+      <span className={`relative block h-7 w-12 rounded-full transition-colors duration-200 ${on ? 'bg-[#2563eb]' : 'bg-gray-300'}`}>
+        <span className="absolute top-1 h-5 w-5 rounded-full bg-white shadow transition-[left] duration-200" style={{ left: on ? 24 : 4 }} />
+      </span>
     </button>
   )
 }
