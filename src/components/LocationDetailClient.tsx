@@ -133,6 +133,8 @@ interface LocationDetailClientProps {
   relatedHeading?: string
   /** Rendered straight after the hero, before any CMS section (city pages: the inventory finder). */
   afterHero?: ReactNode
+  /** The country template: replaces the free page-builder list with the template's own sections (lib/location/countryTemplate.ts). */
+  sectionsOverride?: ReactNode
   /** Language of the template's fixed labels (translated location pages pass 'zh') */
   lang?: 'en' | 'zh'
 }
@@ -181,7 +183,7 @@ const LABELS = {
   },
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en', afterHero }: LocationDetailClientProps) {
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en', afterHero, sectionsOverride }: LocationDetailClientProps) {
   const { t } = useLocale()
   const location = initialData
   // Spanish/Portuguese pages (americas-es, americas-pt) keep their template labels in the page's own
@@ -216,7 +218,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
   const hasCmsSections = location.sections && location.sections.length > 0
   const sectionsPosition = location.sectionsPosition || 'after-faqs'
 
-  const cmsSections = hasCmsSections ? (
+  const cmsSections = sectionsOverride !== undefined ? sectionsOverride : hasCmsSections ? (
     <SectionGraphicProvider lookup={locationGraphicLookup(location.slug || '')}>
       <LandingPageRenderer sections={location.sections!} />
     </SectionGraphicProvider>
