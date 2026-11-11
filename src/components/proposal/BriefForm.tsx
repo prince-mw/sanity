@@ -25,7 +25,9 @@ const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm fo
 export function BriefForm({ markets, formats }: Props) {
   const router = useRouter()
   const { items, remove, clear, ready } = useShortlist()
-  const [market, setMarket] = useState(`${markets[0].countrySlug}/${markets[0].cities[0].slug}`)
+  const [countrySlug, setCountrySlug] = useState(markets[0].countrySlug)
+  const [cities, setCities] = useState<string[]>([markets[0].cities.find(c => c.available)?.slug ?? markets[0].cities[0].slug])
+  const [countryWide, setCountryWide] = useState(false)
   const [startDate, setStartDate] = useState('')
   const [duration, setDuration] = useState<number>(4)
   const [objective, setObjective] = useState<Objective | null>(null)
@@ -43,16 +45,19 @@ export function BriefForm({ markets, formats }: Props) {
   useEffect(() => { fetch('/api/proposals/access').then(r => r.json()).then(j => setRegistered(j.state === 'registered')).catch(() => setRegistered(false)) }, [])
   useEffect(() => { if (!countTouched) setCount(targetSitesFor(budget)) }, [budget, countTouched])
 
-  const [countrySlug, citySlug] = market.split('/')
-  const shortlistHere = items.filter(i => i.countrySlug === countrySlug && i.citySlug === citySlug)
-  const formatChoices = formats[market] ?? []
+  const marketDef = markets.find(m => m.countrySlug === countrySlug) ?? markets[0]
+  const chosen = countryWide ? marketDef.cities.map(c => c.slug) : cities
+  const shortlistHere = items.filter(i => i.countrySlug === countrySlug && chosen.includes(i.citySlug))
+  const formatChoices = Array.from(new Set(chosen.flatMap(c => formats[`${countrySlug}/${c}`] ?? []))).sort()
+  const leadCity = chosen.find(c => marketDef.cities.find(x => x.slug === c)?.available) ?? chosen[0]
+  const toggleCity = (slug: string) => setCities(cs => cs.includes(slug) ? (cs.length > 1 ? cs.filter(x => x !== slug) : cs) : [...cs, slug])
   const minDate = new Date(Date.now() + 7 * 86400_000).toISOString().slice(0, 10)
 
   const generate = async (mode: 'brief' | 'shortlist') => {
     setBusy(mode); setError(null)
     const body = {
       mode, shortlistIds: shortlistHere.map(i => i.id),
-      brief: { countrySlug, citySlug, startDate: startDate || null, durationWeeks: duration, objective, audience, industry, budgetBand: budget, formats: picked, targetSites: count },
+      brief: { countrySlug, cities: chosen, countryWide, citySlug: leadCity, startDate: startDate || null, durationWeeks: duration, objective, audience, industry, budgetBand: budget, formats: picked, targetSites: count },
     }
     const r = await fetch('/api/proposals', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).catch(() => null)
     const j = await r?.json().catch(() => null)
@@ -86,12 +91,25 @@ export function BriefForm({ markets, formats }: Props) {
           <form className="lg:col-span-7 space-y-7" onSubmit={e => { e.preventDefault(); submit('brief') }}>
             <fieldset>
               <legend className="text-lg font-bold text-[#2563eb]">Where and when</legend>
-              <div className="mt-3 grid gap-4 sm:grid-cols-3">
-                <label className="block sm:col-span-1"><span className="text-sm font-semibold text-gray-700">Market</span>
-                  <select value={market} onChange={e => setMarket(e.target.value)} className={input}>
-                    {markets.flatMap(m => m.cities.map(c => <option key={`${m.countrySlug}/${c.slug}`} value={`${m.countrySlug}/${c.slug}`}>{c.name}, {m.countryName}</option>))}
-                  </select>
-                </label>
+              <div className="mt-3">
+                <span className="text-sm font-semibold text-gray-700">Country</span>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  {markets.map(m => <button key={m.countrySlug} type="button" aria-pressed={countrySlug === m.countrySlug} onClick={() => { setCountrySlug(m.countrySlug); setCities([m.cities.find(c => c.available)?.slug ?? m.cities[0].slug]); setCountryWide(false) }} className={chip(countrySlug === m.countrySlug)}>{m.countryName}</button>)}
+                </div>
+              </div>
+              <div className="mt-4">
+                <span className="text-sm font-semibold text-gray-700">Cities <span className="font-normal text-gray-400">(pick one or more)</span></span>
+                <div className="mt-2 flex flex-wrap gap-2">
+                  <button type="button" aria-pressed={countryWide} onClick={() => setCountryWide(w => !w)} className={chip(countryWide)}>Whole of {marketDef.countryName}</button>
+                  {marketDef.cities.map(c => (
+                    <button key={c.slug} type="button" disabled={countryWide} aria-pressed={chosen.includes(c.slug)} onClick={() => toggleCity(c.slug)} className={`${chip(chosen.includes(c.slug))} disabled:opacity-60`}>
+                      {c.name}{!c.available && <span className="ml-1 font-normal text-gray-400">· on request</span>}
+                    </button>
+                  ))}
+                </div>
+                <p className="mt-2 text-xs text-gray-500">Cities marked “on request” have no inventory on the site yet: a planner builds them by hand and adds them to your proposal.</p>
+              </div>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <label className="block"><span className="text-sm font-semibold text-gray-700">Start <span className="font-normal text-gray-400">(optional)</span></span>
                   <input type="date" min={minDate} value={startDate} onChange={e => setStartDate(e.target.value)} className={input} />
                 </label>
@@ -101,7 +119,6 @@ export function BriefForm({ markets, formats }: Props) {
                   </select>
                 </label>
               </div>
-              {markets.length === 1 && markets[0].cities.length === 1 && <p className="mt-2 text-xs text-gray-500">More markets are coming as inventory is connected.</p>}
             </fieldset>
 
             <fieldset>
@@ -161,7 +178,7 @@ export function BriefForm({ markets, formats }: Props) {
             <div className="rounded-2xl border border-gray-200 bg-white p-5">
               <h2 className="text-lg font-bold text-[#2563eb]">Sites you shortlisted</h2>
               {!ready || shortlistHere.length === 0 ? (
-                <p className="mt-2 text-sm text-gray-600">None yet. Browse <Link href={`/locations/${countrySlug}/${citySlug}`} className="font-semibold text-mw-blue-600 hover:underline">the sites in {markets.find(m => m.countrySlug === countrySlug)?.cities.find(c => c.slug === citySlug)?.name}</Link> and tap “Add to proposal” on any you like. They are always kept in the plan.</p>
+                <p className="mt-2 text-sm text-gray-600">None yet. Browse <Link href={`/locations/${countrySlug}/${leadCity}`} className="font-semibold text-mw-blue-600 hover:underline">the sites in {marketDef.cities.find(c => c.slug === leadCity)?.name}</Link> and tap “Add to proposal” on any you like. They are always kept in the plan.</p>
               ) : (
                 <>
                   <p className="mt-1 text-sm text-gray-600">These are kept in the plan whatever the brief says.</p>

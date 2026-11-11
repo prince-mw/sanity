@@ -4,10 +4,13 @@ import type { PublicSite } from '@/lib/inventory/types'
 
 export type Objective = 'launch' | 'awareness' | 'footfall' | 'event'
 export type ProposalStatus = 'draft' | 'sent' | 'approved' | 'changes-requested'
-export type VersionSource = 'claude' | 'rules' | 'manual' | 'shortlist'
+export type VersionSource = 'claude' | 'rules' | 'manual' | 'shortlist' | 'client'
 
 export type Brief = {
-  countrySlug: string; citySlug: string; cityName: string
+  countrySlug: string
+  cities: string[]                    // city slugs, one or more; the first is the lead city
+  countryWide: boolean                // asked for the whole country: every available city is planned, the rest requested
+  citySlug: string; cityName: string  // the lead city (kept for titles and older documents)
   startDate: string | null            // YYYY-MM-DD
   durationWeeks: number | null
   objective: Objective | null
@@ -18,7 +21,7 @@ export type Brief = {
   targetSites: number
 }
 
-export type VersionSite = { siteId: string; siteName: string; reason: string; order: number }
+export type VersionSite = { siteId: string; siteName: string; reason: string; order: number; citySlug?: string }
 
 export type ProposalVersion = { n: number; createdAt: string; source: VersionSource; summary: string; sites: VersionSite[] }
 
@@ -35,6 +38,7 @@ export type ProposalDoc = {
   currentVersion: number
   versions: ProposalVersion[]
   changeRequests: { at: string; message: string }[]
+  cityRequests: { at: string; citySlug: string; by?: string }[]   // cities asked for that have no inventory yet
   approvedAt: string | null
   createdAt: string
   updatedAt: string
@@ -46,6 +50,9 @@ export type ProposalTotals = { sites: number; withFigures: number; reach: number
 export type AudienceMember = { siteId: string; siteName: string; name: string; who: string; when: string; why: string }
 export type AudienceGroup = { key: string; label: string; icon: string; members: AudienceMember[] }
 
+/** One city in the plan: its sites' count and figures, and whether inventory exists for it. */
+export type CityGroup = { slug: string; name: string; available: boolean; requested: boolean; sites: number; reach: number | null; impressions: number | null }
+
 /** The document plus its sites resolved from the inventory, in the current version's order. */
 export type ProposalView = {
   doc: ProposalDoc
@@ -54,4 +61,5 @@ export type ProposalView = {
   missing: VersionSite[]              // sites in the version the inventory no longer has
   totals: ProposalTotals
   audience: AudienceGroup[]
+  cities: CityGroup[]                 // every city of the market: in the plan, requested, or offered
 }

@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { sitesFor, inventoryEnabled } from '@/lib/inventory/source'
+import { inventoryEnabled } from '@/lib/inventory/source'
 import { readProposalGrant, proposalCookie, withProposal } from '@/lib/proposal/access'
-import { createProposal, getProposalByShareId, resolveSites, setCrm, CRM_FIELDS } from '@/lib/proposal/store'
-import { pickSites, shortlistPick } from '@/lib/proposal/pick'
-import { marketFor, targetSitesFor, DURATIONS } from '@/lib/proposal/markets'
+import { createProposal, getProposalByShareId, resolveSites, setCrm, addCityRequest, CRM_FIELDS } from '@/lib/proposal/store'
+import { pickPlan } from '@/lib/proposal/pick'
+import { marketOf, cityOf, targetSitesFor, DURATIONS } from '@/lib/proposal/markets'
 import { crmConfigured, updateLead } from '@/lib/zoho-crm'
 import type { Brief, Objective } from '@/lib/proposal/types'
 
@@ -41,8 +41,14 @@ export async function POST(req: NextRequest) {
   let b: { brief?: Record<string, unknown>; shortlistIds?: unknown; mode?: unknown }
   try { b = await req.json() } catch { return NextResponse.json({ error: 'Bad request' }, { status: 400 }) }
   const raw = b.brief ?? {}
-  const market = marketFor(str(raw.countrySlug, 40), str(raw.citySlug, 60))
-  if (!market) return NextResponse.json({ error: 'We have inventory for Kuala Lumpur today; more markets are coming.' }, { status: 422 })
+  const market = marketOf(str(raw.countrySlug, 40))
+  if (!market) return NextResponse.json({ error: 'We have inventory for Malaysia today; more markets are coming.' }, { status: 422 })
+  const countryWide = raw.countryWide === true
+  const askedCities = Array.isArray(raw.cities) ? raw.cities.map(c => str(c, 60)).filter(c => cityOf(market.countrySlug, c)) : []
+  const cities = countryWide ? market.cities.map(c => c.slug) : askedCities.length ? askedCities : [str(raw.citySlug, 60)].filter(c => cityOf(market.countrySlug, c))
+  const availableCities = cities.filter(c => cityOf(market.countrySlug, c)?.available)
+  if (!availableCities.length) return NextResponse.json({ error: `We have inventory for Kuala Lumpur today; ${cities.length ? 'the cities you chose are coming soon.' : 'pick at least one city.'}` }, { status: 422 })
+  const lead = cityOf(market.countrySlug, availableCities[0])!
 
   const objective = OBJECTIVES.has(raw.objective as Objective) ? (raw.objective as Objective) : null
   const startDate = /^\d{4}-\d{2}-\d{2}$/.test(str(raw.startDate, 10)) ? str(raw.startDate, 10) : null
@@ -51,7 +57,7 @@ export async function POST(req: NextRequest) {
   const formats = Array.isArray(raw.formats) ? raw.formats.map(f => str(f, 60)).filter(Boolean).slice(0, 8) : []
   const wanted = Number(raw.targetSites)
   const brief: Brief = {
-    countrySlug: market.countrySlug, citySlug: market.city.slug, cityName: market.city.name,
+    countrySlug: market.countrySlug, cities, countryWide, citySlug: lead.slug, cityName: lead.name,
     startDate, durationWeeks, objective, audience: str(raw.audience, 600), industry: str(raw.industry, 80), budgetBand, formats,
     targetSites: Number.isInteger(wanted) && wanted >= 2 && wanted <= 12 ? wanted : targetSitesFor(budgetBand),
   }
@@ -63,15 +69,17 @@ export async function POST(req: NextRequest) {
   const now = Date.now(), hist = (made.get(grant.email) ?? []).filter(t => now - t < 86400_000)
   if (!grant.tester && hist.length >= DAILY_LIMIT) return NextResponse.json({ error: 'That is a lot of proposals for one day — our team will take it from here.' }, { status: 429 })
 
-  const candidates = await sitesFor(market.countrySlug, market.city.slug)
-  if (!candidates.length) return NextResponse.json({ error: 'No sites are listed for this market yet.' }, { status: 422 })
-  const pick = mode === 'shortlist' ? shortlistPick(brief, candidates, shortlistIds) : await pickSites(brief, candidates, shortlistIds)
-  if (!pick.sites.length) return NextResponse.json({ error: 'We could not match any sites. Try fewer filters.' }, { status: 422 })
+  const plan = await pickPlan(brief, shortlistIds, mode)
+  if (!plan.candidates.length) return NextResponse.json({ error: 'No sites are listed for this market yet.' }, { status: 422 })
+  if (!plan.sites.length) return NextResponse.json({ error: 'We could not match any sites. Try fewer filters.' }, { status: 422 })
+  const pick = { source: plan.source, summary: plan.summary, sites: plan.sites }
 
   const creator = { name: grant.name, email: grant.email, company: grant.company, country: grant.country }
   const { doc, editToken } = await createProposal({ creator, leadId: grant.leadId, brief, version: pick })
   made.set(grant.email, [...hist, now])
   const url = `${siteUrl(req)}/proposals/${doc.shareId}`
+  // Cities asked for without inventory yet are recorded as requests for the team.
+  for (const c of cities.filter(c => !cityOf(market.countrySlug, c)?.available)) await addCityRequest(doc._id, c, grant.email).catch(() => {})
 
   // Tell the team: the CRM workflow emails the owner when Proposal_URL changes.
   if (grant.leadId && crmConfigured()) {

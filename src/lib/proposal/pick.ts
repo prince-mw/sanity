@@ -1,6 +1,7 @@
 import 'server-only'
 import type { PublicSite } from '@/lib/inventory/types'
-import { OBJECTIVES } from './markets'
+import { sitesFor } from '@/lib/inventory/source'
+import { OBJECTIVES, cityOf, targetByCity } from './markets'
 import type { Brief, VersionSite, VersionSource } from './types'
 
 // Turns a brief into a site list. Claude (Sonnet) reads the brief and a compact
@@ -69,6 +70,34 @@ export function rulesPick(brief: Brief, candidates: PublicSite[], pinnedIds: str
 export function shortlistPick(brief: Brief, candidates: PublicSite[], ids: string[]): Pick {
   const picked = ids.map(id => candidates.find(s => s.id === id)).filter(Boolean) as PublicSite[]
   return { source: 'shortlist', summary: templateSummary(brief, picked), sites: picked.map((s, i) => ({ siteId: s.id, siteName: s.name, reason: templateReason(brief, s), order: i })) }
+}
+
+/**
+ * The whole plan: one pick per city in the brief that has inventory, sized by
+ * city weight, with every site tagged by city. Cities without inventory are
+ * left to the request path. `mode` 'shortlist' skips Claude and keeps only the
+ * visitor's own sites.
+ */
+export async function pickPlan(brief: Brief, pinnedIds: string[], mode: 'brief' | 'shortlist' = 'brief'): Promise<Pick & { candidates: PublicSite[] }> {
+  const cities = brief.cities.filter(c => cityOf(brief.countrySlug, c)?.available)
+  const targets = targetByCity(brief.countrySlug, cities, brief.targetSites)
+  const all: PublicSite[] = []
+  const sites: VersionSite[] = []
+  const summaries: string[] = []
+  let source: VersionSource = mode === 'shortlist' ? 'shortlist' : 'rules'
+  for (const city of cities) {
+    const candidates = await sitesFor(brief.countrySlug, city)
+    all.push(...candidates)
+    if (!candidates.length) continue
+    const cityBrief: Brief = { ...brief, citySlug: city, cityName: cityOf(brief.countrySlug, city)?.name ?? city, targetSites: targets[city] ?? brief.targetSites }
+    const pinnedHere = pinnedIds.filter(id => candidates.some(s => s.id === id))
+    const pick = mode === 'shortlist' ? shortlistPick(cityBrief, candidates, pinnedHere) : await pickSites(cityBrief, candidates, pinnedHere)
+    if (mode === 'shortlist' && !pick.sites.length) continue
+    for (const s of pick.sites) sites.push({ ...s, citySlug: city, order: sites.length })
+    summaries.push(pick.summary)
+    if (pick.source === 'claude') source = 'claude'
+  }
+  return { source, sites, summary: summaries.join(' '), candidates: all }
 }
 
 const memo = new Map<string, { at: number; pick: Pick }>()

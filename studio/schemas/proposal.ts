@@ -21,7 +21,8 @@ export default defineType({
     defineField({ name: 'leadId', title: 'Zoho CRM lead id', type: 'string' }),
     defineField({ name: 'crmError', type: 'string' }),
     defineField({ name: 'brief', type: 'object', fields: [
-      { name: 'countrySlug', type: 'string' }, { name: 'citySlug', type: 'string' }, { name: 'cityName', type: 'string' },
+      { name: 'countrySlug', type: 'string' }, { name: 'cities', type: 'array', of: [{ type: 'string' }] }, { name: 'countryWide', type: 'boolean' },
+      { name: 'citySlug', type: 'string', description: 'The lead city' }, { name: 'cityName', type: 'string' },
       { name: 'startDate', type: 'date' }, { name: 'durationWeeks', type: 'number' },
       { name: 'objective', type: 'string', description: 'launch | awareness | footfall | event' },
       { name: 'audience', type: 'text' }, { name: 'industry', type: 'string' },
@@ -36,13 +37,16 @@ export default defineType({
         { name: 'source', type: 'string', description: 'claude | rules | manual | shortlist' },
         { name: 'summary', type: 'text' },
         { name: 'sites', type: 'array', of: [{ type: 'object', name: 'proposalSite', fields: [
-          { name: 'siteId', type: 'string' }, { name: 'siteName', type: 'string' }, { name: 'reason', type: 'text' }, { name: 'order', type: 'number' },
+          { name: 'siteId', type: 'string' }, { name: 'siteName', type: 'string' }, { name: 'reason', type: 'text' }, { name: 'order', type: 'number' }, { name: 'citySlug', type: 'string' },
         ] }] },
       ],
       preview: { select: { n: 'n', source: 'source' }, prepare: ({ n, source }: { n?: number; source?: string }) => ({ title: `v${n ?? '?'}`, subtitle: source }) },
     }] }),
     defineField({ name: 'changeRequests', type: 'array', of: [{ type: 'object', name: 'proposalChangeRequest', fields: [
       { name: 'at', type: 'datetime' }, { name: 'message', type: 'text' },
+    ] }] }),
+    defineField({ name: 'cityRequests', type: 'array', of: [{ type: 'object', name: 'proposalCityRequest', fields: [
+      { name: 'at', type: 'datetime' }, { name: 'citySlug', type: 'string' }, { name: 'by', type: 'string' },
     ] }] }),
     defineField({ name: 'approvedAt', type: 'datetime' }),
     defineField({ name: 'createdAt', type: 'datetime' }),

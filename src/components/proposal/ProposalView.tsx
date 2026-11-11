@@ -11,7 +11,7 @@ import { Check, Link2, Pencil, Printer, TrainFront, ShoppingBag, Camera, Briefca
 import { SG_NAVY, SgSectionHeading, SgFormButton } from '../SingaporeShared'
 import { SiteCard } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
-import { OBJECTIVES, BUDGET_BANDS } from '@/lib/proposal/markets'
+import { OBJECTIVES, BUDGET_BANDS, citiesLabel } from '@/lib/proposal/markets'
 import type { ProposalView as View, ProposalStatus } from '@/lib/proposal/types'
 import type { SiteSpecs } from '@/lib/inventory/types'
 
@@ -31,7 +31,11 @@ const fmtDate = (iso: string | null | undefined) => iso ? new Date(iso).toLocale
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 
 export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
-  const { doc, version, sites, totals, audience } = view
+  const { doc, version, sites, totals, audience, cities } = view
+  const inPlan = cities.filter(c => c.sites > 0)
+  const offered = cities.filter(c => c.sites === 0)
+  const [cityBusy, setCityBusy] = useState<string | null>(null)
+  const [cityDone, setCityDone] = useState<Record<string, 'added' | 'requested'>>({})
   const [status, setStatus] = useState<ProposalStatus>(doc.status)
   const [ask, setAsk] = useState(false)
   const [message, setMessage] = useState('')
@@ -40,6 +44,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const [copied, setCopied] = useState(false)
   const paged = new Set(pagedIds)
   const brief = doc.brief
+  const whereLabel = citiesLabel(brief.countrySlug, inPlan.map(c => c.slug))
   const objective = OBJECTIVES.find(o => o.id === brief.objective)?.label
   const pins = sites.map(s => s.lat != null && s.lng != null ? { id: s.id, lat: s.lat, lng: s.lng, title: s.name, subtitle: [s.displayFormat ?? s.format, s.areaName].filter(Boolean).join(' · ') } : null).filter(Boolean) as MapPin[]
 
@@ -52,11 +57,23 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
     if (!r || !r.ok) { setError(j?.error ?? 'Something went wrong. Please try again.'); return }
     setStatus(j.status); setAsk(false); setMessage('')
   }
+  const askCity = async (slug: string, available: boolean) => {
+    if (demo) { setCityDone(d => ({ ...d, [slug]: available ? 'added' : 'requested' })); return }
+    setCityBusy(slug); setError(null)
+    const r = available
+      ? await fetch(`/api/proposals/${doc.shareId}/versions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ addCity: slug }) }).catch(() => null)
+      : await fetch(`/api/proposals/${doc.shareId}/request-city`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ citySlug: slug }) }).catch(() => null)
+    const j = await r?.json().catch(() => null)
+    setCityBusy(null)
+    if (!r || !r.ok) { setError(j?.error ?? 'Something went wrong. Please try again.'); return }
+    setCityDone(d => ({ ...d, [slug]: available ? 'added' : 'requested' }))
+    if (available) window.location.reload()
+  }
   const copy = async () => { try { await navigator.clipboard.writeText(location.origin + `/proposals/${doc.shareId}`); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* no clipboard: the address bar has it */ } }
 
   const facts: [string, string | null][] = [
     ['Objective', objective ?? null],
-    ['Market', `${brief.cityName}`],
+    ['Market', whereLabel],
     ['Dates', brief.startDate ? `From ${fmtDate(brief.startDate)}${brief.durationWeeks ? `, ${brief.durationWeeks} weeks` : ''}` : brief.durationWeeks ? `${brief.durationWeeks} weeks` : null],
     ['Audience', brief.audience || null],
     ['Industry', brief.industry || null],
@@ -134,9 +151,17 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
 
       <section className="bg-white mw-section">
         <div className="mw-container">
-          <SgSectionHeading title="Recommended sites" intro={`${sites.length} ${sites.length === 1 ? 'site' : 'sites'} in ${brief.cityName}, strongest fit first.`} />
+          <SgSectionHeading title="Recommended sites" intro={`${sites.length} ${sites.length === 1 ? 'site' : 'sites'} in ${whereLabel}, strongest fit first${inPlan.length > 1 ? ', grouped by city' : ''}.`} />
+          {inPlan.map(c => (
+          <div key={c.slug} className="mb-10 last:mb-0">
+            {inPlan.length > 1 && (
+              <div className="mb-4 flex flex-wrap items-baseline gap-x-4 gap-y-1 border-b border-gray-200 pb-3">
+                <h3 className="text-xl font-bold text-[#2563eb]">{c.name}</h3>
+                <p className="text-sm text-gray-600">{c.sites} {c.sites === 1 ? 'site' : 'sites'}{c.reach != null ? ` · ${num(c.reach)} monthly reach` : ''}{c.impressions != null ? ` · ${num(c.impressions)} impressions` : ''}</p>
+              </div>
+            )}
           <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {sites.map((s, i) => (
+            {sites.map((s, i) => s.citySlug === c.slug && (
               <li key={s.id} className="flex flex-col break-inside-avoid">
                 <div className="relative">
                   <span className="absolute left-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-[#2563eb] text-sm font-bold text-white">{i + 1}</span>
@@ -152,6 +177,8 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
               </li>
             ))}
           </ol>
+          </div>
+          ))}
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             <Stat label="Sites" value={String(totals.sites)} />
             {totals.reach != null && <Stat label="Combined monthly reach" value={num(totals.reach)!} note={`across ${totals.withFigures} of ${totals.sites} sites with published figures`} />}
@@ -161,6 +188,27 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
           {totals.investment && <p className="mt-3 max-w-3xl text-xs text-gray-500">{PRICE_NOTE}</p>}
         </div>
       </section>
+
+      {offered.length > 0 && (
+        <section className="bg-white mw-section no-print">
+          <div className="mw-container">
+            <SgSectionHeading title="Run it in more cities" intro={`The same brief and the same audience, planned for another city in ${brief.countrySlug === 'malaysia' ? 'Malaysia' : 'the country'}. Add a city and it joins this proposal as its own group; you can take it out again later.`} />
+            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {offered.map(c => { const state = cityDone[c.slug] ?? (c.requested ? 'requested' : null); return (
+                <li key={c.slug} className="flex flex-col rounded-2xl border border-gray-200 bg-white p-5">
+                  <h3 className="font-bold text-gray-900">{c.name}</h3>
+                  <p className="mt-1 flex-1 text-sm text-gray-600">{c.available ? 'Sites picked for this brief, with their audiences and figures, added as a city group.' : 'Inventory is being connected. Ask for it and a planner builds this city by hand within one working day.'}</p>
+                  <button type="button" disabled={!!state || cityBusy === c.slug} onClick={() => askCity(c.slug, c.available)}
+                    className={`mw-tap mt-4 inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold ${state ? 'border border-gray-200 bg-gray-50 text-gray-500' : 'bg-[#2563eb] text-white hover:bg-[#1d4ed8]'} disabled:opacity-80`}>
+                    {cityBusy === c.slug ? 'Working…' : state === 'added' ? `${c.name} added` : state === 'requested' ? `${c.name} requested` : c.available ? `Add ${c.name} to my plan` : `Request a plan for ${c.name}`}
+                  </button>
+                </li>
+              ) })}
+            </ul>
+            {error && <p className="mt-3 text-sm text-red-600" role="alert">{error}</p>}
+          </div>
+        </section>
+      )}
 
       {pins.length > 0 && (
         <section className="bg-gray-50 mw-section">

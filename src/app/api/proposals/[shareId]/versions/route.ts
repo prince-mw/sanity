@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { sitesFor } from '@/lib/inventory/source'
 import { readProposalGrant, canEdit } from '@/lib/proposal/access'
 import { getProposalByShareId, appendVersion, CRM_FIELDS } from '@/lib/proposal/store'
-import { pickSites } from '@/lib/proposal/pick'
+import { pickPlan } from '@/lib/proposal/pick'
+import { marketOf, cityOf } from '@/lib/proposal/markets'
 import { crmConfigured, updateLead } from '@/lib/zoho-crm'
 import type { Brief, VersionSite } from '@/lib/proposal/types'
 
@@ -10,6 +11,8 @@ import type { Brief, VersionSite } from '@/lib/proposal/types'
 //   POST /api/proposals/<shareId>/versions
 //     { sites: [{ siteId, reason }], summary }          → a manual version
 //     { rerun: true, brief?: Partial<Brief>, pinnedIds } → Claude picks again
+//     { addCity: '<slug>' }                               → the same brief picks sites in one more city (client or creator)
+//     { removeCity: '<slug>' }                            → drops that city's sites (creator)
 // Needs the creator cookie (set by /edit?t=<token> or by creating it).
 
 export const runtime = 'nodejs'
@@ -20,19 +23,37 @@ const str = (v: unknown, max = 200) => (typeof v === 'string' ? v.trim().slice(0
 export async function POST(req: NextRequest, { params }: { params: Promise<{ shareId: string }> }) {
   const { shareId } = await params
   const grant = await readProposalGrant()
-  if (!canEdit(grant, shareId)) return NextResponse.json({ error: 'Only the person who created this proposal can change it.' }, { status: 403 })
   const doc = await getProposalByShareId(shareId)
   if (!doc) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  let b: { sites?: unknown; summary?: unknown; rerun?: unknown; brief?: Partial<Brief>; pinnedIds?: unknown }
+  let b: { sites?: unknown; summary?: unknown; rerun?: unknown; brief?: Partial<Brief>; pinnedIds?: unknown; addCity?: unknown; removeCity?: unknown }
   try { b = await req.json() } catch { return NextResponse.json({ error: 'Bad request' }, { status: 400 }) }
+  // Anyone with the link may add a city (the funnel); everything else is the creator's.
+  if (!(typeof b.addCity === 'string' && b.addCity) && !canEdit(grant, shareId)) return NextResponse.json({ error: 'Only the person who created this proposal can change it.' }, { status: 403 })
 
-  const candidates = await sitesFor(doc.brief.countrySlug, doc.brief.citySlug)
+  const market = marketOf(doc.brief.countrySlug)
+  const availableCities = (market?.cities ?? []).filter(c => c.available).map(c => c.slug)
+  const candidates = (await Promise.all(availableCities.map(c => sitesFor(doc.brief.countrySlug, c)))).flat()
   const byId = new Map(candidates.map(s => [s.id, s]))
+  const current = doc.versions.find(v => v.n === doc.currentVersion)
   const nextN = (doc.versions.reduce((m, v) => Math.max(m, v.n), 0) || doc.currentVersion || 0) + 1
 
   let version
-  if (b.rerun === true) {
+  const addCity = str(b.addCity, 60), removeCity = str(b.removeCity, 60)
+  if (addCity) {
+    const city = cityOf(doc.brief.countrySlug, addCity)
+    if (!city) return NextResponse.json({ error: 'Unknown city' }, { status: 400 })
+    if (!city.available) return NextResponse.json({ error: 'No inventory in that city yet. Request it instead.' }, { status: 422 })
+    const brief: Brief = { ...doc.brief, cities: Array.from(new Set([...doc.brief.cities, addCity])) }
+    const plan = await pickPlan({ ...brief, cities: [addCity] }, [])
+    const kept = (current?.sites ?? []).map(s => ({ ...s }))
+    const sites: VersionSite[] = [...kept, ...plan.sites.filter(s => !kept.some(k => k.siteId === s.siteId))].map((s, i) => ({ ...s, order: i }))
+    version = { source: 'client' as const, summary: [current?.summary ?? '', plan.summary].filter(Boolean).join(' '), sites }
+  } else if (removeCity) {
+    const sites = (current?.sites ?? []).filter(s => (s.citySlug ?? byId.get(s.siteId)?.citySlug) !== removeCity).map((s, i) => ({ ...s, order: i }))
+    if (!sites.length) return NextResponse.json({ error: 'Keep at least one city in the proposal.' }, { status: 400 })
+    version = { source: 'manual' as const, summary: current?.summary ?? '', sites }
+  } else if (b.rerun === true) {
     const patch = b.brief ?? {}
     const brief: Brief = {
       ...doc.brief,
@@ -45,7 +66,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
       startDate: patch.startDate != null && /^\d{4}-\d{2}-\d{2}$/.test(String(patch.startDate)) ? String(patch.startDate) : doc.brief.startDate,
     }
     const pinned = Array.isArray(b.pinnedIds) ? b.pinnedIds.map(x => str(x, 80)).filter(id => byId.has(id)).slice(0, 30) : []
-    version = await pickSites(brief, candidates, pinned)
+    const plan = await pickPlan(brief, pinned)
+    version = { source: plan.source, summary: plan.summary, sites: plan.sites }
   } else {
     const raw = Array.isArray(b.sites) ? b.sites as { siteId?: unknown; reason?: unknown }[] : []
     const seen = new Set<string>()
@@ -53,11 +75,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
     for (const it of raw) {
       const id = str(it.siteId, 80), s = byId.get(id)
       if (!s || seen.has(id)) continue
-      seen.add(id); sites.push({ siteId: id, siteName: s.name, reason: str(it.reason, 200) || 'Chosen by the planner.', order: sites.length })
+      seen.add(id); sites.push({ siteId: id, siteName: s.name, reason: str(it.reason, 200) || 'Chosen by the planner.', order: sites.length, citySlug: s.citySlug })
       if (sites.length >= 30) break
     }
     if (!sites.length) return NextResponse.json({ error: 'Keep at least one site in the proposal.' }, { status: 400 })
-    const current = doc.versions.find(v => v.n === doc.currentVersion)
     version = { source: 'manual' as const, summary: str(b.summary, 700) || current?.summary || '', sites }
   }
 

@@ -11,7 +11,7 @@ import type { Brief, ProposalDoc, ProposalVersion, ProposalView } from './types'
 export const DEMO_SHARE_ID = 'demo'
 
 const BRIEF: Brief = {
-  countrySlug: 'malaysia', citySlug: 'kuala-lumpur', cityName: 'Kuala Lumpur',
+  countrySlug: 'malaysia', cities: ['kuala-lumpur'], countryWide: false, citySlug: 'kuala-lumpur', cityName: 'Kuala Lumpur',
   startDate: '2027-01-12', durationWeeks: 4, objective: 'launch',
   audience: 'Office workers in the Golden Triangle, 25–45, who shop at KLCC and Pavilion after work',
   industry: 'Beauty', budgetBand: 'mid', formats: [], targetSites: 5,
@@ -20,13 +20,14 @@ const BRIEF: Brief = {
 export async function buildDemoView(): Promise<ProposalView | null> {
   const candidates = await sitesFor(BRIEF.countrySlug, BRIEF.citySlug)
   if (!candidates.length) return null
-  const pick = rulesPick(BRIEF, candidates, [], BRIEF.targetSites)
+  const base = rulesPick(BRIEF, candidates, [], BRIEF.targetSites)
+  const pick = { ...base, sites: base.sites.map(s => ({ ...s, citySlug: 'kuala-lumpur' })) }
   const now = new Date().toISOString()
   const v1: ProposalVersion = { n: 1, createdAt: now, source: 'rules', summary: 'A launch plan across five sites in Kuala Lumpur over four weeks: two landmark highway unipoles on the main commuter routes into the city, a roadside LED on Jalan Tun Razak beside KLCC, and two screens in Bukit Bintang where the audience shops after work. The digital sites carry a countdown creative in the first week and the launch creative from day one; the unipoles hold the hero visual throughout. The Moving Walls team confirms availability before anything is booked.', sites: pick.sites }
   const doc: ProposalDoc = {
     _id: 'proposal-demo', shareId: DEMO_SHARE_ID, editTokenHash: '', status: 'sent', titleLine: titleLineFor(BRIEF),
     creator: { name: '', email: '', company: 'Example Beauty Co.', country: 'Malaysia' }, leadId: null, brief: BRIEF,
-    currentVersion: 1, versions: [v1], changeRequests: [], approvedAt: null, createdAt: now, updatedAt: now,
+    currentVersion: 1, versions: [v1], changeRequests: [], cityRequests: [], approvedAt: null, createdAt: now, updatedAt: now,
   }
   return resolveSites(doc)
 }

@@ -13,7 +13,7 @@ import { ArrowDown, ArrowUp, Plus, X } from 'lucide-react'
 import { SG_NAVY, SgSectionHeading } from '../SingaporeShared'
 import { SampleTag } from '../inventory/InventoryShared'
 import { useShortlist } from '@/lib/proposal/shortlist'
-import { OBJECTIVES, DURATIONS } from '@/lib/proposal/markets'
+import { OBJECTIVES, DURATIONS, cityNameOf } from '@/lib/proposal/markets'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { ProposalView as View, Objective } from '@/lib/proposal/types'
 
@@ -39,6 +39,7 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
   const { items: shortlist } = useShortlist()
 
   const inPlan = new Set(rows.map(r => r.siteId))
+  const cityGroups = Array.from(new Set(rows.map(r => byId.get(r.siteId)?.citySlug).filter(Boolean) as string[])).map(slug => ({ slug, name: cityNameOf(doc.brief.countrySlug, slug), count: rows.filter(r => byId.get(r.siteId)?.citySlug === slug).length }))
   const formats = useMemo(() => Array.from(new Set(candidates.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [candidates])
   const available = candidates.filter(s => !inPlan.has(s.id) && (format === 'All' || (s.displayFormat ?? s.format ?? 'Other') === format))
   const quick = shortlist.filter(i => byId.has(i.id) && !inPlan.has(i.id))
@@ -78,8 +79,16 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
         <div className="mw-container grid gap-10 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <SgSectionHeading title="Sites in this proposal" intro="Reorder, remove, or reword why each site is there. Publishing makes a new version at the same link." />
+            {cityGroups.map(g => (
+            <div key={g.slug} className="mb-6 last:mb-0">
+              {cityGroups.length > 1 && (
+                <div className="mb-2 flex items-center justify-between gap-3 border-b border-gray-200 pb-2">
+                  <h3 className="font-bold text-[#2563eb]">{g.name} <span className="font-normal text-gray-500">· {g.count} {g.count === 1 ? 'site' : 'sites'}</span></h3>
+                  <button type="button" onClick={() => setRows(x => x.filter(y => byId.get(y.siteId)?.citySlug !== g.slug))} className="mw-tap rounded-lg px-2 py-1 text-xs font-semibold text-red-600 hover:bg-red-50">Remove {g.name}</button>
+                </div>
+              )}
             <ol className="space-y-3">
-              {rows.map((r, i) => { const s = byId.get(r.siteId); if (!s) return null; return (
+              {rows.map((r, i) => { const s = byId.get(r.siteId); if (!s || s.citySlug !== g.slug) return null; return (
                 <li key={r.siteId} className="flex gap-3 rounded-2xl border border-gray-200 bg-white p-3">
                   <span className="relative h-20 w-28 flex-shrink-0 overflow-hidden rounded-lg bg-gray-100">{s.photos[0] && <Image src={s.photos[0]} alt="" fill sizes="112px" className="object-cover" />}</span>
                   <div className="min-w-0 flex-1">
@@ -101,6 +110,8 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
                 </li>
               ) })}
             </ol>
+            </div>
+            ))}
             {rows.length === 0 && <p className="text-sm text-red-600">Keep at least one site.</p>}
 
             <label className="mt-6 block"><span className="text-sm font-semibold text-gray-700">Campaign summary</span>
