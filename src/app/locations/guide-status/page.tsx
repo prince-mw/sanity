@@ -101,7 +101,7 @@ export default async function GuideStatusPage() {
             </tbody>
           </table>
         </div>
-        <p className="mt-4 max-w-3xl text-xs text-gray-500">City chips are coloured by their guide: green approved, amber to review, grey not written. Singapore uses its own venue pages and is not on this template.</p>
+        <p className="mt-4 max-w-lg text-xs text-gray-500">City chips are coloured by their guide: green approved, amber to review, grey not written. Singapore uses its own venue pages and is not on this template.</p>
       </div>
     </div>
   )
