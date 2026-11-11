@@ -6,7 +6,9 @@
 import Link from 'next/link'
 import { SgSectionHeading } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
-import { SiteGrid, areaPath } from './InventoryShared'
+import { areaPath } from './InventoryShared'
+import { SiteFinder } from './SiteFinder'
+import type { SiteInsights } from '../proposal/SiteDetailsDialog'
 import type { AreaLink } from './InventoryAreaClient'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
 import type { PlaceContent, Highlight } from '@/lib/inventory/placeContent'
@@ -16,7 +18,7 @@ import { ShoppingBag, Route, TrainFront, Building2, Landmark, Store, Plane, Tree
 
 const HIGHLIGHT_ICONS: Record<Highlight['icon'], LucideIcon> = { shopping: ShoppingBag, road: Route, rail: TrainFront, tower: Building2, landmark: Landmark, mall: Store, airport: Plane, park: Trees }
 
-export function CityInventorySection({ cityName, citySlug, countrySlug, countryName, sites, pagedIds, areas, sample, content, guide }: {
+export function CityInventorySection({ cityName, citySlug, countrySlug, countryName, sites, pagedIds, areas, sample, content, guide, insights = {} }: {
   cityName: string
   citySlug: string
   countrySlug: string
@@ -28,6 +30,8 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
   content: PlaceContent
   /** The city template's guide: rendered after the sites; it covers areas and audiences, so those sections step aside. */
   guide?: React.ReactNode
+  /** Description and personas per site, for the Details popup. */
+  insights?: Record<string, SiteInsights>
 }) {
   const paged = new Set(pagedIds)
   const areaCount = new Set(sites.map(s => s.areaSlug)).size
@@ -45,8 +49,8 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
       )}
       <section className="bg-gray-50 mw-section">
         <div className="mw-container">
-          <SgSectionHeading title={`Every advertising site in ${cityName}`} intro={`${sites.length} sites across ${areaCount} areas. Filter by format and venue; the map shows the sites you pick.`} />
-          <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} mapTitle={`Map of advertising sites in ${cityName}`} />
+          <SgSectionHeading title={`Every advertising site in ${cityName}`} intro={`${sites.length} sites across ${areaCount} areas. Filter on the left; open Details for a site's audience and screen specifications.`} />
+          <SiteFinder sites={sites} hasPage={s => paged.has(s.id)} mapTitle={`Map of advertising sites in ${cityName}`} insights={insights} />
         </div>
       </section>
       {guide}

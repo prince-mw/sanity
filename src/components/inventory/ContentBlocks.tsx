@@ -134,7 +134,7 @@ export function RelatedContent({ cityName, countryName, caseStudies, posts, firs
   const hasFirst = caseStudies.length > 0 || !!video
   return (
     <>
-      <RelatedSection title="Case studies from this market" intro={`Campaigns that ran in ${cityName} and ${countryName}.`} items={caseStudies} bg={firstBg} limit={3} allHref="/case-studies" allLabel="All case studies" video={video} />
+      <RelatedSection title="Case studies from this market" intro={cityName === countryName ? `Campaigns that ran in ${countryName}.` : `Campaigns that ran in ${cityName} and ${countryName}.`} items={caseStudies} bg={firstBg} limit={3} allHref="/case-studies" allLabel="All case studies" video={video} />
       <RelatedSection title={`Reading on OOH in ${countryName}`} intro="Articles about advertising in this market." items={posts} bg={hasFirst ? secondBg : firstBg} limit={3} allHref="/blog" allLabel="All articles" />
     </>
   )

@@ -8,13 +8,16 @@ import type { PlaceContent } from '@/lib/inventory/placeContent'
 import { MARKET_VIDEOS } from '@/data/market-videos'
 import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
-import { SiteGrid, SiteCard, areaPath } from './InventoryShared'
+import { SiteCard, areaPath } from './InventoryShared'
+import { SiteFinder } from './SiteFinder'
+import type { SiteInsights } from '../proposal/SiteDetailsDialog'
 
 export type AreaLink = { name: string; slug: string; kind: 'buyer' | 'supply'; count: number }
 
 export function InventoryAreaClient({
-  kind, areaName, cityName, citySlug, countryName, countrySlug, sites, pagedIds, nearby, otherAreas, sample, content,
+  kind, areaName, cityName, citySlug, countryName, countrySlug, sites, pagedIds, nearby, otherAreas, sample, content, insights = {},
 }: {
+  insights?: Record<string, SiteInsights>
   kind: 'buyer' | 'supply'
   areaName: string
   cityName: string
@@ -107,8 +110,8 @@ export function InventoryAreaClient({
       {sites.length > 0 && (
         <section className="bg-gray-50 mw-section">
           <div className="mw-container">
-            <SgSectionHeading title={`Advertising sites in ${areaName}`} intro="Filter by format and venue. Tap a pin or open a site for its details, and add sites to your proposal." />
-            <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} mapTitle={`Map of advertising sites in ${areaName}`} />
+            <SgSectionHeading title={`Advertising sites in ${areaName}`} intro="Filter on the left; open Details for a site's audience and screen specifications, and add sites to your proposal." />
+            <SiteFinder sites={sites} hasPage={s => paged.has(s.id)} mapTitle={`Map of advertising sites in ${areaName}`} insights={insights} showAreas={false} />
           </div>
         </section>
       )}

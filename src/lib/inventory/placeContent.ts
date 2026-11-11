@@ -24,6 +24,11 @@ const liveQuery = (type: 'blogPost' | 'caseStudy') => `*[_type == "${type}" && !
   && (title match $place || excerpt match $place || location match $place || pt::text(coalesce(content, body, [])) match $place)
 ] | order(publishedAt desc)[0...$max]{ ${relatedFields} }`
 
+/** Country-level fallback (Rif, 11 Nov 2026: Jakarta showed nothing although Indonesia has articles): names the country only. */
+const countryQuery = (type: 'blogPost' | 'caseStudy') => `*[_type == "${type}" && !(_id in path("drafts.**"))
+  && (title match $country || location match $country || excerpt match $country)
+] | order(publishedAt desc)[0...$max]{ ${relatedFields} }`
+
 const img = (f: unknown) => { try { return f ? urlFor(f).width(800).height(500).fit('crop').url() : null } catch { return null } }
 const item = (kind: RelatedItem['kind'], d: any, score: number, reason: string): RelatedItem | null => d?.slug ? {
   kind, id: d._id, title: d.title, href: kind === 'post' ? `/blog/${d.slug}` : `/case-studies/${d.slug}`,
@@ -49,10 +54,24 @@ export async function getPlaceContent(p: { kind: 'city' | 'area'; countrySlug: s
     safeFetch<any[]>(liveQuery('caseStudy'), { ...params, max: 9 }, []),
   ])
   const reason = `Names ${p.countryName} and ${place}`
+  const local = { posts: (posts ?? []).map(d => item('post', d, 70, reason)).filter(Boolean) as RelatedItem[], caseStudies: (cases ?? []).map(d => item('caseStudy', d, 70, reason)).filter(Boolean) as RelatedItem[] }
+  // Fewer than three that name the place: top up with the country's own, after the local ones.
+  const wide = local.posts.length < 3 || local.caseStudies.length < 3 ? await getCountryContent(p.countryName) : { posts: [], caseStudies: [] }
+  const merge = (a: RelatedItem[], b: RelatedItem[]) => [...a, ...b.filter(x => !a.some(y => y.id === x.id))]
   return {
     description: sample?.description ?? null, highlights: sample?.highlights ?? [], personas: sample?.personas ?? [],
-    posts: (posts ?? []).map(d => item('post', d, 70, reason)).filter(Boolean) as RelatedItem[],
-    caseStudies: (cases ?? []).map(d => item('caseStudy', d, 70, reason)).filter(Boolean) as RelatedItem[],
+    posts: merge(local.posts, wide.posts), caseStudies: merge(local.caseStudies, wide.caseStudies),
     fromSanity: false,
+  }
+}
+
+/** Articles and case studies that name a country, for its country page and as a city's fallback. */
+export async function getCountryContent(countryName: string): Promise<{ posts: RelatedItem[]; caseStudies: RelatedItem[] }> {
+  const params = { country: `${countryName}*`, max: 12 }
+  const [posts, cases] = await Promise.all([safeFetch<any[]>(countryQuery('blogPost'), params, []), safeFetch<any[]>(countryQuery('caseStudy'), { ...params, max: 9 }, [])])
+  const reason = `Names ${countryName}`
+  return {
+    posts: (posts ?? []).map(d => item('post', d, 50, reason)).filter(Boolean) as RelatedItem[],
+    caseStudies: (cases ?? []).map(d => item('caseStudy', d, 50, reason)).filter(Boolean) as RelatedItem[],
   }
 }

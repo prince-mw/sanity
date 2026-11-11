@@ -61,7 +61,7 @@ export function SiteCard({ site, linked, addable = true, action }: { site: Publi
       </div>
     </>
   )
-  const cls = 'group flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all'
+  const cls = 'group flex h-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white transition-all'
   return linked
     ? <Link href={sitePath(site)} className={`${cls} hover:-translate-y-1 hover:border-mw-blue-200 hover:shadow-precision-lg`}>{body}</Link>
     : <div className={cls}>{body}</div>

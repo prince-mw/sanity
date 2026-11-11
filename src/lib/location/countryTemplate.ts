@@ -72,8 +72,15 @@ export function guideFor(countrySlug: string, countryName: string, sections: Tem
   }).filter((t): t is GuideTopic => !!t)
 }
 
-export function tailSections(sections: TemplateSection[]): TemplateSection[] {
-  return TAIL_ORDER.map(t => sections.find(s => s._type === t)).filter((s): s is TemplateSection => !!s)
+export function tailSections(sections: TemplateSection[], part: 'all' | 'proof' | 'cta' = 'all'): TemplateSection[] {
+  const order = part === 'proof' ? TAIL_ORDER.filter(t => t !== 'ctaBanner') : part === 'cta' ? ['ctaBanner'] : TAIL_ORDER
+  return order.map(t => sections.find(s => s._type === t)).filter((s): s is TemplateSection => !!s)
+}
+
+/** Case studies the page already shows by hand (a successStories block), so the automatic list does not repeat them. */
+export function handPickedSlugs(sections: TemplateSection[]): string[] {
+  const s = sections.find(x => x._type === 'successStories') as { stories?: { caseStudy?: { slug?: string } | null }[] } | undefined
+  return (s?.stories ?? []).map(x => x.caseStudy?.slug).filter((x): x is string => !!x)
 }
 
 // ── Data for the generated visuals ───────────────────────────────────────────

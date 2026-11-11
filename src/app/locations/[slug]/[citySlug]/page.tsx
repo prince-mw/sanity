@@ -17,6 +17,9 @@ import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
 import { promoEnabled } from '@/lib/proposal/promo'
 import { marketOf } from '@/lib/proposal/markets'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
+import { siteInsightsFor } from '@/lib/inventory/siteContent'
+import { RelatedContent } from '@/components/inventory/ContentBlocks'
+import { MARKET_VIDEOS } from '@/data/market-videos'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
   const { slug, citySlug } = await params
@@ -93,7 +96,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
   // Inventory from the Inventory API (sample until the key is set): only cities that have some.
   const [inventory, inventoryAreas] = await Promise.all([sitesFor(slug, citySlug), areasFor(slug, citySlug)])
-  const placeContent = inventory.length > 0 ? await getPlaceContent({ kind: 'city', countrySlug: slug, countryName: city.country?.country || slug, citySlug, cityName: city.city || citySlug }) : null
+  const placeContent = inventory.length > 0 || CITY_GUIDE_DRAFTS[`${slug}/${citySlug}`] ? await getPlaceContent({ kind: 'city', countrySlug: slug, countryName: city.country?.country || slug, citySlug, cityName: city.city || citySlug }) : null
 
   // The city template (Rif, 11 Nov 2026): cities with a written guide get the fixed order —
   // hero, proposal band, every site, the city guide, proof, FAQ. Others keep their current page.
@@ -149,8 +152,9 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
             sample={usingSample()}
             guide={guide ?? undefined}
+            insights={await siteInsightsFor(inventory)}
           />
-        </>) : guide}
+        </>) : guide && placeContent ? <>{guide}<RelatedContent key="related" cityName={cityName} countryName={city.country?.country || slug} caseStudies={placeContent.caseStudies} posts={placeContent.posts} firstBg="bg-white" video={MARKET_VIDEOS[slug]} /></> : guide}
       />
     </>
   )

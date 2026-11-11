@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { areasFor, sitesFor, usingSample } from '@/lib/inventory/source'
 import { siteHasPage } from '@/lib/inventory/normalize'
 import { InventoryAreaClient } from '@/components/inventory/InventoryAreaClient'
+import { siteInsightsFor } from '@/lib/inventory/siteContent'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
 
 // Area page: every site in one area of a city, from the Inventory API.
@@ -75,6 +76,7 @@ export default async function AreaPage({ params }: Props) {
         nearby={nearby}
         otherAreas={areas.filter(a => a.slug !== area.slug).map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
         sample={usingSample()}
+        insights={await siteInsightsFor(area.sites)}
       />
     </>
   )
