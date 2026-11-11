@@ -12,6 +12,8 @@ import { SG_NAVY, SgSectionHeading, SgFormButton } from '../SingaporeShared'
 import { SiteCard } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import { OBJECTIVES, BUDGET_BANDS, citiesLabel } from '@/lib/proposal/markets'
+import { ADDONS } from '@/lib/proposal/addons'
+import { IdentitySheet, loadIdentity, type Identity } from './IdentitySheet'
 import type { ProposalView as View, ProposalStatus, TierId } from '@/lib/proposal/types'
 import type { SiteSpecs } from '@/lib/inventory/types'
 
@@ -37,6 +39,17 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const [taken, setTaken] = useState<Record<string, boolean>>({})
   const [planBusy, setPlanBusy] = useState<string | null>(null)
   const tier = tiers.find(t => t.id === tierId) ?? tiers[1]
+  const [addons, setAddons] = useState<string[]>(version.addons ?? [])
+  // Someone who is not the creator gives a name and email once before their first action (the second lead).
+  const [identity, setIdentity] = useState<Identity | null>(null)
+  const [pending, setPending] = useState<{ label: string; run: (by: Identity | null) => void } | null>(null)
+  const needIdentity = !canEdit && !demo
+  const withIdentity = (label: string, run: (by: Identity | null) => void) => {
+    if (!needIdentity) { run(null); return }
+    const known = identity ?? loadIdentity()
+    if (known) { setIdentity(known); run(known); return }
+    setPending({ label, run })
+  }
   const poolById = new Map(pool.map(s => [s.id, s]))
   const extraIds = Object.entries(taken).filter(([, on]) => on).flatMap(([id]) => suggestions.find(x => x.id === id)?.siteIds ?? [])
   const sites = tier.current && !extraIds.length ? planSites : [...tier.siteIds, ...extraIds].filter((id, i, a) => a.indexOf(id) === i).map(id => poolById.get(id) ?? planSites.find(x => x.id === id)).filter((x): x is View['pool'][number] => !!x)
@@ -57,28 +70,31 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const objective = OBJECTIVES.find(o => o.id === brief.objective)?.label
   const pins = sites.map(s => s.lat != null && s.lng != null ? { id: s.id, lat: s.lat, lng: s.lng, title: s.name, subtitle: [s.displayFormat ?? s.format, s.areaName].filter(Boolean).join(' · ') } : null).filter(Boolean) as MapPin[]
 
-  const act = async (action: 'approve' | 'request-changes') => {
+  const act = (action: 'approve' | 'request-changes') => withIdentity(action === 'approve' ? 'approve the plan' : 'send your request', by => actNow(action, by))
+  const actNow = async (action: 'approve' | 'request-changes', by: Identity | null) => {
     if (demo) { setStatus(action === 'approve' ? 'approved' : 'changes-requested'); setAsk(false); setMessage(''); return }
     setBusy(true); setError(null)
-    const r = await fetch(`/api/proposals/${doc.shareId}/status`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action, message }) }).catch(() => null)
+    const r = await fetch(`/api/proposals/${doc.shareId}/status`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action, message, by }) }).catch(() => null)
     const j = await r?.json().catch(() => null)
     setBusy(false)
     if (!r || !r.ok) { setError(j?.error ?? 'Something went wrong. Please try again.'); return }
     setStatus(j.status); setAsk(false); setMessage('')
   }
-  const askCity = async (slug: string, available: boolean) => {
+  const askCity = (slug: string, available: boolean) => withIdentity(available ? 'add the city' : 'send your request', by => askCityNow(slug, available, by))
+  const askCityNow = async (slug: string, available: boolean, by: Identity | null) => {
     if (demo) { setCityDone(d => ({ ...d, [slug]: available ? 'added' : 'requested' })); return }
     setCityBusy(slug); setError(null)
     const r = available
-      ? await fetch(`/api/proposals/${doc.shareId}/versions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ addCity: slug }) }).catch(() => null)
-      : await fetch(`/api/proposals/${doc.shareId}/request-city`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ citySlug: slug }) }).catch(() => null)
+      ? await fetch(`/api/proposals/${doc.shareId}/versions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ addCity: slug, by }) }).catch(() => null)
+      : await fetch(`/api/proposals/${doc.shareId}/request-city`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ citySlug: slug, email: by?.email }) }).catch(() => null)
     const j = await r?.json().catch(() => null)
     setCityBusy(null)
     if (!r || !r.ok) { setError(j?.error ?? 'Something went wrong. Please try again.'); return }
     setCityDone(d => ({ ...d, [slug]: available ? 'added' : 'requested' }))
     if (available) window.location.reload()
   }
-  const publish = async (body: Record<string, unknown>, key: string, local: () => void) => {
+  const publish = (body: Record<string, unknown>, key: string, local: () => void, label = 'update the plan') => withIdentity(label, by => publishNow({ ...body, by }, key, local))
+  const publishNow = async (body: Record<string, unknown>, key: string, local: () => void) => {
     if (demo) { local(); return }
     setPlanBusy(key); setError(null)
     const r = await fetch(`/api/proposals/${doc.shareId}/versions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).catch(() => null)
@@ -90,6 +106,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const chooseTier = (id: TierId) => { if (id === tierId) return; publish({ tier: id }, `tier-${id}`, () => setTierId(id)) }
   const takeSuggestion = (sg: View['suggestions'][number]) => publish(
     { addSites: sg.siteIds.map(id => ({ siteId: id, reason: sg.reasons[id] })), weeks: sg.weeks }, sg.id, () => setTaken(t => ({ ...t, [sg.id]: true })))
+  const takeAddon = (id: string) => publish({ addon: id }, `addon-${id}`, () => setAddons(a => { const w = ADDONS.find(x => x.id === id)?.weeks; return [...a.filter(x => !(w && /^weeks-/.test(x))), id] }), 'add it to the plan')
   const copy = async () => { try { await navigator.clipboard.writeText(location.origin + `/proposals/${doc.shareId}`); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* no clipboard: the address bar has it */ } }
 
   const facts: [string, string | null][] = [
@@ -273,6 +290,27 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
         </section>
       )}
 
+      <section className="bg-gray-50 mw-section no-print">
+        <div className="mw-container">
+          <SgSectionHeading title="Add-ons" intro="Services that make the campaign land better. Pick any; the planner confirms the details with you." />
+          <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {ADDONS.map(a => { const on = addons.includes(a.id); const busyNow = planBusy === `addon-${a.id}`; return (
+              <li key={a.id} className={`flex flex-col rounded-2xl border p-5 ${on ? 'border-[#2563eb] bg-mw-blue-50/40' : 'border-gray-200 bg-white'}`}>
+                <h3 className="font-bold text-gray-900">{a.title}</h3>
+                <p className="mt-1 text-sm font-semibold text-[#2563eb]">{a.benefit}</p>
+                <p className="mt-2 flex-1 text-sm text-gray-700">{a.detail}</p>
+                <p className="mt-3 text-xs text-gray-500">{a.price === 'rates' ? 'Priced from the site rates; the investment range updates.' : 'Price on request, confirmed by the planner.'}</p>
+                <button type="button" disabled={on || planBusy !== null} onClick={() => takeAddon(a.id)}
+                  className={`mw-tap mt-4 inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold ${on ? 'border border-gray-200 bg-white text-gray-500' : 'bg-[#2563eb] text-white hover:bg-[#1d4ed8]'} disabled:opacity-80`}>
+                  {busyNow ? 'Adding…' : on ? 'In your plan' : 'Add'}
+                </button>
+              </li>
+            ) })}
+          </ul>
+          {error && <p className="mt-3 text-sm text-red-600" role="alert">{error}</p>}
+        </div>
+      </section>
+
       {pins.length > 0 && (
         <section className="bg-gray-50 mw-section">
           <div className="mw-container">
@@ -348,6 +386,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
           </div>
         </section>
       )}
+      <IdentitySheet open={!!pending} action={pending?.label ?? 'continue'} onClose={() => setPending(null)} onDone={i => { setIdentity(i); const run = pending?.run; setPending(null); run?.(i) }} />
     </div>
   )
 }

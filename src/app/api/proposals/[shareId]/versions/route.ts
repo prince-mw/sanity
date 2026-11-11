@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sitesFor } from '@/lib/inventory/source'
 import { readProposalGrant, canEdit } from '@/lib/proposal/access'
-import { getProposalByShareId, appendVersion, setBriefWeeks, CRM_FIELDS } from '@/lib/proposal/store'
+import { getProposalByShareId, appendVersion, setBriefWeeks, addParticipant, CRM_FIELDS } from '@/lib/proposal/store'
+import { addonOf } from '@/lib/proposal/addons'
 import { buildTiers } from '@/lib/proposal/tiers'
 import { pickPlan } from '@/lib/proposal/pick'
 import { marketOf, cityOf } from '@/lib/proposal/markets'
@@ -16,6 +17,8 @@ import type { Brief, VersionSite } from '@/lib/proposal/types'
 //     { removeCity: '<slug>' }                            → drops that city's sites (creator)
 //     { tier: 'essentials' | 'full' }                     → the client switches to that size of the plan
 //     { addSites: [{ siteId, reason }], weeks? }          → the client takes a suggestion (sites and/or a longer run)
+//     { addon: '<id>' }                                   → the client adds a service (or a longer run) to the plan
+// A client action may carry { by: { name, email } }: recorded as a participant and on the CRM lead.
 // Needs the creator cookie (set by /edit?t=<token> or by creating it).
 
 export const runtime = 'nodejs'
@@ -29,10 +32,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
   const doc = await getProposalByShareId(shareId)
   if (!doc) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  let b: { sites?: unknown; summary?: unknown; rerun?: unknown; brief?: Partial<Brief>; pinnedIds?: unknown; addCity?: unknown; removeCity?: unknown; tier?: unknown; addSites?: unknown; weeks?: unknown }
+  let b: { sites?: unknown; summary?: unknown; rerun?: unknown; brief?: Partial<Brief>; pinnedIds?: unknown; addCity?: unknown; removeCity?: unknown; tier?: unknown; addSites?: unknown; weeks?: unknown; addon?: unknown; by?: { name?: unknown; email?: unknown } }
   try { b = await req.json() } catch { return NextResponse.json({ error: 'Bad request' }, { status: 400 }) }
   // Anyone with the link may add a city (the funnel); everything else is the creator's.
-  const clientAction = (typeof b.addCity === 'string' && b.addCity) || (typeof b.tier === 'string' && b.tier) || Array.isArray(b.addSites) || b.weeks != null
+  const clientAction = (typeof b.addCity === 'string' && b.addCity) || (typeof b.tier === 'string' && b.tier) || Array.isArray(b.addSites) || b.weeks != null || (typeof b.addon === 'string' && b.addon)
   if (!clientAction && !canEdit(grant, shareId)) return NextResponse.json({ error: 'Only the person who created this proposal can change it.' }, { status: 403 })
 
   const market = marketOf(doc.brief.countrySlug)
@@ -45,7 +48,13 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
   let version
   const addCity = str(b.addCity, 60), removeCity = str(b.removeCity, 60), tier = str(b.tier, 20)
   const weeks = [2, 4, 8, 12].includes(Number(b.weeks)) ? Number(b.weeks) : null
-  if (tier === 'essentials' || tier === 'full') {
+  const addon = addonOf(str(b.addon, 20))
+  if (addon) {
+    const have = new Set(current?.addons ?? [])
+    if (addon.weeks) { for (const w of ['weeks-8', 'weeks-12']) have.delete(w); await setBriefWeeks(doc._id, addon.weeks) }
+    have.add(addon.id)
+    version = { source: 'client' as const, summary: current?.summary ?? '', sites: (current?.sites ?? []).map((s, i) => ({ ...s, order: i })), addons: Array.from(have) }
+  } else if (tier === 'essentials' || tier === 'full') {
     const t = buildTiers(doc.brief, current?.sites ?? [], candidates).find(x => x.id === tier)!
     version = { source: 'client' as const, summary: current?.summary ?? '', sites: t.sites }
   } else if (Array.isArray(b.addSites) || weeks) {
@@ -100,10 +109,15 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
     version = { source: 'manual' as const, summary: str(b.summary, 700) || current?.summary || '', sites }
   }
 
+  if (!('addons' in version)) version = { ...version, addons: current?.addons ?? [] }
+  const by = clientAction && !canEdit(grant, shareId) && b.by && typeof b.by.email === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(b.by.email)
+    ? { name: str(b.by.name, 120), email: String(b.by.email).trim().toLowerCase().slice(0, 200), action: addon ? `Added ${addon.title}` : tier ? `Chose ${tier}` : addCity ? `Added ${addCity}` : weeks ? `Chose ${weeks} weeks` : 'Added sites from a suggestion' }
+    : null
+  if (by) await addParticipant(doc._id, by).catch(() => {})
   const v = await appendVersion(doc._id, version, nextN)
   if (doc.leadId && crmConfigured()) {
     const url = `${(process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin).replace(/\/$/, '')}/proposals/${shareId}`
-    updateLead(doc.leadId, { [CRM_FIELDS.url]: url, [CRM_FIELDS.status]: `Updated (v${v.n})` }).catch(e => console.error('[proposals/versions] CRM update failed', e))
+    updateLead(doc.leadId, { [CRM_FIELDS.url]: url, [CRM_FIELDS.status]: by ? 'Updated (client)' : `Updated (v${v.n})`, [CRM_FIELDS.note]: by ? `${by.action} — by ${by.name || by.email} (${by.email})` : undefined }).catch(e => console.error('[proposals/versions] CRM update failed', e))
   }
   console.log(`[proposals] ${shareId} v${v.n} ${v.source} ${v.sites.length} sites`)
   return NextResponse.json({ ok: true, n: v.n, source: v.source })

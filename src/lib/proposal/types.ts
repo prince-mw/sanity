@@ -23,7 +23,10 @@ export type Brief = {
 
 export type VersionSite = { siteId: string; siteName: string; reason: string; order: number; citySlug?: string }
 
-export type ProposalVersion = { n: number; createdAt: string; source: VersionSource; summary: string; sites: VersionSite[] }
+export type ProposalVersion = { n: number; createdAt: string; source: VersionSource; summary: string; sites: VersionSite[]; addons?: string[] }
+
+/** Someone other than the creator who acted on the proposal (approved, added, requested): the second lead. */
+export type Participant = { name: string; email: string; at: string; action: string }
 
 export type ProposalDoc = {
   _id: string
@@ -39,6 +42,7 @@ export type ProposalDoc = {
   versions: ProposalVersion[]
   changeRequests: { at: string; message: string }[]
   cityRequests: { at: string; citySlug: string; by?: string }[]   // cities asked for that have no inventory yet
+  participants: Participant[]
   approvedAt: string | null
   createdAt: string
   updatedAt: string

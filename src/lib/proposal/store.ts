@@ -90,7 +90,7 @@ const AUDIENCE_LABELS: Record<string, string> = {
 const DOC_FIELDS = `_id, shareId, editTokenHash, status, titleLine, creator, leadId, crmError, brief, currentVersion, versions, changeRequests, approvedAt, createdAt, updatedAt`
 
 const norm = (d: ProposalDoc | null): ProposalDoc | null => d ? {
-  ...d, versions: d.versions ?? [], changeRequests: d.changeRequests ?? [], cityRequests: d.cityRequests ?? [], leadId: d.leadId ?? null, approvedAt: d.approvedAt ?? null,
+  ...d, versions: d.versions ?? [], changeRequests: d.changeRequests ?? [], cityRequests: d.cityRequests ?? [], participants: d.participants ?? [], leadId: d.leadId ?? null, approvedAt: d.approvedAt ?? null,
   brief: { ...d.brief, formats: d.brief?.formats ?? [], audience: d.brief?.audience ?? '', industry: d.brief?.industry ?? '',
     cities: d.brief?.cities?.length ? d.brief.cities : [d.brief?.citySlug].filter(Boolean) as string[], countryWide: !!d.brief?.countryWide },
 } : null
@@ -111,7 +111,7 @@ export async function createProposal(input: {
   const doc = {
     _type: 'proposal', shareId: newShareId(), editTokenHash: hashToken(editToken), status: 'sent' as ProposalStatus,
     titleLine: titleLineFor(input.brief), creator: input.creator, leadId: input.leadId, brief: input.brief,
-    currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], cityRequests: [], approvedAt: null, createdAt: now, updatedAt: now,
+    currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], cityRequests: [], participants: [], approvedAt: null, createdAt: now, updatedAt: now,
   }
   if (fileStore()) { const d = { ...doc, _id: `proposal-${doc.shareId}` } as ProposalDoc; await fileWrite(d); return { doc: norm(d) as ProposalDoc, editToken } }
   const created = await writeClient.create(doc)
@@ -149,6 +149,14 @@ export async function addCityRequest(docId: string, citySlug: string, by?: strin
   const item = { _key: `city-${citySlug}-${Date.now()}`, at: now, citySlug, by }
   if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, cityRequests: [...(d.cityRequests ?? []), item], updatedAt: now }); return }
   await writeClient.patch(docId).setIfMissing({ cityRequests: [] }).append('cityRequests', [item]).set({ updatedAt: now }).commit()
+}
+
+/** Someone with the link (not the creator) acted: remembered on the document and on the CRM lead. */
+export async function addParticipant(docId: string, p: { name: string; email: string; action: string }): Promise<void> {
+  const now = new Date().toISOString()
+  const item = { _key: `p-${Date.now()}`, ...p, at: now }
+  if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, participants: [...(d.participants ?? []), item], updatedAt: now }); return }
+  await writeClient.patch(docId).setIfMissing({ participants: [] }).append('participants', [item]).set({ updatedAt: now }).commit()
 }
 
 /** A longer run chosen from a suggestion: the brief's duration changes, the investment follows. */

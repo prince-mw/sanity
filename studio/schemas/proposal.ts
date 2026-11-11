@@ -36,6 +36,7 @@ export default defineType({
         { name: 'n', type: 'number' }, { name: 'createdAt', type: 'datetime' },
         { name: 'source', type: 'string', description: 'claude | rules | manual | shortlist' },
         { name: 'summary', type: 'text' },
+        { name: 'addons', type: 'array', of: [{ type: 'string' }], description: 'measure | creative | dynamic | weeks-8 | weeks-12' },
         { name: 'sites', type: 'array', of: [{ type: 'object', name: 'proposalSite', fields: [
           { name: 'siteId', type: 'string' }, { name: 'siteName', type: 'string' }, { name: 'reason', type: 'text' }, { name: 'order', type: 'number' }, { name: 'citySlug', type: 'string' },
         ] }] },
@@ -47,6 +48,9 @@ export default defineType({
     ] }] }),
     defineField({ name: 'cityRequests', type: 'array', of: [{ type: 'object', name: 'proposalCityRequest', fields: [
       { name: 'at', type: 'datetime' }, { name: 'citySlug', type: 'string' }, { name: 'by', type: 'string' },
+    ] }] }),
+    defineField({ name: 'participants', type: 'array', description: 'People other than the creator who acted on the link (the second lead)', of: [{ type: 'object', name: 'proposalParticipant', fields: [
+      { name: 'name', type: 'string' }, { name: 'email', type: 'string' }, { name: 'at', type: 'datetime' }, { name: 'action', type: 'string' },
     ] }] }),
     defineField({ name: 'approvedAt', type: 'datetime' }),
     defineField({ name: 'createdAt', type: 'datetime' }),
