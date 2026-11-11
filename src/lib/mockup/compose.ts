@@ -167,6 +167,27 @@ export function drawCreative(c: HTMLCanvasElement, input: CreativeInput) {
   }
 }
 
+export type Media = HTMLImageElement | HTMLVideoElement | HTMLCanvasElement
+export const mediaSize = (m: Media): { width: number; height: number } =>
+  'videoWidth' in m ? { width: m.videoWidth, height: m.videoHeight } : 'naturalWidth' in m ? { width: m.naturalWidth || m.width, height: m.naturalHeight || m.height } : { width: m.width, height: m.height }
+
+/**
+ * The visitor's own finished creative on the screen: contained on black
+ * (letterbox, what the real screen does with a wrong-size file) or covering it
+ * (crop). Never stretched. Works for an image or the current frame of a video.
+ */
+export function drawOwnCreative(c: HTMLCanvasElement, input: { width: number; height: number; media: Media; fit: 'letterbox' | 'fill' }) {
+  const { width: W, height: H, media, fit } = input
+  if (c.width !== W || c.height !== H) { c.width = W; c.height = H }
+  const g = c.getContext('2d')!
+  g.fillStyle = '#000'; g.fillRect(0, 0, W, H)
+  const { width: mw, height: mh } = mediaSize(media)
+  if (!(mw > 0 && mh > 0)) return
+  const s = fit === 'fill' ? Math.max(W / mw, H / mh) : Math.min(W / mw, H / mh)
+  const dw = mw * s, dh = mh * s
+  g.drawImage(media, (W - dw) / 2, (H - dh) / 2, dw, dh)
+}
+
 export type Face = {
   corners: Quad                       // TL, TR, BR, BL as fractions of the photo
   edges?: [number, number][] | null   // optional midpoints of the top, right, bottom, left edges (fractions) for curved screens
@@ -253,7 +274,15 @@ function faceMesh(face: Face, W: number, H: number) {
  * existing screen, warped flat and blurred until its old content is gone and
  * only the light stays (glare, hotspot, vignette, dirt). Stored 0..255 for 0..2.
  */
+const lightCache = new Map<string, { data: Uint8Array; size: number }>()
 function lightingMap(photo: HTMLImageElement, face: Face, W: number, H: number, n = 32): { data: Uint8Array; size: number } {
+  // the same photo + face + size always gives the same map; a video preview asks for it every frame
+  const key = `${photo.src}|${W}x${H}|${n}|${JSON.stringify([face.corners, face.edges ?? null, face.seam ?? null])}`
+  const hit = lightCache.get(key); if (hit) return hit
+  if (lightCache.size > 12) lightCache.clear()
+  const out = lightingMapRaw(photo, face, W, H, n); lightCache.set(key, out); return out
+}
+function lightingMapRaw(photo: HTMLImageElement, face: Face, W: number, H: number, n: number): { data: Uint8Array; size: number } {
   const c = document.createElement('canvas'); c.width = W; c.height = H
   const g = c.getContext('2d', { willReadFrequently: true })!; g.drawImage(photo, 0, 0, W, H)
   const px = g.getImageData(0, 0, W, H).data

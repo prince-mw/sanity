@@ -2,17 +2,21 @@
 
 // "See your ad here": the visitor drops a logo and a tagline, we build an ad
 // (optional stock photo, generic layout, their colour) and put it on this
-// billboard's real photo. Watermarked preview is free; the clean download
-// opens the lead form (LeadForm) and is released only after it succeeds, with
-// the file attached to the lead. Everything happens in the browser; the logo
-// is never uploaded unless they submit the form.
+// billboard's real photo — or they upload their own finished creative, an image
+// or a video, and it goes on the screen as is (letterboxed or cropped, never
+// stretched; Rif, 11 Nov 2026). The page tells them the size to make it
+// (spec.ts) and hands out a blank template at that size. A video gives a
+// moving preview and a short recorded clip. Blurred until they register; the
+// chosen version goes to the team only on "Send to our team". Everything
+// happens in the browser; nothing is uploaded until they submit.
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
-import { Upload, Image as ImageIcon, Palette, RefreshCw, Move, Lock, Mail, Send, Check, Unlock } from 'lucide-react'
+import { Upload, Image as ImageIcon, Palette, RefreshCw, Move, Lock, Mail, Send, Check, Unlock, Film, Download, Ruler, Wand2 } from 'lucide-react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import type { Face } from '@/lib/mockup/compose'
-import { aspectFromSize, faceAspect, composeOnSite, drawCreative, loadImage, sampleAccent, wordmark, type Template } from '@/lib/mockup/compose'
+import { aspectFromSize, faceAspect, composeOnSite, drawCreative, drawOwnCreative, loadImage, mediaSize, sampleAccent, wordmark, type Media, type Template } from '@/lib/mockup/compose'
+import { creativeSpec, fitReport, specSentence, templatePng, type Fit } from '@/lib/mockup/spec'
 import { LeadForm, type LeadResult } from '../forms/LeadForm'
 import { CornerEditor } from './CornerEditor'
 
@@ -21,6 +25,7 @@ type StockPhoto = { id: number; src: string; thumb: string; alt: string; credit:
 const TEMPLATES: { id: Template; label: string }[] = [
   { id: 'band', label: 'Photo + band' }, { id: 'split', label: 'Split' }, { id: 'poster', label: 'Poster' },
 ]
+const MAX_IMAGE_MB = 15, MAX_VIDEO_MB = 50, MAX_VIDEO_S = 30, CLIP_S = 10
 const INDUSTRIES = ['Retail', 'Food & beverage', 'Property', 'Automotive', 'Finance', 'Telco & tech', 'Travel', 'Beauty', 'Entertainment', 'Education', 'Healthcare', 'Other']
 
 export function AdMockup({ site, content }: { site: PublicSite; content: Pick<SiteContent, 'faceCorners' | 'faceEdges' | 'faceKind'> }) {
@@ -46,6 +51,16 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   const [preview, setPreview] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [formOpen, setFormOpen] = useState(false)
+  // 'make': logo + tagline → our layout. 'own': their finished creative (image or video) as is.
+  const [mode, setMode] = useState<'make' | 'own'>('make')
+  const [own, setOwn] = useState<Media | null>(null)
+  const [ownName, setOwnName] = useState<string | null>(null)
+  const [ownTick, setOwnTick] = useState(0) // bumps when a video has its first frame
+  const [fit, setFit] = useState<Fit>('letterbox')
+  const [clip, setClip] = useState<string | null>(null) // data URL of the recorded clip
+  const [recording, setRecording] = useState(false)
+  const liveRef = useRef<HTMLCanvasElement | null>(null)
+  const isVideo = !!own && 'videoWidth' in own // duck-typed: HTMLVideoElement does not exist during the server render
   // One mock-up per person: 'loading' → 'none' (not registered) | 'this' (this site unlocked) | 'other' (used on another site)
   type Owner = { name: string; email: string | null } | null
   const [access, setAccess] = useState<{ state: 'loading' | 'none' | 'this' | 'other'; siteName?: string; owner?: Owner; tester?: boolean }>({ state: 'loading' })
@@ -62,7 +77,12 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   // The creative takes the shape of the face in the photo, so it fills it exactly; the site's size is the fallback.
   const aspect = useMemo(() => siteImg && faceCorners ? faceAspect(faceCorners, siteImg.width, siteImg.height)
     : aspectFromSize(site.size, /unipole|portrait|panel|kiosk/i.test(`${site.displayFormat} ${site.format}`) ? 0.6 : 2), [site, siteImg, faceCorners])
-  const ready = !!tagline.trim() || !!logo || !!brand.trim()
+  const ready = mode === 'own' ? !!own : (!!tagline.trim() || !!logo || !!brand.trim())
+  // What to upload: exact when the record has a resolution, else from the board size, else measured from the photo
+  const spec = useMemo(() => creativeSpec({ resolution: site.specs?.resolution, size: site.size, face, photoW: siteImg?.width, photoH: siteImg?.height,
+    formatFallback: /unipole|portrait|panel|kiosk/i.test(`${site.displayFormat} ${site.format}`) ? 0.6 : 2 }), [site, face, siteImg])
+  const ownSize = useMemo(() => own ? mediaSize(own) : null, [own, ownTick]) // eslint-disable-line react-hooks/exhaustive-deps
+  const fitInfo = ownSize && ownSize.width > 0 ? fitReport(ownSize, spec, fit) : null
 
   // The site photo, once
   useEffect(() => {
@@ -98,6 +118,31 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
     try { setPhotoImg(await loadImage(URL.createObjectURL(file))); setPhotoId(-1); setError(null) } catch { setError('That file could not be read as an image.') }
   }
 
+  const onOwnCreative = async (file: File | undefined) => {
+    if (!file) return
+    setClip(null)
+    if (own && 'videoWidth' in own) { (own as HTMLVideoElement).pause(); (own as HTMLVideoElement).src = '' }
+    const url = URL.createObjectURL(file)
+    if (file.type.startsWith('video/')) {
+      if (file.size > MAX_VIDEO_MB * 1024 * 1024) { setError(`Please use a video under ${MAX_VIDEO_MB} MB.`); return }
+      const v = document.createElement('video')
+      v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto'; v.src = url
+      try {
+        await new Promise<void>((res, rej) => { v.onloadedmetadata = () => res(); v.onerror = () => rej(new Error('video')) })
+        if (v.duration > MAX_VIDEO_S) { setError(`Please use a video under ${MAX_VIDEO_S} seconds — a standard spot is 10 to 15.`); return }
+        v.onloadeddata = () => setOwnTick(t => t + 1)
+        await v.play().catch(() => undefined)
+        setOwn(v); setOwnName(file.name); setError(null)
+      } catch { setError('That video could not be read. Use an MP4 (H.264) or WebM file.') }
+      return
+    }
+    if (file.size > MAX_IMAGE_MB * 1024 * 1024) { setError(`Please use an image under ${MAX_IMAGE_MB} MB.`); return }
+    try { setOwn(await loadImage(url)); setOwnName(file.name); setError(null) } catch { setError('That file could not be read as an image.') }
+  }
+  const downloadTemplate = () => {
+    const a = document.createElement('a'); a.href = templatePng(spec, site.name); a.download = `${site.slug}-template-${spec.width}x${spec.height}.png`; a.click()
+  }
+
   const pickPhoto = async (p: StockPhoto | null) => {
     setPhotoId(p?.id ?? null)
     if (!p) { setPhotoImg(null); return }
@@ -110,10 +155,16 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
     try {
       const W = 1200, H = Math.round(1200 / aspect)
       const creative = creativeRef.current ?? (creativeRef.current = document.createElement('canvas'))
-      // no logo file: the brand name becomes the wordmark, in the colour the layout's text uses
-      const dark = (() => { const n = parseInt(accent.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255 < 0.5 })()
-      const mark = logo ?? (brand.trim() ? wordmark(brand, template === 'poster' && photoImg ? '#ffffff' : dark ? '#ffffff' : '#111111') : null)
-      drawCreative(creative, { width: W, height: Math.max(300, Math.min(H, 2000)), photo: photoImg, logo: mark, tagline: tagline.trim() || ' ', accent, template })
+      if (mode === 'own' && own) {
+        void ownTick // re-run once a video has its first frame
+        // their file at the screen's own size; a video contributes its current frame as the still
+        drawOwnCreative(creative, { width: spec.width, height: spec.height, media: own, fit })
+      } else {
+        // no logo file: the brand name becomes the wordmark, in the colour the layout's text uses
+        const dark = (() => { const n = parseInt(accent.slice(1), 16); return (0.299 * (n >> 16) + 0.587 * ((n >> 8) & 255) + 0.114 * (n & 255)) / 255 < 0.5 })()
+        const mark = logo ?? (brand.trim() ? wordmark(brand, template === 'poster' && photoImg ? '#ffffff' : dark ? '#ffffff' : '#111111') : null)
+        drawCreative(creative, { width: W, height: Math.max(300, Math.min(H, 2000)), photo: photoImg, logo: mark, tagline: tagline.trim() || ' ', accent, template })
+      }
       let out: HTMLCanvasElement
       if (siteImg && face) out = composeOnSite(siteImg, creative, face)
       else { out = document.createElement('canvas'); out.width = creative.width; out.height = creative.height; out.getContext('2d')!.drawImage(creative, 0, 0) }
@@ -124,8 +175,53 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
       setError('Your browser could not build the preview. Try Chrome or Safari on a laptop.')
       console.error(e)
     }
-  }, [ready, aspect, photoImg, logo, brand, tagline, accent, template, siteImg, face])
+  }, [ready, aspect, photoImg, logo, brand, tagline, accent, template, siteImg, face, mode, own, ownTick, fit, spec])
   useEffect(() => { const t = setTimeout(render, 150); return () => clearTimeout(t) }, [render])
+
+  // A video creative: the moving preview, drawn frame by frame onto the live canvas (about 15 fps)
+  const live = isVideo && unlocked && !adjusting && !!siteImg && !!face
+  useEffect(() => {
+    if (!live || !own || !siteImg || !face) return
+    const v = own as HTMLVideoElement
+    const creative = document.createElement('canvas')
+    let raf = 0, last = 0, stop = false
+    v.play().catch(() => undefined)
+    const tick = (t: number) => {
+      if (stop) return
+      raf = requestAnimationFrame(tick)
+      if (t - last < 66 || v.readyState < 2) return
+      last = t
+      try {
+        drawOwnCreative(creative, { width: spec.width, height: spec.height, media: v, fit })
+        const out = composeOnSite(siteImg, creative, face, 1000)
+        const c = liveRef.current; if (!c) return
+        if (c.width !== out.width || c.height !== out.height) { c.width = out.width; c.height = out.height }
+        c.getContext('2d')!.drawImage(out, 0, 0)
+      } catch { stop = true }
+    }
+    raf = requestAnimationFrame(tick)
+    return () => { stop = true; cancelAnimationFrame(raf) }
+  }, [live, own, siteImg, face, spec, fit])
+
+  // Record ~10 s of the live canvas: small enough (bitrate-capped) to ride along with "Send to our team"
+  const recordClip = async () => {
+    const c = liveRef.current; if (!c || recording || !isVideo) return
+    const v = own as HTMLVideoElement
+    const mime = ['video/webm;codecs=vp9', 'video/webm', 'video/mp4'].find(m => typeof MediaRecorder !== 'undefined' && MediaRecorder.isTypeSupported(m))
+    if (!mime) { setError('Your browser cannot record the clip. Try Chrome or Safari on a laptop.'); return }
+    setRecording(true); setClip(null)
+    const stream = c.captureStream(15)
+    const rec = new MediaRecorder(stream, { mimeType: mime, videoBitsPerSecond: 1_200_000 })
+    const chunks: Blob[] = []
+    rec.ondataavailable = e => { if (e.data.size) chunks.push(e.data) }
+    const done = new Promise<void>(res => { rec.onstop = () => res() })
+    try { v.currentTime = 0 } catch { /* streams */ }
+    rec.start(500)
+    await new Promise(r => setTimeout(r, Math.min(CLIP_S, Math.max(3, v.duration || CLIP_S)) * 1000))
+    rec.stop(); await done
+    const blob = new Blob(chunks, { type: mime.split(';')[0] })
+    const fr = new FileReader(); fr.onload = () => { setClip(fr.result as string); setRecording(false) }; fr.readAsDataURL(blob)
+  }
 
   const registered = (r: LeadResult & { tester?: boolean }) => {
     setAccess({ state: 'this', siteName: site.name, owner: r.owner ?? null, tester: !!r.tester })
@@ -134,7 +230,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
   const sendUpdate = async () => {
     if (!cleanRef.current) return
     setSent('sending')
-    const r = await fetch('/api/mockup/update', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ siteId: site.id, mockup: cleanRef.current }) }).catch(() => null)
+    const r = await fetch('/api/mockup/update', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ siteId: site.id, mockup: cleanRef.current, clip: clip ?? undefined }) }).catch(() => null)
     setSent(r?.ok ? 'done' : 'failed')
     if (r?.ok) setSentPopup(true)
   }
@@ -146,6 +242,38 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
     <div className="grid gap-8 lg:grid-cols-12">
       {/* Controls */}
       <div className="lg:col-span-5 space-y-5">
+        <div className="grid grid-cols-2 gap-2 rounded-xl bg-gray-100 p-1" role="tablist" aria-label="How to make the ad">
+          <button type="button" role="tab" aria-selected={mode === 'make'} onClick={() => setMode('make')} className={`mw-tap inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold ${mode === 'make' ? 'bg-white text-[#2563eb] shadow' : 'text-gray-600'}`}><Wand2 className="h-4 w-4" aria-hidden="true" /> Make an ad</button>
+          <button type="button" role="tab" aria-selected={mode === 'own'} onClick={() => setMode('own')} className={`mw-tap inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold ${mode === 'own' ? 'bg-white text-[#2563eb] shadow' : 'text-gray-600'}`}><Film className="h-4 w-4" aria-hidden="true" /> Use my own creative</button>
+        </div>
+
+        {mode === 'own' && (
+          <div className="space-y-4">
+            <div className="rounded-xl border border-mw-blue-100 bg-mw-blue-50/60 p-4">
+              <p className="flex items-start gap-2 text-sm text-gray-800"><Ruler className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#2563eb]" aria-hidden="true" /><span>{specSentence(spec, site.name)}</span></p>
+              <button type="button" onClick={downloadTemplate} className="mw-tap mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#2563eb] hover:underline"><Download className="h-4 w-4" aria-hidden="true" /> Download a blank template ({spec.width} × {spec.height} px)</button>
+            </div>
+            <label className="flex cursor-pointer items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 px-4 py-4 hover:border-mw-blue-400">
+              <Upload className="h-5 w-5 flex-shrink-0 text-[#2563eb]" aria-hidden="true" />
+              <span className="text-sm text-gray-700">{ownName ?? `Upload an image (under ${MAX_IMAGE_MB} MB) or a video (MP4/WebM, under ${MAX_VIDEO_S} s and ${MAX_VIDEO_MB} MB)`}</span>
+              <input type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm,video/quicktime" className="sr-only" onChange={e => onOwnCreative(e.target.files?.[0])} />
+            </label>
+            {fitInfo && (
+              <div>
+                <p className={`text-sm ${fitInfo.kind === 'exact' ? 'text-emerald-700' : 'text-gray-700'}`}>{fitInfo.text}</p>
+                {fitInfo.kind !== 'exact' && (
+                  <div className="mt-2 flex flex-wrap items-center gap-2">
+                    <button type="button" aria-pressed={fit === 'letterbox'} onClick={() => setFit('letterbox')} className={chip(fit === 'letterbox')}>Keep whole (black bars)</button>
+                    <button type="button" aria-pressed={fit === 'fill'} onClick={() => setFit('fill')} className={chip(fit === 'fill')}>Fill the screen (crop)</button>
+                  </div>
+                )}
+              </div>
+            )}
+            <p className="text-xs text-gray-500">Stays on your device until you send it.</p>
+          </div>
+        )}
+
+        {mode === 'make' && (<>
         <label className="block">
           <span className="text-sm font-semibold text-gray-700">Your tagline</span>
           <input value={tagline} onChange={e => setTagline(e.target.value.slice(0, 60))} placeholder="e.g. Fresh coffee, 2 minutes from here" className={input} />
@@ -213,6 +341,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
           <input type="color" value={accent} onChange={e => { setAccent(e.target.value); setCustomAccent(true) }} className="mw-tap h-10 w-14 cursor-pointer rounded border border-gray-300 bg-white p-1" aria-label="Accent colour" />
           <span className="text-xs text-gray-500">{customAccent ? 'Your pick' : logo ? 'Taken from your logo' : 'Default'}</span>
         </label>
+        </>)}
         {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
       </div>
 
@@ -237,7 +366,9 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
               )}
             </div>
           )}
-          {preview && unlocked && adjusting && face && site.photos[0] ? (
+          {live ? (
+            <canvas ref={liveRef} className="block h-auto w-full" aria-label={`Moving preview of your video on ${site.name}`} />
+          ) : preview && unlocked && adjusting && face && site.photos[0] ? (
             // the points sit on the mock-up itself; dragging re-renders it live
             <CornerEditor photo={site.photos[0]} face={face} onChange={setFaceOverride}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -249,7 +380,7 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
           ) : (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center text-gray-500">
               <ImageIcon className="mb-3 h-10 w-10 text-gray-300" aria-hidden="true" />
-              <p className="text-sm">Type a tagline or add your logo to see your ad on {site.name}.</p>
+              <p className="text-sm">{mode === 'own' ? `Upload your image or video to see it on ${site.name}.` : `Type a tagline or add your logo to see your ad on ${site.name}.`}</p>
             </div>
           )}
         </div>
@@ -269,6 +400,15 @@ export function AdMockup({ site, content }: { site: PublicSite; content: Pick<Si
         <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-gray-500">{face ? 'A preview of how your creative would look on this site. Final artwork is produced to the site’s specifications.' : 'Shown as a flat creative: the screen in this photo has not been located yet.'}</p>
         </div>
+        {unlocked && isVideo && (
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <button type="button" onClick={recordClip} disabled={recording || !live} className="mw-tap inline-flex items-center gap-2 rounded-lg bg-[#1B1E2B] px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50">
+              {recording ? <RefreshCw className="h-4 w-4 animate-spin" aria-hidden="true" /> : <Film className="h-4 w-4" aria-hidden="true" />} {recording ? `Recording ${CLIP_S} seconds…` : clip ? 'Record the clip again' : `Record a ${CLIP_S}-second clip`}
+            </button>
+            {clip && <a href={clip} download={`${site.slug}-mockup-clip.${clip.startsWith('data:video/mp4') ? 'mp4' : 'webm'}`} className="mw-tap inline-flex items-center gap-2 rounded-lg border border-gray-300 px-4 py-2.5 text-sm font-semibold text-gray-700 hover:border-mw-blue-400"><Download className="h-4 w-4" aria-hidden="true" /> Download the clip</a>}
+            <span className="text-xs text-gray-500">{clip ? 'The clip goes with “Send to our team”.' : 'Record once; the clip is attached when you send.'}</span>
+          </div>
+        )}
         {unlocked && preview && (
           <button type="button" onClick={sendUpdate} disabled={sent === 'sending'} aria-live="polite"
             className="mw-tap mt-3 flex w-full items-center gap-3 rounded-xl border-2 border-[#2563eb] bg-white px-5 py-4 text-left text-[#2563eb] transition-colors hover:bg-mw-blue-50 disabled:opacity-60">

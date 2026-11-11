@@ -25,6 +25,7 @@ export default defineType({
       { name: 'term', type: 'string' }, { name: 'content', type: 'string' }, { name: 'gclid', type: 'string' },
     ] }),
     defineField({ name: 'mockup', type: 'image', description: 'The clean ad mock-up they downloaded, if any.' }),
+    defineField({ name: 'clip', type: 'file', description: 'A short recording of the moving mock-up, when their creative was a video.' }),
     defineField({ name: 'crmId', title: 'Zoho CRM lead id', type: 'string' }),
     defineField({ name: 'crmError', type: 'string' }),
   ],
