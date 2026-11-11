@@ -181,9 +181,10 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
             <SgSectionHeading title="Pairs well with" intro={`Other ${lc(format)} sites and nearby inventory in ${site.cityName}. Add two or three to one proposal to cover more of the city.`} />
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
               {similar.map(s => <SiteCard key={s.id} site={s} linked={paged.has(s.id)} action={
-                <span className="flex items-center gap-2">
-                  <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); setDetail(s) }} className="mw-tap inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]"><Info className="h-3.5 w-3.5" aria-hidden="true" />Details</button>
-                  <AddToProposalButton site={s} variant="card" />
+                // Same pair as the city finder: one row, equal height, Details outlined, Add to proposal the lead CTA.
+                <span className="grid w-full grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-2">
+                  <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); setDetail(s) }} className="mw-tap inline-flex h-11 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-2 border-gray-300 bg-white px-3 text-xs font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]"><Info className="h-3.5 w-3.5" aria-hidden="true" />Details</button>
+                  <AddToProposalButton site={s} variant="card" className="h-11 w-full" />
                 </span>
               } />)}
             </div>
