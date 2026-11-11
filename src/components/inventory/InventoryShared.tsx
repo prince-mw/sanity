@@ -16,13 +16,9 @@ export const MY_CONTACT_FORM =
 export const sitePath = (s: PublicSite) => `/locations/${s.countrySlug}/${s.citySlug}/${s.areaSlug}/${s.slug}`
 export const areaPath = (country: string, city: string, area: string) => `/locations/${country}/${city}/${area}`
 
-/** Marks stand-in data on every page that shows it, so nobody mistakes it for stock. */
-export function SampleBanner({ className = 'mb-5' }: { className?: string }) {
-  return (
-    <div className={`rounded-lg bg-amber-400 text-amber-950 text-sm font-semibold px-4 py-2 ${className}`}>
-      Preview with sample data — sites marked SAMPLE are not real inventory. Real sites load from the Inventory API once it is connected.
-    </div>
-  )
+/** The sample-data banner is retired (Rif, 11 Nov 2026: the team knows which data is sample; the SAMPLE tag on cards stays). */
+export function SampleBanner(_props: { className?: string }) { // eslint-disable-line @typescript-eslint/no-unused-vars
+  return null
 }
 
 export function SampleTag({ className = '' }: { className?: string }) {

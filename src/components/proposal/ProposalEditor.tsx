@@ -65,7 +65,6 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
     <div className="bg-white text-gray-900">
       <section className={`${SG_NAVY} text-white mw-hero-top pb-8`}>
         <div className="mw-container">
-          {demo && <div className="mb-5 rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-amber-950">Sample proposal for design review — try everything; nothing is saved.</div>}
           <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Editing · currently v{version.n}</span>
           <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">{doc.titleLine}</h1>
           <div className="mt-5 flex flex-wrap gap-3">

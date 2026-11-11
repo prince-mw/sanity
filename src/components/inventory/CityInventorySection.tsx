@@ -6,7 +6,7 @@
 import Link from 'next/link'
 import { SgSectionHeading } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
-import { SiteGrid, SampleBanner, areaPath } from './InventoryShared'
+import { SiteGrid, areaPath } from './InventoryShared'
 import type { AreaLink } from './InventoryAreaClient'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
 import type { PlaceContent, Highlight } from '@/lib/inventory/placeContent'
@@ -43,7 +43,6 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
       )}
       <section className="bg-gray-50 mw-section">
         <div className="mw-container">
-          {sample && <SampleBanner className="mb-6" />}
           <SgSectionHeading title={`Every advertising site in ${cityName}`} intro={`${sites.length} sites across ${areaCount} areas. Filter by format and venue; the map shows the sites you pick.`} />
           <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} mapTitle={`Map of advertising sites in ${cityName}`} />
         </div>

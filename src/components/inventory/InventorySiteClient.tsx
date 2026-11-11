@@ -10,7 +10,7 @@ import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
 import { MARKET_VIDEOS } from '@/data/market-videos'
-import { SitesMap, SampleBanner, SampleTag, SiteCard, areaPath } from './InventoryShared'
+import { SitesMap, SampleTag, SiteCard, areaPath } from './InventoryShared'
 import { AddToProposalButton } from '../proposal/AddToProposalButton'
 
 export function InventorySiteClient({ site, content, similar, pagedIds }: { site: PublicSite; content: SiteContent; similar: PublicSite[]; pagedIds: string[] }) {
@@ -43,7 +43,6 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
       <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="relative mw-container">
-          {site.sample && <SampleBanner />}
           <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-x-1.5 text-sm text-blue-100/80">
             <Link href="/locations" className="mw-tap !justify-start hover:text-white">Locations</Link> <span aria-hidden="true">›</span>
             <Link href={`/locations/${site.countrySlug}`} className="mw-tap !justify-start hover:text-white">{site.countryName}</Link> <span aria-hidden="true">›</span>

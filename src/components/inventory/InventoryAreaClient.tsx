@@ -8,7 +8,7 @@ import type { PlaceContent } from '@/lib/inventory/placeContent'
 import { MARKET_VIDEOS } from '@/data/market-videos'
 import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
-import { SiteGrid, SampleBanner, SiteCard, areaPath } from './InventoryShared'
+import { SiteGrid, SiteCard, areaPath } from './InventoryShared'
 
 export type AreaLink = { name: string; slug: string; kind: 'buyer' | 'supply'; count: number }
 
@@ -46,7 +46,6 @@ export function InventoryAreaClient({
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
         <div className="relative mw-container">
-          {sample && <SampleBanner />}
           <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-x-1.5 text-sm text-blue-100/80">
             <Link href="/locations" className="mw-tap !justify-start hover:text-white">Locations</Link> <span aria-hidden="true">›</span>
             <Link href={`/locations/${countrySlug}`} className="mw-tap !justify-start hover:text-white">{countryName}</Link> <span aria-hidden="true">›</span>

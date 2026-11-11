@@ -9,7 +9,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Check, Link2, Pencil, Printer, TrainFront, ShoppingBag, Camera, Briefcase, Users, GraduationCap, Moon, Plane, Car, Home, type LucideIcon } from 'lucide-react'
 import { SG_NAVY, SgSectionHeading, SgFormButton } from '../SingaporeShared'
-import { SiteCard, SampleBanner } from '../inventory/InventoryShared'
+import { SiteCard } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import { OBJECTIVES, BUDGET_BANDS } from '@/lib/proposal/markets'
 import type { ProposalView as View, ProposalStatus } from '@/lib/proposal/types'
@@ -32,7 +32,6 @@ const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 
 export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
   const { doc, version, sites, totals, audience } = view
-  const anySampleSpecs = sites.some(s => s.specs?.sample)
   const [status, setStatus] = useState<ProposalStatus>(doc.status)
   const [ask, setAsk] = useState(false)
   const [message, setMessage] = useState('')
@@ -43,7 +42,6 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const brief = doc.brief
   const objective = OBJECTIVES.find(o => o.id === brief.objective)?.label
   const pins = sites.map(s => s.lat != null && s.lng != null ? { id: s.id, lat: s.lat, lng: s.lng, title: s.name, subtitle: [s.displayFormat ?? s.format, s.areaName].filter(Boolean).join(' · ') } : null).filter(Boolean) as MapPin[]
-  const anySample = sites.some(s => s.sample)
 
   const act = async (action: 'approve' | 'request-changes') => {
     if (demo) { setStatus(action === 'approve' ? 'approved' : 'changes-requested'); setAsk(false); setMessage(''); return }
@@ -72,8 +70,6 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
       <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-10 lg:pb-14 mw-hero-top print-hero`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none no-print" />
         <div className="relative mw-container">
-          {demo && <div className="no-print mb-5 rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-amber-950">Sample proposal for design review — built from the Kuala Lumpur inventory, nothing here is saved or sent.</div>}
-          {anySample && <SampleBanner />}
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Instant proposal · v{version.n}</span>
             <span className={`rounded-full px-3 py-0.5 text-xs font-bold ${STATUS[status].cls}`}>{STATUS[status].label}</span>
@@ -91,7 +87,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
       <section className="bg-white mw-section">
         <div className="mw-container">
           <SgSectionHeading title="Campaign summary" />
-          <div className="grid gap-8 lg:grid-cols-12">
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
             <p className="lg:col-span-7 text-lg leading-relaxed text-gray-700">{version.summary}</p>
             <dl className="lg:col-span-5 grid grid-cols-2 gap-3">
               {facts.filter(([, v]) => v).map(([k, v]) => (
@@ -161,7 +157,6 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
             {totals.investment && <Stat label="Indicative media investment" value={`${totals.investment.currency} ${num(totals.investment.low)} – ${num(totals.investment.high)}`} note={`${brief.durationWeeks ? `${brief.durationWeeks} weeks, ` : ''}${totals.investment.priced} of ${totals.sites} sites priced`} />}
           </div>
           {totals.investment && <p className="mt-3 max-w-3xl text-xs text-gray-500">{PRICE_NOTE}</p>}
-          {anySampleSpecs && <p className="mt-2 max-w-3xl text-xs text-amber-700">Specifications shown are stand-ins until the Inventory API is connected.</p>}
         </div>
       </section>
 
