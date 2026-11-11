@@ -78,19 +78,19 @@ export default async function GuideStatusPage() {
             <tbody className="divide-y divide-gray-100">
               {data.map(d => (
                 <tr key={d.slug} className="align-top">
-                  <td className="px-4 py-3"><Link href={`/locations/${d.slug}`} className="font-semibold text-[#2563eb] hover:underline">{d.country}</Link></td>
+                  <td className="px-4 py-3"><Link href={`/locations/${d.slug}`} className="mw-tap !justify-start font-semibold text-[#2563eb] hover:underline">{d.country}</Link></td>
                   <td className="px-4 py-3"><Pill s={d.guide} /></td>
                   <td className="px-4 py-3">
                     {d.cities.length === 0 ? <span className="text-gray-400">No city pages</span> : (
                       <ul className="flex flex-wrap gap-1.5">
-                        {d.cities.map(c => <li key={c.slug}><Link href={`/locations/${d.slug}/${c.slug}`} className={`inline-block rounded-full px-2.5 py-1 text-xs font-semibold hover:underline ${PILL[c.status]}`}>{c.city}</Link></li>)}
+                        {d.cities.map(c => <li key={c.slug}><Link href={`/locations/${d.slug}/${c.slug}`} className={`mw-tap inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold hover:underline ${PILL[c.status]}`}>{c.city}</Link></li>)}
                       </ul>
                     )}
                   </td>
                   <td className="px-4 py-3">
                     {d.areas.length === 0 ? <span className="text-gray-400">None</span> : (
                       <ul className="flex flex-wrap gap-1.5">
-                        {d.areas.map(a => { const [, city, area] = a.key.split('/'); return <li key={a.key}><Link href={`/locations/${a.key}`} className={`inline-block rounded-full px-2.5 py-1 text-xs font-semibold hover:underline ${PILL[a.status]}`}>{area} · {city}</Link></li> })}
+                        {d.areas.map(a => { const [, city, area] = a.key.split('/'); return <li key={a.key}><Link href={`/locations/${a.key}`} className={`mw-tap inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold hover:underline ${PILL[a.status]}`}>{area} · {city}</Link></li> })}
                       </ul>
                     )}
                   </td>
@@ -101,7 +101,7 @@ export default async function GuideStatusPage() {
             </tbody>
           </table>
         </div>
-        <p className="mt-4 text-xs text-gray-500">City chips are coloured by their guide: green approved, amber to review, grey not written. Singapore uses its own venue pages and is not on this template.</p>
+        <p className="mt-4 max-w-3xl text-xs text-gray-500">City chips are coloured by their guide: green approved, amber to review, grey not written. Singapore uses its own venue pages and is not on this template.</p>
       </div>
     </div>
   )
