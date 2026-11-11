@@ -455,6 +455,9 @@ select {
 .pp-art .pp-site:nth-child(2){animation-delay:2.4s}.pp-art .pp-site:nth-child(3){animation-delay:2.6s}.pp-art .pp-site:nth-child(4){animation-delay:2.8s}
 @keyframes pp-site{0%,2%{transform:scale(.6)}8%,100%{transform:scale(1)}}
 @media (prefers-reduced-motion: reduce){.pp-art *{animation:none!important;opacity:1;stroke-dashoffset:0}}
+/* Tab rows: swipe sideways on a phone if the tabs overflow, but never show a scrollbar (Rif, 12 Nov 2026) */
+.mw-tabrow{overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none}
+.mw-tabrow::-webkit-scrollbar{display:none}
 /* Ad mock-up promo drawing (MockupPromo): the ad slides onto the screen, the screen glows, a car passes */
 .mp-art .mp-ad{animation:mp-ad 6s ease-in-out infinite}
 @keyframes mp-ad{0%{opacity:.25;transform:translateX(-22px)}10%,88%{opacity:1;transform:translateX(0)}100%{opacity:.25;transform:translateX(-22px)}}

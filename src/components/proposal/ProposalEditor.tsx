@@ -173,7 +173,7 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
             <button type="button" onClick={copy} className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">{copied ? 'Link copied' : 'Copy the plan link to share'}</button>
             <Link href="/proposals/mine" className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">Your proposals</Link>
           </div>
-          <div role="tablist" aria-label="Editor" className="mt-6 flex gap-1 overflow-x-auto border-b border-white/15">
+          <div role="tablist" aria-label="Editor" className="mw-tabrow mt-6 flex gap-1 border-b border-white/15">
             {TABS.filter(t => !t.staff || staff).map(t => (
               <button key={t.id} role="tab" aria-selected={tab === t.id} aria-controls={`edit-${t.id}`} id={`edittab-${t.id}`} onClick={() => pickTab(t.id)}
                 className={`mw-tap -mb-px whitespace-nowrap border-b-2 px-4 py-3 text-sm font-semibold ${tab === t.id ? 'border-cyan-300 text-white' : 'border-transparent text-blue-100/80 hover:text-white'}`}>{t.label}</button>

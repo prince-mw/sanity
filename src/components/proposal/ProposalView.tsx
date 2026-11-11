@@ -332,7 +332,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
       {/* The detail, one tab at a time (every panel prints) */}
       <section className="bg-white mw-section">
         <div className="mw-container">
-          <div role="tablist" aria-label="Proposal detail" className="no-print mb-8 flex gap-2 overflow-x-auto border-b border-gray-200">
+          <div role="tablist" aria-label="Proposal detail" className="mw-tabrow no-print mb-8 flex gap-2 border-b border-gray-200">
             {TABS.map(t => (
               <button key={t.id} role="tab" aria-selected={tab === t.id} aria-controls={`panel-${t.id}`} id={`tab-${t.id}`} onClick={() => pickTab(t.id)}
                 className={`mw-tap -mb-px whitespace-nowrap border-b-2 px-4 py-3 text-sm font-semibold ${tab === t.id ? 'border-[#2563eb] text-[#2563eb]' : 'border-transparent text-gray-600 hover:text-gray-900'}`}>{t.label}</button>
