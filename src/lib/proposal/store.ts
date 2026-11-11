@@ -7,7 +7,8 @@ import { sitesFor, indicativeInvestment } from '@/lib/inventory/source'
 import { getSiteContent } from '@/lib/inventory/siteContent'
 import type { PublicSite } from '@/lib/inventory/types'
 import { OBJECTIVES, marketOf, cityOf, citiesLabel } from './markets'
-import type { AudienceGroup, Brief, CityGroup, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersion, ProposalView, VersionSite } from './types'
+import { buildTiers, buildSuggestions } from './tiers'
+import type { AudienceGroup, Brief, CityGroup, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersion, ProposalView, Suggestion, Tier, VersionSite } from './types'
 
 // Proposals live in Sanity as `proposal` documents (studio/schemas/proposal.ts),
 // written only from the API routes with the write token, read without the CDN
@@ -150,6 +151,12 @@ export async function addCityRequest(docId: string, citySlug: string, by?: strin
   await writeClient.patch(docId).setIfMissing({ cityRequests: [] }).append('cityRequests', [item]).set({ updatedAt: now }).commit()
 }
 
+/** A longer run chosen from a suggestion: the brief's duration changes, the investment follows. */
+export async function setBriefWeeks(docId: string, weeks: number): Promise<void> {
+  if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, brief: { ...d.brief, durationWeeks: weeks } }); return }
+  await writeClient.patch(docId).set({ 'brief.durationWeeks': weeks }).commit()
+}
+
 export async function setCrm(docId: string, fields: { leadId?: string | null; crmError?: string | null }): Promise<void> {
   if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, ...fields }); return }
   await writeClient.patch(docId).set(fields).commit()
@@ -173,11 +180,41 @@ export async function resolveSites(doc: ProposalDoc, version = doc.versions.find
     indicativeInvestment(doc.brief.countrySlug, sites.map(s => s.id), doc.brief.durationWeeks),
     audienceFor(sites),
   ])
+  // Tiers and suggestions: computed from the plan and the pool of every available site.
+  const candidates = Array.from(byId.values())
+  const current = ordered.filter(vs => byId.has(vs.siteId))
+  const tierDefs = buildTiers(doc.brief, current, candidates)
+  const sugDefs = buildSuggestions(doc.brief, current, candidates, audience)
+  const currentIds = new Set(current.map(s => s.siteId))
+  const sameSet = (ids: string[]) => ids.length === currentIds.size && ids.every(id => currentIds.has(id))
+  const tiers: Tier[] = await Promise.all(tierDefs.map(async t => {
+    const ids = t.sites.map(s => s.siteId)
+    const list = ids.map(id => byId.get(id)!).filter(Boolean)
+    const inv = await indicativeInvestment(doc.brief.countrySlug, ids, doc.brief.durationWeeks)
+    return { id: t.id, label: t.label, blurb: t.blurb, siteIds: ids, current: sameSet(ids), totals: totalsFor(list, inv) }
+  }))
+  if (!tiers.some(t => t.current)) tiers[1].current = true
+  const suggestions: Suggestion[] = await Promise.all(sugDefs.map(async s => {
+    const addIds = s.siteIds.filter(id => byId.has(id))
+    const withIds = [...currentIds, ...addIds]
+    const weeks = s.weeks ?? doc.brief.durationWeeks
+    const [before, after] = await Promise.all([investment, indicativeInvestment(doc.brief.countrySlug, withIds, weeks)])
+    const addReach = addIds.map(id => parseFigure(byId.get(id)?.audience?.reach)).filter((n): n is number => n != null)
+    const delta = { sites: addIds.length, reach: addReach.length ? addReach.reduce((a, b) => a + b, 0) : null,
+      investment: after ? { currency: after.currency, low: Math.max(0, after.low - (before?.low ?? 0)), high: Math.max(0, after.high - (before?.high ?? 0)) } : null }
+    return { ...s, siteIds: addIds, delta }
+  }))
+  const poolIds = new Set<string>([...tiers.flatMap(t => t.siteIds), ...suggestions.flatMap(s => s.siteIds)])
+  const reasonOf = new Map<string, string>()
+  for (const t of tierDefs) for (const s of t.sites) if (!reasonOf.has(s.siteId)) reasonOf.set(s.siteId, s.reason)
+  for (const s of sugDefs) for (const [id, r] of Object.entries(s.reasons)) if (!reasonOf.has(id)) reasonOf.set(id, r)
+  const pool = Array.from(poolIds).map(id => byId.get(id)).filter((s): s is PublicSite => !!s).map(s => ({ ...s, reason: sites.find(x => x.id === s.id)?.reason ?? reasonOf.get(s.id) ?? 'Chosen by the planner.' }))
+
   const requested = new Set((doc.cityRequests ?? []).map(r => r.citySlug))
   const cities: CityGroup[] = (market?.cities ?? []).map(c => {
     const here = sites.filter(s => s.citySlug === c.slug)
     const t = totalsFor(here)
     return { slug: c.slug, name: c.name, available: c.available, requested: requested.has(c.slug), sites: here.length, reach: t.reach, impressions: t.impressions }
   })
-  return { doc, version, sites, missing, totals: totalsFor(sites, investment), audience, cities }
+  return { doc, version, sites, missing, totals: totalsFor(sites, investment), audience, cities, tiers, suggestions, pool }
 }

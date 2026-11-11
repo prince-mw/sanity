@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { sitesFor } from '@/lib/inventory/source'
 import { readProposalGrant, canEdit } from '@/lib/proposal/access'
-import { getProposalByShareId, appendVersion, CRM_FIELDS } from '@/lib/proposal/store'
+import { getProposalByShareId, appendVersion, setBriefWeeks, CRM_FIELDS } from '@/lib/proposal/store'
+import { buildTiers } from '@/lib/proposal/tiers'
 import { pickPlan } from '@/lib/proposal/pick'
 import { marketOf, cityOf } from '@/lib/proposal/markets'
 import { crmConfigured, updateLead } from '@/lib/zoho-crm'
@@ -13,6 +14,8 @@ import type { Brief, VersionSite } from '@/lib/proposal/types'
 //     { rerun: true, brief?: Partial<Brief>, pinnedIds } → Claude picks again
 //     { addCity: '<slug>' }                               → the same brief picks sites in one more city (client or creator)
 //     { removeCity: '<slug>' }                            → drops that city's sites (creator)
+//     { tier: 'essentials' | 'full' }                     → the client switches to that size of the plan
+//     { addSites: [{ siteId, reason }], weeks? }          → the client takes a suggestion (sites and/or a longer run)
 // Needs the creator cookie (set by /edit?t=<token> or by creating it).
 
 export const runtime = 'nodejs'
@@ -26,10 +29,11 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
   const doc = await getProposalByShareId(shareId)
   if (!doc) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
-  let b: { sites?: unknown; summary?: unknown; rerun?: unknown; brief?: Partial<Brief>; pinnedIds?: unknown; addCity?: unknown; removeCity?: unknown }
+  let b: { sites?: unknown; summary?: unknown; rerun?: unknown; brief?: Partial<Brief>; pinnedIds?: unknown; addCity?: unknown; removeCity?: unknown; tier?: unknown; addSites?: unknown; weeks?: unknown }
   try { b = await req.json() } catch { return NextResponse.json({ error: 'Bad request' }, { status: 400 }) }
   // Anyone with the link may add a city (the funnel); everything else is the creator's.
-  if (!(typeof b.addCity === 'string' && b.addCity) && !canEdit(grant, shareId)) return NextResponse.json({ error: 'Only the person who created this proposal can change it.' }, { status: 403 })
+  const clientAction = (typeof b.addCity === 'string' && b.addCity) || (typeof b.tier === 'string' && b.tier) || Array.isArray(b.addSites) || b.weeks != null
+  if (!clientAction && !canEdit(grant, shareId)) return NextResponse.json({ error: 'Only the person who created this proposal can change it.' }, { status: 403 })
 
   const market = marketOf(doc.brief.countrySlug)
   const availableCities = (market?.cities ?? []).filter(c => c.available).map(c => c.slug)
@@ -39,8 +43,22 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
   const nextN = (doc.versions.reduce((m, v) => Math.max(m, v.n), 0) || doc.currentVersion || 0) + 1
 
   let version
-  const addCity = str(b.addCity, 60), removeCity = str(b.removeCity, 60)
-  if (addCity) {
+  const addCity = str(b.addCity, 60), removeCity = str(b.removeCity, 60), tier = str(b.tier, 20)
+  const weeks = [2, 4, 8, 12].includes(Number(b.weeks)) ? Number(b.weeks) : null
+  if (tier === 'essentials' || tier === 'full') {
+    const t = buildTiers(doc.brief, current?.sites ?? [], candidates).find(x => x.id === tier)!
+    version = { source: 'client' as const, summary: current?.summary ?? '', sites: t.sites }
+  } else if (Array.isArray(b.addSites) || weeks) {
+    const raw = Array.isArray(b.addSites) ? b.addSites as { siteId?: unknown; reason?: unknown }[] : []
+    const kept = (current?.sites ?? []).map(s => ({ ...s }))
+    for (const it of raw) {
+      const id = str(it.siteId, 80), s = byId.get(id)
+      if (!s || kept.some(k => k.siteId === id)) continue
+      kept.push({ siteId: id, siteName: s.name, reason: str(it.reason, 200) || 'Added from a suggestion.', order: kept.length, citySlug: s.citySlug })
+    }
+    if (weeks && weeks !== doc.brief.durationWeeks) await setBriefWeeks(doc._id, weeks)
+    version = { source: 'client' as const, summary: current?.summary ?? '', sites: kept.map((s, i) => ({ ...s, order: i })) }
+  } else if (addCity) {
     const city = cityOf(doc.brief.countrySlug, addCity)
     if (!city) return NextResponse.json({ error: 'Unknown city' }, { status: 400 })
     if (!city.available) return NextResponse.json({ error: 'No inventory in that city yet. Request it instead.' }, { status: 422 })

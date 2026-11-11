@@ -12,7 +12,7 @@ import { SG_NAVY, SgSectionHeading, SgFormButton } from '../SingaporeShared'
 import { SiteCard } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import { OBJECTIVES, BUDGET_BANDS, citiesLabel } from '@/lib/proposal/markets'
-import type { ProposalView as View, ProposalStatus } from '@/lib/proposal/types'
+import type { ProposalView as View, ProposalStatus, TierId } from '@/lib/proposal/types'
 import type { SiteSpecs } from '@/lib/inventory/types'
 
 const PERSONA_ICONS: Record<string, LucideIcon> = { commuter: TrainFront, shopper: ShoppingBag, tourist: Camera, office: Briefcase, family: Users, student: GraduationCap, nightlife: Moon, traveller: Plane, driver: Car, resident: Home }
@@ -31,7 +31,16 @@ const fmtDate = (iso: string | null | undefined) => iso ? new Date(iso).toLocale
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 
 export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
-  const { doc, version, sites, totals, audience, cities } = view
+  const { doc, version, sites: planSites, totals: planTotals, audience, cities, tiers, suggestions, pool } = view
+  // The client can switch tiers; the demo switches on the page, a real proposal publishes a version and reloads.
+  const [tierId, setTierId] = useState<TierId>(tiers.find(t => t.current)?.id ?? 'recommended')
+  const [taken, setTaken] = useState<Record<string, boolean>>({})
+  const [planBusy, setPlanBusy] = useState<string | null>(null)
+  const tier = tiers.find(t => t.id === tierId) ?? tiers[1]
+  const poolById = new Map(pool.map(s => [s.id, s]))
+  const extraIds = Object.entries(taken).filter(([, on]) => on).flatMap(([id]) => suggestions.find(x => x.id === id)?.siteIds ?? [])
+  const sites = tier.current && !extraIds.length ? planSites : [...tier.siteIds, ...extraIds].filter((id, i, a) => a.indexOf(id) === i).map(id => poolById.get(id) ?? planSites.find(x => x.id === id)).filter((x): x is View['pool'][number] => !!x)
+  const totals = tier.current && !extraIds.length ? planTotals : tier.totals
   const inPlan = cities.filter(c => c.sites > 0)
   const offered = cities.filter(c => c.sites === 0)
   const [cityBusy, setCityBusy] = useState<string | null>(null)
@@ -69,6 +78,18 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
     setCityDone(d => ({ ...d, [slug]: available ? 'added' : 'requested' }))
     if (available) window.location.reload()
   }
+  const publish = async (body: Record<string, unknown>, key: string, local: () => void) => {
+    if (demo) { local(); return }
+    setPlanBusy(key); setError(null)
+    const r = await fetch(`/api/proposals/${doc.shareId}/versions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).catch(() => null)
+    const j = await r?.json().catch(() => null)
+    setPlanBusy(null)
+    if (!r || !r.ok) { setError(j?.error ?? 'Something went wrong. Please try again.'); return }
+    window.location.reload()
+  }
+  const chooseTier = (id: TierId) => { if (id === tierId) return; publish({ tier: id }, `tier-${id}`, () => setTierId(id)) }
+  const takeSuggestion = (sg: View['suggestions'][number]) => publish(
+    { addSites: sg.siteIds.map(id => ({ siteId: id, reason: sg.reasons[id] })), weeks: sg.weeks }, sg.id, () => setTaken(t => ({ ...t, [sg.id]: true })))
   const copy = async () => { try { await navigator.clipboard.writeText(location.origin + `/proposals/${doc.shareId}`); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* no clipboard: the address bar has it */ } }
 
   const facts: [string, string | null][] = [
@@ -151,7 +172,20 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
 
       <section className="bg-white mw-section">
         <div className="mw-container">
-          <SgSectionHeading title="Recommended sites" intro={`${sites.length} ${sites.length === 1 ? 'site' : 'sites'} in ${whereLabel}, strongest fit first${inPlan.length > 1 ? ', grouped by city' : ''}.`} />
+          <SgSectionHeading title="Your plan" intro="Three sizes of the same plan. Switch to compare; the sites, audiences and investment below follow your choice." />
+          <div className="mb-10 grid gap-4 sm:grid-cols-3" role="group" aria-label="Plan size">
+            {tiers.map(t => { const on = t.id === tierId; return (
+              <button key={t.id} type="button" aria-pressed={on} disabled={planBusy !== null} onClick={() => chooseTier(t.id)}
+                className={`mw-tap flex flex-col items-start rounded-2xl border-2 p-5 text-left transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-200 bg-white text-gray-900 hover:border-[#2563eb]'}`}>
+                <span className={`text-xs font-bold uppercase tracking-wider ${on ? 'text-blue-100' : 'text-mw-blue-600'}`}>{t.label}{t.id === 'recommended' ? ' · for your brief' : ''}</span>
+                <span className="mt-2 text-3xl font-bold">{t.totals.sites} {t.totals.sites === 1 ? 'site' : 'sites'}</span>
+                <span className={`mt-1 text-sm ${on ? 'text-blue-100/90' : 'text-gray-600'}`}>{t.totals.reach != null ? `${num(t.totals.reach)} monthly reach` : 'Reach as published'}{t.totals.investment ? ` · ${t.totals.investment.currency} ${num(t.totals.investment.low)} – ${num(t.totals.investment.high)}` : ''}</span>
+                <span className={`mt-3 text-sm ${on ? 'text-white' : 'text-gray-700'}`}>{t.blurb}</span>
+                <span className={`mt-4 inline-flex items-center rounded-lg px-3 py-1.5 text-xs font-semibold ${on ? 'bg-white/15 text-white' : 'bg-mw-blue-50 text-[#2563eb]'}`}>{planBusy === `tier-${t.id}` ? 'Switching…' : on ? 'Selected' : `Switch to ${t.label}`}</span>
+              </button>
+            ) })}
+          </div>
+          <h3 className="mb-6 text-xl font-bold text-gray-900">{sites.length} {sites.length === 1 ? 'site' : 'sites'} in {whereLabel}, strongest fit first{inPlan.length > 1 ? ', grouped by city' : ''}</h3>
           {inPlan.map(c => (
           <div key={c.slug} className="mb-10 last:mb-0">
             {inPlan.length > 1 && (
@@ -188,6 +222,35 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
           {totals.investment && <p className="mt-3 max-w-3xl text-xs text-gray-500">{PRICE_NOTE}</p>}
         </div>
       </section>
+
+      {suggestions.length > 0 && (
+        <section className="bg-gray-50 mw-section no-print">
+          <div className="mw-container">
+            <SgSectionHeading title="Make it stronger" intro="What this plan does not cover yet, and what each addition brings. Add any of them and the proposal updates on the spot." />
+            <ul className="grid gap-4 sm:grid-cols-2">
+              {suggestions.map(sg => { const on = !!taken[sg.id]; const d = sg.delta; return (
+                <li key={sg.id} className={`flex flex-col rounded-2xl border p-5 ${on ? 'border-[#2563eb] bg-mw-blue-50/40' : 'border-gray-200 bg-white'}`}>
+                  <h3 className="font-bold text-gray-900">{sg.title}</h3>
+                  <p className="mt-1 text-sm text-gray-700">{sg.body}</p>
+                  {sg.siteIds.length > 0 && <p className="mt-2 text-xs text-gray-500">Adds {sg.siteIds.map(id => poolById.get(id)?.name ?? id).join(', ')}</p>}
+                  {d && (
+                    <p className="mt-3 text-sm font-semibold text-[#2563eb]">
+                      {d.sites > 0 ? `+${d.sites} ${d.sites === 1 ? 'site' : 'sites'}` : sg.weeks ? `${sg.weeks} weeks` : ''}
+                      {d.reach != null ? ` · +${num(d.reach)} monthly reach` : ''}
+                      {d.investment && (d.investment.low || d.investment.high) ? ` · +${d.investment.currency} ${num(d.investment.low)} – ${num(d.investment.high)}` : ''}
+                    </p>
+                  )}
+                  <button type="button" disabled={on || planBusy !== null} onClick={() => takeSuggestion(sg)}
+                    className={`mw-tap mt-4 inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold ${on ? 'border border-gray-200 bg-white text-gray-500' : 'bg-[#2563eb] text-white hover:bg-[#1d4ed8]'} disabled:opacity-80`}>
+                    {planBusy === sg.id ? 'Adding…' : on ? 'Added to your plan' : 'Add to my plan'}
+                  </button>
+                </li>
+              ) })}
+            </ul>
+            {error && <p className="mt-3 text-sm text-red-600" role="alert">{error}</p>}
+          </div>
+        </section>
+      )}
 
       {offered.length > 0 && (
         <section className="bg-white mw-section no-print">

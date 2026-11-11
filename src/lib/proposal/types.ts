@@ -50,6 +50,12 @@ export type ProposalTotals = { sites: number; withFigures: number; reach: number
 export type AudienceMember = { siteId: string; siteName: string; name: string; who: string; when: string; why: string }
 export type AudienceGroup = { key: string; label: string; icon: string; members: AudienceMember[] }
 
+export type TierId = 'essentials' | 'recommended' | 'full'
+/** A size of the plan the client can switch to; `current` is the one the proposal holds now. */
+export type Tier = { id: TierId; label: string; blurb: string; siteIds: string[]; current: boolean; totals: ProposalTotals }
+/** One way to make the plan stronger; `siteIds` are added (with `reasons`) or `weeks` changes the run. */
+export type Suggestion = { id: string; kind: 'moment' | 'audience' | 'frequency' | 'digital'; title: string; body: string; siteIds: string[]; reasons: Record<string, string>; weeks?: number; delta?: { sites: number; reach: number | null; investment: { currency: string; low: number; high: number } | null } }
+
 /** One city in the plan: its sites' count and figures, and whether inventory exists for it. */
 export type CityGroup = { slug: string; name: string; available: boolean; requested: boolean; sites: number; reach: number | null; impressions: number | null }
 
@@ -62,4 +68,7 @@ export type ProposalView = {
   totals: ProposalTotals
   audience: AudienceGroup[]
   cities: CityGroup[]                 // every city of the market: in the plan, requested, or offered
+  tiers: Tier[]
+  suggestions: Suggestion[]
+  pool: (PublicSite & { reason: string })[]   // every site a tier or suggestion can add, resolved, for the page to render
 }
