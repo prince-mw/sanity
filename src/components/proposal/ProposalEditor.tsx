@@ -21,7 +21,7 @@ type Row = { siteId: string; reason: string }
 const input = 'mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-mw-blue-500 focus:outline-none'
 const chip = (on: boolean) => `mw-tap rounded-full border px-3 py-1 text-xs font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`
 
-export function ProposalEditor({ view, candidates }: { view: View; candidates: PublicSite[] }) {
+export function ProposalEditor({ view, candidates, demo = false }: { view: View; candidates: PublicSite[]; demo?: boolean }) {
   const router = useRouter()
   const { doc, version } = view
   const byId = useMemo(() => new Map(candidates.map(s => [s.id, s])), [candidates])
@@ -48,6 +48,7 @@ export function ProposalEditor({ view, candidates }: { view: View; candidates: P
   const add = (s: PublicSite) => setRows(r => r.some(x => x.siteId === s.id) ? r : [...r, { siteId: s.id, reason: '' }])
 
   const post = async (body: unknown, mode: 'publish' | 'rerun') => {
+    if (demo) { setError('This is the sample proposal: changes are not saved. On a real proposal this publishes a new version at the same link.'); return }
     setBusy(mode); setError(null)
     const r = await fetch(`/api/proposals/${doc.shareId}/versions`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }).catch(() => null)
     const j = await r?.json().catch(() => null)
@@ -64,6 +65,7 @@ export function ProposalEditor({ view, candidates }: { view: View; candidates: P
     <div className="bg-white text-gray-900">
       <section className={`${SG_NAVY} text-white mw-hero-top pb-8`}>
         <div className="mw-container">
+          {demo && <div className="mb-5 rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-amber-950">Sample proposal for design review — try everything; nothing is saved.</div>}
           <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Editing · currently v{version.n}</span>
           <h1 className="mt-2 text-3xl sm:text-4xl font-bold tracking-tight">{doc.titleLine}</h1>
           <div className="mt-5 flex flex-wrap gap-3">

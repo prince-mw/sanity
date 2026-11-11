@@ -24,7 +24,7 @@ const STATUS: Record<ProposalStatus, { label: string; cls: string }> = {
 const fmtDate = (iso: string | null | undefined) => iso ? new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : null
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 
-export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit: boolean; pagedIds: string[] }) {
+export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
   const { doc, version, sites, totals } = view
   const [status, setStatus] = useState<ProposalStatus>(doc.status)
   const [ask, setAsk] = useState(false)
@@ -39,6 +39,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
   const anySample = sites.some(s => s.sample)
 
   const act = async (action: 'approve' | 'request-changes') => {
+    if (demo) { setStatus(action === 'approve' ? 'approved' : 'changes-requested'); setAsk(false); setMessage(''); return }
     setBusy(true); setError(null)
     const r = await fetch(`/api/proposals/${doc.shareId}/status`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ action, message }) }).catch(() => null)
     const j = await r?.json().catch(() => null)
@@ -64,6 +65,7 @@ export function ProposalView({ view, canEdit, pagedIds }: { view: View; canEdit:
       <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-10 lg:pb-14 mw-hero-top print-hero`}>
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none no-print" />
         <div className="relative mw-container">
+          {demo && <div className="no-print mb-5 rounded-lg bg-amber-400 px-4 py-2 text-sm font-semibold text-amber-950">Sample proposal for design review — built from the Kuala Lumpur inventory, nothing here is saved or sent.</div>}
           {anySample && <SampleBanner />}
           <div className="flex flex-wrap items-center gap-3">
             <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Instant proposal · v{version.n}</span>
