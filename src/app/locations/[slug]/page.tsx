@@ -15,7 +15,6 @@ import { sitesFor } from '@/lib/inventory/source'
 import { guideFor, handPickedSlugs, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
 import { getCountryContent } from '@/lib/inventory/placeContent'
 import { RelatedContent } from '@/components/inventory/ContentBlocks'
-import { MARKET_VIDEOS } from '@/data/market-videos'
 import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -117,7 +116,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
     const promo = promoEnabled() && marketOf(slug) ? <ProposalPromo variant="band" market={marketOf(slug)!.countryName} /> : null
     if (draft) {
       const sections = (locationData.sections ?? []) as TemplateSection[]
-      const [sites, related] = await Promise.all([sitesFor(slug), getCountryContent(countryName)])
+      const [sites, related] = await Promise.all([sitesFor(slug), getCountryContent(countryName, cities.map(c => c.city))])
       const data = marketData(sites)
       const picked = handPickedSlugs(sections)
       const caseStudies = related.caseStudies.filter(c => !picked.some(p => c.href.endsWith(`/${p}`)))
@@ -135,7 +134,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
             sectionsOverride={<>
               <CountryGuide country={countryName} countrySlug={slug} topics={guideFor(slug, countryName, sections)} data={data} draft={draft} cityLinks={Object.fromEntries(cities.map(c => [c.city.trim().toLowerCase(), c.href]))} proposalHref={promo ? '/proposals/new' : null} tone="brand" />
               <LandingPageRenderer sections={tailSections(sections, 'proof')} />
-              <RelatedContent cityName={countryName} countryName={countryName} caseStudies={caseStudies} posts={related.posts} firstBg="bg-white" video={MARKET_VIDEOS[slug]} />
+              <RelatedContent cityName={countryName} countryName={countryName} caseStudies={caseStudies} posts={related.posts} firstBg="bg-white" />
               <LandingPageRenderer sections={tailSections(sections, 'cta')} />
             </>}
           />

@@ -19,7 +19,6 @@ import { marketOf } from '@/lib/proposal/markets'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
 import { siteInsightsFor } from '@/lib/inventory/siteContent'
 import { RelatedContent } from '@/components/inventory/ContentBlocks'
-import { MARKET_VIDEOS } from '@/data/market-videos'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
   const { slug, citySlug } = await params
@@ -154,7 +153,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             guide={guide ?? undefined}
             insights={await siteInsightsFor(inventory)}
           />
-        </>) : guide && placeContent ? <>{guide}<RelatedContent key="related" cityName={cityName} countryName={city.country?.country || slug} caseStudies={placeContent.caseStudies} posts={placeContent.posts} firstBg="bg-white" video={MARKET_VIDEOS[slug]} /></> : guide}
+        </>) : guide && placeContent ? <>{guide}<RelatedContent key="related" cityName={cityName} countryName={city.country?.country || slug} caseStudies={placeContent.caseStudies} posts={placeContent.posts} firstBg="bg-white" /></> : guide}
       />
     </>
   )

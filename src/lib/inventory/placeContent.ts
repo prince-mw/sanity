@@ -25,9 +25,14 @@ const liveQuery = (type: 'blogPost' | 'caseStudy') => `*[_type == "${type}" && !
 ] | order(publishedAt desc)[0...$max]{ ${relatedFields} }`
 
 /** Country-level fallback (Rif, 11 Nov 2026: Jakarta showed nothing although Indonesia has articles): names the country only. */
-const countryQuery = (type: 'blogPost' | 'caseStudy') => `*[_type == "${type}" && !(_id in path("drafts.**"))
-  && (title match $country || location match $country || excerpt match $country)
-] | order(publishedAt desc)[0...$max]{ ${relatedFields} }`
+// Articles rarely carry a location, so the body counts too; ones that name the country up front rank first.
+// A country page also matches its own cities by name (Jakarta case studies never say "Indonesia").
+const countryQuery = (type: 'blogPost' | 'caseStudy', places: number) => {
+  const named = (f: string) => ['$country', ...Array.from({ length: places }, (_, i) => `$p${i}`)].map(v => `${f} match ${v}`).join(' || ')
+  return `*[_type == "${type}" && !(_id in path("drafts.**"))
+  && (${named('title')} || ${named('location')} || ${named('excerpt')}${type === 'blogPost' ? ' || pt::text(coalesce(content, body, [])) match $country' : ''})
+] | score(title match $country, excerpt match $country, location match $country) | order(_score desc, publishedAt desc)[0...$max]{ ${relatedFields} }`
+}
 
 const img = (f: unknown) => { try { return f ? urlFor(f).width(800).height(500).fit('crop').url() : null } catch { return null } }
 const item = (kind: RelatedItem['kind'], d: any, score: number, reason: string): RelatedItem | null => d?.slug ? {
@@ -66,9 +71,10 @@ export async function getPlaceContent(p: { kind: 'city' | 'area'; countrySlug: s
 }
 
 /** Articles and case studies that name a country, for its country page and as a city's fallback. */
-export async function getCountryContent(countryName: string): Promise<{ posts: RelatedItem[]; caseStudies: RelatedItem[] }> {
-  const params = { country: `${countryName}*`, max: 12 }
-  const [posts, cases] = await Promise.all([safeFetch<any[]>(countryQuery('blogPost'), params, []), safeFetch<any[]>(countryQuery('caseStudy'), { ...params, max: 9 }, [])])
+export async function getCountryContent(countryName: string, cityNames: string[] = []): Promise<{ posts: RelatedItem[]; caseStudies: RelatedItem[] }> {
+  const places = cityNames.filter(Boolean).slice(0, 12)
+  const params = { country: `${countryName}*`, max: 12, ...Object.fromEntries(places.map((c, i) => [`p${i}`, `${c}*`])) }
+  const [posts, cases] = await Promise.all([safeFetch<any[]>(countryQuery('blogPost', places.length), params, []), safeFetch<any[]>(countryQuery('caseStudy', places.length), { ...params, max: 12 }, [])])
   const reason = `Names ${countryName}`
   return {
     posts: (posts ?? []).map(d => item('post', d, 50, reason)).filter(Boolean) as RelatedItem[],

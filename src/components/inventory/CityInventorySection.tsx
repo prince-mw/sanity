@@ -13,7 +13,6 @@ import type { AreaLink } from './InventoryAreaClient'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
 import type { PlaceContent, Highlight } from '@/lib/inventory/placeContent'
 import { IconStoryCards } from '../motion/kit/IconStoryCards'
-import { MARKET_VIDEOS } from '@/data/market-videos'
 import { ShoppingBag, Route, TrainFront, Building2, Landmark, Store, Plane, Trees, type LucideIcon } from 'lucide-react'
 
 const HIGHLIGHT_ICONS: Record<Highlight['icon'], LucideIcon> = { shopping: ShoppingBag, road: Route, rail: TrainFront, tower: Building2, landmark: Landmark, mall: Store, airport: Plane, park: Trees }
@@ -71,7 +70,7 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
         </section>
       )}
       {!guide && <AudienceSection placeName={cityName} personas={content.personas} />}
-      <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" video={MARKET_VIDEOS[countrySlug]} />
+      <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" />
     </div>
   )
 }

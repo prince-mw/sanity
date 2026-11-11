@@ -5,7 +5,6 @@ import { useState } from 'react'
 import { LeadForm } from '../forms/LeadForm'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
 import type { PlaceContent } from '@/lib/inventory/placeContent'
-import { MARKET_VIDEOS } from '@/data/market-videos'
 import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../SingaporeShared'
 import type { PublicSite } from '@/lib/inventory/types'
 import { SiteCard, areaPath } from './InventoryShared'
@@ -127,7 +126,7 @@ export function InventoryAreaClient({
         </section>
       )}
 
-      <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" video={MARKET_VIDEOS[countrySlug]} />
+      <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" />
 
       {/* Other areas */}
       {otherAreas.length > 0 && (

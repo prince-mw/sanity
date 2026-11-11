@@ -55,7 +55,7 @@ export function SiteCard({ site, linked, addable = true, action }: { site: Publi
           {site.audience?.impressions && <div><dt className="sr-only">Monthly impressions</dt><dd>{site.audience.impressions} impressions / mo</dd></div>}
         </dl>
         <div className="mt-auto flex items-center justify-between gap-3 pt-4">
-          {linked ? <span className="text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb]">View site details →</span> : <span />}
+          {linked && !action ? <span className="text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb]">View site details →</span> : <span />}
           {action ?? (addable && <AddToProposalButton site={site} variant="card" />)}
         </div>
       </div>

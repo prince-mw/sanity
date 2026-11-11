@@ -9,7 +9,6 @@ import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../Singap
 import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
-import { MARKET_VIDEOS } from '@/data/market-videos'
 import { SitesMap, SampleTag, SiteCard, areaPath } from './InventoryShared'
 import { AddToProposalButton } from '../proposal/AddToProposalButton'
 
@@ -114,7 +113,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds }: { site
         </section>
       )}
 
-      <RelatedContent cityName={site.cityName} countryName={site.countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" video={MARKET_VIDEOS[site.countrySlug]} />
+      <RelatedContent cityName={site.cityName} countryName={site.countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" />
 
       {similar.length > 0 && (
         <section className="bg-white mw-section">
