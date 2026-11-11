@@ -10,7 +10,8 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Check, Link2, Pencil, Printer, TrainFront, ShoppingBag, Camera, Briefcase, Users, GraduationCap, Moon, Plane, Car, Home, type LucideIcon } from 'lucide-react'
+import { Check, Link2, Pencil, Printer, Users } from 'lucide-react'
+import { PERSONA_ICONS, specRows } from './SiteDetailsDialog'
 import { SG_NAVY } from '../SingaporeShared'
 import { SiteCard } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
@@ -20,7 +21,6 @@ import { IdentitySheet, loadIdentity, type Identity } from './IdentitySheet'
 import type { ProposalView as View, ProposalStatus, TierId } from '@/lib/proposal/types'
 import type { SiteSpecs } from '@/lib/inventory/types'
 
-const PERSONA_ICONS: Record<string, LucideIcon> = { commuter: TrainFront, shopper: ShoppingBag, tourist: Camera, office: Briefcase, family: Users, student: GraduationCap, nightlife: Moon, traveller: Plane, driver: Car, resident: Home }
 
 /** Rif's wording (26 Oct 2026), shown with every estimate. */
 const PRICE_NOTE = 'This is an estimate only, not an exact price. The exact price depends on many factors, such as campaign duration, spots per loop, spots per day and your campaign requirements.'
@@ -368,22 +368,8 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   )
 }
 
-function SpecList({ site }: { site: { size: string | null; illuminated: boolean | null; digital: { spotSeconds: number | null; spotsPerLoop: number | null; loopSeconds: number | null } | null; specs: SiteSpecs | null } }) {
-  const sp = site.specs
-  const d = site.digital
-  const rows: [string, string | null][] = [
-    ['Size', site.size],
-    ['Resolution', sp?.resolution ?? null],
-    ['Panels / screens', sp?.panels != null || sp?.screens != null ? [sp?.panels != null ? `${sp.panels} panel${sp.panels === 1 ? '' : 's'}` : null, sp?.screens != null ? `${sp.screens} screen${sp.screens === 1 ? '' : 's'}` : null].filter(Boolean).join(' · ') : null],
-    ['Loop', d?.spotSeconds ? `${d.spotSeconds}s spot${d.spotsPerLoop ? ` · ${d.spotsPerLoop} per loop` : ''}${d.loopSeconds ? ` · ${d.loopSeconds}s loop` : ''}` : null],
-    ['Illuminated', site.illuminated == null ? null : site.illuminated ? 'Yes' : 'No'],
-    ['Lead time', sp?.leadTimeDays != null ? `${sp.leadTimeDays} days` : null],
-    ['Player', sp?.playerSoftware ?? null],
-    ['Content approval', sp?.contentApproval == null ? null : sp.contentApproval ? 'Required' : 'Not required'],
-    ['Board type', sp?.boardType ?? null],
-    ['Files', [sp?.videoFormats?.length ? `video ${sp.videoFormats.join('/')}` : null, sp?.imageFormats?.length ? `image ${sp.imageFormats.join('/')}` : null, sp?.audioFormats?.length ? `audio ${sp.audioFormats.join('/')}` : null].filter(Boolean).join(' · ') || null],
-  ]
-  const shown = rows.filter(([, v]) => v)
+function SpecList({ site }: { site: Parameters<typeof specRows>[0] }) {
+  const shown = specRows(site)
   if (!shown.length) return null
   return (
     <div className="mt-3 border-t border-mw-blue-100 pt-3">

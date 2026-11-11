@@ -112,6 +112,27 @@ async function locateFace(site: PublicSite, docId: string | null): Promise<{ x: 
   return pts
 }
 
+/**
+ * Description + personas for many sites in one query, for the editor's details
+ * popup. No face location and no related-content lookups: the stored document
+ * when there is one, else the preview copy.
+ */
+export async function siteInsightsFor(sites: PublicSite[]): Promise<Record<string, { description: string | null; personas: Persona[] }>> {
+  const ids = sites.map(s => s.id)
+  const docs = ids.length ? await safeFetch<{ siteId: string; description?: string | null; personas?: Persona[] | null }[]>(
+    `*[_type == "siteContent" && siteId in $ids && hidden != true]{ siteId, description, personas }`, { ids }, []) : []
+  const byId = new Map((docs ?? []).map(d => [d.siteId, d]))
+  const out: Record<string, { description: string | null; personas: Persona[] }> = {}
+  for (const s of sites) {
+    const doc = byId.get(s.id)
+    const sample = SITE_CONTENT_SAMPLE[s.id]
+    out[s.id] = doc
+      ? { description: doc.description ?? null, personas: doc.personas ?? [] }
+      : { description: sample?.description ?? s.description ?? null, personas: sample?.personas ?? [] }
+  }
+  return out
+}
+
 /** Similar sites, no AI: same city + same format first, then the same area, nearest first. */
 export function similarSites(site: PublicSite, all: PublicSite[], max = 6): PublicSite[] {
   const fmt = (s: PublicSite) => s.displayFormat ?? s.format ?? ''

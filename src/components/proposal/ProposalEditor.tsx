@@ -2,9 +2,10 @@
 
 // The creator's editor (round 3, Rif, 11 Nov 2026): four tabs, one task each,
 // and a sticky publish bar.
-//   Plan                 — grouped by city, reorder / remove, the reason as text with Edit; the summary reads in the hero
+//   Plan                 — grouped by city, reorder / remove, the reason as text with Edit, the plan's map beside it; summary and versions read in the hero
 //   Add sites            — a filter sidebar like the Moving Walls Market (another city first, then search, city, format, venue), map, cards
 // Round 5 (Rif, 11 Nov 2026): no free-text summary box — the brief changes only on the Brief tab, so the scope stays small.
+// Round 6 (Rif, 11 Nov 2026): versions in the hero line, the map on the Plan tab, a Details popup per card (audience + specs).
 //   Brief                — update this proposal (new version) or start a new proposal from the brief (new link)
 //   What the client sees — everything off by default; at most 2 options before approval, 2 offers after
 // The demo editor renders all of it; nothing is saved there.
@@ -13,9 +14,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowDown, ArrowUp, Check, Plus, Search, X } from 'lucide-react'
+import { ArrowDown, ArrowUp, Check, Info, Plus, Search, X } from 'lucide-react'
 import { SG_NAVY, SgSectionHeading } from '../SingaporeShared'
 import { SampleTag, SiteGrid } from '../inventory/InventoryShared'
+import { BrandMap, type MapPin } from '../inventory/BrandMap'
+import { SiteDetailsDialog, type SiteInsights } from './SiteDetailsDialog'
 import { useShortlist } from '@/lib/proposal/shortlist'
 import { OBJECTIVES, DURATIONS, BUDGET_BANDS, cityNameOf, marketOf } from '@/lib/proposal/markets'
 import { ADDONS } from '@/lib/proposal/addons'
@@ -30,7 +33,7 @@ const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm fo
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 const MAX_SHOWN = 2
 
-export function ProposalEditor({ view, candidates, demo = false }: { view: View; candidates: PublicSite[]; demo?: boolean }) {
+export function ProposalEditor({ view, candidates, insights = {}, demo = false }: { view: View; candidates: PublicSite[]; insights?: Record<string, SiteInsights>; demo?: boolean }) {
   const router = useRouter()
   const { doc, version, tiers, suggestions, cities } = view
   const market = marketOf(doc.brief.countrySlug)
@@ -38,6 +41,7 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
   const [tab, setTab] = useState<TabId>('plan')
   const [rows, setRows] = useState<Row[]>(view.sites.map(s => ({ siteId: s.id, reason: s.reason })))
   const [editing, setEditing] = useState<string | null>(null)
+  const [detail, setDetail] = useState<PublicSite | null>(null)
   const [city, setCity] = useState<string>('all')
   const [q, setQ] = useState('')
   const [format, setFormat] = useState('all')
@@ -76,6 +80,9 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
     && (format === 'all' || (s.displayFormat ?? s.format ?? 'Other') === format)
     && (venue === 'all' || s.venueType === venue)
     && (!needle || [s.name, s.areaName, s.address, s.displayFormat, s.format].some(v => v?.toLowerCase().includes(needle))))
+  const planPins: MapPin[] = rows.map(r => byId.get(r.siteId)).filter((s): s is PublicSite => !!s && s.lat != null && s.lng != null).map(s => ({ id: s.id, lat: s.lat!, lng: s.lng!, title: s.name, subtitle: [s.displayFormat ?? s.format, s.areaName].filter(Boolean).join(' · ') }))
+  const fmtDate = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+  const older = [...doc.versions].filter(v => v.n !== version.n).sort((a, b) => b.n - a.n)
   const filtered = city !== 'all' || format !== 'all' || venue !== 'all' || needle !== ''
   const clearFilters = () => { setCity('all'); setFormat('all'); setVenue('all'); setQ('') }
   const quick = shortlist.filter(i => byId.has(i.id) && !inPlan.has(i.id))
@@ -85,6 +92,11 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
   const move = (i: number, d: -1 | 1) => setRows(r => { const n = [...r]; const j = i + d; if (j < 0 || j >= n.length) return r; [n[i], n[j]] = [n[j], n[i]]; return n })
   const add = (s: PublicSite) => setRows(r => r.some(x => x.siteId === s.id) ? r : [...r, { siteId: s.id, reason: '' }])
   const toggle = (s: PublicSite) => inPlan.has(s.id) ? setRows(r => r.filter(x => x.siteId !== s.id)) : add(s)
+  const planButton = (s: PublicSite, size = 'px-3 py-1.5 text-xs') => { const on = inPlan.has(s.id); return (
+    <button type="button" onClick={() => toggle(s)} aria-pressed={on} className={`mw-tap inline-flex items-center gap-1.5 rounded-full border font-semibold transition-colors ${size} ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]'}`}>
+      {on ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Plus className="h-3.5 w-3.5" aria-hidden="true" />}{on ? 'In the plan' : 'Add to plan'}
+    </button>
+  ) }
 
   const call = async (path: string, body: unknown, key: string): Promise<Record<string, unknown> | null> => {
     if (demo) { setError(demoNote); return null }
@@ -129,9 +141,15 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
     <div className="bg-white text-gray-900 pb-24">
       <section className={`${SG_NAVY} text-white mw-hero-top pb-6`}>
         <div className="mw-container">
-          <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Editing · currently v{version.n}</span>
+          <p className="text-sm font-bold uppercase tracking-wider text-cyan-300">Editing · v{version.n} · {fmtDate(version.createdAt)} · {version.sites.length} {version.sites.length === 1 ? 'site' : 'sites'} · {version.source}</p>
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">{doc.titleLine}</h1>
           {version.summary && <p className="mt-3 max-w-3xl text-blue-100">{version.summary}</p>}
+          {(older.length > 0 || doc.derivedFrom) && (
+            <p className="mt-3 text-sm text-blue-100/80">
+              {older.length > 0 && <>Earlier: {older.map(v => `v${v.n} · ${fmtDate(v.createdAt)} · ${v.sites.length} ${v.sites.length === 1 ? 'site' : 'sites'}`).join(' — ')}</>}
+              {doc.derivedFrom && <>{older.length > 0 ? ' · ' : ''}Started from <Link href={`/proposals/${doc.derivedFrom}/edit`} className="font-semibold text-white underline">an earlier proposal</Link></>}
+            </p>
+          )}
           <div className="mt-5 flex flex-wrap gap-3">
             <Link href={`/proposals/${doc.shareId}`} className="mw-tap inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">View as the client sees it</Link>
             <button type="button" onClick={copy} className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">{copied ? 'Link copied' : 'Copy client link'}</button>
@@ -149,9 +167,9 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
       {/* Plan */}
       <section id="edit-plan" role="tabpanel" aria-labelledby="edittab-plan" className={`bg-gray-50 mw-section ${tab === 'plan' ? '' : 'hidden'}`}>
         <div className="mw-container">
-          <SgSectionHeading title="Sites in this proposal" intro="Reorder or remove sites; the line under each is what the client reads. The summary above is written from the brief; change the brief on its tab. Publish when you are done; older versions stay listed." />
+          <SgSectionHeading title="Sites in this proposal" intro="Reorder or remove sites; the line under each is what the client reads. The summary above is written from the brief; change the brief on its tab. Publish when you are done." />
           <div className="grid gap-8 lg:grid-cols-12">
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-7">
               {cityGroups.map(g => (
                 <div key={g.slug} className="mb-6 last:mb-0">
                   {cityGroups.length > 1 && (
@@ -194,13 +212,12 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
               ))}
               {rows.length === 0 && <p className="text-sm text-red-600">Keep at least one site.</p>}
             </div>
-            <div className="lg:col-span-4">
-              <div className="rounded-2xl border border-gray-200 bg-white p-5 text-sm text-gray-600">
-                <h3 className="font-bold text-[#2563eb]">Versions</h3>
-                <ul className="mt-2 space-y-1">
-                  {[...doc.versions].sort((a, b) => b.n - a.n).map(v => <li key={v.n} className={v.n === version.n ? 'font-semibold text-gray-900' : ''}>v{v.n} · {new Date(v.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} · {v.sites.length} sites · {v.source}</li>)}
-                </ul>
-                {doc.derivedFrom && <p className="mt-3 text-xs">Started from <Link href={`/proposals/${doc.derivedFrom}/edit`} className="font-semibold text-[#2563eb] hover:underline">an earlier proposal</Link>.</p>}
+            <div className="order-first lg:order-none lg:col-span-5">
+              <div className="lg:sticky lg:top-6">
+                {tab === 'plan' && planPins.length > 0
+                  ? <BrandMap pins={planPins} title={`Map of the sites in this proposal`} className="h-64 sm:h-80 lg:h-[520px]" />
+                  : <div className="flex h-64 items-center justify-center rounded-2xl border border-dashed border-gray-300 text-sm text-gray-500">The map shows the sites in the plan.</div>}
+                <p className="mt-2 text-xs text-gray-500">{planPins.length} of {rows.length} on the map</p>
               </div>
             </div>
           </div>
@@ -273,12 +290,14 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
                   </ul>
                 </div>
               )}
-              {tab === 'sites' && <SiteGrid sites={browse} total={candidates.length} filters={false} hasPage={() => false} mapTitle={`Map of sites in ${city === 'all' ? (market?.countryName ?? 'the market') : cityNameOf(doc.brief.countrySlug, city)}`}
-                renderAction={s => { const on = inPlan.has(s.id); return (
-                  <button type="button" onClick={() => toggle(s)} aria-pressed={on} className={`mw-tap inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]'}`}>
-                    {on ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Plus className="h-3.5 w-3.5" aria-hidden="true" />}{on ? 'In the plan' : 'Add to plan'}
-                  </button>
-                ) }} />}
+              {tab === 'sites' && <SiteGrid sites={browse} total={candidates.length} filters={false} map={false} hasPage={() => false} mapTitle={`Map of sites in ${city === 'all' ? (market?.countryName ?? 'the market') : cityNameOf(doc.brief.countrySlug, city)}`}
+                renderAction={s => (
+                  <span className="flex items-center gap-2">
+                    <button type="button" onClick={() => setDetail(s)} className="mw-tap inline-flex items-center gap-1.5 rounded-full border border-gray-300 bg-white px-3 py-1.5 text-xs font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]"><Info className="h-3.5 w-3.5" aria-hidden="true" />Details</button>
+                    {planButton(s)}
+                  </span>
+                )} />}
+              <SiteDetailsDialog site={detail} insights={detail ? insights[detail.id] : undefined} onClose={() => setDetail(null)} action={detail ? planButton(detail, 'px-4 py-2 text-sm') : null} />
             </div>
           </div>
           {error && tab === 'sites' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}

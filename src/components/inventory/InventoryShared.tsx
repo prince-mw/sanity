@@ -79,7 +79,7 @@ const pinOf = (s: PublicSite, linked: boolean): MapPin | null =>
  * map, all driven by one filter state, so the pins always match the cards.
  * Map on top, cards below at every size. Phone/tablet: List / Map switch.
  */
-export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = true, total }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string; renderAction?: (s: PublicSite) => ReactNode; filters?: boolean; total?: number }) {
+export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = true, total, map = true }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string; renderAction?: (s: PublicSite) => ReactNode; filters?: boolean; total?: number; map?: boolean }) {
   const formats = useMemo(() => Array.from(new Set(sites.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [sites])
   const venues = useMemo(() => Array.from(new Set(sites.map(s => s.venueType).filter(Boolean) as string[])).sort(), [sites])
   const [format, setFormat] = useState('All')
@@ -111,16 +111,16 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
         )}
       </div>}
       <div className="flex items-center justify-between gap-4 mb-4">
-        <p className="text-sm text-gray-500" aria-live="polite">{shown.length} of {total ?? sites.length} {(total ?? sites.length) === 1 ? 'site' : 'sites'}{pins.length < shown.length ? ` · ${pins.length} on the map` : ''}</p>
-        <div className="lg:hidden flex w-48 rounded-full border border-gray-200 bg-white p-1" role="group" aria-label="Show sites as">
+        <p className="text-sm text-gray-500" aria-live="polite">{shown.length} of {total ?? sites.length} {(total ?? sites.length) === 1 ? 'site' : 'sites'}{map && pins.length < shown.length ? ` · ${pins.length} on the map` : ''}</p>
+        {map && <div className="lg:hidden flex w-48 rounded-full border border-gray-200 bg-white p-1" role="group" aria-label="Show sites as">
           <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')} className={tab(view === 'list')}>List</button>
           <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')} className={tab(view === 'map')}>Map</button>
-        </div>
+        </div>}
       </div>
       {/* Map on top at every size (Rif, 4 Nov: no empty column beside a long list), site cards below. */}
       <div className="flex flex-col gap-6">
-        <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
-          className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} lg:h-[480px]`} />
+        {map && <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
+          className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} lg:h-[480px]`} />}
         <div className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} sm:grid-cols-2 lg:grid-cols-3 gap-5`}>
           {shown.map(s => (
             <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}
