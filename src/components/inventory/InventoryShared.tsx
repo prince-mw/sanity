@@ -81,7 +81,7 @@ const pinOf = (s: PublicSite, linked: boolean): MapPin | null =>
  * map, all driven by one filter state, so the pins always match the cards.
  * Map on top, cards below at every size. Phone/tablet: List / Map switch.
  */
-export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = true, total, map = true }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string; renderAction?: (s: PublicSite) => ReactNode; filters?: boolean; total?: number; map?: boolean }) {
+export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = true, total, map = true, mapHeight = 'lg:h-[480px]' }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string; renderAction?: (s: PublicSite) => ReactNode; filters?: boolean; total?: number; map?: boolean; /** Desktop map height; the site finder uses a shorter one beside its filter column. */ mapHeight?: string }) {
   const formats = useMemo(() => Array.from(new Set(sites.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [sites])
   const venues = useMemo(() => Array.from(new Set(sites.map(s => s.venueType).filter(Boolean) as string[])).sort(), [sites])
   const [format, setFormat] = useState('All')
@@ -122,7 +122,7 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
       {/* Map on top at every size (Rif, 4 Nov: no empty column beside a long list), site cards below. */}
       <div className="flex flex-col gap-6">
         {map && <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
-          className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} lg:h-[480px]`} />}
+          className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} ${mapHeight}`} />}
         <div className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} sm:grid-cols-2 lg:grid-cols-3 gap-5`}>
           {shown.map(s => (
             <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}

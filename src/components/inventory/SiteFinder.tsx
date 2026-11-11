@@ -89,7 +89,7 @@ export function SiteFinder({ sites, hasPage, mapTitle, insights = {}, showAreas 
         </div>
       </aside>
       <div className="min-w-0 lg:col-span-9">
-        <SiteGrid sites={shown} total={sites.length} filters={false} hasPage={hasPage} mapTitle={mapTitle} renderAction={action} />
+        <SiteGrid sites={shown} total={sites.length} filters={false} hasPage={hasPage} mapTitle={mapTitle} renderAction={action} mapHeight="lg:h-[340px]" />
         {shown.length === 0 && <p className="mt-6 rounded-2xl border border-dashed border-gray-300 p-6 text-center text-sm text-gray-600">No sites match these filters. <button type="button" onClick={clear} className="font-semibold text-[#2563eb] hover:underline">Clear all</button></p>}
       </div>
       <SiteDetailsDialog site={detail} insights={detail ? insights[detail.id] : undefined} onClose={() => setDetail(null)}
