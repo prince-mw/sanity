@@ -13,11 +13,14 @@ import type { Creative, SiteFace } from '@/lib/proposal/types'
 import { loadImage, sampleAccent } from '@/lib/mockup/compose'
 import { creativeSpec, fitReport, specSentence } from '@/lib/mockup/spec'
 import { SiteMockup } from './SiteMockup'
+import { compressVideo } from '@/lib/mockup/compressVideo'
 
 export type CreativePayload = { creative: Partial<Creative> & { logo?: string; ownFile?: string }; }
 
 const TEMPLATES: { id: Creative['template']; label: string }[] = [{ id: 'band', label: 'Band' }, { id: 'split', label: 'Split' }, { id: 'poster', label: 'Poster' }]
-const MAX_VIDEO_MB = 4.5
+// What one request to the proposal API can carry (PLAYBOOK F22). Bigger videos are shrunk in the browser first.
+const MAX_VIDEO_BYTES = 4 * 1024 * 1024
+const MAX_VIDEO_IN_MB = 300, MAX_VIDEO_SECONDS = 15
 const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-200 bg-white text-gray-700'}`
 const input = 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-mw-blue-500 focus:outline-none'
 
@@ -57,6 +60,8 @@ export function CreativePanel({ site, face, initial, who, onSave, saving = false
   const [fit, setFit] = useState<Creative['fit']>(initial?.fit ?? 'letterbox')
   const [error, setError] = useState<string | null>(null)
   const [reading, setReading] = useState(false)
+  const [progress, setProgress] = useState<string | null>(null)
+  const [info, setInfo] = useState<string | null>(null)
 
   const spec = useMemo(() => creativeSpec({ resolution: site.specs?.resolution, size: site.size, formatFallback: /unipole|portrait|panel|kiosk/i.test(`${site.displayFormat} ${site.format}`) ? 0.6 : 2 }), [site])
   const fitInfo = own && own.width > 0 ? fitReport(own, spec, fit) : null
@@ -76,8 +81,19 @@ export function CreativePanel({ site, face, initial, who, onSave, saving = false
   const onOwn = async (file: File | undefined) => {
     if (!file) return
     const video = file.type.startsWith('video/')
-    if (video && file.size > MAX_VIDEO_MB * 1024 * 1024) { setError(`Videos in a proposal are limited to ${MAX_VIDEO_MB} MB here. A 10-second 1080p H.264 clip at 3 Mbps is about 4 MB; or send the file to your planner.`); return }
+    setInfo(null)
+    if (video && file.size > MAX_VIDEO_IN_MB * 1024 * 1024) { setError(`Please use a video under ${MAX_VIDEO_IN_MB} MB.`); return }
     if (!video && file.size > 15 * 1024 * 1024) { setError('Please use an image under 15 MB.'); return }
+    if (video && file.size > MAX_VIDEO_BYTES) {
+      // too big for one request: shrink it here (720p, first 15 s, no sound) — the mock-up shows it a few hundred pixels wide
+      setReading(true); setError(null); setProgress('Shrinking the video…')
+      try {
+        const c = await compressVideo(file, { maxBytes: MAX_VIDEO_BYTES, maxSeconds: MAX_VIDEO_SECONDS, onProgress: (d, t) => setProgress(`Shrinking the video… ${Math.floor(d)} of ${Math.round(t)} s`) })
+        setOwn({ url: c.dataUrl, kind: 'video', width: c.sourceWidth, height: c.sourceHeight, name: file.name }); setOwnNew(c.dataUrl)
+        setInfo(`Shrunk for the proposal: ${(file.size / 1048576).toFixed(1)} MB → ${(c.bytes / 1048576).toFixed(1)} MB, ${c.width} × ${c.height}, ${Math.round(c.seconds)} s, no sound. Send the original to your planner for the campaign.`)
+      } catch (e) { setError(e instanceof Error ? e.message : 'The video could not be shrunk.') } finally { setReading(false); setProgress(null) }
+      return
+    }
     setReading(true)
     try { const d = await fileToDataUrl(file, video ? 'video' : 'image'); setOwn({ url: d.url, kind: video ? 'video' : 'image', width: d.width, height: d.height, name: file.name }); setOwnNew(d.url); setError(null) }
     catch { setError(video ? 'That video could not be read. Use an MP4 (H.264) or WebM file.' : 'That file could not be read as an image.') } finally { setReading(false) }
@@ -123,9 +139,10 @@ export function CreativePanel({ site, face, initial, who, onSave, saving = false
             </div>
             <label className="flex cursor-pointer items-center gap-3 rounded-lg border-2 border-dashed border-gray-300 px-4 py-4 hover:border-mw-blue-400">
               <Upload className="h-5 w-5 flex-shrink-0 text-[#2563eb]" aria-hidden="true" />
-              <span className="text-sm text-gray-700">{own?.name || `Upload an image (under 15 MB) or a video (MP4/WebM, under ${MAX_VIDEO_MB} MB)`}</span>
+              <span className="text-sm text-gray-700">{own?.name || 'Upload an image (under 15 MB) or a video (MP4, MOV or WebM; large files are shrunk for the proposal)'}</span>
               <input type="file" accept="image/png,image/jpeg,image/webp,video/mp4,video/webm,video/quicktime" className="sr-only" onChange={e => onOwn(e.target.files?.[0])} />
             </label>
+            {info && <p className="text-sm text-emerald-700">{info}</p>}
             {fitInfo && (
               <div>
                 <p className={`text-sm ${fitInfo.kind === 'exact' ? 'text-emerald-700' : 'text-gray-700'}`}>{fitInfo.text}</p>
@@ -136,7 +153,7 @@ export function CreativePanel({ site, face, initial, who, onSave, saving = false
         )}
         {error && <p className="text-sm text-red-600" role="alert">{error}</p>}
         <div className="flex flex-wrap items-center gap-3">
-          <button type="button" onClick={save} disabled={saving || reading || !draft} className="mw-tap inline-flex items-center rounded-lg bg-[#2563eb] px-6 py-3 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{saving ? 'Saving…' : reading ? 'Reading the file…' : who === 'staff' ? 'Save the creative' : 'Use this creative'}</button>
+          <button type="button" onClick={save} disabled={saving || reading || !draft} className="mw-tap inline-flex items-center rounded-lg bg-[#2563eb] px-6 py-3 font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-50">{saving ? 'Saving…' : reading ? (progress ?? 'Reading the file…') : who === 'staff' ? 'Save the creative' : 'Use this creative'}</button>
           {note && <span className="text-sm text-gray-500">{note}</span>}
         </div>
       </div>
