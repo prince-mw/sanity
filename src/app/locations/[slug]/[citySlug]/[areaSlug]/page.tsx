@@ -5,6 +5,12 @@ import { siteHasPage } from '@/lib/inventory/normalize'
 import { InventoryAreaClient } from '@/components/inventory/InventoryAreaClient'
 import { siteInsightsFor } from '@/lib/inventory/siteContent'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
+import { CountryGuide } from '@/components/location/CountryGuide'
+import { AreaFaq } from '@/components/location/AreaFaq'
+import { ProposalPromo } from '@/components/proposal/ProposalPromo'
+import { promoEnabled } from '@/lib/proposal/promo'
+import { marketOf } from '@/lib/proposal/markets'
+import { areaDraftFor, areaFaqJsonLd, areaGuideData, areaGuideFor } from '@/lib/location/areaTemplate'
 
 // Area page: every site in one area of a city, from the Inventory API.
 // Famous areas with fewer than 3 sites become "media owners wanted" pages.
@@ -50,6 +56,15 @@ export default async function AreaPage({ params }: Props) {
   const nearby = area.kind === 'supply' ? citySites.filter(s => s.areaSlug !== area.slug).slice(0, 6) : []
   const shown = [...area.sites, ...nearby]
   const content = await getPlaceContent({ kind: 'area', countrySlug: slug, countryName: first.countryName, citySlug, cityName: first.cityName, areaSlug, areaName: area.name })
+  // The area template: the written guide and FAQ where one exists (data/area-guide-drafts.ts).
+  const draft = areaDraftFor(slug, citySlug, areaSlug)
+  const topics = areaGuideFor(draft, area.name, first.cityName)
+  const showPromo = promoEnabled() && !!marketOf(slug)
+  const faqJsonLd = areaFaqJsonLd(draft)
+  const guide = topics.length ? (
+    <CountryGuide country={area.name} countrySlug={slug} topics={topics} data={areaGuideData(area.sites)} draft={draft}
+      linkBase={`/locations/${slug}/${citySlug}`} placeWord={['place', 'places']} proposalHref={showPromo ? '/proposals/new' : null} tone="brand" />
+  ) : null
   const url = `https://www.movingwalls.com/locations/${slug}/${citySlug}/${areaSlug}`
   const breadcrumb = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
@@ -63,6 +78,7 @@ export default async function AreaPage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
       <InventoryAreaClient
         kind={area.kind}
         areaName={area.name}
@@ -77,6 +93,9 @@ export default async function AreaPage({ params }: Props) {
         otherAreas={areas.filter(a => a.slug !== area.slug).map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
         sample={usingSample()}
         insights={await siteInsightsFor(area.sites)}
+        promo={showPromo ? <ProposalPromo variant="band" market={first.countryName} place={area.name} /> : null}
+        guide={guide}
+        faq={draft ? <AreaFaq placeName={area.name} faqs={draft.faqs} /> : null}
       />
     </>
   )

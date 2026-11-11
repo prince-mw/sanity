@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, type ReactNode } from 'react'
 import { LeadForm } from '../forms/LeadForm'
 import { AudienceSection, RelatedContent } from './ContentBlocks'
 import type { PlaceContent } from '@/lib/inventory/placeContent'
@@ -14,9 +14,13 @@ import type { SiteInsights } from '../proposal/SiteDetailsDialog'
 export type AreaLink = { name: string; slug: string; kind: 'buyer' | 'supply'; count: number }
 
 export function InventoryAreaClient({
-  kind, areaName, cityName, citySlug, countryName, countrySlug, sites, pagedIds, nearby, otherAreas, sample, content, insights = {},
+  kind, areaName, cityName, citySlug, countryName, countrySlug, sites, pagedIds, nearby, otherAreas, sample, content, insights = {}, promo = null, guide = null, faq = null,
 }: {
   insights?: Record<string, SiteInsights>
+  /** The area template (Rif, 11 Nov 2026): the instant-proposal band, the written guide and its FAQ, rendered by the page. */
+  promo?: ReactNode
+  guide?: ReactNode
+  faq?: ReactNode
   kind: 'buyer' | 'supply'
   areaName: string
   cityName: string
@@ -84,6 +88,8 @@ export function InventoryAreaClient({
         </div>
       </section>
 
+      {kind === 'buyer' && promo}
+
       {kind === 'supply' && (
         <section className="bg-white mw-section">
           <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-2 gap-6">
@@ -102,8 +108,6 @@ export function InventoryAreaClient({
           </div>
         </section>
       )}
-
-      <AudienceSection placeName={areaName} personas={content.personas} bg="bg-white" />
 
       {/* Sites */}
       {sites.length > 0 && (
@@ -125,6 +129,9 @@ export function InventoryAreaClient({
           </div>
         </section>
       )}
+
+      {guide ?? <AudienceSection placeName={areaName} personas={content.personas} bg="bg-white" />}
+      {faq}
 
       <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" />
 
