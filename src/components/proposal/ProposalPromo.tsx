@@ -1,7 +1,8 @@
 // The instant-proposal entry points (Rif, 11 Nov 2026): not in every hero, but
 // loud where intent is high — home section, header button, country and city
 // pages, Brands and Agencies, and the end of articles that mention a market.
-// Scoped by market while only Malaysia inventory exists.
+// The home section names no market (Rif, 11 Nov 2026: the planner is not Malaysia-only by design);
+// the country/city bands name their own place because that is where the visitor is.
 //
 //   home  — a full section with the flow drawing, proof line, two buttons
 //   band  — a blue block for country/city pages and Brands/Agencies
@@ -55,7 +56,7 @@ export function ProposalPromo({ variant, market = 'Malaysia', place }: { variant
       <div className="mw-container">
         <div className="grid items-center gap-10 lg:grid-cols-12">
           <div className="lg:col-span-6">
-            <p className="text-sm font-bold uppercase tracking-wider text-[#2563eb]">Instant proposal · {market}</p>
+            <p className="text-sm font-bold uppercase tracking-wider text-[#2563eb]">Instant proposal</p>
             <h2 id="pp-home-title" className="mt-3 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Plan your campaign in two minutes.</h2>
             <p className="mt-4 max-w-xl text-lg text-gray-600">Tell us the objective, the dates and the cities. You get a proposal with real sites picked for the brief, the audience each one reaches and an indicative range, as a link you can share and approve.</p>
             <ul className="mt-6 grid gap-2 sm:grid-cols-2">
