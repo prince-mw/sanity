@@ -37,7 +37,7 @@ export async function buildDemoView(cities: string[] = ['kuala-lumpur']): Promis
     _id: 'proposal-demo', shareId: DEMO_SHARE_ID, editTokenHash: '', status: 'sent', titleLine: titleLineFor(brief),
     creator: { name: '', email: '', company: 'Example Beauty Co.', country: 'Malaysia' }, leadId: null, brief,
     currentVersion: 1, versions: [v1], changeRequests: [], cityRequests: [], participants: [],
-    shown: { options: ['measure', 'moment-cover-the-shopping-moment'], postApproval: ['run-8-weeks', 'creative'] }, derivedFrom: null,
+    shown: { options: [], postApproval: [] }, derivedFrom: null,
     approvedAt: null, createdAt: now, updatedAt: now,
   }
   return resolveSites(doc)

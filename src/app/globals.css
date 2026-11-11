@@ -401,3 +401,45 @@ select {
   .maplibregl-map .maplibregl-ctrl-group button { width: 44px; height: 44px; }
   .maplibregl-map .maplibregl-ctrl-attrib-button { width: 44px; height: 44px; }
 }
+
+/* Proposal offer drawings (OfferArt.tsx): looping SVG, brand colours, CSS only. */
+.offer-art{width:100%;height:auto;display:block;border-radius:12px;background:#eef3ff}
+.offer-art *{transform-box:fill-box}
+.offer-art .oa-sun{transform-box:view-box;transform-origin:160px 90px;animation:oa-spin 6s linear infinite}
+@keyframes oa-spin{to{transform:rotate(360deg)}}
+.offer-art .oa-fade{animation:oa-fade 4s ease-in-out infinite}
+.offer-art .oa-fade-out{animation:oa-fade 4s ease-in-out infinite reverse}
+@keyframes oa-fade{0%,20%{opacity:0}35%,85%{opacity:1}100%{opacity:0}}
+.offer-art .oa-bar{transform-origin:bottom;animation:oa-grow 4s ease-out infinite}
+.offer-art .oa-bar:nth-child(2){animation-delay:.2s}.offer-art .oa-bar:nth-child(3){animation-delay:.4s}.offer-art .oa-bar:nth-child(4){animation-delay:.6s}
+@keyframes oa-grow{0%,10%{transform:scaleY(0)}40%,90%{transform:scaleY(1)}100%{transform:scaleY(0)}}
+.offer-art .oa-ring{transform-origin:center;animation:oa-ring 2s ease-out infinite}
+@keyframes oa-ring{0%{transform:scale(.3);opacity:.9}100%{transform:scale(1.6);opacity:0}}
+.offer-art .oa-dot{animation:oa-walk 4s linear infinite}
+.offer-art .oa-dot:nth-child(2){animation-delay:-1s}.offer-art .oa-dot:nth-child(3){animation-delay:-2s}.offer-art .oa-dot:nth-child(4){animation-delay:-3s}.offer-art .oa-dot:nth-child(5){animation-delay:-.5s}.offer-art .oa-dot:nth-child(6){animation-delay:-2.5s}
+@keyframes oa-walk{0%{transform:translateX(-40px)}100%{transform:translateX(360px)}}
+.offer-art .oa-line,.offer-art .oa-route{stroke-dasharray:300;stroke-dashoffset:300;animation:oa-draw 4s ease-in-out infinite}
+@keyframes oa-draw{0%,15%{stroke-dashoffset:300}60%,90%{stroke-dashoffset:0}100%{stroke-dashoffset:300}}
+.offer-art .oa-fly1{animation:oa-fly1 4s ease-in-out infinite}.offer-art .oa-fly2{animation:oa-fly2 4s ease-in-out infinite}.offer-art .oa-fly3{animation:oa-fly3 4s ease-in-out infinite}
+@keyframes oa-fly1{0%,15%{transform:translate(0,0) scale(1);opacity:0}30%,85%{transform:translate(-95px,-40px) scale(.55);opacity:1}100%{opacity:0}}
+@keyframes oa-fly2{0%,15%{transform:translate(0,0) scale(1);opacity:0}30%,85%{transform:translate(0,-55px) scale(.4,.9);opacity:1}100%{opacity:0}}
+@keyframes oa-fly3{0%,15%{transform:translate(0,0) scale(1);opacity:0}30%,85%{transform:translate(95px,-40px) scale(.55);opacity:1}100%{opacity:0}}
+.offer-art .oa-day{animation:oa-day 6s linear infinite}.offer-art .oa-night{animation:oa-night 6s linear infinite}
+@keyframes oa-day{0%,45%{opacity:1}55%,95%{opacity:0}100%{opacity:1}}@keyframes oa-night{0%,45%{opacity:0}55%,95%{opacity:1}100%{opacity:0}}
+.offer-art .oa-coin{animation:oa-coin 4s ease-in-out infinite}
+@keyframes oa-coin{0%,20%{transform:translate(0,0)}50%,70%{transform:translate(120px,0)}100%{transform:translate(0,0)}}
+.offer-art .oa-wk{transform-origin:left;animation:oa-wk 4s ease-in-out infinite}
+@keyframes oa-wk{0%,20%{transform:scaleX(.5)}50%,90%{transform:scaleX(1)}100%{transform:scaleX(.5)}}
+.offer-art .oa-cell{animation:oa-fill 6s linear infinite;opacity:.15}
+@keyframes oa-fill{0%{opacity:.15}8%,90%{opacity:1}100%{opacity:.15}}
+.offer-art .oa-bob{animation:oa-bob 2s ease-in-out infinite}
+@keyframes oa-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.offer-art .oa-pop{transform-origin:center;animation:oa-pop 4s ease-out infinite}
+@keyframes oa-pop{0%,30%{transform:scale(0);opacity:0}45%,90%{transform:scale(1);opacity:1}100%{transform:scale(0);opacity:0}}
+.offer-art .oa-lit{animation:oa-lit 4s ease-in-out infinite}
+@keyframes oa-lit{0%,35%{fill:#c9d1de}50%,90%{fill:#2563eb}100%{fill:#c9d1de}}
+.offer-art .oa-slide{animation:oa-slide 4s steps(1) infinite}
+@keyframes oa-slide{0%,33%{fill:#2563eb}34%,66%{fill:#66C9F3}67%,100%{fill:#FEDA24}}
+.offer-art .oa-pin2{transform-origin:center bottom;animation:oa-drop 4s ease-out infinite}
+@keyframes oa-drop{0%,30%{transform:translateY(-30px);opacity:0}45%,90%{transform:translateY(0);opacity:1}100%{opacity:0}}
+@media (prefers-reduced-motion: reduce){.offer-art *{animation:none!important;opacity:1;stroke-dashoffset:0}}

@@ -22,18 +22,20 @@ import { SiteDetailsDialog, type SiteInsights } from './SiteDetailsDialog'
 import { useShortlist } from '@/lib/proposal/shortlist'
 import { OBJECTIVES, DURATIONS, BUDGET_BANDS, cityNameOf, marketOf } from '@/lib/proposal/markets'
 import { ADDONS } from '@/lib/proposal/addons'
+import { autoShown } from '@/lib/proposal/shown'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { ProposalView as View, Objective } from '@/lib/proposal/types'
 
 type Row = { siteId: string; reason: string }
 type TabId = 'plan' | 'sites' | 'brief' | 'client'
-const TABS: { id: TabId; label: string }[] = [{ id: 'plan', label: 'Plan' }, { id: 'sites', label: 'Add sites' }, { id: 'brief', label: 'Brief' }, { id: 'client', label: 'What the client sees' }]
+// Round 7 (Rif, 11 Nov 2026): tabs named by what the user does; the client-options tab is staff-only (visitors get the automatic rule in lib/proposal/shown.ts).
+const TABS: { id: TabId; label: string; staff?: boolean }[] = [{ id: 'plan', label: 'Plan' }, { id: 'sites', label: 'Browse sites' }, { id: 'brief', label: 'Plan with AI' }, { id: 'client', label: 'What the client sees', staff: true }]
 const input = 'mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-mw-blue-500 focus:outline-none'
 const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 const MAX_SHOWN = 2
 
-export function ProposalEditor({ view, candidates, insights = {}, demo = false }: { view: View; candidates: PublicSite[]; insights?: Record<string, SiteInsights>; demo?: boolean }) {
+export function ProposalEditor({ view, candidates, insights = {}, demo = false, staff = false }: { view: View; candidates: PublicSite[]; insights?: Record<string, SiteInsights>; demo?: boolean; staff?: boolean }) {
   const router = useRouter()
   const { doc, version, tiers, suggestions, cities } = view
   const market = marketOf(doc.brief.countrySlug)
@@ -65,7 +67,7 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false }
   const { items: shortlist } = useShortlist()
 
   useEffect(() => {
-    const fromHash = () => { const h = location.hash.replace('#', '') as TabId; if (TABS.some(t => t.id === h)) setTab(h) }
+    const fromHash = () => { const h = location.hash.replace('#', '') as TabId; if (TABS.some(t => t.id === h && (!t.staff || staff))) setTab(h) }
     fromHash(); window.addEventListener('hashchange', fromHash)
     return () => window.removeEventListener('hashchange', fromHash)
   }, [])
@@ -136,6 +138,8 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false }
     ...ADDONS.map(a => ({ id: a.id, group: 'Add-on', title: `${a.title}${a.product ? ` · ${a.product}` : ''}`, detail: a.benefit })),
   ].sort((a, b) => askRank(a.id) - askRank(b.id))
   const titleOf = (id: string) => candidatesForClient.find(c => c.id === id)?.title ?? id
+  const auto = autoShown(doc.brief, suggestions, tiers)
+  const overridden = shown.options.length > 0 || shown.postApproval.length > 0
 
   return (
     <div className="bg-white text-gray-900 pb-24">
@@ -156,7 +160,7 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false }
             <Link href="/proposals/mine" className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">Your proposals</Link>
           </div>
           <div role="tablist" aria-label="Editor" className="mt-6 flex gap-1 overflow-x-auto border-b border-white/15">
-            {TABS.map(t => (
+            {TABS.filter(t => !t.staff || staff).map(t => (
               <button key={t.id} role="tab" aria-selected={tab === t.id} aria-controls={`edit-${t.id}`} id={`edittab-${t.id}`} onClick={() => pickTab(t.id)}
                 className={`mw-tap -mb-px whitespace-nowrap border-b-2 px-4 py-3 text-sm font-semibold ${tab === t.id ? 'border-cyan-300 text-white' : 'border-transparent text-blue-100/80 hover:text-white'}`}>{t.label}</button>
             ))}
@@ -361,6 +365,10 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false }
       <section id="edit-client" role="tabpanel" aria-labelledby="edittab-client" className={`bg-gray-50 mw-section ${tab === 'client' ? '' : 'hidden'}`}>
         <div className="mw-container">
           <SgSectionHeading title="What the client sees" intro={`Everything is off until you switch it on. The client page shows at most ${MAX_SHOWN} options before they approve (under the plan, as 'Options from your planner') and at most ${MAX_SHOWN} offers after they approve ('While we confirm availability'). Anything else switched on sits behind a 'More options' link.`} />
+          <div className="mb-6 rounded-2xl border border-mw-blue-100 bg-mw-blue-50/40 p-4 text-sm text-gray-700">
+            <p className="font-semibold text-gray-900">{overridden ? 'This proposal is overridden by hand.' : 'Automatic: smallest ask first, picked from the brief.'}</p>
+            <p className="mt-1">Before approval: {auto.options.map(titleOf).join(' · ') || 'nothing'}. After approval: {auto.postApproval.map(titleOf).join(' · ') || 'nothing'}.{overridden ? ' Switch everything off to go back to the automatic pick.' : ' Switch options on below to override it for this client only.'}</p>
+          </div>
           <div className="mb-6 rounded-2xl border border-mw-blue-100 bg-white p-4 text-sm">
             <p><span className="font-semibold text-gray-700">Before approval the client sees:</span> {shown.options.length ? shown.options.map(titleOf).join(' · ') : <span className="text-gray-500">nothing extra</span>}</p>
             <p className="mt-1"><span className="font-semibold text-gray-700">After approval:</span> {shown.postApproval.length ? shown.postApproval.map(titleOf).join(' · ') : <span className="text-gray-500">nothing extra</span>}</p>

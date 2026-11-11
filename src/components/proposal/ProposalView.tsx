@@ -17,6 +17,9 @@ import { SiteCard } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import { OBJECTIVES, BUDGET_BANDS, citiesLabel } from '@/lib/proposal/markets'
 import { ADDONS } from '@/lib/proposal/addons'
+import { effectiveShown, recommendedBecause } from '@/lib/proposal/shown'
+import { offerCopy } from '@/lib/proposal/offerCopy'
+import { OfferArt, artFor } from './OfferArt'
 import { IdentitySheet, loadIdentity, type Identity } from './IdentitySheet'
 import type { ProposalView as View, ProposalStatus, TierId } from '@/lib/proposal/types'
 import type { SiteSpecs } from '@/lib/inventory/types'
@@ -40,7 +43,7 @@ const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 const money = (inv: { currency: string; low: number; high: number } | null | undefined) => inv ? `${inv.currency} ${num(inv.low)} – ${num(inv.high)}` : null
 
 /** One thing the client can act on: a suggestion, an add-on, a plan size or a city. */
-type Option = { id: string; kind: 'suggestion' | 'addon' | 'tier'; title: string; body: string; meta: string | null; cta: string; done: boolean; busy: boolean; run: () => void }
+type Option = { id: string; kind: 'suggestion' | 'addon' | 'tier'; title: string; body: string; meta: string | null; cta: string; done: boolean; busy: boolean; run: () => void; headline: string; proof: string }
 
 export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
   const { doc, version, sites, totals, audience, cities, tiers, suggestions, pool } = view
@@ -108,7 +111,9 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const copy = async () => { try { await navigator.clipboard.writeText(location.origin + `/proposals/${doc.shareId}`); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* the address bar has it */ } }
 
   /** An option id from the creator's list → what to show and what the click does. */
-  const option = (id: string): Option | null => {
+  const copyCtx = { sites: sites.length, weeks: brief.durationWeeks, cityLabel: whereLabel, digitalSites: sites.filter(s => s.digital).length }
+  const option = (id: string): Option | null => { const o = rawOption(id); if (!o) return null; const c = offerCopy(id, copyCtx, suggestions, tiers); return c ? { ...o, headline: c.headline, proof: c.proof, cta: c.cta } : { ...o, headline: o.title, proof: o.body } }
+  const rawOption = (id: string): Omit<Option, 'headline' | 'proof'> | null => {
     const sg = suggestions.find(x => x.id === id)
     if (sg) { const d = sg.delta; return { id, kind: 'suggestion', title: sg.title, body: sg.body, meta: [d?.sites ? `+${d.sites} ${d.sites === 1 ? 'site' : 'sites'}` : null, d?.reach != null ? `+${num(d.reach)} reach` : null, d?.investment && (d.investment.low || d.investment.high) ? `+${money(d.investment)}` : null].filter(Boolean).join(' · ') || null, cta: 'Add to my plan', done: !!done[id], busy: busy === id, run: () => run.suggestion(id) } }
     const a = ADDONS.find(x => x.id === id)
@@ -122,9 +127,10 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   /** Smallest ask first (Rif): a service on request, then a longer run, then sites by what they add, then the bigger plan. The smaller plan leads. */
   const askOf = (o: Option) => o.kind === 'tier' ? (o.id === 'smaller' ? 0 : 50) : o.kind === 'addon' ? (ADDONS.find(a => a.id === o.id)?.price === 'rates' ? 10 : 5) : o.kind === 'suggestion' ? 20 + ((suggestions.find(x => x.id === o.id)?.delta?.investment?.high ?? 0) / 10000) : 40
   const byAsk = (a: Option, b: Option) => askOf(a) - askOf(b)
-  const before = (doc.shown?.options ?? []).map(option).filter((o): o is Option => !!o).sort(byAsk).slice(0, 2)
-  const after = (doc.shown?.postApproval ?? []).map(option).filter((o): o is Option => !!o).sort(byAsk).slice(0, 2)
-  const allShown = Array.from(new Set([...(doc.shown?.options ?? []), ...(doc.shown?.postApproval ?? [])])).map(option).filter((o): o is Option => !!o).sort(byAsk)
+  const shown = effectiveShown(doc, suggestions, tiers)
+  const before = shown.options.map(option).filter((o): o is Option => !!o).sort(byAsk).slice(0, 2)
+  const after = shown.postApproval.map(option).filter((o): o is Option => !!o).sort(byAsk).slice(0, 2)
+  const allShown = Array.from(new Set([...shown.options, ...shown.postApproval])).map(option).filter((o): o is Option => !!o).sort(byAsk)
   void poolById
 
   const facts: [string, string | null][] = [
@@ -155,15 +161,20 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
     </dl>
   )
 
-  const optionCard = (o: Option, tone: 'light' | 'dark' = 'light') => (
-    <li key={o.id} className={`flex flex-col rounded-2xl border p-5 ${tone === 'dark' ? 'border-white/20 bg-white/10 text-white' : o.done ? 'border-[#2563eb] bg-mw-blue-50/40' : 'border-gray-200 bg-white'}`}>
-      <h3 className={`font-bold ${tone === 'dark' ? 'text-white' : 'text-gray-900'}`}>{o.title}</h3>
-      <p className={`mt-1 flex-1 text-sm ${tone === 'dark' ? 'text-blue-100/90' : 'text-gray-700'}`}>{o.body}</p>
-      {o.meta && <p className={`mt-2 text-xs font-semibold ${tone === 'dark' ? 'text-cyan-200' : 'text-[#2563eb]'}`}>{o.meta}</p>}
-      <button type="button" disabled={o.done || busy !== null} onClick={o.run}
-        className={`mw-tap mt-4 inline-flex items-center justify-center rounded-lg px-4 py-2.5 text-sm font-semibold disabled:opacity-80 ${o.done ? (tone === 'dark' ? 'bg-white/15 text-white' : 'border border-gray-200 bg-white text-gray-500') : tone === 'dark' ? 'bg-white text-[#2563eb] hover:bg-cyan-50' : 'bg-[#2563eb] text-white hover:bg-[#1d4ed8]'}`}>
-        {o.busy ? 'Working…' : o.done ? 'Added' : o.cta}
-      </button>
+  // Offers that sell (Rif, 11 Nov 2026): the drawing, a benefit headline, one proof line about this plan, the ask. The first one leads as Recommended.
+  const optionCard = (o: Option, tone: 'light' | 'dark' = 'light', lead = false) => (
+    <li key={o.id} className={`flex flex-col gap-5 rounded-2xl border p-5 sm:flex-row sm:p-6 ${tone === 'dark' ? 'border-white/20 bg-white/10 text-white' : o.done ? 'border-[#2563eb] bg-mw-blue-50/40' : lead ? 'border-[#2563eb] bg-white' : 'border-gray-200 bg-white'}`}>
+      <div className="sm:w-2/5 sm:flex-shrink-0"><OfferArt art={artFor(o.id, o.kind)} /></div>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <p className={`text-xs font-bold uppercase tracking-wider ${tone === 'dark' ? 'text-cyan-300' : 'text-[#2563eb]'}`}>{lead ? recommendedBecause(brief.objective) : o.title}</p>
+        <h3 className={`mt-1 text-lg font-bold leading-snug ${tone === 'dark' ? 'text-white' : 'text-gray-900'}`}>{o.headline}</h3>
+        <p className={`mt-2 flex-1 text-sm leading-relaxed ${tone === 'dark' ? 'text-blue-100/90' : 'text-gray-700'}`}>{o.proof}</p>
+        {o.meta && <p className={`mt-2 text-xs font-semibold ${tone === 'dark' ? 'text-cyan-200' : 'text-gray-500'}`}>{o.meta}</p>}
+        <button type="button" disabled={o.done || busy !== null} onClick={o.run}
+          className={`mw-tap mt-4 inline-flex items-center justify-center self-start rounded-lg px-5 py-2.5 text-sm font-semibold disabled:opacity-80 ${o.done ? (tone === 'dark' ? 'bg-white/15 text-white' : 'border border-gray-200 bg-white text-gray-500') : tone === 'dark' ? 'bg-white text-[#2563eb] hover:bg-cyan-50' : 'bg-[#2563eb] text-white hover:bg-[#1d4ed8]'}`}>
+          {o.busy ? 'Working…' : o.done ? 'Added' : o.cta}
+        </button>
+      </div>
     </li>
   )
 
@@ -217,14 +228,22 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
       {approved && (
         <section className={`${SG_NAVY} border-t border-white/10 text-white mw-section-sm no-print`}>
           <div className="mw-container">
-            <h2 className="text-xl font-bold">Thank you. A planner confirms availability within one working day.</h2>
+            <h2 className="text-xl font-bold sm:text-2xl">Thank you. A planner checks availability for your dates and comes back to you with the next step.</h2>
+            <p className="mt-2 max-w-2xl text-blue-100">Nothing is booked until you have confirmed availability and the final placements with us.</p>
             {after.length > 0 && (
               <>
-                <p className="mt-4 text-sm font-semibold uppercase tracking-wider text-cyan-300">While we confirm availability</p>
-                <ul className="mt-3 grid gap-4 sm:grid-cols-2">{after.map(o => optionCard(o, 'dark'))}</ul>
+                <p className="mt-8 text-sm font-semibold uppercase tracking-wider text-cyan-300">While we check availability</p>
+                <ul className="mt-3 grid gap-4 lg:grid-cols-2">{after.map((o, i) => optionCard(o, 'dark', i === 0))}</ul>
               </>
             )}
             {allShown.length > after.length && <button type="button" onClick={() => setSheet('offers')} className="mw-tap mt-4 text-sm font-semibold text-cyan-200 hover:underline">Ask about more →</button>}
+            <p className="mt-10 text-sm font-semibold uppercase tracking-wider text-cyan-300">Keep exploring</p>
+            <ul className="mt-3 grid gap-4 sm:grid-cols-3">
+              {[['Case studies', 'What brands like yours did with out-of-home.', '/case-studies'], [`Sites in ${citiesLabel(brief.countrySlug, [])}`, 'Every city, area and site we can plan.', `/locations/${brief.countrySlug}`], ['Ideas and news', 'Planning guides and what is new in the market.', '/blog']].map(([h, b, href]) => (
+                <li key={href}><Link href={href} className="mw-tap flex h-full flex-col rounded-2xl border border-white/20 bg-white/5 p-5 hover:bg-white/10"><span className="font-bold">{h}</span><span className="mt-1 text-sm text-blue-100/90">{b}</span></Link></li>
+              ))}
+            </ul>
+            <Link href="/" className="mw-tap mt-6 inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">Back to movingwalls.com</Link>
           </div>
         </section>
       )}
@@ -322,7 +341,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
               </dl>
             </div>
             <ol className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {[['Confirm the sites', 'Approve this plan, or tell us what to change. The link stays the same; the plan updates.'], ['Availability check', 'A Moving Walls planner confirms each site for your dates within one working day.'], ['Artwork and specs', 'We send the specs for every screen and board, and can mock up your creative on each.'], ['Go live', 'Campaign starts on your date, with play reports for digital sites.']].map(([h, b], i) => (
+              {[['Confirm the sites', 'Approve this plan, or tell us what to change. The link stays the same; the plan updates.'], ['Availability check', 'A Moving Walls planner confirms each site for your dates before anything is booked.'], ['Artwork and specs', 'We send the specs for every screen and board, and can mock up your creative on each.'], ['Go live', 'Campaign starts on your date, with play reports for digital sites.']].map(([h, b], i) => (
                 <li key={h} className="flex gap-3"><span className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white">{i + 1}</span><div><p className="font-bold text-gray-900">{h}</p><p className="text-sm text-gray-600">{b}</p></div></li>
               ))}
             </ol>
@@ -334,8 +353,8 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
       {!approved && before.length > 0 && (
         <section className="bg-gray-50 mw-section-sm no-print">
           <div className="mw-container">
-            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-500">Options from your planner</h2>
-            <ul className="mt-4 grid gap-4 sm:grid-cols-2">{before.map(o => optionCard(o))}</ul>
+            <h2 className="text-sm font-bold uppercase tracking-wider text-gray-500">Two ways to make it work harder</h2>
+            <ul className="mt-4 grid gap-4 lg:grid-cols-2">{before.map((o, i) => optionCard(o, 'light', i === 0))}</ul>
             {allShown.length > before.length && <button type="button" onClick={() => setSheet('options')} className="mw-tap mt-4 text-sm font-semibold text-[#2563eb] hover:underline">More options →</button>}
           </div>
         </section>
@@ -358,7 +377,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
         <div className="fixed inset-0 z-[60] flex items-end justify-center bg-black/50 p-0 sm:items-center sm:p-4" role="dialog" aria-modal="true" aria-label="More options" onClick={e => { if (e.target === e.currentTarget) setSheet(null) }}>
           <div className="max-h-[85vh] w-full overflow-y-auto rounded-t-2xl bg-white p-6 shadow-2xl sm:max-w-2xl sm:rounded-2xl">
             <div className="flex items-center justify-between"><h2 className="text-xl font-bold text-[#2563eb]">More from your planner</h2><button type="button" onClick={() => setSheet(null)} className="mw-tap rounded-lg px-3 py-1 text-sm font-semibold text-gray-600 hover:bg-gray-100">Close</button></div>
-            <ul className="mt-4 grid gap-4 sm:grid-cols-2">{allShown.map(o => optionCard(o))}</ul>
+            <ul className="mt-4 grid gap-4">{allShown.map(o => optionCard(o))}</ul>
           </div>
         </div>
       )}

@@ -18,5 +18,5 @@ export default async function DemoEditPage({ searchParams }: { searchParams: Pro
   const available = (marketOf(view.doc.brief.countrySlug)?.cities ?? []).filter(c => c.available).map(c => c.slug)
   const candidates = (await Promise.all(available.map(c => sitesFor(view.doc.brief.countrySlug, c)))).flat()
   const insights = await siteInsightsFor(candidates)
-  return <ProposalEditor key={view.doc.brief.cities.join(',')} view={view} candidates={candidates} insights={insights} demo />
+  return <ProposalEditor key={view.doc.brief.cities.join(',')} view={view} candidates={candidates} insights={insights} demo staff />
 }

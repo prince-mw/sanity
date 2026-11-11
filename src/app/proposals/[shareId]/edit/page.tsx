@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
 import { getProposalByShareId, resolveSites } from '@/lib/proposal/store'
-import { readProposalGrant, canEdit } from '@/lib/proposal/access'
+import { readProposalGrant, canEdit, isStaffEmail } from '@/lib/proposal/access'
 import { sitesFor } from '@/lib/inventory/source'
 import { siteInsightsFor } from '@/lib/inventory/siteContent'
 import { marketOf } from '@/lib/proposal/markets'
@@ -44,5 +44,5 @@ export default async function EditProposalPage({ params, searchParams }: Props) 
   const candidates = lists.flat()
   const insights = await siteInsightsFor(candidates)
   const { editTokenHash: _h, ...pub } = view.doc // eslint-disable-line @typescript-eslint/no-unused-vars
-  return <ProposalEditor key={`${doc.shareId}-${doc.currentVersion}-${doc.brief.cities.join(',')}`} view={{ ...view, doc: { ...pub, editTokenHash: '' } }} candidates={candidates} insights={insights} />
+  return <ProposalEditor key={`${doc.shareId}-${doc.currentVersion}-${doc.brief.cities.join(',')}`} view={{ ...view, doc: { ...pub, editTokenHash: '' } }} candidates={candidates} insights={insights} staff={!!grant && (grant.tester === true || isStaffEmail(grant.email))} />
 }
