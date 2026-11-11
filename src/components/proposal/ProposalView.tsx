@@ -86,9 +86,11 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
 
       <section className="bg-white mw-section">
         <div className="mw-container">
-          <SgSectionHeading title="Campaign summary" />
           <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
-            <p className="lg:col-span-7 text-lg leading-relaxed text-gray-700">{version.summary}</p>
+            <div className="lg:col-span-7">
+              <h2 className="mb-4 text-2xl font-bold tracking-tight text-[#2563eb] sm:text-3xl lg:text-4xl">Campaign summary</h2>
+              <p className="text-lg leading-relaxed text-gray-700">{version.summary}</p>
+            </div>
             <dl className="lg:col-span-5 grid grid-cols-2 gap-3">
               {facts.filter(([, v]) => v).map(([k, v]) => (
                 <div key={k} className={`rounded-xl border border-gray-200 p-3 ${k === 'Audience' ? 'col-span-2' : ''}`}>
