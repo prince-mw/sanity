@@ -18,6 +18,8 @@ import type { Dashboard } from './data'
 const TARGETS_TABLE = '2553974000072206020'
 const DEALS_TABLE = '2553974000069802853'
 export const TARGET_YEAR = 2026
+/** Shown on the tab and the Overview while the targets table is being refreshed (empty string hides it) */
+export const TARGETS_WARNING = 'Targets may be out of date — being confirmed with the team.'
 // Deal names that are tests ("Concept test" is a real research product, so only a leading "test")
 const TEST_DEAL = /^(test|dummy)\b/i
 

@@ -5,12 +5,15 @@ import type { LeadsDashboard } from './leads'
 import type { ContentDashboard } from './content'
 import type { BlogAudit } from './blogAudit'
 import type { StatusMap } from './actions'
-import type { TabKey } from './tabs'
+import { TABS, type TabKey } from './tabs'
+import { TARGETS_WARNING, type PipelineDashboard } from './pipeline'
+import type { AdsDashboard } from './ads'
 
 // Overview tab: the headline numbers, wins, concerns and open action items of the other tabs (not Roadmap),
 // for the same date range. Built from those tabs' cached data; a source that fails to load is left out.
 
-export type MetricFormat = 'number' | 'usd' | 'percent'
+/** 'sgd': Google Ads amounts, in the ad account's currency */
+export type MetricFormat = 'number' | 'usd' | 'sgd' | 'percent'
 
 export interface Metric {
   label: string
@@ -34,6 +37,8 @@ export interface TabSummary {
   concern?: { title: string; detail: string }
   /** Shown instead of metrics when the source couldn't load */
   unavailable?: string
+  /** Caveat shown on the card, e.g. targets still being confirmed */
+  warning?: string
 }
 
 export interface OverviewAction { id: string; tab: TabKey; tabLabel: string; priority: 'High' | 'Medium' | 'Low'; title: string; detail: string }
@@ -44,6 +49,8 @@ export interface OverviewData {
   tabs: TabSummary[]
   progress: { tab: TabKey; label: string; total: number; wip: number; done: number }[]
   topActions: OverviewAction[]
+  /** Yearly target progress (Pipeline & Targets tab); not tied to the selected dates */
+  target: { year: number; target: number; budget: number; won: number; forecast: number; yearElapsed: number; warning: string } | null
 }
 
 interface Sources {
@@ -52,12 +59,14 @@ interface Sources {
   leads: LeadsDashboard | null
   content: ContentDashboard | null
   blog: BlogAudit | null
+  ads: AdsDashboard | null
+  pipeline: PipelineDashboard | null
   statuses: StatusMap
 }
 
 const sum = <T,>(xs: T[], f: (x: T) => number) => xs.reduce((n, x) => n + f(x), 0)
 
-export function buildOverview({ site, campaigns, leads, content, blog, statuses }: Sources): OverviewData {
+export function buildOverview({ site, campaigns, leads, content, blog, ads, pipeline, statuses }: Sources): OverviewData {
   const headline: Metric[] = []
   if (site) {
     const s = site.site
@@ -156,6 +165,41 @@ export function buildOverview({ site, campaigns, leads, content, blog, statuses 
     })
   } else tabs.push({ key: 'content', title: 'Content', metrics: [], unavailable: 'Content data couldn’t load.' })
 
+  if (ads) {
+    const a = ads.current
+    const b = ads.previous
+    const top = [...ads.campaigns].sort((x, y) => y.leads - x.leads)[0]
+    tabs.push({
+      key: 'ads', title: 'Ads',
+      metrics: [
+        { label: 'Ad spend', value: a.cost, prev: b.cost, format: 'sgd', lowerIsBetter: true, note: 'per Google Analytics' },
+        { label: 'Leads from ads', value: a.leads, prev: b.leads, format: 'number' },
+        { label: 'Cost per lead', value: a.leads ? a.cost / a.leads : 0, prev: b.leads ? b.cost / b.leads : 0, format: 'sgd', lowerIsBetter: true },
+      ],
+      win: top && top.leads ? { title: `Most leads: ${top.name}`, detail: `${top.leads} leads from ${top.sessions.toLocaleString('en-US')} visits.` } : undefined,
+    })
+  }
+
+  if (pipeline) {
+    const t = pipeline.total
+    const share = (n: number, of: number) => (of ? `${Math.round((n / of) * 100)}%` : '–')
+    const onTrack = pipeline.regions.filter((r) => r.status === 'On track')
+    const gap = pipeline.regions.filter((r) => r.target).sort((a, b) => b.target - b.forecast - (a.target - a.forecast))[0]
+    tabs.push({
+      key: 'pipeline', title: `Pipeline & Targets (${pipeline.year})`, warning: TARGETS_WARNING,
+      metrics: [
+        { label: 'Won so far', value: t.won, prev: 0, format: 'usd', hideDelta: true, note: `${share(t.won, t.target)} of target` },
+        { label: 'Expected by year end', value: t.forecast, prev: 0, format: 'usd', hideDelta: true, note: `${share(t.forecast, t.target)} target · ${share(t.forecast, t.budget)} budget` },
+        { label: 'Open pipeline', value: t.open, prev: 0, format: 'usd', hideDelta: true, note: `${t.openDeals} deals` },
+      ],
+      win: onTrack.length ? { title: `On track: ${onTrack.map((r) => r.label).join(', ')}`, detail: 'Expected to reach at least 90% of target.' } : undefined,
+      concern: gap && gap.forecast < gap.target ? { title: `Biggest gap: ${gap.label}`, detail: `Expected ${share(gap.forecast, gap.target)} of its target, $${Math.round((gap.target - gap.forecast) / 1000).toLocaleString('en-US')}k short.` } : undefined,
+    })
+  }
+  // Area cards in the same order as the tabs
+  const order = (k: TabKey) => TABS.findIndex((t) => t.key === k)
+  tabs.sort((a, b) => order(a.key) - order(b.key))
+
   // Action items and their shared status, per tab
   const statusOf = (id: string) => statuses[id]?.status || 'not-started'
   const groups: { tab: TabKey; label: string; items: Omit<OverviewAction, 'tab' | 'tabLabel'>[] }[] = [
@@ -190,5 +234,9 @@ export function buildOverview({ site, campaigns, leads, content, blog, statuses 
     })
   }
 
-  return { headline, funnel, tabs, progress, topActions }
+  const target = pipeline
+    ? { year: pipeline.year, target: pipeline.total.target, budget: pipeline.total.budget, won: pipeline.total.won, forecast: pipeline.total.forecast, yearElapsed: pipeline.yearElapsed, warning: TARGETS_WARNING }
+    : null
+
+  return { headline, funnel, tabs, progress, topActions, target }
 }

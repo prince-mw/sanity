@@ -5,8 +5,10 @@ import { getActionStatuses } from '@/lib/insights/actions'
 import { calendarPeriods, parseRange, periods, type RangeKey } from '@/lib/insights/ranges'
 import { DEFAULT_TAB, RESTRICTED_TABS, TABS, type TabKey } from '@/lib/insights/tabs'
 import { getInsightsConfig } from '@/lib/insights/config'
-import { TARGET_YEAR, getPipelineDashboard, withWebsite } from '@/lib/insights/pipeline'
+import { TARGETS_WARNING, TARGET_YEAR, getPipelineDashboard, withWebsite } from '@/lib/insights/pipeline'
 import PipelineTab from './PipelineTab'
+import { getAdsDashboard } from '@/lib/insights/ads'
+import AdsTab from './AdsTab'
 import { isInsightsConfigured } from '@/lib/insights/google'
 import InsightsLogin from './InsightsLogin'
 import InsightsShell from './InsightsShell'
@@ -95,24 +97,38 @@ async function LeadsSection({ range }: { range: RangeKey }) {
   }
 }
 
-async function OverviewSection({ range }: { range: RangeKey }) {
+/** `withPipeline`: false when the Pipeline & Targets tab is restricted for this person, so its numbers stay hidden here too */
+async function OverviewSection({ range, withPipeline }: { range: RangeKey; withPipeline: boolean }) {
   const safe = <T,>(p: Promise<T>) => p.catch(() => null)
   const [google, zoho] = await Promise.all([isInsightsConfigured(), isZohoConfigured()])
   // Google data in parallel; the Zoho-based tabs one after another, as Zoho rate-limits bursts of calls
   const zohoData = async () => {
-    if (!zoho) return { leads: null, campaigns: null, content: null }
+    if (!zoho) return { leads: null, campaigns: null, content: null, pipeline: null }
     const leads = await safe(getLeadsDashboard(range))
     const campaigns = await safe(getCampaignDashboard(range))
     const content = await safe(getContentDashboard(range))
-    return { leads, campaigns, content }
+    const pipeline = withPipeline ? await safe(getPipelineDashboard()) : null
+    return { leads, campaigns, content, pipeline }
   }
-  const [site, z, blog, statuses] = await Promise.all([
+  const [site, ads, z, blog, statuses] = await Promise.all([
     google ? safe(getDashboard(range)) : null,
+    google ? safe(getAdsDashboard(range)) : null,
     zohoData(),
     safe(getBlogAudit()),
     getActionStatuses().catch(() => ({})),
   ])
-  return <OverviewTab data={buildOverview({ site, ...z, blog, statuses })} range={range} />
+  return <OverviewTab data={buildOverview({ site, ads, ...z, blog, statuses })} range={range} />
+}
+
+async function AdsSection({ range }: { range: RangeKey }) {
+  if (!(await isInsightsConfigured())) return <Message title="Data connection is not configured." detail="Google settings are missing." />
+  try {
+    // Leads by market and city come from the Location pages data; the tab still loads without them
+    const [data, site] = await Promise.all([getAdsDashboard(range), getDashboard(range).catch(() => null)])
+    return <AdsTab data={data} websiteLeads={site?.leadSources ?? null} />
+  } catch (err) {
+    return <Message title="Could not load Google Ads data from Google Analytics." detail={err instanceof Error ? err.message : String(err)} />
+  }
 }
 
 async function PipelineSection() {
@@ -120,7 +136,7 @@ async function PipelineSection() {
   try {
     // Website activity per region for the same year comes from the Location pages data (Google Analytics)
     const [data, site] = await Promise.all([getPipelineDashboard(), (await isInsightsConfigured()) ? getDashboard('this-year').catch(() => null) : null])
-    return <PipelineTab data={withWebsite(data, site)} />
+    return <PipelineTab data={withWebsite(data, site)} warning={TARGETS_WARNING} />
   } catch (err) {
     return <Message title="Could not load pipeline data from Zoho Analytics." detail={err instanceof Error ? err.message : String(err)} />
   }
@@ -154,7 +170,7 @@ export default async function InternalInsightsPage({ searchParams }: { searchPar
 
   return (
     <InsightsShell user={user} tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)} snapshot={snapshot} hiddenTabs={hiddenTabs}>
-      {tab === 'overview' ? <OverviewSection range={range} /> : tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'pipeline' ? <PipelineSection /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
+      {tab === 'overview' ? <OverviewSection range={range} withPipeline={!hiddenTabs.includes('pipeline')} /> : tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'ads' ? <AdsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'pipeline' ? <PipelineSection /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
     </InsightsShell>
   )
 }

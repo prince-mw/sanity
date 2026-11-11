@@ -1,11 +1,12 @@
 // Tabs on /internal-insights (shared by server and client code). To add a tab: add it here,
 // then render its content in src/app/internal-insights/page.tsx.
-export type TabKey = 'overview' | 'locations' | 'campaigns' | 'leads' | 'pipeline' | 'content' | 'blog' | 'projects'
+export type TabKey = 'overview' | 'locations' | 'campaigns' | 'ads' | 'leads' | 'pipeline' | 'content' | 'blog' | 'projects'
 
 export const TABS: { key: TabKey; label: string; title: string }[] = [
   { key: 'overview', label: 'Overview', title: 'Marketing Overview' },
   { key: 'locations', label: 'Location pages', title: 'Location Pages Performance' },
   { key: 'campaigns', label: 'Email campaigns', title: 'Email Campaign Performance' },
+  { key: 'ads', label: 'Ads', title: 'Google Ads' },
   { key: 'leads', label: 'Leads & Deals', title: 'Leads & Deals' },
   { key: 'pipeline', label: 'Pipeline & Targets', title: 'Pipeline & Targets' },
   { key: 'content', label: 'Content', title: 'Content Effectiveness' },

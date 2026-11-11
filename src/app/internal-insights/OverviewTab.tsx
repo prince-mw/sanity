@@ -5,8 +5,9 @@ import Link from 'next/link'
 import type { Metric, MetricFormat, OverviewData } from '@/lib/insights/overview'
 import type { RangeKey } from '@/lib/insights/ranges'
 import { Delta, Kpi, nf, pct, usd } from './ui'
+import { TargetsWarning } from './PipelineTab'
 
-const fmt = (n: number, f: MetricFormat) => (f === 'usd' ? usd(n) : f === 'percent' ? pct(n) : nf(n))
+const fmt = (n: number, f: MetricFormat) => (f === 'usd' ? usd(n) : f === 'sgd' ? `SGD ${nf(n)}` : f === 'percent' ? pct(n) : nf(n))
 const PRIORITY_STYLE = { High: 'bg-red-100 text-red-700', Medium: 'bg-amber-100 text-amber-800', Low: 'bg-gray-100 text-gray-600' }
 
 function MetricRow({ m }: { m: Metric }) {
@@ -25,8 +26,35 @@ function MetricRow({ m }: { m: Metric }) {
 export default function OverviewTab({ data, range }: { data: OverviewData; range: RangeKey }) {
   const tabHref = (tab: string) => `/internal-insights?tab=${tab}&range=${range}`
 
+  const t = data.target
+  const ofTarget = (n: number) => (t && t.target ? `${Math.min(100, (n / t.target) * 100)}%` : '0%')
+
   return (
     <>
+      {/* Yearly target progress (not tied to the date buttons) */}
+      {t && t.target > 0 && (
+        <section className="mb-6 rounded-2xl border border-gray-200 bg-white p-5" aria-label={`${t.year} revenue target progress`}>
+          <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3">
+            <h2 className="text-base font-bold text-[#062068]">{t.year} revenue target <span className="text-xs font-normal text-gray-400">whole year, all regions · doesn&apos;t change with the dates</span></h2>
+            <Link href={tabHref('pipeline')} className="text-xs font-semibold text-mw-blue-600 hover:text-[#062068] whitespace-nowrap">Open Pipeline &amp; Targets →</Link>
+          </div>
+          {t.warning && <div className="mb-3"><TargetsWarning text={t.warning} /></div>}
+          <div className="relative h-3.5 rounded-full bg-gray-100" role="img" aria-label={`Won ${usd(t.won)} and expected ${usd(t.forecast)} of the ${usd(t.target)} target`}>
+            <div className="absolute inset-y-0 left-0 rounded-full bg-sky-300" style={{ width: ofTarget(t.forecast) }} />
+            <div className="absolute inset-y-0 left-0 rounded-full bg-[#062068]" style={{ width: ofTarget(t.won) }} />
+            {t.budget > 0 && <div className="absolute -top-1 -bottom-1 w-0.5 bg-amber-500" style={{ left: ofTarget(t.budget) }} aria-hidden="true" />}
+            <div className="absolute -top-1 -bottom-1 w-0.5 bg-gray-500" style={{ left: `${t.yearElapsed * 100}%` }} aria-hidden="true" />
+          </div>
+          <p className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-sm text-gray-600">
+            <span className="inline-flex items-center gap-1.5"><span className="h-2 w-3 rounded-full bg-[#062068]" />Won <b className="text-gray-900">{usd(t.won)}</b> ({pct(t.won / t.target, 0)})</span>
+            <span className="inline-flex items-center gap-1.5"><span className="h-2 w-3 rounded-full bg-sky-300" />Expected <b className="text-gray-900">{usd(t.forecast)}</b> ({pct(t.forecast / t.target, 0)} of target{t.budget ? `, ${pct(t.forecast / t.budget, 0)} of budget` : ''})</span>
+            {t.budget > 0 && <span className="inline-flex items-center gap-1.5"><span className="h-3 w-0.5 bg-amber-500" />Revenue budget <b className="text-gray-900">{usd(t.budget)}</b></span>}
+            <span className="inline-flex items-center gap-1.5"><span className="h-3 w-0.5 bg-gray-500" />{pct(t.yearElapsed, 0)} of the year gone</span>
+            <span>Target <b className="text-gray-900">{usd(t.target)}</b></span>
+          </p>
+        </section>
+      )}
+
       {/* Headline numbers */}
       <section className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8" aria-label="Headline numbers">
         {data.headline.map((m) => (
@@ -67,6 +95,7 @@ export default function OverviewTab({ data, range }: { data: OverviewData; range
                 <h3 className="text-base font-bold text-[#062068]">{t.title}</h3>
                 <Link href={tabHref(t.key)} className="text-xs font-semibold text-mw-blue-600 hover:text-[#062068] whitespace-nowrap">Open tab →</Link>
               </div>
+              {t.warning && <p className="mb-2 text-xs font-medium text-amber-800">⚠ {t.warning}</p>}
               {t.unavailable ? (
                 <p className="text-sm text-gray-500">{t.unavailable}</p>
               ) : (
@@ -145,7 +174,8 @@ export default function OverviewTab({ data, range }: { data: OverviewData; range
           <li>Every number here comes from the other tabs for the same dates; open a tab for the detail and its own notes. Roadmap &amp; execution isn&apos;t included.</li>
           <li><strong>Website leads</strong> are form fills recorded by Google Analytics; <strong>CRM leads</strong> are what reached Zoho CRM, so the two can differ.</li>
           <li><strong>Deals and deal value</strong> belong to the period their lead came in, so recent periods grow as leads turn into deals.</li>
-          <li><strong>Blog findings</strong> is a fixed 12-month audit, so its numbers don&apos;t change with the dates.</li>
+          <li><strong>Blog findings</strong> is a fixed 12-month audit, and the <strong>revenue target</strong> bar and <strong>Pipeline &amp; Targets</strong> card cover the whole year, so their numbers don&apos;t change with the dates.</li>
+          <li><strong>Ad spend</strong> is as reported by Google Analytics (in SGD), which runs lower than the Google Ads bill.</li>
         </ul>
       </section>
     </>

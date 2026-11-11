@@ -27,7 +27,18 @@ function ProgressBar({ r, pace }: { r: RegionRow; pace: number }) {
   )
 }
 
-export default function PipelineTab({ data }: { data: PipelineDashboard }) {
+/** A small amber banner above everything while the targets are being confirmed */
+export function TargetsWarning({ text }: { text: string }) {
+  if (!text) return null
+  return (
+    <p className="flex items-start gap-2 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm text-amber-900" role="note">
+      <span aria-hidden="true">⚠</span>
+      <span>{text}</span>
+    </p>
+  )
+}
+
+export default function PipelineTab({ data, warning = '' }: { data: PipelineDashboard; warning?: string }) {
   const t = data.total
   const remaining = Math.max(0, t.target - t.won)
   const behind = data.regions.filter((r) => r.status === 'Behind' || r.status === 'At risk').sort((a, b) => b.target - b.forecast - (a.target - a.forecast))
@@ -35,6 +46,8 @@ export default function PipelineTab({ data }: { data: PipelineDashboard }) {
 
   return (
     <>
+      {warning && <div className="mb-4"><TargetsWarning text={warning} /></div>}
+
       {/* Company totals */}
       <section className="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4 mb-4" aria-label={`${data.year} totals`}>
         <Kpi label={`${data.year} target`} value={usd(t.target)} cur={0} prev={0} hideDelta note={`revenue budget ${usd(t.budget)}`} info="Yearly revenue target and revenue budget, from the Zoho Analytics table “Budget Region Summary 2026”. The target looks like the stretch goal and the budget the planned revenue (to be confirmed)." />
