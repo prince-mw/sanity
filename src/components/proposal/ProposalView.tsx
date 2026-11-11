@@ -10,7 +10,7 @@
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Check, Link2, Pencil, Printer, Users } from 'lucide-react'
+import { Check, Link2, Pencil, Printer, Users, Lock } from 'lucide-react'
 import { PERSONA_ICONS, specRows } from './SiteDetailsDialog'
 import { SG_NAVY } from '../SingaporeShared'
 import { SiteCard } from '../inventory/InventoryShared'
@@ -184,10 +184,13 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const actions = (compact: boolean) => approved ? (
     <p className={`flex items-center gap-2 font-semibold ${compact ? 'text-sm text-emerald-700' : 'text-white'}`}><Check className="h-5 w-5 text-emerald-300" aria-hidden="true" /> Approved</p>
   ) : (
+    <>
     <div className={`flex ${compact ? 'gap-2' : 'flex-col gap-3 sm:flex-row'}`}>
       <button type="button" disabled={busy !== null} onClick={() => act('approve')} className={`mw-tap inline-flex items-center justify-center rounded-lg font-semibold ${compact ? 'bg-[#2563eb] px-4 py-2 text-sm text-white hover:bg-[#1d4ed8]' : 'bg-white px-6 py-3 text-[#2563eb] hover:bg-cyan-50'} disabled:opacity-60`}>{busy === 'approve' ? 'Sending…' : 'Approve this proposal'}</button>
       <button type="button" onClick={() => { setAsk(true); setTimeout(() => document.getElementById('request-changes')?.scrollIntoView({ behavior: 'smooth', block: 'center' }), 50) }} className={`mw-tap inline-flex items-center justify-center rounded-lg font-semibold ${compact ? 'border border-gray-300 px-4 py-2 text-sm text-gray-700' : 'border-2 border-white/40 px-6 py-3 text-white hover:bg-white/10'}`}>Request changes</button>
     </div>
+    {!compact && creative && sites.length > 1 && <p className="mt-2 flex items-center gap-1.5 text-sm text-blue-100/90"><Lock className="h-4 w-4" aria-hidden="true" /> Approving unlocks your ad on all {sites.length} screens.</p>}
+    </>
   )
 
   const numbers = (compact: boolean) => (
@@ -273,11 +276,34 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
               <div className="lg:col-span-4">
                 <p className="text-sm font-bold uppercase tracking-wider text-[#2563eb]">Your ad on the lead site</p>
                 <h2 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">{creative.mode === 'own' ? 'Your creative' : creative.brand || 'Your brand'} on {lead.name}</h2>
-                <p className="mt-3 text-gray-600">A real photo of the site with your creative on its screen. Approve the plan and every site in it is mocked up the same way, ready to download{sites.length > 1 ? ` — ${sites.length} sites in all` : ''}.</p>
+                {/* Set the expectation (Rif, 12 Nov 2026): one screen now, all of them once the plan is approved */}
+                {sites.length > 1 && <p className="mt-2 inline-flex rounded-full bg-mw-blue-50 px-3 py-1 text-sm font-semibold text-[#1d4ed8] ring-1 ring-mw-blue-200">Screen 1 of {sites.length} in your plan</p>}
+                <ol className="mt-4 space-y-3 text-sm text-gray-700">
+                  <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white">1</span><span><strong>Now:</strong> your ad on {lead.name}, the lead site, on its real photo.</span></li>
+                  <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white">2</span><span><strong>Go through the plan:</strong> check the sites and ask for changes if you like. The link stays the same.</span></li>
+                  <li className="flex gap-3"><span className="inline-flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-[#2563eb] text-xs font-bold text-white">3</span><span><strong>Approve it:</strong> your ad appears on {sites.length > 1 ? `all ${sites.length} screens` : 'the screen'}. Each one can be fitted, given its own file at its own size, and downloaded.</span></li>
+                </ol>
                 {canEdit && <Link href={`/proposals/${doc.shareId}/edit#creative`} className="mw-tap mt-4 inline-flex text-sm font-semibold text-[#2563eb] hover:underline">Change the creative in the editor →</Link>}
               </div>
               <div className="lg:col-span-8"><SiteMockup site={lead} face={faces[lead.id]} creative={creative} play caption={false} /></div>
             </div>
+            {sites.length > 1 && (
+              <div className="mt-6 no-print">
+                <p className="text-sm font-semibold text-gray-700">The other {sites.length - 1} {sites.length - 1 === 1 ? 'screen' : 'screens'} in your plan</p>
+                <ul className="mt-2 grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {sites.slice(1, 5).map((s, i) => (
+                    <li key={s.id} className="relative aspect-[16/10] overflow-hidden rounded-xl bg-gray-200 ring-1 ring-gray-200">
+                      {s.photos[0] && <Image src={s.photos[0]} alt="" fill sizes="(min-width: 640px) 25vw, 50vw" className="scale-110 object-cover blur-[3px] brightness-90" />}
+                      <span className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-white/35 p-2 text-center">
+                        <Lock className="h-5 w-5 text-[#1d4ed8]" aria-hidden="true" />
+                        <span className="text-xs font-bold text-gray-900">{i === 3 && sites.length > 5 ? `+${sites.length - 4} more` : s.name}</span>
+                        <span className="text-[11px] font-semibold text-gray-700">Unlocks when you approve</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </section>
       )}
