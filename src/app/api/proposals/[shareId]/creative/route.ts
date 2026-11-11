@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { writeClient } from '@/sanity/lib/client'
 import { getProposalByShareId, setCreative, addParticipant } from '@/lib/proposal/store'
 import { readProposalGrant, canEdit } from '@/lib/proposal/access'
-import type { Creative } from '@/lib/proposal/types'
+import type { Creative, ScreenOverride } from '@/lib/proposal/types'
+import { parseFace } from '@/lib/mockup/screens'
 
 // The client's creative for the mock-ups on a proposal (Rif, 11 Nov 2026):
 //   POST /api/proposals/<shareId>/creative { creative, by? }
@@ -34,7 +35,7 @@ async function store(kind: 'image' | 'file', d: { type: string; bytes: Buffer },
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ shareId: string }> }) {
   const { shareId } = await params
-  let b: { creative?: Partial<Creative> & { logo?: string; ownFile?: string }; by?: { name?: unknown; email?: unknown } }
+  let b: { creative?: Partial<Creative> & { logo?: string; ownFile?: string }; screen?: { siteId?: unknown; face?: unknown; own?: Creative['own']; ownFile?: string; fit?: unknown; reset?: unknown }; by?: { name?: unknown; email?: unknown } }
   try { b = await req.json() } catch { return NextResponse.json({ error: 'Bad request' }, { status: 400 }) }
   const doc = await getProposalByShareId(shareId)
   if (!doc) return NextResponse.json({ error: 'Not found' }, { status: 404 })
@@ -47,6 +48,38 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
     if (doc.status !== 'approved') return NextResponse.json({ error: 'The creative can be changed once the proposal is approved.' }, { status: 403 })
     if (!by) return NextResponse.json({ error: 'Tell us who you are first.' }, { status: 401 })
   }
+  // One screen's own settings (after approval): its fit on the photo and/or a file of its own
+  if (b.screen) {
+    const sc = b.screen, cur = doc.creative
+    if (!cur) return NextResponse.json({ error: 'Add the plan’s creative first.' }, { status: 400 })
+    const siteId = typeof sc.siteId === 'string' ? sc.siteId.slice(0, 80) : ''
+    if (!siteId) return NextResponse.json({ error: 'Bad request' }, { status: 400 })
+    const rest = (cur.screens ?? []).filter(x => x.siteId !== siteId)
+    if (sc.reset === true) {
+      const next = { ...cur, screens: rest }
+      await setCreative(doc._id, next)
+      return NextResponse.json({ ok: true, creative: next })
+    }
+    const prev = (cur.screens ?? []).find(x => x.siteId === siteId)
+    const faceJson = typeof sc.face === 'string' && parseFace(sc.face) ? sc.face.slice(0, 4000) : prev?.faceJson ?? null
+    let own: Creative['own'] = null
+    try {
+      const file = dataUrl(sc.ownFile, /^data:((?:image\/(?:png|jpeg|webp))|(?:video\/(?:mp4|webm|quicktime)));base64,([A-Za-z0-9+/=]+)$/)
+      if (file) {
+        const video = file.type.startsWith('video/')
+        if (file.bytes.length > (video ? MAX_VIDEO : MAX_IMAGE)) return NextResponse.json({ error: 'That file is too large for the proposal.' }, { status: 413 })
+        const o: Partial<NonNullable<Creative['own']>> = sc.own ?? {}
+        own = { url: await store(video ? 'file' : 'image', file, `proposal-${shareId}-${siteId}`, sc.ownFile as string), kind: video ? 'video' : 'image', width: Number(o.width) || 0, height: Number(o.height) || 0, name: typeof o.name === 'string' ? o.name.slice(0, 120) : '' }
+      } else if (sc.own && prev?.own && sc.own.url === prev.own.url) own = prev.own
+    } catch (e) { console.error('[proposals/creative] screen upload', e); return NextResponse.json({ error: 'The file could not be stored. Please try again.' }, { status: 500 }) }
+    const entry: ScreenOverride = { _key: siteId.replace(/[^A-Za-z0-9_-]/g, '-'), siteId, faceJson, own, fit: sc.fit === 'fill' || sc.fit === 'letterbox' ? sc.fit : null,
+      by: staff ? 'staff' : 'client', byName: staff ? (grant?.name ?? '') : (by?.name || by?.email || ''), at: new Date().toISOString() }
+    const next = { ...cur, screens: [...rest, entry] }
+    await setCreative(doc._id, next)
+    if (by) await addParticipant(doc._id, { ...by, action: `Adjusted a screen (${siteId})` }).catch(() => {})
+    return NextResponse.json({ ok: true, creative: next })
+  }
+
   const c = b.creative ?? {}
   const mode = c.mode === 'own' ? 'own' : 'make'
   const out: Creative = {
@@ -59,6 +92,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ sha
     own: null,
     fit: c.fit === 'fill' ? 'fill' : 'letterbox',
     by: staff ? 'staff' : 'client', byName: staff ? (grant?.name ?? doc.creator.name ?? '') : (by?.name || by?.email || ''), at: new Date().toISOString(),
+    screens: doc.creative?.screens ?? [],
   }
   try {
     const logo = dataUrl(c.logo, /^data:(image\/(?:png|jpeg|webp|svg\+xml));base64,([A-Za-z0-9+/=]+)$/)

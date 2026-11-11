@@ -9,8 +9,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import type { PublicSite } from '@/lib/inventory/types'
 import type { Creative, SiteFace } from '@/lib/proposal/types'
-import { aspectFromSize, composeOnSite, drawCreative, drawOwnCreative, faceAspect, loadImage, wordmark, type Face, type Media } from './compose'
-import { creativeSpec, isDigitalSite, type CreativeSpec } from './spec'
+import { aspectFromSize, composeOnSite, drawCreative, drawOwnCreative, faceAspect, loadImage, mediaSize, wordmark, type Face, type Media } from './compose'
+import { creativeSpec, fitReport, isDigitalSite, type CreativeSpec, type FitReport } from './spec'
 
 const proxied = (u: string) => u.startsWith('data:') || u.startsWith('blob:') ? u : `/api/mockup/photo?u=${encodeURIComponent(u)}`
 
@@ -28,7 +28,7 @@ function loadVideo(u: string): Promise<HTMLVideoElement> {
 }
 
 export const faceFor = (site: PublicSite, f: SiteFace | null | undefined): Face | null => f && f.corners.length === 4
-  ? { corners: f.corners as Face['corners'], edges: f.edges ?? null, kind: f.kind ?? (/led|digital|screen|panel|gantry/i.test(`${site.displayFormat} ${site.format}`) ? 'led' : 'print') }
+  ? { corners: f.corners as Face['corners'], edges: f.edges ?? null, seam: f.seam ?? null, kind: f.kind ?? (/led|digital|screen|panel|gantry/i.test(`${site.displayFormat} ${site.format}`) ? 'led' : 'print') }
   : null
 
 const portrait = (site: PublicSite) => /unipole|portrait|panel|kiosk/i.test(`${site.displayFormat} ${site.format}`) ? 0.6 : 2
@@ -110,5 +110,10 @@ export function useSiteMockup(site: PublicSite, siteFace: SiteFace | null | unde
     return () => { stop = true; cancelAnimationFrame(raf) }
   }, [live, creative, assets, siteImg, face, spec, aspect])
 
-  return { still, live, liveRef, error, spec, face, ready: !!siteImg && !!assets, png: () => render('png'), stillFromVideo: isVideo && !digital }
+  // how their own file sits on this screen: exact, black bars or cropped (for the card's tag)
+  const fit: FitReport | null = useMemo(() => {
+    if (!creative || creative.mode !== 'own' || !assets?.own) return null
+    const size = mediaSize(assets.own); return size.width > 0 ? fitReport(size, spec, creative.fit) : null
+  }, [creative, assets, spec])
+  return { still, live, liveRef, error, spec, face, fit, digital, photoAspect: siteImg && face ? aspect : null, ready: !!siteImg && !!assets, png: () => render('png'), stillFromVideo: isVideo && !digital }
 }

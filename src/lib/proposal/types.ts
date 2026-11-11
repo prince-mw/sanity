@@ -38,10 +38,25 @@ export type Creative = {
   own: { url: string; kind: 'image' | 'video'; width: number; height: number; name: string } | null
   fit: 'letterbox' | 'fill'
   by: 'staff' | 'client'; byName: string; at: string
+  /** Per-screen changes after approval (Rif, 12 Nov 2026): the fit on that photo and/or a file just for that screen. */
+  screens?: ScreenOverride[]
 }
 
-/** The billboard face on a site's first photo, for the mock-up (from siteContent). */
-export type SiteFace = { corners: [number, number][]; edges: [number, number][] | null; kind: 'led' | 'print' | null }
+/**
+ * One screen's own settings. `faceJson` holds the corners (and curved edges or
+ * the 6-point seam) as JSON text, because Sanity documents cannot hold arrays
+ * of arrays; read it with screenFor() in lib/mockup/screens.ts.
+ */
+export type ScreenOverride = {
+  _key?: string; siteId: string
+  faceJson?: string | null
+  own?: Creative['own']
+  fit?: 'letterbox' | 'fill' | null
+  by: 'staff' | 'client'; byName: string; at: string
+}
+
+/** The billboard face on a site's first photo, for the mock-up (from siteContent, or a screen's own fit). */
+export type SiteFace = { corners: [number, number][]; edges: [number, number][] | null; kind: 'led' | 'print' | null; seam?: [number, number][] | null }
 
 /** Someone other than the creator who acted on the proposal (approved, added, requested): the second lead. */
 export type Participant = { name: string; email: string; at: string; action: string }

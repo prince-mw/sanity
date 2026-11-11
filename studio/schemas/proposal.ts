@@ -65,6 +65,12 @@ export default defineType({
       ] },
       { name: 'fit', type: 'string', description: 'letterbox | fill' },
       { name: 'by', type: 'string', description: 'staff | client' }, { name: 'byName', type: 'string' }, { name: 'at', type: 'datetime' },
+      { name: 'screens', type: 'array', description: 'Per-screen changes after approval: the fit on that photo and/or a file just for that screen', of: [{ type: 'object', name: 'proposalScreen', fields: [
+        { name: 'siteId', type: 'string' }, { name: 'faceJson', type: 'text', description: 'Corners (and curved edges or the 6-point seam) as JSON, fractions of the photo' },
+        { name: 'own', type: 'object', fields: [{ name: 'url', type: 'url' }, { name: 'kind', type: 'string' }, { name: 'width', type: 'number' }, { name: 'height', type: 'number' }, { name: 'name', type: 'string' }] },
+        { name: 'fit', type: 'string', description: 'letterbox | fill' },
+        { name: 'by', type: 'string' }, { name: 'byName', type: 'string' }, { name: 'at', type: 'datetime' },
+      ] }] },
     ] }),
     defineField({ name: 'owner', type: 'object', description: 'The market lead for the country, stamped at creation', fields: [
       { name: 'name', type: 'string' }, { name: 'email', type: 'string' }, { name: 'market', type: 'string' }, { name: 'fallback', type: 'boolean' },

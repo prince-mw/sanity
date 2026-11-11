@@ -23,6 +23,8 @@ import { OfferArt, artFor } from './OfferArt'
 import { IdentitySheet, loadIdentity, type Identity } from './IdentitySheet'
 import { SiteMockup } from './SiteMockup'
 import { CreativePanel, type CreativePayload } from './CreativePanel'
+import { ScreenAdjuster, type ScreenSave } from './ScreenAdjuster'
+import { faceToJson } from '@/lib/mockup/screens'
 import { isDigitalSite } from '@/lib/mockup/spec'
 import type { ProposalView as View, ProposalStatus, TierId, Creative } from '@/lib/proposal/types'
 import type { SiteSpecs } from '@/lib/inventory/types'
@@ -56,6 +58,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const [creativeOpen, setCreativeOpen] = useState(false)
   const [savingCreative, setSavingCreative] = useState(false)
   const [creativeNote, setCreativeNote] = useState<string | null>(null)
+  const [adjustAt, setAdjustAt] = useState<number | null>(null)   // the screen open in the adjuster, after approval
   const lead = sites[0] ?? null
   const [tab, setTab] = useState<TabId>('sites')
   const [ask, setAsk] = useState(false)
@@ -115,6 +118,18 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
     setSavingCreative(false)
     if (!r || !r.ok || !j?.creative) { setCreativeNote(j?.error ?? 'Something went wrong. Please try again.'); resolve(false); return }
     setCreative(j.creative); setCreativeOpen(false); setCreativeNote('Saved. Every site below shows it.'); resolve(true)
+  }))
+  // One screen's own fit / file (after approval). Sales and the client can both do it; the client says who they are once.
+  const saveScreen = (s: ScreenSave) => new Promise<boolean>(resolve => withIdentity('save this screen', async by => {
+    if (!creative) { resolve(false); return }
+    if (demo) {
+      const rest = (creative.screens ?? []).filter(x => x.siteId !== s.siteId)
+      const next = s.reset ? rest : [...rest, { _key: s.siteId, siteId: s.siteId, faceJson: s.face ? faceToJson(s.face) : (creative.screens ?? []).find(x => x.siteId === s.siteId)?.faceJson ?? null, own: s.own, fit: s.fit, by: 'client' as const, byName: '', at: new Date().toISOString() }]
+      setCreative({ ...creative, screens: next }); resolve(true); return
+    }
+    const r = await fetch(`/api/proposals/${doc.shareId}/creative`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ screen: { ...s, face: s.face ? faceToJson(s.face) : null }, by }) }).catch(() => null)
+    const j = await r?.json().catch(() => null)
+    if (r?.ok && j?.creative) { setCreative(j.creative); resolve(true) } else resolve(false)
   }))
   const post = async (path: string, body: Record<string, unknown>, key: string, local: () => void, reload = true) => {
     if (demo) { local(); return }
@@ -321,8 +336,11 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
             )}
             {creative && (
               <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-                {sites.map((s, i) => <li key={s.id}><SiteMockup site={s} face={faces[s.id]} creative={creative} play={i === 0} download cover /></li>)}
+                {sites.map((s, i) => <li key={s.id}><SiteMockup site={s} face={faces[s.id]} creative={creative} play={i === 0} download cover onAdjust={() => setAdjustAt(i)} /></li>)}
               </ul>
+            )}
+            {creative && adjustAt !== null && sites[adjustAt] && (
+              <ScreenAdjuster sites={sites} faces={faces} creative={creative} index={adjustAt} onIndex={setAdjustAt} onClose={() => setAdjustAt(null)} onSave={saveScreen} />
             )}
             {creative && creativeNote && !creativeOpen && <p className="mt-4 text-sm text-gray-500 no-print">{creativeNote}</p>}
           </div>

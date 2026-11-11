@@ -25,7 +25,7 @@ const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm fo
 const input = 'mt-1 w-full rounded-lg border border-gray-300 px-3 py-2.5 text-base focus:border-mw-blue-500 focus:outline-none'
 
 /** A file as a data URL; images are downsized to 1920 px on the long side (logos keep PNG for transparency). */
-async function fileToDataUrl(file: File, kind: 'logo' | 'image' | 'video'): Promise<{ url: string; width: number; height: number }> {
+export async function fileToDataUrl(file: File, kind: 'logo' | 'image' | 'video'): Promise<{ url: string; width: number; height: number }> {
   if (kind === 'video') {
     const url = await new Promise<string>((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result as string); r.onerror = () => rej(r.error); r.readAsDataURL(file) })
     const v = document.createElement('video'); v.src = URL.createObjectURL(file)
