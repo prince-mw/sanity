@@ -56,7 +56,7 @@ export function SiteCard({ site, linked, addable = true, action }: { site: Publi
         </dl>
         <div className="mt-auto flex items-center justify-between gap-3 pt-4">
           {action ? action : <>
-            {linked ? <span className="text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb]">View site details →</span> : <span />}
+            {linked ? <span className="text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb]">Details · see your ad on it →</span> : <span />}
             {addable && <AddToProposalButton site={site} variant="card" />}
           </>}
         </div>

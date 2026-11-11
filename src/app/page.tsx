@@ -7,6 +7,7 @@ import Services from "../components/Services";
 import Clients from "../components/Clients";
 import TestimonialSection from "../components/TestimonialSection";
 import { ProposalPromo } from "../components/proposal/ProposalPromo";
+import { MockupPromo } from "../components/proposal/MockupPromo";
 import { promoEnabled } from "@/lib/proposal/promo";
 
 // Lazy-load below-fold client components to reduce initial bundle size and TBT
@@ -77,6 +78,7 @@ export default async function Home() {
       <Hero />
       <TrustBar stats={trustBarContent?.stats} />
       {promoEnabled() && <ProposalPromo variant="home" />}
+      {promoEnabled() && <MockupPromo variant="home" />}
       <AsianBornGlobal />
       <Services />
       <PlatformEcosystem />

@@ -11,6 +11,7 @@
 
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { MockupPromo } from './MockupPromo'
 
 const NEW = '/proposals/new'
 const SAMPLE = '/proposals/demo'
@@ -80,6 +81,7 @@ export function ProposalPromo({ variant, market = 'Malaysia', place }: { variant
           <p className="text-sm font-bold uppercase tracking-wider text-cyan-300">Instant proposal</p>
           <h2 id="pp-band-title" className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">Get a plan for {where} in two minutes.</h2>
           <p className="mt-2 text-blue-100">Real sites picked for your brief, the audience each one reaches and an indicative range, as a link you can share and approve. No sales call to get it.</p>
+          <p className="mt-3 text-cyan-200"><MockupPromo variant="inline" place={where} /></p>
         </div>
         <div className="flex flex-wrap gap-3 lg:flex-shrink-0">
           <Link href={NEW} className="mw-tap inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-[#2563eb] hover:bg-cyan-50">Start a proposal <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
@@ -97,6 +99,7 @@ export function ProposalPromo({ variant, market = 'Malaysia', place }: { variant
             <p className="text-xs font-bold uppercase tracking-wider text-[#2563eb]">Try it on your own brief</p>
             <h2 id="pp-card-title" className="mt-2 text-xl font-bold text-gray-900 sm:text-2xl">Plan a campaign in {where} in two minutes.</h2>
             <p className="mt-2 text-gray-700">Real sites picked for the brief, who each one reaches, an indicative range, and a link to share. No sales call to get it.</p>
+            <p className="mt-3 text-[#2563eb]"><MockupPromo variant="inline" place={where} /></p>
           </div>
           <div className="flex flex-wrap gap-3 lg:flex-shrink-0">
             <Link href={NEW} className={primary}>Start a proposal <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
