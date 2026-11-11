@@ -14,6 +14,7 @@ import PolyfillLoader from "@/components/PolyfillLoader";
 import { LocaleProvider } from "@/i18n/LocaleContext";
 import { type Locale } from "@/i18n/config";
 import { getRequestLocale } from "@/i18n/serverLocale";
+import { headers } from "next/headers";
 import { FormPopupProvider } from "@/components/FormPopupProvider";
 import { ZohoPopupProvider } from "@/components/ZohoPopupProvider";
 import { ShortlistProvider } from "@/lib/proposal/shortlist";
@@ -156,6 +157,8 @@ export default async function RootLayout({
   ]);
 
   const initialLocale: Locale = await getRequestLocale();
+  // /proposals/* is a one-page funnel: no site header, footer or global CTA (set by the middleware).
+  const funnel = (await headers()).get('x-mw-funnel') === '1';
 
   return (
     <html lang={initialLocale} className="scroll-smooth">
@@ -183,7 +186,7 @@ export default async function RootLayout({
       </head>
       {/* suppressHydrationWarning: browser extensions (e.g. Grammarly) inject data-gr-* attributes onto <body>
           before React hydrates, which would otherwise falsely report as a hydration mismatch */}
-      <body className={`${poppins.variable} font-sans antialiased bg-white text-mw-gray-900`} suppressHydrationWarning>
+      <body className={`${poppins.variable} font-sans antialiased bg-white text-mw-gray-900`} suppressHydrationWarning data-funnel={funnel ? '1' : undefined}>
         {/* Cross-Browser Polyfills */}
         <PolyfillLoader />
         
@@ -212,18 +215,20 @@ export default async function RootLayout({
                   segment's notFound()/redirect() can still set the correct response status —
                   wrapping both under one Suspense would let the shell start streaming (and the
                   200 status commit) before the page's own render/notFound() resolves. */}
-              <Suspense fallback={null}>
-                <HeaderWrapper />
-              </Suspense>
+              {!funnel && (
+                <Suspense fallback={null}>
+                  <HeaderWrapper />
+                </Suspense>
+              )}
               <main className={isPreview ? 'pb-16' : ''}>
                 {children}
               </main>
-              <GlobalCTA />
-              <Footer content={footerContent} />
+              {!funnel && <GlobalCTA />}
+              {!funnel && <Footer content={footerContent} />}
              </ShortlistProvider>
             </ZohoPopupProvider>
           </FormPopupProvider>
-          <ScrollToTop />
+          {!funnel && <ScrollToTop />}
           <CookieConsent />
           <PreviewBanner isPreview={isPreview} />
         </LocaleProvider>

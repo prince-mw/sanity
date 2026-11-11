@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { inventoryEnabled } from '@/lib/inventory/source'
-import { siteHasPage } from '@/lib/inventory/normalize'
 import { buildDemoView } from '@/lib/proposal/demo'
 import { ProposalView } from '@/components/proposal/ProposalView'
 
@@ -14,5 +13,5 @@ export default async function DemoProposalPage() {
   if (!inventoryEnabled()) notFound()
   const view = await buildDemoView()
   if (!view) notFound()
-  return <ProposalView view={view} canEdit pagedIds={view.sites.filter(siteHasPage).map(s => s.id)} demo />
+  return <ProposalView view={view} canEdit pagedIds={[]} demo />
 }

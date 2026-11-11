@@ -132,6 +132,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(buildRedirectUrl(request, normalizedPath), 301)
   }
 
+  // Proposal pages are a funnel: the root layout reads this header and renders no
+  // site header, footer or global CTA there (Rif, 11 Nov 2026).
+  if (pathname === '/proposals' || pathname.startsWith('/proposals/')) {
+    const h = new Headers(request.headers)
+    h.set('x-mw-funnel', '1')
+    return NextResponse.next({ request: { headers: h } })
+  }
+
   return NextResponse.next()
 }
 

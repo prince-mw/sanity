@@ -2,7 +2,6 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getProposalByShareId, resolveSites } from '@/lib/proposal/store'
 import { readProposalGrant, canEdit } from '@/lib/proposal/access'
-import { siteHasPage } from '@/lib/inventory/normalize'
 import { ProposalView } from '@/components/proposal/ProposalView'
 
 // The proposal the client receives: a private link, never indexed.
@@ -30,5 +29,5 @@ export default async function ProposalPage({ params }: Params) {
   const [view, grant] = await Promise.all([resolveSites(doc), readProposalGrant()])
   const { editTokenHash: _h, creator, ...pub } = view.doc // eslint-disable-line @typescript-eslint/no-unused-vars
   const safe = { ...view, doc: { ...pub, editTokenHash: '', creator: { name: '', email: '', country: '', company: creator.company } } }
-  return <ProposalView view={safe} canEdit={canEdit(grant, shareId)} pagedIds={view.sites.filter(siteHasPage).map(s => s.id)} />
+  return <ProposalView view={safe} canEdit={canEdit(grant, shareId)} pagedIds={[]} />
 }
