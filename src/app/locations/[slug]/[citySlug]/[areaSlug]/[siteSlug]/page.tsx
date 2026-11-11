@@ -3,8 +3,21 @@ import { notFound, permanentRedirect } from 'next/navigation'
 import { sitesFor, usingSample } from '@/lib/inventory/source'
 import { siteHasPage } from '@/lib/inventory/normalize'
 import { getSiteContent, similarSites, siteInsightsFor } from '@/lib/inventory/siteContent'
-import { siteFaqs } from '@/lib/inventory/siteFaq'
+import { contentWords, siteFaqs, siteOverview } from '@/lib/inventory/siteFaq'
 import { getCountryContent } from '@/lib/inventory/placeContent'
+import { safeFetch } from '@/sanity/lib/fetch'
+import { urlFor } from '@/sanity/lib/client'
+import type { RelatedItem } from '@/lib/inventory/siteContent'
+
+// Last resort for the related rows: the latest case studies and articles, so each row always has three
+// cards (Rif, 11 Nov 2026: "fill it up with all 3").
+async function latest(): Promise<{ posts: RelatedItem[]; caseStudies: RelatedItem[] }> {
+  const q = (t: string) => `*[_type == "${t}" && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...3]{ _id, title, "slug": slug.current, excerpt, featuredImage, publishedAt }`
+  const [p, c] = await Promise.all([safeFetch<any[]>(q('blogPost'), {}, []), safeFetch<any[]>(q('caseStudy'), {}, [])]) // eslint-disable-line @typescript-eslint/no-explicit-any
+  const img = (f: unknown) => { try { return f ? urlFor(f).width(800).height(500).fit('crop').url() : null } catch { return null } }
+  const map = (kind: RelatedItem['kind'], d: any): RelatedItem => ({ kind, id: d._id, title: d.title, href: kind === 'post' ? `/blog/${d.slug}` : `/case-studies/${d.slug}`, image: img(d.featuredImage), excerpt: d.excerpt ?? null, publishedAt: d.publishedAt ?? null, score: 10, reason: 'Latest' }) // eslint-disable-line @typescript-eslint/no-explicit-any
+  return { posts: (p ?? []).filter(d => d?.slug).map(d => map('post', d)), caseStudies: (c ?? []).filter(d => d?.slug).map(d => map('caseStudy', d)) }
+}
 import { InventorySiteClient } from '@/components/inventory/InventorySiteClient'
 
 // Site page: one billboard or screen. Only sites with a photo get one; a site
@@ -55,8 +68,15 @@ export default async function SitePage({ params }: Props) {
   // proposal pages that also read site content do not pay for the extra query.
   const wide = siteContent.posts.length < 3 || siteContent.caseStudies.length < 3 ? await getCountryContent(site.countryName) : null
   const merge = <T extends { id: string }>(a: T[], b: T[]) => [...a, ...b.filter(x => !a.some(y => y.id === x.id))]
-  const content = wide ? { ...siteContent, posts: merge(siteContent.posts, wide.posts), caseStudies: merge(siteContent.caseStudies, wide.caseStudies) } : siteContent
+  const topped = wide ? { ...siteContent, posts: merge(siteContent.posts, wide.posts), caseStudies: merge(siteContent.caseStudies, wide.caseStudies) } : siteContent
+  const last = topped.posts.length < 3 || topped.caseStudies.length < 3 ? await latest() : null
+  const content = last ? { ...topped, posts: merge(topped.posts, last.posts), caseStudies: merge(topped.caseStudies, last.caseStudies) } : topped
   const [insights, faqs] = [await siteInsightsFor(similar), siteFaqs(site, content.personas.map(x => x.name))]
+  const description = content.description ?? site.description
+  const overview = siteOverview(site, description)
+  // The 150-word floor (Rif, 11 Nov 2026): the page's own words, not menus, footer or related links.
+  const own = contentWords(site.name, description, overview, ...content.personas.flatMap(x => [x.name, x.who, x.when, x.why]), ...faqs.flatMap(f => [f.q, f.a]))
+  if (own < 150) console.warn(`[site page] ${site.id} has ${own} words of its own content, under the 150 floor`)
   const url = `https://www.movingwalls.com/locations/${p.slug}/${p.citySlug}/${p.areaSlug}/${p.siteSlug}`
   const jsonLd = [
     {
@@ -83,7 +103,7 @@ export default async function SitePage({ params }: Props) {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <InventorySiteClient site={site} content={content} similar={similar} pagedIds={similar.filter(siteHasPage).map(s => s.id)} faqs={faqs} insights={insights} />
+      <InventorySiteClient site={site} content={content} similar={similar} pagedIds={similar.filter(siteHasPage).map(s => s.id)} faqs={faqs} insights={insights} overview={overview} />
     </>
   )
 }

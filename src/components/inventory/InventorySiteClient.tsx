@@ -14,7 +14,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useState } from 'react'
-import { BarChart3, Eye, Info, Maximize2, Minus, Monitor, Plus, Users, Zap, type LucideIcon } from 'lucide-react'
+import { CalendarDays, Eye, Info, MapPin, Maximize2, Monitor, Plus, Users, Zap, type LucideIcon } from 'lucide-react'
 import { LeadForm } from '../forms/LeadForm'
 import { AdMockup } from './AdMockup'
 import { SG_NAVY, SgSectionHeading, SgClosingCta, SgFormButton } from '../SingaporeShared'
@@ -33,12 +33,11 @@ const tile = (i: number) => `flex h-12 w-12 flex-shrink-0 items-center justify-c
 const lc = (f: string) => f.toLowerCase().replace(/\bled\b/g, 'LED').replace(/\bdooh\b/g, 'DOOH')
 const card = 'group h-full rounded-2xl border border-mw-blue-100 bg-white shadow-mw-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-mw-xl'
 
-export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [], insights = {} }: { site: PublicSite; content: SiteContent; similar: PublicSite[]; pagedIds: string[]; faqs?: Faq[]; insights?: Record<string, SiteInsights> }) {
+export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [], insights = {}, overview = null }: { site: PublicSite; content: SiteContent; similar: PublicSite[]; pagedIds: string[]; faqs?: Faq[]; insights?: Record<string, SiteInsights>; overview?: string | null }) {
   // The site's own lead form (not Zoho Forms): GA4 sees the conversion, the lead still reaches Zoho CRM.
   const [formOpen, setFormOpen] = useState(false)
   const enquire = () => setFormOpen(true)
   const [photo, setPhoto] = useState(0)
-  const [openFaq, setOpenFaq] = useState<number | null>(0)
   const [detail, setDetail] = useState<PublicSite | null>(null)
   const paged = new Set(pagedIds)
   const areaHref = areaPath(site.countrySlug, site.citySlug, site.areaSlug)
@@ -52,7 +51,12 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
     site.audience?.impressions ? { icon: Eye, label: 'Monthly impressions', value: site.audience.impressions } : null,
     site.size ? { icon: Maximize2, label: 'Size', value: site.size } : null,
     site.digital?.spotSeconds ? { icon: Zap, label: 'Spot length', value: `${site.digital.spotSeconds} seconds` } : site.illuminated != null ? { icon: Monitor, label: 'Illuminated', value: site.illuminated ? 'Yes' : 'No' } : null,
-  ].filter((x): x is { icon: LucideIcon; label: string; value: string } => !!x).slice(0, 4)
+    // Fallbacks, so a site without audience figures or a size still gets a full row (Rif preferred Komtar's fuller hero).
+    site.illuminated != null && site.digital?.spotSeconds ? { icon: Monitor, label: 'Illuminated', value: site.illuminated ? 'Yes' : 'No' } : null,
+    site.venueType ? { icon: MapPin, label: 'Venue', value: site.venueType } : null,
+    site.specs?.leadTimeDays != null ? { icon: CalendarDays, label: 'Lead time', value: `${site.specs.leadTimeDays} days` } : null,
+    site.specs?.resolution ? { icon: Maximize2, label: 'Resolution', value: site.specs.resolution } : null,
+  ].filter((x): x is { icon: LucideIcon; label: string; value: string } => !!x).filter((f, i, a) => a.findIndex(g => g.label === f.label) === i).slice(0, 4)
 
   return (
     <div className="bg-white text-gray-900">
@@ -110,12 +114,12 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
 
       {/* About this site: the description at reading width, then the full specification sheet across the page
           (never a short text beside a tall panel — Rif, 11 Nov 2026) */}
-      {(description || specs.length > 0) && (
+      {(description || overview || specs.length > 0) && (
         <section className="bg-white mw-section" aria-labelledby="site-about">
           <div className="mw-container">
             <p className="text-xs font-bold uppercase tracking-wider text-[#2563eb]">About this site</p>
             <h2 id="site-about" className="mt-2 text-3xl font-bold tracking-tight text-gray-900">{format} advertising on {site.name}</h2>
-            {description && <div className="prose mt-4 max-w-3xl text-gray-700">{description.split(/\n{2,}/).map((p, i) => <p key={i}>{p}</p>)}</div>}
+            {(description || overview) && <div className="prose mt-4 max-w-3xl text-gray-700">{[...(description ? description.split(/\n{2,}/) : []), ...(overview ? [overview] : [])].map((p, i) => <p key={i}>{p}</p>)}</div>}
             {specs.length > 0 && (
               <div className="mt-10 rounded-2xl border-2 border-mw-blue-200 bg-gradient-to-br from-mw-blue-50 to-cyan-100 p-6 shadow-lg sm:p-8">
                 <div className="flex items-center gap-3">
@@ -139,7 +143,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
             <p className="text-xs font-bold uppercase tracking-wider text-[#2563eb]">Audience</p>
             <h2 id="site-audience" className="mt-2 text-3xl font-bold tracking-tight text-gray-900">Who you reach at {site.name}</h2>
             <p className="mt-3 max-w-3xl text-lg text-gray-600">The people who pass this {lc(format)} in {site.areaName}, when they are there, and why it matters for your campaign.</p>
-            <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+            <ul className={`mt-8 grid gap-5 ${({ 1: 'max-w-md', 2: 'sm:grid-cols-2', 3: 'sm:grid-cols-2 lg:grid-cols-3' } as Record<number, string>)[content.personas.length] ?? 'sm:grid-cols-2 lg:grid-cols-4'}`}>
               {content.personas.map((p, i) => { const Icon = PERSONA_ICONS[p.icon] ?? Users; return (
                 <li key={p.name} className={`${card} flex flex-col p-6`}>
                   <span className={`mb-4 ${tile(i + 1)}`}><Icon className="h-6 w-6" aria-hidden="true" /></span>
@@ -192,25 +196,23 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
         </section>
       )}
 
-      {/* FAQ, built from the site's data; the page's FAQPage JSON-LD uses the same list */}
+      {/* FAQ, built from the site's data; the page's FAQPage JSON-LD uses the same list. Same look as the
+          area page's FAQ (Rif, 11 Nov 2026), on <details> so every answer is in the page HTML. */}
       {faqs.length > 0 && (
         <section className="bg-gray-50 mw-section" aria-labelledby="site-faq">
-          <div className="mw-container max-w-3xl">
-            <div className="flex items-center gap-3">
-              <span className={tile(4)}><BarChart3 className="h-6 w-6" aria-hidden="true" /></span>
-              <h2 id="site-faq" className="text-3xl font-bold tracking-tight text-gray-900">{site.name}: questions</h2>
-            </div>
-            <ul className="mt-8 space-y-3">
-              {faqs.map((f, i) => (
-                <li key={f.q} className="overflow-hidden rounded-2xl border border-mw-blue-100 bg-white shadow-sm">
-                  <button type="button" onClick={() => setOpenFaq(openFaq === i ? null : i)} aria-expanded={openFaq === i} className="mw-tap flex w-full items-center justify-between gap-4 px-6 py-4 text-left">
-                    <h3 className="font-semibold text-gray-900">{f.q}</h3>
-                    {openFaq === i ? <Minus className="h-5 w-5 flex-shrink-0 text-[#2563eb]" aria-hidden="true" /> : <Plus className="h-5 w-5 flex-shrink-0 text-[#2563eb]" aria-hidden="true" />}
-                  </button>
-                  {openFaq === i && <p className="border-t border-gray-100 px-6 py-4 text-gray-700">{f.a}</p>}
-                </li>
+          <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+            <h2 id="site-faq" className="mb-8 text-center text-3xl font-bold text-gray-900 lg:text-4xl">Advertising on {site.name}: questions</h2>
+            <div className="space-y-4">
+              {faqs.map(f => (
+                <details key={f.q} className="group overflow-hidden rounded-xl border border-gray-200 bg-white">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 px-6 py-4 font-semibold text-gray-900 hover:bg-gray-50 [&::-webkit-details-marker]:hidden">
+                    {f.q}
+                    <Plus className="h-5 w-5 flex-shrink-0 text-mw-blue-600 transition-transform group-open:rotate-45" aria-hidden="true" />
+                  </summary>
+                  <p className="border-t border-gray-200 bg-gray-50 px-6 py-4 text-gray-600">{f.a}</p>
+                </details>
               ))}
-            </ul>
+            </div>
           </div>
         </section>
       )}
