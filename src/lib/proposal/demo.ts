@@ -1,7 +1,7 @@
 import 'server-only'
 import { sitesFor } from '@/lib/inventory/source'
 import { rulesPick } from './pick'
-import { titleLineFor, totalsFor } from './store'
+import { titleLineFor, resolveSites } from './store'
 import type { Brief, ProposalDoc, ProposalVersion, ProposalView } from './types'
 
 // A sample proposal built from the live inventory, for reviewing the proposal
@@ -28,7 +28,5 @@ export async function buildDemoView(): Promise<ProposalView | null> {
     creator: { name: '', email: '', company: 'Example Beauty Co.', country: 'Malaysia' }, leadId: null, brief: BRIEF,
     currentVersion: 1, versions: [v1], changeRequests: [], approvedAt: null, createdAt: now, updatedAt: now,
   }
-  const byId = new Map(candidates.map(s => [s.id, s]))
-  const sites = pick.sites.map(x => ({ ...byId.get(x.siteId)!, reason: x.reason }))
-  return { doc, version: v1, sites, missing: [], totals: totalsFor(sites) }
+  return resolveSites(doc)
 }

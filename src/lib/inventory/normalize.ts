@@ -57,6 +57,7 @@ export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite |
     lat: point?.lat ?? null, lng: point?.lng ?? null,
     photos,
     audience: r.audience ?? null,
+    specs: r.specs ?? null,
     sample: !!r.sample,
   }
 }

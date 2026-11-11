@@ -40,6 +40,24 @@ export interface InventoryRecord {
   sample?: boolean
   /** Not an API field: audience figures already published on the hand-built city page. */
   audience?: { reach?: string; impressions?: string } | null
+  /** Screen/board specifications. Field names to be confirmed against the API's full record; the sample data fills them with stand-ins. */
+  specs?: SiteSpecs | null
+}
+
+/** What a planner needs to brief artwork and timing. Any field may be missing. */
+export interface SiteSpecs {
+  resolution?: string | null        // '1080 px × 1920 px'
+  panels?: number | null
+  screens?: number | null
+  leadTimeDays?: number | null
+  playerSoftware?: string | null
+  contentApproval?: boolean | null
+  boardType?: string | null         // 'STANDEE', 'BILLBOARD', ...
+  videoFormats?: string[] | null
+  imageFormats?: string[] | null
+  audioFormats?: string[] | null
+  /** Not an API field: true while the values are stand-ins. */
+  sample?: boolean
 }
 
 export interface InventoryPrice {
@@ -75,6 +93,7 @@ export interface PublicSite {
   lng: number | null
   photos: string[]
   audience: { reach?: string; impressions?: string } | null
+  specs: SiteSpecs | null
   sample: boolean
 }
 

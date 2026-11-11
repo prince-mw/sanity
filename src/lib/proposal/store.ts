@@ -3,10 +3,11 @@ import { createHash, randomBytes } from 'node:crypto'
 import { promises as fs } from 'node:fs'
 import path from 'node:path'
 import { writeClient } from '@/sanity/lib/client'
-import { sitesFor } from '@/lib/inventory/source'
+import { sitesFor, indicativeInvestment } from '@/lib/inventory/source'
+import { getSiteContent } from '@/lib/inventory/siteContent'
 import type { PublicSite } from '@/lib/inventory/types'
 import { OBJECTIVES } from './markets'
-import type { Brief, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersion, ProposalView, VersionSite } from './types'
+import type { AudienceGroup, Brief, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersion, ProposalView, VersionSite } from './types'
 
 // Proposals live in Sanity as `proposal` documents (studio/schemas/proposal.ts),
 // written only from the API routes with the write token, read without the CDN
@@ -52,11 +53,36 @@ export function titleLineFor(brief: Brief): string {
   return [obj ? `${obj} campaign` : 'OOH campaign', brief.cityName, start ? `from ${start}` : null].filter(Boolean).join(' · ')
 }
 
-export function totalsFor(sites: PublicSite[]): ProposalTotals {
+export function totalsFor(sites: PublicSite[], investment: ProposalTotals['investment'] = null): ProposalTotals {
   const reach = sites.map(s => parseFigure(s.audience?.reach)).filter((n): n is number => n != null)
   const imp = sites.map(s => parseFigure(s.audience?.impressions)).filter((n): n is number => n != null)
   const withFigures = sites.filter(s => parseFigure(s.audience?.reach) != null || parseFigure(s.audience?.impressions) != null).length
-  return { sites: sites.length, withFigures, reach: reach.length ? reach.reduce((a, b) => a + b, 0) : null, impressions: imp.length ? imp.reduce((a, b) => a + b, 0) : null }
+  return { sites: sites.length, withFigures, reach: reach.length ? reach.reduce((a, b) => a + b, 0) : null, impressions: imp.length ? imp.reduce((a, b) => a + b, 0) : null, investment }
+}
+
+/**
+ * The audiences a plan reaches: each site's personas (who / when / why, written
+ * per site) merged by audience type, keeping the fullest description and the
+ * sites that reach it. Sorted by how many sites reach the group.
+ */
+export async function audienceFor(sites: PublicSite[]): Promise<AudienceGroup[]> {
+  const groups = new Map<string, AudienceGroup>()
+  const contents = await Promise.all(sites.map(s => getSiteContent(s).catch(() => null)))
+  sites.forEach((s, i) => {
+    for (const p of contents[i]?.personas ?? []) {
+      const key = p.icon || 'other'
+      const g = groups.get(key) ?? { key, label: AUDIENCE_LABELS[key] ?? 'Other audiences', icon: p.icon, members: [] }
+      if (!g.members.some(m => m.siteId === s.id)) g.members.push({ siteId: s.id, siteName: s.name, name: p.name, who: p.who, when: p.when, why: p.why })
+      groups.set(key, g)
+    }
+  })
+  return Array.from(groups.values()).sort((a, b) => b.members.length - a.members.length || a.label.localeCompare(b.label))
+}
+
+const AUDIENCE_LABELS: Record<string, string> = {
+  commuter: 'Commuters', office: 'Office workers and decision-makers', shopper: 'Shoppers', tourist: 'Tourists and visitors',
+  traveller: 'Business and hotel travellers', resident: 'Nearby residents', driver: 'Drivers', student: 'Students',
+  family: 'Families', nightlife: 'Evening and nightlife crowd',
 }
 
 const DOC_FIELDS = `_id, shareId, editTokenHash, status, titleLine, creator, leadId, crmError, brief, currentVersion, versions, changeRequests, approvedAt, createdAt, updatedAt`
@@ -129,5 +155,9 @@ export async function resolveSites(doc: ProposalDoc, version = doc.versions.find
     const s = byId.get(vs.siteId)
     if (s) sites.push({ ...s, reason: vs.reason }); else missing.push(vs)
   }
-  return { doc, version, sites, missing, totals: totalsFor(sites) }
+  const [investment, audience] = await Promise.all([
+    indicativeInvestment(doc.brief.countrySlug, sites.map(s => s.id), doc.brief.durationWeeks),
+    audienceFor(sites),
+  ])
+  return { doc, version, sites, missing, totals: totalsFor(sites, investment), audience }
 }

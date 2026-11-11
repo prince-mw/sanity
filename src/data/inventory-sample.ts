@@ -7,7 +7,7 @@
 // Every other record is invented and marked `sample: true`, and the pages show
 // a SAMPLE label on it — no visitor or colleague should mistake it for stock.
 
-import type { InventoryRecord, LevelMap } from '@/lib/inventory/types'
+import type { InventoryRecord, LevelMap, SiteSpecs } from '@/lib/inventory/types'
 
 const img = (ref: string) => `https://cdn.sanity.io/images/u10im6di/production/${ref}`
 
@@ -22,7 +22,7 @@ export const FAMOUS_AREAS: Record<string, string[]> = {
 const kl = (area: string) => ({ adminLevel0Name: 'Malaysia', adminLevel1Name: 'Wilayah Persekutuan Kuala Lumpur', adminLevel2Name: 'Kuala Lumpur', adminLevel3Name: area })
 const base = { status: 'active', publication: 'public', mediaOwnerName: 'Hidden on the website' }
 
-export const SAMPLE_RECORDS: InventoryRecord[] = [
+const RAW: InventoryRecord[] = [
   // ── real, from the hand-built Kuala Lumpur page
   {
     ...base, ...kl('KLCC'), id: 'real-menara-tan-tan', referenceId: 'MY-KL-TT01',
@@ -130,3 +130,20 @@ export const SAMPLE_RECORDS: InventoryRecord[] = [
   // a private site: must never appear
   { ...kl('Bukit Bintang'), status: 'active', publication: 'private', sample: true, id: 'sample-private', name: 'Private test site', mediaOwnerName: 'Hidden' },
 ]
+
+// Stand-in specifications so the proposal page shows the full block while the
+// API is not connected. Replaced by the API's values; marked `sample` until then.
+function sampleSpecs(r: InventoryRecord): SiteSpecs {
+  const digital = /digital|led|screen|panel/i.test(`${r.typeName} ${r.displayFormatName}`)
+  const big = /unipole|highway|gantry|billboard/i.test(`${r.displayFormatName} ${r.typeName}`)
+  return digital ? {
+    resolution: big ? '1920 px × 960 px' : '1080 px × 1920 px', panels: 1, screens: big ? 1 : 3, leadTimeDays: big ? 7 : 10,
+    playerSoftware: 'CS Play', contentApproval: true, boardType: big ? 'BILLBOARD' : 'STANDEE',
+    videoFormats: ['mp4'], imageFormats: ['jpg', 'png'], audioFormats: [], sample: true,
+  } : {
+    resolution: null, panels: 1, screens: null, leadTimeDays: 14, playerSoftware: null, contentApproval: true, boardType: 'STATIC',
+    videoFormats: [], imageFormats: ['pdf', 'ai'], audioFormats: [], sample: true,
+  }
+}
+
+export const SAMPLE_RECORDS: InventoryRecord[] = RAW.map(r => ({ specs: sampleSpecs(r), ...r }))

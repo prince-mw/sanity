@@ -41,3 +41,25 @@ export async function areasFor(countrySlug: string, citySlug: string): Promise<A
   return areaPages(await sitesFor(countrySlug, citySlug), FAMOUS_AREAS[`${countrySlug}/${citySlug}`] ?? [])
 }
 
+/**
+ * Indicative media investment for a set of sites over a campaign length, as a
+ * range (±10% of the summed monthly rates), server-side only. The per-site
+ * rates never leave this function: a proposal shows one total, marked an
+ * estimate (Rif, 11 Nov 2026).
+ */
+export async function indicativeInvestment(countrySlug: string, ids: string[], weeks: number | null): Promise<{ currency: string; low: number; high: number; priced: number } | null> {
+  const want = new Set(ids)
+  const rows = (await records(countrySlug)).filter(r => want.has(r.id) && isPublishable(r))
+  const months = Math.max(0.25, (weeks ?? 4) / 4.33)
+  let sum = 0, priced = 0, currency = 'MYR'
+  for (const r of rows) {
+    const p = (r.prices ?? []).find(x => x.monthly || x.daily)
+    if (!p) continue
+    const monthly = p.monthly ?? (p.daily ? p.daily * 30 : 0)
+    if (!monthly) continue
+    sum += monthly * months; priced++; currency = p.currency ?? currency
+  }
+  if (!priced) return null
+  const round = (n: number) => Math.round(n / 1000) * 1000
+  return { currency, low: round(sum * 0.9), high: round(sum * 1.1), priced }
+}

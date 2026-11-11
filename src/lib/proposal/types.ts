@@ -40,7 +40,11 @@ export type ProposalDoc = {
   updatedAt: string
 }
 
-export type ProposalTotals = { sites: number; withFigures: number; reach: number | null; impressions: number | null }
+export type ProposalTotals = { sites: number; withFigures: number; reach: number | null; impressions: number | null; investment: { currency: string; low: number; high: number; priced: number } | null }
+
+/** One audience type the plan reaches (commuters, shoppers…), with each site's own persona note for it. */
+export type AudienceMember = { siteId: string; siteName: string; name: string; who: string; when: string; why: string }
+export type AudienceGroup = { key: string; label: string; icon: string; members: AudienceMember[] }
 
 /** The document plus its sites resolved from the inventory, in the current version's order. */
 export type ProposalView = {
@@ -49,4 +53,5 @@ export type ProposalView = {
   sites: (PublicSite & { reason: string })[]
   missing: VersionSite[]              // sites in the version the inventory no longer has
   totals: ProposalTotals
+  audience: AudienceGroup[]
 }

@@ -7,12 +7,18 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { Check, Link2, Pencil, Printer } from 'lucide-react'
+import { Check, Link2, Pencil, Printer, TrainFront, ShoppingBag, Camera, Briefcase, Users, GraduationCap, Moon, Plane, Car, Home, type LucideIcon } from 'lucide-react'
 import { SG_NAVY, SgSectionHeading, SgFormButton } from '../SingaporeShared'
 import { SiteCard, SampleBanner } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import { OBJECTIVES, BUDGET_BANDS } from '@/lib/proposal/markets'
 import type { ProposalView as View, ProposalStatus } from '@/lib/proposal/types'
+import type { SiteSpecs } from '@/lib/inventory/types'
+
+const PERSONA_ICONS: Record<string, LucideIcon> = { commuter: TrainFront, shopper: ShoppingBag, tourist: Camera, office: Briefcase, family: Users, student: GraduationCap, nightlife: Moon, traveller: Plane, driver: Car, resident: Home }
+
+/** Rif's wording (26 Oct 2026), shown with every estimate. */
+const PRICE_NOTE = 'This is an estimate only, not an exact price. The exact price depends on many factors, such as campaign duration, spots per loop, spots per day and your campaign requirements.'
 
 const STATUS: Record<ProposalStatus, { label: string; cls: string }> = {
   draft: { label: 'Draft', cls: 'bg-white/15 text-white' },
@@ -25,7 +31,8 @@ const fmtDate = (iso: string | null | undefined) => iso ? new Date(iso).toLocale
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 
 export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
-  const { doc, version, sites, totals } = view
+  const { doc, version, sites, totals, audience } = view
+  const anySampleSpecs = sites.some(s => s.specs?.sample)
   const [status, setStatus] = useState<ProposalStatus>(doc.status)
   const [ask, setAsk] = useState(false)
   const [message, setMessage] = useState('')
@@ -98,7 +105,36 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
         </div>
       </section>
 
-      <section className="bg-gray-50 mw-section">
+      {audience.length > 0 && (
+        <section className="bg-gray-50 mw-section">
+          <div className="mw-container">
+            <SgSectionHeading title="Who this plan reaches" intro={`The audiences that pass the proposed sites, and which sites reach each of them.${brief.audience ? ` Your brief: ${brief.audience.trim()}.` : ''}`} />
+            <ul className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+              {audience.map(g => { const Icon = PERSONA_ICONS[g.icon] ?? Users; return (
+                <li key={g.key} className="flex flex-col rounded-2xl border border-gray-200 bg-white p-6 break-inside-avoid">
+                  <div className="flex items-start justify-between gap-3">
+                    <span className="inline-flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-xl bg-mw-blue-50 text-[#2563eb]"><Icon className="h-6 w-6" aria-hidden="true" /></span>
+                    <span className="rounded-full bg-mw-blue-50 px-3 py-1 text-xs font-bold text-[#2563eb]">{g.members.length} of {sites.length} sites</span>
+                  </div>
+                  <h3 className="mt-4 font-bold text-gray-900">{g.label}</h3>
+                  <ul className="mt-3 space-y-3">
+                    {g.members.map(m => (
+                      <li key={m.siteId} className="border-l-2 border-mw-blue-100 pl-3 text-sm">
+                        <p className="font-semibold text-gray-900">{m.name} <span className="font-normal text-gray-500">· {m.siteName}</span></p>
+                        <p className="text-gray-700">{m.who}</p>
+                        <p className="mt-0.5 text-xs text-gray-500">{m.when} · {m.why}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ) })}
+            </ul>
+            <p className="mt-5 text-xs text-gray-500">Audience groups come from the planner notes on each site. Measured age, gender and frequency figures are added as media owners publish them.</p>
+          </div>
+        </section>
+      )}
+
+      <section className="bg-white mw-section">
         <div className="mw-container">
           <SgSectionHeading title="Recommended sites" intro={`${sites.length} ${sites.length === 1 ? 'site' : 'sites'} in ${brief.cityName}, strongest fit first.`} />
           <ol className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -113,6 +149,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
                   <p className="mt-1 text-sm text-gray-800">{s.reason}</p>
                   {s.audience?.reach && <p className="mt-2 text-xs text-gray-500">Monthly reach {s.audience.reach}{s.audience.impressions ? ` · impressions ${s.audience.impressions}` : ''}</p>}
                   {!s.audience?.reach && !s.audience?.impressions && <p className="mt-2 text-xs text-gray-500">Audience figures not yet published for this site.</p>}
+                  <SpecList site={s} />
                 </div>
               </li>
             ))}
@@ -121,12 +158,15 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
             <Stat label="Sites" value={String(totals.sites)} />
             {totals.reach != null && <Stat label="Combined monthly reach" value={num(totals.reach)!} note={`across ${totals.withFigures} of ${totals.sites} sites with published figures`} />}
             {totals.impressions != null && <Stat label="Combined monthly impressions" value={num(totals.impressions)!} note={`across ${totals.withFigures} of ${totals.sites} sites with published figures`} />}
+            {totals.investment && <Stat label="Indicative media investment" value={`${totals.investment.currency} ${num(totals.investment.low)} – ${num(totals.investment.high)}`} note={`${brief.durationWeeks ? `${brief.durationWeeks} weeks, ` : ''}${totals.investment.priced} of ${totals.sites} sites priced`} />}
           </div>
+          {totals.investment && <p className="mt-3 max-w-3xl text-xs text-gray-500">{PRICE_NOTE}</p>}
+          {anySampleSpecs && <p className="mt-2 max-w-3xl text-xs text-amber-700">Specifications shown are stand-ins until the Inventory API is connected.</p>}
         </div>
       </section>
 
       {pins.length > 0 && (
-        <section className="bg-white mw-section">
+        <section className="bg-gray-50 mw-section">
           <div className="mw-container">
             <SgSectionHeading title="Where the sites are" />
             <div className="no-print"><BrandMap pins={pins} title={`Map of the proposed sites in ${brief.cityName}`} className="h-72 sm:h-96 lg:h-[480px]" /></div>
@@ -137,7 +177,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
         </section>
       )}
 
-      <section className="bg-gray-50 mw-section">
+      <section className="bg-white mw-section">
         <div className="mw-container grid gap-8 lg:grid-cols-12">
           <div className="lg:col-span-7">
             <SgSectionHeading title="Next steps" />
@@ -200,6 +240,33 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
           </div>
         </section>
       )}
+    </div>
+  )
+}
+
+function SpecList({ site }: { site: { size: string | null; illuminated: boolean | null; digital: { spotSeconds: number | null; spotsPerLoop: number | null; loopSeconds: number | null } | null; specs: SiteSpecs | null } }) {
+  const sp = site.specs
+  const d = site.digital
+  const rows: [string, string | null][] = [
+    ['Size', site.size],
+    ['Resolution', sp?.resolution ?? null],
+    ['Panels / screens', sp?.panels != null || sp?.screens != null ? [sp?.panels != null ? `${sp.panels} panel${sp.panels === 1 ? '' : 's'}` : null, sp?.screens != null ? `${sp.screens} screen${sp.screens === 1 ? '' : 's'}` : null].filter(Boolean).join(' · ') : null],
+    ['Loop', d?.spotSeconds ? `${d.spotSeconds}s spot${d.spotsPerLoop ? ` · ${d.spotsPerLoop} per loop` : ''}${d.loopSeconds ? ` · ${d.loopSeconds}s loop` : ''}` : null],
+    ['Illuminated', site.illuminated == null ? null : site.illuminated ? 'Yes' : 'No'],
+    ['Lead time', sp?.leadTimeDays != null ? `${sp.leadTimeDays} days` : null],
+    ['Player', sp?.playerSoftware ?? null],
+    ['Content approval', sp?.contentApproval == null ? null : sp.contentApproval ? 'Required' : 'Not required'],
+    ['Board type', sp?.boardType ?? null],
+    ['Files', [sp?.videoFormats?.length ? `video ${sp.videoFormats.join('/')}` : null, sp?.imageFormats?.length ? `image ${sp.imageFormats.join('/')}` : null, sp?.audioFormats?.length ? `audio ${sp.audioFormats.join('/')}` : null].filter(Boolean).join(' · ') || null],
+  ]
+  const shown = rows.filter(([, v]) => v)
+  if (!shown.length) return null
+  return (
+    <div className="mt-3 border-t border-mw-blue-100 pt-3">
+      <p className="text-xs font-semibold uppercase tracking-wider text-mw-blue-600">Specifications</p>
+      <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
+        {shown.map(([k, v]) => <div key={k}><dt className="text-gray-500">{k}</dt><dd className="font-semibold text-gray-800">{v}</dd></div>)}
+      </dl>
     </div>
   )
 }
