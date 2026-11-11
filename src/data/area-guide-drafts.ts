@@ -14,6 +14,7 @@ export type AreaGuideDraft = GuideDraft & { faqs: { q: string; a: string }[] }
 
 export const AREA_GUIDE_DRAFTS: Record<string, AreaGuideDraft> = {
   'malaysia/kuala-lumpur/klcc': {
+    status: 'approved',
     facts: [
       { value: '88', label: 'floors in each Petronas Twin Tower' },
       { value: '2', label: 'MRT and LRT lines within walking distance' },
@@ -79,6 +80,7 @@ export const AREA_GUIDE_DRAFTS: Record<string, AreaGuideDraft> = {
   },
 
   'malaysia/kuala-lumpur/bukit-bintang': {
+    status: 'approved',
     facts: [
       { value: '3', label: 'major malls within a few minutes’ walk' },
       { value: '1', label: 'MRT and Monorail interchange at its centre' },

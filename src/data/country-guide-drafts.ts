@@ -14,6 +14,8 @@ export type GuideMoment = { name: string; months: number[]; note?: string }
 /** One audience a place reaches. `icon` is a persona icon key (commuter, shopper, tourist, office, family, student, nightlife, traveller, driver, resident). */
 export type GuidePerson = { name: string; icon: string; who: string; when: string }
 export type GuideDraft = {
+  /** Rif's sign-off: 'approved' once he has reviewed the copy on staging; new guides start as 'draft'. */
+  status?: 'approved' | 'draft'
   /** Shown as tiles when the country has no inventory to count yet. Public facts only. */
   facts?: { value: string; label: string }[]
   digital: string[]
@@ -27,8 +29,11 @@ export type GuideDraft = {
   moments: GuideMoment[]
 }
 
+import { COUNTRY_GUIDES_BATCH_1 } from './country-guides-batch-1'
+
 export const COUNTRY_GUIDE_DRAFTS: Record<string, GuideDraft> = {
   malaysia: {
+    status: 'approved',
     digital: [
       'Digital billboard advertising in Malaysia is concentrated where the country’s spending is: the Klang Valley. Large-format LED screens line Kuala Lumpur’s Golden Triangle around Bukit Bintang and KLCC, the expressways that feed the city, and the entrances of its biggest malls.',
       'What digital adds is control. A campaign can start in days because nothing is printed, the message can change by the hour, and one booking can carry several versions of the creative. That matters in a market that reads Malay, English and Chinese: the same screen can speak to each audience in turn.',
@@ -84,6 +89,7 @@ export const COUNTRY_GUIDE_DRAFTS: Record<string, GuideDraft> = {
   },
 
   indonesia: {
+    status: 'approved',
     facts: [
       { value: '270M+', label: 'people, the fourth-largest population in the world' },
       { value: '17,000+', label: 'islands, so campaigns are planned city by city' },
@@ -140,4 +146,6 @@ export const COUNTRY_GUIDE_DRAFTS: Record<string, GuideDraft> = {
       { name: 'Christmas and New Year', months: [12, 1] },
     ],
   },
+  // Batch 1 (12 Nov 2026), drafts awaiting Rif's review.
+  ...COUNTRY_GUIDES_BATCH_1,
 }

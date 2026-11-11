@@ -76,8 +76,17 @@ export async function getCountryContent(countryName: string, cityNames: string[]
   const params = { country: `${countryName}*`, max: 12, ...Object.fromEntries(places.map((c, i) => [`p${i}`, `${c}*`])) }
   const [posts, cases] = await Promise.all([safeFetch<any[]>(countryQuery('blogPost', places.length), params, []), safeFetch<any[]>(countryQuery('caseStudy', places.length), { ...params, max: 12 }, [])])
   const reason = `Names ${countryName}`
-  return {
+  const out = {
     posts: (posts ?? []).map(d => item('post', d, 50, reason)).filter(Boolean) as RelatedItem[],
     caseStudies: (cases ?? []).map(d => item('caseStudy', d, 50, reason)).filter(Boolean) as RelatedItem[],
+  }
+  // Rows always show three (Rif, 11 Nov 2026): a country with fewer matches tops up with the latest.
+  if (out.posts.length >= 3 && out.caseStudies.length >= 3) return out
+  const latestQuery = (type: 'blogPost' | 'caseStudy') => `*[_type == "${type}" && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...6]{ ${relatedFields} }`
+  const [lp, lc] = await Promise.all([safeFetch<any[]>(latestQuery('blogPost'), {}, []), safeFetch<any[]>(latestQuery('caseStudy'), {}, [])])
+  const fill = (have: RelatedItem[], more: RelatedItem[]) => [...have, ...more.filter(x => !have.some(y => y.id === x.id))].slice(0, Math.max(have.length, 3))
+  return {
+    posts: fill(out.posts, (lp ?? []).map(d => item('post', d, 10, 'Latest')).filter(Boolean) as RelatedItem[]),
+    caseStudies: fill(out.caseStudies, (lc ?? []).map(d => item('caseStudy', d, 10, 'Latest')).filter(Boolean) as RelatedItem[]),
   }
 }

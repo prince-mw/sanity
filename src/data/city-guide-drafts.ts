@@ -9,8 +9,11 @@
 
 import type { GuideDraft } from './country-guide-drafts'
 
+import { CITY_GUIDES_BATCH_1 } from './city-guides-batch-1'
+
 export const CITY_GUIDE_DRAFTS: Record<string, GuideDraft> = {
   'malaysia/kuala-lumpur': {
+    status: 'approved',
     digital: [
       'Billboard advertising in Kuala Lumpur reaches the largest and highest-spending audience in Malaysia. The city is the centre of the Klang Valley, and people from Petaling Jaya, Shah Alam, Subang Jaya and beyond travel into it every day to work, shop and eat.',
       'That daily movement is what outdoor media buys. Expressways and the Sprint, NPE and Duta corridors deliver commuters by the hundred thousand; the Golden Triangle delivers shoppers and office workers on foot; the MRT, LRT and Monorail connect the two.',
@@ -72,6 +75,7 @@ export const CITY_GUIDE_DRAFTS: Record<string, GuideDraft> = {
   },
 
   'indonesia/jakarta': {
+    status: 'approved',
     facts: [
       { value: '10M+', label: 'residents in the city itself' },
       { value: '5', label: 'municipalities, plus the surrounding commuter cities' },
@@ -134,4 +138,6 @@ export const CITY_GUIDE_DRAFTS: Record<string, GuideDraft> = {
       { name: 'Christmas and New Year', months: [12, 1] },
     ],
   },
+  // Batch 1 (12 Nov 2026), drafts awaiting Rif's review.
+  ...CITY_GUIDES_BATCH_1,
 }
