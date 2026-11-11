@@ -16,7 +16,7 @@ import { ShoppingBag, Route, TrainFront, Building2, Landmark, Store, Plane, Tree
 
 const HIGHLIGHT_ICONS: Record<Highlight['icon'], LucideIcon> = { shopping: ShoppingBag, road: Route, rail: TrainFront, tower: Building2, landmark: Landmark, mall: Store, airport: Plane, park: Trees }
 
-export function CityInventorySection({ cityName, citySlug, countrySlug, countryName, sites, pagedIds, areas, sample, content }: {
+export function CityInventorySection({ cityName, citySlug, countrySlug, countryName, sites, pagedIds, areas, sample, content, guide }: {
   cityName: string
   citySlug: string
   countrySlug: string
@@ -26,12 +26,14 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
   sample: boolean
   countryName: string
   content: PlaceContent
+  /** The city template's guide: rendered after the sites; it covers areas and audiences, so those sections step aside. */
+  guide?: React.ReactNode
 }) {
   const paged = new Set(pagedIds)
   const areaCount = new Set(sites.map(s => s.areaSlug)).size
   return (
     <div id="all-sites">
-      {(content.highlights.length > 0 || content.description) && (
+      {!guide && (content.highlights.length > 0 || content.description) && (
         <section className="bg-white mw-section">
           <div className="mw-container">
             <SgSectionHeading title={`Outdoor advertising in ${cityName}`} intro={content.highlights.length ? undefined : content.description ?? undefined} />
@@ -47,7 +49,8 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
           <SiteGrid sites={sites} hasPage={s => paged.has(s.id)} mapTitle={`Map of advertising sites in ${cityName}`} />
         </div>
       </section>
-      {areas.length > 0 && (
+      {guide}
+      {!guide && areas.length > 0 && (
         <section className="bg-white mw-section">
           <div className="mw-container">
             <SgSectionHeading title={`Advertising areas in ${cityName}`} intro="Pick an area to see every site there." />
@@ -63,7 +66,7 @@ export function CityInventorySection({ cityName, citySlug, countrySlug, countryN
           </div>
         </section>
       )}
-      <AudienceSection placeName={cityName} personas={content.personas} />
+      {!guide && <AudienceSection placeName={cityName} personas={content.personas} />}
       <RelatedContent cityName={cityName} countryName={countryName} caseStudies={content.caseStudies} posts={content.posts} firstBg="bg-white" video={MARKET_VIDEOS[countrySlug]} />
     </div>
   )

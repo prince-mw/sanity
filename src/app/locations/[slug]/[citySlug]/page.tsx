@@ -10,6 +10,12 @@ import { areasFor, sitesFor, usingSample } from '@/lib/inventory/source'
 import { siteHasPage } from '@/lib/inventory/normalize'
 import { CityInventorySection } from '@/components/inventory/CityInventorySection'
 import { ProposalPromo } from '@/components/proposal/ProposalPromo'
+import { LandingPageRenderer } from '@/components/landing'
+import { CountryGuide } from '@/components/location/CountryGuide'
+import { cityGuideFor, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
+import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
+import { promoEnabled } from '@/lib/proposal/promo'
+import { marketOf } from '@/lib/proposal/markets'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
@@ -89,6 +95,20 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const [inventory, inventoryAreas] = await Promise.all([sitesFor(slug, citySlug), areasFor(slug, citySlug)])
   const placeContent = inventory.length > 0 ? await getPlaceContent({ kind: 'city', countrySlug: slug, countryName: city.country?.country || slug, citySlug, cityName: city.city || citySlug }) : null
 
+  // The city template (Rif, 11 Nov 2026): cities with a written guide get the fixed order —
+  // hero, proposal band, every site, the city guide, proof, FAQ. Others keep their current page.
+  const cityName = city.city || citySlug
+  const guideTopics = cityGuideFor(slug, citySlug, cityName)
+  const cityDraft = CITY_GUIDE_DRAFTS[`${slug}/${citySlug}`] ?? null
+  const templated = guideTopics.length > 0 && !!cityDraft
+  const citySections = ((cityData as { sections?: TemplateSection[] }).sections ?? []) as TemplateSection[]
+  const showPromo = promoEnabled() && !!marketOf(slug)
+  const guide = templated ? (
+    <CountryGuide key="guide" country={cityName} countrySlug={slug} topics={guideTopics} data={marketData(inventory, 'area')} draft={cityDraft}
+      cityLinks={Object.fromEntries(inventoryAreas.map(a => [a.name.trim().toLowerCase(), `/locations/${slug}/${citySlug}/${a.slug}`]))}
+      linkBase={`/locations/${slug}/${citySlug}`} placeWord={['area', 'areas']} proposalHref={showPromo ? '/proposals/new' : null} tone="brand" />
+  ) : null
+
   const locationJsonLd = buildLocationJsonLd({
     countrySlug: slug,
     countryName: city.country?.country || slug,
@@ -114,6 +134,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         relatedCities={relatedCities}
         countryName={city.country?.country || undefined}
         relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || undefined}
+        accents={templated}
+        sectionsOverride={templated ? <LandingPageRenderer sections={tailSections(citySections)} /> : undefined}
         afterHero={inventory.length > 0 ? (<>
           <ProposalPromo key="promo" variant="band" market={city.country?.country || slug} place={city.city || citySlug} />
           <CityInventorySection key="inventory"
@@ -126,8 +148,9 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             pagedIds={inventory.filter(siteHasPage).map(s => s.id)}
             areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
             sample={usingSample()}
+            guide={guide ?? undefined}
           />
-        </>) : null}
+        </>) : guide}
       />
     </>
   )

@@ -13,10 +13,11 @@
 
 import type { PublicSite } from '@/lib/inventory/types'
 import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
+import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
 
 export type TemplateSection = { _type: string; _key: string; heading?: string; content?: unknown; [k: string]: unknown }
 
-export type TopicId = 'digital' | 'audiences' | 'formats' | 'buying' | 'seasons'
+export type TopicId = 'digital' | 'audiences' | 'people' | 'formats' | 'buying' | 'seasons'
 export type GuideTopic = { id: TopicId; heading: string; blocks: unknown[] | null; paragraphs: string[] | null; source: 'cms' | 'draft' }
 
 /** Headings follow one keyword pattern per topic, so every country covers the same searches. */
@@ -26,6 +27,26 @@ export const TOPIC_HEADINGS: Record<TopicId, (country: string) => string> = {
   formats: c => `Outdoor advertising formats in ${c}`,
   buying: c => `How to buy billboard advertising in ${c}`,
   seasons: c => `When to advertise in ${c}: seasons and moments`,
+  people: c => `Who you reach in ${c}`,
+}
+
+/** The city template's five topics, in order, with their keyword patterns. */
+export const CITY_TOPIC_ORDER: TopicId[] = ['digital', 'audiences', 'people', 'formats', 'seasons']
+export const CITY_TOPIC_HEADINGS: Record<TopicId, (city: string) => string> = {
+  digital: c => `Billboard advertising in ${c}`,
+  audiences: c => `Where to advertise in ${c}: the areas that matter`,
+  people: c => `Who you reach in ${c}`,
+  formats: c => `Outdoor advertising formats in ${c}`,
+  buying: c => `How to buy billboard advertising in ${c}`,
+  seasons: c => `When to advertise in ${c}`,
+}
+
+/** A city's guide: only cities with a written guide get the city template. */
+export function cityGuideFor(countrySlug: string, citySlug: string, cityName: string): GuideTopic[] {
+  const d = CITY_GUIDE_DRAFTS[`${countrySlug}/${citySlug}`]
+  if (!d) return []
+  const written: Partial<Record<TopicId, string[] | undefined>> = { digital: d.digital, audiences: d.audiences.intro, people: d.people?.intro, formats: d.formats.intro, seasons: d.seasons }
+  return CITY_TOPIC_ORDER.filter(id => written[id]?.length).map(id => ({ id, heading: CITY_TOPIC_HEADINGS[id](cityName), blocks: null, paragraphs: written[id]!, source: 'draft' as const }))
 }
 export const TOPIC_ORDER: TopicId[] = ['digital', 'audiences', 'formats', 'buying', 'seasons']
 
@@ -62,13 +83,15 @@ export type CityStat = { slug: string; name: string; sites: number; impressions:
 export type FormatStat = { name: string; sites: number }
 export type MarketData = { sites: number; cities: CityStat[]; formats: FormatStat[]; impressions: number }
 
-export function marketData(sites: PublicSite[]): MarketData {
+/** Counts for the visuals. `by` picks the places: a country's cities, or a city's areas. */
+export function marketData(sites: PublicSite[], by: 'city' | 'area' = 'city'): MarketData {
   const byCity = new Map<string, PublicSite[]>()
-  for (const s of sites) byCity.set(s.citySlug, [...(byCity.get(s.citySlug) ?? []), s])
+  const slugOf = (s: PublicSite) => by === 'area' ? s.areaSlug : s.citySlug
+  for (const s of sites) byCity.set(slugOf(s), [...(byCity.get(slugOf(s)) ?? []), s])
   const cities = Array.from(byCity.entries()).map(([slug, list]): CityStat => {
     const geo = list.filter(s => s.lat != null && s.lng != null)
     return {
-      slug, name: list[0].cityName, sites: list.length, impressions: list.reduce((n, s) => n + figure(s.audience?.impressions), 0),
+      slug, name: by === 'area' ? list[0].areaName : list[0].cityName, sites: list.length, impressions: list.reduce((n, s) => n + figure(s.audience?.impressions), 0),
       lat: geo.length ? geo.reduce((n, s) => n + s.lat!, 0) / geo.length : null,
       lng: geo.length ? geo.reduce((n, s) => n + s.lng!, 0) / geo.length : null,
     }

@@ -14,7 +14,7 @@
 //   brand — the treatment above
 
 import Link from 'next/link'
-import { ArrowRight, BarChart3, Building2, CalendarDays, Lightbulb, MapPin as MapPinIcon, Monitor, PanelTop, RectangleHorizontal, ShoppingBag, Store, TrainFront, Zap, type LucideIcon } from 'lucide-react'
+import { ArrowRight, BarChart3, Building2, CalendarDays, Lightbulb, MapPin as MapPinIcon, Monitor, PanelTop, RectangleHorizontal, ShoppingBag, Store, TrainFront, Zap, Briefcase, Camera, Car, GraduationCap, Home, Moon, Plane, Users, type LucideIcon } from 'lucide-react'
 import SanityPortableText from '@/components/SanityPortableText'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import type { GuideTopic, MarketData, TopicId } from '@/lib/location/countryTemplate'
@@ -155,11 +155,37 @@ function FormatsTopic({ t, list, data, lk }: { t: GuideTopic; list: { name: stri
 }
 
 /** The cities topic: a short intro beside the map, then one card per city across the full width. */
-function CitiesTopic({ t, draft, data, country, countrySlug, cityLinks, lk }: { t: GuideTopic; draft: GuideDraft | null; data: MarketData; country: string; countrySlug: string; cityLinks: Record<string, string>; lk: Look }) {
+const PERSON_ICONS: Record<string, LucideIcon> = { commuter: TrainFront, shopper: ShoppingBag, tourist: Camera, office: Briefcase, family: Users, student: GraduationCap, nightlife: Moon, traveller: Plane, driver: Car, resident: Home }
+
+/** City guides: who you reach, one card per audience with when they are there. */
+function PeopleTopic({ t, list, lk }: { t: GuideTopic; list: { name: string; icon: string; who: string; when: string }[]; lk: Look }) {
+  return (
+    <>
+      <div className="max-w-3xl">
+        <h3 className="text-2xl font-bold tracking-tight text-gray-900">{t.heading}</h3>
+        <Text t={t} />
+      </div>
+      <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        {list.map((p, i) => { const Icon = PERSON_ICONS[p.icon] ?? Users; return (
+          <li key={p.name} className={`flex gap-4 rounded-2xl p-5 ${lk.card('white')}`}>
+            <span className={lk.on ? lk.tile(i + 2) : 'flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-mw-blue-50 text-mw-blue-600'}><Icon className="h-6 w-6" aria-hidden="true" /></span>
+            <div className="flex min-w-0 flex-1 flex-col">
+              <h4 className="font-bold text-gray-900">{p.name}</h4>
+              <p className="mt-1 flex-1 text-sm leading-relaxed text-gray-700">{p.who}</p>
+              <p className="mt-3 text-xs font-semibold text-[#2563eb]">{p.when}</p>
+            </div>
+          </li>
+        ) })}
+      </ul>
+    </>
+  )
+}
+
+function CitiesTopic({ t, draft, data, country, linkBase, cityLinks, lk }: { t: GuideTopic; draft: GuideDraft | null; data: MarketData; country: string; linkBase: string; cityLinks: Record<string, string>; lk: Look }) {
   const stat = (name: string) => data.cities.find(c => key(c.name) === key(name)) ?? null
   // Written cities carry their own coordinates; without a written guide, the inventory's cities are used.
   const cities = draft?.audiences.cities ?? data.cities.filter(c => c.lat != null && c.lng != null).map(c => ({ name: c.name, lat: c.lat!, lng: c.lng!, body: '', bestFor: [] as string[] }))
-  const hrefOf = (name: string) => cityLinks[key(name)] ?? (stat(name) ? `/locations/${countrySlug}/${stat(name)!.slug}` : null)
+  const hrefOf = (name: string) => cityLinks[key(name)] ?? (stat(name) ? `${linkBase}/${stat(name)!.slug}` : null)
   const pins: MapPin[] = cities.map(c => { const s = stat(c.name); return { id: key(c.name), lat: c.lat, lng: c.lng, title: c.name, subtitle: s ? `${s.sites} ${s.sites === 1 ? 'site' : 'sites'}` : c.bestFor[0] ?? undefined, href: hrefOf(c.name) ?? undefined } })
   return (
     <>
@@ -168,7 +194,7 @@ function CitiesTopic({ t, draft, data, country, countrySlug, cityLinks, lk }: { 
           <h3 className="text-2xl font-bold tracking-tight text-gray-900">{t.heading}</h3>
           <Text t={t} />
         </div>
-        {pins.length > 0 && <div className="lg:col-span-7"><BrandMap pins={pins} title={`Map of the cities to advertise in, ${country}`} className="h-72 sm:h-80 lg:h-[360px]" /></div>}
+        {pins.length > 0 && <div className="lg:col-span-7"><BrandMap pins={pins} title={`Map of where to advertise in ${country}`} className="h-72 sm:h-80 lg:h-[360px]" /></div>}
       </div>
       {draft && (
         <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -190,12 +216,16 @@ function CitiesTopic({ t, draft, data, country, countrySlug, cityLinks, lk }: { 
   )
 }
 
-export function CountryGuide({ country, countrySlug, topics, data, draft = null, cityLinks = {}, proposalHref = null, tone = 'none' }: { country: string; countrySlug: string; topics: GuideTopic[]; data: MarketData; draft?: GuideDraft | null; cityLinks?: Record<string, string>; proposalHref?: string | null; tone?: Tone }) {
+/**
+ * `country` is the place the guide is about (a country, or a city on the city template).
+ * `linkBase` is where its place cards link under; `placeWord` names those places.
+ */
+export function CountryGuide({ country, countrySlug, topics, data, draft = null, cityLinks = {}, proposalHref = null, tone = 'none', linkBase, placeWord = ['city', 'cities'] }: { country: string; countrySlug: string; topics: GuideTopic[]; data: MarketData; draft?: GuideDraft | null; cityLinks?: Record<string, string>; proposalHref?: string | null; tone?: Tone; linkBase?: string; placeWord?: [string, string] }) {
   if (topics.length === 0) return null
   const lk = look(tone)
   const inventoryTiles = data.sites > 0 ? [
     { value: num(data.sites), label: data.sites === 1 ? 'site to plan' : 'sites to plan' },
-    { value: num(data.cities.length), label: data.cities.length === 1 ? 'city covered' : 'cities covered' },
+    { value: num(data.cities.length), label: `${data.cities.length === 1 ? placeWord[0] : placeWord[1]} covered` },
     { value: num(data.formats.length), label: data.formats.length === 1 ? 'format' : 'formats' },
     ...(data.impressions > 0 ? [{ value: short(data.impressions), label: 'monthly impressions, as published' }] : []),
   ] : null
@@ -216,9 +246,14 @@ export function CountryGuide({ country, countrySlug, topics, data, draft = null,
           {topics.map(t => <a key={t.id} href={`#guide-${t.id}`} className="mw-tap rounded-full border border-gray-300 bg-white px-4 py-1.5 text-sm font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]">{t.heading.split(':')[0]}</a>)}
         </nav>
         {topics.map(t => {
+          if (t.id === 'people' && draft?.people?.list.length) return (
+            <article key={t.id} id={`guide-${t.id}`} className="mt-12 scroll-mt-28 border-t border-gray-200 pt-12">
+              <PeopleTopic t={t} list={draft.people.list} lk={lk} />
+            </article>
+          )
           if (t.id === 'audiences') return (
             <article key={t.id} id={`guide-${t.id}`} className="mt-12 scroll-mt-28 border-t border-gray-200 pt-12">
-              <CitiesTopic t={t} draft={draft} data={data} country={country} countrySlug={countrySlug} cityLinks={cityLinks} lk={lk} />
+              <CitiesTopic t={t} draft={draft} data={data} country={country} linkBase={linkBase ?? `/locations/${countrySlug}`} cityLinks={cityLinks} lk={lk} />
             </article>
           )
           if (t.id === 'formats' && draft?.formats.list.length) return (

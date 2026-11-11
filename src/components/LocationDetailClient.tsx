@@ -371,10 +371,11 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
+                  className="h-full"
                 >
                   <Link
                     href={city.href}
-                    className="block bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow"
+                    className="flex h-full flex-col bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100 hover:shadow-xl transition-shadow"
                   >
                     {city.image && (
                       <div className="h-40 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 relative">

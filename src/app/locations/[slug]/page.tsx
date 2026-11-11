@@ -9,6 +9,11 @@ import { buildLocationJsonLd } from '@/lib/locationSchema'
 import { ProposalPromo } from '@/components/proposal/ProposalPromo'
 import { marketOf } from '@/lib/proposal/markets'
 import { promoEnabled } from '@/lib/proposal/promo'
+import { LandingPageRenderer } from '@/components/landing'
+import { CountryGuide } from '@/components/location/CountryGuide'
+import { sitesFor } from '@/lib/inventory/source'
+import { guideFor, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
+import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params
@@ -102,6 +107,33 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
       : (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
     const faqJsonLd = buildFaqJsonLd(locationData.faqs)
     const locationJsonLd = buildLocationJsonLd({ countrySlug: slug, countryName: sanityLocation.country || locationData.name })
+    // The country template (approved by Rif, 11 Nov 2026): fixed slot order, the written market guide,
+    // visuals from data. Countries without a written guide keep their page-builder sections until theirs is written.
+    const draft = COUNTRY_GUIDE_DRAFTS[slug] ?? null
+    const countryName = sanityLocation.country || locationData.name
+    const promo = promoEnabled() && marketOf(slug) ? <ProposalPromo variant="band" market={marketOf(slug)!.countryName} /> : null
+    if (draft) {
+      const sections = (locationData.sections ?? []) as TemplateSection[]
+      const data = marketData(await sitesFor(slug))
+      return (
+        <>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(locationJsonLd) }} />
+          {faqJsonLd && <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />}
+          <LocationDetailClient
+            initialData={{ ...locationData, sectionsPosition: 'before-faqs' }}
+            cities={cities}
+            pageType="country"
+            lang={getLocationPageLang(slug)}
+            accents
+            afterHero={promo}
+            sectionsOverride={<>
+              <CountryGuide country={countryName} countrySlug={slug} topics={guideFor(slug, countryName, sections)} data={data} draft={draft} cityLinks={Object.fromEntries(cities.map(c => [c.city.trim().toLowerCase(), c.href]))} proposalHref={promo ? '/proposals/new' : null} tone="brand" />
+              <LandingPageRenderer sections={tailSections(sections)} />
+            </>}
+          />
+        </>
+      )
+    }
     return (
       <>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(locationJsonLd) }} />

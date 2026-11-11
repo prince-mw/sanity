@@ -11,13 +11,18 @@
 export type GuideCity = { name: string; lat: number; lng: number; body: string; bestFor: string[] }
 export type GuideFormat = { name: string; job: string }
 export type GuideMoment = { name: string; months: number[]; note?: string }
+/** One audience a place reaches. `icon` is a persona icon key (commuter, shopper, tourist, office, family, student, nightlife, traveller, driver, resident). */
+export type GuidePerson = { name: string; icon: string; who: string; when: string }
 export type GuideDraft = {
   /** Shown as tiles when the country has no inventory to count yet. Public facts only. */
   facts?: { value: string; label: string }[]
   digital: string[]
   audiences: { intro: string[]; cities: GuideCity[] }
   formats: { intro: string[]; list: GuideFormat[] }
-  buying: string[]
+  /** Country guides only: how the market is bought. */
+  buying?: string[]
+  /** City guides only: who you reach. */
+  people?: { intro: string[]; list: GuidePerson[] }
   seasons: string[]
   moments: GuideMoment[]
 }
