@@ -79,7 +79,7 @@ const pinOf = (s: PublicSite, linked: boolean): MapPin | null =>
  * map, all driven by one filter state, so the pins always match the cards.
  * Map on top, cards below at every size. Phone/tablet: List / Map switch.
  */
-export function SiteGrid({ sites, hasPage, mapTitle, renderAction }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string; renderAction?: (s: PublicSite) => ReactNode }) {
+export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = true, total }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string; renderAction?: (s: PublicSite) => ReactNode; filters?: boolean; total?: number }) {
   const formats = useMemo(() => Array.from(new Set(sites.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [sites])
   const venues = useMemo(() => Array.from(new Set(sites.map(s => s.venueType).filter(Boolean) as string[])).sort(), [sites])
   const [format, setFormat] = useState('All')
@@ -98,7 +98,7 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction }: { sites: Pu
   const tab = (on: boolean) => `mw-tap flex-1 rounded-full px-4 py-1.5 text-sm font-semibold ${on ? 'bg-[#2563eb] text-white' : 'text-gray-700'}`
   return (
     <div>
-      <div className="flex flex-col gap-3 mb-5">
+      {filters && <div className="flex flex-col gap-3 mb-5">
         <div className="flex flex-wrap items-center gap-2">
           <span className="text-sm font-semibold text-gray-500 mr-1">Format</span>
           {['All', ...formats].map(f => <button key={f} type="button" aria-pressed={format === f} onClick={() => { setFormat(f); setActive(null) }} className={chip(format === f)}>{f}</button>)}
@@ -109,9 +109,9 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction }: { sites: Pu
             {['All', ...venues].map(v => <button key={v} type="button" aria-pressed={venue === v} onClick={() => { setVenue(v); setActive(null) }} className={chip(venue === v)}>{v}</button>)}
           </div>
         )}
-      </div>
+      </div>}
       <div className="flex items-center justify-between gap-4 mb-4">
-        <p className="text-sm text-gray-500" aria-live="polite">{shown.length} of {sites.length} sites{pins.length < shown.length ? ` · ${pins.length} on the map` : ''}</p>
+        <p className="text-sm text-gray-500" aria-live="polite">{shown.length} of {total ?? sites.length} {(total ?? sites.length) === 1 ? 'site' : 'sites'}{pins.length < shown.length ? ` · ${pins.length} on the map` : ''}</p>
         <div className="lg:hidden flex w-48 rounded-full border border-gray-200 bg-white p-1" role="group" aria-label="Show sites as">
           <button type="button" aria-pressed={view === 'list'} onClick={() => setView('list')} className={tab(view === 'list')}>List</button>
           <button type="button" aria-pressed={view === 'map'} onClick={() => setView('map')} className={tab(view === 'map')}>Map</button>

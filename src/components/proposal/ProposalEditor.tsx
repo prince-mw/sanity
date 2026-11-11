@@ -2,8 +2,9 @@
 
 // The creator's editor (round 3, Rif, 11 Nov 2026): four tabs, one task each,
 // and a sticky publish bar.
-//   Plan                 — grouped by city, reorder / remove, the reason as text with Edit, the summary
-//   Add sites            — the location-page browser: country and city chips, format and venue filters, map, cards
+//   Plan                 — grouped by city, reorder / remove, the reason as text with Edit; the summary reads in the hero
+//   Add sites            — a filter sidebar like the Moving Walls Market (another city first, then search, city, format, venue), map, cards
+// Round 5 (Rif, 11 Nov 2026): no free-text summary box — the brief changes only on the Brief tab, so the scope stays small.
 //   Brief                — update this proposal (new version) or start a new proposal from the brief (new link)
 //   What the client sees — everything off by default; at most 2 options before approval, 2 offers after
 // The demo editor renders all of it; nothing is saved there.
@@ -12,7 +13,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowDown, ArrowUp, Check, Plus, X } from 'lucide-react'
+import { ArrowDown, ArrowUp, Check, Plus, Search, X } from 'lucide-react'
 import { SG_NAVY, SgSectionHeading } from '../SingaporeShared'
 import { SampleTag, SiteGrid } from '../inventory/InventoryShared'
 import { useShortlist } from '@/lib/proposal/shortlist'
@@ -37,8 +38,10 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
   const [tab, setTab] = useState<TabId>('plan')
   const [rows, setRows] = useState<Row[]>(view.sites.map(s => ({ siteId: s.id, reason: s.reason })))
   const [editing, setEditing] = useState<string | null>(null)
-  const [summary, setSummary] = useState(version.summary)
   const [city, setCity] = useState<string>('all')
+  const [q, setQ] = useState('')
+  const [format, setFormat] = useState('all')
+  const [venue, setVenue] = useState('all')
   const [shown, setShown] = useState(doc.shown ?? { options: [], postApproval: [] })
   const [shownSaved, setShownSaved] = useState(true)
   const [objective, setObjective] = useState<Objective | null>(doc.brief.objective)
@@ -66,9 +69,17 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
 
   const inPlan = new Set(rows.map(r => r.siteId))
   const cityGroups = Array.from(new Set(rows.map(r => byId.get(r.siteId)?.citySlug).filter(Boolean) as string[])).map(slug => ({ slug, name: cityNameOf(doc.brief.countrySlug, slug), count: rows.filter(r => byId.get(r.siteId)?.citySlug === slug).length }))
-  const browse = candidates.filter(s => city === 'all' || s.citySlug === city)
+  const formats = useMemo(() => Array.from(new Set(candidates.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [candidates])
+  const venues = useMemo(() => Array.from(new Set(candidates.map(s => s.venueType).filter(Boolean) as string[])).sort(), [candidates])
+  const needle = q.trim().toLowerCase()
+  const browse = candidates.filter(s => (city === 'all' || s.citySlug === city)
+    && (format === 'all' || (s.displayFormat ?? s.format ?? 'Other') === format)
+    && (venue === 'all' || s.venueType === venue)
+    && (!needle || [s.name, s.areaName, s.address, s.displayFormat, s.format].some(v => v?.toLowerCase().includes(needle))))
+  const filtered = city !== 'all' || format !== 'all' || venue !== 'all' || needle !== ''
+  const clearFilters = () => { setCity('all'); setFormat('all'); setVenue('all'); setQ('') }
   const quick = shortlist.filter(i => byId.has(i.id) && !inPlan.has(i.id))
-  const dirty = JSON.stringify(rows) !== JSON.stringify(view.sites.map(s => ({ siteId: s.id, reason: s.reason }))) || summary !== version.summary
+  const dirty = JSON.stringify(rows) !== JSON.stringify(view.sites.map(s => ({ siteId: s.id, reason: s.reason })))
   const demoNote = 'This is the sample proposal: nothing is saved here. On a real proposal this works as described.'
 
   const move = (i: number, d: -1 | 1) => setRows(r => { const n = [...r]; const j = i + d; if (j < 0 || j >= n.length) return r; [n[i], n[j]] = [n[j], n[i]]; return n })
@@ -85,7 +96,7 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
     return j ?? {}
   }
   const toClient = () => { router.refresh(); router.push(`/proposals/${doc.shareId}`) }
-  const publish = async () => { if (await call(`/api/proposals/${doc.shareId}/versions`, { sites: rows, summary }, 'publish')) toClient() }
+  const publish = async () => { if (await call(`/api/proposals/${doc.shareId}/versions`, { sites: rows }, 'publish')) toClient() }
   const briefPatch = () => ({ objective, audience, industry, durationWeeks: duration, budgetBand: budget, targetSites: count, cities: briefCities, countryWide })
   const rerun = async () => { if (await call(`/api/proposals/${doc.shareId}/versions`, { rerun: true, pinnedIds: keepSites ? rows.map(r => r.siteId) : [], brief: briefPatch() }, 'rerun')) toClient() }
   const fork = async () => { const j = await call(`/api/proposals/${doc.shareId}/fork`, { brief: briefPatch(), keepSites }, 'fork'); if (j?.shareId) router.push(`/proposals/${j.shareId}/edit`) }
@@ -120,7 +131,8 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
         <div className="mw-container">
           <span className="text-sm font-bold uppercase tracking-wider text-cyan-300">Editing · currently v{version.n}</span>
           <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl lg:text-4xl">{doc.titleLine}</h1>
-          <div className="mt-4 flex flex-wrap gap-3">
+          {version.summary && <p className="mt-3 max-w-3xl text-blue-100">{version.summary}</p>}
+          <div className="mt-5 flex flex-wrap gap-3">
             <Link href={`/proposals/${doc.shareId}`} className="mw-tap inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">View as the client sees it</Link>
             <button type="button" onClick={copy} className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">{copied ? 'Link copied' : 'Copy client link'}</button>
             <Link href="/proposals/mine" className="mw-tap inline-flex items-center rounded-lg border-2 border-white/40 px-5 py-2.5 font-semibold text-white hover:bg-white/10">Your proposals</Link>
@@ -137,7 +149,7 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
       {/* Plan */}
       <section id="edit-plan" role="tabpanel" aria-labelledby="edittab-plan" className={`bg-gray-50 mw-section ${tab === 'plan' ? '' : 'hidden'}`}>
         <div className="mw-container">
-          <SgSectionHeading title="Sites in this proposal" intro="Reorder or remove sites; the line under each is what the client reads. Publish when you are done; older versions stay listed." />
+          <SgSectionHeading title="Sites in this proposal" intro="Reorder or remove sites; the line under each is what the client reads. The summary above is written from the brief; change the brief on its tab. Publish when you are done; older versions stay listed." />
           <div className="grid gap-8 lg:grid-cols-12">
             <div className="lg:col-span-8">
               {cityGroups.map(g => (
@@ -183,10 +195,7 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
               {rows.length === 0 && <p className="text-sm text-red-600">Keep at least one site.</p>}
             </div>
             <div className="lg:col-span-4">
-              <label className="block"><span className="text-sm font-semibold text-gray-700">Campaign summary</span>
-                <textarea value={summary} onChange={e => setSummary(e.target.value)} rows={8} maxLength={700} className={input} />
-              </label>
-              <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 text-sm text-gray-600">
+              <div className="rounded-2xl border border-gray-200 bg-white p-5 text-sm text-gray-600">
                 <h3 className="font-bold text-[#2563eb]">Versions</h3>
                 <ul className="mt-2 space-y-1">
                   {[...doc.versions].sort((a, b) => b.n - a.n).map(v => <li key={v.n} className={v.n === version.n ? 'font-semibold text-gray-900' : ''}>v{v.n} · {new Date(v.createdAt).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} · {v.sites.length} sites · {v.source}</li>)}
@@ -202,40 +211,76 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
       {/* Add sites */}
       <section id="edit-sites" role="tabpanel" aria-labelledby="edittab-sites" className={`bg-white mw-section ${tab === 'sites' ? '' : 'hidden'}`}>
         <div className="mw-container">
-          <SgSectionHeading title="Add sites" intro="Browse the market the way the location pages do. Add a site and it joins the plan; publish from the bar below when you are done." />
-          <div className="mb-5 flex flex-wrap items-center gap-2">
-            <span className="mr-1 text-sm font-semibold text-gray-500">{market?.countryName ?? 'Country'}</span>
-            <button type="button" aria-pressed={city === 'all'} onClick={() => setCity('all')} className={chip(city === 'all')}>All cities</button>
-            {(market?.cities ?? []).map(c => c.available
-              ? <button key={c.slug} type="button" aria-pressed={city === c.slug} onClick={() => setCity(c.slug)} className={chip(city === c.slug)}>{c.name}</button>
-              : <button key={c.slug} type="button" disabled={requested.includes(c.slug) || busy === `city-${c.slug}`} onClick={() => requestCity(c.slug)} className={`${chip(false)} disabled:opacity-60`}>{requested.includes(c.slug) ? `${c.name} · requested` : `${c.name} · request`}</button>)}
-          </div>
-          {(() => { const planned = new Set(cityGroups.map(g => g.slug)); const more = (market?.cities ?? []).filter(c => c.available && !planned.has(c.slug)); return more.length > 0 && (
-            <div className="mb-5 rounded-2xl border border-gray-200 bg-gray-50 p-4">
-              <p className="text-sm font-semibold text-gray-700">Run the same brief in another city</p>
-              <p className="mt-1 text-sm text-gray-600">The plan is picked for that city with the brief above and added as its own group, with its own sites, audiences and figures. Publish when you are happy with it.</p>
-              <div className="mt-3 flex flex-wrap gap-2">
-                {more.map(c => <button key={c.slug} type="button" disabled={busy !== null} onClick={() => planCity(c.slug)} className="mw-tap inline-flex items-center gap-1.5 rounded-lg bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-60"><Plus className="h-4 w-4" aria-hidden="true" />{busy === `plan-${c.slug}` ? 'Planning…' : `Plan ${c.name} with this brief`}</button>)}
+          <SgSectionHeading title="Add sites" intro="Filter the market on the left; add a site and it joins the plan. Publish from the bar below when you are done." />
+          <div className="grid gap-8 lg:grid-cols-12">
+            <aside className="lg:col-span-3">
+              <div className="rounded-2xl border border-gray-200 bg-white lg:sticky lg:top-6">
+                {(() => { const planned = new Set(cityGroups.map(g => g.slug)); const more = (market?.cities ?? []).filter(c => c.available && !planned.has(c.slug)); const onRequest = (market?.cities ?? []).filter(c => !c.available); return (more.length > 0 || onRequest.length > 0) && (
+                  <div className="border-b border-gray-200 bg-mw-blue-50/40 p-5">
+                    <p className="text-xs font-bold uppercase tracking-wider text-mw-blue-600">Run this brief in another city</p>
+                    <p className="mt-1 text-xs text-gray-600">Picked with the same brief and added as its own group with its own sites and figures.</p>
+                    <div className="mt-3 flex flex-col gap-2">
+                      {more.map(c => <button key={c.slug} type="button" disabled={busy !== null} onClick={() => planCity(c.slug)} className="mw-tap inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-[#2563eb] px-3 py-2 text-sm font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-60"><Plus className="h-4 w-4" aria-hidden="true" />{busy === `plan-${c.slug}` ? 'Planning…' : `Plan ${c.name}`}</button>)}
+                      {onRequest.map(c => <button key={c.slug} type="button" disabled={requested.includes(c.slug) || busy === `city-${c.slug}`} onClick={() => requestCity(c.slug)} className="mw-tap inline-flex w-full items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm font-semibold text-gray-700 hover:border-[#2563eb] disabled:opacity-60">{requested.includes(c.slug) ? `${c.name} · requested` : `Request ${c.name}`}</button>)}
+                    </div>
+                    {requested.length > 0 && <p className="mt-3 text-xs text-gray-600">A planner builds requested cities by hand; they appear as their own group and the client sees them as “requested”.</p>}
+                  </div>
+                ) })()}
+                <div className="p-5">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-bold text-gray-900">Filter by</h3>
+                    {filtered && <button type="button" onClick={clearFilters} className="mw-tap !min-h-0 text-xs font-semibold text-[#2563eb] hover:underline">Clear all</button>}
+                  </div>
+                  <label className="mt-4 block"><span className="text-xs font-semibold text-gray-500">Search</span>
+                    <span className="relative mt-1 block"><Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" aria-hidden="true" />
+                      <input type="search" value={q} onChange={e => setQ(e.target.value)} placeholder="Site, area or address" className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-9 pr-3 text-sm text-gray-900 focus:border-mw-blue-500 focus:outline-none" /></span>
+                  </label>
+                  <fieldset className="mt-5 border-t border-gray-200 pt-4"><legend className="sr-only">City</legend>
+                    <p className="text-xs font-semibold text-gray-500">{market?.countryName ?? 'Country'}</p>
+                    <div className="mt-2 flex flex-col gap-1.5">
+                      {[{ slug: 'all', name: 'All cities' }, ...(market?.cities ?? []).filter(c => c.available)].map(c => (
+                        <label key={c.slug} className="flex cursor-pointer items-center gap-2 text-sm text-gray-700"><input type="radio" name="edit-city" value={c.slug} checked={city === c.slug} onChange={() => setCity(c.slug)} className="peer sr-only" /><span aria-hidden="true" className="h-4 w-4 flex-shrink-0 rounded-full border-2 border-gray-300 bg-white peer-checked:border-[5px] peer-checked:border-[#2563eb] peer-focus-visible:ring-2 peer-focus-visible:ring-mw-blue-200" />{c.name}</label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <fieldset className="mt-5 border-t border-gray-200 pt-4"><legend className="text-xs font-semibold text-gray-500">Format</legend>
+                    <div className="mt-2 flex flex-col gap-1.5">
+                      {['all', ...formats].map(f => (
+                        <label key={f} className="flex cursor-pointer items-center gap-2 text-sm text-gray-700"><input type="radio" name="edit-format" value={f} checked={format === f} onChange={() => setFormat(f)} className="peer sr-only" /><span aria-hidden="true" className="h-4 w-4 flex-shrink-0 rounded-full border-2 border-gray-300 bg-white peer-checked:border-[5px] peer-checked:border-[#2563eb] peer-focus-visible:ring-2 peer-focus-visible:ring-mw-blue-200" />{f === 'all' ? 'All formats' : f}</label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  {venues.length > 1 && (
+                    <fieldset className="mt-5 border-t border-gray-200 pt-4"><legend className="text-xs font-semibold text-gray-500">Venue type</legend>
+                      <div className="mt-2 flex flex-col gap-1.5">
+                        {['all', ...venues].map(v => (
+                          <label key={v} className="flex cursor-pointer items-center gap-2 text-sm text-gray-700"><input type="radio" name="edit-venue" value={v} checked={venue === v} onChange={() => setVenue(v)} className="peer sr-only" /><span aria-hidden="true" className="h-4 w-4 flex-shrink-0 rounded-full border-2 border-gray-300 bg-white peer-checked:border-[5px] peer-checked:border-[#2563eb] peer-focus-visible:ring-2 peer-focus-visible:ring-mw-blue-200" />{v === 'all' ? 'All venues' : v}</label>
+                        ))}
+                      </div>
+                    </fieldset>
+                  )}
+                </div>
               </div>
+            </aside>
+            <div className="lg:col-span-9">
+              {quick.length > 0 && (
+                <div className="mb-5 rounded-2xl border border-mw-blue-100 bg-mw-blue-50/40 p-4">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-mw-blue-600">From your shortlist</p>
+                  <ul className="mt-2 flex flex-wrap gap-2">
+                    {quick.map(i => { const s = byId.get(i.id)!; return (
+                      <li key={i.id}><button type="button" onClick={() => add(s)} className="mw-tap inline-flex items-center gap-1 rounded-full border border-[#2563eb] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563eb] hover:bg-mw-blue-50"><Plus className="h-3.5 w-3.5" aria-hidden="true" /> {s.name}</button></li>
+                    ) })}
+                  </ul>
+                </div>
+              )}
+              {tab === 'sites' && <SiteGrid sites={browse} total={candidates.length} filters={false} hasPage={() => false} mapTitle={`Map of sites in ${city === 'all' ? (market?.countryName ?? 'the market') : cityNameOf(doc.brief.countrySlug, city)}`}
+                renderAction={s => { const on = inPlan.has(s.id); return (
+                  <button type="button" onClick={() => toggle(s)} aria-pressed={on} className={`mw-tap inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]'}`}>
+                    {on ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Plus className="h-3.5 w-3.5" aria-hidden="true" />}{on ? 'In the plan' : 'Add to plan'}
+                  </button>
+                ) }} />}
             </div>
-          ) })()}
-          {requested.length > 0 && <p className="mb-5 text-sm text-gray-600"><span className="font-semibold">Requested:</span> {requested.map(s => cityNameOf(doc.brief.countrySlug, s)).join(', ')} — a planner builds these by hand and they appear in the plan as their own city group. The client sees them as “requested” too.</p>}
-          {quick.length > 0 && (
-            <div className="mb-5 rounded-2xl border border-mw-blue-100 bg-mw-blue-50/40 p-4">
-              <p className="text-xs font-semibold uppercase tracking-wider text-mw-blue-600">From your shortlist</p>
-              <ul className="mt-2 flex flex-wrap gap-2">
-                {quick.map(i => { const s = byId.get(i.id)!; return (
-                  <li key={i.id}><button type="button" onClick={() => add(s)} className="mw-tap inline-flex items-center gap-1 rounded-full border border-[#2563eb] bg-white px-3 py-1.5 text-xs font-semibold text-[#2563eb] hover:bg-mw-blue-50"><Plus className="h-3.5 w-3.5" aria-hidden="true" /> {s.name}</button></li>
-                ) })}
-              </ul>
-            </div>
-          )}
-          {tab === 'sites' && <SiteGrid sites={browse} hasPage={() => false} mapTitle={`Map of sites in ${city === 'all' ? (market?.countryName ?? 'the market') : cityNameOf(doc.brief.countrySlug, city)}`}
-            renderAction={s => { const on = inPlan.has(s.id); return (
-              <button type="button" onClick={() => toggle(s)} aria-pressed={on} className={`mw-tap inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]'}`}>
-                {on ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Plus className="h-3.5 w-3.5" aria-hidden="true" />}{on ? 'In the plan' : 'Add to plan'}
-              </button>
-            ) }} />}
+          </div>
           {error && tab === 'sites' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
         </div>
       </section>
