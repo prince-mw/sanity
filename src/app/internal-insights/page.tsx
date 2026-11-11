@@ -3,7 +3,10 @@ import { currentUser, googleSignIn } from '@/lib/insights/auth'
 import { getDashboard } from '@/lib/insights/data'
 import { getActionStatuses } from '@/lib/insights/actions'
 import { calendarPeriods, parseRange, periods, type RangeKey } from '@/lib/insights/ranges'
-import { DEFAULT_TAB, TABS, type TabKey } from '@/lib/insights/tabs'
+import { DEFAULT_TAB, RESTRICTED_TABS, TABS, type TabKey } from '@/lib/insights/tabs'
+import { getInsightsConfig } from '@/lib/insights/config'
+import { TARGET_YEAR, getPipelineDashboard, withWebsite } from '@/lib/insights/pipeline'
+import PipelineTab from './PipelineTab'
 import { isInsightsConfigured } from '@/lib/insights/google'
 import InsightsLogin from './InsightsLogin'
 import InsightsShell from './InsightsShell'
@@ -112,6 +115,17 @@ async function OverviewSection({ range }: { range: RangeKey }) {
   return <OverviewTab data={buildOverview({ site, ...z, blog, statuses })} range={range} />
 }
 
+async function PipelineSection() {
+  if (!(await isZohoConfigured())) return <Message title="Waiting for the Zoho Analytics connection." detail="Pipeline and target data will appear here once read-only Zoho Analytics access is set up." />
+  try {
+    // Website activity per region for the same year comes from the Location pages data (Google Analytics)
+    const [data, site] = await Promise.all([getPipelineDashboard(), (await isInsightsConfigured()) ? getDashboard('this-year').catch(() => null) : null])
+    return <PipelineTab data={withWebsite(data, site)} />
+  } catch (err) {
+    return <Message title="Could not load pipeline data from Zoho Analytics." detail={err instanceof Error ? err.message : String(err)} />
+  }
+}
+
 async function BlogSection() {
   try {
     const [data, statuses] = await Promise.all([getBlogAudit(), getActionStatuses()])
@@ -128,11 +142,19 @@ export default async function InternalInsightsPage({ searchParams }: { searchPar
   if (user === null) return <InsightsLogin google={!!(await googleSignIn())} signinError={params.signin} />
 
   const range: RangeKey = parseRange(params.range)
-  const tab: TabKey = TABS.some((t) => t.key === params.tab) ? (params.tab as TabKey) : DEFAULT_TAB
+  // Restricted tabs (revenue targets) only for the Google accounts listed in the private settings
+  const viewers = (await getInsightsConfig()).pipelineViewers
+  const hiddenTabs = user && viewers.includes(user) ? [] : RESTRICTED_TABS
+  const requested = TABS.some((t) => t.key === params.tab) ? (params.tab as TabKey) : DEFAULT_TAB
+  const tab: TabKey = hiddenTabs.includes(requested) ? DEFAULT_TAB : requested
+  const snapshot =
+    tab === 'blog' ? 'Snapshot audit · 30 Oct 2026 · data 29 Oct 2025 – 29 Oct 2026'
+    : tab === 'pipeline' ? `${TARGET_YEAR} targets · deals closing in ${TARGET_YEAR} · Zoho CRM, refreshed every 6 hours`
+    : undefined
 
   return (
-    <InsightsShell user={user} tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)} snapshot={tab === 'blog' ? 'Snapshot audit · 30 Oct 2026 · data 29 Oct 2025 – 29 Oct 2026' : undefined}>
-      {tab === 'overview' ? <OverviewSection range={range} /> : tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
+    <InsightsShell user={user} tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)} snapshot={snapshot} hiddenTabs={hiddenTabs}>
+      {tab === 'overview' ? <OverviewSection range={range} /> : tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'pipeline' ? <PipelineSection /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
     </InsightsShell>
   )
 }

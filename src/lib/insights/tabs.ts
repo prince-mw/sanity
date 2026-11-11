@@ -1,15 +1,19 @@
 // Tabs on /internal-insights (shared by server and client code). To add a tab: add it here,
 // then render its content in src/app/internal-insights/page.tsx.
-export type TabKey = 'overview' | 'locations' | 'campaigns' | 'leads' | 'content' | 'blog' | 'projects'
+export type TabKey = 'overview' | 'locations' | 'campaigns' | 'leads' | 'pipeline' | 'content' | 'blog' | 'projects'
 
 export const TABS: { key: TabKey; label: string; title: string }[] = [
   { key: 'overview', label: 'Overview', title: 'Marketing Overview' },
   { key: 'locations', label: 'Location pages', title: 'Location Pages Performance' },
   { key: 'campaigns', label: 'Email campaigns', title: 'Email Campaign Performance' },
   { key: 'leads', label: 'Leads & Deals', title: 'Leads & Deals' },
+  { key: 'pipeline', label: 'Pipeline & Targets', title: 'Pipeline & Targets' },
   { key: 'content', label: 'Content', title: 'Content Effectiveness' },
   { key: 'blog', label: 'Blog findings', title: 'Blog Content Audit' },
   { key: 'projects', label: 'Roadmap & execution', title: 'Roadmap & Execution' },
 ]
+
+/** Tabs only the people in the private `pipelineViewers` list may open (page.tsx). Empty: every tab is open to all MW sign-ins */
+export const RESTRICTED_TABS: TabKey[] = []
 
 export const DEFAULT_TAB: TabKey = 'overview'

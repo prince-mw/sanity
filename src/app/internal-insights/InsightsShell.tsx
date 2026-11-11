@@ -13,7 +13,8 @@ type Period = { start: string; end: string; prevStart: string; prevEnd: string }
 /** Frame shared by every tab: title, tab bar, pinned date bar and sign out */
 /** `snapshot`: a tab with fixed, point-in-time data shows this label instead of the date buttons */
 /** `user`: the signed-in Google account, '' with the shared password */
-export default function InsightsShell({ user, tab, range, period, snapshot, children }: { user: string; tab: TabKey; range: RangeKey; period: Period; snapshot?: string; children: React.ReactNode }) {
+/** `hiddenTabs`: restricted tabs this person may not open, left out of the tab bar */
+export default function InsightsShell({ user, tab, range, period, snapshot, hiddenTabs = [], children }: { user: string; tab: TabKey; range: RangeKey; period: Period; snapshot?: string; hiddenTabs?: TabKey[]; children: React.ReactNode }) {
   const router = useRouter()
   const current = TABS.find((t) => t.key === tab) || TABS[0]
 
@@ -62,7 +63,7 @@ export default function InsightsShell({ user, tab, range, period, snapshot, chil
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Tabs */}
         <nav className="flex gap-1 overflow-x-auto border-b border-gray-200 mb-5" aria-label="Dashboard sections">
-          {TABS.map((t) => (
+          {TABS.filter((t) => !hiddenTabs.includes(t.key)).map((t) => (
             <Link
               key={t.key}
               href={`/internal-insights?tab=${t.key}&range=${range}`}

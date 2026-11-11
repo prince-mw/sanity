@@ -100,6 +100,9 @@ const getBase = unstable_cache(
   { revalidate: 6 * 60 * 60, tags: ['internal-insights'] },
 )
 
+/** Ids of deals that came from an inbound (marketing) lead; used by the Pipeline & Targets tab */
+export const getMarketingDealIds = async () => new Set((await getBase()).deals.filter((d) => d.channel === 'Inbound').map((d) => d.id))
+
 export interface ChannelTotals { leads: number; /** Inbound only: leads that came through a website form */ fromForms: number; deals: number; dealValue: number; won: number; wonValue: number; convRate: number }
 export interface BreakdownRow { name: string; leads: number; deals: number; dealValue: number; won: number; wonValue: number }
 export interface StageRow { stage: string; inbound: number; inboundValue: number; outbound: number; outboundValue: number }
