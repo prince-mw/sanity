@@ -93,6 +93,7 @@ export default async function AreaPage({ params }: Props) {
         otherAreas={areas.filter(a => a.slug !== area.slug).map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
         sample={usingSample()}
         insights={await siteInsightsFor(area.sites)}
+        heroImage={[...area.sites, ...nearby].find(s => s.photos[0])?.photos[0] ?? null}
         promo={showPromo ? <ProposalPromo variant="band" market={first.countryName} place={area.name} /> : null}
         guide={guide}
         faq={draft ? <AreaFaq placeName={area.name} faqs={draft.faqs} /> : null}

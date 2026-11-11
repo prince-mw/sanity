@@ -1,5 +1,6 @@
 'use client'
 
+import Image from 'next/image'
 import Link from 'next/link'
 import { useState, type ReactNode } from 'react'
 import { LeadForm } from '../forms/LeadForm'
@@ -14,8 +15,10 @@ import type { SiteInsights } from '../proposal/SiteDetailsDialog'
 export type AreaLink = { name: string; slug: string; kind: 'buyer' | 'supply'; count: number }
 
 export function InventoryAreaClient({
-  kind, areaName, cityName, citySlug, countryName, countrySlug, sites, pagedIds, nearby, otherAreas, sample, content, insights = {}, promo = null, guide = null, faq = null,
+  kind, areaName, cityName, citySlug, countryName, countrySlug, sites, pagedIds, nearby, otherAreas, sample, content, insights = {}, promo = null, guide = null, faq = null, heroImage = null,
 }: {
+  /** A photo of the area for the hero: the first site photo there, else a nearby one. */
+  heroImage?: string | null
   insights?: Record<string, SiteInsights>
   /** The area template (Rif, 11 Nov 2026): the instant-proposal band, the written guide and its FAQ, rendered by the page. */
   promo?: ReactNode
@@ -43,48 +46,65 @@ export function InventoryAreaClient({
   const formats = new Set(sites.map(s => s.displayFormat ?? s.format).filter(Boolean)).size
   const digital = sites.filter(s => s.digital).length
   const cityHref = `/locations/${countrySlug}/${citySlug}`
+  // A hero reads in one breath: the description's opening sentences, up to about 200 characters.
+  const heroLine = (t: string | null) => { if (!t) return null; const parts = t.match(/[^.!?]+[.!?]+/g) ?? [t]; let out = ''; for (const p of parts) { if (out && (out + p).length > 200) break; out += p } return out.trim() }
 
   return (
     <div className="bg-white text-gray-900">
 
-      {/* Hero */}
-      <section className={`relative overflow-hidden ${SG_NAVY} text-white pb-12 lg:pb-16 mw-hero-top`}>
-        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-[#24387f]/40 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative mw-container">
-          <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-x-1.5 text-sm text-blue-100/80">
-            <Link href="/locations" className="mw-tap !justify-start hover:text-white">Locations</Link> <span aria-hidden="true">›</span>
-            <Link href={`/locations/${countrySlug}`} className="mw-tap !justify-start hover:text-white">{countryName}</Link> <span aria-hidden="true">›</span>
-            <Link href={cityHref} className="mw-tap !justify-start hover:text-white">{cityName}</Link> <span aria-hidden="true">›</span> <span className="text-white">{areaName}</span>
-          </nav>
-          {kind === 'buyer' ? (
-            <>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3">Billboard &amp; Digital Screen Advertising in {areaName}, {cityName}</h1>
-              <p className="text-lg sm:text-xl font-semibold text-cyan-300 mb-5">{sites.length} sites you can book in {areaName}, programmatically or direct.</p>
-              <p className="max-w-[60ch] text-base sm:text-lg text-blue-100/90 leading-relaxed mb-7">
-                {content.description ?? `Every site below shows its format, size and location; add the ones you like to an instant proposal.`}
+      {/* Hero: the city page's hero (Rif, 11 Nov 2026) — dark blue, text left, a photo of the area right. */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-mw-blue-900 via-mw-blue-800 to-mw-blue-900 text-white mw-hero-top pb-12 md:pb-16 lg:pb-20">
+        <div className="absolute inset-0 bg-black/10 pointer-events-none" />
+        <div className="relative z-10 mw-container">
+          <div className="grid items-center gap-12 lg:grid-cols-2">
+            <div>
+              <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-x-1.5 text-sm text-blue-100/80">
+                <Link href="/locations" className="mw-tap !justify-start hover:text-white">Locations</Link> <span aria-hidden="true">›</span>
+                <Link href={`/locations/${countrySlug}`} className="mw-tap !justify-start hover:text-white">{countryName}</Link> <span aria-hidden="true">›</span>
+                <Link href={cityHref} className="mw-tap !justify-start hover:text-white">{cityName}</Link> <span aria-hidden="true">›</span> <span className="text-white">{areaName}</span>
+              </nav>
+              <h1 className="mb-6 text-4xl font-bold md:text-5xl lg:text-6xl">
+                {kind === 'buyer' ? 'Billboard Advertising in' : 'Outdoor Advertising in'}{' '}
+                <span className="bg-gradient-to-r from-cyan-300 to-blue-200 bg-clip-text text-transparent">{areaName}</span>
+              </h1>
+              <p className="mb-8 max-w-xl text-lg leading-relaxed text-mw-blue-100 md:text-xl">
+                {kind === 'buyer'
+                  ? (heroLine(content.description) ?? `${sites.length} billboards and digital screens you can book in ${areaName}, ${cityName}, programmatically or direct.`)
+                  : sites.length ? `We list ${sites.length} site${sites.length === 1 ? '' : 's'} in ${areaName} today, and we are adding more.` : `We don't list sites in ${areaName} yet, and we want to.`}
               </p>
-              <dl className="grid grid-cols-3 gap-px overflow-hidden rounded-2xl bg-white/20 max-w-xl">
-                {[[String(sites.length), 'Sites'], [String(formats), 'Formats'], [String(digital), 'Digital screens']].map(([v, l]) => (
-                  <div key={l} className="bg-[#1d4ed8] p-4 text-center">
-                    <dt className="sr-only">{l}</dt>
-                    <dd><span className="block text-2xl font-bold">{v}</span><span className="block text-xs text-blue-100/80">{l}</span></dd>
-                  </div>
-                ))}
-              </dl>
-            </>
-          ) : (
-            <>
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-3">Outdoor Advertising in {areaName}, {cityName}</h1>
-              <p className="text-lg sm:text-xl font-semibold text-cyan-300 mb-5">
-                {sites.length ? `We list ${sites.length} site${sites.length === 1 ? '' : 's'} in ${areaName} today — and we're adding more.` : `We don't list sites in ${areaName} yet — and we want to.`}
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <SgFormButton onOpen={contact(`List your screens in ${areaName}`)} showArrow={false}>I own screens in {areaName}</SgFormButton>
-                <a href="#nearby" className="inline-flex items-center justify-center border-2 border-white/40 text-white px-6 py-3 rounded-lg font-semibold hover:bg-white/10 transition-all">I want to advertise here</a>
+              {kind === 'buyer' && (
+                <dl className="mb-8 grid max-w-md grid-cols-3 gap-3">
+                  {[[String(sites.length), sites.length === 1 ? 'Site' : 'Sites'], [String(formats), formats === 1 ? 'Format' : 'Formats'], [String(digital), 'Digital screens']].map(([v, l]) => (
+                    <div key={l} className="rounded-2xl bg-white/10 p-4 text-center backdrop-blur-sm">
+                      <dt className="sr-only">{l}</dt>
+                      <dd><span className="block text-2xl font-bold">{v}</span><span className="block text-xs text-mw-blue-200">{l}</span></dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              <div className="flex flex-wrap gap-4">
+                {kind === 'buyer' ? (
+                  <button type="button" onClick={contact(`Advertise in ${areaName}`)} className="mw-tap inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 font-semibold text-mw-blue-900 transition-all hover:scale-105 hover:bg-mw-blue-50">
+                    Launch your campaign
+                    <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                  </button>
+                ) : (
+                  <>
+                    <SgFormButton onOpen={contact(`List your screens in ${areaName}`)} showArrow={false}>I own screens in {areaName}</SgFormButton>
+                    <a href="#nearby" className="mw-tap inline-flex items-center justify-center rounded-lg border-2 border-white/30 px-6 py-3 font-semibold text-white transition-all hover:bg-white/10">I want to advertise here</a>
+                  </>
+                )}
+                {kind === 'buyer' && <Link href={cityHref} className="mw-tap inline-flex items-center gap-2 rounded-lg border-2 border-white/30 px-6 py-3 font-semibold text-white transition-all hover:bg-white/10">All of {cityName}</Link>}
               </div>
-            </>
-          )}
+            </div>
+            {heroImage && (
+              <div className="hidden lg:block">
+                <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-2xl">
+                  <Image src={heroImage} alt={`Outdoor advertising in ${areaName}, ${cityName}`} fill sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" priority />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
