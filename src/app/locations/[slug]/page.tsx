@@ -12,7 +12,7 @@ import { promoEnabled } from '@/lib/proposal/promo'
 import { LandingPageRenderer } from '@/components/landing'
 import { CountryGuide } from '@/components/location/CountryGuide'
 import { sitesFor } from '@/lib/inventory/source'
-import { guideFor, handPickedSlugs, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
+import { guideFor, handPickedSlugs, legacySections, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
 import { getCountryContent } from '@/lib/inventory/placeContent'
 import { inventoryCityCards } from '@/lib/location/inventoryPlaces'
 import { RelatedContent } from '@/components/inventory/ContentBlocks'
@@ -112,12 +112,15 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
     const cities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards ? cmsCities : [...cmsCities, ...await inventoryCityCards(slug, cmsCities)]
     const faqJsonLd = buildFaqJsonLd(locationData.faqs)
     const locationJsonLd = buildLocationJsonLd({ countrySlug: slug, countryName: sanityLocation.country || locationData.name })
-    // The country template (approved by Rif, 11 Nov 2026): fixed slot order, the written market guide,
-    // visuals from data. Countries without a written guide keep their page-builder sections until theirs is written.
+    // The country template (approved by Rif, 11 Nov 2026), on EVERY country since 12 Nov: fixed slot order, the
+    // market guide, visuals from data. Without a written guide the topics come from the CMS blocks by role and
+    // the rest of the old content stays after the guide (legacySections). Only full-page custom layouts
+    // (hideDefaultHero, e.g. the Americas pages) keep their own page.
     const draft = COUNTRY_GUIDE_DRAFTS[slug] ?? null
     const countryName = sanityLocation.country || locationData.name
-    const promo = promoEnabled() && marketOf(slug) ? <ProposalPromo variant="band" market={marketOf(slug)!.countryName} /> : null
-    if (draft) {
+    // The page's own country name (Sanity), not the market list's (which spelled the UAE "Uae").
+    const promo = promoEnabled() && marketOf(slug) ? <ProposalPromo variant="band" market={countryName} /> : null
+    if (!locationData.hideDefaultHero) {
       const sections = (locationData.sections ?? []) as TemplateSection[]
       const [sites, related] = await Promise.all([sitesFor(slug), getCountryContent(countryName, cities.map(c => c.city))])
       const data = marketData(sites)
@@ -136,6 +139,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
             afterHero={promo}
             sectionsOverride={<>
               <CountryGuide country={countryName} countrySlug={slug} topics={guideFor(slug, countryName, sections)} data={data} draft={draft} cityLinks={Object.fromEntries(cities.map(c => [c.city.trim().toLowerCase(), c.href]))} proposalHref={promo ? '/proposals/new' : null} tone="brand" />
+              <LandingPageRenderer sections={legacySections(sections, !!draft)} />
               <LandingPageRenderer sections={tailSections(sections, 'proof')} />
               <RelatedContent cityName={countryName} countryName={countryName} caseStudies={caseStudies} posts={related.posts} firstBg="bg-white" />
               <LandingPageRenderer sections={tailSections(sections, 'cta')} />

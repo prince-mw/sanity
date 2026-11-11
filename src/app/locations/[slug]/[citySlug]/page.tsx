@@ -12,7 +12,7 @@ import { CityInventorySection } from '@/components/inventory/CityInventorySectio
 import { ProposalPromo } from '@/components/proposal/ProposalPromo'
 import { LandingPageRenderer } from '@/components/landing'
 import { CountryGuide } from '@/components/location/CountryGuide'
-import { cityGuideFor, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
+import { cityGuideFor, legacySections, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
 import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
 import { promoEnabled } from '@/lib/proposal/promo'
 import { marketOf } from '@/lib/proposal/markets'
@@ -98,17 +98,18 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
 
   // Inventory from the Inventory API (sample until the key is set): only cities that have some.
   const [inventory, inventoryAreas] = await Promise.all([sitesFor(slug, citySlug), areasFor(slug, citySlug)])
-  const placeContent = inventory.length > 0 || CITY_GUIDE_DRAFTS[`${slug}/${citySlug}`] ? await getPlaceContent({ kind: 'city', countrySlug: slug, countryName: city.country?.country || slug, citySlug, cityName: city.city || citySlug }) : null
+  const placeContent = await getPlaceContent({ kind: 'city', countrySlug: slug, countryName: city.country?.country || slug, citySlug, cityName: city.city || citySlug })
 
-  // The city template (Rif, 11 Nov 2026): cities with a written guide get the fixed order —
-  // hero, proposal band, every site, the city guide, proof, FAQ. Others keep their current page.
+  // The city template (Rif, 11 Nov 2026), on EVERY city since 12 Nov: hero, proposal band, every site,
+  // the city guide, related content, proof, FAQ. Without a written guide the topics come from the CMS
+  // blocks by role and the rest of the old content stays (legacySections).
   const cityName = city.city || citySlug
-  const guideTopics = cityGuideFor(slug, citySlug, cityName)
-  const cityDraft = CITY_GUIDE_DRAFTS[`${slug}/${citySlug}`] ?? null
-  const templated = guideTopics.length > 0 && !!cityDraft
   const citySections = ((cityData as { sections?: TemplateSection[] }).sections ?? []) as TemplateSection[]
+  const guideTopics = cityGuideFor(slug, citySlug, cityName, citySections)
+  const cityDraft = CITY_GUIDE_DRAFTS[`${slug}/${citySlug}`] ?? null
+  const templated = !(cityData as { hideDefaultHero?: boolean }).hideDefaultHero
   const showPromo = promoEnabled() && !!marketOf(slug)
-  const guide = templated ? (
+  const guide = templated && guideTopics.length > 0 ? (
     <CountryGuide key="guide" country={cityName} countrySlug={slug} topics={guideTopics} data={marketData(inventory, 'area')} draft={cityDraft}
       cityLinks={Object.fromEntries(inventoryAreas.map(a => [a.name.trim().toLowerCase(), `/locations/${slug}/${citySlug}/${a.slug}`]))}
       linkBase={`/locations/${slug}/${citySlug}`} placeWord={['area', 'areas']} proposalHref={showPromo ? '/proposals/new' : null} tone="brand" />
@@ -140,7 +141,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         countryName={city.country?.country || undefined}
         relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || undefined}
         accents={templated}
-        sectionsOverride={templated ? <LandingPageRenderer sections={tailSections(citySections)} /> : undefined}
+        sectionsOverride={templated ? <><LandingPageRenderer sections={legacySections(citySections, !!cityDraft)} /><LandingPageRenderer sections={tailSections(citySections)} /></> : undefined}
         afterHero={inventory.length > 0 ? (<>
           <ProposalPromo key="promo" variant="band" market={city.country?.country || slug} place={city.city || citySlug} />
           <CityInventorySection key="inventory"
@@ -156,7 +157,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             guide={guide ?? undefined}
             insights={await siteInsightsFor(inventory)}
           />
-        </>) : guide && placeContent ? <>{guide}<RelatedContent key="related" cityName={cityName} countryName={city.country?.country || slug} caseStudies={placeContent.caseStudies} posts={placeContent.posts} firstBg="bg-white" /></> : guide}
+        </>) : templated ? <>{guide}<RelatedContent key="related" cityName={cityName} countryName={city.country?.country || slug} caseStudies={placeContent.caseStudies} posts={placeContent.posts} firstBg="bg-white" /></> : null}
       />
     </>
   )

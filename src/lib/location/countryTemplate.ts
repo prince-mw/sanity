@@ -41,19 +41,27 @@ export const CITY_TOPIC_HEADINGS: Record<TopicId, (city: string) => string> = {
   seasons: c => `When to advertise in ${c}`,
 }
 
-/** A city's guide: only cities with a written guide get the city template. */
-export function cityGuideFor(countrySlug: string, citySlug: string, cityName: string): GuideTopic[] {
+/**
+ * A city's guide. Every city is on the template (Rif, 12 Nov 2026): a written guide
+ * fills all five topics; without one, the first two come from the city's own CMS
+ * blocks by role, exactly as on the country page.
+ */
+export function cityGuideFor(countrySlug: string, citySlug: string, cityName: string, sections: TemplateSection[] = []): GuideTopic[] {
   const d = CITY_GUIDE_DRAFTS[`${countrySlug}/${citySlug}`]
-  if (!d) return []
+  if (!d) {
+    const cms: [TopicId, unknown[] | null][] = [['digital', blocksOf(sections.find(s => s._type === 'twoColumn'))], ['audiences', blocksOf(sections.find(s => s._type === 'textBlock'))]]
+    return cms.filter(([, b]) => !!b).map(([id, b]) => ({ id, heading: CITY_TOPIC_HEADINGS[id](cityName), blocks: b, paragraphs: null, source: 'cms' as const }))
+  }
   const written: Partial<Record<TopicId, string[] | undefined>> = { digital: d.digital, audiences: d.audiences.intro, people: d.people?.intro, formats: d.formats.intro, seasons: d.seasons }
   return CITY_TOPIC_ORDER.filter(id => written[id]?.length).map(id => ({ id, heading: CITY_TOPIC_HEADINGS[id](cityName), blocks: null, paragraphs: written[id]!, source: 'draft' as const }))
 }
 export const TOPIC_ORDER: TopicId[] = ['digital', 'audiences', 'formats', 'buying', 'seasons']
 
+const blocksOf = (s: TemplateSection | undefined) => (s && Array.isArray(s.content) && s.content.length > 0 ? (s.content as unknown[]) : null)
+
 /** The sections that follow the guide, in this order, one of each. */
 const TAIL_ORDER = ['imageGallery', 'logoCarousel', 'successStories', 'ctaBanner']
 
-const blocksOf = (s: TemplateSection | undefined) => (s && Array.isArray(s.content) && s.content.length > 0 ? (s.content as unknown[]) : null)
 
 export function guideFor(countrySlug: string, countryName: string, sections: TemplateSection[]): GuideTopic[] {
   // A written guide wins over the page-builder text (Rif, 11 Nov 2026); countries
@@ -75,6 +83,18 @@ export function guideFor(countrySlug: string, countryName: string, sections: Tem
 export function tailSections(sections: TemplateSection[], part: 'all' | 'proof' | 'cta' = 'all'): TemplateSection[] {
   const order = part === 'proof' ? TAIL_ORDER.filter(t => t !== 'ctaBanner') : part === 'cta' ? ['ctaBanner'] : TAIL_ORDER
   return order.map(t => sections.find(s => s._type === t)).filter((s): s is TemplateSection => !!s)
+}
+
+/**
+ * Sections the template has no slot for (pasted HTML, a second text block…).
+ * Every page is on the template now (Rif, 12 Nov 2026), so until a place's guide
+ * is written these stay on the page, after the guide: no live text is lost. Once
+ * the guide exists they are dropped, as on the approved Malaysia page.
+ */
+export function legacySections(sections: TemplateSection[], written: boolean): TemplateSection[] {
+  if (written) return []
+  const tw = sections.find(s => s._type === 'twoColumn'), tb = sections.find(s => s._type === 'textBlock')
+  return sections.filter(s => s !== tw && s !== tb && !TAIL_ORDER.includes(s._type))
 }
 
 /** Case studies the page already shows by hand (a successStories block), so the automatic list does not repeat them. */
