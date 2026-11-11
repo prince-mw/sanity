@@ -4,6 +4,7 @@ import { notFound, redirect } from 'next/navigation'
 import { getProposalByShareId, resolveSites } from '@/lib/proposal/store'
 import { readProposalGrant, canEdit } from '@/lib/proposal/access'
 import { sitesFor } from '@/lib/inventory/source'
+import { marketOf } from '@/lib/proposal/markets'
 import { ProposalEditor } from '@/components/proposal/ProposalEditor'
 import { SG_NAVY } from '@/components/SingaporeShared'
 
@@ -37,7 +38,9 @@ export default async function EditProposalPage({ params, searchParams }: Props) 
     )
   }
 
-  const [view, candidates] = await Promise.all([resolveSites(doc), sitesFor(doc.brief.countrySlug, doc.brief.citySlug)])
+  const available = (marketOf(doc.brief.countrySlug)?.cities ?? []).filter(c => c.available).map(c => c.slug)
+  const [view, lists] = await Promise.all([resolveSites(doc), Promise.all(available.map(c => sitesFor(doc.brief.countrySlug, c)))])
+  const candidates = lists.flat()
   const { editTokenHash: _h, ...pub } = view.doc // eslint-disable-line @typescript-eslint/no-unused-vars
   return <ProposalEditor view={{ ...view, doc: { ...pub, editTokenHash: '' } }} candidates={candidates} />
 }

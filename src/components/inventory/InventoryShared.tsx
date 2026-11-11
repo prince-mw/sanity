@@ -3,7 +3,7 @@
 // Inventory pages: shared pieces. Same look as the Singapore venue pages
 // (navy hero, rounded cards, mw-blue accents), so the new pages sit in the site.
 
-import { useMemo, useState } from 'react'
+import { useMemo, useState, type ReactNode } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { PublicSite } from '@/lib/inventory/types'
@@ -38,7 +38,7 @@ function Photo({ site, className = '', sizes = '100vw', priority = false }: { si
   )
 }
 
-export function SiteCard({ site, linked, addable = true }: { site: PublicSite; linked: boolean; addable?: boolean }) {
+export function SiteCard({ site, linked, addable = true, action }: { site: PublicSite; linked: boolean; addable?: boolean; action?: ReactNode }) {
   const body = (
     <>
       <Photo site={site} className="aspect-[16/10]" sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw" />
@@ -56,7 +56,7 @@ export function SiteCard({ site, linked, addable = true }: { site: PublicSite; l
         </dl>
         <div className="mt-auto flex items-center justify-between gap-3 pt-4">
           {linked ? <span className="text-sm font-semibold text-mw-blue-600 group-hover:text-[#2563eb]">View site details →</span> : <span />}
-          {addable && <AddToProposalButton site={site} variant="card" />}
+          {action ?? (addable && <AddToProposalButton site={site} variant="card" />)}
         </div>
       </div>
     </>
@@ -79,7 +79,7 @@ const pinOf = (s: PublicSite, linked: boolean): MapPin | null =>
  * map, all driven by one filter state, so the pins always match the cards.
  * Map on top, cards below at every size. Phone/tablet: List / Map switch.
  */
-export function SiteGrid({ sites, hasPage, mapTitle }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string }) {
+export function SiteGrid({ sites, hasPage, mapTitle, renderAction }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string; renderAction?: (s: PublicSite) => ReactNode }) {
   const formats = useMemo(() => Array.from(new Set(sites.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [sites])
   const venues = useMemo(() => Array.from(new Set(sites.map(s => s.venueType).filter(Boolean) as string[])).sort(), [sites])
   const [format, setFormat] = useState('All')
@@ -125,7 +125,7 @@ export function SiteGrid({ sites, hasPage, mapTitle }: { sites: PublicSite[]; ha
           {shown.map(s => (
             <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}
               className={`scroll-mt-28 rounded-2xl transition-shadow ${active === s.id ? 'ring-2 ring-mw-blue-500 ring-offset-2' : ''}`}>
-              <SiteCard site={s} linked={hasPage(s)} />
+              <SiteCard site={s} linked={hasPage(s)} action={renderAction?.(s)} />
             </div>
           ))}
         </div>

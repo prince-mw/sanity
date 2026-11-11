@@ -36,7 +36,7 @@ export default defineType({
         { name: 'n', type: 'number' }, { name: 'createdAt', type: 'datetime' },
         { name: 'source', type: 'string', description: 'claude | rules | manual | shortlist' },
         { name: 'summary', type: 'text' },
-        { name: 'addons', type: 'array', of: [{ type: 'string' }], description: 'measure | creative | dynamic | weeks-8 | weeks-12' },
+        { name: 'addons', type: 'array', of: [{ type: 'string' }], description: 'measure | planner | creative | dynamic | market | weeks-8 | weeks-12' },
         { name: 'sites', type: 'array', of: [{ type: 'object', name: 'proposalSite', fields: [
           { name: 'siteId', type: 'string' }, { name: 'siteName', type: 'string' }, { name: 'reason', type: 'text' }, { name: 'order', type: 'number' }, { name: 'citySlug', type: 'string' },
         ] }] },
@@ -52,6 +52,10 @@ export default defineType({
     defineField({ name: 'participants', type: 'array', description: 'People other than the creator who acted on the link (the second lead)', of: [{ type: 'object', name: 'proposalParticipant', fields: [
       { name: 'name', type: 'string' }, { name: 'email', type: 'string' }, { name: 'at', type: 'datetime' }, { name: 'action', type: 'string' },
     ] }] }),
+    defineField({ name: 'hidden', type: 'object', description: 'What the creator keeps off the client page', fields: [
+      { name: 'suggestions', type: 'array', of: [{ type: 'string' }] }, { name: 'addons', type: 'array', of: [{ type: 'string' }] },
+    ] }),
+    defineField({ name: 'derivedFrom', type: 'string', description: 'The shareId this proposal was started from' }),
     defineField({ name: 'approvedAt', type: 'datetime' }),
     defineField({ name: 'createdAt', type: 'datetime' }),
     defineField({ name: 'updatedAt', type: 'datetime' }),

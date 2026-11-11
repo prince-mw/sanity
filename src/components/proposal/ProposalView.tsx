@@ -33,7 +33,9 @@ const fmtDate = (iso: string | null | undefined) => iso ? new Date(iso).toLocale
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 
 export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
-  const { doc, version, sites: planSites, totals: planTotals, audience, cities, tiers, suggestions, pool } = view
+  const { doc, version, sites: planSites, totals: planTotals, audience, cities, tiers, suggestions: allSuggestions, pool } = view
+  const suggestions = allSuggestions.filter(s => !doc.hidden?.suggestions?.includes(s.id))
+  const shownAddons = ADDONS.filter(a => !doc.hidden?.addons?.includes(a.id))
   // The client can switch tiers; the demo switches on the page, a real proposal publishes a version and reloads.
   const [tierId, setTierId] = useState<TierId>(tiers.find(t => t.current)?.id ?? 'recommended')
   const [taken, setTaken] = useState<Record<string, boolean>>({})
@@ -290,13 +292,15 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
         </section>
       )}
 
+      {shownAddons.length > 0 && (
       <section className="bg-gray-50 mw-section no-print">
         <div className="mw-container">
           <SgSectionHeading title="Add-ons" intro="Services that make the campaign land better. Pick any; the planner confirms the details with you." />
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {ADDONS.map(a => { const on = addons.includes(a.id); const busyNow = planBusy === `addon-${a.id}`; return (
+            {shownAddons.map(a => { const on = addons.includes(a.id); const busyNow = planBusy === `addon-${a.id}`; return (
               <li key={a.id} className={`flex flex-col rounded-2xl border p-5 ${on ? 'border-[#2563eb] bg-mw-blue-50/40' : 'border-gray-200 bg-white'}`}>
-                <h3 className="font-bold text-gray-900">{a.title}</h3>
+                {a.product && <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">{a.product}</p>}
+                <h3 className="mt-1 font-bold text-gray-900">{a.title}</h3>
                 <p className="mt-1 text-sm font-semibold text-[#2563eb]">{a.benefit}</p>
                 <p className="mt-2 flex-1 text-sm text-gray-700">{a.detail}</p>
                 <p className="mt-3 text-xs text-gray-500">{a.price === 'rates' ? 'Priced from the site rates; the investment range updates.' : 'Price on request, confirmed by the planner.'}</p>
@@ -310,6 +314,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
           {error && <p className="mt-3 text-sm text-red-600" role="alert">{error}</p>}
         </div>
       </section>
+      )}
 
       {pins.length > 0 && (
         <section className="bg-gray-50 mw-section">

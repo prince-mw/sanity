@@ -91,6 +91,7 @@ const DOC_FIELDS = `_id, shareId, editTokenHash, status, titleLine, creator, lea
 
 const norm = (d: ProposalDoc | null): ProposalDoc | null => d ? {
   ...d, versions: d.versions ?? [], changeRequests: d.changeRequests ?? [], cityRequests: d.cityRequests ?? [], participants: d.participants ?? [], leadId: d.leadId ?? null, approvedAt: d.approvedAt ?? null,
+  hidden: { suggestions: d.hidden?.suggestions ?? [], addons: d.hidden?.addons ?? [] }, derivedFrom: d.derivedFrom ?? null,
   brief: { ...d.brief, formats: d.brief?.formats ?? [], audience: d.brief?.audience ?? '', industry: d.brief?.industry ?? '',
     cities: d.brief?.cities?.length ? d.brief.cities : [d.brief?.citySlug].filter(Boolean) as string[], countryWide: !!d.brief?.countryWide },
 } : null
@@ -103,7 +104,7 @@ export async function getProposalByShareId(shareId: string): Promise<ProposalDoc
 }
 
 export async function createProposal(input: {
-  creator: ProposalDoc['creator']; leadId: string | null; brief: Brief; version: Omit<ProposalVersion, 'n' | 'createdAt'>
+  creator: ProposalDoc['creator']; leadId: string | null; brief: Brief; version: Omit<ProposalVersion, 'n' | 'createdAt'>; derivedFrom?: string | null
 }): Promise<{ doc: ProposalDoc; editToken: string }> {
   const now = new Date().toISOString()
   const editToken = newEditToken()
@@ -111,7 +112,8 @@ export async function createProposal(input: {
   const doc = {
     _type: 'proposal', shareId: newShareId(), editTokenHash: hashToken(editToken), status: 'sent' as ProposalStatus,
     titleLine: titleLineFor(input.brief), creator: input.creator, leadId: input.leadId, brief: input.brief,
-    currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], cityRequests: [], participants: [], approvedAt: null, createdAt: now, updatedAt: now,
+    currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], cityRequests: [], participants: [], hidden: { suggestions: [], addons: [] }, derivedFrom: input.derivedFrom ?? null,
+    approvedAt: null, createdAt: now, updatedAt: now,
   }
   if (fileStore()) { const d = { ...doc, _id: `proposal-${doc.shareId}` } as ProposalDoc; await fileWrite(d); return { doc: norm(d) as ProposalDoc, editToken } }
   const created = await writeClient.create(doc)
@@ -157,6 +159,24 @@ export async function addParticipant(docId: string, p: { name: string; email: st
   const item = { _key: `p-${Date.now()}`, ...p, at: now }
   if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, participants: [...(d.participants ?? []), item], updatedAt: now }); return }
   await writeClient.patch(docId).setIfMissing({ participants: [] }).append('participants', [item]).set({ updatedAt: now }).commit()
+}
+
+/** The creator chooses which suggestions and add-ons the client sees. */
+export async function setHidden(docId: string, hidden: { suggestions: string[]; addons: string[] }): Promise<void> {
+  const now = new Date().toISOString()
+  if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, hidden, updatedAt: now }); return }
+  await writeClient.patch(docId).set({ hidden, updatedAt: now }).commit()
+}
+
+/** Every proposal this person created: by the shareIds on their cookie and by their email. Newest first. */
+export async function listProposalsFor(email: string, shareIds: string[]): Promise<Pick<ProposalDoc, '_id' | 'shareId' | 'titleLine' | 'status' | 'currentVersion' | 'createdAt' | 'updatedAt' | 'derivedFrom' | 'brief'>[]> {
+  if (fileStore()) {
+    let names: string[] = []
+    try { names = (await fs.readdir(FILE_DIR)).filter(n => n.endsWith('.json')) } catch { return [] }
+    const docs = (await Promise.all(names.map(n => fileRead(n.replace(/\.json$/, ''))))).filter((d): d is ProposalDoc => !!d)
+    return docs.filter(d => d.creator?.email === email || shareIds.includes(d.shareId)).sort((a, b) => b.updatedAt.localeCompare(a.updatedAt))
+  }
+  return writeClient.fetch(`*[_type == "proposal" && (creator.email == $email || shareId in $ids)] | order(updatedAt desc)[0...100]{ _id, shareId, titleLine, status, currentVersion, createdAt, updatedAt, derivedFrom, brief }`, { email, ids: shareIds })
 }
 
 /** A longer run chosen from a suggestion: the brief's duration changes, the investment follows. */
