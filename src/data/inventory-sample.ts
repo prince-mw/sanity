@@ -20,6 +20,8 @@ export const FAMOUS_AREAS: Record<string, string[]> = {
 }
 
 const kl = (area: string) => ({ adminLevel0Name: 'Malaysia', adminLevel1Name: 'Wilayah Persekutuan Kuala Lumpur', adminLevel2Name: 'Kuala Lumpur', adminLevel3Name: area })
+const city = (state: string, cityName: string) => (area: string) => ({ adminLevel0Name: 'Malaysia', adminLevel1Name: state, adminLevel2Name: cityName, adminLevel3Name: area })
+const pg = city('Pulau Pinang', 'Penang'), jb = city('Johor', 'Johor Bahru'), kk = city('Sabah', 'Kota Kinabalu')
 const base = { status: 'active', publication: 'public', mediaOwnerName: 'Hidden on the website' }
 
 const RAW: InventoryRecord[] = [
@@ -146,4 +148,50 @@ function sampleSpecs(r: InventoryRecord): SiteSpecs {
   }
 }
 
-export const SAMPLE_RECORDS: InventoryRecord[] = RAW.map(r => ({ specs: sampleSpecs(r), ...r }))
+// ── SAMPLE: Penang, Johor Bahru, Kota Kinabalu — invented sites so the multi-city
+// proposal flow can be seen before the Inventory API connects (Rif, 11 Nov 2026).
+// Photos are reused from the Kuala Lumpur samples; every record is marked sample.
+const MORE_CITIES: InventoryRecord[] = [
+  { ...base, ...pg('George Town'), sample: true, id: 'sample-pg-01', referenceId: 'SAMPLE-PG01', name: 'Komtar Junction LED', typeName: 'Digital Billboard', displayFormatName: 'Roadside LED',
+    description: 'At the Komtar roundabout where the island’s main roads meet, facing the traffic into George Town’s shopping and office core.',
+    size: '10m × 5m', classicFields: { illuminated: true }, digitalFields: { spotDuration: 15, spotsPerLoop: 8, loopDuration: 120 }, venueTaxonomyName: 'Roadside',
+    address: 'Jalan Penang, 10000 George Town, Pulau Pinang', geoms: ['POINT(100.3296 5.4141)'],
+    medias: [{ mediaType: 'image', url: img('ea8587579959167f504a083c7e591b573e9edc15-646x484.webp') }], prices: [{ currency: 'MYR', daily: 1100, monthly: 26000 }] },
+  { ...base, ...pg('Gurney'), sample: true, id: 'sample-pg-02', referenceId: 'SAMPLE-PG02', name: 'Gurney Plaza Entrance Screen', typeName: 'Digital Billboard', displayFormatName: 'Mall Entrance LED',
+    description: 'Over the main doors of Gurney Plaza on the seafront, where Penang shops, dines and meets after work.',
+    size: '6m × 3m', classicFields: { illuminated: true }, digitalFields: { spotDuration: 10, spotsPerLoop: 10, loopDuration: 100 }, venueTaxonomyName: 'Shopping mall',
+    address: 'Persiaran Gurney, 10250 George Town, Pulau Pinang', geoms: ['POINT(100.3100 5.4375)'],
+    medias: [{ mediaType: 'image', url: img('154bbff7d23c8bfff79379bcc66544b647d95077-800x449.webp') }], prices: [{ currency: 'MYR', daily: 900, monthly: 21000 }] },
+  { ...base, ...pg('Bayan Lepas'), sample: true, id: 'sample-pg-03', referenceId: 'SAMPLE-PG03', name: 'Bayan Lepas Expressway Unipole', typeName: 'Static Billboard', displayFormatName: 'Highway Unipole',
+    description: 'On the expressway between the airport, the free-trade zone and the bridge: the island’s commuter and visitor artery.',
+    size: '12m × 6m', classicFields: { illuminated: true }, venueTaxonomyName: 'Roadside',
+    address: 'Lebuhraya Bayan Lepas, 11900 Bayan Lepas, Pulau Pinang', geoms: ['POINT(100.2950 5.3100)'],
+    medias: [{ mediaType: 'image', url: img('a963efb089a720d86e06c198b61e066ca47f430d-800x450.webp') }], prices: [{ currency: 'MYR', daily: 1300, monthly: 30000 }] },
+  { ...base, ...jb('City Centre'), sample: true, id: 'sample-jb-01', referenceId: 'SAMPLE-JB01', name: 'Jalan Wong Ah Fook Digital Billboard', typeName: 'Digital Billboard', displayFormatName: 'Roadside LED',
+    description: 'In the heart of Johor Bahru beside the causeway approach, seen by the cross-border flow every day and by the city’s shoppers.',
+    size: '10m × 5m', classicFields: { illuminated: true }, digitalFields: { spotDuration: 15, spotsPerLoop: 8, loopDuration: 120 }, venueTaxonomyName: 'Roadside',
+    address: 'Jalan Wong Ah Fook, 80000 Johor Bahru, Johor', geoms: ['POINT(103.7640 1.4600)'],
+    medias: [{ mediaType: 'image', url: img('1c34e4270b8de61a1b8649e269d55a070245d313-800x484.webp') }], prices: [{ currency: 'MYR', daily: 1200, monthly: 28000 }] },
+  { ...base, ...jb('Tebrau'), sample: true, id: 'sample-jb-02', referenceId: 'SAMPLE-JB02', name: 'Tebrau Highway Gantry', typeName: 'Digital Billboard', displayFormatName: 'Gantry LED',
+    description: 'Spanning the Tebrau Highway on the route to AEON Tebrau City and the northern suburbs.',
+    size: '14m × 4m', classicFields: { illuminated: true }, digitalFields: { spotDuration: 10, spotsPerLoop: 12, loopDuration: 120 }, venueTaxonomyName: 'Roadside',
+    address: 'Jalan Tebrau, 81100 Johor Bahru, Johor', geoms: ['POINT(103.7900 1.5300)'],
+    medias: [{ mediaType: 'image', url: img('ea8587579959167f504a083c7e591b573e9edc15-646x484.webp') }], prices: [{ currency: 'MYR', daily: 1000, monthly: 24000 }] },
+  { ...base, ...jb('Mid Valley Southkey'), sample: true, id: 'sample-jb-03', referenceId: 'SAMPLE-JB03', name: 'Southkey Mall Concourse Panel', typeName: 'Digital Billboard', displayFormatName: 'Indoor Panel',
+    description: 'Inside Mid Valley Southkey, the largest mall in the south, at the junction of its main concourses.',
+    size: '2m × 3m', classicFields: { illuminated: true }, digitalFields: { spotDuration: 10, spotsPerLoop: 10, loopDuration: 100 }, venueTaxonomyName: 'Shopping mall',
+    address: 'Persiaran Southkey 1, 80150 Johor Bahru, Johor', geoms: ['POINT(103.7780 1.5050)'],
+    medias: [{ mediaType: 'image', url: img('154bbff7d23c8bfff79379bcc66544b647d95077-800x449.webp') }], prices: [{ currency: 'MYR', daily: 600, monthly: 14000 }] },
+  { ...base, ...kk('City Centre'), sample: true, id: 'sample-kk-01', referenceId: 'SAMPLE-KK01', name: 'Jalan Tun Fuad Stephens Waterfront LED', typeName: 'Digital Billboard', displayFormatName: 'Roadside LED',
+    description: 'On the waterfront road past Suria Sabah and the Jesselton jetty, where the city’s visitors and office crowd pass every day.',
+    size: '8m × 4m', classicFields: { illuminated: true }, digitalFields: { spotDuration: 15, spotsPerLoop: 8, loopDuration: 120 }, venueTaxonomyName: 'Roadside',
+    address: 'Jalan Tun Fuad Stephens, 88000 Kota Kinabalu, Sabah', geoms: ['POINT(116.0730 5.9830)'],
+    medias: [{ mediaType: 'image', url: img('a963efb089a720d86e06c198b61e066ca47f430d-800x450.webp') }], prices: [{ currency: 'MYR', daily: 900, monthly: 21000 }] },
+  { ...base, ...kk('Likas'), sample: true, id: 'sample-kk-02', referenceId: 'SAMPLE-KK02', name: 'Likas Bypass Unipole', typeName: 'Static Billboard', displayFormatName: 'Unipole',
+    description: 'On the coastal bypass between the city centre, the university and the airport road.',
+    size: '12m × 6m', classicFields: { illuminated: true }, venueTaxonomyName: 'Roadside',
+    address: 'Jalan Tun Fuad Stephens (Likas), 88400 Kota Kinabalu, Sabah', geoms: ['POINT(116.1000 6.0150)'],
+    medias: [{ mediaType: 'image', url: img('1c34e4270b8de61a1b8649e269d55a070245d313-800x484.webp') }], prices: [{ currency: 'MYR', daily: 800, monthly: 18000 }] },
+]
+
+export const SAMPLE_RECORDS: InventoryRecord[] = [...RAW, ...MORE_CITIES].map(r => ({ specs: sampleSpecs(r), ...r }))

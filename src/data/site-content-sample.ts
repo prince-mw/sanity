@@ -118,4 +118,70 @@ export const SITE_CONTENT_SAMPLE: Record<string, Entry> = {
       { name: 'Cross-city drivers', icon: 'driver', who: 'Drivers using Jalan Tun Razak and the Maju Expressway', when: 'Daily', why: 'A high-volume route linking the city centre with the south' },
     ],
   },
+  // ── Penang, Johor Bahru, Kota Kinabalu: sample sites for the multi-city proposal flow (11 Nov 2026).
+  // Photos are reused from the Kuala Lumpur samples, so the screen corners match those photos.
+  'sample-pg-01': {
+    faceCorners: [[0.147, 0.243], [0.77, 0.306], [0.797, 0.781], [0.139, 0.81]],
+    description: 'At the Komtar roundabout, the hub of George Town’s roads, buses and office towers, facing traffic into the shopping and heritage core.',
+    personas: [
+      { name: 'Island commuters', icon: 'commuter', who: 'Office workers and traders driving into George Town from Air Itam, Jelutong and the bridge', when: 'Weekdays, 7–10am and 5–8pm', why: 'The roundabout slows every car; long looks at the loop twice a day' },
+      { name: 'Heritage-zone visitors', icon: 'tourist', who: 'Tourists heading to the UNESCO core, Komtar and the street food', when: 'All week, peaks on weekends', why: 'First big screen visitors meet in the city' },
+    ],
+  },
+  'sample-pg-02': {
+    faceCorners: [[0.479, 0.07], [0.751, 0.054], [0.748, 0.496], [0.481, 0.468]],
+    description: 'Over the main entrance of Gurney Plaza on the seafront, Penang’s after-work shopping and dining address.',
+    personas: [
+      { name: 'Gurney shoppers', icon: 'shopper', who: 'Families and professionals shopping and dining at Gurney Plaza and Gurney Paragon', when: 'Evenings and weekends', why: 'Seen at the door, minutes before they buy' },
+      { name: 'Seafront residents', icon: 'resident', who: 'Households in the condominiums along Gurney Drive', when: 'Daily', why: 'The screen sits on their everyday route' },
+    ],
+  },
+  'sample-pg-03': {
+    faceCorners: [[0.344, 0.136], [0.515, 0.128], [0.513, 0.598], [0.347, 0.599]],
+    description: 'On the Bayan Lepas Expressway between the airport, the free-trade zone and the first bridge: the island’s commuter artery.',
+    personas: [
+      { name: 'Factory and tech commuters', icon: 'driver', who: 'The Bayan Lepas free-trade-zone workforce driving to and from the plants', when: 'Shift changes, weekdays', why: 'High-volume, repeated exposure on a fixed route' },
+      { name: 'Arriving travellers', icon: 'traveller', who: 'Visitors from the airport heading into the city and to Batu Ferringhi', when: 'Daily', why: 'Reach visitors in their first minutes on the island' },
+    ],
+  },
+  'sample-jb-01': {
+    faceCorners: [[0.035, 0.052], [0.27, 0.1], [0.265, 0.63], [0.036, 0.657]],
+    description: 'In the heart of Johor Bahru beside the causeway approach, seen by the daily cross-border flow and the city’s shoppers.',
+    personas: [
+      { name: 'Cross-border commuters', icon: 'commuter', who: 'Johoreans and Singaporeans crossing the causeway daily', when: 'Weekdays, both rush hours', why: 'One of the busiest land crossings in the world, in slow traffic' },
+      { name: 'City-centre shoppers', icon: 'shopper', who: 'Visitors to KSL City, City Square and the old town', when: 'Weekends and public holidays', why: 'Weekend crowds from both sides of the causeway' },
+    ],
+  },
+  'sample-jb-02': {
+    faceCorners: [[0.147, 0.243], [0.77, 0.306], [0.797, 0.781], [0.139, 0.81]],
+    description: 'Spanning the Tebrau Highway on the route to AEON Tebrau City and the northern suburbs.',
+    personas: [
+      { name: 'Suburban families', icon: 'family', who: 'Households in Taman Molek, Setia Indah and Austin Heights driving to the malls', when: 'Evenings and weekends', why: 'The highway every family in the north takes to shop' },
+      { name: 'Northern commuters', icon: 'driver', who: 'Workers driving between the suburbs and the city centre', when: 'Weekday rush hours', why: 'Repeated daily exposure on a fixed route' },
+    ],
+  },
+  'sample-jb-03': {
+    faceCorners: [[0.479, 0.07], [0.751, 0.054], [0.748, 0.496], [0.481, 0.468]],
+    description: 'Inside Mid Valley Southkey, the largest mall in the south, at the junction of its main concourses.',
+    personas: [
+      { name: 'Southkey shoppers', icon: 'shopper', who: 'Families and young professionals shopping at Mid Valley Southkey', when: 'Daily, peaks on weekends', why: 'At the point of purchase, in the mall’s busiest crossing' },
+      { name: 'Weekend visitors from Singapore', icon: 'tourist', who: 'Day-trippers crossing for shopping and dining', when: 'Weekends', why: 'High-spending visitors in a buying mood' },
+    ],
+  },
+  'sample-kk-01': {
+    faceCorners: [[0.344, 0.136], [0.515, 0.128], [0.513, 0.598], [0.347, 0.599]],
+    description: 'On the waterfront road past Suria Sabah and the Jesselton jetty, where the city’s visitors and office crowd pass daily.',
+    personas: [
+      { name: 'Waterfront visitors', icon: 'tourist', who: 'Tourists heading to the jetty, the islands and the waterfront restaurants', when: 'All week, all year', why: 'The road every visitor to Kota Kinabalu takes' },
+      { name: 'City-centre office workers', icon: 'office', who: 'Staff of the banks and government offices along the waterfront', when: 'Weekdays, all day', why: 'Daily exposure to the city’s working crowd' },
+    ],
+  },
+  'sample-kk-02': {
+    faceCorners: [[0.035, 0.052], [0.27, 0.1], [0.265, 0.63], [0.036, 0.657]],
+    description: 'On the coastal bypass between the city centre, the university and the airport road.',
+    personas: [
+      { name: 'Bypass commuters', icon: 'driver', who: 'Drivers between Likas, the city centre and the airport', when: 'Weekday rush hours', why: 'The main coastal route, slow at peak' },
+      { name: 'University students', icon: 'student', who: 'Students and staff of Universiti Malaysia Sabah', when: 'Term time', why: 'A large young audience on its daily route' },
+    ],
+  },
 }

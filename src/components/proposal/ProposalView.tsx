@@ -40,7 +40,7 @@ const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 const money = (inv: { currency: string; low: number; high: number } | null | undefined) => inv ? `${inv.currency} ${num(inv.low)} – ${num(inv.high)}` : null
 
 /** One thing the client can act on: a suggestion, an add-on, a plan size or a city. */
-type Option = { id: string; kind: 'suggestion' | 'addon' | 'tier' | 'city'; title: string; body: string; meta: string | null; cta: string; done: boolean; busy: boolean; run: () => void }
+type Option = { id: string; kind: 'suggestion' | 'addon' | 'tier'; title: string; body: string; meta: string | null; cta: string; done: boolean; busy: boolean; run: () => void }
 
 export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
   const { doc, version, sites, totals, audience, cities, tiers, suggestions, pool } = view
@@ -104,9 +104,6 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
     suggestion: (id: string) => { const sg = suggestions.find(x => x.id === id); if (!sg) return; withIdentity('update the plan', by => post(versions, { addSites: sg.siteIds.map(s => ({ siteId: s, reason: sg.reasons[s] })), weeks: sg.weeks, by }, id, mark(id))) },
     addon: (id: string) => withIdentity('add it to the plan', by => post(versions, { addon: id, by }, id, mark(id))),
     tier: (id: TierId) => withIdentity('change the plan size', by => post(versions, { tier: id, by }, id, mark(id))),
-    city: (slug: string, available: boolean) => withIdentity(available ? 'add the city' : 'send your request', by => available
-      ? post(versions, { addCity: slug, by }, slug, mark(slug))
-      : post(`/api/proposals/${doc.shareId}/request-city`, { citySlug: slug, email: by?.email }, slug, mark(slug), false)),
   }
   const copy = async () => { try { await navigator.clipboard.writeText(location.origin + `/proposals/${doc.shareId}`); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* the address bar has it */ } }
 
@@ -120,13 +117,14 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
       const t = tiers.find(x => x.id === (id === 'smaller' ? 'essentials' : 'full')); if (!t || t.current) return null
       return { id, kind: 'tier', title: id === 'smaller' ? 'A smaller plan' : 'A larger plan', body: t.blurb, meta: [`${t.totals.sites} sites`, t.totals.reach != null ? `${num(t.totals.reach)} reach` : null, money(t.totals.investment)].filter(Boolean).join(' · '), cta: `Switch to ${t.totals.sites} sites`, done: !!done[id], busy: busy === t.id, run: () => run.tier(t.id) }
     }
-    const c = cities.find(x => x.slug === id && x.sites === 0)
-    if (c) return { id, kind: 'city', title: `Run it in ${c.name} too`, body: c.available ? 'The same brief and audience, planned for this city and added as its own group.' : 'Inventory is being connected. Ask for it and a planner builds this city by hand within one working day.', meta: null, cta: c.available ? `Add ${c.name}` : `Request ${c.name}`, done: !!done[id] || c.requested, busy: busy === id, run: () => run.city(id, c.available) }
     return null
   }
-  const before = (doc.shown?.options ?? []).map(option).filter((o): o is Option => !!o).slice(0, 2)
-  const after = (doc.shown?.postApproval ?? []).map(option).filter((o): o is Option => !!o).slice(0, 2)
-  const allShown = Array.from(new Set([...(doc.shown?.options ?? []), ...(doc.shown?.postApproval ?? [])])).map(option).filter((o): o is Option => !!o)
+  /** Smallest ask first (Rif): a service on request, then a longer run, then sites by what they add, then the bigger plan. The smaller plan leads. */
+  const askOf = (o: Option) => o.kind === 'tier' ? (o.id === 'smaller' ? 0 : 50) : o.kind === 'addon' ? (ADDONS.find(a => a.id === o.id)?.price === 'rates' ? 10 : 5) : o.kind === 'suggestion' ? 20 + ((suggestions.find(x => x.id === o.id)?.delta?.investment?.high ?? 0) / 10000) : 40
+  const byAsk = (a: Option, b: Option) => askOf(a) - askOf(b)
+  const before = (doc.shown?.options ?? []).map(option).filter((o): o is Option => !!o).sort(byAsk).slice(0, 2)
+  const after = (doc.shown?.postApproval ?? []).map(option).filter((o): o is Option => !!o).sort(byAsk).slice(0, 2)
+  const allShown = Array.from(new Set([...(doc.shown?.options ?? []), ...(doc.shown?.postApproval ?? [])])).map(option).filter((o): o is Option => !!o).sort(byAsk)
   void poolById
 
   const facts: [string, string | null][] = [
@@ -388,11 +386,11 @@ function SpecList({ site }: { site: { size: string | null; illuminated: boolean 
   const shown = rows.filter(([, v]) => v)
   if (!shown.length) return null
   return (
-    <details className="group mt-3 border-t border-mw-blue-100 pt-3">
-      <summary className="mw-tap cursor-pointer list-none !justify-start text-xs font-semibold uppercase tracking-wider text-mw-blue-600 [&::-webkit-details-marker]:hidden">Specifications <span className="font-normal normal-case tracking-normal text-gray-500 group-open:hidden">· show</span><span className="hidden font-normal normal-case tracking-normal text-gray-500 group-open:inline">· hide</span></summary>
+    <div className="mt-3 border-t border-mw-blue-100 pt-3">
+      <p className="text-xs font-semibold uppercase tracking-wider text-mw-blue-600">Specifications</p>
       <dl className="mt-2 grid grid-cols-2 gap-x-3 gap-y-1.5 text-xs">
         {shown.map(([k, v]) => <div key={k}><dt className="text-gray-500">{k}</dt><dd className="font-semibold text-gray-800">{v}</dd></div>)}
       </dl>
-    </details>
+    </div>
   )
 }

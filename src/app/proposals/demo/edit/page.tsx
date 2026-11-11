@@ -9,9 +9,10 @@ import { ProposalEditor } from '@/components/proposal/ProposalEditor'
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Sample proposal · editor | Moving Walls', robots: { index: false, follow: false } }
 
-export default async function DemoEditPage() {
+export default async function DemoEditPage({ searchParams }: { searchParams: Promise<{ cities?: string }> }) {
   if (!inventoryEnabled()) notFound()
-  const view = await buildDemoView()
+  const { cities } = await searchParams
+  const view = await buildDemoView(cities ? cities.split(',') : undefined)
   if (!view) notFound()
   const available = (marketOf(view.doc.brief.countrySlug)?.cities ?? []).filter(c => c.available).map(c => c.slug)
   const candidates = (await Promise.all(available.map(c => sitesFor(view.doc.brief.countrySlug, c)))).flat()

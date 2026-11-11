@@ -11,9 +11,9 @@ export type Market = { countrySlug: string; countryName: string; cities: City[] 
 export const MARKETS: Market[] = [
   { countrySlug: 'malaysia', countryName: 'Malaysia', cities: [
     { slug: 'kuala-lumpur', name: 'Kuala Lumpur', available: true, weight: 1 },
-    { slug: 'penang', name: 'Penang', available: false, weight: 0.6 },
-    { slug: 'johor-bahru', name: 'Johor Bahru', available: false, weight: 0.6 },
-    { slug: 'kota-kinabalu', name: 'Kota Kinabalu', available: false, weight: 0.5 },
+    { slug: 'penang', name: 'Penang', available: true, weight: 0.6 },
+    { slug: 'johor-bahru', name: 'Johor Bahru', available: true, weight: 0.6 },
+    { slug: 'kota-kinabalu', name: 'Kota Kinabalu', available: true, weight: 0.5 },
     { slug: 'ipoh', name: 'Ipoh', available: false, weight: 0.4 },
     { slug: 'melaka', name: 'Melaka', available: false, weight: 0.4 },
   ] },

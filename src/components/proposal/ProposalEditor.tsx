@@ -90,6 +90,10 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
   const rerun = async () => { if (await call(`/api/proposals/${doc.shareId}/versions`, { rerun: true, pinnedIds: keepSites ? rows.map(r => r.siteId) : [], brief: briefPatch() }, 'rerun')) toClient() }
   const fork = async () => { const j = await call(`/api/proposals/${doc.shareId}/fork`, { brief: briefPatch(), keepSites }, 'fork'); if (j?.shareId) router.push(`/proposals/${j.shareId}/edit`) }
   const saveShown = async () => { if (demo) { setShownSaved(true); setNote('Saved (demo: this page only).'); return } if (await call(`/api/proposals/${doc.shareId}/settings`, { shown }, 'shown')) { setShownSaved(true); setNote('Saved. The client page shows only what is switched on.') } }
+  const planCity = async (slug: string) => {
+    if (demo) { router.push(`/proposals/demo/edit?cities=${[...cityGroups.map(g => g.slug), slug].join(',')}#sites`); return }
+    if (await call(`/api/proposals/${doc.shareId}/versions`, { addCity: slug }, `plan-${slug}`)) { router.refresh(); router.push(`/proposals/${doc.shareId}/edit#plan`) }
+  }
   const requestCity = async (slug: string) => { if (demo) { setRequested(r => [...r, slug]); return } if (await call(`/api/proposals/${doc.shareId}/request-city`, { citySlug: slug }, `city-${slug}`)) setRequested(r => [...r, slug]) }
   const copy = async () => { try { await navigator.clipboard.writeText(`${location.origin}/proposals/${doc.shareId}`); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* no clipboard */ } }
 
@@ -101,12 +105,13 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
     setShown({ ...shown, [list]: has ? shown[list].filter(x => x !== id) : [...shown[list], id] })
   }
   type Candidate = { id: string; group: string; title: string; detail: string }
+  // Smallest ask first (Rif, 11 Nov 2026): a service on request, a longer run, then sites, then the bigger plan.
+  const askRank = (id: string) => id === 'smaller' ? 0 : ADDONS.some(a => a.id === id && a.price === 'on-request') ? 5 : ADDONS.some(a => a.id === id) ? 10 : id === 'larger' ? 50 : 20 + ((suggestions.find(x => x.id === id)?.delta?.investment?.high ?? 0) / 10000)
   const candidatesForClient: Candidate[] = [
     ...(['smaller', 'larger'] as const).map((id): Candidate | null => { const t = tiers.find(x => x.id === (id === 'smaller' ? 'essentials' : 'full')); return t && !t.current ? { id: id as string, group: 'Plan size', title: id === 'smaller' ? `A smaller plan · ${t.totals.sites} sites` : `A larger plan · ${t.totals.sites} sites`, detail: `${t.totals.reach != null ? `${num(t.totals.reach)} reach` : 'reach as published'}${t.totals.investment ? ` · ${t.totals.investment.currency} ${num(t.totals.investment.low)} – ${num(t.totals.investment.high)}` : ''}` } : null }).filter((x): x is Candidate => !!x),
     ...suggestions.map(s => ({ id: s.id, group: 'Suggestion', title: s.title, detail: s.body })),
     ...ADDONS.map(a => ({ id: a.id, group: 'Add-on', title: `${a.title}${a.product ? ` · ${a.product}` : ''}`, detail: a.benefit })),
-    ...cities.filter(c => c.sites === 0).map(c => ({ id: c.slug, group: 'City', title: `Run it in ${c.name} too`, detail: c.available ? 'Adds the city as its own group' : 'No inventory yet: becomes a request to the team' })),
-  ]
+  ].sort((a, b) => askRank(a.id) - askRank(b.id))
   const titleOf = (id: string) => candidatesForClient.find(c => c.id === id)?.title ?? id
 
   return (
@@ -205,6 +210,15 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
               ? <button key={c.slug} type="button" aria-pressed={city === c.slug} onClick={() => setCity(c.slug)} className={chip(city === c.slug)}>{c.name}</button>
               : <button key={c.slug} type="button" disabled={requested.includes(c.slug) || busy === `city-${c.slug}`} onClick={() => requestCity(c.slug)} className={`${chip(false)} disabled:opacity-60`}>{requested.includes(c.slug) ? `${c.name} · requested` : `${c.name} · request`}</button>)}
           </div>
+          {(() => { const planned = new Set(cityGroups.map(g => g.slug)); const more = (market?.cities ?? []).filter(c => c.available && !planned.has(c.slug)); return more.length > 0 && (
+            <div className="mb-5 rounded-2xl border border-gray-200 bg-gray-50 p-4">
+              <p className="text-sm font-semibold text-gray-700">Run the same brief in another city</p>
+              <p className="mt-1 text-sm text-gray-600">The plan is picked for that city with the brief above and added as its own group, with its own sites, audiences and figures. Publish when you are happy with it.</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {more.map(c => <button key={c.slug} type="button" disabled={busy !== null} onClick={() => planCity(c.slug)} className="mw-tap inline-flex items-center gap-1.5 rounded-lg bg-[#2563eb] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1d4ed8] disabled:opacity-60"><Plus className="h-4 w-4" aria-hidden="true" />{busy === `plan-${c.slug}` ? 'Planning…' : `Plan ${c.name} with this brief`}</button>)}
+              </div>
+            </div>
+          ) })()}
           {requested.length > 0 && <p className="mb-5 text-sm text-gray-600"><span className="font-semibold">Requested:</span> {requested.map(s => cityNameOf(doc.brief.countrySlug, s)).join(', ')} — a planner builds these by hand and they appear in the plan as their own city group. The client sees them as “requested” too.</p>}
           {quick.length > 0 && (
             <div className="mb-5 rounded-2xl border border-mw-blue-100 bg-mw-blue-50/40 p-4">

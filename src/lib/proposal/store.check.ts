@@ -25,6 +25,6 @@ check(titleLineFor(brief) === 'Launch campaign · Kuala Lumpur · from 12 Jan 20
 check(titleLineFor({ ...brief, objective: null, startDate: null }) === 'OOH campaign · Kuala Lumpur', 'title line without objective or date')
 check(targetSitesFor('low') === 3 && targetSitesFor('high') === 8 && targetSitesFor(null) === 5, 'budget bands size the list: 3 / 5 / 8')
 check(BUDGET_BANDS.every(b => !/\d{2,}/.test(b.id)), 'budget band ids carry no amounts (ids may reach logs)')
-check(marketFor('malaysia', 'kuala-lumpur')?.city.available === true && marketFor('malaysia', 'penang')?.city.available === false && marketFor('malaysia', 'langkawi') === null, 'KL has inventory, Penang is on request, unknown cities do not resolve')
+check(marketFor('malaysia', 'kuala-lumpur')?.city.available === true && marketFor('malaysia', 'ipoh')?.city.available === false && marketFor('malaysia', 'langkawi') === null, 'KL has inventory, Ipoh is on request, unknown cities do not resolve')
 
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')

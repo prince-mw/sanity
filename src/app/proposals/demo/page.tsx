@@ -9,9 +9,10 @@ import { ProposalView } from '@/components/proposal/ProposalView'
 export const dynamic = 'force-dynamic'
 export const metadata: Metadata = { title: 'Sample proposal | Moving Walls', robots: { index: false, follow: false } }
 
-export default async function DemoProposalPage() {
+export default async function DemoProposalPage({ searchParams }: { searchParams: Promise<{ cities?: string }> }) {
   if (!inventoryEnabled()) notFound()
-  const view = await buildDemoView()
+  const { cities } = await searchParams
+  const view = await buildDemoView(cities ? cities.split(',') : undefined)
   if (!view) notFound()
   return <ProposalView view={view} canEdit pagedIds={[]} demo />
 }
