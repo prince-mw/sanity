@@ -56,6 +56,16 @@ export default defineType({
       { name: 'options', type: 'array', of: [{ type: 'string' }] }, { name: 'postApproval', type: 'array', of: [{ type: 'string' }] },
     ] }),
     defineField({ name: 'derivedFrom', type: 'string', description: 'The shareId this proposal was started from' }),
+    defineField({ name: 'creative', type: 'object', description: 'The client\'s creative for the mock-ups: our layout from logo + tagline, or their own file', fields: [
+      { name: 'mode', type: 'string', description: 'make | own' },
+      { name: 'brand', type: 'string' }, { name: 'tagline', type: 'string' }, { name: 'accent', type: 'string' }, { name: 'template', type: 'string', description: 'band | split | poster' },
+      { name: 'logoUrl', type: 'url' },
+      { name: 'own', type: 'object', fields: [
+        { name: 'url', type: 'url' }, { name: 'kind', type: 'string', description: 'image | video' }, { name: 'width', type: 'number' }, { name: 'height', type: 'number' }, { name: 'name', type: 'string' },
+      ] },
+      { name: 'fit', type: 'string', description: 'letterbox | fill' },
+      { name: 'by', type: 'string', description: 'staff | client' }, { name: 'byName', type: 'string' }, { name: 'at', type: 'datetime' },
+    ] }),
     defineField({ name: 'approvedAt', type: 'datetime' }),
     defineField({ name: 'createdAt', type: 'datetime' }),
     defineField({ name: 'updatedAt', type: 'datetime' }),

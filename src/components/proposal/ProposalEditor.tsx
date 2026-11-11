@@ -19,17 +19,18 @@ import { SG_NAVY, SgSectionHeading } from '../SingaporeShared'
 import { SampleTag, SiteGrid } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import { SiteDetailsDialog, type SiteInsights } from './SiteDetailsDialog'
+import { CreativePanel, type CreativePayload } from './CreativePanel'
 import { useShortlist } from '@/lib/proposal/shortlist'
 import { OBJECTIVES, DURATIONS, BUDGET_BANDS, cityNameOf as nameOfSlug, marketOf, type Market } from '@/lib/proposal/markets'
 import { ADDONS } from '@/lib/proposal/addons'
 import { autoShown } from '@/lib/proposal/shown'
 import type { PublicSite } from '@/lib/inventory/types'
-import type { ProposalView as View, Objective } from '@/lib/proposal/types'
+import type { ProposalView as View, Objective, Creative } from '@/lib/proposal/types'
 
 type Row = { siteId: string; reason: string }
-type TabId = 'plan' | 'sites' | 'brief' | 'client'
+type TabId = 'plan' | 'sites' | 'brief' | 'creative' | 'client'
 // Round 7 (Rif, 11 Nov 2026): tabs named by what the user does; the client-options tab is staff-only (visitors get the automatic rule in lib/proposal/shown.ts).
-const TABS: { id: TabId; label: string; staff?: boolean }[] = [{ id: 'plan', label: 'Plan' }, { id: 'sites', label: 'Browse sites' }, { id: 'brief', label: 'Plan with AI' }, { id: 'client', label: 'What the client sees', staff: true }]
+const TABS: { id: TabId; label: string; staff?: boolean }[] = [{ id: 'plan', label: 'Plan' }, { id: 'sites', label: 'Browse sites' }, { id: 'brief', label: 'Plan with AI' }, { id: 'creative', label: 'Client creative' }, { id: 'client', label: 'What the client sees', staff: true }]
 const input = 'mt-1 w-full rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 focus:border-mw-blue-500 focus:outline-none'
 const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb]'}`
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
@@ -65,6 +66,9 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
   const [note, setNote] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [requested, setRequested] = useState<string[]>(doc.cityRequests.map(r => r.citySlug))
+  const [creative, setCreative] = useState<Creative | null>(doc.creative ?? null)
+  const [creativeNote, setCreativeNote] = useState<string | null>(null)
+  const leadSite = view.sites[0] ?? null
   const { items: shortlist } = useShortlist()
 
   useEffect(() => {
@@ -115,6 +119,12 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
   const briefPatch = () => ({ objective, audience, industry, durationWeeks: duration, budgetBand: budget, targetSites: count, cities: briefCities, countryWide })
   const rerun = async () => { if (await call(`/api/proposals/${doc.shareId}/versions`, { rerun: true, pinnedIds: keepSites ? rows.map(r => r.siteId) : [], brief: briefPatch() }, 'rerun')) toClient() }
   const fork = async () => { const j = await call(`/api/proposals/${doc.shareId}/fork`, { brief: briefPatch(), keepSites }, 'fork'); if (j?.shareId) router.push(`/proposals/${j.shareId}/edit`) }
+  const saveCreative = async (payload: CreativePayload): Promise<boolean> => {
+    if (demo) { setCreativeNote('Saved (demo: this page only).'); return true }
+    const j = await call(`/api/proposals/${doc.shareId}/creative`, { creative: payload.creative }, 'creative')
+    if (!j?.creative) { setCreativeNote(error ?? 'Could not save.'); return false }
+    setCreative(j.creative as Creative); setCreativeNote('Saved. The client page opens with it on the lead site.'); return true
+  }
   const saveShown = async () => { if (demo) { setShownSaved(true); setNote('Saved (demo: this page only).'); return } if (await call(`/api/proposals/${doc.shareId}/settings`, { shown }, 'shown')) { setShownSaved(true); setNote('Saved. The client page shows only what is switched on.') } }
   const planCity = async (slug: string) => {
     if (demo) { window.location.assign(`/proposals/demo/edit?cities=${[...cityGroups.map(g => g.slug), slug].join(',')}#plan`); return }
@@ -393,6 +403,20 @@ export function ProposalEditor({ view, candidates, insights = {}, demo = false, 
             <span className="text-sm text-gray-500">{note ?? (shownSaved ? 'Saved.' : 'Unsaved switches.')}</span>
           </div>
           {error && tab === 'client' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
+        </div>
+      </section>
+
+      {/* The client's creative for the mock-ups: sales pre-fills it; the client sees it on the lead site before approval and on every site after */}
+      <section id="edit-creative" role="tabpanel" aria-labelledby="edittab-creative" className={`bg-gray-50 mw-section ${tab === 'creative' ? '' : 'hidden'}`}>
+        <div className="mw-container">
+          <SgSectionHeading title="Client creative" intro="Their logo and a line, or their finished image or video. The client page then opens with it on the lead site; once they approve, every site in the plan is mocked up with it and they can swap in their own file. Saved on its own, separate from the plan versions." />
+          {leadSite ? (
+            <CreativePanel key={creative?.at ?? 'none'} site={leadSite} face={view.faces[leadSite.id]} initial={creative} who="staff" onSave={saveCreative} saving={busy === 'creative'} note={creativeNote} />
+          ) : <p className="text-gray-600">Add at least one site to the plan first.</p>}
+          {creative && !demo && (
+            <button type="button" onClick={async () => { const r = await fetch(`/api/proposals/${doc.shareId}/creative`, { method: 'DELETE' }).catch(() => null); if (r?.ok) { setCreative(null); setCreativeNote('Removed. The client page shows no mock-ups until a creative is added.') } else setCreativeNote('Could not remove it. Please try again.') }} className="mw-tap mt-6 text-sm font-semibold text-gray-600 hover:underline">Remove the creative</button>
+          )}
+          {error && tab === 'creative' && <p className="mt-4 text-sm text-red-600" role="alert">{error}</p>}
         </div>
       </section>
 

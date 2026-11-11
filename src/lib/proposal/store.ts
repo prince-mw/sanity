@@ -9,7 +9,7 @@ import type { PublicSite } from '@/lib/inventory/types'
 import { OBJECTIVES, marketOf, cityOf, citiesLabel } from './markets'
 import { ensureMarkets } from './marketsData'
 import { buildTiers, buildSuggestions } from './tiers'
-import type { AudienceGroup, Brief, CityGroup, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersion, ProposalView, Suggestion, Tier, VersionSite } from './types'
+import type { AudienceGroup, Brief, CityGroup, Creative, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersion, ProposalView, SiteFace, Suggestion, Tier, VersionSite } from './types'
 
 // Proposals live in Sanity as `proposal` documents (studio/schemas/proposal.ts),
 // written only from the API routes with the write token, read without the CDN
@@ -68,9 +68,19 @@ export function totalsFor(sites: PublicSite[], investment: ProposalTotals['inves
  * per site) merged by audience type, keeping the fullest description and the
  * sites that reach it. Sorted by how many sites reach the group.
  */
-export async function audienceFor(sites: PublicSite[]): Promise<AudienceGroup[]> {
+type Contents = (Awaited<ReturnType<typeof getSiteContent>> | null)[]
+const contentsFor = (sites: PublicSite[]): Promise<Contents> => Promise.all(sites.map(s => getSiteContent(s).catch(() => null)))
+
+/** The marked billboard faces, keyed by site id, for the mock-ups. */
+export function facesFrom(sites: PublicSite[], contents: Contents): Record<string, SiteFace> {
+  const out: Record<string, SiteFace> = {}
+  sites.forEach((s, i) => { const c = contents[i]; if (c?.faceCorners?.length === 4) out[s.id] = { corners: c.faceCorners, edges: c.faceEdges ?? null, kind: c.faceKind ?? null } })
+  return out
+}
+
+export async function audienceFor(sites: PublicSite[], contents?: Contents): Promise<AudienceGroup[]> {
   const groups = new Map<string, AudienceGroup>()
-  const contents = await Promise.all(sites.map(s => getSiteContent(s).catch(() => null)))
+  contents ??= await contentsFor(sites)
   sites.forEach((s, i) => {
     for (const p of contents[i]?.personas ?? []) {
       const key = p.icon || 'other'
@@ -88,11 +98,11 @@ const AUDIENCE_LABELS: Record<string, string> = {
   family: 'Families', nightlife: 'Evening and nightlife crowd',
 }
 
-const DOC_FIELDS = `_id, shareId, editTokenHash, status, titleLine, creator, leadId, crmError, brief, currentVersion, versions, changeRequests, approvedAt, createdAt, updatedAt`
+const DOC_FIELDS = `_id, shareId, editTokenHash, status, titleLine, creator, leadId, crmError, brief, currentVersion, versions, changeRequests, cityRequests, participants, shown, derivedFrom, creative, approvedAt, createdAt, updatedAt`
 
 const norm = (d: ProposalDoc | null): ProposalDoc | null => d ? {
   ...d, versions: d.versions ?? [], changeRequests: d.changeRequests ?? [], cityRequests: d.cityRequests ?? [], participants: d.participants ?? [], leadId: d.leadId ?? null, approvedAt: d.approvedAt ?? null,
-  shown: { options: d.shown?.options ?? [], postApproval: d.shown?.postApproval ?? [] }, derivedFrom: d.derivedFrom ?? null,
+  shown: { options: d.shown?.options ?? [], postApproval: d.shown?.postApproval ?? [] }, derivedFrom: d.derivedFrom ?? null, creative: d.creative ?? null,
   brief: { ...d.brief, formats: d.brief?.formats ?? [], audience: d.brief?.audience ?? '', industry: d.brief?.industry ?? '',
     cities: d.brief?.cities?.length ? d.brief.cities : [d.brief?.citySlug].filter(Boolean) as string[], countryWide: !!d.brief?.countryWide },
 } : null
@@ -114,7 +124,7 @@ export async function createProposal(input: {
     _type: 'proposal', shareId: newShareId(), editTokenHash: hashToken(editToken), status: 'sent' as ProposalStatus,
     titleLine: titleLineFor(input.brief), creator: input.creator, leadId: input.leadId, brief: input.brief,
     currentVersion: 1, versions: [withKeys(v1)], changeRequests: [], cityRequests: [], participants: [], shown: { options: [], postApproval: [] }, derivedFrom: input.derivedFrom ?? null,
-    approvedAt: null, createdAt: now, updatedAt: now,
+    creative: null, approvedAt: null, createdAt: now, updatedAt: now,
   }
   if (fileStore()) { const d = { ...doc, _id: `proposal-${doc.shareId}` } as ProposalDoc; await fileWrite(d); return { doc: norm(d) as ProposalDoc, editToken } }
   const created = await writeClient.create(doc)
@@ -181,6 +191,13 @@ export async function listProposalsFor(email: string, shareIds: string[]): Promi
 }
 
 /** A longer run chosen from a suggestion: the brief's duration changes, the investment follows. */
+/** The client's creative for the mock-ups (null clears it). */
+export async function setCreative(docId: string, creative: Creative | null): Promise<void> {
+  const updatedAt = new Date().toISOString()
+  if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, creative, updatedAt }); return }
+  await writeClient.patch(docId).set({ creative, updatedAt }).commit()
+}
+
 export async function setBriefWeeks(docId: string, weeks: number): Promise<void> {
   if (fileStore()) { const d = await fileRead(docId); if (d) await fileWrite({ ...d, brief: { ...d.brief, durationWeeks: weeks } }); return }
   await writeClient.patch(docId).set({ 'brief.durationWeeks': weeks }).commit()
@@ -206,10 +223,12 @@ export async function resolveSites(doc: ProposalDoc, version = doc.versions.find
     const s = byId.get(vs.siteId)
     if (s) sites.push({ ...s, reason: vs.reason }); else missing.push(vs)
   }
+  const contents = await contentsFor(sites)
   const [investment, audience] = await Promise.all([
     indicativeInvestment(doc.brief.countrySlug, sites.map(s => s.id), doc.brief.durationWeeks),
-    audienceFor(sites),
+    audienceFor(sites, contents),
   ])
+  const faces = facesFrom(sites, contents)
   // Tiers and suggestions: computed from the plan and the pool of every available site.
   const candidates = Array.from(byId.values())
   const current = ordered.filter(vs => byId.has(vs.siteId))
@@ -246,5 +265,5 @@ export async function resolveSites(doc: ProposalDoc, version = doc.versions.find
     const t = totalsFor(here)
     return { slug: c.slug, name: c.name, available: c.available, requested: requested.has(c.slug), sites: here.length, reach: t.reach, impressions: t.impressions }
   })
-  return { doc, version, sites, missing, totals: totalsFor(sites, investment), audience, cities, tiers, suggestions, pool }
+  return { doc, version, sites, missing, totals: totalsFor(sites, investment), audience, cities, tiers, suggestions, pool, faces }
 }

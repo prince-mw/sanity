@@ -21,7 +21,9 @@ import { effectiveShown, recommendedBecause } from '@/lib/proposal/shown'
 import { offerCopy } from '@/lib/proposal/offerCopy'
 import { OfferArt, artFor } from './OfferArt'
 import { IdentitySheet, loadIdentity, type Identity } from './IdentitySheet'
-import type { ProposalView as View, ProposalStatus, TierId } from '@/lib/proposal/types'
+import { SiteMockup } from './SiteMockup'
+import { CreativePanel, type CreativePayload } from './CreativePanel'
+import type { ProposalView as View, ProposalStatus, TierId, Creative } from '@/lib/proposal/types'
 import type { SiteSpecs } from '@/lib/inventory/types'
 
 
@@ -46,8 +48,14 @@ const money = (inv: { currency: string; low: number; high: number } | null | und
 type Option = { id: string; kind: 'suggestion' | 'addon' | 'tier'; title: string; body: string; meta: string | null; cta: string; done: boolean; busy: boolean; run: () => void; headline: string; proof: string }
 
 export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: View; canEdit: boolean; pagedIds: string[]; demo?: boolean }) {
-  const { doc, version, sites, totals, audience, cities, tiers, suggestions, pool } = view
+  const { doc, version, sites, totals, audience, cities, tiers, suggestions, pool, faces } = view
   const [status, setStatus] = useState<ProposalStatus>(doc.status)
+  // The client's creative on the sites (Rif, 11 Nov 2026): one site before approval, every site after; the client may change it once approved.
+  const [creative, setCreative] = useState<Creative | null>(doc.creative ?? null)
+  const [creativeOpen, setCreativeOpen] = useState(false)
+  const [savingCreative, setSavingCreative] = useState(false)
+  const [creativeNote, setCreativeNote] = useState<string | null>(null)
+  const lead = sites[0] ?? null
   const [tab, setTab] = useState<TabId>('sites')
   const [ask, setAsk] = useState(false)
   const [message, setMessage] = useState('')
@@ -93,6 +101,20 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
     if (known) { setIdentity(known); run(known); return }
     setPending({ label, run })
   }
+  const saveCreative = (payload: CreativePayload) => new Promise<boolean>(resolve => withIdentity('save your creative', async by => {
+    if (demo) {
+      const pc = payload.creative
+      setCreative({ mode: pc.mode ?? 'make', brand: pc.brand ?? '', tagline: pc.tagline ?? '', accent: pc.accent ?? '#1B1E2B', template: pc.template ?? 'band', fit: pc.fit ?? 'letterbox', by: 'client', byName: '', at: new Date().toISOString(),
+        logoUrl: pc.logo ?? pc.logoUrl ?? null, own: pc.ownFile && pc.own ? { ...pc.own, url: pc.ownFile } : pc.own ?? null })
+      setCreativeOpen(false); setCreativeNote('Saved (sample proposal: this page only).'); resolve(true); return
+    }
+    setSavingCreative(true); setError(null)
+    const r = await fetch(`/api/proposals/${doc.shareId}/creative`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ ...payload, by }) }).catch(() => null)
+    const j = await r?.json().catch(() => null)
+    setSavingCreative(false)
+    if (!r || !r.ok || !j?.creative) { setCreativeNote(j?.error ?? 'Something went wrong. Please try again.'); resolve(false); return }
+    setCreative(j.creative); setCreativeOpen(false); setCreativeNote('Saved. Every site below shows it.'); resolve(true)
+  }))
   const post = async (path: string, body: Record<string, unknown>, key: string, local: () => void, reload = true) => {
     if (demo) { local(); return }
     setBusy(key); setError(null)
@@ -227,6 +249,33 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
         </div>
       </section>
 
+      {/* The creative on the lead site before approval: the strongest reason to say yes (Rif, 11 Nov 2026). The rest unlock on approval. */}
+      {!approved && lead && creative && (
+        <section className="bg-gray-50 mw-section-sm">
+          <div className="mw-container">
+            <div className="grid items-center gap-8 lg:grid-cols-12">
+              <div className="lg:col-span-4">
+                <p className="text-sm font-bold uppercase tracking-wider text-[#2563eb]">Your ad on the lead site</p>
+                <h2 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">{creative.mode === 'own' ? 'Your creative' : creative.brand || 'Your brand'} on {lead.name}</h2>
+                <p className="mt-3 text-gray-600">A real photo of the site with your creative on its screen. Approve the plan and every site in it is mocked up the same way, ready to download{sites.length > 1 ? ` — ${sites.length} sites in all` : ''}.</p>
+                {canEdit && <Link href={`/proposals/${doc.shareId}/edit#creative`} className="mw-tap mt-4 inline-flex text-sm font-semibold text-[#2563eb] hover:underline">Change the creative in the editor →</Link>}
+              </div>
+              <div className="lg:col-span-8"><SiteMockup site={lead} face={faces[lead.id]} creative={creative} play caption={false} /></div>
+            </div>
+          </div>
+        </section>
+      )}
+      {!approved && lead && !creative && canEdit && (
+        <section className="bg-gray-50 mw-section-sm no-print">
+          <div className="mw-container">
+            <Link href={`/proposals/${doc.shareId}/edit#creative`} className="mw-tap flex flex-col gap-1 rounded-2xl border-2 border-dashed border-mw-blue-200 bg-white p-5 hover:border-[#2563eb]">
+              <span className="font-bold text-gray-900">Add the client's creative →</span>
+              <span className="text-sm text-gray-600">Only you see this. With a logo and a tagline, this page opens with their brand on {lead.name}; every site is mocked up once they approve.</span>
+            </Link>
+          </div>
+        </section>
+      )}
+
       {/* After approval: thank you, then at most two offers */}
       {approved && (
         <section className={`${SG_NAVY} border-t border-white/10 text-white mw-section-sm no-print`}>
@@ -247,6 +296,34 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
               ))}
             </ul>
             <Link href="/" className="mw-tap mt-6 inline-flex items-center rounded-lg bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-cyan-50">Back to movingwalls.com</Link>
+          </div>
+        </section>
+      )}
+
+      {/* After approval: the creative on every site, and the client may change it (the second lead) */}
+      {approved && lead && (
+        <section className="bg-gray-50 mw-section">
+          <div className="mw-container">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <div>
+                <p className="text-sm font-bold uppercase tracking-wider text-[#2563eb]">Your ad on every site</p>
+                <h2 className="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl">{creative ? `${creative.mode === 'own' ? 'Your creative' : creative.brand || 'Your brand'} across the plan` : 'See your ad across the plan'}</h2>
+                <p className="mt-2 max-w-2xl text-gray-600">{creative ? 'Each site with your creative on its real photo. Download any of them, or swap in a finished image or video to see it everywhere.' : 'Add a logo and a tagline, or upload a finished image or video, and every site below shows it on its real photo.'}</p>
+              </div>
+              {creative && !creativeOpen && <button type="button" onClick={() => setCreativeOpen(true)} className="mw-tap no-print inline-flex items-center rounded-lg border-2 border-[#2563eb] bg-white px-5 py-2.5 font-semibold text-[#2563eb] hover:bg-mw-blue-50">Change the creative</button>}
+            </div>
+            {(creativeOpen || !creative) && (
+              <div className="mt-6 rounded-2xl border border-gray-200 bg-white p-5 no-print sm:p-6">
+                <CreativePanel site={lead} face={faces[lead.id]} initial={creative} who="client" onSave={saveCreative} saving={savingCreative} note={creativeNote} />
+                {creative && <button type="button" onClick={() => setCreativeOpen(false)} className="mw-tap mt-4 text-sm font-semibold text-gray-600 hover:underline">Keep the current creative</button>}
+              </div>
+            )}
+            {creative && (
+              <ul className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {sites.map((s, i) => <li key={s.id}><SiteMockup site={s} face={faces[s.id]} creative={creative} play={i === 0} download cover /></li>)}
+              </ul>
+            )}
+            {creative && creativeNote && !creativeOpen && <p className="mt-4 text-sm text-gray-500 no-print">{creativeNote}</p>}
           </div>
         </section>
       )}

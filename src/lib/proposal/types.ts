@@ -25,6 +25,24 @@ export type VersionSite = { siteId: string; siteName: string; reason: string; or
 
 export type ProposalVersion = { n: number; createdAt: string; source: VersionSource; summary: string; sites: VersionSite[]; addons?: string[] }
 
+/**
+ * The client's creative for the mock-ups (Rif, 11 Nov 2026): either our layout
+ * from a logo/brand name + tagline, or their finished file (image or video) as
+ * is. Set by sales in the editor or by the client after approval. Asset URLs
+ * point at the Sanity CDN (data URLs only in the local file store).
+ */
+export type Creative = {
+  mode: 'make' | 'own'
+  brand: string; tagline: string; accent: string; template: 'band' | 'split' | 'poster'
+  logoUrl: string | null
+  own: { url: string; kind: 'image' | 'video'; width: number; height: number; name: string } | null
+  fit: 'letterbox' | 'fill'
+  by: 'staff' | 'client'; byName: string; at: string
+}
+
+/** The billboard face on a site's first photo, for the mock-up (from siteContent). */
+export type SiteFace = { corners: [number, number][]; edges: [number, number][] | null; kind: 'led' | 'print' | null }
+
 /** Someone other than the creator who acted on the proposal (approved, added, requested): the second lead. */
 export type Participant = { name: string; email: string; at: string; action: string }
 
@@ -45,6 +63,7 @@ export type ProposalDoc = {
   participants: Participant[]
   shown: { options: string[]; postApproval: string[] }             // what the client sees: at most 2 before approval, at most 2 after (ids of suggestions, add-ons, 'smaller' | 'larger', city slugs)
   derivedFrom: string | null                                       // the shareId this proposal was started from
+  creative: Creative | null                                        // the client's creative for the mock-ups
   approvedAt: string | null
   createdAt: string
   updatedAt: string
@@ -77,4 +96,5 @@ export type ProposalView = {
   tiers: Tier[]
   suggestions: Suggestion[]
   pool: (PublicSite & { reason: string })[]   // every site a tier or suggestion can add, resolved, for the page to render
+  faces: Record<string, SiteFace>             // billboard faces per site id, for the mock-ups (only sites whose photo was marked)
 }
