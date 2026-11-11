@@ -42,5 +42,5 @@ export default async function EditProposalPage({ params, searchParams }: Props) 
   const [view, lists] = await Promise.all([resolveSites(doc), Promise.all(available.map(c => sitesFor(doc.brief.countrySlug, c)))])
   const candidates = lists.flat()
   const { editTokenHash: _h, ...pub } = view.doc // eslint-disable-line @typescript-eslint/no-unused-vars
-  return <ProposalEditor view={{ ...view, doc: { ...pub, editTokenHash: '' } }} candidates={candidates} />
+  return <ProposalEditor key={`${doc.shareId}-${doc.currentVersion}-${doc.brief.cities.join(',')}`} view={{ ...view, doc: { ...pub, editTokenHash: '' } }} candidates={candidates} />
 }

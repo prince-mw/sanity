@@ -91,8 +91,8 @@ export function ProposalEditor({ view, candidates, demo = false }: { view: View;
   const fork = async () => { const j = await call(`/api/proposals/${doc.shareId}/fork`, { brief: briefPatch(), keepSites }, 'fork'); if (j?.shareId) router.push(`/proposals/${j.shareId}/edit`) }
   const saveShown = async () => { if (demo) { setShownSaved(true); setNote('Saved (demo: this page only).'); return } if (await call(`/api/proposals/${doc.shareId}/settings`, { shown }, 'shown')) { setShownSaved(true); setNote('Saved. The client page shows only what is switched on.') } }
   const planCity = async (slug: string) => {
-    if (demo) { router.push(`/proposals/demo/edit?cities=${[...cityGroups.map(g => g.slug), slug].join(',')}#sites`); return }
-    if (await call(`/api/proposals/${doc.shareId}/versions`, { addCity: slug }, `plan-${slug}`)) { router.refresh(); router.push(`/proposals/${doc.shareId}/edit#plan`) }
+    if (demo) { window.location.assign(`/proposals/demo/edit?cities=${[...cityGroups.map(g => g.slug), slug].join(',')}#plan`); return }
+    if (await call(`/api/proposals/${doc.shareId}/versions`, { addCity: slug }, `plan-${slug}`)) window.location.assign(`/proposals/${doc.shareId}/edit#plan`)
   }
   const requestCity = async (slug: string) => { if (demo) { setRequested(r => [...r, slug]); return } if (await call(`/api/proposals/${doc.shareId}/request-city`, { citySlug: slug }, `city-${slug}`)) setRequested(r => [...r, slug]) }
   const copy = async () => { try { await navigator.clipboard.writeText(`${location.origin}/proposals/${doc.shareId}`); setCopied(true); setTimeout(() => setCopied(false), 2000) } catch { /* no clipboard */ } }
