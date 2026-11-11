@@ -1,3 +1,4 @@
+import { ensureMarkets } from '@/lib/proposal/marketsData'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { readProposalGrant } from '@/lib/proposal/access'
@@ -13,6 +14,7 @@ const STATUS: Record<string, string> = { draft: 'Draft', sent: 'For review', app
 const fmt = (iso: string) => new Date(iso).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
 
 export default async function MyProposalsPage() {
+  await ensureMarkets()
   const grant = await readProposalGrant()
   const list = grant ? await listProposalsFor(grant.email, grant.proposals) : []
   return (

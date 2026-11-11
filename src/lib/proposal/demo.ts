@@ -2,6 +2,7 @@ import 'server-only'
 import { sitesFor } from '@/lib/inventory/source'
 import { pickPlan, rulesPick } from './pick'
 import { cityOf } from './markets'
+import { ensureMarkets } from './marketsData'
 import { titleLineFor, resolveSites } from './store'
 import type { Brief, ProposalDoc, ProposalVersion, ProposalView } from './types'
 
@@ -22,6 +23,7 @@ const BRIEF: Brief = {
 const KL_SUMMARY = 'A launch plan across five sites in Kuala Lumpur over four weeks: two landmark highway unipoles on the main commuter routes into the city, a roadside LED on Jalan Tun Razak beside KLCC, and two screens in Bukit Bintang where the audience shops after work. The digital sites carry a countdown creative in the first week and the launch creative from day one; the unipoles hold the hero visual throughout. The Moving Walls team confirms availability before anything is booked.'
 
 export async function buildDemoView(cities: string[] = ['kuala-lumpur']): Promise<ProposalView | null> {
+  await ensureMarkets()
   const wanted = Array.from(new Set(cities.map(c => c.trim()).filter(c => cityOf(BRIEF.countrySlug, c)?.available)))
   const briefCities = wanted.length ? wanted : ['kuala-lumpur']
   const brief: Brief = { ...BRIEF, cities: briefCities, citySlug: briefCities[0], cityName: cityOf(BRIEF.countrySlug, briefCities[0])?.name ?? 'Kuala Lumpur' }

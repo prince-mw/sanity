@@ -155,7 +155,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <BlogDetailClient post={post} relatedPosts={relatedPosts} promo={(() => { const m = promoMarketFor(post.title, post.excerpt, post.content, ...(post.tags ?? [])); return m ? <ProposalPromo variant="card" market={m} /> : null })()} />
+      <BlogDetailClient post={post} relatedPosts={relatedPosts} promo={await (async () => { const m = await promoMarketFor(post.title, post.excerpt, post.content, ...(post.tags ?? [])); return m ? <ProposalPromo variant="card" market={m} /> : null })()} />
     </>
   );
 }

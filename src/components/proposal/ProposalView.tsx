@@ -63,7 +63,10 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
   const paged = new Set(pagedIds)
   const brief = doc.brief
   const inPlan = cities.filter(c => c.sites > 0)
-  const whereLabel = citiesLabel(brief.countrySlug, inPlan.map(c => c.slug))
+  // City names come with the view (the client cannot load the market registry).
+  const nameOf = (slug: string) => cities.find(c => c.slug === slug)?.name
+  const joinNames = (names: string[]) => names.length <= 1 ? names[0] ?? '' : `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}`
+  const whereLabel = inPlan.length ? joinNames(inPlan.map(c => nameOf(c.slug) ?? c.name)) : citiesLabel(brief.countrySlug, [])
   const objective = OBJECTIVES.find(o => o.id === brief.objective)?.label
   const poolById = new Map(pool.map(s => [s.id, s]))
   const pins = sites.map(s => s.lat != null && s.lng != null ? { id: s.id, lat: s.lat, lng: s.lng, title: s.name, subtitle: [s.displayFormat ?? s.format, s.areaName].filter(Boolean).join(' · ') } : null).filter(Boolean) as MapPin[]

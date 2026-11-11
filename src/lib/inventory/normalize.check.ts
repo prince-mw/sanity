@@ -27,5 +27,12 @@ check(!siteHasPage(sites.find(s => s.name === 'Lot 10 Junction Lightbox')!), 'a 
 check(siteHasPage(sites.find(s => s.name === 'Menara Tan & Tan')!), 'a site with a photo gets a page')
 check(JSON.stringify(parsePoint('POINT(101.71 3.14)')) === '{"lat":3.14,"lng":101.71}', 'map points read longitude first, as the API sends them')
 
+// The address decides the place, and no site is dropped over a missing level (Rif, 11 Nov 2026).
+const base = SAMPLE_RECORDS.find(r => isPublishable(r))!
+const noArea = toPublicSite({ ...base, id: 'x-no-area', adminLevel3Name: null, adminLevel4Name: null }, { city: 2, area: 3 })
+check(!!noArea && noArea.areaName === noArea.cityName, 'a site with no area is kept, listed under its city')
+const noCity = toPublicSite({ ...base, id: 'x-no-city', adminLevel2Name: null }, { city: 2, area: 3 })
+check(!!noCity && noCity.cityName === base.adminLevel1Name?.trim(), 'a site with no city level falls back to the level above')
+
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')
 process.exit(bad ? 1 : 0)

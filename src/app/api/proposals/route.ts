@@ -1,3 +1,4 @@
+import { ensureMarkets } from '@/lib/proposal/marketsData'
 import { NextRequest, NextResponse } from 'next/server'
 import { inventoryEnabled } from '@/lib/inventory/source'
 import { readProposalGrant, proposalCookie, withProposal } from '@/lib/proposal/access'
@@ -34,6 +35,7 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  await ensureMarkets()
   const grant = await readProposalGrant()
   if (!grant) return NextResponse.json({ error: 'register' }, { status: 401 })
   if (!inventoryEnabled()) return NextResponse.json({ error: 'Proposals are not available yet.' }, { status: 503 })
@@ -42,12 +44,23 @@ export async function POST(req: NextRequest) {
   try { b = await req.json() } catch { return NextResponse.json({ error: 'Bad request' }, { status: 400 }) }
   const raw = b.brief ?? {}
   const market = marketOf(str(raw.countrySlug, 40))
-  if (!market) return NextResponse.json({ error: 'We have inventory for Malaysia today; more markets are coming.' }, { status: 422 })
+  if (!market) return NextResponse.json({ error: 'Pick a country.' }, { status: 400 })
   const countryWide = raw.countryWide === true
   const askedCities = Array.isArray(raw.cities) ? raw.cities.map(c => str(c, 60)).filter(c => cityOf(market.countrySlug, c)) : []
   const cities = countryWide ? market.cities.map(c => c.slug) : askedCities.length ? askedCities : [str(raw.citySlug, 60)].filter(c => cityOf(market.countrySlug, c))
   const availableCities = cities.filter(c => cityOf(market.countrySlug, c)?.available)
-  if (!availableCities.length) return NextResponse.json({ error: `We have inventory for Kuala Lumpur today; ${cities.length ? 'the cities you chose are coming soon.' : 'pick at least one city.'}` }, { status: 422 })
+  // Every country is eligible (Rif, 11 Nov 2026). Where the site has no sites for the
+  // brief yet, the brief still counts: it goes to the team as a request (CRM status
+  // "Requested") and the visitor is told a planner builds it by hand.
+  if (!availableCities.length) {
+    const where = cities.length ? cities.map(c => cityOf(market.countrySlug, c)?.name ?? c).join(', ') : `${market.countryName}, nationwide`
+    if (grant.leadId && crmConfigured()) {
+      updateLead(grant.leadId, { [CRM_FIELDS.status]: 'Requested', [CRM_FIELDS.note]: `Instant proposal requested for ${where} (${market.countryName}): ${str(raw.objective, 20) || 'no objective'}, ${Number(raw.durationWeeks) || '?'} weeks, budget ${str(raw.budgetBand, 10) || 'not stated'}. ${str(raw.audience, 300)}`.trim() })
+        .catch(e => console.error('[proposals] CRM request update failed', e))
+    }
+    console.log(`[proposals] request (no inventory yet) ${market.countrySlug} ${where} for ${grant.email}`)
+    return NextResponse.json({ requested: true, where })
+  }
   const lead = cityOf(market.countrySlug, availableCities[0])!
 
   const objective = OBJECTIVES.has(raw.objective as Objective) ? (raw.objective as Objective) : null

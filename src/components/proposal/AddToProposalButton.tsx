@@ -5,10 +5,12 @@ import type { PublicSite } from '@/lib/inventory/types'
 import { useShortlist } from '@/lib/proposal/shortlist'
 
 /**
- * "Add to proposal" on a site card (small, inside the card's link, so it stops
- * the click) or in the site page hero (the slot the price button used to hold).
+ * "Add to proposal" on a site card (inside the card's link, so it stops the
+ * click) or in the site page hero (the slot the price button used to hold).
+ * It is the lead CTA (Rif, 11 Nov 2026), so on cards it is the solid blue
+ * button and the one beside it is the outlined one. `className` sizes it.
  */
-export function AddToProposalButton({ site, variant }: { site: PublicSite; variant: 'card' | 'hero' }) {
+export function AddToProposalButton({ site, variant, className = '' }: { site: PublicSite; variant: 'card' | 'hero'; className?: string }) {
   const { has, add, remove, ready } = useShortlist()
   const on = ready && has(site.id)
   const toggle = (e: React.MouseEvent) => {
@@ -26,7 +28,7 @@ export function AddToProposalButton({ site, variant }: { site: PublicSite; varia
   }
   return (
     <button type="button" onClick={toggle} aria-pressed={on}
-      className={`mw-tap inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${on ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-300 bg-white text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]'}`}>
+      className={`mw-tap inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-2 px-4 py-2 text-xs font-semibold shadow-sm transition-colors ${on ? 'border-[#2563eb] bg-white text-[#2563eb]' : 'border-[#2563eb] bg-[#2563eb] text-white hover:border-[#1d4ed8] hover:bg-[#1d4ed8]'} ${className}`}>
       {on ? <Check className="h-3.5 w-3.5" aria-hidden="true" /> : <Plus className="h-3.5 w-3.5" aria-hidden="true" />}
       {on ? 'Added' : 'Add to proposal'}
     </button>

@@ -2,6 +2,7 @@ import 'server-only'
 import type { PublicSite } from '@/lib/inventory/types'
 import { sitesFor } from '@/lib/inventory/source'
 import { OBJECTIVES, cityOf, targetByCity } from './markets'
+import { ensureMarkets } from './marketsData'
 import type { Brief, VersionSite, VersionSource } from './types'
 
 // Turns a brief into a site list. Claude (Sonnet) reads the brief and a compact
@@ -79,6 +80,7 @@ export function shortlistPick(brief: Brief, candidates: PublicSite[], ids: strin
  * visitor's own sites.
  */
 export async function pickPlan(brief: Brief, pinnedIds: string[], mode: 'brief' | 'shortlist' = 'brief'): Promise<Pick & { candidates: PublicSite[] }> {
+  await ensureMarkets()
   const cities = brief.cities.filter(c => cityOf(brief.countrySlug, c)?.available)
   const targets = targetByCity(brief.countrySlug, cities, brief.targetSites)
   const all: PublicSite[] = []

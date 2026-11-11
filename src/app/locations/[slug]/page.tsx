@@ -14,6 +14,7 @@ import { CountryGuide } from '@/components/location/CountryGuide'
 import { sitesFor } from '@/lib/inventory/source'
 import { guideFor, handPickedSlugs, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
 import { getCountryContent } from '@/lib/inventory/placeContent'
+import { inventoryCityCards } from '@/lib/location/inventoryPlaces'
 import { RelatedContent } from '@/components/inventory/ContentBlocks'
 import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 
@@ -104,9 +105,11 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
   if (sanityLocation) {
     const locationData = transformLocationFull(sanityLocation)
     // Pages that link to their sub-pages from their own sections (e.g. Philippines) hide the automatic city grid
-    const cities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards
+    const cmsCities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards
       ? []
       : (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
+    // Cities the inventory has but the CMS does not list yet still get a card (and a page).
+    const cities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards ? cmsCities : [...cmsCities, ...await inventoryCityCards(slug, cmsCities)]
     const faqJsonLd = buildFaqJsonLd(locationData.faqs)
     const locationJsonLd = buildLocationJsonLd({ countrySlug: slug, countryName: sanityLocation.country || locationData.name })
     // The country template (approved by Rif, 11 Nov 2026): fixed slot order, the written market guide,

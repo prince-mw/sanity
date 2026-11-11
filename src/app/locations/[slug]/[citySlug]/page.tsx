@@ -18,13 +18,15 @@ import { promoEnabled } from '@/lib/proposal/promo'
 import { marketOf } from '@/lib/proposal/markets'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
 import { siteInsightsFor } from '@/lib/inventory/siteContent'
+import { inventoryCity } from '@/lib/location/inventoryPlaces'
+import type { SanityLocationCity } from '@/sanity/lib/fetch'
 import { RelatedContent } from '@/components/inventory/ContentBlocks'
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string; citySlug: string }> }): Promise<Metadata> {
   const { slug, citySlug } = await params
 
   const { isEnabled: isPreview } = await draftMode()
-  const city = await getCityBySlug(slug, citySlug, isPreview)
+  const city = (await getCityBySlug(slug, citySlug, isPreview)) ?? (await inventoryCity(slug, citySlug) as unknown as SanityLocationCity | null)
   if (!city) {
     const formattedName = citySlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
     return {
@@ -70,7 +72,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   const t = await getServerT()
 
   const { isEnabled: isPreview } = await draftMode()
-  const city = await getCityBySlug(slug, citySlug, isPreview)
+  // Sanity's city page when there is one, else the inventory's city: sites decide what exists.
+  const city = (await getCityBySlug(slug, citySlug, isPreview)) ?? (await inventoryCity(slug, citySlug) as unknown as SanityLocationCity | null)
   if (!city) {
     notFound()
   }

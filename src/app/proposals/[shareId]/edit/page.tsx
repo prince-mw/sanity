@@ -1,3 +1,4 @@
+import { ensureMarkets } from '@/lib/proposal/marketsData'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound, redirect } from 'next/navigation'
@@ -18,6 +19,7 @@ export const metadata: Metadata = { title: 'Edit your proposal | Moving Walls', 
 type Props = { params: Promise<{ shareId: string }>; searchParams: Promise<{ t?: string }> }
 
 export default async function EditProposalPage({ params, searchParams }: Props) {
+  await ensureMarkets()
   const { shareId } = await params
   const { t } = await searchParams
   const doc = await getProposalByShareId(shareId)
@@ -44,5 +46,5 @@ export default async function EditProposalPage({ params, searchParams }: Props) 
   const candidates = lists.flat()
   const insights = await siteInsightsFor(candidates)
   const { editTokenHash: _h, ...pub } = view.doc // eslint-disable-line @typescript-eslint/no-unused-vars
-  return <ProposalEditor key={`${doc.shareId}-${doc.currentVersion}-${doc.brief.cities.join(',')}`} view={{ ...view, doc: { ...pub, editTokenHash: '' } }} candidates={candidates} insights={insights} staff={!!grant && (grant.tester === true || isStaffEmail(grant.email))} />
+  return <ProposalEditor key={`${doc.shareId}-${doc.currentVersion}-${doc.brief.cities.join(',')}`} view={{ ...view, doc: { ...pub, editTokenHash: '' } }} candidates={candidates} insights={insights} market={marketOf(doc.brief.countrySlug)} staff={!!grant && (grant.tester === true || isStaffEmail(grant.email))} />
 }

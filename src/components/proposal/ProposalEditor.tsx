@@ -20,7 +20,7 @@ import { SampleTag, SiteGrid } from '../inventory/InventoryShared'
 import { BrandMap, type MapPin } from '../inventory/BrandMap'
 import { SiteDetailsDialog, type SiteInsights } from './SiteDetailsDialog'
 import { useShortlist } from '@/lib/proposal/shortlist'
-import { OBJECTIVES, DURATIONS, BUDGET_BANDS, cityNameOf, marketOf } from '@/lib/proposal/markets'
+import { OBJECTIVES, DURATIONS, BUDGET_BANDS, cityNameOf as nameOfSlug, marketOf, type Market } from '@/lib/proposal/markets'
 import { ADDONS } from '@/lib/proposal/addons'
 import { autoShown } from '@/lib/proposal/shown'
 import type { PublicSite } from '@/lib/inventory/types'
@@ -35,10 +35,11 @@ const chip = (on: boolean) => `mw-tap rounded-full border px-4 py-1.5 text-sm fo
 const num = (n: number | null) => n == null ? null : n.toLocaleString('en-US')
 const MAX_SHOWN = 2
 
-export function ProposalEditor({ view, candidates, insights = {}, demo = false, staff = false }: { view: View; candidates: PublicSite[]; insights?: Record<string, SiteInsights>; demo?: boolean; staff?: boolean }) {
+export function ProposalEditor({ view, candidates, insights = {}, demo = false, staff = false, market: marketProp }: { view: View; candidates: PublicSite[]; insights?: Record<string, SiteInsights>; demo?: boolean; staff?: boolean; market?: Market | null }) {
   const router = useRouter()
   const { doc, version, tiers, suggestions, cities } = view
-  const market = marketOf(doc.brief.countrySlug)
+  const market = marketProp ?? marketOf(doc.brief.countrySlug)
+  const cityNameOf = (_country: string, slug: string) => market?.cities.find(c => c.slug === slug)?.name ?? nameOfSlug(_country, slug)
   const byId = useMemo(() => new Map(candidates.map(s => [s.id, s])), [candidates])
   const [tab, setTab] = useState<TabId>('plan')
   const [rows, setRows] = useState<Row[]>(view.sites.map(s => ({ siteId: s.id, reason: s.reason })))

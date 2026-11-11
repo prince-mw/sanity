@@ -26,8 +26,10 @@ export function BriefForm({ markets, formats }: Props) {
   const router = useRouter()
   const { items, remove, clear, ready } = useShortlist()
   const [countrySlug, setCountrySlug] = useState(markets[0].countrySlug)
-  const [cities, setCities] = useState<string[]>([markets[0].cities.find(c => c.available)?.slug ?? markets[0].cities[0].slug])
-  const [countryWide, setCountryWide] = useState(false)
+  const firstCity = (m: Market | undefined) => m?.cities.find(c => c.available)?.slug ?? m?.cities[0]?.slug ?? null
+  const [cities, setCities] = useState<string[]>(firstCity(markets[0]) ? [firstCity(markets[0])!] : [])
+  const [countryWide, setCountryWide] = useState(!firstCity(markets[0]))
+  const [requested, setRequested] = useState<string | null>(null)
   const [startDate, setStartDate] = useState('')
   const [duration, setDuration] = useState<number>(4)
   const [objective, setObjective] = useState<Objective | null>(null)
@@ -63,6 +65,7 @@ export function BriefForm({ markets, formats }: Props) {
     const j = await r?.json().catch(() => null)
     if (r?.status === 401) { setBusy(null); setRegistered(false); setGate(true); return }
     if (!r || !r.ok) { setBusy(null); setError(j?.error ?? 'Something went wrong. Please try again.'); return }
+    if (j?.requested) { setBusy(null); setRequested(j.where ?? marketDef.countryName); return }
     clear()
     router.push(`/proposals/${j.shareId}/edit?t=${encodeURIComponent(j.editToken)}`)
   }
@@ -89,12 +92,18 @@ export function BriefForm({ markets, formats }: Props) {
       <section className="bg-gray-50 mw-section">
         <div className="mw-container grid gap-10 lg:grid-cols-12">
           <form className="lg:col-span-7 space-y-7" onSubmit={e => { e.preventDefault(); submit('brief') }}>
+            {requested && (
+              <div role="status" className="rounded-2xl border-2 border-mw-blue-200 bg-gradient-to-br from-mw-blue-50 to-cyan-100 p-6">
+                <p className="text-lg font-bold text-gray-900">Brief received for {requested}.</p>
+                <p className="mt-1 text-gray-700">A Moving Walls planner builds this proposal by hand and comes back to you with it. Nothing is booked until you have seen it.</p>
+              </div>
+            )}
             <fieldset>
               <legend className="text-lg font-bold text-[#2563eb]">Where and when</legend>
               <div className="mt-3">
                 <span className="text-sm font-semibold text-gray-700">Country</span>
                 <div className="mt-2 flex flex-wrap gap-2">
-                  {markets.map(m => <button key={m.countrySlug} type="button" aria-pressed={countrySlug === m.countrySlug} onClick={() => { setCountrySlug(m.countrySlug); setCities([m.cities.find(c => c.available)?.slug ?? m.cities[0].slug]); setCountryWide(false) }} className={chip(countrySlug === m.countrySlug)}>{m.countryName}</button>)}
+                  {markets.map(m => <button key={m.countrySlug} type="button" aria-pressed={countrySlug === m.countrySlug} onClick={() => { setCountrySlug(m.countrySlug); const f = firstCity(m); setCities(f ? [f] : []); setCountryWide(!f); setRequested(null) }} className={chip(countrySlug === m.countrySlug)}>{m.countryName}</button>)}
                 </div>
               </div>
               <div className="mt-4">
@@ -107,7 +116,7 @@ export function BriefForm({ markets, formats }: Props) {
                     </button>
                   ))}
                 </div>
-                <p className="mt-2 text-xs text-gray-500">Cities marked “on request” have no inventory on the site yet: a planner builds them by hand and adds them to your proposal.</p>
+                <p className="mt-2 text-xs text-gray-500">{marketDef.cities.some(c => c.available) ? 'Cities marked “on request” have no sites on the website yet: a planner builds them by hand and adds them to your proposal.' : `Sites in ${marketDef.countryName} are not on the website yet. Send the brief and a planner builds the proposal by hand.`}</p>
               </div>
               <div className="mt-4 grid gap-4 sm:grid-cols-2">
                 <label className="block"><span className="text-sm font-semibold text-gray-700">Start <span className="font-normal text-gray-400">(optional)</span></span>

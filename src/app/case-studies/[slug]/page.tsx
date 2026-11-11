@@ -122,7 +122,7 @@ export default async function CaseStudyPage({ params }: PageProps) {
     notFound();
   }
 
-  const promoMarket = promoMarketFor(caseStudy.title, caseStudy.country, (caseStudy as { excerpt?: string }).excerpt, caseStudy.content);
+  const promoMarket = await promoMarketFor(caseStudy.title, caseStudy.country, (caseStudy as { excerpt?: string }).excerpt, caseStudy.content);
   const promo = promoMarket ? <ProposalPromo variant="card" market={promoMarket} /> : null;
 
   const faqScript = faqJsonLd && (

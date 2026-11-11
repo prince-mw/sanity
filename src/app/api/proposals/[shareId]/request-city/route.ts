@@ -1,3 +1,4 @@
+import { ensureMarkets } from '@/lib/proposal/marketsData'
 import { NextRequest, NextResponse } from 'next/server'
 import { getProposalByShareId, addCityRequest, CRM_FIELDS } from '@/lib/proposal/store'
 import { cityOf } from '@/lib/proposal/markets'
@@ -11,6 +12,7 @@ export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ shareId: string }> }) {
+  await ensureMarkets()
   const { shareId } = await params
   let b: { citySlug?: unknown; email?: unknown }
   try { b = await req.json() } catch { return NextResponse.json({ error: 'Bad request' }, { status: 400 }) }

@@ -7,6 +7,7 @@ import { sitesFor, indicativeInvestment } from '@/lib/inventory/source'
 import { getSiteContent } from '@/lib/inventory/siteContent'
 import type { PublicSite } from '@/lib/inventory/types'
 import { OBJECTIVES, marketOf, cityOf, citiesLabel } from './markets'
+import { ensureMarkets } from './marketsData'
 import { buildTiers, buildSuggestions } from './tiers'
 import type { AudienceGroup, Brief, CityGroup, ProposalDoc, ProposalStatus, ProposalTotals, ProposalVersion, ProposalView, Suggestion, Tier, VersionSite } from './types'
 
@@ -192,6 +193,7 @@ export async function setCrm(docId: string, fields: { leadId?: string | null; cr
 
 /** The current version's sites, resolved from the inventory in order, with each one's reason. */
 export async function resolveSites(doc: ProposalDoc, version = doc.versions.find(v => v.n === doc.currentVersion) ?? doc.versions[doc.versions.length - 1]): Promise<ProposalView> {
+  await ensureMarkets()
   // Every city of the market is loaded (the plan's cities and the ones on offer); a site's city comes from the inventory, not the stored tag.
   const market = marketOf(doc.brief.countrySlug)
   const citySlugs = Array.from(new Set([...(doc.brief.cities ?? []), ...(market?.cities.filter(c => c.available).map(c => c.slug) ?? [])]))

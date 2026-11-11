@@ -1,3 +1,4 @@
+import { ensureMarkets } from '@/lib/proposal/marketsData'
 import { NextRequest, NextResponse } from 'next/server'
 import { readProposalGrant, canEdit, proposalCookie, withProposal } from '@/lib/proposal/access'
 import { getProposalByShareId, createProposal, CRM_FIELDS } from '@/lib/proposal/store'
@@ -16,6 +17,7 @@ export const dynamic = 'force-dynamic'
 const str = (v: unknown, max = 200) => (typeof v === 'string' ? v.trim().slice(0, max) : '')
 
 export async function POST(req: NextRequest, { params }: { params: Promise<{ shareId: string }> }) {
+  await ensureMarkets()
   const { shareId } = await params
   const grant = await readProposalGrant()
   if (!grant || !canEdit(grant, shareId)) return NextResponse.json({ error: 'Only the person who created this proposal can start a new one from it.' }, { status: 403 })

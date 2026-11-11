@@ -1,23 +1,21 @@
 // The choices the brief form offers. A proposal covers one country and one
-// or more of its cities. `available` marks cities with inventory on the site
-// (Kuala Lumpur until the Inventory API key arrives); the others can be
-// requested from a proposal and the team is told. The budget band never
-// reaches the proposal page, it only sizes the site list. Rif, 11 Nov 2026.
+// or more of its cities. Rif, 11 Nov 2026: EVERY country is eligible, and the
+// inventory decides which cities exist — no hand-made list. `MARKETS` is a
+// registry that ensureMarkets() (lib/proposal/marketsData.ts) fills on the
+// server from the Sanity countries plus the countries and cities the inventory
+// returns. `available` marks a city with sites; `weight` is its share of them.
+// Client components get markets through props. The budget band never reaches
+// the proposal page, it only sizes the site list.
 import type { Objective } from './types'
 
 export type City = { slug: string; name: string; available: boolean; weight: number }
 export type Market = { countrySlug: string; countryName: string; cities: City[] }
 
-export const MARKETS: Market[] = [
-  { countrySlug: 'malaysia', countryName: 'Malaysia', cities: [
-    { slug: 'kuala-lumpur', name: 'Kuala Lumpur', available: true, weight: 1 },
-    { slug: 'penang', name: 'Penang', available: true, weight: 0.6 },
-    { slug: 'johor-bahru', name: 'Johor Bahru', available: true, weight: 0.6 },
-    { slug: 'kota-kinabalu', name: 'Kota Kinabalu', available: true, weight: 0.5 },
-    { slug: 'ipoh', name: 'Ipoh', available: false, weight: 0.4 },
-    { slug: 'melaka', name: 'Melaka', available: false, weight: 0.4 },
-  ] },
-]
+export const MARKETS: Market[] = []
+export function setMarkets(list: Market[]) { MARKETS.splice(0, MARKETS.length, ...list) }
+
+/** "kuala-lumpur" -> "Kuala Lumpur": only a fallback until the registry is loaded. */
+export const nameFromSlug = (slug: string) => slug.split('-').filter(Boolean).map(w => w[0].toUpperCase() + w.slice(1)).join(' ')
 
 export const BUDGET_BANDS: { id: string; label: string; targetSites: number }[] = [
   { id: 'low', label: 'Under RM50k', targetSites: 3 },
@@ -34,9 +32,11 @@ export const OBJECTIVES: { id: Objective; label: string; hint: string }[] = [
 
 export const DURATIONS = [2, 4, 8, 12] as const
 
-export const marketOf = (countrySlug: string) => MARKETS.find(x => x.countrySlug === countrySlug) ?? null
+/** Every country is a market: before the registry knows it, a country still resolves, with no cities yet. */
+export const marketOf = (countrySlug: string): Market | null => !countrySlug ? null
+  : MARKETS.find(x => x.countrySlug === countrySlug) ?? { countrySlug, countryName: nameFromSlug(countrySlug), cities: [] }
 export const cityOf = (countrySlug: string, citySlug: string): City | null => marketOf(countrySlug)?.cities.find(c => c.slug === citySlug) ?? null
-export const cityNameOf = (countrySlug: string, citySlug: string) => cityOf(countrySlug, citySlug)?.name ?? citySlug
+export const cityNameOf = (countrySlug: string, citySlug: string) => cityOf(countrySlug, citySlug)?.name ?? nameFromSlug(citySlug)
 
 /** Kept for callers that still think in one city: the market with that city attached. */
 export const marketFor = (countrySlug: string, citySlug: string) => {

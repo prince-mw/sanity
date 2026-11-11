@@ -5,8 +5,8 @@
 // Pages only ever receive PublicSite — owners and prices stay on the server.
 
 import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '@/data/inventory-sample'
-import { isPublishable, toPublicSite, areaPages, type AreaPage } from './normalize'
-import type { InventoryRecord, PublicSite } from './types'
+import { isPublishable, toPublicSite, areaPages, slugify, type AreaPage } from './normalize'
+import type { InventoryRecord, LevelMap, PublicSite } from './types'
 
 export const usingSample = () => !process.env.INVENTORY_API_KEY
 
@@ -21,6 +21,16 @@ export function inventoryEnabled(): boolean {
   return /(^|\/\/)stg\./.test(process.env.NEXT_PUBLIC_SITE_URL ?? '')
 }
 
+/** The countries the inventory has sites in. With the API this becomes one call; today it is the sample. */
+export async function inventoryCountries(): Promise<{ slug: string; name: string }[]> {
+  if (!inventoryEnabled()) return []
+  const names = new Set(SAMPLE_RECORDS.map(r => r.adminLevel0Name?.trim()).filter((n): n is string => !!n))
+  return Array.from(names).map(name => ({ slug: slugify(name), name }))
+}
+
+/** Which address level is the city and which the area. A country without a setting uses the common shape; toPublicSite falls back per record, so no site is dropped. */
+const DEFAULT_LEVELS: LevelMap = { city: 2, area: 3 }
+
 async function records(countrySlug: string): Promise<InventoryRecord[]> {
   if (!inventoryEnabled()) return []
   // The live API call goes here once the key and the public/active values are
@@ -29,8 +39,7 @@ async function records(countrySlug: string): Promise<InventoryRecord[]> {
 }
 
 export async function sitesFor(countrySlug: string, citySlug?: string): Promise<PublicSite[]> {
-  const levels = SAMPLE_LEVELS[countrySlug]
-  if (!levels) return []
+  const levels = SAMPLE_LEVELS[countrySlug] ?? DEFAULT_LEVELS
   return (await records(countrySlug))
     .filter(isPublishable)
     .map(r => toPublicSite(r, levels))

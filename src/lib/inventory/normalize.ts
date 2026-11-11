@@ -28,9 +28,14 @@ export const isPublishable = (r: InventoryRecord) =>
  * the newsletter sign-up), so they can't leak into a page.
  */
 export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite | null {
+  // The address decides the place (Rif, 11 Nov 2026: never drop inventory over naming).
+  // City: the configured level, else the nearest filled level above it. Area: the
+  // configured level, else the next one down, else the city itself.
   const countryName = level(r, 0)
-  const cityName = level(r, levels.city)
-  const areaName = level(r, levels.area)
+  const up = [levels.city, levels.city - 1, levels.city - 2, levels.city - 3].filter(n => n >= 1)
+  const down = [levels.area, levels.area + 1, levels.area + 2].filter(n => n <= 4 && n > levels.city)
+  const cityName = up.map(n => level(r, n)).find(Boolean) ?? null
+  const areaName = down.map(n => level(r, n)).find(Boolean) ?? cityName
   if (!countryName || !cityName || !areaName || !r.name?.trim()) return null
   const point = parsePoint(r.geoms?.[0])
   const photos = [

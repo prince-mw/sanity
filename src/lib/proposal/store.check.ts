@@ -3,7 +3,7 @@
 // (store.ts is server-only; the pure helpers are re-implemented here from the
 // same source so the check needs no Next.js runtime.)
 import { createHash } from 'node:crypto'
-import { OBJECTIVES, BUDGET_BANDS, targetSitesFor, marketFor } from './markets'
+import { OBJECTIVES, BUDGET_BANDS, targetSitesFor, marketFor, marketOf, setMarkets, cityNameOf } from './markets'
 import type { Brief } from './types'
 
 let bad = 0
@@ -25,6 +25,10 @@ check(titleLineFor(brief) === 'Launch campaign · Kuala Lumpur · from 12 Jan 20
 check(titleLineFor({ ...brief, objective: null, startDate: null }) === 'OOH campaign · Kuala Lumpur', 'title line without objective or date')
 check(targetSitesFor('low') === 3 && targetSitesFor('high') === 8 && targetSitesFor(null) === 5, 'budget bands size the list: 3 / 5 / 8')
 check(BUDGET_BANDS.every(b => !/\d{2,}/.test(b.id)), 'budget band ids carry no amounts (ids may reach logs)')
+// The registry is filled from the inventory on the server (marketsData.ts); here a fixture stands in.
+setMarkets([{ countrySlug: 'malaysia', countryName: 'Malaysia', cities: [{ slug: 'kuala-lumpur', name: 'Kuala Lumpur', available: true, weight: 1 }, { slug: 'ipoh', name: 'Ipoh', available: false, weight: 0.3 }] }])
 check(marketFor('malaysia', 'kuala-lumpur')?.city.available === true && marketFor('malaysia', 'ipoh')?.city.available === false && marketFor('malaysia', 'langkawi') === null, 'KL has inventory, Ipoh is on request, unknown cities do not resolve')
+check(marketOf('vietnam')?.countryName === 'Vietnam' && marketOf('vietnam')?.cities.length === 0, 'every country is a market, even before the registry knows it')
+check(cityNameOf('malaysia', 'johor-bahru') === 'Johor Bahru', 'an unknown city still gets a readable name')
 
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')
