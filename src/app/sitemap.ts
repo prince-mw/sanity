@@ -4,10 +4,11 @@ import { defaultPartners } from '@/data/partners'
 import { SG_BASE_PATH } from '@/data/singapore'
 import { getSingaporeVenues } from '@/sanity/lib/singapore'
 
-// Cache for an hour — content freshness here doesn't need to be per-request,
-// and this query fans out to ~12 collections, so refetching on every crawler
-// hit is expensive. The Sanity webhook still revalidates '/' on content changes.
-export const revalidate = 3600
+// Rendered on request rather than kept in the server's page cache: on Amplify the cached copy stopped
+// refreshing (webhook and hourly revalidation never reached it), so pages published after a deploy were
+// missing for days. CloudFront still caches /sitemap.xml for 10 minutes (s-maxage=600 in next.config.ts),
+// so Sanity sees at most a handful of these queries an hour per edge location.
+export const dynamic = 'force-dynamic'
 
 // Publishing filter for Sanity queries
 const publishedFilter = `isPublished == true && status == "published" && (scheduledPublishAt == null || scheduledPublishAt <= now())`
@@ -71,8 +72,8 @@ async function getSitemapData() {
     }
   }`
 
-  // Tagged so the Sanity webhook's revalidateTag('sanity') clears this cached result on publish
-  return client.fetch(query, {}, { next: { revalidate: 3600, tags: ['sanity'] } })
+  // Not kept in the server's data cache either (see the note on `dynamic` above)
+  return client.fetch(query, {}, { cache: 'no-store' })
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

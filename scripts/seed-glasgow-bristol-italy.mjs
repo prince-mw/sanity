@@ -271,7 +271,7 @@ const UK_PAGES = [
       title: 'Plan Bristol DOOH with Audience and Location Intelligence',
       leads: [
         'Audience movement in Bristol can connect the city centre with business and innovation districts, universities, residential neighbourhoods, retail destinations, transport hubs, the airport corridor and nearby West of England communities. Campaign planning may therefore need to balance concentrated city visibility with wider commuter and regional reach.',
-        'The <a href="/mw-planner" style="color:#2F5FE0;font-weight:600;text-decoration:none">Moving Walls Planner</a> helps advertisers use available audience and location data to identify relevant placements for the campaign brief. Teams can plan activity around geography, timing, campaign objectives and budget, then carry those decisions into activation and measurement. Final inventory and buying options are confirmed against availability and participating UK partners.',
+        '<a href="/mw-planner" style="color:#2F5FE0;font-weight:600;text-decoration:none">MW Planner</a> helps advertisers use available audience and location data to identify relevant placements for the campaign brief. Teams can plan activity around geography, timing, campaign objectives and budget, then carry those decisions into activation and measurement. Final inventory and buying options are confirmed against availability and participating UK partners.',
       ],
       steps: connectSteps(['Plan Across Relevant Media Environments', 'Consider available roadside, transport, retail, business, university, leisure, event and travel environments within one campaign plan.']),
       cta: 'See How Bristol Campaign Planning Works',
@@ -357,7 +357,7 @@ const ITALY = {
     leads: [
       'Italy combines major metropolitan centres, regional business hubs, high-volume transport networks, retail destinations and globally recognised visitor markets. Campaign planning may need to connect daily commuter movement with seasonal travel, events, shopping activity and local market differences.',
       'Italy’s OOH market reached <strong>€766 million in 2025</strong>, while DOOH reached <strong>€273 million and represented 36% of the total OOH market</strong>. Programmatic DOOH reached <strong>€15.2 million</strong>, showing a growing activation route that still depends on suitable digital inventory and market connectivity.',
-      'The <a href="/mw-planner" style="color:#2F5FE0;font-weight:600;text-decoration:none">Moving Walls Planner</a> helps advertisers use available audience and location data to identify placements that are relevant to the brief. Teams can shape plans around geography, timing, audience priorities, campaign objectives and budget before confirming inventory and buying options with participating partners.',
+      '<a href="/mw-planner" style="color:#2F5FE0;font-weight:600;text-decoration:none">MW Planner</a> helps advertisers use available audience and location data to identify placements that are relevant to the brief. Teams can shape plans around geography, timing, audience priorities, campaign objectives and budget before confirming inventory and buying options with participating partners.',
     ],
     steps: [
       ['pin', 'Plan with Audience and Location Context', 'Use available audience, location and mobility intelligence to assess where campaign activity may be most relevant.'],
