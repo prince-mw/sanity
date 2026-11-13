@@ -120,6 +120,9 @@ interface LocationCityCard {
   description: string
   billboards: string
   image: string
+  imageAlt?: string
+  /** Shown on the photo and in the credits list under the cards (free-licence landmark photos). */
+  imageCredit?: { by: string; license: string; source: string }
 }
 
 interface LocationDetailClientProps {
@@ -381,11 +384,16 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                       <div className="h-40 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 relative">
                         <Image
                           src={city.image}
-                          alt={city.city}
+                          alt={city.imageAlt || city.city}
                           fill
                           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                           className="object-cover"
                         />
+                        {city.imageCredit && (
+                          <span className="absolute bottom-0 right-0 max-w-full truncate rounded-tl-lg bg-black/55 px-2 py-0.5 text-xs text-white/90">
+                            Photo: {city.imageCredit.by} · {city.imageCredit.license}
+                          </span>
+                        )}
                       </div>
                     )}
                     <div className="p-6">
@@ -399,6 +407,18 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                 </motion.div>
               ))}
             </div>
+            {cities.some(c => c.imageCredit) && (
+              <details className="mt-8 text-xs text-gray-500">
+                <summary className="mw-tap cursor-pointer font-semibold text-gray-600">Photo credits</summary>
+                <p className="mt-2 leading-relaxed">
+                  {cities.filter(c => c.imageCredit).map((c, i, all) => (
+                    <span key={c.href}>
+                      {c.city}: <a href={c.imageCredit!.source} target="_blank" rel="noopener nofollow" className="underline hover:text-mw-blue-600">{c.imageCredit!.by}</a>, {c.imageCredit!.license}, via Wikimedia Commons{i < all.length - 1 ? ' · ' : ''}
+                    </span>
+                  ))}
+                </p>
+              </details>
+            )}
           </div>
         </section>
       )}

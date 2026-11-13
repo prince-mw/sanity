@@ -54,6 +54,9 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.movingwalls.com',
         pathname: '/inventory/**',
       },
+      // Landmark photos on the country page's place cards (src/data/place-photos.ts).
+      { protocol: 'https', hostname: 'upload.wikimedia.org', pathname: '/wikipedia/commons/**' },
+      { protocol: 'https', hostname: 'thumb.wikimedia.org', pathname: '/wikipedia/commons/**' },
     ],
     // Image optimization settings
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],

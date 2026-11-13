@@ -7,8 +7,9 @@ import 'server-only'
 
 import { sitesFor } from '@/lib/inventory/source'
 import type { PublicSite } from '@/lib/inventory/types'
+import { PLACE_PHOTOS } from '@/data/place-photos'
 
-export type CityCard = { country: string; city: string; href: string; description: string; billboards: string; image: string }
+export type CityCard = { country: string; city: string; href: string; description: string; billboards: string; image: string; imageAlt?: string; imageCredit?: { by: string; license: string; source: string } }
 
 /**
  * The country page's place cards: the CMS cards plus a card for every place
@@ -37,7 +38,13 @@ export async function inventoryCityCards(countrySlug: string, have: CityCard[]):
         billboards: String(list.length), image,
       }
     })
+  // A place with a landmark photo (src/data/place-photos.ts) shows it, CMS cards included.
+  const withPhoto = (c: CityCard): CityCard => {
+    const photo = PLACE_PHOTOS[`${countrySlug}/${c.href.split('/').pop()}`]
+    return photo ? { ...c, image: photo.image, imageAlt: photo.alt, imageCredit: { by: photo.by, license: photo.license, source: photo.source } } : c
+  }
   return [...have.map(c => (count(c.href) ? { ...c, billboards: String(count(c.href)) } : c)), ...added]
+    .map(withPhoto)
     .sort((a, b) => count(b.href) - count(a.href))
 }
 
