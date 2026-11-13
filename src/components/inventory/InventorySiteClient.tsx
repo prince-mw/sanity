@@ -94,14 +94,16 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
                 <AddToProposalButton site={site} variant="hero" />
               </div>
             </div>
-            <div className="lg:col-span-6">
+            <div className="min-w-0 lg:col-span-6">
               <div className="relative aspect-[16/10] overflow-hidden rounded-2xl ring-1 ring-white/15 shadow-2xl bg-white/10">
                 {site.photos[photo] && <Image src={site.photos[photo]} alt={`${site.name} — ${format} in ${site.areaName}, ${site.cityName}`} fill priority sizes="(min-width: 1024px) 50vw, 100vw" className="object-cover" />}
               </div>
               {site.photos.length > 1 && (
-                <div className="mt-3 flex gap-2">
+                // API sites can carry six or more photos: the row wraps instead of
+                // widening the hero past the screen (audit, 13 Nov 2026).
+                <div className="mt-3 flex flex-wrap gap-2">
                   {site.photos.map((p, i) => (
-                    <button key={p} type="button" onClick={() => setPhoto(i)} aria-label={`Photo ${i + 1}`} className={`mw-tap relative h-14 w-20 overflow-hidden rounded-lg ring-2 ${i === photo ? 'ring-cyan-300' : 'ring-transparent'}`}>
+                    <button key={p} type="button" onClick={() => setPhoto(i)} aria-label={`Photo ${i + 1}`} className={`mw-tap relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg ring-2 ${i === photo ? 'ring-cyan-300' : 'ring-transparent'}`}>
                       <Image src={p} alt="" fill sizes="80px" className="object-cover" />
                     </button>
                   ))}

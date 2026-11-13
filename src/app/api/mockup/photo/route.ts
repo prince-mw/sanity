@@ -7,7 +7,8 @@ import { NextRequest, NextResponse } from 'next/server'
 
 export const runtime = 'nodejs'
 
-const ALLOWED = new Set(['images.pexels.com', 'cdn.sanity.io'])
+// Plus the Inventory API's site photos (test-cdn = staging; cdn = production, to be confirmed).
+const ALLOWED = new Set(['images.pexels.com', 'cdn.sanity.io', 'test-cdn.movingwalls.com', 'cdn.movingwalls.com'])
 
 export async function GET(req: NextRequest) {
   const u = req.nextUrl.searchParams.get('u') ?? ''

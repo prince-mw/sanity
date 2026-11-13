@@ -40,11 +40,15 @@ const isImage = (m: { mediaType?: string | null; url?: string | null }) =>
 
 const metres = (n: number) => `${Number(n.toFixed(2))}m`
 
-/** "4.5m × 9m", from the record's own size or its first panel's measurements. */
+/**
+ * "4.5m × 9m": the first panel's measurements, else the record's own size when
+ * it is a measurement. The API's `size` is a class code ("xs", "l",
+ * "medium-cinema"), which would read as nonsense on a page.
+ */
 function sizeOf(r: InventoryRecord): string | null {
-  if (r.size?.trim()) return r.size.trim()
   const p = r.panels?.find(x => x.physicalWidth && x.physicalHeight)
-  return p ? `${metres(p.physicalWidth!)} × ${metres(p.physicalHeight!)}` : null
+  if (p) return `${metres(p.physicalWidth!)} × ${metres(p.physicalHeight!)}`
+  return r.size && /\d/.test(r.size) ? r.size.trim() : null
 }
 
 /** Screen specs from the API's panels, over anything the record already carries. */
