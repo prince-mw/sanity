@@ -32,8 +32,17 @@ export interface InventoryRecord {
   geoms?: string[] | null
   medias?: { mediaType?: string | null; url?: string | null }[] | null
   thumbnailUrl?: string | null
+  /** Full-size version of thumbnailUrl (the plain one is a small `tn_` copy). */
+  thumbnailUrlOriginal?: string | null
+  /** Venue taxonomy, broad to narrow (e.g. Retail → Mall → Concourse). */
+  venues?: { name?: string | null; path?: string | null }[] | null
+  /** One entry per screen face: pixels, metres, screens. */
+  panels?: InventoryPanel[] | null
   status?: string | null
   publication?: string | null
+  archived?: boolean | null
+  /** The media owner approves each creative before it runs. */
+  requiresContentApproval?: boolean | null
   mediaOwnerName?: string | null
   prices?: InventoryPrice[] | null
   /** Not an API field: marks stand-in data until the API key arrives. */
@@ -58,6 +67,16 @@ export interface SiteSpecs {
   audioFormats?: string[] | null
   /** Not an API field: true while the values are stand-ins. */
   sample?: boolean
+}
+
+export interface InventoryPanel {
+  pixelWidth?: number | null
+  pixelHeight?: number | null
+  physicalWidth?: number | null
+  physicalHeight?: number | null
+  screenCount?: number | null
+  orientation?: string | null
+  supportsAudio?: boolean | null
 }
 
 export interface InventoryPrice {

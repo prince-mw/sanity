@@ -46,3 +46,6 @@ scripts/*-backup-*.json
 
 # instant-proposal dev store (PROPOSAL_STORE=file)
 .proposals-dev/
+
+# Inventory API snapshot (prices inside; server-side only)
+/.inventory/

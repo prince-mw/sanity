@@ -81,6 +81,9 @@ const pinOf = (s: PublicSite, linked: boolean): MapPin | null =>
  * map, all driven by one filter state, so the pins always match the cards.
  * Map on top, cards below at every size. Phone/tablet: List / Map switch.
  */
+/** Site cards shown per page in a list (divides by 2 and 3, so the last row is always full). */
+const CARD_PAGE = 24
+
 export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = true, total, map = true, mapHeight = 'lg:h-[480px]' }: { sites: PublicSite[]; hasPage: (s: PublicSite) => boolean; mapTitle: string; renderAction?: (s: PublicSite) => ReactNode; filters?: boolean; total?: number; map?: boolean; /** Desktop map height; the site finder uses a shorter one beside its filter column. */ mapHeight?: string }) {
   const formats = useMemo(() => Array.from(new Set(sites.map(s => s.displayFormat ?? s.format ?? 'Other'))).sort(), [sites])
   const venues = useMemo(() => Array.from(new Set(sites.map(s => s.venueType).filter(Boolean) as string[])).sort(), [sites])
@@ -91,8 +94,18 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
   const shown = useMemo(() => sites.filter(s =>
     (format === 'All' || (s.displayFormat ?? s.format ?? 'Other') === format) && (venue === 'All' || s.venueType === venue)), [sites, format, venue])
   const pins = useMemo(() => shown.map(s => pinOf(s, hasPage(s))).filter(Boolean) as MapPin[], [shown, hasPage])
+  // A city can hold thousands of sites (Kuala Lumpur, API data: ~2,000), so the
+  // cards come a page at a time; the map always shows every pin. A new filter
+  // starts again from the first page.
+  const [limit, setLimit] = useState(CARD_PAGE)
+  const [seen, setSeen] = useState(shown)
+  if (seen !== shown) { setSeen(shown); setLimit(CARD_PAGE) }
+  const cards = shown.slice(0, limit)
   const pick = (id: string) => {
     // Highlight the pin and its card; the map's label card links to the site, so the page doesn't jump away from the map.
+    // A pin whose card is not on the list yet brings the list down to it.
+    const at = shown.findIndex(s => s.id === id)
+    if (at >= limit) setLimit(Math.ceil((at + 1) / CARD_PAGE) * CARD_PAGE)
     setActive(id)
   }
   const chip = (on: boolean) =>
@@ -124,13 +137,22 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
         {map && <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
           className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} ${mapHeight}`} />}
         <div className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} sm:grid-cols-2 lg:grid-cols-3 gap-5`}>
-          {shown.map(s => (
+          {cards.map(s => (
             <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}
               className={`scroll-mt-28 rounded-2xl transition-shadow ${active === s.id ? 'ring-2 ring-mw-blue-500 ring-offset-2' : ''}`}>
               <SiteCard site={s} linked={hasPage(s)} action={renderAction?.(s)} />
             </div>
           ))}
         </div>
+        {shown.length > cards.length && (
+          <div className={`${view === 'map' ? 'hidden lg:flex' : 'flex'} flex-col items-center gap-2`}>
+            <button type="button" onClick={() => setLimit(l => l + CARD_PAGE)}
+              className="mw-tap inline-flex h-11 items-center justify-center rounded-full border-2 border-[#2563eb] bg-white px-6 text-sm font-semibold text-[#2563eb] hover:bg-mw-blue-50">
+              Show {Math.min(CARD_PAGE, shown.length - cards.length)} more {shown.length - cards.length === 1 ? 'site' : 'sites'}
+            </button>
+            <span className="text-xs text-gray-500">Showing {cards.length} of {shown.length}</span>
+          </div>
+        )}
       </div>
     </div>
   )

@@ -42,6 +42,18 @@ const nextConfig: NextConfig = {
         hostname: 'cdn.sanity.io',
         pathname: '/**',
       },
+      // Inventory API site photos (Sandeep, 13 Nov 2026: stored as URLs in their
+      // DB). test-cdn = staging; the production host is still to be confirmed.
+      {
+        protocol: 'https',
+        hostname: 'test-cdn.movingwalls.com',
+        pathname: '/inventory/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdn.movingwalls.com',
+        pathname: '/inventory/**',
+      },
     ],
     // Image optimization settings
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],

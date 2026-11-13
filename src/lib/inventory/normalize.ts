@@ -18,9 +18,49 @@ export function parsePoint(wkt: string | null | undefined): { lat: number; lng: 
 const level = (r: InventoryRecord, n: number) =>
   (r as unknown as Record<string, string | null | undefined>)[`adminLevel${n}Name`]?.trim() || null
 
-/** Only active, public sites ever reach the website. */
+/**
+ * Placeholder records the inventory team creates while testing ("TEST - …",
+ * "DisplayInventory1016b34"). Sandeep, 13 Nov 2026: staging is all test data;
+ * these names are the ones that would look broken on a page.
+ */
+export const isTestRecord = (r: InventoryRecord) => /^\s*(test\b|displayinventory[0-9a-f]+\s*$)/i.test(r.name ?? '')
+
+/**
+ * Only active, public, unarchived sites ever reach the website (Sandeep, 13 Nov
+ * 2026: status active + publication public are safe to show). "specific" means
+ * shown to chosen agencies only, so it stays off the public site.
+ */
 export const isPublishable = (r: InventoryRecord) =>
-  (r.status ?? '').toLowerCase() === 'active' && (r.publication ?? '').toLowerCase() !== 'private'
+  (r.status ?? '').toLowerCase() === 'active' && (r.publication ?? '').toLowerCase() === 'public' &&
+  r.archived !== true && !isTestRecord(r)
+
+/** Images only: the API marks photos "asset" or "thumbnail" (older data "image"); videos are left out. */
+const isImage = (m: { mediaType?: string | null; url?: string | null }) =>
+  !!m.url && !/^video/i.test(m.mediaType ?? '') && !/\.(mp4|mov|webm|m4v)(\?|$)/i.test(m.url)
+
+const metres = (n: number) => `${Number(n.toFixed(2))}m`
+
+/** "4.5m × 9m", from the record's own size or its first panel's measurements. */
+function sizeOf(r: InventoryRecord): string | null {
+  if (r.size?.trim()) return r.size.trim()
+  const p = r.panels?.find(x => x.physicalWidth && x.physicalHeight)
+  return p ? `${metres(p.physicalWidth!)} × ${metres(p.physicalHeight!)}` : null
+}
+
+/** Screen specs from the API's panels, over anything the record already carries. */
+function specsOf(r: InventoryRecord): InventoryRecord['specs'] {
+  const panels = r.panels ?? []
+  const px = panels.find(p => p.pixelWidth && p.pixelHeight)
+  if (!px && !panels.length) return r.specs ?? null
+  const screens = panels.reduce((n, p) => n + (p.screenCount ?? 1), 0)
+  return {
+    ...(r.specs ?? {}),
+    resolution: px ? `${px.pixelWidth} px × ${px.pixelHeight} px` : r.specs?.resolution ?? null,
+    panels: panels.length || null,
+    screens: screens || null,
+    contentApproval: r.requiresContentApproval ?? r.specs?.contentApproval ?? null,
+  }
+}
 
 /**
  * The public face of a site. The media owner and prices are left behind here
@@ -38,9 +78,14 @@ export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite |
   const areaName = down.map(n => level(r, n)).find(Boolean) ?? cityName
   if (!countryName || !cityName || !areaName || !r.name?.trim()) return null
   const point = parsePoint(r.geoms?.[0])
+  // The thumbnail's full-size original first (it is the photo the media owner
+  // chose), then the rest; the small `tn_` copy only when nothing else exists.
+  const media = (r.medias ?? []).filter(isImage)
   const photos = [
-    ...(r.medias ?? []).filter(m => (m.mediaType ?? 'image').toLowerCase().startsWith('image') && m.url).map(m => m.url as string),
-    ...(r.thumbnailUrl ? [r.thumbnailUrl] : []),
+    ...(r.thumbnailUrlOriginal ? [r.thumbnailUrlOriginal] : []),
+    ...media.filter(m => (m.mediaType ?? '').toLowerCase() === 'thumbnail').map(m => m.url as string),
+    ...media.map(m => m.url as string),
+    ...(r.thumbnailUrl && !r.thumbnailUrlOriginal && !media.length ? [r.thumbnailUrl] : []),
   ].filter((u, i, a) => a.indexOf(u) === i)
   const d = r.digitalFields
   return {
@@ -51,10 +96,11 @@ export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite |
     description: r.description?.trim() || null,
     format: r.typeName ?? null,
     displayFormat: r.displayFormatName ?? null,
-    size: r.size ?? null,
+    size: sizeOf(r),
     illuminated: r.classicFields?.illuminated ?? null,
-    digital: d ? { spotSeconds: d.spotDuration ?? null, spotsPerLoop: d.spotsPerLoop ?? null, loopSeconds: d.loopDuration ?? null } : null,
-    venueType: r.venueTaxonomyName ?? null,
+    digital: d && (d.spotDuration || d.spotsPerLoop || d.loopDuration)
+      ? { spotSeconds: d.spotDuration ?? null, spotsPerLoop: d.spotsPerLoop ?? null, loopSeconds: d.loopDuration ?? null } : null,
+    venueType: r.venueTaxonomyName ?? r.venues?.filter(v => v.name).at(-1)?.name ?? null,
     countryName, countrySlug: slugify(countryName),
     cityName, citySlug: slugify(cityName),
     areaName, areaSlug: slugify(areaName),
@@ -62,7 +108,7 @@ export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite |
     lat: point?.lat ?? null, lng: point?.lng ?? null,
     photos,
     audience: r.audience ?? null,
-    specs: r.specs ?? null,
+    specs: specsOf(r) ?? null,
     sample: !!r.sample,
   }
 }
@@ -71,6 +117,53 @@ export function toPriceQuote(r: InventoryRecord): PriceQuote | null {
   const p = (r.prices ?? []).find(x => x.daily != null || x.monthly != null)
   if (!p) return null
   return { siteId: r.id, currency: p.currency ?? '', daily: p.daily ?? null, monthly: p.monthly ?? null }
+}
+
+/** A named place with a map point: the area cards a city guide already carries. */
+export type AreaAnchor = { name: string; lat: number; lng: number }
+
+/** How far from an area's point a site still counts as in it. */
+export const AREA_RADIUS_KM = 1.2
+
+export function distanceKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
+  const rad = Math.PI / 180, dLat = (b.lat - a.lat) * rad, dLng = (b.lng - a.lng) * rad
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * rad) * Math.cos(b.lat * rad) * Math.sin(dLng / 2) ** 2
+  return 12742 * Math.asin(Math.sqrt(h))
+}
+
+/**
+ * Areas by coordinates (Sandeep, 13 Nov 2026: the API's levels stop at the
+ * mukim, so neighbourhoods like KLCC or Bukit Bintang come from the map). A
+ * site within AREA_RADIUS_KM of a named area joins the nearest one; every
+ * other site keeps the area its address gives. No site is ever dropped.
+ */
+export function assignAreas(sites: PublicSite[], anchors: AreaAnchor[], radiusKm = AREA_RADIUS_KM): PublicSite[] {
+  if (!anchors.length) return sites
+  return sites.map(s => {
+    if (s.lat == null || s.lng == null) return s
+    let best: AreaAnchor | null = null, bestKm = radiusKm
+    for (const a of anchors) {
+      const km = distanceKm({ lat: s.lat, lng: s.lng }, a)
+      if (km <= bestKm) { best = a; bestKm = km }
+    }
+    return best ? { ...s, areaName: best.name, areaSlug: slugify(best.name) } : s
+  })
+}
+
+/**
+ * Two sites can still share a URL (same name, same reference ending, same
+ * area). The one with the lower id keeps the plain slug; the other gets its
+ * own id ending, so both stay reachable and neither URL moves between runs.
+ */
+export function uniqueSlugs(sites: PublicSite[]): PublicSite[] {
+  const seen = new Set<string>()
+  return [...sites].sort((x, y) => (x.id < y.id ? -1 : x.id > y.id ? 1 : 0)).map(s => {
+    const key = `${s.citySlug}/${s.areaSlug}/${s.slug}`
+    if (!seen.has(key)) { seen.add(key); return s }
+    const slug = `${s.slug}-${slugify(s.id).replace(/-/g, '').slice(-6)}`
+    seen.add(`${s.citySlug}/${s.areaSlug}/${slug}`)
+    return { ...s, slug }
+  })
 }
 
 /** An area earns its own buyer page at this many sites (owner, 26 Oct 2026). */
