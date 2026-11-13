@@ -3038,3 +3038,7 @@ export function getPostsByCategory(category: string): BlogPost[] {
 export function getAllCategories(): string[] {
   return [...new Set(blogPosts.map(post => post.category))];
 }
+
+// staging-only previews (see accelerator-preview.ts)
+import { acceleratorPreviewBlogPosts } from "./accelerator-preview";
+blogPosts.push(...acceleratorPreviewBlogPosts);

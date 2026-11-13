@@ -18,6 +18,13 @@ export interface CaseStudy {
   pdfLink?: string;
   date: string;
   featured?: boolean;
+  // one-pager fields (optional; used by staging previews)
+  titleHighlight?: string;
+  categoryBadge?: string;
+  metaLine?: string;
+  whatWeDid?: string[];
+  whyItWorked?: string;
+  metrics?: Array<{ label: string; value: string }>;
 }
 
 export const caseStudyCountries = [
@@ -845,3 +852,7 @@ export const getRelatedCaseStudies = (slug: string, industry?: string, limit = 3
     .filter(cs => cs.slug !== slug && (industry ? cs.industry === industry : true))
     .slice(0, limit);
 };
+
+// staging-only previews (see accelerator-preview.ts)
+import { acceleratorPreviewCaseStudies } from "./accelerator-preview";
+caseStudies.push(...acceleratorPreviewCaseStudies);
