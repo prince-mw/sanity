@@ -47,6 +47,19 @@ export function SiteFinder({ sites, hasPage, mapTitle, insights = {}, showAreas 
   const [venue, setVenue] = useState('all')
   const [open, setOpen] = useState(false)
   const [detail, setDetail] = useState<PublicSite | null>(null)
+  const [full, setFull] = useState<Record<string, { site: PublicSite; insights: SiteInsights | null }>>({})
+  // Lists carry a slim card per site; the full record (specs, every photo,
+  // description) is fetched when Details opens, then kept for this visit.
+  const openDetail = (s: PublicSite) => {
+    setDetail(s)
+    if (full[s.id]) return
+    const q = new URLSearchParams({ country: s.countrySlug, city: s.citySlug, id: s.id })
+    fetch(`/api/inventory/site?${q}`).then(r => (r.ok ? r.json() : null)).then(d => {
+      if (d?.site) setFull(f => ({ ...f, [s.id]: d }))
+    }).catch(() => {})
+  }
+  const shownDetail = detail ? full[detail.id]?.site ?? detail : null
+  const detailInsights = detail ? insights[detail.id] ?? full[detail.id]?.insights ?? undefined : undefined
 
   const areas = useMemo(() => optionsOf(sites, s => [s.areaSlug, s.areaName]), [sites])
   const formats = useMemo(() => optionsOf(sites, s => { const f = s.displayFormat ?? s.format ?? 'Other'; return [f, f] }), [sites])
@@ -62,7 +75,7 @@ export function SiteFinder({ sites, hasPage, mapTitle, insights = {}, showAreas 
   const action = (s: PublicSite) => (
     // One row of two equal buttons: Details outlined, Add to proposal solid (the lead CTA).
     <span className="grid w-full grid-cols-[minmax(0,2fr)_minmax(0,3fr)] gap-2">
-      <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); setDetail(s) }} className="mw-tap inline-flex h-11 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-2 border-gray-300 bg-white px-3 text-xs font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]"><Info className="h-3.5 w-3.5" aria-hidden="true" />Details</button>
+      <button type="button" onClick={e => { e.preventDefault(); e.stopPropagation(); openDetail(s) }} className="mw-tap inline-flex h-11 w-full items-center justify-center gap-1.5 whitespace-nowrap rounded-full border-2 border-gray-300 bg-white px-3 text-xs font-semibold text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]"><Info className="h-3.5 w-3.5" aria-hidden="true" />Details</button>
       <AddToProposalButton site={s} variant="card" className="h-11 w-full" />
     </span>
   )
@@ -92,7 +105,7 @@ export function SiteFinder({ sites, hasPage, mapTitle, insights = {}, showAreas 
         <SiteGrid sites={shown} total={sites.length} filters={false} hasPage={hasPage} mapTitle={mapTitle} renderAction={action} mapHeight="lg:h-[340px]" />
         {shown.length === 0 && <p className="mt-6 rounded-2xl border border-dashed border-gray-300 p-6 text-center text-sm text-gray-600">No sites match these filters. <button type="button" onClick={clear} className="font-semibold text-[#2563eb] hover:underline">Clear all</button></p>}
       </div>
-      <SiteDetailsDialog site={detail} insights={detail ? insights[detail.id] : undefined} onClose={() => setDetail(null)}
+      <SiteDetailsDialog site={shownDetail} insights={detailInsights} onClose={() => setDetail(null)}
         action={detail ? (
           <span className="flex flex-wrap items-center justify-end gap-3">
             {hasPage(detail) && <Link href={sitePath(detail)} className="mw-tap inline-flex items-center gap-1.5 text-sm font-semibold text-[#2563eb] hover:underline">View site page <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>}

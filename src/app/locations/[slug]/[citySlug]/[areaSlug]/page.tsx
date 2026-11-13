@@ -1,9 +1,8 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { areasFor, sitesFor, usingSample } from '@/lib/inventory/source'
-import { siteHasPage } from '@/lib/inventory/normalize'
+import { siteHasPage, toSiteCard } from '@/lib/inventory/normalize'
 import { InventoryAreaClient } from '@/components/inventory/InventoryAreaClient'
-import { siteInsightsFor } from '@/lib/inventory/siteContent'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
 import { CountryGuide } from '@/components/location/CountryGuide'
 import { AreaFaq } from '@/components/location/AreaFaq'
@@ -87,12 +86,12 @@ export default async function AreaPage({ params }: Props) {
         countryName={first.countryName}
         countrySlug={slug}
         content={content}
-        sites={area.sites}
+        sites={area.sites.map(toSiteCard)}
         pagedIds={shown.filter(siteHasPage).map(s => s.id)}
         nearby={nearby}
         otherAreas={areas.filter(a => a.slug !== area.slug).map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
         sample={usingSample()}
-        insights={await siteInsightsFor(area.sites)}
+        /* Descriptions load with Details (api/inventory/site), not for every site up front. */
         heroImage={[...area.sites, ...nearby].find(s => s.photos[0])?.photos[0] ?? null}
         promo={showPromo ? <ProposalPromo variant="band" market={first.countryName} place={area.name} /> : null}
         guide={guide}

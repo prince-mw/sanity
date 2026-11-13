@@ -197,6 +197,22 @@ export function areaPages(sites: PublicSite[], famous: string[]): AreaPage[] {
   return out.sort((x, y) => (x.kind === y.kind ? y.sites.length - x.sites.length : x.kind === 'buyer' ? -1 : 1))
 }
 
+/**
+ * What a site list sends to the browser: enough for the card, the filters,
+ * search and the map pin. Specs, extra photos and the description stay on the
+ * server and arrive when someone opens Details (/api/inventory/site). Empty
+ * fields are left out entirely. Kuala Lumpur with API data has ~2,000 sites,
+ * and every byte here is repeated that many times in the page.
+ */
+export function toSiteCard(s: PublicSite): PublicSite {
+  const card: Partial<PublicSite> = { ...s, photos: s.photos.slice(0, 1), specs: null, description: null }
+  for (const k of Object.keys(card) as (keyof PublicSite)[]) {
+    const v = card[k]
+    if (v == null || v === false) delete card[k]
+  }
+  return card as PublicSite
+}
+
 /** A site earns its own page only with a photo; without one it is listed, not paged. */
 export const siteHasPage = (s: PublicSite) => s.photos.length > 0
 

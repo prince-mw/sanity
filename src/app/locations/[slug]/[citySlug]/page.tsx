@@ -7,7 +7,7 @@ import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUr
 import { buildLocationJsonLd } from '@/lib/locationSchema'
 import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLanguageGroups'
 import { areasFor, sitesFor, usingSample } from '@/lib/inventory/source'
-import { siteHasPage } from '@/lib/inventory/normalize'
+import { siteHasPage, toSiteCard } from '@/lib/inventory/normalize'
 import { CityInventorySection } from '@/components/inventory/CityInventorySection'
 import { ProposalPromo } from '@/components/proposal/ProposalPromo'
 import { LandingPageRenderer } from '@/components/landing'
@@ -17,7 +17,6 @@ import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
 import { promoEnabled } from '@/lib/proposal/promo'
 import { marketOf } from '@/lib/proposal/markets'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
-import { siteInsightsFor } from '@/lib/inventory/siteContent'
 import { inventoryCity } from '@/lib/location/inventoryPlaces'
 import type { SanityLocationCity } from '@/sanity/lib/fetch'
 import { RelatedContent } from '@/components/inventory/ContentBlocks'
@@ -150,12 +149,12 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             countrySlug={slug}
             countryName={city.country?.country || slug}
             content={placeContent!}
-            sites={inventory}
+            sites={inventory.map(toSiteCard)}
             pagedIds={inventory.filter(siteHasPage).map(s => s.id)}
             areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
             sample={usingSample()}
             guide={guide ?? undefined}
-            insights={await siteInsightsFor(inventory)}
+            /* Descriptions load with Details (api/inventory/site), not for every site up front. */
           />
         </>) : templated ? <>{guide}<RelatedContent key="related" cityName={cityName} countryName={city.country?.country || slug} caseStudies={placeContent.caseStudies} posts={placeContent.posts} firstBg="bg-white" /></> : null}
       />

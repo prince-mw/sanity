@@ -1,7 +1,7 @@
 // Checks for the inventory rules. No test runner in this repo, so run directly:
 //   npx -y tsx src/lib/inventory/normalize.check.ts
 import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '../../data/inventory-sample'
-import { isPublishable, toPublicSite, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
+import { isPublishable, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
 import type { PublicSite } from './types'
 
 let bad = 0
@@ -57,6 +57,12 @@ const placed = assignAreas([near(3.1585, 101.7120, 'k'), near(3.1470, 101.7110, 
 check(placed[0].areaSlug === 'klcc' && placed[1].areaSlug === 'bukit-bintang', 'a site near a named area joins the nearest one')
 check(placed[2].areaSlug === 'bandar-kuala-lumpur' && placed.length === 3, 'a site near no named area keeps its address area and is never dropped')
 check(Math.abs(distanceKm(anchors[0], anchors[1]) - 1.26) < 0.05, 'distances are in kilometres')
+
+// Site lists send a slim card; Details fetches the rest (13 Nov 2026: KL page weight).
+const card = toSiteCard(a)
+check(card.photos.length === 1 && !('specs' in card) && !('description' in card), 'a list card carries one photo and no specs or description')
+check(!Object.values(card).some(v => v == null), 'a list card leaves empty fields out')
+check(card.id === a.id && card.slug === a.slug && card.lat === a.lat && card.areaSlug === a.areaSlug, 'a list card keeps what the card, filters and map need')
 
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')
 process.exit(bad ? 1 : 0)
