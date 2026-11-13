@@ -7,7 +7,9 @@
 
 import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '@/data/inventory-sample'
 import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
-import { isPublishable, toPublicSite, areaPages, assignAreas, uniqueSlugs, slugify, type AreaPage, type AreaAnchor } from './normalize'
+import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
+import { PLACE_PLANS } from '@/data/place-names'
+import { isPublishable, toPublicSite, areaPages, assignAreas, uniqueSlugs, placeOf, buildPlaceRules, slugify, type AreaPage, type AreaAnchor, type PlaceRules } from './normalize'
 import { countrySnapshot, snapshotIndex, snapshotVersion } from './snapshot'
 import type { InventoryRecord, LevelMap, PublicSite } from './types'
 
@@ -62,6 +64,10 @@ function areaAnchors(countrySlug: string, citySlug: string): AreaAnchor[] {
   return cities.flatMap(c => (typeof c.lat === 'number' && typeof c.lng === 'number' && c.name ? [{ name: c.name, lat: c.lat, lng: c.lng }] : []))
 }
 
+/** A country's place rules, with its big cities from the approved country guide (null = address levels only). */
+const placeRules = (countrySlug: string, kept: { r: InventoryRecord; s: PublicSite }[]): PlaceRules | null =>
+  PLACE_PLANS[countrySlug] ? buildPlaceRules(PLACE_PLANS[countrySlug], COUNTRY_GUIDE_DRAFTS[countrySlug]?.audiences?.cities ?? [], kept) : null
+
 // Normalising ~10,000 records is cheap once, not on every call: keep the
 // result per country until its snapshot file changes.
 const normalised = new Map<string, { version: number; sites: PublicSite[] }>()
@@ -73,7 +79,9 @@ function countrySites(countrySlug: string): PublicSite[] {
   if (hit && hit.version === version) return hit.sites
   const { rows, test } = records(countrySlug)
   const levels = SAMPLE_LEVELS[countrySlug] ?? DEFAULT_LEVELS
-  const base = rows.filter(isPublishable).map(r => toPublicSite(r, levels)).filter((s): s is PublicSite => !!s)
+  const kept = rows.filter(isPublishable).flatMap(r => { const s = toPublicSite(r, levels); return s ? [{ r, s }] : [] })
+  const rules = placeRules(countrySlug, kept)
+  const base = rules ? kept.map(({ r, s }) => placeOf(r, s, rules)) : kept.map(({ s }) => s)
   const byCity = new Map<string, PublicSite[]>()
   for (const s of base) byCity.set(s.citySlug, [...(byCity.get(s.citySlug) ?? []), s])
   const sites = uniqueSlugs(Array.from(byCity.entries()).flatMap(([city, list]) => assignAreas(list, areaAnchors(countrySlug, city))))

@@ -123,6 +123,81 @@ export function toPriceQuote(r: InventoryRecord): PriceQuote | null {
   return { siteId: r.id, currency: p.currency ?? '', daily: p.daily ?? null, monthly: p.monthly ?? null }
 }
 
+/** A big city from the country guide: its own page instead of (part of) its state. */
+export type BigCity = { name: string; lat: number; lng: number; state: string | null }
+
+export type PlaceRules = {
+  stateLevel: 1 | 2
+  names: Record<string, string>
+  bigCities: BigCity[]
+  radiusKm: number
+}
+
+/**
+ * The English name the website uses for an address name. A numbered mukim
+ * ("Mukim 12 (Bayan Lepas)") is shown by the place name in its brackets.
+ */
+export const placeName = (name: string, names: Record<string, string>) =>
+  names[name] ?? name.match(/^Mukim\s+\d+\s*\((.+)\)\s*$/i)?.[1]?.trim() ?? name
+
+/**
+ * Which place page a site belongs to, under a country's place rules
+ * (src/data/place-names.ts): a big city that shares its state's name takes the
+ * whole state; another big city takes the sites near its point in its own
+ * state; everything else stays with its state. Inside a city the area is the
+ * neighbourhood level (mukim), inside a state the district.
+ */
+export function placeOf(r: InventoryRecord, s: PublicSite, rules: PlaceRules): PublicSite {
+  const raw = level(r, rules.stateLevel)
+  if (!raw) return s
+  const state = placeName(raw, rules.names), stateSlug = slugify(state)
+  let city = rules.bigCities.find(c => slugify(c.name) === stateSlug) ?? null
+  if (!city && s.lat != null && s.lng != null) {
+    let best = rules.radiusKm
+    for (const c of rules.bigCities) {
+      if (c.state !== state) continue
+      const km = distanceKm({ lat: s.lat, lng: s.lng }, c)
+      if (km <= best) { city = c; best = km }
+    }
+  }
+  const place = city?.name ?? state, placeSlug = slugify(place)
+  // A state's area is never named after one of the big cities (Johor's sites just outside
+  // Johor Bahru are named by their own mukim, not "Johor Bahru" again).
+  const bigSlugs = rules.bigCities.map(c => slugify(c.name))
+  const order = city ? [rules.stateLevel + 2, rules.stateLevel + 3, rules.stateLevel + 1] : [rules.stateLevel + 1, rules.stateLevel + 2, rules.stateLevel + 3]
+  const areaRaw = order.filter(n => n <= 4).map(n => level(r, n))
+    .find((n): n is string => !!n && ![placeSlug, stateSlug, ...bigSlugs].includes(slugify(placeName(n, rules.names)))) ?? place
+  const area = placeName(areaRaw, rules.names)
+  return { ...s, cityName: place, citySlug: placeSlug, areaName: area, areaSlug: slugify(area) }
+}
+
+/**
+ * A country's place rules (src/data/place-names.ts) with its big cities from
+ * the approved country guide. Each big city's state is the one most sites
+ * within 5 km of its point are in, so a city only ever takes sites from its
+ * own state.
+ */
+export function buildPlaceRules(
+  plan: { stateLevel: 1 | 2; names: Record<string, string>; bigCityRadiusKm: number },
+  guideCities: { name: string; lat?: number | null; lng?: number | null }[],
+  kept: { r: InventoryRecord; s: PublicSite }[],
+): PlaceRules {
+  const stateOf = (r: InventoryRecord) => { const raw = level(r, plan.stateLevel); return raw ? placeName(raw, plan.names) : null }
+  const bigCities = guideCities
+    .filter((c): c is { name: string; lat: number; lng: number } => !!c.name && typeof c.lat === 'number' && typeof c.lng === 'number')
+    .map(c => {
+      const near = new Map<string, number>()
+      for (const { r, s } of kept) {
+        if (s.lat == null || s.lng == null || distanceKm({ lat: s.lat, lng: s.lng }, c) > 5) continue
+        const st = stateOf(r)
+        if (st) near.set(st, (near.get(st) ?? 0) + 1)
+      }
+      const state = [...near.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? null
+      return { name: c.name, lat: c.lat, lng: c.lng, state }
+    })
+  return { stateLevel: plan.stateLevel, names: plan.names, bigCities, radiusKm: plan.bigCityRadiusKm }
+}
+
 /** A named place with a map point: the area cards a city guide already carries. */
 export type AreaAnchor = { name: string; lat: number; lng: number }
 

@@ -15,6 +15,7 @@ import { sitesFor } from '@/lib/inventory/source'
 import { guideFor, handPickedSlugs, legacySections, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
 import { getCountryContent } from '@/lib/inventory/placeContent'
 import { inventoryCityCards } from '@/lib/location/inventoryPlaces'
+import { PLACE_PLANS } from '@/data/place-names'
 import { RelatedContent } from '@/components/inventory/ContentBlocks'
 import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 
@@ -104,12 +105,17 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
 
   if (sanityLocation) {
     const locationData = transformLocationFull(sanityLocation)
+    // Countries grouped into big cities and states (src/data/place-names.ts) say so in the card heading.
+    if (PLACE_PLANS[slug] && !locationData.citiesHeading) {
+      locationData.citiesHeading = 'Explore by city and state'
+      locationData.citiesSubheading ||= `Out-of-home advertising across ${sanityLocation.country || locationData.name}'s cities and states`
+    }
     // Pages that link to their sub-pages from their own sections (e.g. Philippines) hide the automatic city grid
     const cmsCities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards
       ? []
       : (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
     // Cities the inventory has but the CMS does not list yet still get a card (and a page).
-    const cities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards ? cmsCities : [...cmsCities, ...await inventoryCityCards(slug, cmsCities)]
+    const cities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards ? cmsCities : await inventoryCityCards(slug, cmsCities)
     const faqJsonLd = buildFaqJsonLd(locationData.faqs)
     const locationJsonLd = buildLocationJsonLd({ countrySlug: slug, countryName: sanityLocation.country || locationData.name })
     // The country template (approved by Rif, 11 Nov 2026), on EVERY country since 12 Nov: fixed slot order, the

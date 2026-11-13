@@ -10,22 +10,35 @@ import type { PublicSite } from '@/lib/inventory/types'
 
 export type CityCard = { country: string; city: string; href: string; description: string; billboards: string; image: string }
 
-/** City cards for the inventory's cities that the CMS list does not have yet. */
+/**
+ * The country page's place cards: the CMS cards plus a card for every place
+ * the inventory has that the CMS does not list yet. Every card shows the
+ * inventory's site count, cards run biggest first, and no two inventory cards
+ * share a photo (test data reuses one photo across hundreds of sites).
+ */
 export async function inventoryCityCards(countrySlug: string, have: CityCard[]): Promise<CityCard[]> {
-  const known = new Set(have.map(c => c.href))
   const by = new Map<string, PublicSite[]>()
   for (const s of await sitesFor(countrySlug)) by.set(s.citySlug, [...(by.get(s.citySlug) ?? []), s])
-  return Array.from(by.entries())
-    .filter(([slug]) => !known.has(`/locations/${countrySlug}/${slug}`))
+  if (!by.size) return have
+  const count = (href: string) => by.get(href.split('/').pop() ?? '')?.length ?? 0
+  const used = new Set(have.map(c => c.image).filter(Boolean))
+  const added = Array.from(by.entries())
+    .filter(([slug]) => !have.some(c => c.href === `/locations/${countrySlug}/${slug}`))
     .sort((a, b) => b[1].length - a[1].length)
     .map(([slug, list]) => {
-      const areas = Array.from(new Set(list.map(s => s.areaName))).filter(a => a !== list[0].cityName).slice(0, 3)
+      const areaCounts = new Map<string, number>()
+      for (const s of list) if (s.areaName !== s.cityName) areaCounts.set(s.areaName, (areaCounts.get(s.areaName) ?? 0) + 1)
+      const areas = [...areaCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3).map(([a]) => a)
+      const image = list.flatMap(s => s.photos).find(u => !used.has(u)) ?? ''
+      if (image) used.add(image)
       return {
         country: list[0].countryName, city: list[0].cityName, href: `/locations/${countrySlug}/${slug}`,
         description: `${list.length} advertising ${list.length === 1 ? 'site' : 'sites'}${areas.length ? ` across ${areas.join(', ')}` : ''}.`,
-        billboards: String(list.length), image: list.find(s => s.photos[0])?.photos[0] ?? '',
+        billboards: String(list.length), image,
       }
     })
+  return [...have.map(c => (count(c.href) ? { ...c, billboards: String(count(c.href)) } : c)), ...added]
+    .sort((a, b) => count(b.href) - count(a.href))
 }
 
 /** The fields a city page needs, built from the inventory when Sanity has no page for the city. */
