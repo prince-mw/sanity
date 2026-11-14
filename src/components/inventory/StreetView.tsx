@@ -39,14 +39,23 @@ export function StreetViewImage({ sv, alt, fallback = null, width = 640, height 
   )
 }
 
-/** Google's interactive Street View viewer, pointed at the site. */
+/**
+ * Google's interactive Street View viewer, pointed at the site. Visitors can
+ * look around and walk along the road (the free viewer can't turn walking off),
+ * so "Back to the site" reloads it at the site's panorama and heading.
+ */
 export function StreetViewEmbed({ sv, title }: { sv: SV; title: string }) {
+  const [resets, setResets] = useState(0)
   if (!KEY) return null
   const src = `https://www.google.com/maps/embed/v1/streetview?key=${encodeURIComponent(KEY)}&pano=${encodeURIComponent(sv.panoId)}&heading=${sv.heading}&pitch=4&fov=70`
   return (
     <div className="relative aspect-[16/10] overflow-hidden rounded-xl bg-gray-100">
-      <iframe src={src} title={title} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen className="absolute inset-0 h-full w-full border-0" />
+      <iframe key={resets} src={src} title={title} loading="lazy" referrerPolicy="strict-origin-when-cross-origin" allowFullScreen className="absolute inset-0 h-full w-full border-0" />
       <Label sv={sv} />
+      <button type="button" onClick={() => setResets(n => n + 1)}
+        className="mw-tap absolute bottom-2 left-2 rounded-full bg-white px-3 py-1.5 text-xs font-semibold text-gray-800 shadow ring-1 ring-black/10 hover:text-[#2563eb]">
+        ↺ Back to the site
+      </button>
     </div>
   )
 }
