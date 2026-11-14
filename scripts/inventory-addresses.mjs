@@ -33,14 +33,14 @@ const pointOf = r => {
   return m ? { lat: Number(m[2]), lng: Number(m[1]) } : null
 }
 
-const LANDMARK = /(mall|plaza|centre|center|city|square|sentral|station|stesen|terminal|airport|hospital|university|universiti|tower|menara|wisma|complex|kompleks|market|pasar|stadium|park)/i
+const LANDMARK = /\b(mall|plaza|centre|center|city|square|sentral|station|stesen|terminal|airport|hospital|university|universiti|tower|menara|wisma|complex|kompleks|market|pasar|stadium|park)\b/i
 
 /** Nominatim's parts as one address line: street, neighbourhood, postcode town, state. */
 function lineOf(a) {
   if (!a) return null
   const street = [a.house_number, a.road ?? a.pedestrian ?? a.highway].filter(Boolean).join(' ')
   // A named landmark only (a mall, station, hospital…): "KFC, Jalan…" would read as if the screen were in the shop.
-  const near = [a.building, a.amenity, a.shop, a.tourism, a.railway, a.aeroway].find(n => n && LANDMARK.test(n)) ?? null
+  const near = [a.building, a.amenity, a.shop, a.tourism, a.railway, a.aeroway].find(n => n && LANDMARK.test(n) && !/\b(police|polis|bomba|fire|petrol|charging|supercharger|parking)\b/i.test(n)) ?? null
   const hood = a.suburb ?? a.neighbourhood ?? a.quarter ?? a.residential ?? a.city_district ?? null
   const town = a.city ?? a.town ?? a.village ?? a.municipality ?? a.county ?? null
   const parts = [near, street, hood, [a.postcode, town].filter(Boolean).join(' '), a.state]
