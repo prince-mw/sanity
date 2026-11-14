@@ -55,6 +55,53 @@ export function cityGuideFor(countrySlug: string, citySlug: string, cityName: st
   const written: Partial<Record<TopicId, string[] | undefined>> = { digital: d.digital, audiences: d.audiences.intro, people: d.people?.intro, formats: d.formats.intro, seasons: d.seasons }
   return CITY_TOPIC_ORDER.filter(id => written[id]?.length).map(id => ({ id, heading: CITY_TOPIC_HEADINGS[id](cityName), blocks: null, paragraphs: written[id]!, source: 'draft' as const }))
 }
+/**
+ * A guide written from the inventory alone, for a city or state with no written
+ * guide and no CMS text (the API decides which places exist, so most get no
+ * hand-written page; Rif, 14 Nov 2026). Every sentence is a count or a name
+ * from the sites themselves: nothing is claimed that the data doesn't show.
+ */
+/** How a venue type reads in a sentence ("Spectacular" → "spectaculars"); anything else → "<name> sites". */
+const VENUE_WORDS: Record<string, string> = {
+  outdoor: 'outdoor billboards', billboards: 'billboards', spectacular: 'spectaculars', roadside: 'roadside billboards',
+  highway: 'highway billboards', 'office buildings': 'office-building screens', mall: 'mall screens', 'shopping area': 'shopping-area screens',
+  transit: 'transit screens', platform: 'station platform screens', lobby: 'lobby screens', 'food court': 'food court screens',
+  'arrival hall': 'arrival hall screens', 'bus (inside)': 'in-bus screens', 'common areas': 'common-area screens', education: 'campus screens',
+  'train stations': 'train station screens', 'sports entertainment': 'sports venue screens', 'bus (outside)': 'bus exterior ads', 'movie theaters': 'cinema screens',
+  retail: 'retail screens', 'sport arena': 'stadium screens', terminal: 'terminal screens', 'athletic facilities': 'gym screens', banks: 'bank screens',
+  'casual dining': 'restaurant screens', 'colleges and universities': 'campus screens', 'urban panels': 'street panels', subway: 'metro screens',
+  residences: 'residential screens', elevator: 'lift screens',
+  'veterinary offices': 'clinic screens', 'point of care': 'clinic screens', leisure: 'leisure venue screens', financial: 'bank screens', 'health & beauty': 'health and beauty screens', airports: 'airport screens', concourse: 'mall concourse screens', 'convenience stores': 'convenience store screens',
+}
+const venueLabel = (v: string) => VENUE_WORDS[v.toLowerCase()] ?? `${v.toLowerCase()} sites`
+
+export function dataGuideFor(place: string, sites: PublicSite[]): GuideTopic[] {
+  if (!sites.length) return []
+  const n = (x: number, one: string, many: string) => `${x.toLocaleString('en-US')} ${x === 1 ? one : many}`
+  const list = (xs: string[]) => xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs[xs.length - 1]}`
+  const count = <T,>(xs: T[]) => { const m = new Map<T, number>(); for (const x of xs) m.set(x, (m.get(x) ?? 0) + 1); return [...m.entries()].sort((a, b) => b[1] - a[1]) }
+  const digital = sites.filter(s => (s.format ?? '').toLowerCase() === 'digital').length
+  const classic = sites.filter(s => (s.format ?? '').toLowerCase() === 'classic').length
+  const areas = count(sites.filter(s => s.areaSlug !== s.citySlug).map(s => s.areaName))
+  // Venue labels arrive as paths ("Outdoor > Billboards > Spectacular"): the last part names the format.
+  const venues = count(sites.map(s => s.venueType?.split('>').pop()?.trim()).filter((v): v is string => !!v))
+  const withPhoto = sites.filter(s => s.photos.length).length
+  const topic = (id: TopicId, paragraphs: string[]): GuideTopic => ({ id, heading: CITY_TOPIC_HEADINGS[id](place), blocks: null, paragraphs, source: 'draft' })
+  const out: GuideTopic[] = [topic('digital', [
+    `Billboard advertising in ${place} covers ${n(sites.length, 'site', 'sites')} you can plan with Moving Walls${digital || classic ? `: ${[digital ? n(digital, 'digital screen', 'digital screens') : '', classic ? n(classic, 'static billboard', 'static billboards') : ''].filter(Boolean).join(' and ')}` : ''}${areas.length > 1 ? `, across ${n(areas.length, 'area', 'areas')}` : ''}.`,
+    `Every site is on the map below with its format and size${withPhoto ? `, and ${n(withPhoto, 'site has', 'sites have')} photos you can open` : ''}. Open Details on any site for its screen specifications, or add it to a proposal to see availability and an indicative budget.`,
+  ])]
+  if (areas.length > 1) out.push(topic('audiences', [
+    `Where you advertise in ${place} decides who sees you. The largest groups of sites are in ${list(areas.slice(0, 3).map(([a, c]) => `${a} (${c})`))}${areas.length > 3 ? `, with more in ${list(areas.slice(3, 6).map(([a]) => a))}` : ''}.`,
+    `Pick an area to see every site there on its own page, or combine areas in one proposal to cover more of ${place}.`,
+  ]))
+  if (venues.length) out.push(topic('formats', [
+    `The advertising formats in ${place}: ${list(venues.slice(0, 3).map(([v, c]) => `${venueLabel(v)} (${c})`))}${venues.length > 3 ? `, plus ${list(venues.slice(3, 5).map(([v]) => venueLabel(v)))}` : ''}.`,
+    digital ? `Digital screens play your ad in a loop with other advertisers, so one booking can change by time of day; static billboards carry one printed design for the whole booking.` : `Static billboards carry one printed design for the whole booking, which suits campaigns that run for weeks rather than days.`,
+  ]))
+  return out
+}
+
 export const TOPIC_ORDER: TopicId[] = ['digital', 'audiences', 'formats', 'buying', 'seasons']
 
 const blocksOf = (s: TemplateSection | undefined) => (s && Array.isArray(s.content) && s.content.length > 0 ? (s.content as unknown[]) : null)

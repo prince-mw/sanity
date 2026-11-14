@@ -12,12 +12,14 @@ import { CityInventorySection } from '@/components/inventory/CityInventorySectio
 import { ProposalPromo } from '@/components/proposal/ProposalPromo'
 import { LandingPageRenderer } from '@/components/landing'
 import { CountryGuide } from '@/components/location/CountryGuide'
-import { cityGuideFor, legacySections, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
+import { cityGuideFor, dataGuideFor, legacySections, marketData, tailSections, type TemplateSection } from '@/lib/location/countryTemplate'
 import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
 import { promoEnabled } from '@/lib/proposal/promo'
 import { marketOf } from '@/lib/proposal/markets'
 import { getPlaceContent } from '@/lib/inventory/placeContent'
-import { inventoryCity } from '@/lib/location/inventoryPlaces'
+import { inventoryCity, inventoryCityCards } from '@/lib/location/inventoryPlaces'
+import { PLACE_PHOTOS } from '@/data/place-photos'
+import { PLACE_PLANS } from '@/data/place-names'
 import type { SanityLocationCity } from '@/sanity/lib/fetch'
 import { RelatedContent } from '@/components/inventory/ContentBlocks'
 
@@ -35,11 +37,13 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   const seo = city.seo
-  const title = seo?.metaTitle || `${city.city}, ${city.country?.country || ''}`
+  const country = city.country?.country || ''
+  // Places made by the inventory have no SEO fields: name the search phrase in the title.
+  const title = seo?.metaTitle || `Billboard & Outdoor Advertising in ${city.city}${country ? `, ${country}` : ''} | Moving Walls`
   const description = seo?.metaDescription || city.description || `Explore OOH advertising opportunities in ${city.city}.`
   const ogImage = seo?.ogImage
     ? getSanityImageUrl(seo.ogImage, { width: 1200 })
-    : getSanityImageUrl(city.heroImage, { width: 1200 })
+    : getSanityImageUrl(city.heroImage, { width: 1200 }) || PLACE_PHOTOS[`${slug}/${citySlug}`]?.image
 
   return {
     title,
@@ -78,9 +82,16 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   }
 
   const cityData = transformCityFull(city)
-  const relatedCities = (await getCitiesByCountry(slug, isPreview))
-    .filter((c) => c.slug?.current !== citySlug)
-    .map(transformCityForList)
+  // A place without its own hero photo shows its landmark (src/data/place-photos.ts), credited.
+  const placePhoto = PLACE_PHOTOS[`${slug}/${citySlug}`]
+  if (!cityData.heroImage && placePhoto) cityData.heroImage = placePhoto.image
+  const heroCredit = cityData.heroImage && placePhoto && cityData.heroImage === placePhoto.image ? `Photo: ${placePhoto.by} · ${placePhoto.license}, via Wikimedia Commons` : undefined
+  // Countries grouped into big cities and states link the biggest other places (two full rows),
+  // the same set the country page shows; others keep their CMS city list.
+  const cmsRelated = (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
+  const relatedCities = (PLACE_PLANS[slug] ? (await inventoryCityCards(slug, cmsRelated)).slice(0, 9) : cmsRelated)
+    .filter((c) => c.href !== `/locations/${slug}/${citySlug}`)
+    .slice(0, PLACE_PLANS[slug] ? 8 : undefined)
 
   const faqJsonLd = cityData.faqs && cityData.faqs.length > 0 ? {
     "@context": "https://schema.org",
@@ -104,7 +115,9 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   // blocks by role and the rest of the old content stays (legacySections).
   const cityName = city.city || citySlug
   const citySections = ((cityData as { sections?: TemplateSection[] }).sections ?? []) as TemplateSection[]
-  const guideTopics = cityGuideFor(slug, citySlug, cityName, citySections)
+  const writtenTopics = cityGuideFor(slug, citySlug, cityName, citySections)
+  // No written guide and no CMS text (most places the inventory makes): a guide from the data.
+  const guideTopics = writtenTopics.length ? writtenTopics : dataGuideFor(cityName, inventory)
   const cityDraft = CITY_GUIDE_DRAFTS[`${slug}/${citySlug}`] ?? null
   const templated = !(cityData as { hideDefaultHero?: boolean }).hideDefaultHero
   const showPromo = promoEnabled() && !!marketOf(slug)
@@ -138,7 +151,8 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         pageType="city"
         relatedCities={relatedCities}
         countryName={city.country?.country || undefined}
-        relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || undefined}
+        relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || (PLACE_PLANS[slug] ? `Explore other cities and states in ${city.country?.country || slug}` : undefined)}
+        heroCredit={heroCredit}
         accents={templated}
         sectionsOverride={templated ? <><LandingPageRenderer sections={legacySections(citySections, !!cityDraft)} /><LandingPageRenderer sections={tailSections(citySections)} /></> : undefined}
         afterHero={inventory.length > 0 ? (<>
@@ -151,9 +165,10 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
             content={placeContent!}
             sites={inventory.map(toSiteCard)}
             pagedIds={inventory.filter(siteHasPage).map(s => s.id)}
-            areas={inventoryAreas.map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
+            areas={inventoryAreas.filter(a => a.slug !== citySlug).map(a => ({ name: a.name, slug: a.slug, kind: a.kind, count: a.sites.length }))}
             sample={usingSample()}
             guide={guide ?? undefined}
+            showAreas={!cityDraft?.audiences?.cities?.length}
             /* Descriptions load with Details (api/inventory/site), not for every site up front. */
           />
         </>) : templated ? <>{guide}<RelatedContent key="related" cityName={cityName} countryName={city.country?.country || slug} caseStudies={placeContent.caseStudies} posts={placeContent.posts} firstBg="bg-white" /></> : null}

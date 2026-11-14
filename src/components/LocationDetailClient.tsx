@@ -135,6 +135,8 @@ interface LocationDetailClientProps {
   /** City pages only: the country's other cities, linked at the bottom of the page */
   relatedCities?: LocationCityCard[]
   countryName?: string
+  /** Credit shown on the hero photo when it's a free-licence landmark photo */
+  heroCredit?: string
   /** Overrides the default "Explore Other Cities in <country>" heading */
   relatedHeading?: string
   /** Rendered straight after the hero, before any CMS section (city pages: the inventory finder). */
@@ -191,7 +193,7 @@ const LABELS = {
   },
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en', afterHero, sectionsOverride, accents = false }: LocationDetailClientProps) {
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en', afterHero, sectionsOverride, accents = false, heroCredit }: LocationDetailClientProps) {
   const { t } = useLocale()
   const location = initialData
   // Spanish/Portuguese pages (americas-es, americas-pt) keep their template labels in the page's own
@@ -319,6 +321,9 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                     className="object-cover"
                     priority
                   />
+                  {heroCredit && (
+                    <span className="absolute bottom-0 right-0 max-w-full truncate rounded-tl-lg bg-black/55 px-2 py-0.5 text-xs text-white/90">{heroCredit}</span>
+                  )}
                 </div>
               ) : location.stats && location.stats.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4">
