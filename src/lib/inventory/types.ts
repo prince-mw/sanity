@@ -79,6 +79,8 @@ export interface InventoryPanel {
   screenCount?: number | null
   orientation?: string | null
   supportsAudio?: boolean | null
+  /** Which way the face points: n, ne, e, se, s, sw, w, nw. */
+  cardinalDirection?: string | null
 }
 
 export interface InventoryPrice {

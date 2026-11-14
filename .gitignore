@@ -49,3 +49,4 @@ scripts/*-backup-*.json
 
 # Inventory API snapshot (prices inside; server-side only)
 /.inventory/
+/.inventory-corrections/

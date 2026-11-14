@@ -63,6 +63,7 @@ function slim(r) {
     pixelWidth: p.pixelWidth ?? null, pixelHeight: p.pixelHeight ?? null,
     physicalWidth: p.physicalWidth ?? null, physicalHeight: p.physicalHeight ?? null,
     screenCount: p.screenCount ?? null, orientation: p.orientation ?? null, supportsAudio: p.supportsAudio ?? null,
+    cardinalDirection: p.cardinalDirection ?? null,
   }))
   const prices = (r.prices ?? []).map(p => ({
     currency: p.currency ?? null, daily: p.daily ?? null, monthly: p.monthly ?? null,

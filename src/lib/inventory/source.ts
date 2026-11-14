@@ -11,6 +11,8 @@ import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 import { PLACE_PLANS } from '@/data/place-names'
 import { isPublishable, trustedLevels, toPublicSite, areaPages, assignAreas, uniqueSlugs, placeOf, buildPlaceRules, slugify, type AreaPage, type AreaAnchor, type PlaceRules } from './normalize'
 import { countrySnapshot, snapshotIndex, snapshotVersion } from './snapshot'
+import { listCorrections, correctionsStamp } from './corrections'
+import { applyCorrections, type Correction } from './correctionsCore'
 import type { InventoryRecord, LevelMap, PublicSite } from './types'
 
 /** A snapshot of the live (production) API is in place. */
@@ -70,10 +72,10 @@ const placeRules = (countrySlug: string, kept: { r: InventoryRecord; s: PublicSi
 
 // Normalising ~10,000 records is cheap once, not on every call: keep the
 // result per country until its snapshot file changes.
-const normalised = new Map<string, { version: number; sites: PublicSite[] }>()
+const normalised = new Map<string, { version: string; sites: PublicSite[] }>()
 
-function countrySites(countrySlug: string): PublicSite[] {
-  const version = snapshotVersion(countrySlug)
+function countrySites(countrySlug: string, corrections: Correction[] = []): PublicSite[] {
+  const version = `${snapshotVersion(countrySlug)}|${correctionsStamp(corrections)}`
   const key = `${countrySlug}:${inventoryEnabled()}`
   const hit = normalised.get(key)
   if (hit && hit.version === version) return hit.sites
@@ -82,7 +84,14 @@ function countrySites(countrySlug: string): PublicSite[] {
   // Trust the map point over the stored state (trustedLevels; Rif, 14 Nov 2026: the stored state
   // is wrong on 15.5% of Malaysia's sites). `r` from here on carries the trusted levels.
   const address = PLACE_PLANS[countrySlug]?.address ?? null
-  const kept = rows.filter(isPublishable).map(raw => trustedLevels(raw, address).record)
+  // Staff corrections first (correctionsCore.ts): a corrected place is locked against the
+  // map-point rule, and a site staff hid never reaches a page.
+  const bySite = new Map<string, Correction[]>()
+  for (const c of corrections) bySite.set(c.siteId, [...(bySite.get(c.siteId) ?? []), c])
+  const kept = rows.filter(isPublishable)
+    .map(raw => (bySite.has(raw.id) ? applyCorrections(raw, bySite.get(raw.id)!) : raw))
+    .filter(r => !(r as { hiddenByStaff?: boolean }).hiddenByStaff)
+    .map(r => ((r as { placeLocked?: boolean }).placeLocked ? r : trustedLevels(r, address).record))
     .flatMap(r => { const s = toPublicSite(r, levels); return s ? [{ r, s }] : [] })
   const rules = placeRules(countrySlug, kept)
   const base = rules ? kept.map(({ r, s }) => placeOf(r, s, rules)) : kept.map(({ s }) => s)
@@ -97,7 +106,7 @@ function countrySites(countrySlug: string): PublicSite[] {
 }
 
 export async function sitesFor(countrySlug: string, citySlug?: string): Promise<PublicSite[]> {
-  const all = countrySites(countrySlug)
+  const all = countrySites(countrySlug, snapshotIndex() ? await listCorrections(countrySlug) : [])
   return citySlug ? all.filter(s => s.citySlug === citySlug) : all
 }
 
