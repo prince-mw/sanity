@@ -19,11 +19,15 @@ const level = (r: InventoryRecord, n: number) =>
   (r as unknown as Record<string, string | null | undefined>)[`adminLevel${n}Name`]?.trim() || null
 
 /**
- * Placeholder records the inventory team creates while testing ("TEST - …",
- * "DisplayInventory1016b34"). Sandeep, 13 Nov 2026: staging is all test data;
- * these names are the ones that would look broken on a page.
+ * Placeholder records the inventory team creates while testing. Sandeep, 13 Nov
+ * 2026: staging is all test data. Patterns from the hygiene scan of 14 Nov
+ * (mw-inventory-hygiene/REPORT.md): "TEST - …", "DisplayInventory1016b34",
+ * "Import Classic…/Import Digital 2026-09-30…", "QA THIS IS MY DATA 23",
+ * "FLEET CLASSIC CHECK", and names ending in a random hex code ("Kelantan Rive1d562").
+ * Keep this pattern the same as the scan's (skills/inventory-hygiene/scripts/scan.py).
  */
-export const isTestRecord = (r: InventoryRecord) => /^\s*(test\b|displayinventory[0-9a-f]+\s*$)/i.test(r.name ?? '')
+export const TEST_NAME = /^\s*(test\b|displayinventory[0-9a-f]+\s*$|import (classic|digital)\b|qa\b|sample\b|dummy\b|.*\bcheck\s*$|.*[a-z](?=[0-9a-f]*\d)[0-9a-f]{5,6}\s*$)/i
+export const isTestRecord = (r: InventoryRecord) => TEST_NAME.test(r.name ?? '')
 
 /**
  * Only active, public, unarchived sites ever reach the website (Sandeep, 13 Nov

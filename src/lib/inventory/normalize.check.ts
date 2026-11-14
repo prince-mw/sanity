@@ -49,6 +49,8 @@ check(!isPublishable({ ...api, archived: true }), 'an archived site never shows'
 check(!isPublishable({ ...api, publication: 'specific' }), 'a site shown to chosen agencies only never shows publicly')
 check(!isPublishable({ ...api, name: 'TEST - Jln Bukit Bintang' }) && !isPublishable({ ...api, name: 'DisplayInventory1016b34' }), 'test placeholders never show')
 check(isPublishable({ ...api, name: 'Testing Grounds Mall' }), 'a real name that starts with "Test…" still shows')
+for (const n of ['Kelantan Rive1d562', 'QA THIS IS MY DATA 23', 'Import Digital 2026-09-30T11-18-02 #1', 'FLEET CLASSIC CHECK']) check(!isPublishable({ ...api, name: n }), `test record "${n}" never shows`)
+for (const n of ['Menara Tan & Tan', 'JIM Melaka 2', 'LOW8 - Plaza Low Yat (8)', 'Jalan Bukit Bintang-1', 'DC4 - Damansara City Mall (4)']) check(isPublishable({ ...api, name: n }), `real name "${n}" still shows`)
 
 // Areas by coordinates: the nearest named area within the radius, else the address's own area.
 const near = (lat: number, lng: number, id: string) => ({ ...a, id, lat, lng, areaName: 'Bandar Kuala Lumpur', areaSlug: 'bandar-kuala-lumpur' })
