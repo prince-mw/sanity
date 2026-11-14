@@ -130,6 +130,8 @@ export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite |
     address: r.address?.trim() || null,
     lat: point?.lat ?? null, lng: point?.lng ?? null,
     photos,
+    // Street View only when there's no photo and the pin is trusted (no-pin sites have no point).
+    streetView: !photos.length && point && r.streetView?.panoId ? { panoId: r.streetView.panoId, heading: r.streetView.lat != null && r.streetView.lng != null ? bearing({ lat: r.streetView.lat, lng: r.streetView.lng }, point) : 0, date: r.streetView.date ?? null } : null,
     audience: r.audience ?? null,
     specs: specsOf(r) ?? null,
     sample: !!r.sample,
@@ -233,6 +235,13 @@ export function placementOf(r: InventoryRecord, address: AddressRules | null, de
   if (!address) return P ? { record: byPoint(), display: 'show', reason: null, source: 'point' } : { record: r, display: S ? 'show' : 'hold', reason: S ? null : 'single-signal', source: P ? 'point' : 'stored' }
   const reason: HoldReason = P && !A ? 'no-tiebreak' : !P && !A ? 'single-signal' : 'three-way'
   return { record: r, display: 'hold', reason, source: P ? 'point' : 'stored' }
+}
+
+/** Compass bearing in degrees from `a` to `b` (0 = north), to point the Street View camera at the site. */
+export function bearing(a: { lat: number; lng: number }, b: { lat: number; lng: number }): number {
+  const r = Math.PI / 180, dl = (b.lng - a.lng) * r
+  const y = Math.sin(dl) * Math.cos(b.lat * r), x = Math.cos(a.lat * r) * Math.sin(b.lat * r) - Math.sin(a.lat * r) * Math.cos(b.lat * r) * Math.cos(dl)
+  return Math.round(((Math.atan2(y, x) / r) + 360) % 360)
 }
 
 /** A big city from the country guide: its own page instead of (part of) its state. */

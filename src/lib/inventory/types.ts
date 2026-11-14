@@ -26,6 +26,8 @@ export interface InventoryRecord {
   adminLevel2Name?: string | null
   adminLevel3Name?: string | null
   adminLevel4Name?: string | null
+  /** Google's nearest outdoor Street View panorama, for sites without a photo (scripts/inventory-streetview.mjs). */
+  streetView?: { panoId: string; lat?: number | null; lng?: number | null; date?: string | null } | null
   /** Where the map point really is, from the API's /locations/resolve at pull time (scripts/inventory-pull.mjs). */
   resolved?: { adminLevel0Name?: string | null; adminLevel1Name?: string | null; adminLevel2Name?: string | null; adminLevel3Name?: string | null } | null
   address?: string | null
@@ -115,6 +117,12 @@ export interface PublicSite {
   lat: number | null
   lng: number | null
   photos: string[]
+  /**
+   * Google Street View for a site without a photo (Rif, 14 Nov 2026): the
+   * panorama and the camera direction towards the site. Shown through Google's
+   * own image and embed services, credited to Google; never copied or stored.
+   */
+  streetView?: { panoId: string; heading: number; date: string | null } | null
   audience: { reach?: string; impressions?: string } | null
   specs: SiteSpecs | null
   sample: boolean

@@ -10,6 +10,7 @@ import { X, MapPin, ExternalLink, TrainFront, ShoppingBag, Camera, Briefcase, Us
 import type { PublicSite, SiteSpecs } from '@/lib/inventory/types'
 import type { Persona } from '@/lib/inventory/siteContent'
 import { SampleTag, SitesMap } from '../inventory/InventoryShared'
+import { StreetViewEmbed, streetViewEnabled } from '../inventory/StreetView'
 
 export const PERSONA_ICONS: Record<string, LucideIcon> = { commuter: TrainFront, shopper: ShoppingBag, tourist: Camera, office: Briefcase, family: Users, student: GraduationCap, nightlife: Moon, traveller: Plane, driver: Car, resident: Home }
 
@@ -86,6 +87,13 @@ export function SiteDetailsDialog({ site, insights, onClose, action }: { site: P
                         ))}
                       </div>
                     )}
+                  </section>
+                )}
+                {/* No photo yet: Google's own Street View viewer, pointed at the site and labelled as such. */}
+                {!photo && site.streetView && streetViewEnabled && (
+                  <section aria-label="Street View">
+                    <StreetViewEmbed sv={site.streetView} title={`Street View near ${site.name}`} />
+                    <p className="mt-2 text-xs text-gray-500">Google Street View near this site{site.streetView.date ? `, captured ${site.streetView.date}` : ''}. It shows the location, not a current photo of the advertising face.</p>
                   </section>
                 )}
                 {insights?.description && (

@@ -1,7 +1,7 @@
 // Checks for the inventory rules. No test runner in this repo, so run directly:
 //   npx -y tsx src/lib/inventory/normalize.check.ts
 import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '../../data/inventory-sample'
-import { isPublishable, trustedLevels, placementOf, plausibleSize, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
+import { isPublishable, trustedLevels, placementOf, bearing, plausibleSize, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
 import type { PublicSite } from './types'
 
 let bad = 0
@@ -94,6 +94,14 @@ check(bar('Kedah', 'Kedah', 'Sungai Petani, Kedah', true).display === 'no-pin', 
 check(bar('Kedah', 'Negeri Sembilan', null).display === 'hold' && bar('Kedah', 'Negeri Sembilan', null).reason === 'no-tiebreak', 'stored and point disagree with no address: held')
 check(bar('Kedah', null, null, true).reason === 'single-signal', 'default pin and no address: held')
 check(bar('Kedah', 'Selangor', 'Balok, Pahang').reason === 'three-way', 'all three disagree: held')
+
+// Street View (Rif, 14 Nov 2026): only for a site without a photo whose pin is trusted, camera aimed at the site.
+const svRec = { ...api, medias: [], thumbnailUrl: null, thumbnailUrlOriginal: null, geoms: ['POINT(101.7000 3.1500)'], streetView: { panoId: 'PANO1', lat: 3.1500, lng: 101.6995, date: '2024-05' } }
+const sv = toPublicSite(svRec, { city: 2, area: 3 })!
+check(sv.streetView?.panoId === 'PANO1' && sv.streetView.heading === 90, 'a site without a photo gets Street View, camera facing the site (east here)')
+check(toPublicSite({ ...svRec, medias: [{ mediaType: 'asset', url: 'https://x/a.jpg' }] }, { city: 2, area: 3 })!.streetView == null, 'a site with a real photo never shows Street View')
+check(toPublicSite({ ...svRec, geoms: [] }, { city: 2, area: 3 })!.streetView == null, 'a site without a trusted pin never shows Street View')
+check(bearing({ lat: 0, lng: 0 }, { lat: 1, lng: 0 }) === 0 && bearing({ lat: 1, lng: 0 }, { lat: 0, lng: 0 }) === 180, 'bearings point the right way')
 
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')
 process.exit(bad ? 1 : 0)

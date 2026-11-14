@@ -9,6 +9,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { PublicSite } from '@/lib/inventory/types'
 import { BrandMap, type MapPin } from './BrandMap'
+import { StreetViewImage } from './StreetView'
 import { AddToProposalButton } from '../proposal/AddToProposalButton'
 
 export const MY_CONTACT_FORM =
@@ -32,6 +33,8 @@ function Photo({ site, className = '', sizes = '100vw', priority = false }: { si
     <div className={`relative overflow-hidden bg-gray-100 ${className}`}>
       {src ? (
         <Image src={src} alt={`${site.name} — ${site.displayFormat ?? site.format ?? 'outdoor advertising'} in ${site.areaName}, ${site.cityName}`} fill sizes={sizes} priority={priority} className="object-cover" />
+      ) : site.streetView ? (
+        <StreetViewImage sv={site.streetView} alt={`Street View near ${site.name}, ${site.areaName}`} fallback={<div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">Photo coming soon</div>} />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">Photo coming soon</div>
       )}
