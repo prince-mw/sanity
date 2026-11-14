@@ -9,8 +9,8 @@ import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '@/data/inventory-sa
 import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
 import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 import { PLACE_PLANS } from '@/data/place-names'
-import { isPublishable, trustedLevels, toPublicSite, areaPages, assignAreas, uniqueSlugs, placeOf, buildPlaceRules, slugify, type AreaPage, type AreaAnchor, type PlaceRules } from './normalize'
-import { countrySnapshot, snapshotIndex, snapshotVersion } from './snapshot'
+import { isPublishable, placementOf, defaultPins, isOutdoorRecord, toPublicSite, areaPages, assignAreas, uniqueSlugs, placeOf, buildPlaceRules, slugify, type AreaPage, type AreaAnchor, type PlaceRules } from './normalize'
+import { countrySnapshot, snapshotIndex, snapshotVersion, englishNames } from './snapshot'
 import { listCorrections, correctionsStamp } from './corrections'
 import { applyCorrections, type Correction } from './correctionsCore'
 import type { InventoryRecord, LevelMap, PublicSite } from './types'
@@ -75,23 +75,32 @@ const placeRules = (countrySlug: string, kept: { r: InventoryRecord; s: PublicSi
 const normalised = new Map<string, { version: string; sites: PublicSite[] }>()
 
 function countrySites(countrySlug: string, corrections: Correction[] = []): PublicSite[] {
-  const version = `${snapshotVersion(countrySlug)}|${correctionsStamp(corrections)}`
+  const version = `${snapshotVersion(countrySlug)}|${correctionsStamp(corrections)}|${Object.keys(englishNames(countrySlug)).length}`
   const key = `${countrySlug}:${inventoryEnabled()}`
   const hit = normalised.get(key)
   if (hit && hit.version === version) return hit.sites
   const { rows, test } = records(countrySlug)
   const levels = SAMPLE_LEVELS[countrySlug] ?? DEFAULT_LEVELS
-  // Trust the map point over the stored state (trustedLevels; Rif, 14 Nov 2026: the stored state
-  // is wrong on 15.5% of Malaysia's sites). `r` from here on carries the trusted levels.
+  // The display bar (placementOf; Rif, 14 Nov 2026): show only when two of stored state, map
+  // point and address agree; a wrong or default pin shows without a pin; the rest is held.
+  // `r` from here on carries the agreed levels.
   const address = PLACE_PLANS[countrySlug]?.address ?? null
+  const pins = defaultPins(rows.filter(isPublishable))
+  const english = englishNames(countrySlug)
   // Staff corrections first (correctionsCore.ts): a corrected place is locked against the
   // map-point rule, and a site staff hid never reaches a page.
   const bySite = new Map<string, Correction[]>()
   for (const c of corrections) bySite.set(c.siteId, [...(bySite.get(c.siteId) ?? []), c])
   const kept = rows.filter(isPublishable)
     .map(raw => (bySite.has(raw.id) ? applyCorrections(raw, bySite.get(raw.id)!) : raw))
+    // English names (Rif, 14 Nov 2026: English only), unless staff corrected the name.
+    .map(r => (r.name && english[r.name] && !(bySite.get(r.id) ?? []).some(c => c.field === 'name') ? { ...r, name: english[r.name] } : r))
     .filter(r => !(r as { hiddenByStaff?: boolean }).hiddenByStaff)
-    .map(r => ((r as { placeLocked?: boolean }).placeLocked ? r : trustedLevels(r, address).record))
+    .flatMap(r => {
+      if ((r as { placeLocked?: boolean }).placeLocked) return [r]
+      const p = placementOf(r, address, pins.has(r.geoms?.[0] ?? '') && isOutdoorRecord(r))
+      return p.display === 'hold' ? [] : [p.record]
+    })
     .flatMap(r => { const s = toPublicSite(r, levels); return s ? [{ r, s }] : [] })
   const rules = placeRules(countrySlug, kept)
   const base = rules ? kept.map(({ r, s }) => placeOf(r, s, rules)) : kept.map(({ s }) => s)

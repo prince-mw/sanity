@@ -6,7 +6,8 @@ import 'server-only'
 
 import { PLACE_PLANS } from '@/data/place-names'
 import { countrySnapshot, snapshotIndex } from './snapshot'
-import { isPublishable, isTestRecord, trustedLevels, type PlaceSource } from './normalize'
+import { isPublishable, isTestRecord, placementOf, defaultPins, isOutdoorRecord, type PlaceSource, type Display, type HoldReason } from './normalize'
+import { englishNames } from './snapshot'
 import { listCorrections } from './corrections'
 import { applyCorrections, statusOf, type Correction, type CorrectionStatus } from './correctionsCore'
 import { issuesOf, type Issue } from './hygiene'
@@ -21,6 +22,11 @@ export type StaffSite = {
   issues: Issue[]
   corrections: (Correction & { status: CorrectionStatus })[]
   hidden: boolean
+  /** On the website: shown, shown without a pin, or held (with why). */
+  display: Display
+  hold: HoldReason | null
+  /** The English name the website uses, when the API name was translated. */
+  englishName: string | null
 }
 
 export async function staffCountries() {
@@ -36,17 +42,22 @@ export async function staffSites(country: string): Promise<{ sites: StaffSite[];
   const bySite = new Map<string, Correction[]>()
   for (const c of corrections) bySite.set(c.siteId, [...(bySite.get(c.siteId) ?? []), c])
   const pages = new Map((await sitesFor(country)).map(s => [s.id, s]))
+  const pins = defaultPins(snap.records.filter(isPublishable))
+  const english = englishNames(country)
   const sites: StaffSite[] = snap.records.filter(r => isPublishable(r) || (!isTestRecord(r) && bySite.has(r.id))).map(raw => {
     const list = bySite.get(raw.id) ?? []
     const applied = list.length ? applyCorrections(raw, list) : raw
     const locked = (applied as { placeLocked?: boolean }).placeLocked
-    const placed = locked ? { record: applied, source: 'staff' as const } : trustedLevels(applied, address)
+    const placed = locked ? { record: applied, source: 'staff' as const, display: 'show' as Display, reason: null } : placementOf(applied, address, pins.has(applied.geoms?.[0] ?? '') && isOutdoorRecord(applied))
     const statuses = list.map(c => statusOf(c, raw))
     const p = pages.get(raw.id)
     return {
       raw, shown: placed.record, source: placed.source,
       page: p ? { cityName: p.cityName, citySlug: p.citySlug, areaName: p.areaName, areaSlug: p.areaSlug, slug: p.slug } : null,
-      issues: issuesOf(raw, placed.record, placed.source, address, statuses),
+      // A long Malay direction that now has a short English name is no longer a naming issue.
+      issues: issuesOf(raw, placed.record, placed.source, address, statuses, placed.display, placed.reason).filter(i => !(i.code === 'long-name' && english[raw.name ?? ''] && english[raw.name ?? ''].length <= 60)),
+      display: placed.display, hold: placed.reason,
+      englishName: raw.name && english[raw.name] && english[raw.name] !== raw.name ? english[raw.name] : null,
       corrections: list.map((c, i) => ({ ...c, status: statuses[i] })),
       hidden: !!(applied as { hiddenByStaff?: boolean }).hiddenByStaff,
     }

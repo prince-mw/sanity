@@ -45,3 +45,9 @@ export function countrySnapshot(countrySlug: string): CountrySnapshot | null {
 export function snapshotVersion(countrySlug: string): number {
   try { return fs.statSync(path.join(dir(), `${countrySlug}.json`)).mtimeMs } catch { return 0 }
 }
+
+/** English site names for a country (scripts/inventory-names.mjs), { original: english }. Empty until translated. */
+export function englishNames(countrySlug: string): Record<string, string> {
+  if (!/^[a-z0-9-]+$/.test(countrySlug)) return {}
+  return readJson<Record<string, string>>(path.join(dir(), `names-en-${countrySlug}.json`)) ?? {}
+}

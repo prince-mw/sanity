@@ -57,13 +57,13 @@ export default async function StaffInventoryPage({ searchParams }: { searchParam
             <span className="ml-auto text-sm text-blue-100">{staff.name} · <Link href="/api/staff/login?off=1" prefetch={false} className="underline">Sign out</Link></span>
           </div>
           <h1 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">Inventory hygiene</h1>
-          <p className="mt-2 max-w-[70ch] text-blue-100/90">Sites with a problem in the latest pull from the Inventory API. A correction you make here replaces the API&apos;s value on the website and survives every pull. It retires itself once onboarding fixes the source.</p>
+          <p className="mt-2 max-w-[70ch] text-blue-100/90">Sites with a problem in the latest pull from the Inventory API. A site shows on the website only when two of its stored state, map point and address agree; the rest are held for onboarding. A correction you make here replaces the API&apos;s value and survives every pull, and retires itself once onboarding fixes the source.</p>
           <div className="mt-4 flex flex-wrap items-center gap-2">
             {countries.map(c => <Link key={c.slug} href={`/staff/inventory?country=${c.slug}`} className={`mw-tap rounded-full px-3 py-1 text-xs font-semibold ${c.slug === country ? 'bg-white text-[#2563eb]' : 'bg-white/10 text-white ring-1 ring-white/25'}`}>{c.name}</Link>)}
             <span className="text-xs text-blue-100">Pulled {fmt(pulledAt)}{staging ? ' · staging (test data)' : ''}</span>
           </div>
-          <dl className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {([['Sites', sites.length], ['With an issue', withIssues.length], ['Placed by map point', count('state-auto')], ['Staff corrections in use', open.length]] as const).map(([k, v]) => (
+          <dl className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-5">
+            {([['Real sites', sites.length], ['On the website', sites.filter(s => s.display !== 'hold' && !s.hidden).length], ['Shown without a pin', sites.filter(s => s.display === 'no-pin' && !s.hidden).length], ['Held for onboarding', sites.filter(s => s.display === 'hold' && !s.hidden).length], ['Corrections in use', open.length]] as const).map(([k, v]) => (
               <div key={k} className="rounded-xl bg-white/10 p-4 ring-1 ring-white/15"><dt className="text-xs font-semibold uppercase tracking-wider text-blue-100/80">{k}</dt><dd className="mt-1 text-2xl font-bold">{v.toLocaleString('en-US')}</dd></div>
             ))}
           </dl>
@@ -109,8 +109,8 @@ export default async function StaffInventoryPage({ searchParams }: { searchParam
                 <tbody>
                   {shown.map(s => (
                     <tr key={s.raw.id} className="border-b border-gray-100 last:border-0 align-top">
-                      <td className="px-4 py-3"><span className="font-semibold text-gray-900">{s.shown.name}</span><span className="block text-xs text-gray-500">{s.raw.referenceId ?? s.raw.id}</span></td>
-                      <td className="px-3 py-3 text-gray-700">{s.hidden ? <span className="text-xs font-semibold text-red-700">Hidden by staff</span> : <>{s.page ? `${s.page.areaName}, ${s.page.cityName}` : s.shown.adminLevel1Name}<span className="block text-xs text-gray-500">{s.source === 'point' ? 'placed by map point' : s.source === 'staff' ? 'placed by staff' : s.source === 'stored' ? 'stored state kept' : 'no map point'}</span></>}</td>
+                      <td className="px-4 py-3"><span className="font-semibold text-gray-900">{s.englishName ?? s.shown.name}</span>{s.englishName && <span className="block text-xs text-gray-500">API: {s.raw.name}</span>}<span className="block text-xs text-gray-500">{s.raw.referenceId ?? s.raw.id}</span></td>
+                      <td className="px-3 py-3 text-gray-700">{s.hidden ? <span className="text-xs font-semibold text-red-700">Hidden by staff</span> : s.display === 'hold' ? <span className="text-xs font-semibold text-red-700">Held: not on the website</span> : <>{s.page ? `${s.page.areaName}, ${s.page.cityName}` : s.shown.adminLevel1Name}<span className="block text-xs text-gray-500">{s.display === 'no-pin' ? 'shown without a map pin' : s.source === 'point' ? 'placed by map point' : s.source === 'staff' ? 'placed by staff' : 'stored state kept'}</span></>}</td>
                       <td className="px-3 py-3"><ul className="flex flex-wrap gap-1.5">{s.issues.map(i => <li key={i.code} className={`rounded-full px-2 py-0.5 text-xs font-semibold ${SEV[i.severity].cls}`}>{i.label}</li>)}</ul></td>
                       <td className="px-3 py-3 text-xs text-gray-600">{s.corrections.length ? s.corrections.map(c => <span key={c.field} className={`mr-1 inline-block rounded-full px-2 py-0.5 font-semibold ${STATUS[c.status].cls}`}>{c.field}</span>) : '—'}</td>
                       <td className="px-3 py-3 text-right"><Link href={`/staff/inventory/site?country=${country}&id=${s.raw.id}`} className="mw-tap inline-flex h-9 items-center rounded-full border-2 border-[#2563eb] px-4 text-xs font-semibold text-[#2563eb] hover:bg-mw-blue-50">Review</Link></td>

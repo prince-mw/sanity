@@ -34,8 +34,9 @@ export default async function StaffSitePage({ searchParams }: { searchParams: Pr
       <section className="bg-[#2563eb] text-white mw-hero-top pb-8">
         <div className="mw-container">
           <Link href={`/staff/inventory?country=${sp.country}`} className="text-sm text-blue-100 underline">← Inventory hygiene</Link>
-          <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{s.shown.name}</h1>
-          <p className="mt-1 text-sm text-blue-100">{s.raw.referenceId ?? s.raw.id} · {s.hidden ? 'Hidden by staff' : s.page ? `${s.page.areaName}, ${s.page.cityName}` : s.shown.adminLevel1Name}</p>
+          <h1 className="mt-2 text-2xl font-bold tracking-tight sm:text-3xl">{s.englishName ?? s.shown.name}</h1>
+          {s.englishName && <p className="mt-1 text-sm text-blue-100">API name: {s.raw.name}</p>}
+          <p className="mt-1 text-sm text-blue-100">{s.raw.referenceId ?? s.raw.id} · {s.hidden ? 'Hidden by staff' : s.display === 'hold' ? 'Held: not on the website' : s.page ? `${s.page.areaName}, ${s.page.cityName}${s.display === 'no-pin' ? ' (no map pin)' : ''}` : s.shown.adminLevel1Name}</p>
           <div className="mt-3 flex flex-wrap gap-3 text-sm">
             {pageHref && <Link href={pageHref} className="mw-tap rounded-full bg-white px-4 py-1.5 font-semibold text-[#2563eb]">Open the site page</Link>}
             {maps && <a href={maps} target="_blank" rel="noopener nofollow" className="mw-tap rounded-full bg-white/10 px-4 py-1.5 font-semibold text-white ring-1 ring-white/25">Map point in Google Maps</a>}
@@ -49,6 +50,8 @@ export default async function StaffSitePage({ searchParams }: { searchParams: Pr
           {s.issues.length ? (
             <ul className="mt-2 flex flex-wrap gap-2">{s.issues.map(i => <li key={i.code} className="rounded-full bg-white px-3 py-1 text-sm font-semibold text-gray-800 ring-1 ring-gray-200">{i.label}{i.fix ? <span className="text-gray-500"> → correct “{CORRECTABLE[i.fix].label}” below</span> : i.code === 'no-photo' ? <span className="text-gray-500"> → onboarding adds a photo</span> : null}</li>)}</ul>
           ) : <p className="mt-2 text-sm text-gray-600">No open issues.</p>}
+          {s.display === 'hold' && <p className="mt-3 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-800"><b>Not on the website.</b> Its stored state, map point and address don&apos;t give two that agree. Correct the state (or the map point) below to put it back, or leave it for onboarding.</p>}
+          {s.display === 'no-pin' && <p className="mt-3 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-900"><b>Shown without a map pin.</b> Its stored state and address agree, but the map point is elsewhere or shared by other sites. Correct the map point below to give it a pin and its own page.</p>}
           {s.raw.resolved?.adminLevel1Name && (
             <p className="mt-3 text-sm text-gray-600">Stored in the API as <b>{[s.raw.adminLevel1Name, s.raw.adminLevel2Name].filter(Boolean).join(' / ') || '—'}</b>; its map point is in <b>{[s.raw.resolved.adminLevel1Name, s.raw.resolved.adminLevel2Name].filter(Boolean).join(' / ')}</b>; the address says <b>{s.raw.address ?? 'nothing'}</b>.</p>
           )}

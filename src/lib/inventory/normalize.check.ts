@@ -1,7 +1,7 @@
 // Checks for the inventory rules. No test runner in this repo, so run directly:
 //   npx -y tsx src/lib/inventory/normalize.check.ts
 import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '../../data/inventory-sample'
-import { isPublishable, trustedLevels, plausibleSize, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
+import { isPublishable, trustedLevels, placementOf, plausibleSize, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
 import type { PublicSite } from './types'
 
 let bad = 0
@@ -49,7 +49,7 @@ check(!isPublishable({ ...api, archived: true }), 'an archived site never shows'
 check(!isPublishable({ ...api, publication: 'specific' }), 'a site shown to chosen agencies only never shows publicly')
 check(!isPublishable({ ...api, name: 'TEST - Jln Bukit Bintang' }) && !isPublishable({ ...api, name: 'DisplayInventory1016b34' }), 'test placeholders never show')
 check(isPublishable({ ...api, name: 'Testing Grounds Mall' }), 'a real name that starts with "Test…" still shows')
-for (const n of ['Kelantan Rive1d562', 'QA THIS IS MY DATA 23', 'Import Digital 2026-09-30T11-18-02 #1', 'FLEET CLASSIC CHECK']) check(!isPublishable({ ...api, name: n }), `test record "${n}" never shows`)
+for (const n of ['Kelantan Rive1d562', 'QA THIS IS MY DATA 23', 'Import Digital 2026-09-30T11-18-02 #1', 'FLEET CLASSIC CHECK', 'Classic Check 7508', 'test123', 'Testing fits qa 0217', 'digital invnetory 19/08', 'single board', 'vic-qa']) check(!isPublishable({ ...api, name: n }), `test record "${n}" never shows`)
 for (const n of ['Menara Tan & Tan', 'JIM Melaka 2', 'LOW8 - Plaza Low Yat (8)', 'Jalan Bukit Bintang-1', 'DC4 - Damansara City Mall (4)']) check(isPublishable({ ...api, name: n }), `real name "${n}" still shows`)
 
 // Areas by coordinates: the nearest named area within the radius, else the address's own area.
@@ -82,6 +82,18 @@ const indoorRec = { ...api, venues: [{ name: 'Office Buildings' }] }
 check(!plausibleSize(indoorRec, 40, 60) && plausibleSize(indoorRec, 2.27, 3.97), 'an indoor screen of 40 m x 60 m is hidden; 2.27 m x 3.97 m shows')
 check(!plausibleSize({ ...api, venues: [{ name: 'Outdoor' }], panels: [{ pixelWidth: 1920, pixelHeight: 1080 }] }, 1920, 1080), 'pixel counts typed into metres are hidden')
 check(plausibleSize({ ...api, venues: [{ name: 'Outdoor' }] }, 30, 20), 'a 30 m x 20 m roadside billboard shows')
+
+// The display bar: two of stored state, map point and address must agree (Rif, 14 Nov 2026).
+const bar = (stored: string, point: string | null, addr: string | null, defaultPin = false) =>
+  placementOf({ ...tl, adminLevel1Name: stored, address: addr, resolved: point ? { adminLevel0Name: 'Malaysia', adminLevel1Name: point } : null }, MY, defaultPin)
+check(bar('Kuala Lumpur', 'Pahang', '26060 Balok, Pahang').display === 'show' && bar('Kuala Lumpur', 'Pahang', '26060 Balok, Pahang').record.adminLevel1Name === 'Pahang', 'point + address agree: shown, placed by the point')
+check(bar('Selangor', 'Selangor', null).display === 'show', 'stored + point agree with no address: shown')
+const np = bar('Kedah', 'Selangor', 'Sungai Petani, Kedah')
+check(np.display === 'no-pin' && np.record.adminLevel1Name === 'Kedah' && !np.record.geoms?.length, 'stored + address agree, point elsewhere: shown under its stored state without a pin')
+check(bar('Kedah', 'Kedah', 'Sungai Petani, Kedah', true).display === 'no-pin', 'a shared default pin is not trusted even when it agrees')
+check(bar('Kedah', 'Negeri Sembilan', null).display === 'hold' && bar('Kedah', 'Negeri Sembilan', null).reason === 'no-tiebreak', 'stored and point disagree with no address: held')
+check(bar('Kedah', null, null, true).reason === 'single-signal', 'default pin and no address: held')
+check(bar('Kedah', 'Selangor', 'Balok, Pahang').reason === 'three-way', 'all three disagree: held')
 
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')
 process.exit(bad ? 1 : 0)

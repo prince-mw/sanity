@@ -23,10 +23,10 @@ const level = (r: InventoryRecord, n: number) =>
  * 2026: staging is all test data. Patterns from the hygiene scan of 14 Nov
  * (mw-inventory-hygiene/REPORT.md): "TEST - …", "DisplayInventory1016b34",
  * "Import Classic…/Import Digital 2026-09-30…", "QA THIS IS MY DATA 23",
- * "FLEET CLASSIC CHECK", and names ending in a random hex code ("Kelantan Rive1d562").
+ * "FLEET CLASSIC CHECK", "Classic Check 7508", "test123", "… qa …", "digital invnetory", "single board", and names ending in a random hex code ("Kelantan Rive1d562").
  * Keep this pattern the same as the scan's (skills/inventory-hygiene/scripts/scan.py).
  */
-export const TEST_NAME = /^\s*(test\b|displayinventory[0-9a-f]+\s*$|import (classic|digital)\b|qa\b|sample\b|dummy\b|.*\bcheck\s*$|.*[a-z](?=[0-9a-f]*\d)[0-9a-f]{5,6}\s*$)/i
+export const TEST_NAME = /^\s*(test(\b|\d)|displayinventory[0-9a-f]+\s*$|import (classic|digital)\b|qa\b|sample\b|dummy\b|.*\bcheck\b\s*\d*\s*$|.*\b(qa|invnetory)\b|single board\b|.*[a-z](?=[0-9a-f]*\d)[0-9a-f]{5,6}\s*$)/i
 export const isTestRecord = (r: InventoryRecord) => TEST_NAME.test(r.name ?? '')
 
 /**
@@ -183,6 +183,56 @@ export function trustedLevels(r: InventoryRecord, address?: AddressRules | null)
     record: { ...r, adminLevel0Name: p.adminLevel0Name ?? r.adminLevel0Name, adminLevel1Name: p.adminLevel1Name, adminLevel2Name: p.adminLevel2Name ?? null, adminLevel3Name: p.adminLevel3Name ?? null, adminLevel4Name: null },
     source: 'point',
   }
+}
+
+/** An outdoor site: its venue sits under "Outdoor". */
+export const isOutdoorRecord = (r: InventoryRecord) =>
+  (r.venues?.find(v => v.name)?.name ?? r.venueTaxonomyName?.split('>')[0] ?? '').trim().toLowerCase() === 'outdoor'
+
+/**
+ * Map points that look like defaults: the same exact point on 3 or more real
+ * sites. Fine for screens inside one mall; for an outdoor site it means the pin
+ * was never set (Malaysia, 14 Nov: one point carried 102 "Classic Check" records).
+ */
+export function defaultPins(records: InventoryRecord[]): Set<string> {
+  const n = new Map<string, number>()
+  for (const r of records) { const g = r.geoms?.[0]; if (g && !isTestRecord(r)) n.set(g, (n.get(g) ?? 0) + 1) }
+  return new Set([...n.entries()].filter(([, c]) => c >= 3).map(([g]) => g))
+}
+
+export type Display = 'show' | 'no-pin' | 'hold'
+export const HOLD_REASONS = {
+  'no-tiebreak': 'Stored state and map point disagree, and there is no address to decide',
+  'single-signal': 'Only the stored state: the pin is a shared default and there is no address',
+  'three-way': 'Stored state, map point and address all disagree',
+} as const
+export type HoldReason = keyof typeof HOLD_REASONS
+
+/**
+ * The display bar (Rif, 14 Nov 2026): a site shows only when at least two of
+ * its three location signals agree: the stored state, the map point (resolved
+ * by the API at pull time) and the address (state name or postcode).
+ *   - point agrees with stored or address → show, placed by the point
+ *   - stored and address agree, point wrong or a shared default pin
+ *     (`defaultPin`: an outdoor site on a point 3+ sites share) → show without
+ *     a pin: listed under its stored place, no map pin, no site page
+ *   - otherwise → hold, off the website, for onboarding to fix
+ * Malaysia, 14 Nov: 6,761 of 7,047 real sites show (146 without a pin), 286 held.
+ * A place staff corrected skips this (see source.ts).
+ */
+export function placementOf(r: InventoryRecord, address: AddressRules | null, defaultPin: boolean): { record: InventoryRecord; display: Display; reason: HoldReason | null; source: PlaceSource } {
+  const S = r.adminLevel1Name?.trim() || null
+  const res = r.resolved
+  const inCountry = !res?.adminLevel0Name || !r.adminLevel0Name || res.adminLevel0Name.trim() === r.adminLevel0Name.trim()
+  const P = !defaultPin && inCountry && r.geoms?.length ? res?.adminLevel1Name ?? null : null
+  const A = address ? addressState(r.address, address) : null
+  const byPoint = (): InventoryRecord => ({ ...r, adminLevel0Name: res?.adminLevel0Name ?? r.adminLevel0Name, adminLevel1Name: P, adminLevel2Name: res?.adminLevel2Name ?? null, adminLevel3Name: res?.adminLevel3Name ?? null, adminLevel4Name: null })
+  if (P && (P === S || P === A)) return { record: byPoint(), display: 'show', reason: null, source: 'point' }
+  if (S && A && S === A) return { record: { ...r, geoms: [] }, display: 'no-pin', reason: null, source: 'stored' }
+  // No address table for this country: nothing to break a tie, so keep the old rule (point, else stored).
+  if (!address) return P ? { record: byPoint(), display: 'show', reason: null, source: 'point' } : { record: r, display: S ? 'show' : 'hold', reason: S ? null : 'single-signal', source: P ? 'point' : 'stored' }
+  const reason: HoldReason = P && !A ? 'no-tiebreak' : !P && !A ? 'single-signal' : 'three-way'
+  return { record: r, display: 'hold', reason, source: P ? 'point' : 'stored' }
 }
 
 /** A big city from the country guide: its own page instead of (part of) its state. */
@@ -351,6 +401,7 @@ export function toSiteCard(s: PublicSite): PublicSite {
 }
 
 /** A site earns its own page only with a photo; without one it is listed, not paged. */
-export const siteHasPage = (s: PublicSite) => s.photos.length > 0
+/** A site earns its own page only with a photo and a trustworthy map pin (no-pin sites are listed, not paged). */
+export const siteHasPage = (s: PublicSite) => s.photos.length > 0 && s.lat != null
 
 export const formatCount = (n: number) => n.toLocaleString('en-US')

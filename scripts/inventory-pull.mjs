@@ -16,6 +16,7 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
+import { translateNames } from './inventory-names.mjs'
 
 const ROOT = process.cwd()
 const OUT = process.env.INVENTORY_SNAPSHOT_DIR || path.join(ROOT, '.inventory')
@@ -171,6 +172,7 @@ async function main() {
       const slug = slugify(c.name), t = Date.now()
       try {
         const rows = await resolvePoints(slug, await pullCountry(c))
+        await translateNames(slug, rows)
         const file = path.join(OUT, `${slug}.json`)
         if (rows.length) {
           fs.writeFileSync(file, JSON.stringify({ country: c.name, slug, source: BASE, staging, pulledAt: new Date().toISOString(), records: rows }))
