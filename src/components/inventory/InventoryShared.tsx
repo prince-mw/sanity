@@ -9,7 +9,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import type { PublicSite } from '@/lib/inventory/types'
 import { BrandMap, type MapPin } from './BrandMap'
-import { StreetViewImage } from './StreetView'
+import { StreetViewImage, StreetViewNote, streetViewEnabled } from './StreetView'
 import { AddToProposalButton } from '../proposal/AddToProposalButton'
 
 export const MY_CONTACT_FORM =
@@ -34,7 +34,7 @@ function Photo({ site, className = '', sizes = '100vw', priority = false }: { si
       {src ? (
         <Image src={src} alt={`${site.name} — ${site.displayFormat ?? site.format ?? 'outdoor advertising'} in ${site.areaName}, ${site.cityName}`} fill sizes={sizes} priority={priority} className="object-cover" />
       ) : site.streetView ? (
-        <StreetViewImage sv={site.streetView} alt={`Street View near ${site.name}, ${site.areaName}`} fallback={<div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">Photo coming soon</div>} />
+        <StreetViewImage sv={site.streetView} hint alt={`Street View near ${site.name}, ${site.areaName}`} fallback={<div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">Photo coming soon</div>} />
       ) : (
         <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-400">Photo coming soon</div>
       )}
@@ -182,6 +182,8 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
       <div className="flex flex-col gap-6">
         {map && <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
           className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} ${mapHeight}`} />}
+        {/* Explained once, only on a page of cards that has Street View in it. */}
+        {streetViewEnabled && cards.some(s => !s.photos.length && s.streetView) && <StreetViewNote className={view === 'map' ? 'hidden lg:flex' : ''} />}
         <div ref={gridRef} className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} scroll-mt-28 sm:grid-cols-2 lg:grid-cols-3 gap-5`}>
           {cards.map(s => (
             <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}

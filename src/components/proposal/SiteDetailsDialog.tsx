@@ -93,7 +93,7 @@ export function SiteDetailsDialog({ site, insights, onClose, action }: { site: P
                 {!photo && site.streetView && streetViewEnabled && (
                   <section aria-label="Street View">
                     <StreetViewEmbed sv={site.streetView} title={`Street View near ${site.name}`} />
-                    <p className="mt-2 text-xs text-gray-500">Google Street View near this site{site.streetView.date ? `, captured ${site.streetView.date}` : ''}. It shows the location, not a current photo of the advertising face.</p>
+                    <p className="mt-2 text-xs text-gray-500">Google Street View near this site{site.streetView.date ? `, captured ${site.streetView.date}` : ''}: drag to look around for the screen. It shows the location, not a current photo of the advertising face.</p>
                   </section>
                 )}
                 {insights?.description && (
