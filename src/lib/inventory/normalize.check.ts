@@ -1,7 +1,7 @@
 // Checks for the inventory rules. No test runner in this repo, so run directly:
 //   npx -y tsx src/lib/inventory/normalize.check.ts
 import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '../../data/inventory-sample'
-import { isPublishable, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
+import { isPublishable, trustedLevels, plausibleSize, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
 import type { PublicSite } from './types'
 
 let bad = 0
@@ -65,6 +65,23 @@ const card = toSiteCard(a)
 check(card.photos.length === 1 && !('specs' in card) && !('description' in card), 'a list card carries one photo and no specs or description')
 check(!Object.values(card).some(v => v == null), 'a list card leaves empty fields out')
 check(card.id === a.id && card.slug === a.slug && card.lat === a.lat && card.areaSlug === a.areaSlug, 'a list card keeps what the card, filters and map need')
+
+// Place by the map point (hygiene scan, 14 Nov 2026). Rif's two examples, as the API holds them.
+const MY = { states: { Pahang: ['pahang'], Kedah: ['kedah'], 'Kuala Lumpur': ['kuala lumpur'], Selangor: ['selangor'] }, postcodes: [[25, 28, 'Pahang'], [5, 9, 'Kedah'], [50, 60, 'Kuala Lumpur'], [40, 48, 'Selangor']] as [number, number, string][] }
+const tl = { ...api, adminLevel0Name: 'Malaysia', adminLevel1Name: 'Kuala Lumpur', adminLevel2Name: 'Kuala Lumpur', adminLevel3Name: null, address: 'Jalan Tanjung Lumpur, 26060 Balok, Pahang, Malaysia', resolved: { adminLevel0Name: 'Malaysia', adminLevel1Name: 'Pahang', adminLevel2Name: 'Kuantan', adminLevel3Name: 'Kuala Kuantan' } }
+const moved = trustedLevels(tl, MY)
+check(moved.source === 'point' && moved.record.adminLevel1Name === 'Pahang' && moved.record.adminLevel2Name === 'Kuantan', 'a site whose point and address say Pahang is placed in Pahang, not its stored Kuala Lumpur')
+const pin = trustedLevels({ ...tl, address: 'Jalan Ampang, 50450 Kuala Lumpur', resolved: { adminLevel0Name: 'Malaysia', adminLevel1Name: 'Kedah', adminLevel2Name: 'Kuala Muda' } }, MY)
+check(pin.source === 'stored' && pin.record.adminLevel1Name === 'Kuala Lumpur', 'when the address confirms the stored state, a misplaced pin does not move the site')
+check(trustedLevels({ ...tl, resolved: null }, MY).source === 'no-point', 'a site without a resolved point keeps its stored place')
+check(trustedLevels({ ...tl, resolved: { adminLevel0Name: 'Singapore', adminLevel1Name: 'Singapore' } }, MY).source === 'stored', 'a point in another country never moves a site out of its country')
+check(trustedLevels({ ...tl, address: null }, MY).source === 'point', 'with no address, the point wins')
+
+// Sizes: never show an impossible one.
+const indoorRec = { ...api, venues: [{ name: 'Office Buildings' }] }
+check(!plausibleSize(indoorRec, 40, 60) && plausibleSize(indoorRec, 2.27, 3.97), 'an indoor screen of 40 m x 60 m is hidden; 2.27 m x 3.97 m shows')
+check(!plausibleSize({ ...api, venues: [{ name: 'Outdoor' }], panels: [{ pixelWidth: 1920, pixelHeight: 1080 }] }, 1920, 1080), 'pixel counts typed into metres are hidden')
+check(plausibleSize({ ...api, venues: [{ name: 'Outdoor' }] }, 30, 20), 'a 30 m x 20 m roadside billboard shows')
 
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')
 process.exit(bad ? 1 : 0)

@@ -26,6 +26,8 @@ export interface InventoryRecord {
   adminLevel2Name?: string | null
   adminLevel3Name?: string | null
   adminLevel4Name?: string | null
+  /** Where the map point really is, from the API's /locations/resolve at pull time (scripts/inventory-pull.mjs). */
+  resolved?: { adminLevel0Name?: string | null; adminLevel1Name?: string | null; adminLevel2Name?: string | null; adminLevel3Name?: string | null } | null
   address?: string | null
   postalCode?: string | null
   /** WKT, e.g. "POINT(101.7123 3.1466)" — longitude first. */

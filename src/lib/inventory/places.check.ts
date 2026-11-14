@@ -6,13 +6,18 @@ import { SAMPLE_RECORDS, SAMPLE_LEVELS } from '../../data/inventory-sample'
 import { CITY_GUIDE_DRAFTS } from '../../data/city-guide-drafts'
 import { COUNTRY_GUIDE_DRAFTS } from '../../data/country-guide-drafts'
 import { PLACE_PLANS } from '../../data/place-names'
-import { isPublishable, toPublicSite, placeOf, buildPlaceRules, assignAreas, uniqueSlugs, distanceKm } from './normalize'
+import { isPublishable, trustedLevels, toPublicSite, placeOf, buildPlaceRules, assignAreas, uniqueSlugs, distanceKm } from './normalize'
 import type { InventoryRecord, PublicSite } from './types'
 
 const country = process.argv[2] ?? 'malaysia', sample = process.argv[3] === 'sample'
 const rows: InventoryRecord[] = sample ? SAMPLE_RECORDS : JSON.parse(fs.readFileSync(`.inventory/${country}.json`, 'utf8')).records
 const levels = SAMPLE_LEVELS[country] ?? { city: 2, area: 3 }
-const kept = rows.filter(isPublishable).flatMap(r => { const s = toPublicSite(r, levels); return s ? [{ r, s }] : [] })
+const pub = rows.filter(isPublishable)
+const trusted = pub.map(raw => trustedLevels(raw, PLACE_PLANS[country]?.address ?? null))
+const kept = trusted.map(t => t.record).flatMap(r => { const s = toPublicSite(r, levels); return s ? [{ r, s }] : [] })
+const src = trusted.reduce((m, t) => ({ ...m, [t.source]: (m[t.source] ?? 0) + 1 }), {} as Record<string, number>)
+const movedState = trusted.filter((t, i) => t.record.adminLevel1Name !== pub[i].adminLevel1Name).length
+console.log(`placed by: ${JSON.stringify(src)} · state changed from the stored one: ${movedState}`)
 const rules = buildPlaceRules(PLACE_PLANS[country], COUNTRY_GUIDE_DRAFTS[country]?.audiences?.cities ?? [], kept)
 const placed = kept.map(({ r, s }) => ({ r, s: placeOf(r, s, rules) }))
 const byCity = new Map<string, PublicSite[]>()

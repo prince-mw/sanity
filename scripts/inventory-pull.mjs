@@ -110,6 +110,46 @@ async function pullCountry(country) {
   return [...first.rows, ...rest].filter(r => !seen.has(r.id) && seen.add(r.id)).map(slim)
 }
 
+/**
+ * Where each map point really is, by the API's own GET /locations/resolve (Rif,
+ * 14 Nov 2026: 15.5% of Malaysia's sites carry a wrong stored state; their point
+ * and address agree elsewhere). The answer is attached to the record as
+ * `resolved`; normalize.ts decides which place wins. Cached per point in
+ * .inventory/resolved-<country>.json, so a daily pull only asks for new or moved
+ * points (the first Malaysia run is ~6,000 points, ~15 minutes).
+ */
+async function resolvePoints(slug, rows) {
+  const file = path.join(OUT, `resolved-${slug}.json`)
+  const cache = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : {}
+  const keyOf = r => {
+    const m = String(r.geoms?.[0] ?? '').match(/POINT\s*\(\s*(-?[\d.]+)\s+(-?[\d.]+)/i)
+    return m ? `${Number(m[2]).toFixed(6)},${Number(m[1]).toFixed(6)}` : null
+  }
+  const todo = [...new Set(rows.map(keyOf).filter(Boolean))].filter(k => !cache[k])
+  if (todo.length) console.log(`  resolving ${todo.length} new map points…`)
+  let done = 0
+  await Promise.all(Array.from({ length: PARALLEL }, async () => {
+    for (let k = todo.shift(); k; k = todo.shift()) {
+      const [lat, lng] = k.split(',')
+      try {
+        cache[k] = await (await call(`/locations/resolve?lat=${lat}&lng=${lng}`)).json()
+      } catch (e) {
+        cache[k] = { error: String(e.message).slice(0, 60) }
+      }
+      if (++done % 500 === 0) { fs.writeFileSync(file, JSON.stringify(cache)); console.log(`  ${done} resolved`) }
+    }
+  }))
+  fs.writeFileSync(file, JSON.stringify(cache))
+  for (const r of rows) {
+    const hit = cache[keyOf(r)]
+    r.resolved = hit && !hit.error ? {
+      adminLevel0Name: hit.adminLevel0Name ?? null, adminLevel1Name: hit.adminLevel1Name ?? null,
+      adminLevel2Name: hit.adminLevel2Name ?? null, adminLevel3Name: hit.adminLevel3Name ?? null,
+    } : null
+  }
+  return rows
+}
+
 async function main() {
   const wanted = process.argv.slice(2).map(slugify).filter(Boolean)
   const countries = await (await call('/locations')).json()
@@ -129,7 +169,7 @@ async function main() {
     for (let c = queue.shift(); c; c = queue.shift()) {
       const slug = slugify(c.name), t = Date.now()
       try {
-        const rows = await pullCountry(c)
+        const rows = await resolvePoints(slug, await pullCountry(c))
         const file = path.join(OUT, `${slug}.json`)
         if (rows.length) {
           fs.writeFileSync(file, JSON.stringify({ country: c.name, slug, source: BASE, staging, pulledAt: new Date().toISOString(), records: rows }))

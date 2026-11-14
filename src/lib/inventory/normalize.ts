@@ -51,8 +51,22 @@ const metres = (n: number) => `${Number(n.toFixed(2))}m`
  */
 function sizeOf(r: InventoryRecord): string | null {
   const p = r.panels?.find(x => x.physicalWidth && x.physicalHeight)
-  if (p) return `${metres(p.physicalWidth!)} × ${metres(p.physicalHeight!)}`
+  if (p) return plausibleSize(r, p.physicalWidth!, p.physicalHeight!) ? `${metres(p.physicalWidth!)} × ${metres(p.physicalHeight!)}` : null
   return r.size && /\d/.test(r.size) ? r.size.trim() : null
+}
+
+/**
+ * A size worth showing (hygiene scan, 14 Nov 2026: 855 implausible sizes in
+ * Malaysia, e.g. 40 m × 60 m office screens, and 79 with pixel counts typed
+ * into metres, 1920 m × 1080 m). Not plausible → no size shown, never a wrong one.
+ * Indoor = a venue that isn't under "Outdoor". Same limits as the hygiene scan.
+ */
+export function plausibleSize(r: InventoryRecord, w: number, h: number): boolean {
+  const px = r.panels?.find(x => x.pixelWidth && x.pixelHeight)
+  if (Math.max(w, h) >= 300 || (px && Math.round(w) === px.pixelWidth && Math.round(h) === px.pixelHeight)) return false
+  const top = (r.venues?.find(v => v.name)?.name ?? r.venueTaxonomyName?.split('>')[0] ?? '').trim().toLowerCase()
+  const indoor = !!top && top !== 'outdoor'
+  return !((indoor && Math.max(w, h) > 10) || Math.max(w, h) > 100 || Math.min(w, h) < 0.1)
 }
 
 /** Screen specs from the API's panels, over anything the record already carries. */
@@ -128,6 +142,49 @@ export function toPriceQuote(r: InventoryRecord): PriceQuote | null {
   return { siteId: r.id, currency: p.currency ?? '', daily: p.daily ?? null, monthly: p.monthly ?? null }
 }
 
+/** A country's address vocabulary: state names as addresses write them, and postcode prefix → state. */
+export type AddressRules = { states: Record<string, string[]>; postcodes: [number, number, string][] }
+
+/** The state an address names (its last state name, a non-capital one first), else its 5-digit postcode's state. */
+export function addressState(address: string | null | undefined, rules: AddressRules): string | null {
+  const a = (address ?? '').toLowerCase()
+  if (!a) return null
+  const named = Object.entries(rules.states).filter(([, names]) => names.some(n => new RegExp(`\\b${n.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(a))).map(([st]) => st)
+  if (named.length) return named.filter(s => s !== 'Kuala Lumpur').at(-1) ?? named.at(-1)!
+  const pc = a.match(/\b(\d{5})\b/)
+  if (!pc) return null
+  const n = Number(pc[1].slice(0, 2))
+  return rules.postcodes.find(([lo, hi]) => n >= lo && n <= hi)?.[2] ?? null
+}
+
+export type PlaceSource = 'point' | 'stored' | 'no-point'
+
+/**
+ * Which address levels to trust for a site (Rif, 14 Nov 2026: 1,121 of 7,231
+ * Malaysia sites carry a stored state their own map point and address
+ * contradict; see mw-inventory-hygiene/REPORT.md). The map point, resolved by
+ * the API itself at pull time, wins, as in the industry (Place Exchange
+ * corrects city/country from lat/lng). One exception: when the address
+ * confirms the stored state and contradicts the point, the pin is the thing
+ * that's wrong, so the stored levels stay. No resolved point: stored levels.
+ * Never drops a site.
+ */
+export function trustedLevels(r: InventoryRecord, address?: AddressRules | null): { record: InventoryRecord; source: PlaceSource } {
+  const p = r.resolved
+  if (!p?.adminLevel1Name) return { record: r, source: 'no-point' }
+  // A point in another country (or the sea) is a broken pin: keep the stored place.
+  if (p.adminLevel0Name && r.adminLevel0Name && p.adminLevel0Name.trim() !== r.adminLevel0Name.trim()) return { record: r, source: 'stored' }
+  const stored = r.adminLevel1Name?.trim() || null
+  if (address && stored && stored !== p.adminLevel1Name) {
+    const said = addressState(r.address, address)
+    if (said === stored) return { record: r, source: 'stored' }
+  }
+  return {
+    record: { ...r, adminLevel0Name: p.adminLevel0Name ?? r.adminLevel0Name, adminLevel1Name: p.adminLevel1Name, adminLevel2Name: p.adminLevel2Name ?? null, adminLevel3Name: p.adminLevel3Name ?? null, adminLevel4Name: null },
+    source: 'point',
+  }
+}
+
 /** A big city from the country guide: its own page instead of (part of) its state. */
 export type BigCity = { name: string; lat: number; lng: number; state: string | null }
 
@@ -171,7 +228,7 @@ export function placeOf(r: InventoryRecord, s: PublicSite, rules: PlaceRules): P
   const bigSlugs = rules.bigCities.map(c => slugify(c.name))
   const order = city ? [rules.stateLevel + 2, rules.stateLevel + 3, rules.stateLevel + 1] : [rules.stateLevel + 1, rules.stateLevel + 2, rules.stateLevel + 3]
   const areaRaw = order.filter(n => n <= 4).map(n => level(r, n))
-    .find((n): n is string => !!n && ![placeSlug, stateSlug, ...bigSlugs].includes(slugify(placeName(n, rules.names)))) ?? place
+    .find((n): n is string => !!n && !/^mukim\s+\d+\s*$/i.test(n.trim()) && ![placeSlug, stateSlug, ...bigSlugs].includes(slugify(placeName(n, rules.names)))) ?? place
   const area = placeName(areaRaw, rules.names)
   return { ...s, cityName: place, citySlug: placeSlug, areaName: area, areaSlug: slugify(area) }
 }

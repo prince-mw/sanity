@@ -9,7 +9,7 @@ import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '@/data/inventory-sa
 import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
 import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 import { PLACE_PLANS } from '@/data/place-names'
-import { isPublishable, toPublicSite, areaPages, assignAreas, uniqueSlugs, placeOf, buildPlaceRules, slugify, type AreaPage, type AreaAnchor, type PlaceRules } from './normalize'
+import { isPublishable, trustedLevels, toPublicSite, areaPages, assignAreas, uniqueSlugs, placeOf, buildPlaceRules, slugify, type AreaPage, type AreaAnchor, type PlaceRules } from './normalize'
 import { countrySnapshot, snapshotIndex, snapshotVersion } from './snapshot'
 import type { InventoryRecord, LevelMap, PublicSite } from './types'
 
@@ -79,7 +79,11 @@ function countrySites(countrySlug: string): PublicSite[] {
   if (hit && hit.version === version) return hit.sites
   const { rows, test } = records(countrySlug)
   const levels = SAMPLE_LEVELS[countrySlug] ?? DEFAULT_LEVELS
-  const kept = rows.filter(isPublishable).flatMap(r => { const s = toPublicSite(r, levels); return s ? [{ r, s }] : [] })
+  // Trust the map point over the stored state (trustedLevels; Rif, 14 Nov 2026: the stored state
+  // is wrong on 15.5% of Malaysia's sites). `r` from here on carries the trusted levels.
+  const address = PLACE_PLANS[countrySlug]?.address ?? null
+  const kept = rows.filter(isPublishable).map(raw => trustedLevels(raw, address).record)
+    .flatMap(r => { const s = toPublicSite(r, levels); return s ? [{ r, s }] : [] })
   const rules = placeRules(countrySlug, kept)
   const base = rules ? kept.map(({ r, s }) => placeOf(r, s, rules)) : kept.map(({ s }) => s)
   const byCity = new Map<string, PublicSite[]>()
