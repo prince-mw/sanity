@@ -6,7 +6,7 @@ import 'server-only'
 
 import { PLACE_PLANS } from '@/data/place-names'
 import { countrySnapshot, snapshotIndex } from './snapshot'
-import { isPublishable, isTestRecord, placementOf, defaultPins, isOutdoorRecord, type PlaceSource, type Display, type HoldReason } from './normalize'
+import { isPublishable, isTestRecord, placementOf, defaultPins, isOutdoorRecord, needsPhoto, type PlaceSource, type Display, type HoldReason } from './normalize'
 import { englishNames } from './snapshot'
 import { listCorrections } from './corrections'
 import { applyCorrections, statusOf, type Correction, type CorrectionStatus } from './correctionsCore'
@@ -48,7 +48,9 @@ export async function staffSites(country: string): Promise<{ sites: StaffSite[];
     const list = bySite.get(raw.id) ?? []
     const applied = list.length ? applyCorrections(raw, list) : raw
     const locked = (applied as { placeLocked?: boolean }).placeLocked
-    const placed = locked ? { record: applied, source: 'staff' as const, display: 'show' as Display, reason: null } : placementOf(applied, address, pins.has(applied.geoms?.[0] ?? '') && isOutdoorRecord(applied))
+    const where = locked ? { record: applied, source: 'staff' as const, display: 'show' as Display, reason: null as HoldReason | null } : placementOf(applied, address, pins.has(applied.geoms?.[0] ?? '') && isOutdoorRecord(applied))
+    // Indoor with no photo: held until onboarding adds one (same rule as source.ts).
+    const placed = needsPhoto(applied) ? { ...where, display: 'hold' as Display, reason: 'indoor-no-photo' as HoldReason } : where
     const statuses = list.map(c => statusOf(c, raw))
     const p = pages.get(raw.id)
     return {

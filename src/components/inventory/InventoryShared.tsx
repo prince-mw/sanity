@@ -137,8 +137,11 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
   // cards come in numbered pages of 24 (Rif, 14 Nov 2026: pages, not an ever-longer
   // list); the map always shows every pin. A new filter starts again at page 1.
   const [page, setPage] = useState(0)
-  const [seen, setSeen] = useState(shown)
-  if (seen !== shown) { setSeen(shown); setPage(0) }
+  // Back to page 1 only when the list itself changes (a filter or search), not on
+  // every re-render: opening and closing Details keeps you on page 70 (Rif, 14 Nov 2026).
+  const listKey = useMemo(() => shown.map(s => s.id).join(','), [shown])
+  const [seen, setSeen] = useState(listKey)
+  if (seen !== listKey) { setSeen(listKey); setPage(0) }
   const pages = Math.max(1, Math.ceil(shown.length / CARD_PAGE))
   const cards = shown.slice(page * CARD_PAGE, page * CARD_PAGE + CARD_PAGE)
   const gridRef = useRef<HTMLDivElement>(null)

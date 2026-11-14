@@ -12,6 +12,7 @@ export type Issue = { code: string; label: string; severity: Severity; fix: Corr
 
 export const ISSUE_TYPES: Record<string, { label: string; severity: Severity; fix: CorrectionField | null; onboarding: boolean }> = {
   'held': { label: 'Held from the website: location not confirmed', severity: 'blocking', fix: 'state', onboarding: true },
+  'indoor-no-photo': { label: 'Held from the website: indoor site with no photo', severity: 'blocking', fix: null, onboarding: true },
   'no-pin': { label: 'Shown without a map pin (pin wrong or a shared default)', severity: 'high', fix: 'point', onboarding: true },
   'state-auto': { label: 'Stored state was wrong (placed by its map point)', severity: 'info', fix: 'state', onboarding: true },
   'border': { label: 'Address names another state (check)', severity: 'medium', fix: 'state', onboarding: false },
@@ -38,7 +39,8 @@ export function issuesOf(raw: InventoryRecord, shown: InventoryRecord, source: P
   const out: Issue[] = []
   const stored = raw.adminLevel1Name?.trim() || null
   const point = raw.resolved?.adminLevel1Name ?? null
-  if (display === 'hold') out.push({ ...issue('held'), label: `Held from the website: ${HOLD_REASONS[hold ?? 'three-way'].toLowerCase()}` })
+  if (display === 'hold' && hold === 'indoor-no-photo') out.push(issue('indoor-no-photo'))
+  else if (display === 'hold') out.push({ ...issue('held'), label: `Held from the website: ${HOLD_REASONS[hold ?? 'three-way'].toLowerCase()}` })
   else if (display === 'no-pin') out.push(issue('no-pin'))
   else if (!raw.geoms?.length) out.push(issue('no-point'))
   else if (source === 'point' && point && stored && point !== stored) out.push(issue('state-auto'))
@@ -51,7 +53,7 @@ export function issuesOf(raw: InventoryRecord, shown: InventoryRecord, source: P
   if (!p) out.push(issue('no-size'))
   else if (!plausibleSize(shown, p.physicalWidth!, p.physicalHeight!)) out.push(issue('size-wrong'))
   if (isOutdoor(shown) && !shown.panels?.[0]?.cardinalDirection) out.push(issue('no-facing'))
-  if (!(shown.medias?.length || shown.thumbnailUrl)) out.push(issue('no-photo'))
+  if (!(shown.medias?.length || shown.thumbnailUrl) && hold !== 'indoor-no-photo') out.push(issue('no-photo'))
   if (!shown.address?.trim()) out.push(issue('no-address'))
   if ((shown.name ?? '').trim().length > 60) out.push(issue('long-name'))
   return out

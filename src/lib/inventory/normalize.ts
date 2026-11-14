@@ -26,7 +26,7 @@ const level = (r: InventoryRecord, n: number) =>
  * "FLEET CLASSIC CHECK", "Classic Check 7508", "test123", "… qa …", "digital invnetory", "single board", and names ending in a random hex code ("Kelantan Rive1d562").
  * Keep this pattern the same as the scan's (skills/inventory-hygiene/scripts/scan.py).
  */
-export const TEST_NAME = /^\s*(test(\b|\d)|displayinventory[0-9a-f]+\s*$|import (classic|digital)\b|qa\b|sample\b|dummy\b|.*\bcheck\b\s*\d*\s*$|.*\b(qa|invnetory)\b|single board\b|.*[a-z](?=[0-9a-f]*\d)[0-9a-f]{5,6}\s*$)/i
+export const TEST_NAME = /^\s*(test(\b|\d)|displayinventory[0-9a-f]+\s*$|import (classic|digital)\b|qa\b|sample\b|dummy\b|.*\bcheck\b\s*\d*\s*$|.*\b(qa|invnetory)\b|single board\b|tes[a-z]\s*-|trasntic\b|.*\buat\d*\b|.*[a-z](?=[0-9a-f]*\d)[0-9a-f]{5,6}\s*$)/i
 export const isTestRecord = (r: InventoryRecord) => TEST_NAME.test(r.name ?? '')
 
 /**
@@ -207,7 +207,16 @@ export const HOLD_REASONS = {
   'no-tiebreak': 'Stored state and map point disagree, and there is no address to decide',
   'single-signal': 'Only the stored state: the pin is a shared default and there is no address',
   'three-way': 'Stored state, map point and address all disagree',
+  'indoor-no-photo': 'Indoor site with no photo (Street View can only stand in outdoors)',
 } as const
+
+/**
+ * Indoor sites need a real photo to show (Rif, 14 Nov 2026): Street View can
+ * stand in for an outdoor face, never for a screen inside a mall or station.
+ * They wait on the staff dashboard for onboarding to add one.
+ */
+export const needsPhoto = (r: InventoryRecord) =>
+  !isOutdoorRecord(r) && !(r.medias ?? []).some(m => m.url) && !r.thumbnailUrl
 export type HoldReason = keyof typeof HOLD_REASONS
 
 /**

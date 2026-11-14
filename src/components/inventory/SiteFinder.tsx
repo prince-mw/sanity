@@ -65,10 +65,11 @@ export function SiteFinder({ sites, hasPage, mapTitle, insights = {}, showAreas 
   const formats = useMemo(() => optionsOf(sites, s => { const f = s.displayFormat ?? s.format ?? 'Other'; return [f, f] }), [sites])
   const venues = useMemo(() => optionsOf(sites, s => s.venueType ? [s.venueType, s.venueType] : null), [sites])
   const needle = q.trim().toLowerCase()
-  const shown = sites.filter(s => (area === 'all' || s.areaSlug === area)
+  // Memoised: a new array on every render (opening or closing Details) sent the list back to page 1.
+  const shown = useMemo(() => sites.filter(s => (area === 'all' || s.areaSlug === area)
     && (format === 'all' || (s.displayFormat ?? s.format ?? 'Other') === format)
     && (venue === 'all' || s.venueType === venue)
-    && (!needle || [s.name, s.areaName, s.address, s.displayFormat, s.format].some(v => v?.toLowerCase().includes(needle))))
+    && (!needle || [s.name, s.areaName, s.address, s.displayFormat, s.format].some(v => v?.toLowerCase().includes(needle)))), [sites, area, format, venue, needle])
   const active = [area, format, venue].filter(v => v !== 'all').length + (needle ? 1 : 0)
   const clear = () => { setQ(''); setArea('all'); setFormat('all'); setVenue('all') }
 

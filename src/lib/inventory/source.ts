@@ -9,7 +9,7 @@ import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '@/data/inventory-sa
 import { CITY_GUIDE_DRAFTS } from '@/data/city-guide-drafts'
 import { COUNTRY_GUIDE_DRAFTS } from '@/data/country-guide-drafts'
 import { PLACE_PLANS } from '@/data/place-names'
-import { isPublishable, placementOf, defaultPins, isOutdoorRecord, toPublicSite, areaPages, assignAreas, uniqueSlugs, placeOf, buildPlaceRules, slugify, type AreaPage, type AreaAnchor, type PlaceRules } from './normalize'
+import { isPublishable, placementOf, defaultPins, isOutdoorRecord, needsPhoto, toPublicSite, areaPages, assignAreas, uniqueSlugs, placeOf, buildPlaceRules, slugify, type AreaPage, type AreaAnchor, type PlaceRules } from './normalize'
 import { countrySnapshot, snapshotIndex, snapshotVersion, englishNames } from './snapshot'
 import { listCorrections, correctionsStamp } from './corrections'
 import { applyCorrections, type Correction } from './correctionsCore'
@@ -96,6 +96,7 @@ function countrySites(countrySlug: string, corrections: Correction[] = []): Publ
     // English names (Rif, 14 Nov 2026: English only), unless staff corrected the name.
     .map(r => (r.name && english[r.name] && !(bySite.get(r.id) ?? []).some(c => c.field === 'name') ? { ...r, name: english[r.name] } : r))
     .filter(r => !(r as { hiddenByStaff?: boolean }).hiddenByStaff)
+    .filter(r => !needsPhoto(r))
     .flatMap(r => {
       if ((r as { placeLocked?: boolean }).placeLocked) return [r]
       const p = placementOf(r, address, pins.has(r.geoms?.[0] ?? '') && isOutdoorRecord(r))
