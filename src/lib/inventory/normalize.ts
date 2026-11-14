@@ -104,7 +104,8 @@ export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite |
     illuminated: r.classicFields?.illuminated ?? null,
     digital: d && (d.spotDuration || d.spotsPerLoop || d.loopDuration)
       ? { spotSeconds: d.spotDuration ?? null, spotsPerLoop: d.spotsPerLoop ?? null, loopSeconds: d.loopDuration ?? null } : null,
-    venueType: r.venueTaxonomyName ?? r.venues?.filter(v => v.name).at(-1)?.name ?? null,
+    // The API sends the venue as a path ("Outdoor > Billboards > Highway"); pages show its last part.
+    venueType: (r.venueTaxonomyName ?? r.venues?.filter(v => v.name).at(-1)?.name ?? null)?.split('>').pop()?.trim() || null,
     countryName, countrySlug: slugify(countryName),
     cityName, citySlug: slugify(cityName),
     areaName, areaSlug: slugify(areaName),

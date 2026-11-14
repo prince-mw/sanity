@@ -48,22 +48,29 @@ const words = (s: string | null | undefined) => (s ?? '').trim().split(/\s+/).fi
  */
 export function siteOverview(site: PublicSite, description: string | null): string | null {
   if (words(description) >= 80) return null
-  const fmt = site.displayFormat ?? site.format ?? 'outdoor advertising site'
+  // The API's bare type names ("Classic", "Digital") read as nouns once completed.
+  const fmt = site.displayFormat ?? ({ classic: 'classic billboard', digital: 'digital screen' } as Record<string, string>)[(site.format ?? '').toLowerCase()] ?? site.format ?? 'outdoor advertising site'
   const f = fmt.toLowerCase().replace(/\bled\b/g, 'LED').replace(/\bdooh\b/g, 'DOOH')
+  // "Kuala Lumpur, Kuala Lumpur" when a site has no area of its own: name the place once.
+  const place = site.areaSlug === site.citySlug ? site.cityName : `${site.areaName}, ${site.cityName}`
   const article = /^[aeiou]/i.test(f) ? 'an' : 'a'
   const venue = site.venueType?.toLowerCase()
   const d = site.digital
   const sp = site.specs
   const s: string[] = []
-  s.push(`${site.name} is ${article} ${f} in ${site.areaName}, ${site.cityName}${site.address ? `, at ${site.address}` : ''}.`)
-  if (venue) s.push(venue.includes('mall') ? `It sits inside a shopping mall, where people are close to the point of purchase.` : venue.includes('road') ? `It faces road traffic, so drivers and passengers see it on their daily routes through ${site.areaName}.` : `It is a ${venue} site, seen by people moving through ${site.areaName} on foot and by road.`)
+  // Some addresses are directions ("Located on Pudu Sentral building", "In front of…"): those go in brackets, not after "at".
+  const where = !site.address ? '' : /^(located|in front|opposite|next to|near|along|beside|facing|from|towards|at )/i.test(site.address) ? ` (${site.address.charAt(0).toLowerCase()}${site.address.slice(1)})` : `, at ${site.address}`
+  s.push(`${site.name} is ${article} ${f} in ${place}${where}.`)
+  if (venue) s.push(/mall|concourse|retail|shop/.test(venue) ? `It sits inside a shopping mall, where people are close to the point of purchase.`
+    : /road|highway|outdoor|spectacular|billboard|bridge/.test(venue) ? `It faces road traffic, so drivers and passengers see it on their daily routes through ${site.areaName}.`
+    : `It is ${/^[aeiou]/.test(venue) ? 'an' : 'a'} ${venue} site, seen by the people who use it every day.`)
   if (site.size) s.push(`The ${d ? 'screen' : 'face'} measures ${site.size}${sp?.resolution ? ` at ${sp.resolution}` : ''}${site.illuminated ? ' and is lit after dark' : ''}.`)
   if (d?.spotSeconds) s.push(`As a digital site it plays ${d.spotsPerLoop ? `a loop of ${d.spotsPerLoop} spots` : 'a loop of spots'} of ${d.spotSeconds} seconds each, so a campaign can start without printing and the message can change by time of day.`)
   else s.push(`As a classic site it carries one design for the length of the booking, which builds steady, repeated exposure with the people who pass it every day.`)
   if (site.audience?.reach || site.audience?.impressions) s.push(`Media-owner figures put its monthly ${[site.audience.reach ? `reach at ${site.audience.reach}` : null, site.audience.impressions ? `impressions at ${site.audience.impressions}` : null].filter(Boolean).join(' and ')}.`)
   const files = [sp?.videoFormats?.length ? sp.videoFormats.join(' or ') : null, sp?.imageFormats?.length ? sp.imageFormats.join(' or ') : null].filter(Boolean)
   if (files.length || sp?.leadTimeDays != null) s.push(`${files.length ? `Artwork is supplied as ${files.join(', or ')}` : 'Artwork is checked against the site specification'}${sp?.leadTimeDays != null ? `, and bookings need at least ${sp.leadTimeDays} days before the start date` : ''}.`)
-  s.push(`Moving Walls can plan ${site.name} together with other sites in ${site.areaName} and across ${site.cityName}, check availability for your dates and report on delivery once the campaign is live.`)
+  s.push(`Moving Walls can plan ${site.name} together with other sites ${site.areaSlug === site.citySlug ? `across ${site.cityName}` : `in ${site.areaName} and across ${site.cityName}`}, check availability for your dates and report on delivery once the campaign is live.`)
   return s.join(' ')
 }
 

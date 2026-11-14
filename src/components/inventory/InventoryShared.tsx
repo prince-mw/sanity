@@ -3,7 +3,8 @@
 // Inventory pages: shared pieces. Same look as the Singapore venue pages
 // (navy hero, rounded cards, mw-blue accents), so the new pages sit in the site.
 
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useRef, useState, type ReactNode } from 'react'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import type { PublicSite } from '@/lib/inventory/types'
@@ -81,6 +82,41 @@ const pinOf = (s: PublicSite, linked: boolean): MapPin | null =>
  * map, all driven by one filter state, so the pins always match the cards.
  * Map on top, cards below at every size. Phone/tablet: List / Map switch.
  */
+/** The page numbers to show: always the first and last, the current one and its neighbours, gaps as "…". */
+function pageWindow(page: number, pages: number): (number | '…')[] {
+  const want = new Set([0, pages - 1, page - 1, page, page + 1].filter(n => n >= 0 && n < pages))
+  const out: (number | '…')[] = []
+  ;[...want].sort((a, b) => a - b).forEach((n, i, a) => { if (i && n - a[i - 1] > 1) out.push('…'); out.push(n) })
+  return out
+}
+
+/**
+ * Numbered pages under a site list: first, previous, page numbers, next, last,
+ * and "Showing 25–48 of 1,974 sites". Phones show "Page 2 of 83" between the
+ * arrows instead of the numbers. Every control is a 44px tap target.
+ */
+function Pager({ page, pages, onPage, from, to, total }: { page: number; pages: number; onPage: (n: number) => void; from: number; to: number; total: number }) {
+  const btn = 'mw-tap inline-flex h-11 min-w-11 items-center justify-center rounded-full border text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-40'
+  const idle = `${btn} border-gray-200 bg-white px-3 text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]`
+  const fmt = (n: number) => n.toLocaleString('en-US')
+  return (
+    <nav aria-label="Site list pages" className="flex flex-col items-center gap-3">
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <button type="button" onClick={() => onPage(0)} disabled={page === 0} aria-label="First page" className={idle}><ChevronsLeft className="h-4 w-4" aria-hidden="true" /></button>
+        <button type="button" onClick={() => onPage(page - 1)} disabled={page === 0} aria-label="Previous page" className={idle}><ChevronLeft className="h-4 w-4" aria-hidden="true" /></button>
+        <span className="px-2 text-sm font-semibold text-gray-700 sm:hidden">Page {page + 1} of {fmt(pages)}</span>
+        {pageWindow(page, pages).map((n, i) => n === '…'
+          ? <span key={`gap-${i}`} className="hidden px-1 text-gray-400 sm:inline" aria-hidden="true">…</span>
+          : <button key={n} type="button" onClick={() => onPage(n)} aria-label={`Page ${n + 1}`} aria-current={n === page ? 'page' : undefined}
+              className={`${btn} hidden px-3 sm:inline-flex ${n === page ? 'border-[#2563eb] bg-[#2563eb] text-white' : 'border-gray-200 bg-white text-gray-700 hover:border-[#2563eb] hover:text-[#2563eb]'}`}>{fmt(n + 1)}</button>)}
+        <button type="button" onClick={() => onPage(page + 1)} disabled={page === pages - 1} aria-label="Next page" className={idle}><ChevronRight className="h-4 w-4" aria-hidden="true" /></button>
+        <button type="button" onClick={() => onPage(pages - 1)} disabled={page === pages - 1} aria-label="Last page" className={idle}><ChevronsRight className="h-4 w-4" aria-hidden="true" /></button>
+      </div>
+      <p className="text-xs text-gray-500" aria-live="polite">Showing {fmt(from)}–{fmt(to)} of {fmt(total)} sites</p>
+    </nav>
+  )
+}
+
 /** Site cards shown per page in a list (divides by 2 and 3, so the last row is always full). */
 const CARD_PAGE = 24
 
@@ -95,17 +131,24 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
     (format === 'All' || (s.displayFormat ?? s.format ?? 'Other') === format) && (venue === 'All' || s.venueType === venue)), [sites, format, venue])
   const pins = useMemo(() => shown.map(s => pinOf(s, hasPage(s))).filter(Boolean) as MapPin[], [shown, hasPage])
   // A city can hold thousands of sites (Kuala Lumpur, API data: ~2,000), so the
-  // cards come a page at a time; the map always shows every pin. A new filter
-  // starts again from the first page.
-  const [limit, setLimit] = useState(CARD_PAGE)
+  // cards come in numbered pages of 24 (Rif, 14 Nov 2026: pages, not an ever-longer
+  // list); the map always shows every pin. A new filter starts again at page 1.
+  const [page, setPage] = useState(0)
   const [seen, setSeen] = useState(shown)
-  if (seen !== shown) { setSeen(shown); setLimit(CARD_PAGE) }
-  const cards = shown.slice(0, limit)
+  if (seen !== shown) { setSeen(shown); setPage(0) }
+  const pages = Math.max(1, Math.ceil(shown.length / CARD_PAGE))
+  const cards = shown.slice(page * CARD_PAGE, page * CARD_PAGE + CARD_PAGE)
+  const gridRef = useRef<HTMLDivElement>(null)
+  const goTo = (n: number) => {
+    setPage(Math.min(pages - 1, Math.max(0, n)))
+    // Back to the top of the cards, not the top of the page.
+    requestAnimationFrame(() => gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
+  }
   const pick = (id: string) => {
     // Highlight the pin and its card; the map's label card links to the site, so the page doesn't jump away from the map.
-    // A pin whose card is not on the list yet brings the list down to it.
+    // A pin whose card is on another page turns the list to that page.
     const at = shown.findIndex(s => s.id === id)
-    if (at >= limit) setLimit(Math.ceil((at + 1) / CARD_PAGE) * CARD_PAGE)
+    if (at >= 0 && Math.floor(at / CARD_PAGE) !== page) setPage(Math.floor(at / CARD_PAGE))
     setActive(id)
   }
   const chip = (on: boolean) =>
@@ -136,7 +179,7 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
       <div className="flex flex-col gap-6">
         {map && <BrandMap pins={pins} activeId={active} onPinClick={pick} title={mapTitle}
           className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} ${mapHeight}`} />}
-        <div className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} sm:grid-cols-2 lg:grid-cols-3 gap-5`}>
+        <div ref={gridRef} className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} scroll-mt-28 sm:grid-cols-2 lg:grid-cols-3 gap-5`}>
           {cards.map(s => (
             <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}
               className={`scroll-mt-28 rounded-2xl transition-shadow ${active === s.id ? 'ring-2 ring-mw-blue-500 ring-offset-2' : ''}`}>
@@ -144,13 +187,9 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
             </div>
           ))}
         </div>
-        {shown.length > cards.length && (
-          <div className={`${view === 'map' ? 'hidden lg:flex' : 'flex'} flex-col items-center gap-2`}>
-            <button type="button" onClick={() => setLimit(l => l + CARD_PAGE)}
-              className="mw-tap inline-flex h-11 items-center justify-center rounded-full border-2 border-[#2563eb] bg-white px-6 text-sm font-semibold text-[#2563eb] hover:bg-mw-blue-50">
-              Show {Math.min(CARD_PAGE, shown.length - cards.length)} more {shown.length - cards.length === 1 ? 'site' : 'sites'}
-            </button>
-            <span className="text-xs text-gray-500">Showing {cards.length} of {shown.length}</span>
+        {pages > 1 && (
+          <div className={view === 'map' ? 'hidden lg:block' : ''}>
+            <Pager page={page} pages={pages} onPage={goTo} from={page * CARD_PAGE + 1} to={page * CARD_PAGE + cards.length} total={shown.length} />
           </div>
         )}
       </div>
@@ -159,8 +198,8 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
 }
 
 /** One site's location on the branded map. */
-export function SitesMap({ sites, title }: { sites: PublicSite[]; title: string }) {
+export function SitesMap({ sites, title, className = 'h-72 sm:h-96' }: { sites: PublicSite[]; title: string; className?: string }) {
   const pins = sites.map(s => pinOf(s, false)).filter(Boolean) as MapPin[]
   if (!pins.length) return null
-  return <BrandMap pins={pins} activeId={pins.length === 1 ? pins[0].id : null} title={title} className="h-72 sm:h-96" />
+  return <BrandMap pins={pins} activeId={pins.length === 1 ? pins[0].id : null} title={title} className={className} />
 }

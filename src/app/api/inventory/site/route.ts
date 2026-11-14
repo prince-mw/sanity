@@ -1,11 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { inventoryEnabled, sitesFor } from '@/lib/inventory/source'
 import { siteInsightsFor } from '@/lib/inventory/siteContent'
+import { siteOverview } from '@/lib/inventory/siteFaq'
+import { typicalPersonas } from '@/lib/inventory/typicalPersonas'
 
 // One site's full public record for the Details popup. Site lists send only a
 // slim card per site (toSiteCard) so a city with thousands of sites stays
-// light; the specs, every photo and the description come from here on demand.
-// Same data the site page shows: PublicSite never carries owners or prices.
+// light; the specs, every photo, the description and the audiences come from
+// here on demand. Same data the site page shows: PublicSite never carries
+// owners or prices.
+//   description: the written one, else the overview built from the data (as on the site page)
+//   personas:    the written ones, else the typical audiences for this kind of site (typical: true)
 
 export const runtime = 'nodejs'
 
@@ -18,6 +23,11 @@ export async function GET(req: NextRequest) {
   if (!inventoryEnabled()) return NextResponse.json({ error: 'not found' }, { status: 404 })
   const site = (await sitesFor(country, city)).find(s => s.id === id)
   if (!site) return NextResponse.json({ error: 'not found' }, { status: 404 })
-  const insights = (await siteInsightsFor([site]))[site.id] ?? null
-  return NextResponse.json({ site, insights }, { headers: { 'cache-control': 'public, max-age=300, s-maxage=3600' } })
+  const written = (await siteInsightsFor([site]))[site.id] ?? { description: null, personas: [] }
+  const description = written.description ?? siteOverview(site, null)
+  const personas = written.personas.length ? written.personas : typicalPersonas(site)
+  return NextResponse.json(
+    { site, insights: { description, personas, typical: !written.personas.length } },
+    { headers: { 'cache-control': 'public, max-age=300, s-maxage=3600' } },
+  )
 }
