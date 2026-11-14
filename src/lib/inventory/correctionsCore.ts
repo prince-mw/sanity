@@ -129,13 +129,14 @@ export function applyCorrections(r: InventoryRecord, list: Correction[]): Invent
     if (statusOf(c, r) === 'fixed-at-source') continue
     switch (c.field) {
       case 'name': out.name = c.value; break
-      case 'address': out.address = c.value; break
+      case 'address': out.address = c.value; out.mapAddress = null; break
       case 'state': out.adminLevel1Name = c.value; out.placeLocked = true; break
       case 'district': out.adminLevel2Name = c.value; out.placeLocked = true; break
       case 'area': out.adminLevel3Name = c.value; out.placeLocked = true; break
       case 'point': {
         const [lat, lng] = c.value.split(',').map(Number)
         out.geoms = [`POINT(${lng} ${lat})`]
+        out.mapAddress = null // looked up for the old point
         if (c.resolved) out.resolved = c.resolved
         break
       }

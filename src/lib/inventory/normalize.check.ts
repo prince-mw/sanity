@@ -1,7 +1,7 @@
 // Checks for the inventory rules. No test runner in this repo, so run directly:
 //   npx -y tsx src/lib/inventory/normalize.check.ts
 import { SAMPLE_RECORDS, SAMPLE_LEVELS, FAMOUS_AREAS } from '../../data/inventory-sample'
-import { isPublishable, trustedLevels, placementOf, bearing, plausibleSize, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES } from './normalize'
+import { isPublishable, trustedLevels, placementOf, bearing, plausibleSize, toPublicSite, toSiteCard, areaPages, siteHasPage, parsePoint, assignAreas, distanceKm, AREA_MIN_SITES, weakAddress } from './normalize'
 import type { PublicSite } from './types'
 
 let bad = 0
@@ -101,6 +101,14 @@ const sv = toPublicSite(svRec, { city: 2, area: 3 })!
 check(sv.streetView?.panoId === 'PANO1' && sv.streetView.heading === 90, 'a site without a photo gets Street View, camera facing the site (east here)')
 check(toPublicSite({ ...svRec, medias: [{ mediaType: 'asset', url: 'https://x/a.jpg' }] }, { city: 2, area: 3 })!.streetView == null, 'a site with a real photo never shows Street View')
 check(toPublicSite({ ...svRec, geoms: [] }, { city: 2, area: 3 })!.streetView == null, 'a site without a trusted pin never shows Street View')
+// Addresses (Rif, 14 Nov 2026: the full address has to be there): OpenStreetMap's for a trusted pin when the API has no street.
+const at = (address: string | null, mapAddress: string | null, geoms = ['POINT(101.7000 3.1500)']) => toPublicSite({ ...api, address, mapAddress, geoms }, { city: 2, area: 3 })!
+check(at('Lot 5, Jalan Ampang, 50450 Kuala Lumpur', 'Jalan X, KL').address === 'Lot 5, Jalan Ampang, 50450 Kuala Lumpur' && !at('Lot 5, Jalan Ampang, 50450 Kuala Lumpur', 'Jalan X, KL').addressFromMap, 'an API address with a street wins')
+check(at('transit', 'Jalan Pudu, Bukit Bintang, 55100 Kuala Lumpur').address === 'Jalan Pudu, Bukit Bintang, 55100 Kuala Lumpur' && at('transit', 'Jalan Pudu, Bukit Bintang, 55100 Kuala Lumpur').addressFromMap === true, '"transit" gives way to the map address')
+check(at('Kuantan, Pahang, Malaysia', 'Jalan Besar, 25000 Kuantan, Pahang').addressFromMap === true, 'a town-only address gives way to the map address')
+check(at('transit', 'Jalan Pudu, KL', []).address === null, 'no trusted pin: no map address, and a one-word address is dropped')
+check(at('Kuantan, Pahang, Malaysia', null).address === 'Kuantan, Pahang, Malaysia', 'no map address: the town-only address stays')
+check(weakAddress('Malaysia') && weakAddress('55100, Kuala Lumpur, Malaysia') && !weakAddress('KM 6.8/FT26 KLIA HIGHWAY') && !weakAddress('SS7, 47301 Petaling Jaya, Selangor'), 'weak addresses: no street in them')
 check(bearing({ lat: 0, lng: 0 }, { lat: 1, lng: 0 }) === 0 && bearing({ lat: 1, lng: 0 }, { lat: 0, lng: 0 }) === 180, 'bearings point the right way')
 
 console.log(bad ? `\n${bad} FAILED` : '\nall passed')

@@ -89,6 +89,25 @@ function specsOf(r: InventoryRecord): InventoryRecord['specs'] {
  * on purpose (owner, 26 Oct 2026: owner names never shown; prices only behind
  * the newsletter sign-up), so they can't leak into a page.
  */
+// Same rule as weakAddress in scripts/inventory-addresses.mjs: keep the two in sync.
+const STREET = /\b(jalan|jln|lebuh(raya)?|lorong|persiaran|road|rd|street|st|avenue|highway|hwy|expressway|expy|link|elite|ah\d+|usj\s?\d+|lingkaran|km\s?\d|km\d|ft\s?\d|e\d+|mrr\s?\d|ldp|kesas|sprint|npe|duke|dash|smart|precinct|presint|ss\s?\d+|seksyen|section|taman|bandar|kampung|kg|plaza|mall|tower|menara|building|wisma|station|stesen|sentral|lrt|mrt|airport|near|@|no\.?\s?\d)/i
+/** An address with no street in it: empty, "transit", "Malaysia", or only a postcode and town. */
+export const weakAddress = (a: string | null | undefined) => { const t = (a ?? '').trim(); return !t || (t.length < 40 && !STREET.test(t)) }
+/** A single word that is no address at all ("transit", "Malaysia", "test"). */
+const junkAddress = (a: string) => !/[\s,\d]/.test(a.trim())
+
+/**
+ * The address a page shows (Rif, 14 Nov 2026: the full address has to be there).
+ * The API's when it names a street; else OpenStreetMap's for a trusted map point;
+ * else whatever the API has, unless it is a single word.
+ */
+export function addressOf(r: InventoryRecord, trustedPoint: boolean): { text: string | null; fromMap: boolean } {
+  const api = r.address?.trim() || null
+  if (api && !weakAddress(api)) return { text: api, fromMap: false }
+  if (trustedPoint && r.mapAddress?.trim()) return { text: r.mapAddress.trim(), fromMap: true }
+  return { text: api && !junkAddress(api) ? api : null, fromMap: false }
+}
+
 export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite | null {
   // The address decides the place (Rif, 11 Nov 2026: never drop inventory over naming).
   // City: the configured level, else the nearest filled level above it. Area: the
@@ -110,6 +129,7 @@ export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite |
     ...(r.thumbnailUrl && !r.thumbnailUrlOriginal && !media.length ? [r.thumbnailUrl] : []),
   ].filter((u, i, a) => a.indexOf(u) === i)
   const d = r.digitalFields
+  const where = addressOf(r, !!point)
   return {
     id: r.id,
     // Name for search, plus a short stable code so two sites with the same name never collide.
@@ -127,7 +147,8 @@ export function toPublicSite(r: InventoryRecord, levels: LevelMap): PublicSite |
     countryName, countrySlug: slugify(countryName),
     cityName, citySlug: slugify(cityName),
     areaName, areaSlug: slugify(areaName),
-    address: r.address?.trim() || null,
+    address: where.text,
+    addressFromMap: where.fromMap,
     lat: point?.lat ?? null, lng: point?.lng ?? null,
     photos,
     // Street View only when there's no photo and the pin is trusted (no-pin sites have no point).

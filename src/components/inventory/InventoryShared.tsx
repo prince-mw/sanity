@@ -23,6 +23,14 @@ export function SampleBanner(_props: { className?: string }) { // eslint-disable
   return null
 }
 
+/**
+ * Credit for addresses looked up from a site's map point (scripts/inventory-addresses.mjs).
+ * OpenStreetMap's licence (ODbL) asks for this wherever the data shows.
+ */
+export function OsmCredit({ className = '', lead = 'Address from the map point.' }: { className?: string; lead?: string }) {
+  return <p className={`text-xs text-gray-500 ${className}`}>{lead} © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener nofollow" className="underline hover:text-gray-700">OpenStreetMap contributors</a></p>
+}
+
 export function SampleTag({ className = '' }: { className?: string }) {
   return <span className={`inline-block rounded-lg bg-amber-400 px-2 py-0.5 text-xs font-bold uppercase tracking-wider text-amber-950 ${className}`}>Sample</span>
 }
@@ -187,6 +195,7 @@ export function SiteGrid({ sites, hasPage, mapTitle, renderAction, filters = tru
           className={`${view === 'map' ? 'h-[70vh]' : 'h-64 sm:h-80'} ${mapHeight}`} />}
         {/* Explained once, only on a page of cards that has Street View in it. */}
         {streetViewEnabled && cards.some(s => !s.photos.length && s.streetView) && <StreetViewNote className={view === 'map' ? 'hidden lg:flex' : ''} />}
+        {cards.some(s => s.addressFromMap) && <OsmCredit className={view === 'map' ? 'hidden lg:block -mb-3' : '-mb-3'} lead="Some addresses are looked up from the site's map point." />}
         <div ref={gridRef} className={`${view === 'map' ? 'hidden lg:grid' : 'grid'} scroll-mt-28 sm:grid-cols-2 lg:grid-cols-3 gap-5`}>
           {cards.map(s => (
             <div key={s.id} id={`site-${s.id}`} onMouseEnter={() => setActive(s.id)}

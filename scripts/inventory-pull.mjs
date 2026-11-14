@@ -18,6 +18,7 @@ import fs from 'node:fs'
 import path from 'node:path'
 import { translateNames } from './inventory-names.mjs'
 import { findStreetView } from './inventory-streetview.mjs'
+import { fillAddresses } from './inventory-addresses.mjs'
 
 const ROOT = process.cwd()
 const OUT = process.env.INVENTORY_SNAPSHOT_DIR || path.join(ROOT, '.inventory')
@@ -175,6 +176,7 @@ async function main() {
         const rows = await resolvePoints(slug, await pullCountry(c))
         await translateNames(slug, rows)
         await findStreetView(slug, rows)
+        await fillAddresses(slug, rows)
         const file = path.join(OUT, `${slug}.json`)
         if (rows.length) {
           fs.writeFileSync(file, JSON.stringify({ country: c.name, slug, source: BASE, staging, pulledAt: new Date().toISOString(), records: rows }))

@@ -3,7 +3,7 @@
 // latest daily pull, so the queue is always current; the monthly report is the
 // scan skill's job. Pure: no storage, no fetching.
 
-import { addressState, plausibleSize, isTestRecord, HOLD_REASONS, type AddressRules, type PlaceSource, type Display, type HoldReason } from './normalize'
+import { addressState, plausibleSize, isTestRecord, weakAddress, HOLD_REASONS, type AddressRules, type PlaceSource, type Display, type HoldReason } from './normalize'
 import type { CorrectionField, CorrectionStatus } from './correctionsCore'
 import type { InventoryRecord } from './types'
 
@@ -23,6 +23,7 @@ export const ISSUE_TYPES: Record<string, { label: string; severity: Severity; fi
   'no-facing': { label: 'Outdoor site without a facing direction', severity: 'medium', fix: 'facing', onboarding: true },
   'no-photo': { label: 'No photo', severity: 'medium', fix: null, onboarding: true },
   'no-address': { label: 'No address', severity: 'medium', fix: 'address', onboarding: true },
+  'address-from-pin': { label: 'Address from map pin (OpenStreetMap): please confirm', severity: 'info', fix: 'address', onboarding: true },
   'long-name': { label: 'Name reads like a direction (over 60 characters)', severity: 'medium', fix: 'name', onboarding: true },
 }
 const issue = (code: keyof typeof ISSUE_TYPES): Issue => ({ code, ...ISSUE_TYPES[code] })
@@ -54,7 +55,8 @@ export function issuesOf(raw: InventoryRecord, shown: InventoryRecord, source: P
   else if (!plausibleSize(shown, p.physicalWidth!, p.physicalHeight!)) out.push(issue('size-wrong'))
   if (isOutdoor(shown) && !shown.panels?.[0]?.cardinalDirection) out.push(issue('no-facing'))
   if (!(shown.medias?.length || shown.thumbnailUrl) && hold !== 'indoor-no-photo') out.push(issue('no-photo'))
-  if (!shown.address?.trim()) out.push(issue('no-address'))
+  // A street-less API address: the website shows OpenStreetMap's for the pin (normalize.ts addressOf) until onboarding confirms one.
+  if (weakAddress(shown.address)) out.push(issue(shown.mapAddress?.trim() && shown.geoms?.length ? 'address-from-pin' : 'no-address'))
   if ((shown.name ?? '').trim().length > 60) out.push(issue('long-name'))
   return out
 }

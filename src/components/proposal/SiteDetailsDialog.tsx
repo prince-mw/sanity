@@ -9,7 +9,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { X, MapPin, ExternalLink, TrainFront, ShoppingBag, Camera, Briefcase, Users, GraduationCap, Moon, Plane, Car, Home, type LucideIcon } from 'lucide-react'
 import type { PublicSite, SiteSpecs } from '@/lib/inventory/types'
 import type { Persona } from '@/lib/inventory/siteContent'
-import { SampleTag, SitesMap } from '../inventory/InventoryShared'
+import { OsmCredit, SampleTag, SitesMap } from '../inventory/InventoryShared'
 import { StreetViewEmbed, streetViewEnabled } from '../inventory/StreetView'
 
 export const PERSONA_ICONS: Record<string, LucideIcon> = { commuter: TrainFront, shopper: ShoppingBag, tourist: Camera, office: Briefcase, family: Users, student: GraduationCap, nightlife: Moon, traveller: Plane, driver: Car, resident: Home }
@@ -134,6 +134,7 @@ export function SiteDetailsDialog({ site, insights, onClose, action }: { site: P
                 <section>
                   <h3 className={heading}>Location</h3>
                   <p className="mt-3 flex gap-2 text-sm text-gray-700"><MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-mw-blue-600" aria-hidden="true" /><span>{[site.address, site.areaName, site.cityName, site.countryName].filter(Boolean).filter((v, i, a) => a.indexOf(v) === i).join(', ')}</span></p>
+                  {site.addressFromMap && <OsmCredit className="mt-1 pl-6" />}
                   {site.lat != null && site.lng != null && <div className="mt-3 overflow-hidden rounded-xl"><SitesMap sites={[site]} title={`Map of ${site.name}`} className="h-48" /></div>}
                   {mapsHref && <a href={mapsHref} target="_blank" rel="noopener nofollow" className="mw-tap mt-2 inline-flex items-center gap-1.5 text-sm font-semibold text-[#2563eb] hover:underline">Open in Google Maps <ExternalLink className="h-3.5 w-3.5" aria-hidden="true" /></a>}
                 </section>

@@ -22,7 +22,7 @@ import type { PublicSite } from '@/lib/inventory/types'
 import type { SiteContent } from '@/lib/inventory/siteContent'
 import type { Faq } from '@/lib/inventory/siteFaq'
 import { RelatedContent } from './ContentBlocks'
-import { SitesMap, SampleTag, SiteCard, areaPath, sitePath } from './InventoryShared'
+import { OsmCredit, SitesMap, SampleTag, SiteCard, areaPath, sitePath } from './InventoryShared'
 import { AddToProposalButton } from '../proposal/AddToProposalButton'
 import { PERSONA_ICONS, SiteDetailsDialog, specRows, type SiteInsights } from '../proposal/SiteDetailsDialog'
 
@@ -177,6 +177,7 @@ export function InventorySiteClient({ site, content, similar, pagedIds, faqs = [
         <section className="bg-gray-50 mw-section">
           <div className="mw-container">
             <SgSectionHeading title={`Where ${site.name} is`} intro={site.address ?? `${site.areaName}, ${site.cityName}`} />
+            {site.addressFromMap && <OsmCredit className="-mt-4 mb-4" />}
             <SitesMap sites={[site]} title={`Map showing ${site.name}`} />
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <span className="text-sm font-semibold text-gray-600">More sites nearby</span>
