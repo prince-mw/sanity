@@ -3,6 +3,8 @@ import { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { getLandingPageBySlug, getLandingPageSlugs } from "@/sanity/lib/queries";
 import { LandingPageRenderer } from "@/components/landing";
+import PageHtmlLang from "@/components/PageHtmlLang";
+import { landingHreflangs, getLandingPageLang } from "@/lib/landingLanguageGroups";
 
 
 export const revalidate = 3600;
@@ -25,9 +27,11 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  
+  // In preview, show the draft's title/description so SEO fields can be checked before publishing
+  const { isEnabled: isPreview } = await draftMode();
+
   try {
-    const page = await getLandingPageBySlug(slug);
+    const page = await getLandingPageBySlug(slug, isPreview);
     
     if (page) {
       const seo = page.seo;
@@ -56,6 +60,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         robots: seo?.noIndex ? { index: false, follow: false } : undefined,
         alternates: {
           canonical: `https://www.movingwalls.com/${slug}`,
+          languages: landingHreflangs(slug),
         },
       };
     }
@@ -90,6 +95,7 @@ export default async function DynamicLandingPage({ params }: PageProps) {
   return (
     <>
       <main className="min-h-screen">
+        {getLandingPageLang(slug) && <PageHtmlLang lang={getLandingPageLang(slug)!} />}
         {isPreview && (
           <div className="bg-yellow-500 text-black text-center py-2 text-sm font-medium">
             Preview Mode - {page.status === 'draft' ? 'Draft' : page.status === 'archived' ? 'Archived' : 'Published'}

@@ -26,7 +26,7 @@ export function getReferrerName(pathname: string): string {
     // Most specific segment available: city slug if present, else country slug.
     // Translated city pages (/locations/china-zh/beijing) get the language suffix, like their
     // country page does ("chinazh"), so they're told apart from the English page ("beijing").
-    const langSuffix = segments[2] && segments[1]?.endsWith('-zh') ? 'zh' : '';
+    const langSuffix = segments[2] ? (segments[1]?.match(/-(zh|ja)$/)?.[1] ?? '') : '';
     return (segments[2] || segments[1] || 'locations').replace(/-/g, '') + langSuffix;
   }
 

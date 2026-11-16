@@ -12,6 +12,7 @@ import { CTAButton } from "./CTAButton";
 import { useZohoPopup } from "./ZohoPopupProvider";
 import { LOCATION_LANGUAGE_GROUPS, getLocationGroupKeyForLocale, getLocationSlugFromPathname } from "@/lib/locationLanguageGroups";
 import { getBlogSlugFromPathname } from "@/lib/blogLanguageGroups";
+import { LANDING_LANGUAGE_GROUPS, getLandingSlugFromPathname } from "@/lib/landingLanguageGroups";
 import type { BlogLanguageGroups } from "@/sanity/lib/queries";
 
 // Types for Sanity mega menu data
@@ -258,10 +259,12 @@ export default function Header({ sanityMenuData, blogLanguageGroups }: HeaderPro
     const locationSlug = getLocationSlugFromPathname(pathname);
     const locationGroupKey = getLocationGroupKeyForLocale(newLocale);
     const blogSlug = getBlogSlugFromPathname(pathname);
+    const landingSlug = getLandingSlugFromPathname(pathname);
 
     const targetUrl =
       (locationSlug && locationGroupKey ? LOCATION_LANGUAGE_GROUPS[locationSlug]?.[locationGroupKey] : undefined) ??
-      (blogSlug ? blogLanguageGroups?.[blogSlug]?.[newLocale] : undefined);
+      (blogSlug ? blogLanguageGroups?.[blogSlug]?.[newLocale] : undefined) ??
+      (landingSlug ? LANDING_LANGUAGE_GROUPS[landingSlug]?.[newLocale] : undefined);
 
     setLocale(newLocale);
 

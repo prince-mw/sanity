@@ -26,6 +26,15 @@ export const LOCATION_LANGUAGE_GROUPS: Record<string, Record<string, string>> = 
     'zh-CN': 'https://www.movingwalls.com/locations/china-zh',
   },
   ...cityPairs('china', 'china-zh', 'zh-CN', ['beijing', 'shanghai', 'guangzhou', 'shenzhen', 'chengdu']),
+  japan: {
+    en: 'https://www.movingwalls.com/locations/japan',
+    ja: 'https://www.movingwalls.com/locations/japan-ja',
+  },
+  'japan-ja': {
+    en: 'https://www.movingwalls.com/locations/japan',
+    ja: 'https://www.movingwalls.com/locations/japan-ja',
+  },
+  ...cityPairs('japan', 'japan-ja', 'ja', ['tokyo', 'osaka', 'nagoya', 'fukuoka']),
 }
 
 // City pages with a translated sibling under the translated country page, keyed "country/city":
@@ -52,6 +61,7 @@ const UI_LOCALE_TO_GROUP_KEY: Record<string, string> = {
   es: 'es',
   pt: 'pt-BR',
   zh: 'zh-CN',
+  ja: 'ja',
 }
 
 export function getLocationGroupKeyForLocale(locale: string): string | undefined {
@@ -66,6 +76,8 @@ const LOCATION_OWN_GROUP_KEY: Record<string, string> = {
   'americas-pt': 'pt-BR',
   china: 'en',
   'china-zh': 'zh-CN',
+  japan: 'en',
+  'japan-ja': 'ja',
 }
 
 // Should this location card show in the /locations grid for the given nav locale?
@@ -92,7 +104,10 @@ export function getLocationSlugFromPathname(pathname: string): string | undefine
   return m[2] ? `${m[1]}/${m[2]}` : m[1]
 }
 
-// Translated location pages (slug ending in "-zh") show the page template's fixed labels in Chinese.
-export function getLocationPageLang(countrySlug: string): 'en' | 'zh' {
-  return countrySlug.endsWith('-zh') ? 'zh' : 'en'
+// Translated location pages (slug ending in "-zh" / "-ja") show the page template's fixed labels in that
+// language. Also used by city pages, whose own slug ("tokyo") doesn't carry the language.
+export function getLocationPageLang(countrySlug: string): 'en' | 'zh' | 'ja' {
+  if (countrySlug.endsWith('-zh')) return 'zh'
+  if (countrySlug.endsWith('-ja')) return 'ja'
+  return 'en'
 }

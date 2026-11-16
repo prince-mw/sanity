@@ -130,7 +130,7 @@ interface LocationDetailClientProps {
   /** Overrides the default "Explore Other Cities in <country>" heading */
   relatedHeading?: string
   /** Language of the template's fixed labels (translated location pages pass 'zh') */
-  lang?: 'en' | 'zh'
+  lang?: 'en' | 'zh' | 'ja'
 }
 
 // Fixed labels in the page template (the page content itself comes from Sanity).
@@ -182,7 +182,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
   const location = initialData
   // Spanish/Portuguese pages (americas-es, americas-pt) keep their template labels in the page's own
   // language; English-content pages follow the visitor's language.
-  const pageLang = location.slug?.match(/-(es|pt)$/)?.[1] as 'es' | 'pt' | undefined
+  const pageLang = lang === 'ja' ? 'ja' : location.slug?.match(/-(es|pt)$/)?.[1] as 'es' | 'pt' | undefined
   const labelT = pageLang ? (key: string) => getMessage(messagesMap[pageLang], key) : t
   const L = lang === 'zh' ? LABELS.zh : getEnLabels(labelT)
   const backLabel = backLabelProp ?? L.allLocations
@@ -201,13 +201,13 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
   // so browsers don't offer to auto-translate an already-translated page, then restore whatever
   // it was before on unmount (not a hardcoded "en" — that would clobber a non-English UI locale).
   useEffect(() => {
-    const suffix = location.slug?.match(/-(es|zh|pt)$/)?.[1]
+    const suffix = lang === 'ja' ? 'ja' : location.slug?.match(/-(es|zh|pt)$/)?.[1]
     if (!suffix) return
-    const langBySuffix: Record<string, string> = { es: 'es', zh: 'zh-CN', pt: 'pt-BR' }
+    const langBySuffix: Record<string, string> = { es: 'es', zh: 'zh-CN', pt: 'pt-BR', ja: 'ja' }
     const previous = document.documentElement.lang
     document.documentElement.lang = langBySuffix[suffix]
     return () => { document.documentElement.lang = previous }
-  }, [location.slug])
+  }, [location.slug, lang])
 
   const hasCmsSections = location.sections && location.sections.length > 0
   const sectionsPosition = location.sectionsPosition || 'after-faqs'
