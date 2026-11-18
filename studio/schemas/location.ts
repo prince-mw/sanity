@@ -53,6 +53,14 @@ export default defineType({
       type: 'image',
       group: 'basic',
       options: { hotspot: true },
+      fields: [
+        defineField({
+          name: 'alt',
+          title: 'Alt text',
+          type: 'string',
+          description: 'Describe what the photo shows (e.g. Digital billboard beside a highway in Dubai at night). Used by screen readers and Google Images.',
+        }),
+      ],
     }),
     defineField({
       name: 'ctaButtonText',

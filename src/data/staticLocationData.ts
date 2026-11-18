@@ -9,6 +9,8 @@ export interface LocationData {
   heroTitle?: string
   heroSubtitle?: string
   heroImage: string
+  /** Describes the hero photo for screen readers and Google Images (Sanity: heroImage.alt) */
+  heroImageAlt?: string
   heroTagline?: string
   ctaButtonText?: string
   showAllLocationsButton?: boolean

@@ -4,7 +4,8 @@ import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
 import { getServerT } from '@/i18n/serverT'
 import { messagesMap, getMessage } from '@/i18n/messages'
-import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUrl, getCitiesByCountry, transformCityForList } from '@/sanity/lib/fetch'
+import { getCityBySlug, getAllCitySlugPairs, transformCityFull, getSanityImageUrl, getCitiesByCountry, transformCityForList, getLocationCardsBySlugs } from '@/sanity/lib/fetch'
+import { NEARBY_MARKETS, NEARBY_MARKETS_COPY } from '@/lib/nearbyMarkets'
 import { buildLocationJsonLd } from '@/lib/locationSchema'
 import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLanguageGroups'
 
@@ -24,9 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const seo = city.seo
   const title = seo?.metaTitle || `${city.city}, ${city.country?.country || ''}`
   const description = seo?.metaDescription || city.description || `Explore OOH advertising opportunities in ${city.city}.`
-  const ogImage = seo?.ogImage
-    ? getSanityImageUrl(seo.ogImage, { width: 1200 })
-    : getSanityImageUrl(city.heroImage, { width: 1200 })
+  const ogImage = getSanityImageUrl(seo?.ogImage || city.heroImage, { width: 1200, height: 630, fit: 'crop' })
 
   return {
     title,
@@ -64,9 +63,12 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
   }
 
   const cityData = transformCityFull(city)
-  const relatedCities = (await getCitiesByCountry(slug, isPreview))
+  const siblingCities = (await getCitiesByCountry(slug, isPreview))
     .filter((c) => c.slug?.current !== citySlug)
     .map(transformCityForList)
+  // Only city in its country (e.g. Accra): link neighbouring markets instead
+  const useNearby = siblingCities.length === 0 && Boolean(NEARBY_MARKETS[slug])
+  const relatedCities = useNearby ? await getLocationCardsBySlugs(NEARBY_MARKETS[slug], isPreview) : siblingCities
 
   const faqJsonLd = cityData.faqs && cityData.faqs.length > 0 ? {
     "@context": "https://schema.org",
@@ -106,6 +108,7 @@ export default async function CityPage({ params }: { params: Promise<{ slug: str
         relatedCities={relatedCities}
         countryName={city.country?.country || undefined}
         relatedHeading={(city.country as { relatedPagesHeading?: string } | undefined)?.relatedPagesHeading || undefined}
+        nearbyMarkets={useNearby ? NEARBY_MARKETS_COPY : undefined}
       />
     </>
   )

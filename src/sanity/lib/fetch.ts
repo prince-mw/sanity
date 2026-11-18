@@ -53,18 +53,22 @@ export interface SanitySEO {
 // Helper function to get Sanity image URL with optional transformations
 export function getSanityImageUrl(
   image: any,
-  options?: { width?: number; height?: number; quality?: number }
+  options?: { width?: number; height?: number; quality?: number; fit?: 'crop' }
 ): string {
   if (!image || !image.asset) return ''
-  
+
   try {
     let builder = urlFor(image)
-    
+
     if (options?.width) {
       builder = builder.width(options.width)
     }
     if (options?.height) {
       builder = builder.height(options.height)
+    }
+    // Without fit=crop, width+height only bounds the image (e.g. 1092x630), it doesn't fill the box
+    if (options?.fit) {
+      builder = builder.fit(options.fit)
     }
     if (options?.quality) {
       builder = builder.quality(options.quality)
@@ -1858,6 +1862,7 @@ export function transformLocationFull(location: SanityLocation) {
     description: location.fullDescription || location.description || '',
     heroTitle: location.heroTitle || '',
     heroImage: getSanityImageUrl(location.heroImage, { width: 1200 }) || '',
+    heroImageAlt: location.heroImage?.alt || '',
     ctaButtonText: location.ctaButtonText || '',
     showAllLocationsButton: location.showAllLocationsButton !== false,
     contactFormUrl: location.contactFormUrl || '',
@@ -2027,6 +2032,28 @@ export async function getAllCitySlugPairs(): Promise<Array<{ countrySlug: string
   return safeFetch(query)
 }
 
+/** Country pages by slug, as link cards (used for the "nearby markets" block). Keeps the order of `slugs`. */
+export async function getLocationCardsBySlugs(slugs: string[], preview: boolean = false) {
+  if (!slugs.length) return []
+  const query = `
+    *[_type == "location" && isActive == true && slug.current in $slugs] {
+      country, slug, description, heroImage
+    }
+  `
+  const docs: SanityLocation[] = (preview ? await previewClient.fetch(query, { slugs }) : await safeFetch(query, { slugs })) || []
+  return slugs
+    .map((s) => docs.find((d) => d.slug?.current === s))
+    .filter((d): d is SanityLocation => Boolean(d))
+    .map((d) => ({
+      city: d.country || '',
+      href: `/locations/${d.slug.current}`,
+      description: d.description || '',
+      billboards: '0',
+      image: getSanityImageUrl(d.heroImage, { width: 800 }) || '',
+      imageAlt: d.heroImage?.alt || '',
+    }))
+}
+
 export function transformCityForList(city: SanityLocationCity) {
   return {
     country: city.country?.country || '',
@@ -2035,6 +2062,7 @@ export function transformCityForList(city: SanityLocationCity) {
     description: city.description || '',
     billboards: city.billboards || '0',
     image: getSanityImageUrl(city.heroImage, { width: 800 }) || '',
+    imageAlt: city.heroImage?.alt || '',
   }
 }
 
@@ -2047,6 +2075,7 @@ export function transformCityFull(city: SanityLocationCity): LocationData {
     heroTitle: city.heroTitle || '',
     heroSubtitle: city.heroSubtitle || '',
     heroImage: getSanityImageUrl(city.heroImage, { width: 1200 }) || '',
+    heroImageAlt: city.heroImage?.alt || '',
     ctaButtonText: city.ctaButtonText || '',
     showAllLocationsButton: city.showAllLocationsButton !== false,
     contactFormUrl: city.contactFormUrl || '',

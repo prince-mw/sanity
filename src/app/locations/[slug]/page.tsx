@@ -2,7 +2,8 @@ import { Metadata } from 'next'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
-import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transformCityForList, getSanityImageUrl } from '@/sanity/lib/fetch'
+import { getLocationBySlug, transformLocationFull, getCitiesByCountry, transformCityForList, getSanityImageUrl, getLocationCardsBySlugs } from '@/sanity/lib/fetch'
+import { NEARBY_MARKETS, NEARBY_MARKETS_COPY } from '@/lib/nearbyMarkets'
 import { getStaticLocationData, STATIC_LOCATION_SLUGS, LocationData } from '@/data/staticLocationData'
 import { LOCATION_LANGUAGE_GROUPS, getLocationPageLang } from '@/lib/locationLanguageGroups'
 import { buildLocationJsonLd } from '@/lib/locationSchema'
@@ -17,9 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     const seo = sanityLocation.seo
     const title = seo?.metaTitle || sanityLocation.country
     const description = seo?.metaDescription || sanityLocation.description || `Explore OOH advertising opportunities in ${sanityLocation.country}.`
-    const ogImage = seo?.ogImage 
-      ? getSanityImageUrl(seo.ogImage, { width: 1200 })
-      : getSanityImageUrl(sanityLocation.heroImage, { width: 1200 })
+    const ogImage = getSanityImageUrl(seo?.ogImage || sanityLocation.heroImage, { width: 1200, height: 630, fit: 'crop' })
     
     return {
       title,
@@ -97,6 +96,9 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
     const cities = (sanityLocation as { hideCityCards?: boolean }).hideCityCards
       ? []
       : (await getCitiesByCountry(slug, isPreview)).map(transformCityForList)
+    // Country pages without city pages (e.g. Egypt) link neighbouring markets at the bottom instead
+    const useNearby = cities.length === 0 && Boolean(NEARBY_MARKETS[slug])
+    const nearby = useNearby ? await getLocationCardsBySlugs(NEARBY_MARKETS[slug], isPreview) : []
     const faqJsonLd = buildFaqJsonLd(locationData.faqs)
     const locationJsonLd = buildLocationJsonLd({ countrySlug: slug, countryName: sanityLocation.country || locationData.name })
     return (
@@ -108,7 +110,14 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
             dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
           />
         )}
-        <LocationDetailClient initialData={locationData} cities={cities} pageType="country" lang={getLocationPageLang(slug)} />
+        <LocationDetailClient
+          initialData={locationData}
+          cities={cities}
+          pageType="country"
+          lang={getLocationPageLang(slug)}
+          relatedCities={nearby}
+          nearbyMarkets={useNearby ? NEARBY_MARKETS_COPY : undefined}
+        />
       </>
     )
   }

@@ -115,6 +115,15 @@ interface LocationCityCard {
   description: string
   billboards: string
   image: string
+  imageAlt?: string
+}
+
+/** Copy for the "nearby markets" fallback shown when a page has no sibling cities to link to */
+export interface NearbyMarketsCopy {
+  heading: string
+  subheading: string
+  viewAllLabel: string
+  viewAllHref: string
 }
 
 interface LocationDetailClientProps {
@@ -131,6 +140,8 @@ interface LocationDetailClientProps {
   relatedHeading?: string
   /** Language of the template's fixed labels (translated location pages pass 'zh') */
   lang?: 'en' | 'zh' | 'ja'
+  /** Set when relatedCities holds neighbouring markets (country pages) instead of sibling cities */
+  nearbyMarkets?: NearbyMarketsCopy
 }
 
 // Fixed labels in the page template (the page content itself comes from Sanity).
@@ -177,7 +188,7 @@ const LABELS = {
   },
 }
 
-export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en' }: LocationDetailClientProps) {
+export default function LocationDetailClient({ initialData, backHref = '/locations', backLabel: backLabelProp, cities = [], pageType = 'country', relatedCities = [], countryName, relatedHeading, lang = 'en', nearbyMarkets }: LocationDetailClientProps) {
   const { t } = useLocale()
   const location = initialData
   // Spanish/Portuguese pages (americas-es, americas-pt) keep their template labels in the page's own
@@ -303,7 +314,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src={location.heroImage}
-                    alt={location.heroTitle || location.name}
+                    alt={location.heroImageAlt || location.heroTitle || location.name}
                     fill
                     className="object-cover"
                     priority
@@ -322,7 +333,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                 <div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
                     src={location.heroImage}
-                    alt={location.heroTitle || location.name}
+                    alt={location.heroImageAlt || location.heroTitle || location.name}
                     fill
                     className="object-cover"
                     priority
@@ -370,7 +381,7 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
                       <div className="h-40 bg-gradient-to-br from-mw-blue-100 to-mw-blue-50 relative">
                         <Image
                           src={city.image}
-                          alt={city.city}
+                          alt={city.imageAlt || city.city}
                           fill
                           sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
                           className="object-cover"
@@ -555,15 +566,15 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
       {/* CMS Sections - After FAQs */}
       {sectionsPosition === 'after-faqs' && cmsSections}
 
-      {/* Other cities in this country (city pages) — internal links between sibling city pages */}
-      {pageType === 'city' && relatedCities.length > 0 && (
+      {/* Other cities in this country (city pages), or nearby markets when there are no sibling cities */}
+      {(pageType === 'city' || nearbyMarkets) && relatedCities.length > 0 && (
         <section className="py-14 md:py-16 bg-mw-gray-50 border-t border-mw-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-10">
               <h2 className="text-3xl font-bold text-gray-900 mb-3">
-                {relatedHeading || L.otherCities(countryName)}
+                {nearbyMarkets?.heading || relatedHeading || L.otherCities(countryName)}
               </h2>
-              <p className="text-lg text-gray-600">{L.otherCitiesSub}</p>
+              <p className="text-lg text-gray-600">{nearbyMarkets?.subheading || L.otherCitiesSub}</p>
             </div>
             <div className="flex flex-wrap justify-center gap-6">
               {relatedCities.map((related) => (
@@ -584,8 +595,8 @@ export default function LocationDetailClient({ initialData, backHref = '/locatio
               ))}
             </div>
             <div className="text-center mt-10">
-              <Link href={backHref} className="inline-flex items-center gap-2 font-semibold text-mw-blue-600 hover:text-mw-blue-700">
-                {L.viewAll(backLabel, countryName)}
+              <Link href={nearbyMarkets?.viewAllHref || backHref} className="inline-flex items-center gap-2 font-semibold text-mw-blue-600 hover:text-mw-blue-700">
+                {nearbyMarkets?.viewAllLabel || L.viewAll(backLabel, countryName)}
               </Link>
             </div>
           </div>
