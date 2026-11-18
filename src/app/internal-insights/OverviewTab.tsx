@@ -14,9 +14,10 @@ import { TargetsWarning } from './PipelineTab'
 const fmt = (n: number, f: MetricFormat) => (f === 'usd' ? usd(n) : f === 'sgd' ? `SGD ${nf(n)}` : f === 'percent' ? pct(n) : nf(n))
 const PRIORITY_STYLE = { High: 'bg-red-100 text-red-700', Medium: 'bg-amber-100 text-amber-800', Low: 'bg-gray-100 text-gray-600' }
 
-// Google sources load side by side; Zoho sources one after another, as Zoho rate-limits bursts of calls
-const GOOGLE_PARTS: OverviewPart[] = ['site', 'ads', 'blog']
-const ZOHO_PARTS: OverviewPart[] = ['leads', 'campaigns', 'content', 'pipeline']
+// Sources load one after another, most important first. Not in parallel: the host (Amplify) runs several server
+// copies, each with its own data cache, so parallel requests land on "cold" copies and refetch from Zoho
+// (10–30 s each), while back-to-back requests reuse the same warm copy (~1 s each). Zoho also rate-limits bursts.
+const PART_ORDER: OverviewPart[] = ['site', 'leads', 'pipeline', 'content', 'campaigns', 'ads', 'blog']
 /** Order of the headline numbers, and how many each source adds (for the loading boxes) */
 const HEADLINE: [OverviewPart, number][] = [['site', 2], ['leads', 3], ['content', 2], ['campaigns', 1]]
 /** Order of the action-item groups */
@@ -68,16 +69,15 @@ function MetricRow({ m }: { m: Metric }) {
 
 export default function OverviewTab({ range, withPipeline }: { range: RangeKey; withPipeline: boolean }) {
   const tabHref = (tab: string) => `/internal-insights?tab=${tab}&range=${range}`
-  const parts = [...GOOGLE_PARTS, ...ZOHO_PARTS].filter((p) => withPipeline || p !== 'pipeline')
+  const parts = PART_ORDER.filter((p) => withPipeline || p !== 'pipeline')
   const [pieces, setPieces] = useState<Partial<Record<OverviewPart, OverviewPiece>>>({})
 
   useEffect(() => {
     let cancelled = false
     setPieces({})
     const put = (part: OverviewPart, piece: OverviewPiece) => { if (!cancelled) setPieces((p) => ({ ...p, [part]: piece })) }
-    for (const part of GOOGLE_PARTS) loadPiece(part, range).then((piece) => put(part, piece))
     ;(async () => {
-      for (const part of ZOHO_PARTS) {
+      for (const part of PART_ORDER) {
         if (cancelled) return
         if (part === 'pipeline' && !withPipeline) continue
         put(part, await loadPiece(part, range))
