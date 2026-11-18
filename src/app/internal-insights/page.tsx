@@ -24,7 +24,6 @@ import { getBlogAudit } from '@/lib/insights/blogAudit'
 import BlogTab from './BlogTab'
 import { getLeadsDashboard } from '@/lib/insights/leads'
 import LeadsTab from './LeadsTab'
-import { buildOverview } from '@/lib/insights/overview'
 import OverviewTab from './OverviewTab'
 
 // Internal, password-protected performance dashboard. Not in the sitemap, not linked anywhere,
@@ -97,29 +96,6 @@ async function LeadsSection({ range }: { range: RangeKey }) {
   }
 }
 
-/** `withPipeline`: false when the Pipeline & Targets tab is restricted for this person, so its numbers stay hidden here too */
-async function OverviewSection({ range, withPipeline }: { range: RangeKey; withPipeline: boolean }) {
-  const safe = <T,>(p: Promise<T>) => p.catch(() => null)
-  const [google, zoho] = await Promise.all([isInsightsConfigured(), isZohoConfigured()])
-  // Google data in parallel; the Zoho-based tabs one after another, as Zoho rate-limits bursts of calls
-  const zohoData = async () => {
-    if (!zoho) return { leads: null, campaigns: null, content: null, pipeline: null }
-    const leads = await safe(getLeadsDashboard(range))
-    const campaigns = await safe(getCampaignDashboard(range))
-    const content = await safe(getContentDashboard(range))
-    const pipeline = withPipeline ? await safe(getPipelineDashboard()) : null
-    return { leads, campaigns, content, pipeline }
-  }
-  const [site, ads, z, blog, statuses] = await Promise.all([
-    google ? safe(getDashboard(range)) : null,
-    google ? safe(getAdsDashboard(range)) : null,
-    zohoData(),
-    safe(getBlogAudit()),
-    getActionStatuses().catch(() => ({})),
-  ])
-  return <OverviewTab data={buildOverview({ site, ads, ...z, blog, statuses })} range={range} />
-}
-
 async function AdsSection({ range }: { range: RangeKey }) {
   if (!(await isInsightsConfigured())) return <Message title="Data connection is not configured." detail="Google settings are missing." />
   try {
@@ -170,7 +146,8 @@ export default async function InternalInsightsPage({ searchParams }: { searchPar
 
   return (
     <InsightsShell user={user} tab={tab} range={range} period={tab === 'projects' ? calendarPeriods(range) : periods(range)} snapshot={snapshot} hiddenTabs={hiddenTabs}>
-      {tab === 'overview' ? <OverviewSection range={range} withPipeline={!hiddenTabs.includes('pipeline')} /> : tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'ads' ? <AdsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'pipeline' ? <PipelineSection /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
+      {/* The Overview loads its data from the browser, one source at a time (OverviewTab), so it never waits here */}
+      {tab === 'overview' ? <OverviewTab range={range} withPipeline={!hiddenTabs.includes('pipeline')} /> : tab === 'campaigns' ? <CampaignsSection range={range} /> : tab === 'ads' ? <AdsSection range={range} /> : tab === 'leads' ? <LeadsSection range={range} /> : tab === 'pipeline' ? <PipelineSection /> : tab === 'content' ? <ContentSection range={range} /> : tab === 'blog' ? <BlogSection /> : tab === 'projects' ? <ProjectsSection range={range} /> : <LocationsTab range={range} />}
     </InsightsShell>
   )
 }

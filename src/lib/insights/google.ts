@@ -2,12 +2,13 @@ import 'server-only'
 import { createSign } from 'node:crypto'
 import { getInsightsConfig } from './config'
 
-// Read-only access to GA4 and Search Console through the "website-insights" service account.
+// Read-only access to GA4, Search Console and shared Google Sheets through the "website-insights" service account.
 // Credentials come from getInsightsConfig() (env or the private Sanity doc) and never leave the server.
 
 const SCOPES = [
   'https://www.googleapis.com/auth/analytics.readonly',
   'https://www.googleapis.com/auth/webmasters.readonly',
+  'https://www.googleapis.com/auth/spreadsheets.readonly',
 ].join(' ')
 
 let cachedToken: { token: string; expires: number } | null = null
@@ -75,6 +76,23 @@ export async function gscQuery(body: Record<string, unknown>): Promise<GscRow[]>
   const json = await res.json()
   if (json.error) throw new Error(`Search Console: ${json.error.message}`)
   return json.rows || []
+}
+
+/** Reads tabs of a Google Sheet shared with the service account → { tabName: rows (first row = header) }, as displayed
+ *  (dates stay "YYYY-MM-DD" rather than becoming serial numbers) */
+export async function sheetTabs(sheetId: string, tabs: string[]): Promise<Record<string, string[][]>> {
+  const ranges = tabs.map((t) => `ranges=${encodeURIComponent(t)}`).join('&')
+  const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(sheetId)}/values:batchGet?${ranges}`, {
+    headers: { authorization: `Bearer ${await accessToken()}` },
+    cache: 'no-store',
+  })
+  const json = await res.json()
+  if (json.error) throw new Error(`Google Sheets: ${json.error.message}`)
+  const out: Record<string, string[][]> = {}
+  ;(json.valueRanges || []).forEach((v: { values?: unknown[][] }, i: number) => {
+    out[tabs[i]] = (v.values || []).map((row) => row.map((c) => String(c ?? '')))
+  })
+  return out
 }
 
 export const isInsightsConfigured = async () => !!(await getInsightsConfig()).serviceAccount
