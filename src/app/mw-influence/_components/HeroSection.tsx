@@ -3,8 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
-import { InfluenceGeometry } from './brand/InfluenceGeometry';
 import { useLocale } from '@/i18n/LocaleContext';
+import { ProductLogo } from '@/components/ProductLogo';
 
 // New filename (not overwritten in place): /assets images are served with a 1-year immutable cache
 const HERO_IMAGE_URL = '/assets/images/mw-influence-hero-banner-image-v2.webp';
@@ -47,13 +47,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
           <div className="lg:col-span-5 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-400/30 text-blue-200 text-xs font-semibold tracking-wide shadow-sm" id="hero-badge">
-              <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
-                <InfluenceGeometry className="w-3 h-3 text-white" />
-              </div>
-              <span className="font-sans uppercase tracking-wider text-[11px] text-blue-100">
-                {badge}
-              </span>
+            <div className="flex justify-center lg:justify-start" id="hero-badge">
+              <ProductLogo product="influence" priority className="h-9 sm:h-10 w-auto" />
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans">

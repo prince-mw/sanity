@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
 import { useLocale } from '@/i18n/LocaleContext';
+import { ProductLogo } from '@/components/ProductLogo';
 
 // Same hero artwork as MW Studio (MW Inventory is part of MW Studio)
 const HERO_IMAGE_URL = '/assets/images/mw-studio-hero-banner-image.webp';
@@ -17,17 +18,6 @@ interface HeroSectionProps {
   ctaText?: string;
   ctaLink?: string;
 }
-
-// MW Studio's brand geometry: three overlapping, fading squares — matches the icon
-// already used for MW Studio on the MW Science page. MW Inventory is part of MW Studio,
-// so this icon replaces the old plain 4-square mark next to the product name.
-const StudioGeoIcon: React.FC<{ className?: string }> = ({ className }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <rect x="2" y="11" width="11" height="11" rx="1.5" opacity="0.45" />
-    <rect x="6.5" y="6.5" width="11" height="11" rx="1.5" opacity="0.7" />
-    <rect x="11" y="2" width="11" height="11" rx="1.5" />
-  </svg>
-);
 
 // Highlights the closing word "Revenue" in the same cyan-to-blue gradient used for
 // "Prove It." on the MW Measure hero — falls back to plain text if the CMS copy changes.
@@ -86,13 +76,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
           <div className="lg:col-span-6 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-300/30 text-blue-100 text-xs font-semibold tracking-wide shadow-sm" id="hero-badge">
-              <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
-                <StudioGeoIcon className="w-3 h-3 text-white" />
-              </div>
-              <span className="font-sans uppercase tracking-wider text-[11px]">
-                {badge}
-              </span>
+            <div className="flex justify-center lg:justify-start" id="hero-badge">
+              <ProductLogo product="studio" priority className="h-9 sm:h-10 w-auto" />
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans">

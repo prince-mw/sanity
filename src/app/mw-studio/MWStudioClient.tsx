@@ -18,6 +18,7 @@ import { FeatureCalendarAvailability as InventoryFeatureCalendarAvailability } f
 import { MwScienceStrip as InventoryMwScienceStrip } from '../mw-inventory/_components/MwScienceStrip'
 import { CtaSection as InventoryCtaSection } from '../mw-inventory/_components/CtaSection'
 import { useLocale } from '@/i18n/LocaleContext'
+import { ProductLogo } from '@/components/ProductLogo'
 
 // MW Studio's own hero banner (1024x1024 square) — kept separate from the shared CDN
 // asset below, which is still used by the MW Inventory hero.
@@ -159,15 +160,6 @@ const LinkIcon = ({ className }: { className?: string }) => (
 const MoonIcon = ({ className }: { className?: string }) => (
   <svg className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
     <path strokeLinecap="round" strokeLinejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
-  </svg>
-)
-// MW Studio's brand geometry: three overlapping, fading squares — matches the icon used
-// for MW Studio on the MW Science page and the MW Inventory hero badge.
-const StudioGeoIcon = ({ className }: { className?: string }) => (
-  <svg className={className} viewBox="0 0 24 24" fill="currentColor" stroke="none">
-    <rect x="2" y="11" width="11" height="11" rx="1.5" opacity="0.45" />
-    <rect x="6.5" y="6.5" width="11" height="11" rx="1.5" opacity="0.7" />
-    <rect x="11" y="2" width="11" height="11" rx="1.5" />
   </svg>
 )
 const SettingsIcon = ({ className }: { className?: string }) => (
@@ -351,11 +343,8 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
               transition={{ duration: 0.6 }}
               className="lg:col-span-6 space-y-4 sm:space-y-5 z-10 text-center lg:text-left"
             >
-              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-300/30 text-blue-100 text-xs font-semibold tracking-wide shadow-sm" id="hero-badge">
-                <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
-                  <StudioGeoIcon className="w-3 h-3 text-white" />
-                </div>
-                <span className="font-sans uppercase tracking-wider text-[11px]">MW Studio</span>
+              <div className="flex justify-center lg:justify-start" id="hero-badge">
+                <ProductLogo product="studio" priority className="h-9 sm:h-10 w-auto" />
               </div>
 
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans">

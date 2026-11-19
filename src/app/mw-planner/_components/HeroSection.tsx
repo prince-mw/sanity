@@ -3,8 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
-import { PlannerGeometry } from './brand/PlannerGeometry';
 import { useLocale } from '@/i18n/LocaleContext';
+import { ProductLogo } from '@/components/ProductLogo';
 
 const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/c08c5ef5a4b177066e024763e88d29c0f1bd1e3a-960x640.png?w=1200&q=90&auto=format';
 
@@ -59,13 +59,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-10 items-center">
 
           <div className="lg:col-span-5 space-y-6 sm:space-y-8 z-10 text-center lg:text-left">
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/40 border border-blue-300/30 text-blue-100 text-xs font-semibold tracking-wide shadow-sm" id="hero-badge">
-              <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center shrink-0">
-                <PlannerGeometry className="w-3.5 h-3.5 text-white" />
-              </div>
-              <span className="font-sans uppercase tracking-wider text-[11px]">
-                {badge}
-              </span>
+            <div className="flex justify-center lg:justify-start" id="hero-badge">
+              <ProductLogo product="planner" priority className="h-9 sm:h-10 w-auto" />
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans">

@@ -3,8 +3,8 @@
 import React from 'react';
 import Image from 'next/image';
 import { CTAButton } from '@/components/CTAButton';
-import { MeasureGeometry } from './brand/MeasureGeometry';
 import { useLocale } from '@/i18n/LocaleContext';
+import { ProductLogo } from '@/components/ProductLogo';
 
 const HERO_IMAGE_URL = 'https://cdn.sanity.io/images/u10im6di/production/670221eb1688190722ae99c3a30204f5690cb59b-1200x1200.png?w=1200&q=90&auto=format';
 
@@ -68,14 +68,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
           <div className="md:col-span-6 space-y-6 sm:space-y-8 text-center md:text-left">
 
-            {/* Pill Badge with MW Measure Geometry */}
-            <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-blue-950/80 border border-blue-400/30 text-blue-200 text-xs font-semibold tracking-wide shadow-sm">
-              <div className="w-5 h-5 rounded-full bg-[#0b162c] flex items-center justify-center">
-                <MeasureGeometry size="xs" />
-              </div>
-              <span className="font-sans uppercase tracking-wider text-[11px] text-blue-100">
-                {badge}
-              </span>
+            <div className="flex justify-center md:justify-start" id="hero-badge">
+              <ProductLogo product="measure" priority className="h-9 sm:h-10 w-auto" />
             </div>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-[1.2] font-sans">

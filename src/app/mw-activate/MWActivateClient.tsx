@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useState } from "react"
 import Image from "next/image"
 import { CTAButton } from "@/components/CTAButton"
+import { ProductLogo } from "@/components/ProductLogo"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
 import { getDisplayIntegrations, DisplayIntegration } from '@/data/default-integrations'
 import type { SanityProduct } from "@/sanity/lib/fetch"
@@ -167,6 +168,9 @@ export default function MWActivate({ caseStudies = [], product, partnerLogos }: 
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
             >
+              <div className="mb-6 pt-6 md:pt-0" id="hero-badge">
+                <ProductLogo product="activate" priority className="h-9 sm:h-10 w-auto" />
+              </div>
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
                 {heroTitle}
                 <span className="block text-3xl md:text-4xl font-light mt-3 text-white/80">
