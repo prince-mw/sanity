@@ -98,7 +98,9 @@ function countrySites(countrySlug: string, corrections: Correction[] = []): Publ
     .filter(r => !(r as { hiddenByStaff?: boolean }).hiddenByStaff)
     .filter(r => !needsPhoto(r))
     .flatMap(r => {
-      if ((r as { placeLocked?: boolean }).placeLocked) return [r]
+      // The built-in sample is hand-placed and never went through the pull's map-point check, so
+      // the display bar would hold all of it (staging without a key showed no sites, 19 Nov 2026).
+      if ((r as { placeLocked?: boolean }).placeLocked || !snapshotIndex()) return [r]
       const p = placementOf(r, address, pins.has(r.geoms?.[0] ?? '') && isOutdoorRecord(r))
       return p.display === 'hold' ? [] : [p.record]
     })
