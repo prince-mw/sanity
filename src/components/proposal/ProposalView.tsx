@@ -297,7 +297,7 @@ export function ProposalView({ view, canEdit, pagedIds, demo = false }: { view: 
                       <span className="absolute inset-0 flex flex-col items-center justify-center gap-1 bg-white/35 p-2 text-center">
                         <Lock className="h-5 w-5 text-[#1d4ed8]" aria-hidden="true" />
                         <span className="text-xs font-bold text-gray-900">{i === 3 && sites.length > 5 ? `+${sites.length - 4} more` : s.name}</span>
-                        <span className="text-[11px] font-semibold text-gray-700">Unlocks when you approve</span>
+                        <span className="text-xs font-semibold text-gray-700">Unlocks when you approve</span>
                       </span>
                     </li>
                   ))}
