@@ -25,7 +25,10 @@ export const LOCATION_LANGUAGE_GROUPS: Record<string, Record<string, string>> = 
     en: 'https://www.movingwalls.com/locations/china',
     'zh-CN': 'https://www.movingwalls.com/locations/china-zh',
   },
-  ...cityPairs('china', 'china-zh', 'zh-CN', ['beijing', 'shanghai', 'guangzhou', 'shenzhen', 'chengdu']),
+  ...cityPairs('china', 'china-zh', 'zh-CN', [
+    'beijing', 'shanghai', 'guangzhou', 'shenzhen', 'chengdu',
+    'changsha', 'chongqing', 'hangzhou', 'nanjing', 'qingdao', 'suzhou', 'tianjin', 'wuhan', 'xiamen', 'xian',
+  ]),
   japan: {
     en: 'https://www.movingwalls.com/locations/japan',
     ja: 'https://www.movingwalls.com/locations/japan-ja',
