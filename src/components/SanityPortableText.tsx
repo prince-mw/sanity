@@ -331,38 +331,43 @@ const components: PortableTextComponents = {
         right: 'justify-end',
       };
       
-      const buttonStyle = styleClasses[value.style] || styleClasses.primary;
       const alignment = alignmentClass[value.alignment] || alignmentClass.left;
-      
-      const ButtonContent = () => (
-        <>
-          {value.text}
-          {value.style === 'link' && (
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          )}
-        </>
-      );
-      
-      const isExternal = value.url?.startsWith('http');
-      
+
+      // One button, or two side by side when the optional second button is filled in.
+      const renderButton = (text: string, url: string | undefined, style: string, key: string) => {
+        const className = styleClasses[style] || styleClasses.primary;
+        const content = (
+          <>
+            {text}
+            {style === 'link' && (
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            )}
+          </>
+        );
+        return url?.startsWith('http') ? (
+          <a
+            key={key}
+            href={url}
+            className={className}
+            target={value.openInNewTab ? '_blank' : undefined}
+            rel={value.openInNewTab ? 'noopener noreferrer' : undefined}
+          >
+            {content}
+          </a>
+        ) : (
+          <Link key={key} href={url || '#'} className={className}>
+            {content}
+          </Link>
+        );
+      };
+
       return (
-        <div className={`my-6 flex ${alignment}`}>
-          {isExternal ? (
-            <a
-              href={value.url}
-              className={buttonStyle}
-              target={value.openInNewTab ? '_blank' : undefined}
-              rel={value.openInNewTab ? 'noopener noreferrer' : undefined}
-            >
-              <ButtonContent />
-            </a>
-          ) : (
-            <Link href={value.url || '#'} className={buttonStyle}>
-              <ButtonContent />
-            </Link>
-          )}
+        <div className={`my-6 flex flex-wrap items-center gap-3 ${alignment}`}>
+          {renderButton(value.text, value.url, value.style, 'primary')}
+          {value.secondaryText && value.secondaryUrl &&
+            renderButton(value.secondaryText, value.secondaryUrl, value.secondaryStyle || 'secondary', 'secondary')}
         </div>
       );
     },

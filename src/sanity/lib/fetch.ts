@@ -662,10 +662,14 @@ function portableTextToHtml(blocks: any[] | undefined): string {
         dark: 'not-prose no-underline hover:no-underline bg-mw-gray-900 hover:bg-mw-gray-800 text-white px-6 py-3 rounded-lg font-semibold',
         link: 'not-prose no-underline hover:no-underline text-mw-blue-600 hover:text-mw-blue-700 font-semibold',
       }
-      const btnClass = styleMap[block.style] || styleMap.primary
       const align = block.alignment === 'center' ? 'justify-center' : block.alignment === 'right' ? 'justify-end' : 'justify-start'
-      const isExternal = (block.url || '').startsWith('http')
-      return `<div class="my-6 flex ${align}"><a href="${block.url || '#'}" class="${btnClass}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ''}>${block.text || ''}</a></div>`
+      const btn = (text: string, url: string, style: string) => {
+        const isExternal = (url || '').startsWith('http')
+        return `<a href="${url || '#'}" class="${styleMap[style] || styleMap.primary}"${isExternal ? ' target="_blank" rel="noopener noreferrer"' : ''}>${text || ''}</a>`
+      }
+      // Optional second button shown beside the first
+      const second = block.secondaryText && block.secondaryUrl ? btn(block.secondaryText, block.secondaryUrl, block.secondaryStyle || 'secondary') : ''
+      return `<div class="my-6 flex flex-wrap items-center gap-3 ${align}">${btn(block.text, block.url, block.style)}${second}</div>`
     }
 
     // Handle table blocks

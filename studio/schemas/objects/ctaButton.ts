@@ -51,6 +51,32 @@ export default defineType({
       },
       initialValue: 'left',
     }),
+    defineField({
+      name: 'secondaryText',
+      title: 'Second Button Text (optional)',
+      type: 'string',
+      description: 'Fill this and the second URL to show a second button beside the first, in the same row',
+    }),
+    defineField({
+      name: 'secondaryUrl',
+      title: 'Second Button URL',
+      type: 'string',
+      description: 'Internal path (e.g., /locations/india) or external URL',
+    }),
+    defineField({
+      name: 'secondaryStyle',
+      title: 'Second Button Style',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Primary (Blue)', value: 'primary'},
+          {title: 'Secondary (Outline)', value: 'secondary'},
+          {title: 'Dark', value: 'dark'},
+          {title: 'Link with Arrow', value: 'link'},
+        ],
+      },
+      initialValue: 'secondary',
+    }),
   ],
   preview: {
     select: {text: 'text', url: 'url', style: 'style'},
