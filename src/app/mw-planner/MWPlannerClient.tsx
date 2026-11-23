@@ -7,7 +7,7 @@ import { DataPlanningSection } from './_components/DataPlanningSection';
 import { FeatureShowcaseSection } from './_components/FeatureShowcaseSection';
 import { WorkflowJourneySection } from './_components/WorkflowJourneySection';
 import { AudienceCardsSection } from './_components/AudienceCardsSection';
-import { MwScienceStrip } from './_components/MwScienceStrip';
+import { MwScienceStrip } from '@/components/MwScienceStrip';
 import { FooterCTA } from './_components/FooterCTA';
 
 interface MWPlannerClientProps {

@@ -15,7 +15,7 @@ import { FeatureSupplyConfidence as InventoryFeatureSupplyConfidence } from '../
 import { FeatureBundleOpportunities as InventoryFeatureBundleOpportunities } from '../mw-inventory/_components/FeatureBundleOpportunities'
 import { FeatureControlSelling as InventoryFeatureControlSelling } from '../mw-inventory/_components/FeatureControlSelling'
 import { FeatureCalendarAvailability as InventoryFeatureCalendarAvailability } from '../mw-inventory/_components/FeatureCalendarAvailability'
-import { MwScienceStrip as InventoryMwScienceStrip } from '../mw-inventory/_components/MwScienceStrip'
+import { MwScienceStrip } from '@/components/MwScienceStrip'
 import { CtaSection as InventoryCtaSection } from '../mw-inventory/_components/CtaSection'
 import { useLocale } from '@/i18n/LocaleContext'
 import { ProductLogo } from '@/components/ProductLogo'
@@ -531,7 +531,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 <div className="rounded-2xl overflow-hidden shadow-sm">
-                  <InventoryMwScienceStrip />
+                  <MwScienceStrip />
                 </div>
 
                 <div className="rounded-2xl overflow-hidden shadow-sm">
@@ -639,7 +639,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 <div className="rounded-2xl overflow-hidden shadow-sm mb-8">
-                  <InventoryMwScienceStrip />
+                  <MwScienceStrip />
                 </div>
 
                 {/* 2D: Final CTA */}
@@ -798,7 +798,7 @@ export default function MWStudioClient({ caseStudies = [], product, partnerLogos
                 </div>
 
                 <div className="rounded-2xl overflow-hidden shadow-sm mb-8">
-                  <InventoryMwScienceStrip />
+                  <MwScienceStrip />
                 </div>
 
                 {/* 3E: Final CTA */}

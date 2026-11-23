@@ -7,7 +7,7 @@ import { ComparisonSection } from './_components/ComparisonSection';
 import { ThreeAnswersSection } from './_components/ThreeAnswersSection';
 import { CampaignInsightsSection } from './_components/CampaignInsightsSection';
 import { AudiencesSection } from './_components/AudiencesSection';
-import { MwScienceStrip } from './_components/MwScienceStrip';
+import { MwScienceStrip } from '@/components/MwScienceStrip';
 import { FooterCTA } from './_components/FooterCTA';
 
 interface MWMeasureClientProps {

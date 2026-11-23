@@ -6,7 +6,7 @@ import { HeroSection } from './_components/HeroSection';
 import { ValuePropositionSection } from './_components/ValuePropositionSection';
 import { FeatureShowcase } from './_components/FeatureShowcase';
 import { StackIntegrationSection } from './_components/StackIntegrationSection';
-import { MwScienceStrip } from './_components/MwScienceStrip';
+import { MwScienceStrip } from '@/components/MwScienceStrip';
 import { FooterCTA } from './_components/FooterCTA';
 
 interface MWInfluenceClientProps {

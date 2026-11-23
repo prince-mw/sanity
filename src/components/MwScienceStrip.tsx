@@ -2,9 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { CompassNeedleAmbientDrift } from '@/components/CompassNeedleAmbientDrift';
+import { IntelligenceWave } from '@/components/IntelligenceWave';
 import { useLocale } from '@/i18n/LocaleContext';
 
+// "Powered by MW Science" strip shown near the foot of every product page
+// (MW Studio, Inventory, Planner, Measure, Influence).
 export const MwScienceStrip: React.FC = () => {
   const { t } = useLocale();
   return (
@@ -15,7 +17,7 @@ export const MwScienceStrip: React.FC = () => {
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-12 relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
 
-          <div className="lg:col-span-8 space-y-4">
+          <div className="lg:col-span-8 space-y-4 text-center lg:text-left">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-mw-gray-200 shadow-sm">
               <span className="w-2 h-2 rounded-full bg-emerald-400 ring-2 ring-emerald-400/30" />
               <span className="text-[10px] sm:text-[11px] font-sans font-semibold tracking-wider text-mw-blue-900 uppercase">
@@ -23,8 +25,8 @@ export const MwScienceStrip: React.FC = () => {
               </span>
             </div>
 
-            <p className="text-base sm:text-[17px] lg:text-[18px] text-mw-blue-900 font-normal leading-relaxed tracking-tight max-w-2xl font-sans">
-              Powered by <strong className="font-bold">MW Science</strong>, the Cognitive Compass behind Moving Walls, connecting real-world signals to guide smarter decisions across the entire ecosystem.
+            <p className="text-base sm:text-[17px] lg:text-[18px] text-mw-blue-900 font-normal leading-relaxed tracking-tight max-w-2xl mx-auto lg:mx-0 font-sans">
+              Powered by <strong className="font-bold">MW Science</strong>, the intelligence behind every Moving Walls product.
             </p>
 
             <div className="pt-1 text-center lg:text-left">
@@ -40,8 +42,8 @@ export const MwScienceStrip: React.FC = () => {
 
           </div>
 
-          <div className="lg:col-span-4 flex items-center justify-center lg:justify-end lg:-translate-x-16">
-            <CompassNeedleAmbientDrift className="w-32 h-32 sm:w-40 sm:h-40" tone="dark" />
+          <div className="lg:col-span-4 flex items-center justify-center lg:justify-end">
+            <IntelligenceWave variant="stack" tone="light" className="w-64 sm:w-72 h-auto" />
           </div>
 
         </div>

@@ -8,7 +8,7 @@ import { FeatureSupplyConfidence } from './_components/FeatureSupplyConfidence';
 import { FeatureBundleOpportunities } from './_components/FeatureBundleOpportunities';
 import { FeatureControlSelling } from './_components/FeatureControlSelling';
 import { FeatureCalendarAvailability } from './_components/FeatureCalendarAvailability';
-import { MwScienceStrip } from './_components/MwScienceStrip';
+import { MwScienceStrip } from '@/components/MwScienceStrip';
 import { CtaSection } from './_components/CtaSection';
 
 interface MWInventoryClientProps {
