@@ -4,9 +4,9 @@ import Image from 'next/image'
 // 885×190 canvas with identical icon/text placement, so logos line up when stacked.
 //   white — colour icon + white text, for the dark product-page heroes
 //   navy  — colour icon + navy text, for white/light sections
-// MW Market has no logo yet; MW Inventory uses the MW Studio logo.
+// MW Inventory uses the MW Studio logo.
 
-export type ProductLogoName = 'activate' | 'science' | 'planner' | 'measure' | 'studio' | 'influence'
+export type ProductLogoName = 'activate' | 'science' | 'planner' | 'measure' | 'studio' | 'influence' | 'market'
 
 const NAMES: Record<ProductLogoName, string> = {
   activate: 'MW Activate',
@@ -15,6 +15,7 @@ const NAMES: Record<ProductLogoName, string> = {
   measure: 'MW Measure',
   studio: 'MW Studio',
   influence: 'MW Influence',
+  market: 'MW Market',
 }
 
 export function ProductLogo({

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import { CTAButton } from "@/components/CTAButton"
+import { ProductLogo } from "@/components/ProductLogo"
 import { useFormPopup } from "@/components/FormPopupProvider"
 import CaseStudiesSection from "@/components/CaseStudiesSection"
 import TestimonialSectionClient from "@/components/TestimonialSectionClient"
@@ -223,12 +224,12 @@ export default function MWMarketPage({ caseStudies = [], product, partnerLogos, 
 
             {/* Left Content */}
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="order-2 lg:order-1">
-              {tagline && (
-                <div className="inline-flex items-center bg-white/10 px-3 sm:px-4 py-1.5 sm:py-2 rounded-md mb-4 sm:mb-6 w-fit">
-                  <span className="text-white/90 font-medium text-xs sm:text-sm">{tagline}</span>
-                </div>
-              )}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 leading-tight">{heroTitle}</h1>
+              <div className="mb-4 sm:mb-5" id="hero-badge">
+                <ProductLogo product="market" priority className="h-9 sm:h-10 w-auto" />
+              </div>
+              {/* The logo already names the product, so the headline is the tagline
+                  ("DOOH Inventory Marketplace") instead of repeating "MW Market". */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-3 sm:mb-4 leading-tight">{tagline || heroTitle}</h1>
               {heroSubtitle && <p className="text-lg sm:text-xl md:text-2xl font-light text-blue-200 mb-4 sm:mb-6">{heroSubtitle}</p>}
               {heroDescription && <p className="text-base sm:text-lg text-white/80 mb-6 sm:mb-8 leading-relaxed max-w-xl">{heroDescription}</p>}
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
