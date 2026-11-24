@@ -58,7 +58,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         // Honour the page's "Hide from search engines" setting (e.g. invitation-only event pages)
         robots: seo?.noIndex ? { index: false, follow: false } : undefined,
         alternates: {
-          canonical: `https://www.movingwalls.com/lp/${slug}`,
+          // The same page is served at /{slug} (the address the sitemap and links use) — point there so
+          // search engines don't index two copies.
+          canonical: `https://www.movingwalls.com/${slug}`,
         },
       };
     }

@@ -1,4 +1,5 @@
 import { Metadata } from 'next'
+import { withXDefault } from '@/lib/hreflang'
 import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation'
 import LocationDetailClient from '@/components/LocationDetailClient'
@@ -39,7 +40,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     },
     alternates: {
       canonical: `https://www.movingwalls.com/locations/${slug}/${citySlug}`,
-      languages: LOCATION_LANGUAGE_GROUPS[`${slug}/${citySlug}`] ?? undefined,
+      languages: withXDefault(LOCATION_LANGUAGE_GROUPS[`${slug}/${citySlug}`]),
     },
     robots: seo?.noIndex ? { index: false, follow: false } : undefined,
   }

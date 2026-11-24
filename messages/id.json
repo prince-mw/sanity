@@ -874,20 +874,20 @@
       "intro": "Inti dari Moving Walls adalah sistem terhubung yang menyatukan data, perencanaan, aktivasi, dan pengukuran di berbagai pasar.",
       "cards": {
         "data": {
-          "label": "Data Inputs",
+          "label": "Input Data",
           "description": "Sinyal audiens, pola lokasi dan mobilitas, arus lalu lintas, pemicu cuaca, demografi, titik minat (POI), kalender acara, serta data pihak pertama dan pihak ketiga."
         },
         "execute": {
-          "label": "Execute Locally",
+          "label": "Eksekusi Lokal",
           "description": "Kampanye direncanakan secara terpusat dan dijalankan secara lokal, diukur secara konsisten di seluruh wilayah, serta terus disempurnakan."
         },
         "measure": {
-          "label": "Measure & Refine",
-          "description": "Track performance across markets with unified analytics, optimise in real time, and build learnings into every future campaign."
+          "label": "Ukur & Sempurnakan",
+          "description": "Pantau kinerja di berbagai pasar dengan analitik terpadu, optimalkan secara real-time, dan terapkan pembelajaran ke setiap kampanye berikutnya."
         }
       },
       "scenario": {
-        "label": "Imagine This",
+        "label": "Bayangkan Ini",
         "description": "Sebuah brand ritel berekspansi ke kota baru. Layar aktif di dalam area perdagangan yang telah ditentukan ketika jumlah pengunjung meningkat dan kondisi kontekstual selaras dengan permintaan. Materi kreatif menyesuaikan dengan momen lokal sambil tetap menjaga konsistensi brand global. Anggaran mengikuti peluang secara real-time."
       },
       "quote": "Beginilah media luar ruang berevolusi dari ruang statis menjadi jaringan global yang responsif.",

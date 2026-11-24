@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { legacyLanguageRedirect } from '@/lib/legacyLanguageUrls'
 
 interface RedirectRule {
   source: string
@@ -125,6 +126,13 @@ export async function middleware(request: NextRequest) {
         })
       }
     }
+  }
+
+  // Old WordPress language-prefixed URLs (/ja/…, /ko/…, /id/…) → the matching live page.
+  // Runs after the CMS redirects so an explicit rule in Studio always wins.
+  const legacyTarget = legacyLanguageRedirect(normalizedPath)
+  if (legacyTarget) {
+    return NextResponse.redirect(buildRedirectUrl(request, legacyTarget), 301)
   }
 
   // Handle trailing slash normalization (since skipTrailingSlashRedirect is enabled)

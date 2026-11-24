@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { withXDefault } from '@/lib/hreflang'
 import { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { getBlogPostBySlug, getRelatedBlogPosts, transformBlogPost, getAllBlogPosts, getSanityImageUrl } from "@/sanity/lib/fetch";
@@ -79,7 +80,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         },
         alternates: {
           canonical: `https://www.movingwalls.com/blog/${slug}`,
-          languages: toHreflangLanguages(blogLanguageGroups[slug]),
+          languages: withXDefault(toHreflangLanguages(blogLanguageGroups[slug])),
         },
         robots: seo?.noIndex ? { index: false, follow: false } : undefined,
       };

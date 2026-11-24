@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { withXDefault } from "@/lib/hreflang";
 import { Metadata } from "next";
 import { draftMode } from "next/headers";
 import { getLandingPageBySlug, getLandingPageSlugs } from "@/sanity/lib/queries";
@@ -60,7 +61,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         robots: seo?.noIndex ? { index: false, follow: false } : undefined,
         alternates: {
           canonical: `https://www.movingwalls.com/${slug}`,
-          languages: landingHreflangs(slug),
+          languages: withXDefault(landingHreflangs(slug)),
         },
       };
     }
