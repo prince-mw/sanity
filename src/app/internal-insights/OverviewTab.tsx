@@ -52,7 +52,18 @@ async function loadPiece(part: OverviewPart, range: RangeKey): Promise<OverviewP
   return { headline: [], tab: card.failed ? { key: card.key, title: card.title, metrics: [], unavailable: card.failed } : undefined }
 }
 
-const Pulse = ({ className }: { className: string }) => <div className={`animate-pulse rounded bg-gray-100 ${className}`} />
+/** The saved snapshots for this range ({} for custom dates, or when they can't be read) */
+async function loadSaved(range: RangeKey): Promise<Partial<Record<OverviewPart, OverviewPiece>>> {
+  try {
+    const res = await fetch(`/api/internal-insights/overview?part=saved&range=${encodeURIComponent(range)}`)
+    if (res.ok) return ((await res.json()) as { pieces: Partial<Record<OverviewPart, OverviewPiece>> }).pieces || {}
+  } catch {
+    // fall back to loading each source
+  }
+  return {}
+}
+
+const Pulse =({ className }: { className: string }) => <div className={`animate-pulse rounded bg-gray-100 ${className}`} />
 
 function MetricRow({ m }: { m: Metric }) {
   return (
@@ -77,9 +88,13 @@ export default function OverviewTab({ range, withPipeline }: { range: RangeKey; 
     setPieces({})
     const put = (part: OverviewPart, piece: OverviewPiece) => { if (!cancelled) setPieces((p) => ({ ...p, [part]: piece })) }
     ;(async () => {
+      // 1. Every saved snapshot in one quick request (shared by all server copies; older ones refresh in the background)
+      const saved = await loadSaved(range)
+      for (const [part, piece] of Object.entries(saved) as [OverviewPart, OverviewPiece][]) put(part, piece)
+      // 2. Anything not saved yet, one source at a time
       for (const part of PART_ORDER) {
         if (cancelled) return
-        if (part === 'pipeline' && !withPipeline) continue
+        if ((part === 'pipeline' && !withPipeline) || saved[part]) continue
         put(part, await loadPiece(part, range))
       }
     })()

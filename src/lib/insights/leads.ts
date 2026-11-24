@@ -1,6 +1,8 @@
 import 'server-only'
 import { unstable_cache } from 'next/cache'
 import { zohoTableRows } from './zoho'
+import { allSheetTabs } from './google'
+import { getInsightsConfig } from './config'
 import { periods, type RangeKey } from './ranges'
 
 // Leads & Deals tab: CRM leads and the deals they turned into, from the marketing team's Zoho Analytics
@@ -13,6 +15,9 @@ import { periods, type RangeKey } from './ranges'
 // "Website / Webform" also holds event and list uploads and other leads the team files there, so only some
 // inbound leads are website form fills. A lead counts as a website form lead when its first CRM tag names a
 // website form (set by the Zoho Forms → CRM integration).
+// Leads from info@movingwalls.com emails are also filed as "Website / Webform" with no tag. The marketing team lists
+// them in a Google Sheet (one tab per month, each row with the CRM lead link); a lead whose id is in that sheet
+// counts as an info@ email lead.
 
 const LEADS_TABLE = '2553974000069802824'
 const DEALS_TABLE = '2553974000069802853'
@@ -35,6 +40,8 @@ export interface Deal {
   channel: Channel
   /** Inbound only: the website form (first CRM tag) and market of the lead */
   form: string
+  /** The lead is in the info@ email sheet */
+  info: boolean
   market: string
   leadDate: string
 }
@@ -42,8 +49,34 @@ export interface Deal {
 interface Base {
   /** Leads created per day: [inbound, outbound, other] */
   daily: Record<string, [number, number, number]>
-  inbound: { date: string; form: string; market: string }[]
+  inbound: { date: string; form: string; market: string; info: boolean }[]
   deals: Deal[]
+  infoSheet: InfoSheetStatus
+}
+
+export interface InfoSheetStatus {
+  /** 'off' = no sheet set up; 'error' = the sheet couldn't be read */
+  status: 'ok' | 'off' | 'error'
+  /** CRM lead links in the sheet, and how many of them were found in the CRM data */
+  listed: number
+  matched: number
+}
+
+export const INFO_LABEL = 'info@ email'
+
+/** Lead ids from the CRM links in every tab of the info@ email sheet */
+async function infoLeadIds(): Promise<{ ids: Set<string>; status: InfoSheetStatus['status'] }> {
+  const sheetId = (await getInsightsConfig()).infoLeadsSheetId
+  if (!sheetId) return { ids: new Set(), status: 'off' }
+  try {
+    const tabs = await allSheetTabs(sheetId)
+    const ids = new Set<string>()
+    for (const rows of Object.values(tabs)) for (const row of rows) for (const cell of row) for (const m of cell.matchAll(/\/tab\/Leads\/(\d{10,})/g)) ids.add(m[1])
+    return { ids, status: 'ok' }
+  } catch (e) {
+    console.error('[insights] info@ leads sheet:', e)
+    return { ids: new Set(), status: 'error' }
+  }
 }
 
 /** Zoho dates come as "dd/MM/yyyy[ hh:mm AM]" */
@@ -69,6 +102,7 @@ const getBase = unstable_cache(
     const dealRows = await zohoTableRows(DEALS_TABLE, {
       columns: ['Id', 'Deal Name', 'Stage', 'Created Time', 'Closing Date', 'Amount', 'Deal Owner Name', 'Account Name', 'Converted from Lead'],
     })
+    const info = await infoLeadIds()
 
     const daily: Base['daily'] = {}
     const leadChannel = new Map<string, { channel: Channel; date: string }>()
@@ -80,7 +114,10 @@ const getBase = unstable_cache(
       const d = (daily[date] ??= [0, 0, 0])
       d[channel === 'Inbound' ? 0 : channel === 'Outbound' ? 1 : 2]++
     }
-    const inboundById = new Map(inboundRows.map((r) => [r.Id, { date: isoDate(r['Created Time']), form: formOf(r.Tag), market: r['Operating Country'] || r.Country || 'Unknown' }]))
+    const inboundById = new Map(inboundRows.map((r) => {
+      const form = formOf(r.Tag)
+      return [r.Id, { date: isoDate(r['Created Time']), form, market: r['Operating Country'] || r.Country || 'Unknown', info: !form && info.ids.has(r.Id) }]
+    }))
 
     // Only deals converted from a lead, as in the Zoho report
     const deals: Deal[] = []
@@ -91,19 +128,20 @@ const getBase = unstable_cache(
       deals.push({
         id: r.Id, name: r['Deal Name'], stage: r.Stage, created: isoDate(r['Created Time']), closing: isoDate(r['Closing Date']),
         amount: money(r.Amount), owner: r['Deal Owner Name'] || '', account: r['Account Name'] || '', channel: lead.channel,
-        form: inbound?.form || '', market: inbound?.market || '', leadDate: lead.date,
+        form: inbound?.form || '', info: !!inbound?.info, market: inbound?.market || '', leadDate: lead.date,
       })
     }
-    return { daily, inbound: [...inboundById.values()], deals }
+    const matched = [...info.ids].filter((id) => leadChannel.has(id)).length
+    return { daily, inbound: [...inboundById.values()], deals, infoSheet: { status: info.status, listed: info.ids.size, matched } }
   },
-  ['internal-insights-zoho-crm', 'b2'],
+  ['internal-insights-zoho-crm', 'b3'],
   { revalidate: 6 * 60 * 60, tags: ['internal-insights'] },
 )
 
 /** Ids of deals that came from an inbound (marketing) lead; used by the Pipeline & Targets tab */
 export const getMarketingDealIds = async () => new Set((await getBase()).deals.filter((d) => d.channel === 'Inbound').map((d) => d.id))
 
-export interface ChannelTotals { leads: number; /** Inbound only: leads that came through a website form */ fromForms: number; deals: number; dealValue: number; won: number; wonValue: number; convRate: number }
+export interface ChannelTotals { leads: number; /** Inbound only: leads that came through a website form */ fromForms: number; /** Inbound only: leads from info@ emails (the team's sheet) */ fromInfo: number; deals: number; dealValue: number; won: number; wonValue: number; convRate: number }
 export interface BreakdownRow { name: string; leads: number; deals: number; dealValue: number; won: number; wonValue: number }
 export interface StageRow { stage: string; inbound: number; inboundValue: number; outbound: number; outboundValue: number }
 export interface MonthRow { month: string; inLeads: number; inDeals: number; inValue: number; outLeads: number; outDeals: number; outValue: number }
@@ -120,6 +158,7 @@ export interface LeadsDashboard {
   months: MonthRow[]
   deals: Deal[]
   coverage: { firstLead: string; lastLead: string }
+  infoSheet: InfoSheetStatus
 }
 
 const CLOSED = /closed/i
@@ -138,23 +177,25 @@ function totals(base: Base, start: string, end: string): Record<Channel, Channel
     const won = created.filter(isWon)
     const leads = leadCounts[i]
     const fromForms = ch === 'Inbound' ? base.inbound.filter((l) => l.form && inRange(l.date)).length : 0
+    const fromInfo = ch === 'Inbound' ? base.inbound.filter((l) => l.info && inRange(l.date)).length : 0
     out[ch] = {
-      leads, fromForms, deals: created.length, dealValue: created.reduce((n, d) => n + d.amount, 0),
+      leads, fromForms, fromInfo, deals: created.length, dealValue: created.reduce((n, d) => n + d.amount, 0),
       won: won.length, wonValue: won.reduce((n, d) => n + d.amount, 0), convRate: leads ? created.length / leads : 0,
     }
   })
   return out
 }
 
-/** Inbound leads and their deals grouped by market, or by website form (leads from a form only) */
+/** Inbound leads and their deals grouped by market, or by website form (leads from a form or info@ email only) */
 function breakdown(base: Base, start: string, end: string, key: 'form' | 'market'): BreakdownRow[] {
   const rows = new Map<string, BreakdownRow>()
   const row = (name: string) => rows.get(name) || rows.set(name, { name, leads: 0, deals: 0, dealValue: 0, won: 0, wonValue: 0 }).get(name)!
-  for (const l of base.inbound) if (l.date >= start && l.date <= end && (key === 'market' || l.form)) row(l[key]).leads++
+  const nameOf = (x: { form: string; info: boolean; market: string }) => (key === 'market' ? x.market || 'Unknown' : x.form || (x.info ? INFO_LABEL : ''))
+  for (const l of base.inbound) if (l.date >= start && l.date <= end && nameOf(l)) row(nameOf(l)).leads++
   for (const d of base.deals) {
     if (d.channel !== 'Inbound' || !counts(d) || d.leadDate < start || d.leadDate > end) continue
-    if (key === 'form' && !d.form) continue
-    const r = row(d[key] || 'Unknown')
+    if (!nameOf(d)) continue
+    const r = row(nameOf(d))
     r.deals++
     r.dealValue += d.amount
     if (isWon(d)) {
@@ -208,11 +249,12 @@ async function build(range: RangeKey): Promise<LeadsDashboard> {
     months,
     deals: base.deals.filter((d) => d.channel !== 'Other' && counts(d) && inRange(d.leadDate)).sort((a, b) => b.amount - a.amount),
     coverage: { firstLead: leadDates[0] || '', lastLead: leadDates[leadDates.length - 1] || '' },
+    infoSheet: base.infoSheet,
   }
 }
 
 // Bump when the calculation changes so cached results are rebuilt
-const CACHE_VERSION = 'l4'
+const CACHE_VERSION = 'l5'
 
 export const getLeadsDashboard = (range: RangeKey) =>
   unstable_cache(() => build(range), ['internal-insights-leads', CACHE_VERSION, range], { revalidate: 6 * 60 * 60, tags: ['internal-insights'] })()

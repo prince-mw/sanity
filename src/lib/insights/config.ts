@@ -2,7 +2,7 @@ import 'server-only'
 
 // Where the dashboard's settings come from, in order:
 // 1. Environment variables (INSIGHTS_PASSWORD, GOOGLE_SA_KEY_B64, GA4_PROPERTY_ID, GSC_SITE_URL, ZOHO_ANALYTICS_*,
-//    INSIGHTS_GOOGLE_CLIENT_ID / _SECRET, INSIGHTS_PIPELINE_VIEWERS = comma-separated emails, GOOGLE_ADS_SHEET_ID)
+//    INSIGHTS_GOOGLE_CLIENT_ID / _SECRET, INSIGHTS_PIPELINE_VIEWERS = comma-separated emails, GOOGLE_ADS_SHEET_ID, INFO_LEADS_SHEET_ID)
 // 2. The private Sanity document `secrets.internalInsights`. Documents whose _id contains a dot
 //    are not readable by the public API; the server reads it with its existing Sanity token.
 
@@ -19,6 +19,8 @@ export interface InsightsConfig {
   pipelineViewers: string[]
   /** Google Sheet filled daily by a Google Ads Script (Ads tab), shared read-only with the service account */
   googleAdsSheetId: string | null
+  /** The marketing team's "Info Moving walls Lead" sheet (info@ email leads, one tab per month, each row with a CRM link) */
+  infoLeadsSheetId: string | null
 }
 
 export interface GoogleOAuthConfig { clientId: string; clientSecret: string; allowedDomain: string }
@@ -33,7 +35,7 @@ async function fromSanity(): Promise<Partial<InsightsConfig>> {
   if (!token) return {}
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di'
   const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
-  const query = encodeURIComponent('*[_id == "secrets.internalInsights"][0]{password, ga4PropertyId, gscSiteUrl, googleServiceAccount, zohoAnalytics, googleOAuth, pipelineViewers, googleAdsSheetId}')
+  const query = encodeURIComponent('*[_id == "secrets.internalInsights"][0]{password, ga4PropertyId, gscSiteUrl, googleServiceAccount, zohoAnalytics, googleOAuth, pipelineViewers, googleAdsSheetId, infoLeadsSheetId}')
   try {
     const res = await fetch(`https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${query}`, {
       headers: { authorization: `Bearer ${token}` },
@@ -50,6 +52,7 @@ async function fromSanity(): Promise<Partial<InsightsConfig>> {
       googleOAuth: doc.googleOAuth?.clientId && doc.googleOAuth?.clientSecret ? { allowedDomain: 'movingwalls.com', ...doc.googleOAuth } : null,
       pipelineViewers: Array.isArray(doc.pipelineViewers) ? doc.pipelineViewers.map((e: string) => String(e).toLowerCase().trim()) : [],
       googleAdsSheetId: doc.googleAdsSheetId || null,
+      infoLeadsSheetId: doc.infoLeadsSheetId || null,
     }
   } catch {
     return {}
@@ -91,6 +94,7 @@ export async function getInsightsConfig(): Promise<InsightsConfig> {
       ...(sanity.pipelineViewers || []),
     ],
     googleAdsSheetId: process.env.GOOGLE_ADS_SHEET_ID || sanity.googleAdsSheetId || null,
+    infoLeadsSheetId: process.env.INFO_LEADS_SHEET_ID || sanity.infoLeadsSheetId || null,
   }
   cached = { value, at: Date.now() }
   return value

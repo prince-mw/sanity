@@ -141,7 +141,7 @@ export function buildOverviewPiece<P extends OverviewPart>(part: P, data: Overvi
       const topDeal = leads.deals[0]
       return {
         headline: [
-          { label: 'Inbound CRM leads', value: i.leads, prev: pi.leads, format: 'number', note: `${i.fromForms} from website forms`, info: 'New marketing leads in Zoho CRM (website, social, downloads, plus event and list uploads filed as Website).' },
+          { label: 'Inbound CRM leads', value: i.leads, prev: pi.leads, format: 'number', note: `${i.fromForms} from website forms${leads.infoSheet.status === 'ok' ? ` · ${i.fromInfo} info@ emails` : ''} · spam, junk & job applications excluded`, info: 'New marketing leads in Zoho CRM (website forms, info@movingwalls.com emails, social, downloads, plus event and list uploads filed as Website). Spam, junk and job applications never become CRM leads, which is why Website leads (every form sent) is a little higher.' },
           { label: 'Pipeline created', value: i.dealValue + o.dealValue, prev: pi.dealValue + po.dealValue, format: 'usd', note: `${i.deals + o.deals} deals`, info: 'Value of the deals that came from this period’s inbound and outbound leads (Leads & Deals tab).' },
           { label: 'Closed won', value: i.wonValue + o.wonValue, prev: pi.wonValue + po.wonValue, format: 'usd', note: `${i.won + o.won} deals`, info: 'Deals from this period’s leads that are now Closed Won.' },
         ],

@@ -95,4 +95,18 @@ export async function sheetTabs(sheetId: string, tabs: string[]): Promise<Record
   return out
 }
 
+/** Every tab of a Google Sheet shared with the service account (for sheets that add a tab per month) */
+export async function allSheetTabs(sheetId: string): Promise<Record<string, string[][]>> {
+  const res = await fetch(`https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(sheetId)}?fields=sheets.properties.title`, {
+    headers: { authorization: `Bearer ${await accessToken()}` },
+    cache: 'no-store',
+  })
+  const json = await res.json()
+  if (json.error) throw new Error(`Google Sheets: ${json.error.message}`)
+  const tabs: string[] = (json.sheets || []).map((s: { properties: { title: string } }) => s.properties.title)
+  // Quoted so names with spaces ("Nov 2026") are read as whole tabs
+  const quoted = await sheetTabs(sheetId, tabs.map((t) => `'${t.replace(/'/g, "''")}'`))
+  return Object.fromEntries(tabs.map((t) => [t, quoted[`'${t.replace(/'/g, "''")}'`] || []]))
+}
+
 export const isInsightsConfigured = async () => !!(await getInsightsConfig()).serviceAccount

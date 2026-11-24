@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest, NextResponse, after } from 'next/server'
 import { currentUser } from '@/lib/insights/auth'
 import { getInsightsConfig } from '@/lib/insights/config'
 import { RESTRICTED_TABS } from '@/lib/insights/tabs'
-import { parseRange } from '@/lib/insights/ranges'
+import { parseRange, type RangeKey } from '@/lib/insights/ranges'
 import { getActionStatuses } from '@/lib/insights/actions'
 import { isInsightsConfigured } from '@/lib/insights/google'
 import { isZohoConfigured } from '@/lib/insights/zoho'
@@ -13,9 +13,13 @@ import { getLeadsDashboard } from '@/lib/insights/leads'
 import { getCampaignDashboard } from '@/lib/insights/campaigns'
 import { getContentDashboard } from '@/lib/insights/content'
 import { getPipelineDashboard } from '@/lib/insights/pipeline'
-import { OVERVIEW_PARTS, buildOverviewPiece, unavailablePiece, type OverviewPart, type OverviewSources } from '@/lib/insights/overview'
+import { OVERVIEW_PARTS, buildOverviewPiece, unavailablePiece, type OverviewPart, type OverviewPiece, type OverviewSources } from '@/lib/insights/overview'
+import { isSnapshotRange, readSnapshots, refreshing, writeSnapshot } from '@/lib/insights/overviewCache'
 
-// GET ?part=<source>&range=<range> → one source's piece of the Overview tab (OverviewPiece JSON).
+// GET ?part=<source>&range=<range> → one source's piece of the Overview tab (OverviewPiece JSON), built from the data
+//   and saved as the shared snapshot (overviewCache.ts).
+// GET ?part=saved&range=<range> → { pieces, at } — every usable saved snapshot at once (quick); older ones are rebuilt
+//   after the response. The browser then loads any missing piece with ?part=<source>.
 // The Overview page loads each piece with its own request, so a slow (cold-cache) source can't push the
 // whole page past the hosting time limit. Requires the dashboard sign-in cookie.
 
@@ -33,24 +37,59 @@ const LOADERS: { [P in OverviewPart]: (range: ReturnType<typeof parseRange>) => 
   pipeline: async () => ((await isZohoConfigured()) ? getPipelineDashboard() : null),
 }
 
+/** Builds one piece from its data; null when the source failed (not saved, so the next visit tries again) */
+async function buildPiece(part: OverviewPart, range: RangeKey): Promise<OverviewPiece | null> {
+  try {
+    const [data, statuses] = await Promise.all([LOADERS[part](range), getActionStatuses().catch(() => ({}))])
+    return data ? buildOverviewPiece(part, data, statuses) : unavailablePiece(part)
+  } catch {
+    return null
+  }
+}
+
 export async function GET(req: NextRequest) {
   const user = await currentUser()
   if (user === null) return NextResponse.json({ error: 'Not signed in.' }, { status: 401, headers })
 
-  const part = req.nextUrl.searchParams.get('part') as OverviewPart
-  if (!OVERVIEW_PARTS.includes(part)) return NextResponse.json({ error: 'Unknown part.' }, { status: 400, headers })
   // Pipeline numbers stay hidden from people who can't open that tab (when it's restricted)
-  if (part === 'pipeline' && RESTRICTED_TABS.includes('pipeline') && !(user && (await getInsightsConfig()).pipelineViewers.includes(user))) {
-    return NextResponse.json({ headline: [] }, { headers })
+  const canSeePipeline = !RESTRICTED_TABS.includes('pipeline') || !!(user && (await getInsightsConfig()).pipelineViewers.includes(user))
+  const range = parseRange(req.nextUrl.searchParams.get('range') ?? undefined)
+  const part = req.nextUrl.searchParams.get('part')
+
+  if (part === 'saved') {
+    if (!isSnapshotRange(range)) return NextResponse.json({ pieces: {} }, { headers })
+    const snaps = await readSnapshots(range, [...OVERVIEW_PARTS]).catch(() => ({}) as Awaited<ReturnType<typeof readSnapshots>>)
+    const pieces: Partial<Record<OverviewPart, OverviewPiece>> = {}
+    const stale: OverviewPart[] = []
+    let oldest = ''
+    for (const [p, s] of Object.entries(snaps) as [OverviewPart, NonNullable<(typeof snaps)[OverviewPart]>][]) {
+      if (s.stale) stale.push(p)
+      if (p === 'pipeline' && !canSeePipeline) continue
+      pieces[p] = s.piece
+      if (!oldest || s.at < oldest) oldest = s.at
+    }
+    // Rebuild older snapshots one after another once the response has gone (Zoho rate-limits bursts)
+    const todo = stale.filter((p) => !refreshing.has(`${range}.${p}`))
+    if (todo.length) {
+      todo.forEach((p) => refreshing.add(`${range}.${p}`))
+      after(async () => {
+        for (const p of todo) {
+          const piece = await buildPiece(p, range)
+          if (piece) await writeSnapshot(range, p, piece)
+          refreshing.delete(`${range}.${p}`)
+        }
+      })
+    }
+    return NextResponse.json({ pieces, at: oldest }, { headers })
   }
 
-  const range = parseRange(req.nextUrl.searchParams.get('range') ?? undefined)
-  try {
-    const [data, statuses] = await Promise.all([LOADERS[part](range), getActionStatuses().catch(() => ({}))])
-    const piece = data ? buildOverviewPiece(part, data, statuses) : unavailablePiece(part)
-    return NextResponse.json(piece, { headers })
-  } catch {
-    // A source that fails shows "couldn't load" on its card; the rest of the Overview is unaffected
-    return NextResponse.json(unavailablePiece(part), { headers })
-  }
+  if (!OVERVIEW_PARTS.includes(part as OverviewPart)) return NextResponse.json({ error: 'Unknown part.' }, { status: 400, headers })
+  const p = part as OverviewPart
+  if (p === 'pipeline' && !canSeePipeline) return NextResponse.json({ headline: [] }, { headers })
+
+  const piece = await buildPiece(p, range)
+  // A source that fails shows "couldn't load" on its card; the rest of the Overview is unaffected
+  if (!piece) return NextResponse.json(unavailablePiece(p), { headers })
+  if (isSnapshotRange(range)) await writeSnapshot(range, p, piece)
+  return NextResponse.json(piece, { headers })
 }

@@ -27,7 +27,7 @@ function ChannelCards({ data, channel }: { data: LeadsDashboard; channel: Exclud
       <h2 className="text-lg font-bold text-[#062068]">{CHANNEL_INFO[channel].title}</h2>
       <p className="text-sm text-gray-500 mb-3">{CHANNEL_INFO[channel].sub}</p>
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4">
-        <Kpi label="Leads" value={nf(c.leads)} cur={c.leads} prev={p.leads} note={channel === 'Inbound' ? `${nf(c.fromForms)} from website forms` : undefined} info="New leads created in the CRM in this period. All the other numbers here are about these leads." />
+        <Kpi label="Leads" value={nf(c.leads)} cur={c.leads} prev={p.leads} note={channel === 'Inbound' ? `${nf(c.fromForms)} from website forms${data.infoSheet.status === 'ok' ? ` · ${nf(c.fromInfo)} from info@ emails` : ''} · spam, junk & job applications excluded` : undefined} info="New leads created in the CRM in this period. All the other numbers here are about these leads." />
         <Kpi label="Deals created" value={nf(c.deals)} cur={c.deals} prev={p.deals} info="Deals created from this period's leads (whenever the deal was created), as in the Zoho Lead to Pipeline report." />
         <Kpi label="Lead → deal rate" value={pct(c.convRate)} cur={c.convRate} prev={p.convRate} points info="Share of this period's leads that became a deal (deals ÷ leads)." />
         <Kpi label="Deal value" value={usd(c.dealValue)} cur={c.dealValue} prev={p.dealValue} info="Total amount of the deals from this period's leads: the pipeline these leads created." />
@@ -132,8 +132,8 @@ export default function LeadsTab({ data, websiteLeads }: { data: LeadsDashboard;
       {/* Inbound breakdowns */}
       <section className="grid lg:grid-cols-2 gap-4 mb-8">
         <div>
-          <h2 className="text-lg font-bold text-[#062068] mb-1">Inbound by website form</h2>
-          <p className="text-sm text-gray-500 mb-3">CRM leads that came through a website form, by form, with their deals. City pages use their country&apos;s form, so cities are in the cards above.</p>
+          <h2 className="text-lg font-bold text-[#062068] mb-1">Inbound by website form and info@ email</h2>
+          <p className="text-sm text-gray-500 mb-3">CRM leads that came through a website form, by form, and from info@movingwalls.com emails, with their deals. City pages use their country&apos;s form, so cities are in the cards above.</p>
           <div className="rounded-2xl border border-gray-200 bg-white p-3"><BreakdownTable rows={data.byForm} label="Form" top={Infinity} /></div>
         </div>
         <div>
@@ -162,7 +162,7 @@ export default function LeadsTab({ data, websiteLeads }: { data: LeadsDashboard;
                     </td>
                     <td className="px-3 py-2 whitespace-nowrap">
                       {d.channel}
-                      {d.form && <div className="text-xs text-gray-400">{d.form}{d.market ? ` · ${d.market}` : ''}</div>}
+                      {(d.form || d.info) && <div className="text-xs text-gray-400">{d.form || 'info@ email'}{d.market ? ` · ${d.market}` : ''}</div>}
                     </td>
                     <td className="px-3 py-2">{stagePill(d.stage)}</td>
                     <td className="px-3 py-2 text-right font-semibold whitespace-nowrap">{d.amount ? usd(d.amount) : '–'}</td>
@@ -210,6 +210,7 @@ export default function LeadsTab({ data, websiteLeads }: { data: LeadsDashboard;
           <li><strong>Everything is dated by the lead&apos;s created date</strong>, as in the Zoho &ldquo;06. Lead to Pipeline&rdquo; tab: a period&apos;s deals, deal value and closed won are the deals that came from that period&apos;s leads, whenever the deal was created or closed. So recent periods grow as their leads turn into deals.</li>
           <li><strong>Deals</strong> are all deals converted from a lead, each with its lead&apos;s type; amounts are in US dollars. A deal with no amount still counts as a deal (the Zoho report&apos;s inbound card skips these, so it can show one or two fewer).</li>
           <li><strong>Inbound leads</strong> include more than website forms: the team also files event and list uploads, info@movingwalls.com enquiries and other leads under &ldquo;Website / Webform&rdquo;. &ldquo;From website forms&rdquo; counts only the leads whose CRM tag names a website form.</li>
+          <li><strong>info@ email leads</strong> are the CRM leads listed in the marketing team&apos;s &ldquo;Info Moving walls Lead&rdquo; Google Sheet (one tab per month; each row&apos;s CRM link identifies the lead). Everything else about them (date, market, deals) comes from the CRM. {data.infoSheet.status === 'ok' ? `${data.infoSheet.matched} of the ${data.infoSheet.listed} leads linked in the sheet were found in the CRM data; a lead without a CRM link in the sheet can't be counted.` : data.infoSheet.status === 'error' ? 'The sheet could not be read at the last refresh.' : 'The sheet is not connected.'}</li>
           <li><strong>Leads by city page</strong> come from Google Analytics: each form carries the name of the page it was sent from. The CRM has the form but not the page, so deals and deal value can&apos;t be split by city yet. GA4 and the CRM can differ by a few leads (spam, tests, blocked tracking).</li>
           <li>Zoho Analytics syncs from Zoho CRM on its own schedule; this tab refreshes every 6 hours · last refreshed {new Date(data.generatedAt).toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' })}.</li>
         </ul>
