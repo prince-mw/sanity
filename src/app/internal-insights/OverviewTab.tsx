@@ -53,14 +53,17 @@ async function loadPiece(part: OverviewPart, range: RangeKey): Promise<OverviewP
 }
 
 /** The saved snapshots for this range ({} for custom dates, or when they can't be read) */
-async function loadSaved(range: RangeKey): Promise<Partial<Record<OverviewPart, OverviewPiece>>> {
+async function loadSaved(range: RangeKey): Promise<{ pieces: Partial<Record<OverviewPart, OverviewPiece>>; stale: OverviewPart[] }> {
   try {
     const res = await fetch(`/api/internal-insights/overview?part=saved&range=${encodeURIComponent(range)}`)
-    if (res.ok) return ((await res.json()) as { pieces: Partial<Record<OverviewPart, OverviewPiece>> }).pieces || {}
+    if (res.ok) {
+      const j = (await res.json()) as { pieces?: Partial<Record<OverviewPart, OverviewPiece>>; stale?: OverviewPart[] }
+      return { pieces: j.pieces || {}, stale: j.stale || [] }
+    }
   } catch {
     // fall back to loading each source
   }
-  return {}
+  return { pieces: {}, stale: [] }
 }
 
 const Pulse =({ className }: { className: string }) => <div className={`animate-pulse rounded bg-gray-100 ${className}`} />
@@ -89,13 +92,22 @@ export default function OverviewTab({ range, withPipeline }: { range: RangeKey; 
     const put = (part: OverviewPart, piece: OverviewPiece) => { if (!cancelled) setPieces((p) => ({ ...p, [part]: piece })) }
     ;(async () => {
       // 1. Every saved snapshot in one quick request (shared by all server copies; older ones refresh in the background)
-      const saved = await loadSaved(range)
+      const { pieces: saved, stale } = await loadSaved(range)
       for (const [part, piece] of Object.entries(saved) as [OverviewPart, OverviewPiece][]) put(part, piece)
       // 2. Anything not saved yet, one source at a time
       for (const part of PART_ORDER) {
         if (cancelled) return
         if ((part === 'pipeline' && !withPipeline) || saved[part]) continue
         put(part, await loadPiece(part, range))
+      }
+      // 3. Quietly refresh older saved pieces (this also updates the shared copy for the next visitor);
+      //    a failed refresh keeps the saved numbers on screen
+      for (const part of PART_ORDER) {
+        if (cancelled) return
+        if (!stale.includes(part) || (part === 'pipeline' && !withPipeline)) continue
+        const fresh = await loadPiece(part, range)
+        const failed = !!fresh.tab?.unavailable || (!fresh.headline.length && !fresh.tab && !fresh.target && !fresh.progress)
+        if (!failed) put(part, fresh)
       }
     })()
     return () => { cancelled = true }

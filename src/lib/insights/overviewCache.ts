@@ -7,7 +7,7 @@ import { RANGE_KEYS, type PresetRange, type RangeKey } from './ranges'
 // "cold" copy that has to reload Zoho (10–30 s). These snapshots live in PRIVATE Sanity documents
 // (secrets.insightsOverview.<range>.<part>), which every copy reads in one quick query:
 // - fresh (under FRESH_MS): shown as is
-// - older, up to MAX_STALE_MS: shown at once and rebuilt in the background after the response
+// - older, up to MAX_STALE_MS: shown at once; the browser then re-requests it quietly, which saves a fresh one
 // - older still, or missing: the browser loads that piece the normal (slow) way, which saves a new snapshot
 // Only the preset date ranges are saved; custom dates load the normal way.
 
@@ -65,6 +65,3 @@ export async function writeSnapshot(range: PresetRange, part: OverviewPart, piec
     cache: 'no-store',
   }).catch(() => undefined)
 }
-
-/** Rebuilds in progress on this server copy, so several viewers don't rebuild the same piece at once */
-export const refreshing = new Set<string>()

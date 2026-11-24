@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse, after } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { currentUser } from '@/lib/insights/auth'
 import { getInsightsConfig } from '@/lib/insights/config'
 import { RESTRICTED_TABS } from '@/lib/insights/tabs'
@@ -14,12 +14,13 @@ import { getCampaignDashboard } from '@/lib/insights/campaigns'
 import { getContentDashboard } from '@/lib/insights/content'
 import { getPipelineDashboard } from '@/lib/insights/pipeline'
 import { OVERVIEW_PARTS, buildOverviewPiece, unavailablePiece, type OverviewPart, type OverviewPiece, type OverviewSources } from '@/lib/insights/overview'
-import { isSnapshotRange, readSnapshots, refreshing, writeSnapshot } from '@/lib/insights/overviewCache'
+import { isSnapshotRange, readSnapshots, writeSnapshot } from '@/lib/insights/overviewCache'
 
 // GET ?part=<source>&range=<range> → one source's piece of the Overview tab (OverviewPiece JSON), built from the data
 //   and saved as the shared snapshot (overviewCache.ts).
-// GET ?part=saved&range=<range> → { pieces, at } — every usable saved snapshot at once (quick); older ones are rebuilt
-//   after the response. The browser then loads any missing piece with ?part=<source>.
+// GET ?part=saved&range=<range> → { pieces, stale, at } — every usable saved snapshot at once (quick). The browser then
+//   loads any missing piece, and afterwards re-requests the stale ones, with ?part=<source> (which saves a new snapshot).
+//   (Rebuilding with next/server after() doesn't work on Amplify: work after the response is stopped.)
 // The Overview page loads each piece with its own request, so a slow (cold-cache) source can't push the
 // whole page past the hosting time limit. Requires the dashboard sign-in cookie.
 
@@ -63,24 +64,12 @@ export async function GET(req: NextRequest) {
     const stale: OverviewPart[] = []
     let oldest = ''
     for (const [p, s] of Object.entries(snaps) as [OverviewPart, NonNullable<(typeof snaps)[OverviewPart]>][]) {
-      if (s.stale) stale.push(p)
       if (p === 'pipeline' && !canSeePipeline) continue
       pieces[p] = s.piece
+      if (s.stale) stale.push(p)
       if (!oldest || s.at < oldest) oldest = s.at
     }
-    // Rebuild older snapshots one after another once the response has gone (Zoho rate-limits bursts)
-    const todo = stale.filter((p) => !refreshing.has(`${range}.${p}`))
-    if (todo.length) {
-      todo.forEach((p) => refreshing.add(`${range}.${p}`))
-      after(async () => {
-        for (const p of todo) {
-          const piece = await buildPiece(p, range)
-          if (piece) await writeSnapshot(range, p, piece)
-          refreshing.delete(`${range}.${p}`)
-        }
-      })
-    }
-    return NextResponse.json({ pieces, at: oldest }, { headers })
+    return NextResponse.json({ pieces, stale, at: oldest }, { headers })
   }
 
   if (!OVERVIEW_PARTS.includes(part as OverviewPart)) return NextResponse.json({ error: 'Unknown part.' }, { status: 400, headers })
