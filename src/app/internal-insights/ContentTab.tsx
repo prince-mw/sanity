@@ -159,7 +159,7 @@ export default function ContentTab({ data, statuses }: { data: ContentDashboard;
         <Kpi label="Content readers" value={nf(c.readers)} cur={c.readers} prev={p.readers} note={c.botReaders ? `${nf(c.botReaders)} bot visits removed` : 'blogs + case studies'}
           info="People who read a blog or case study on movingwalls.com in this period (Google Analytics users, added up per page). Bot bursts from data-centre cities are removed, as on the Location pages tab." />
         <Kpi label="Enquiries from content" value={nf(c.leads)} cur={c.leads} prev={p.leads}
-          info="Website form submissions in visits that started on a blog or case study." />
+          info="Website forms sent from a blog or case study page (each form records the page it was sent from), plus, for older leads, forms sent in a visit that started on one." />
         <Kpi label="Content published" value={nf(c.published)} cur={c.published} prev={p.published} note="blogs + case studies"
           info="New English blogs and case studies published on the website in this period (from the Sanity CMS)." />
         <Kpi label="Ebook forms opened" value={nf(c.ebookOpens)} cur={c.ebookOpens} prev={p.ebookOpens} note={`${nf(c.ebookDownloads)} downloaded`}

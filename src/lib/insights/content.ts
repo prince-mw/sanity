@@ -118,6 +118,23 @@ const FORM_NAMES: Record<string, string> = {
 }
 const EBOOK_FORM = /ebook|e-book|whitepaper|guide|playbook|report|download|getyourcopy|bestpractices|cms|roadmap|security/i
 
+/** The article a lead came from: the form's referrername ("blog/<slug>", "casestudies/<slug>") when it has one,
+ *  else the visit's landing page when that was an article. Leads sent from other pages don't count. */
+function leadContentPath(landingPage: string, pageLocation: string): string | null {
+  let ref: string | null = null
+  try {
+    ref = new URL(pageLocation).searchParams.get('referrername')
+  } catch {
+    // not a full URL
+  }
+  if (ref) {
+    const m = ref.match(/^(blog|casestudies)\/(.+)$/)
+    return m ? `/${m[1] === 'blog' ? 'blog' : 'case-studies'}/${m[2]}` : null
+  }
+  const path = cleanPath(landingPage)
+  return /^\/(blog|case-studies)\//.test(path) ? path : null
+}
+
 async function website(start: string, end: string) {
   const dateRanges = [{ startDate: start, endDate: end }]
   const [pages, leads, ebooks, zohoViews] = await Promise.all([
@@ -129,8 +146,9 @@ async function website(start: string, end: string) {
       dimensionFilter: contentFilter('pagePath'),
       limit: 100000,
     }),
-    // Enquiries in sessions that started on an article (form events fire inside the Zoho iframe, so credit the landing page)
-    ga4Report({ dateRanges, dimensions: [{ name: 'landingPage' }], metrics: [{ name: 'eventCount' }], dimensionFilter: { andGroup: { expressions: [contentFilter('landingPage'), leadFilter] } } }),
+    // Enquiries: each lead event with the page its form was sent from (the form URL's referrername, on every form since
+    // 29 Oct 2026) and the visit's landing page (for older leads without it)
+    ga4Report({ dateRanges, dimensions: [{ name: 'landingPage' }, { name: 'pageLocation' }], metrics: [{ name: 'eventCount' }], dimensionFilter: leadFilter, limit: 100000 }),
     ga4Report({ dateRanges, dimensions: [{ name: 'eventName' }], metrics: [{ name: 'eventCount' }], dimensionFilter: { filter: { fieldName: 'eventName', stringFilter: { matchType: 'BEGINS_WITH', value: 'download_' } } } }),
     ga4Report({ dateRanges, dimensions: [{ name: 'pagePath' }], metrics: [{ name: 'eventCount' }], dimensionFilter: zohoPageViews, limit: 5000 }),
   ])
@@ -161,7 +179,8 @@ async function website(start: string, end: string) {
     channelMap.set(r.dims[2], c)
   }
   for (const r of leads) {
-    const e = byPath.get(cleanPath(r.dims[0]))
+    const path = leadContentPath(r.dims[0], r.dims[1])
+    const e = path && byPath.get(path)
     if (e) e.leads += r.mets[0]
   }
   return {
@@ -323,7 +342,7 @@ async function build(range: RangeKey): Promise<ContentDashboard> {
   else if (previous.readers && current.readers < previous.readers * 0.9) notWorking.push({ title: `Content readers down: ${nf(current.readers)} vs ${nf(previous.readers)}`, detail: 'Blogs and case studies together.' })
   if (all[0]) working.push({ title: `Most read: ${all[0].title}`, detail: `${nf(all[0].readers)} readers, ${Math.round(all[0].readSeconds)}s average visit time.` })
   const converting = pages.filter((x) => x.leads > 0).sort((a, b) => b.leads - a.leads)
-  if (converting.length) working.push({ title: `${current.leads} enquir${current.leads === 1 ? 'y' : 'ies'} started on content`, detail: converting.slice(0, 3).map((x) => `${x.title} (${x.leads})`).join('; ') + '.' })
+  if (converting.length) working.push({ title: `${current.leads} enquir${current.leads === 1 ? 'y' : 'ies'} came from content`, detail: converting.slice(0, 3).map((x) => `${x.title} (${x.leads})`).join('; ') + '.' })
   const bestSocial = socialChannels.flatMap((c) => c.top.slice(0, 1).map((t) => ({ c, t }))).sort((a, b) => b.t.engagements - a.t.engagements)[0]
   if (bestSocial && bestSocial.t.engagements > 0) working.push({ title: `Top social post (${bestSocial.c.name}): ${nf(bestSocial.t.engagements)} engagements`, detail: `“${bestSocial.t.text.slice(0, 90)}…”` })
 
@@ -366,7 +385,7 @@ async function build(range: RangeKey): Promise<ContentDashboard> {
 }
 
 // Bump when the calculation changes so cached results are rebuilt
-const CACHE_VERSION = 'k6'
+const CACHE_VERSION = 'k7'
 
 export const getContentDashboard = (range: RangeKey) =>
   unstable_cache(() => build(range), ['internal-insights-content', CACHE_VERSION, range], { revalidate: 6 * 60 * 60, tags: ['internal-insights'] })()

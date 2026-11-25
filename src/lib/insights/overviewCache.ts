@@ -19,7 +19,7 @@ const WITH_ACTIONS: OverviewPart[] = ['site', 'campaigns', 'content', 'blog']
 const projectId = () => process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'u10im6di'
 const dataset = () => process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 /** Bump when a piece's content or wording changes, so the new code doesn't show old snapshots */
-const SNAPSHOT_VERSION = 'v1'
+const SNAPSHOT_VERSION = 'v2'
 const docId = (range: PresetRange, part: OverviewPart) => `secrets.insightsOverview.${SNAPSHOT_VERSION}.${range}.${part}`
 
 export const isSnapshotRange = (range: RangeKey): range is PresetRange => RANGE_KEYS.includes(range as PresetRange)

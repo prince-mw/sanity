@@ -77,6 +77,8 @@ export interface PageRow {
   page: string
   market: string
   level: 'Country' | 'City'
+  /** Language version (e.g. "Chinese" for /locations/china-zh/...), null for English */
+  language: string | null
   sessions: number
   botSessions: number
   realSessions: number
@@ -112,7 +114,7 @@ export interface ActionItem {
   /** Stable across refreshes (category + page + title), used for the shared status */
   id: string
   priority: 'High' | 'Medium' | 'Low'
-  category: 'Tracking' | 'Titles & CTR' | 'Rankings' | 'New page' | 'Content' | 'Indexing'
+  category: 'Tracking' | 'Conversion' | 'Titles & CTR' | 'Rankings' | 'New page' | 'Content' | 'Indexing'
   title: string
   detail: string
   page?: string
@@ -170,7 +172,7 @@ export interface Dashboard {
 // Helpers
 // ---------------------------------------------------------------------------
 
-const isLocationPage = (p: string) => /^\/locations\/[^?#]+/.test(p)
+const isLocationPath = (p: string) => /^\/locations\/[^?#]+/.test(p)
 const cleanPath = (p: string) => (p.split('?')[0].replace(/\/$/, '') || '/').toLowerCase()
 /** Shared with the Content tab (content.ts) */
 export const isBotRow = (city: string, channel: string, sessions: number, engaged: number) =>
@@ -180,7 +182,7 @@ const isBrand = (q: string) => /moving ?walls|movingwalls/i.test(q)
 // Not worth targeting: 'near me' searches and other companies' brand names
 const isPoorTarget = (q: string) => /near me|funny|walls and trends|gohoardings|shubham|floyd|moove|gleamedia|ewins|wilayah|out of home media sdn bhd/i.test(q)
 // Short page name for lists: the city for city pages, the country otherwise
-const shortName = (p: PageRow) => p.market.split(',')[0]
+const shortName = (p: PageRow) => p.market.split(',')[0] + (p.language ? ` (${p.language})` : '')
 
 function channelBucket(channel: string): 'organic' | 'paid' | 'other' {
   if (channel === 'Organic Search') return 'organic'
@@ -188,10 +190,41 @@ function channelBucket(channel: string): 'organic' | 'paid' | 'other' {
   return 'other'
 }
 
-function marketFromPath(page: string): { market: string; level: 'Country' | 'City' } {
+const LANGUAGES: Record<string, string> = { es: 'Spanish', zh: 'Chinese', ja: 'Japanese', pt: 'Portuguese', ko: 'Korean', id: 'Indonesian' }
+const LANG_SUFFIX = /-(es|zh|ja|pt|ko|id)$/
+
+/** Page name from its path; language versions (-zh, -ja, ...) are named with their language, e.g. "Beijing, China (Chinese)" */
+function marketFromPath(page: string): { market: string; level: 'Country' | 'City'; language: string | null } {
   const parts = page.split('/').filter(Boolean).slice(1)
-  const title = (s: string) => s.replace(/-(es|zh)$/, '').split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
-  return parts.length >= 2 ? { market: `${title(parts[1])}, ${title(parts[0])}`, level: 'City' } : { market: title(parts[0] || ''), level: 'Country' }
+  const code = parts.map((x) => x.match(LANG_SUFFIX)?.[1]).find(Boolean)
+  const language = code ? LANGUAGES[code] : null
+  const title = (s: string) => s.replace(LANG_SUFFIX, '').split('-').map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+  const lang = language ? ` (${language})` : ''
+  return parts.length >= 2
+    ? { market: `${title(parts[1])}, ${title(parts[0])}${lang}`, level: 'City', language }
+    : { market: `${title(parts[0] || '')}${lang}`, level: 'Country', language }
+}
+
+/** Every live location page (the same Sanity documents the sitemap lists). Google Analytics also records visits to
+ *  addresses that don't exist (old links, typos, test URLs); only these real pages are counted as location pages. */
+async function activeLocationPages(): Promise<Set<string>> {
+  try {
+    const q = encodeURIComponent(`{
+      "countries": *[_type == "location" && isActive == true && defined(slug.current)].slug.current,
+      "cities": *[_type == "locationCity" && isActive == true && defined(country->slug.current) && defined(slug.current)]{"c": country->slug.current, "s": slug.current},
+      "venues": *[_type == "singaporeVenuePage" && isPublished != false && defined(slug.current)].slug.current
+    }`)
+    const res = await fetch(`https://u10im6di.apicdn.sanity.io/v2024-01-01/data/query/production?query=${q}`, { cache: 'no-store' })
+    const r: { countries: string[]; cities: { c: string; s: string }[]; venues: string[] } | undefined = (await res.json())?.result
+    if (!r) return new Set()
+    return new Set([
+      ...r.countries.map((c) => `/locations/${c}`),
+      ...r.cities.map((x) => `/locations/${x.c}/${x.s}`),
+      ...r.venues.map((v) => `/locations/singapore/${v}`),
+    ].map((x) => x.toLowerCase()))
+  } catch {
+    return new Set()
+  }
 }
 
 const emptyTotals = (): Totals => ({
@@ -238,7 +271,7 @@ async function build(range: RangeKey): Promise<Dashboard> {
   const trendDim = isLongRange(range) ? 'yearMonth' : 'date'
   const locFilter = { filter: { fieldName: 'landingPage', stringFilter: { matchType: 'BEGINS_WITH', value: '/locations/' } } }
 
-  const [byPageChannel, botRows, aiRows, leadRows, trendAll, trendLoc, trendLeads, gscSite, gscPages, gscPageQueries, semrush, citySlugs] =
+  const [byPageChannel, botRows, aiRows, leadRows, trendAll, trendLoc, trendLeads, gscSite, gscPages, gscPageQueries, semrush, citySlugs, activePages] =
     await Promise.all([
       ga4Report({ dateRanges: ranges, dimensions: [{ name: 'landingPage' }, { name: 'sessionDefaultChannelGroup' }], metrics: [{ name: 'sessions' }, { name: 'engagedSessions' }] }),
       ga4Report({
@@ -274,7 +307,10 @@ async function build(range: RangeKey): Promise<Dashboard> {
       }),
       getSemrushSnapshot(),
       existingCitySlugs(),
+      activeLocationPages(),
     ])
+  // A real, live location page (all /locations/ paths if the page list couldn't be read)
+  const isLocationPage = (p: string) => isLocationPath(p) && (activePages.size === 0 || activePages.has(p))
 
   const site = { cur: emptyTotals(), prev: emptyTotals() }
   const loc = { cur: emptyTotals(), prev: emptyTotals() }
@@ -286,7 +322,7 @@ async function build(range: RangeKey): Promise<Dashboard> {
     if (!r) {
       const m = marketFromPath(page)
       r = {
-        page, market: m.market, level: m.level, sessions: 0, botSessions: 0, realSessions: 0, prevRealSessions: 0,
+        page, market: m.market, level: m.level, language: m.language, sessions: 0, botSessions: 0, realSessions: 0, prevRealSessions: 0,
         organic: 0, paid: 0, ai: 0, other: 0, bounceRate: 0, leads: 0, paidLeads: 0, prevLeads: 0, leadEvent: null, convRate: 0,
         gscClicks: 0, prevGscClicks: 0, gscImpressions: 0, gscPosition: null, topQuery: null, topQueryPosition: null,
         semrush: [], status: 'Steady', action: '',
@@ -348,7 +384,7 @@ async function build(range: RangeKey): Promise<Dashboard> {
   }
 
   // Leads: credit each one to the page in the form URL's referrername, else map its form event to a page
-  const knownPages = () => [...new Set([...pages.keys(), ...prevSessions.keys(), ...[...citySlugs].map((s) => `/locations/${s}`)])]
+  const knownPages = () => [...new Set([...pages.keys(), ...prevSessions.keys(), ...[...citySlugs].map((s) => `/locations/${s}`), ...activePages])].filter(isLocationPage)
   let pageByRef: Map<string, string> | undefined
   const referrerOf = (location: string) => {
     try {
@@ -633,16 +669,20 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
 
   // --- Leaking pages
   const leaking = d.pages.filter((p) => p.status === 'Leaking').sort((a, b) => b.realSessions - a.realSessions)
+  // City pages use their country's form, so a page counts as tracked when any page of its country sent a lead
+  const countryOf = (page: string) => (page.split('/')[2] || '').replace(LANG_SUFFIX, '')
+  const trackedCountries = new Set(d.pages.filter((x) => x.leads > 0 || x.prevLeads > 0).map((x) => countryOf(x.page)))
   for (const p of leaking.slice(0, 3)) {
-    notWorking.push({ title: `${p.market}: ${p.realSessions} real visits, 0 leads`, detail: `${pct(p.bounceRate)} bounce${p.leadEvent ? '' : '; no lead event found for this page'}.`, page: p.page })
+    const tracked = !!p.leadEvent || p.prevLeads > 0 || trackedCountries.has(countryOf(p.page))
+    notWorking.push({ title: `${p.market}: ${p.realSessions} real visits, 0 leads`, detail: `${pct(p.bounceRate)} bounce${tracked ? '' : `; no lead recorded from any ${p.market.split(',').pop()!.trim()} page this period or the last`}.`, page: p.page })
     actions.push({
       id: '',
       priority: 'High',
-      category: 'Tracking',
-      title: `Check the ${p.market} form is tracked`,
-      detail: p.leadEvent
-        ? `It has a form event but no leads from ${p.realSessions} visits. Review the CTA placement and the form itself.`
-        : `No generate_lead event exists for this page, so enquiries (if any) are invisible. Give its Zoho form its own GA4 lead event.`,
+      category: tracked ? 'Conversion' : 'Tracking',
+      title: tracked ? `Turn ${shortName(p)} visits into leads` : `Check the ${p.market} form sends leads`,
+      detail: tracked
+        ? `${p.realSessions} real visits (${pct(p.bounceRate)} bounce) but no leads this period, while the form's lead tracking works on other pages of this market. Review the offer, the call-to-action placement and where the traffic comes from.`
+        : `${p.realSessions} real visits but no lead recorded from this market's pages this period or the last. Ask for the form's GA4 lead event to be checked (no test submissions).`,
       page: p.page,
       score: 900 + p.realSessions,
     })
@@ -766,7 +806,7 @@ function buildInsights(d: Dashboard, citySlugs: Set<string>) {
 }
 
 // Bump when the calculations change so cached results from older code are not reused
-const CACHE_VERSION = 'v11'
+const CACHE_VERSION = 'v12'
 
 export const getDashboard = (range: RangeKey) =>
   unstable_cache(() => build(range), ['internal-insights', CACHE_VERSION, range], { revalidate: 6 * 60 * 60, tags: ['internal-insights'] })()

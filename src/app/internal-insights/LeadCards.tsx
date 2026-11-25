@@ -10,11 +10,13 @@ const SITE_WIDE = 'Main contact & demo'
 const FORM_NAMES: Record<string, string> = { contact: 'Contact form', demo: 'Demo form', f1: 'F1 page form' }
 const ACRONYMS = new Set(['uae', 'uk', 'usa', 'mrt', 'cbd', 'ooh', 'dooh'])
 const title = (slug: string) => slug.split('-').map((w) => (ACRONYMS.has(w) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1))).join(' ')
-/** "shanghai-zh" → "Shanghai (Chinese)" */
-const pageName = (slug: string) => {
-  const lang = slug.match(/-(es|zh)$/)?.[1]
-  const base = title(slug.replace(/-(es|zh)$/, ''))
-  return lang ? `${base} (${lang === 'es' ? 'Spanish' : 'Chinese'})` : base
+const LANGUAGES: Record<string, string> = { es: 'Spanish', zh: 'Chinese', ja: 'Japanese', pt: 'Portuguese', ko: 'Korean', id: 'Indonesian' }
+const LANG = /-(es|zh|ja|pt|ko|id)$/
+/** "shanghai" under "china-zh" → "Shanghai (Chinese)"; "japan-ja" → "Japan (Japanese)" */
+const pageName = (slug: string, language?: string) => {
+  const lang = language || LANGUAGES[slug.match(LANG)?.[1] || '']
+  const base = title(slug.replace(LANG, ''))
+  return lang ? `${base} (${lang})` : base
 }
 
 export function groupLeads(sources: LeadSource[]): Group[] {
@@ -30,7 +32,8 @@ export function groupLeads(sources: LeadSource[]): Group[] {
   for (const s of sources) {
     if (s.isLocation) {
       const [, country = '', city] = s.creditedTo.split('/').filter(Boolean)
-      add(title(country.replace(/-(es|zh)$/, '')), city ? pageName(city) : `${pageName(country)} page`, s)
+      const language = LANGUAGES[country.match(LANG)?.[1] || '']
+      add(title(country.replace(LANG, '')), city ? pageName(city, language) : `${pageName(country)} page`, s)
     } else {
       const suffix = s.event.replace(/^generate_lead_?/, '')
       add(SITE_WIDE, FORM_NAMES[suffix] || `${title(suffix.replace(/_/g, '-')) || 'Other'} form`, s)
