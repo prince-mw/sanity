@@ -78,8 +78,13 @@ export async function POST(request: NextRequest) {
       body: formData.toString(),
     })
 
-    if (!zohoResponse.ok) {
-      console.error('Zoho form submission failed:', zohoResponse.status, await zohoResponse.text())
+    const zohoBody = await zohoResponse.text()
+    // Zoho can refuse a submission but still answer 200 with its "ShowError" page
+    // (e.g. "This form is temporarily inaccessible"), so check the page as well as the status.
+    const zohoRefused = /<title>\s*ShowError\s*<\/title>/i.test(zohoBody) || /temporarily inaccessible/i.test(zohoBody)
+    if (!zohoResponse.ok || zohoRefused) {
+      const reason = zohoBody.match(/elname="errMsgCont">([^<]*)/)?.[1]?.trim()
+      console.error('Zoho form submission failed:', zohoResponse.status, zohoFormLinkName, reason || zohoBody.slice(0, 300))
       return NextResponse.json(
         { success: false, error: 'Form submission failed. Please try again.' },
         { status: 502 }
