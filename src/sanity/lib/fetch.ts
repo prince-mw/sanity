@@ -6,6 +6,7 @@ import type { LocationData } from '@/data/staticLocationData'
 import { defaultRetailMediaContent, type RetailMediaContent } from '@/data/retail-media-page'
 import { defaultPartners, type PartnerPageContent } from '@/data/partners'
 import type { LocaleValue, LocaleTranslations } from '@/i18n/config'
+import { buildPageTranslations, type PageTranslations } from '@/lib/pageTranslations'
 
 // Per-request deduplication: identical query+params won't fire twice within the same render tree
 // (e.g. generateMetadata + page body both calling getBlogPostBySlug for the same slug)
@@ -4129,4 +4130,14 @@ export async function getDocumentationPageContent(): Promise<DocumentationPageCo
     console.error('Error fetching documentation page content:', error)
     return null
   }
+}
+
+// Translations of a page's copy, all languages (see src/lib/pageTranslations.ts)
+export async function getPageTranslations(page: string): Promise<PageTranslations> {
+  const docs = await safeFetch<Array<{ language?: string; entries?: Array<{ source?: string; translation?: string }> }>>(
+    `*[_type == "pageTranslation" && page == $page && !(_id in path("drafts.**"))]{ language, entries[]{ source, translation } }`,
+    { page },
+    [],
+  )
+  return buildPageTranslations(docs)
 }

@@ -5,6 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { CTAButton } from '@/components/CTAButton'
 import type { RetailMediaContent } from '@/data/retail-media-page'
+import { usePageTr } from '@/i18n/usePageTr'
+import type { PageTranslations } from '@/lib/pageTranslations'
 
 const NAVY = 'bg-[#062068]'
 
@@ -33,7 +35,16 @@ const Eyebrow = ({ children, light = false }: { children: React.ReactNode; light
   </p>
 )
 
-export default function RetailMediaPageClient({ content }: { content: RetailMediaContent }) {
+export default function RetailMediaPageClient({
+  content: rawContent,
+  translations,
+}: {
+  content: RetailMediaContent
+  translations?: PageTranslations
+}) {
+  const { tr, deep } = usePageTr(translations)
+  // CMS copy translated for the visitor's language (image urls are left untouched, alt text is translated)
+  const content = deep(rawContent)
   const [openFaq, setOpenFaq] = useState<number | null>(0)
 
   return (
@@ -138,15 +149,15 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
                 </div>
                 <dl className="space-y-4 text-sm">
                   <div>
-                    <dt className="font-semibold text-gray-500 uppercase tracking-wide text-xs mb-1">Where</dt>
+                    <dt className="font-semibold text-gray-500 uppercase tracking-wide text-xs mb-1">{tr('Where')}</dt>
                     <dd className="text-gray-900">{moment.where}</dd>
                   </div>
                   <div>
-                    <dt className="font-semibold text-gray-500 uppercase tracking-wide text-xs mb-1">What it does</dt>
+                    <dt className="font-semibold text-gray-500 uppercase tracking-wide text-xs mb-1">{tr('What it does')}</dt>
                     <dd className="text-gray-900">{moment.whatItDoes}</dd>
                   </div>
                   <div>
-                    <dt className="font-semibold text-gray-500 uppercase tracking-wide text-xs mb-1">What we measure</dt>
+                    <dt className="font-semibold text-gray-500 uppercase tracking-wide text-xs mb-1">{tr('What we measure')}</dt>
                     <dd className="text-mw-blue-600 font-semibold">{moment.whatWeMeasure}</dd>
                   </div>
                 </dl>
@@ -268,9 +279,9 @@ export default function RetailMediaPageClient({ content }: { content: RetailMedi
             <table className="w-full text-left">
               <thead className={`${NAVY} text-white`}>
                 <tr>
-                  <th scope="col" className="px-6 py-4 font-semibold w-1/5">Layer</th>
-                  <th scope="col" className="px-6 py-4 font-semibold w-1/4">What it answers</th>
-                  <th scope="col" className="px-6 py-4 font-semibold">How it is measured</th>
+                  <th scope="col" className="px-6 py-4 font-semibold w-1/5">{tr('Layer')}</th>
+                  <th scope="col" className="px-6 py-4 font-semibold w-1/4">{tr('What it answers')}</th>
+                  <th scope="col" className="px-6 py-4 font-semibold">{tr('How it is measured')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">

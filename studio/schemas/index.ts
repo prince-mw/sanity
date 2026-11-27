@@ -53,6 +53,7 @@ import contactPage from './contactPage'
 import trustBar from './trustBar'
 import clientPartners from './clientPartners'
 import retailMediaPage from './retailMediaPage'
+import pageTranslation from './pageTranslation'
 import partnerPage from './partnerPage'
 import {singaporePage, singaporeVenuePage} from './singaporePages'
 import helpCenterFaq from './helpCenterFaq'
@@ -122,6 +123,7 @@ export const schemaTypes = [
   trustBar,
   clientPartners,
   retailMediaPage,
+  pageTranslation,
   partnerPage,
   singaporePage,
   singaporeVenuePage,

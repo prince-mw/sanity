@@ -7,9 +7,12 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import TestimonialSectionClient from '@/components/TestimonialSectionClient'
 import { useLocale } from '@/i18n/LocaleContext'
+import { usePageTr } from '@/i18n/usePageTr'
+import type { PageTranslations } from '@/lib/pageTranslations'
 
 // Types for CMS-managed content
 interface BrandsPageProps {
+  translations?: PageTranslations;
   title?: string;
   titleHighlight?: string;
   subtitle?: string;
@@ -132,23 +135,29 @@ const defaultContent = {
 };
 
 export default function BrandsPageClient(props: BrandsPageProps) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
+  // Page-copy translations: CMS copy and English defaults go through deep(); case studies,
+  // testimonials and customer logos (brand names) are kept exactly as received.
+  const { caseStudies: cmsCaseStudies, testimonials, customerLogos: cmsCustomerLogos, translations, ...cmsProps } = props
+  const { tr, deep } = usePageTr(translations)
+  const p = deep(cmsProps)
+  const dc = deep(defaultContent)
   // Merge props with defaults
   const content = {
-    title: props.title || defaultContent.title,
-    titleHighlight: props.titleHighlight || defaultContent.titleHighlight,
-    subtitle: props.subtitle || defaultContent.subtitle,
-    primaryCTA: props.primaryCTA || defaultContent.primaryCTA,
-    secondaryCTA: props.secondaryCTA || defaultContent.secondaryCTA,
-    stats: props.stats?.length ? props.stats : defaultContent.stats,
-    benefits: props.benefits?.length ? props.benefits : defaultContent.benefits,
-    platformFeatures: props.platformFeatures?.length ? props.platformFeatures : defaultContent.platformFeatures,
-    faqs: props.faqs?.length ? props.faqs : defaultContent.faqs,
+    title: p.title || dc.title,
+    titleHighlight: p.titleHighlight || dc.titleHighlight,
+    subtitle: p.subtitle || dc.subtitle,
+    primaryCTA: p.primaryCTA || dc.primaryCTA,
+    secondaryCTA: p.secondaryCTA || dc.secondaryCTA,
+    stats: p.stats?.length ? p.stats : dc.stats,
+    benefits: p.benefits?.length ? p.benefits : dc.benefits,
+    platformFeatures: p.platformFeatures?.length ? p.platformFeatures : dc.platformFeatures,
+    faqs: p.faqs?.length ? p.faqs : dc.faqs,
   };
 
   // Trust bar logos - CMS or fallback
-  const trustBarTitle = props.trustBarTitle || 'Trusted by leading brands worldwide';
-  const cmsLogosWithImages = (props.customerLogos || []).filter(l => l.logo);
+  const trustBarTitle = p.trustBarTitle || tr('Trusted by leading brands worldwide');
+  const cmsLogosWithImages = (cmsCustomerLogos || []).filter(l => l.logo);
   const customerLogos = cmsLogosWithImages.length ? cmsLogosWithImages : [
     { name: 'Coca-Cola', logo: '/assets/images/our-customers-logos/coca-cola.png' },
     { name: "McDonald's", logo: '/assets/images/our-customers-logos/mcdonalds.png' },
@@ -171,19 +180,19 @@ export default function BrandsPageClient(props: BrandsPageProps) {
   ];
 
   // Journey section - CMS or fallback
-  const journeyTitle = props.journeyTitle || 'Your Journey with Moving Walls';
-  const journeySubtitle = props.journeySubtitle || 'Create. Execute. Measure. A seamless journey from brief to results.';
-  const journeySteps = props.journeySteps?.length ? props.journeySteps : [
+  const journeyTitle = p.journeyTitle || tr('Your Journey with Moving Walls');
+  const journeySubtitle = p.journeySubtitle || tr('Create. Execute. Measure. A seamless journey from brief to results.');
+  const journeySteps = p.journeySteps?.length ? p.journeySteps : deep([
     { stepLabel: 'Step 1', stepName: 'Create', description: 'Go from concept to live without operational drag.', items: ['Define your audience', 'Set objectives', 'Receive optimised inventory recommendations', 'Launch instantly'] },
     { stepLabel: 'Step 2', stepName: 'Execute', description: 'Outdoor becomes responsive, not static.', items: ['Monitor campaigns in real time', 'Adjust placements dynamically', 'Optimise creative and locations', 'Track performance live'] },
     { stepLabel: 'Step 3', stepName: 'Measure', description: 'Full transparency from impression to outcome.', items: ['Transparent impression tracking', 'Footfall uplift measurement', 'Attribution insights', 'Clear ROI reporting'] },
-  ];
+  ]);
 
   // Case studies - CMS or fallback (real case studies from Sanity are passed as props)
-  const caseStudySectionTitle = props.caseStudySectionTitle || 'Our Case Studies';
-  const caseStudySectionSubtitle = props.caseStudySectionSubtitle || 'Discover how leading brands achieved remarkable results with Moving Walls';
-  const caseStudies = props.caseStudies?.length ? props.caseStudies : [
-    { client: 'Moving Walls', category: 'OOH', title: 'Driving Brand Awareness with OOH', description: 'Discover how brands achieve measurable results with outdoor advertising campaigns.', image: '/assets/images/case-study-placeholder.svg', duration: '', budget: '', metrics: [{ label: 'Results', value: 'View Details' }] },
+  const caseStudySectionTitle = p.caseStudySectionTitle || tr('Our Case Studies');
+  const caseStudySectionSubtitle = p.caseStudySectionSubtitle || tr('Discover how leading brands achieved remarkable results with Moving Walls');
+  const caseStudies = cmsCaseStudies?.length ? cmsCaseStudies : [
+    { client: 'Moving Walls', category: 'OOH', title: tr('Driving Brand Awareness with OOH'), description: tr('Discover how brands achieve measurable results with outdoor advertising campaigns.'), image: '/assets/images/case-study-placeholder.svg', duration: '', budget: '', metrics: [{ label: tr('Results'), value: tr('View Details') }] },
   ];
 
   const [activeTab, setActiveTab] = useState('retail')
@@ -248,7 +257,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               className="text-left"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                {content.title}{' '}
+                {content.title}{locale === 'ja' || locale === 'zh' ? '' : ' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
                   {content.titleHighlight}
                 </span>
@@ -404,12 +413,11 @@ export default function BrandsPageClient(props: BrandsPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-bold text-mw-gray-900 mb-6">
-              Plan. Activate. Measure.<br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">All in One Place.</span>
+              {tr('Plan. Activate. Measure.')}<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">{tr('All in One Place.')}</span>
             </h2>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
-              The outdoors has always delivered attention. What it lacked was speed and accountability.
-              Moving Walls connects planning, booking, activation, and attribution into one streamlined workflow. No manual coordination. No disconnected systems. No blind spending.
+              {tr('The outdoors has always delivered attention. What it lacked was speed and accountability. Moving Walls connects planning, booking, activation, and attribution into one streamlined workflow. No manual coordination. No disconnected systems. No blind spending.')}
             </p>
           </motion.div>
 
@@ -417,17 +425,17 @@ export default function BrandsPageClient(props: BrandsPageProps) {
           <div className="flex justify-center mb-16 px-4">
             <div className="inline-flex flex-wrap justify-center border border-mw-gray-200 p-1.5 rounded-xl gap-1">
               {[
-                { id: 'campaigns', name: 'Campaign Creation', icon: (
+                { id: 'campaigns', name: tr('Campaign Creation'), icon: (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 )},
-                { id: 'realtime', name: 'Real Time Activation', icon: (
+                { id: 'realtime', name: tr('Real Time Activation'), icon: (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 )},
-                { id: 'measurement', name: 'Full Funnel Measurement', icon: (
+                { id: 'measurement', name: tr('Full Funnel Measurement'), icon: (
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
@@ -466,31 +474,31 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
-                    Create and Launch in Minutes
+                    {tr('Create and Launch in Minutes')}
                   </h3>
                   <p className="text-lg text-mw-gray-600 leading-relaxed mb-8">
-                    Turn your brief into an optimised OOH proposal instantly.
+                    {tr('Turn your brief into an optimised OOH proposal instantly.')}
                   </p>
                   
                   {/* Horizontal/Vertical Pipeline Steps */}
                   <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-8 gap-4 sm:gap-0">
                     {[
-                      { label: 'Define your audience', icon: (
+                      { label: tr('Define your audience'), icon: (
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                       )},
-                      { label: 'Set campaign objectives', icon: (
+                      { label: tr('Set campaign objectives'), icon: (
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                         </svg>
                       )},
-                      { label: 'Select markets', icon: (
+                      { label: tr('Select markets'), icon: (
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                       )},
-                      { label: 'Activate with one click', icon: (
+                      { label: tr('Activate with one click'), icon: (
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
@@ -546,7 +554,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                   </div>
 
                   <p className="text-base text-mw-gray-500 leading-relaxed border-l-4 border-mw-blue-400 pl-4">
-                    Our platform evaluates movement patterns, historical performance, and contextual signals to recommend high-impact inventory aligned to your goals.
+                    {tr('Our platform evaluates movement patterns, historical performance, and contextual signals to recommend high-impact inventory aligned to your goals.')}
                   </p>
                 </motion.div>
               )}
@@ -557,10 +565,10 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
-                    Execute Campaigns in Real-Time
+                    {tr('Execute Campaigns in Real-Time')}
                   </h3>
                   <p className="text-lg text-mw-gray-600 leading-relaxed">
-                    Manage and activate OOH campaigns through a purpose-built Demand-Side Platform, designed for real-time execution and optimization. Use live data signals, such as audience movement, location context, and performance metrics, to refine delivery, adjust targeting, and optimize creative while campaigns are live.
+                    {tr('Manage and activate OOH campaigns through a purpose-built Demand-Side Platform, designed for real-time execution and optimization. Use live data signals, such as audience movement, location context, and performance metrics, to refine delivery, adjust targeting, and optimize creative while campaigns are live.')}
                   </p>
                 </motion.div>
               )}
@@ -571,10 +579,10 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
-                    Measurement & Analytics
+                    {tr('Measurement & Analytics')}
                   </h3>
                   <p className="text-lg text-mw-gray-600 leading-relaxed">
-                    Measure and validate campaign performance with transparent, real-time analytics and attribution. Monitor impressions, assess real-world impact, and track outcomes using standardized measurement and verification tools that support confident, data-driven optimization.
+                    {tr('Measure and validate campaign performance with transparent, real-time analytics and attribution. Monitor impressions, assess real-world impact, and track outcomes using standardized measurement and verification tools that support confident, data-driven optimization.')}
                   </p>
                 </motion.div>
               )}
@@ -590,7 +598,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                       return (
                         <Image
                           src={activeFeature.image}
-                          alt={activeFeature.title || 'Feature'}
+                          alt={activeFeature.title || tr('Feature')}
                           width={800}
                           height={500}
                           className="w-full h-auto object-cover"
@@ -599,9 +607,9 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                     }
                     // Fallback to default images
                     const fallbackImages: Record<string, { src: string; alt: string }> = {
-                      campaigns: { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop', alt: 'Campaign Dashboard' },
-                      realtime: { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop', alt: 'Real-Time Dashboard' },
-                      measurement: { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&q=80', alt: 'Analytics Dashboard' },
+                      campaigns: { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop', alt: tr('Campaign Dashboard') },
+                      realtime: { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop', alt: tr('Real-Time Dashboard') },
+                      measurement: { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&q=80', alt: tr('Analytics Dashboard') },
                     };
                     const fallback = fallbackImages[activePlatform] || fallbackImages.campaigns;
                     return (
@@ -804,15 +812,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                       </svg>
                     </motion.div>
                     <div>
-                      <span className="text-xs font-bold text-mw-blue-600 uppercase tracking-wider">{journeySteps[0]?.stepLabel || 'Step 1'}</span>
-                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || 'Create'}</h3>
+                      <span className="text-xs font-bold text-mw-blue-600 uppercase tracking-wider">{journeySteps[0]?.stepLabel || tr('Step 1')}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || tr('Create')}</h3>
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6">
-                    {journeySteps[0]?.description || 'Go from concept to live without operational drag.'}
+                    {journeySteps[0]?.description || tr('Go from concept to live without operational drag.')}
                   </p>
                   <div className="space-y-3">
-                    {(journeySteps[0]?.items || ['Define your audience', 'Set objectives', 'Receive optimised inventory recommendations', 'Launch instantly']).map((item, index) => (
+                    {(journeySteps[0]?.items || [tr('Define your audience'), tr('Set objectives'), tr('Receive optimised inventory recommendations'), tr('Launch instantly')]).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -10 }}
@@ -860,7 +868,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ duration: 2, repeat: Infinity }}
                     >
-                      Live Now
+                      {tr('Live Now')}
                     </motion.span>
                   </div>
                   <div className="flex items-center gap-3 mb-6 pt-2">
@@ -876,15 +884,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                       </svg>
                     </motion.div>
                     <div>
-                      <span className="text-xs font-bold text-purple-200 uppercase tracking-wider">{journeySteps[1]?.stepLabel || 'Step 2'}</span>
-                      <h3 className="text-xl font-bold text-white">{journeySteps[1]?.stepName || 'Execute'}</h3>
+                      <span className="text-xs font-bold text-purple-200 uppercase tracking-wider">{journeySteps[1]?.stepLabel || tr('Step 2')}</span>
+                      <h3 className="text-xl font-bold text-white">{journeySteps[1]?.stepName || tr('Execute')}</h3>
                     </div>
                   </div>
                   <p className="text-purple-100 mb-6">
-                    {journeySteps[1]?.description || 'Outdoor becomes responsive, not static.'}
+                    {journeySteps[1]?.description || tr('Outdoor becomes responsive, not static.')}
                   </p>
                   <div className="space-y-3">
-                    {(journeySteps[1]?.items || ['Monitor campaigns in real time', 'Adjust placements dynamically', 'Optimise creative and locations', 'Track performance live']).map((item, index) => (
+                    {(journeySteps[1]?.items || [tr('Monitor campaigns in real time'), tr('Adjust placements dynamically'), tr('Optimise creative and locations'), tr('Track performance live')]).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -937,15 +945,15 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                       </svg>
                     </motion.div>
                     <div>
-                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || 'Step 3'}</span>
-                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || 'Measure'}</h3>
+                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || tr('Step 3')}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || tr('Measure')}</h3>
                     </div>
                   </div>
                   <p className="text-gray-600 mb-6">
-                    {journeySteps[2]?.description || 'Full transparency from impression to outcome.'}
+                    {journeySteps[2]?.description || tr('Full transparency from impression to outcome.')}
                   </p>
                   <div className="space-y-3">
-                    {(journeySteps[2]?.items || ['Transparent impression tracking', 'Footfall uplift measurement', 'Attribution insights', 'Clear ROI reporting']).map((item, index) => (
+                    {(journeySteps[2]?.items || [tr('Transparent impression tracking'), tr('Footfall uplift measurement'), tr('Attribution insights'), tr('Clear ROI reporting')]).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 10 }}
@@ -1169,10 +1177,10 @@ export default function BrandsPageClient(props: BrandsPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Complete MW Platform Suite
+              {tr('Complete MW Platform Suite')}
             </h2>
             <p className="text-xl text-mw-gray-600">
-              All the tools you need, integrated seamlessly
+              {tr('All the tools you need, integrated seamlessly')}
             </p>
           </motion.div>
 
@@ -1195,7 +1203,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                   </svg>
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">MW Planner</h3>
-                <p className="text-blue-100 text-lg mb-6 max-w-md">AI-powered campaign planning and audience insights. Discover where your audiences are and plan with precision.</p>
+                <p className="text-blue-100 text-lg mb-6 max-w-md">{tr('AI-powered campaign planning and audience insights. Discover where your audiences are and plan with precision.')}</p>
                 <Link href="/mw-planner" className="inline-flex items-center gap-2 text-white font-semibold text-sm bg-white/20 hover:bg-white/30 backdrop-blur-sm px-5 py-2.5 rounded-lg transition-all">
                   {t('ui.solutions.learnMore')}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1220,7 +1228,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Marketplace</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Access 250,000+ premium billboard locations worldwide</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Access 250,000+ premium billboard locations worldwide')}</p>
               <Link href="/mw-market" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1244,7 +1252,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Studio</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Creative design and optimization tools for every format</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Creative design and optimization tools for every format')}</p>
               <Link href="/mw-studio" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1268,7 +1276,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Activate</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Campaign activation and automation at scale</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Campaign activation and automation at scale')}</p>
               <Link href="/mw-activate" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1291,7 +1299,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Measure</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Real-time analytics and attribution tracking</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Real-time analytics and attribution tracking')}</p>
               <Link href="/mw-measure" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1314,7 +1322,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Science</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Data science and predictive analytics engine</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Data science and predictive analytics engine')}</p>
               <Link href="/mw-science" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1337,7 +1345,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Influence</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Intelligent DOOH ad serving and yield optimization</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Intelligent DOOH ad serving and yield optimization')}</p>
               <Link href="/mw-influence" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1350,7 +1358,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialSectionClient testimonials={props.testimonials} />
+      <TestimonialSectionClient testimonials={testimonials} />
 
       {/* FAQ Section */}
       <section className="py-20 bg-white">
@@ -1365,7 +1373,7 @@ export default function BrandsPageClient(props: BrandsPageProps) {
               {t('ui.solutions.faqTitle')}
             </h2>
             <p className="text-xl text-mw-gray-600">
-              Everything you need to know about Moving Walls for brands
+              {tr('Everything you need to know about Moving Walls for brands')}
             </p>
           </motion.div>
 

@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getAudiencePage, getPageSeo, getSanityImageUrl } from '@/sanity/lib/fetch';
+import { getAudiencePage, getPageSeo, getSanityImageUrl, getPageTranslations } from '@/sanity/lib/fetch';
 import { getFeaturedTestimonials } from '@/sanity/lib/queries';
 import AgenciesPageClient from '@/components/AgenciesPageClient';
 
@@ -35,8 +35,9 @@ export async function generateMetadata(): Promise<Metadata> {
 export const revalidate = 3600;
 
 export default async function AgenciesPage() {
-  const [pageData, testimonials] = await Promise.all([
+  const [pageData, translations, testimonials] = await Promise.all([
     getAudiencePage('agencies'),
+    getPageTranslations('agencies'),
     getFeaturedTestimonials()
   ]);
 
@@ -107,7 +108,7 @@ export default async function AgenciesPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <AgenciesPageClient {...clientProps} />
+      <AgenciesPageClient {...clientProps} translations={translations} />
     </>
   );
 }

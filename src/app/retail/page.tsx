@@ -1,10 +1,10 @@
-import { getRetailMediaPage } from '@/sanity/lib/fetch';
+import { getRetailMediaPage, getPageTranslations } from '@/sanity/lib/fetch';
 import RetailMediaPageClient from '@/components/RetailMediaPageClient';
 
 export const revalidate = 3600;
 
 export default async function RetailPage() {
-  const content = await getRetailMediaPage();
+  const [content, translations] = await Promise.all([getRetailMediaPage(), getPageTranslations('retail')]);
 
   const faqJsonLd = content.faqs.length > 0 ? {
     "@context": "https://schema.org",
@@ -27,7 +27,7 @@ export default async function RetailPage() {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
         />
       )}
-      <RetailMediaPageClient content={content} />
+      <RetailMediaPageClient content={content} translations={translations} />
     </>
   );
 }

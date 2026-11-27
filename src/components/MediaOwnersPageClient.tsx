@@ -7,6 +7,8 @@ import { useState } from 'react'
 import TestimonialSectionClient from '@/components/TestimonialSectionClient'
 import { CTAButton } from '@/components/CTAButton'
 import { useLocale } from '@/i18n/LocaleContext'
+import { usePageTr } from '@/i18n/usePageTr'
+import type { PageTranslations } from '@/lib/pageTranslations'
 
 // Types for CMS-managed content
 interface MediaOwnersPageProps {
@@ -51,6 +53,7 @@ interface MediaOwnersPageProps {
     image?: { asset: { _ref: string } };
     companyLogo?: { asset: { _ref: string } };
   }>;
+  translations?: PageTranslations;
 }
 
 // Default values for fallback
@@ -115,23 +118,29 @@ const defaultContent = {
 };
 
 export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
+  // Page-copy translation: CMS copy and the English defaults below are translated for the visitor's
+  // language (testimonials and customer logo names are kept exactly as received).
+  const { testimonials, customerLogos: cmsCustomerLogos, translations, ...cmsProps } = props
+  const { tr, deep } = usePageTr(translations)
+  const p = deep(cmsProps)
+  const defaults = deep(defaultContent)
   // Merge props with defaults
   const content = {
-    title: props.title || defaultContent.title,
-    titleHighlight: props.titleHighlight || defaultContent.titleHighlight,
-    subtitle: props.subtitle || defaultContent.subtitle,
-    primaryCTA: props.primaryCTA || defaultContent.primaryCTA,
-    secondaryCTA: props.secondaryCTA || defaultContent.secondaryCTA,
-    stats: props.stats?.length ? props.stats : defaultContent.stats,
-    benefits: props.benefits?.length ? props.benefits : defaultContent.benefits,
-    platformFeatures: props.platformFeatures?.length ? props.platformFeatures : defaultContent.platformFeatures,
-    faqs: props.faqs?.length ? props.faqs : defaultContent.faqs,
+    title: p.title || defaults.title,
+    titleHighlight: p.titleHighlight || defaults.titleHighlight,
+    subtitle: p.subtitle || defaults.subtitle,
+    primaryCTA: p.primaryCTA || defaults.primaryCTA,
+    secondaryCTA: p.secondaryCTA || defaults.secondaryCTA,
+    stats: p.stats?.length ? p.stats : defaults.stats,
+    benefits: p.benefits?.length ? p.benefits : defaults.benefits,
+    platformFeatures: p.platformFeatures?.length ? p.platformFeatures : defaults.platformFeatures,
+    faqs: p.faqs?.length ? p.faqs : defaults.faqs,
   };
 
   // Trust bar logos - CMS or fallback
-  const trustBarTitle = props.trustBarTitle || 'TRUSTED BY LEADING MEDIA OWNERS WORLDWIDE';
-  const cmsLogosWithImages = (props.customerLogos || []).filter(l => l.logo);
+  const trustBarTitle = p.trustBarTitle || tr('TRUSTED BY LEADING MEDIA OWNERS WORLDWIDE');
+  const cmsLogosWithImages = (cmsCustomerLogos || []).filter(l => l.logo);
   const customerLogos = cmsLogosWithImages.length ? cmsLogosWithImages : [
     { name: '3thirds Inc', logo: '/assets/images/media-owners/3thirds-inc.png' },
     { name: 'Act Media', logo: '/assets/images/media-owners/act-media.png' },
@@ -154,18 +163,18 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
   ];
 
   // Journey section - CMS or fallback
-  const journeyTitle = props.journeyTitle || 'From Inefficiency to Maximum Yield';
-  const journeySubtitle = props.journeySubtitle || 'See how Moving Walls transforms your inventory monetization';
-  const journeySteps = props.journeySteps?.length ? props.journeySteps : [
+  const journeyTitle = p.journeyTitle || tr('From Inefficiency to Maximum Yield');
+  const journeySubtitle = p.journeySubtitle || tr('See how Moving Walls transforms your inventory monetization');
+  const journeySteps = p.journeySteps?.length ? p.journeySteps : deep([
     { stepLabel: 'The Old Way', stepName: 'Challenges', description: '', items: ['Low fill rates', 'Limited demand access', 'Manual booking', 'No real-time insights', 'Complicated pricing slowed growth'] },
     { stepLabel: 'Transformation', stepName: 'Moving Walls SSP', description: 'Your complete monetization solution', items: ['Premium demand access', 'Automated yield optimization', 'Real-time analytics', 'Fully streamlined workflows'] },
     { stepLabel: 'Results for Media Owners', stepName: 'Results', description: '', items: ['95% fill rate achieved', '+35% eCPM improvement', 'Global demand access', 'Real-time performance insights', '80% operations time saved'] },
-  ];
+  ]);
 
   // Feature grid section - CMS or fallback
-  const featureGridTitle = props.featureGridTitle || 'Everything Media Owners Need to Succeed';
-  const featureGridSubtitle = props.featureGridSubtitle || '';
-  const featureGrid = props.featureGrid?.length ? props.featureGrid : [
+  const featureGridTitle = p.featureGridTitle || tr('Everything Media Owners Need to Succeed');
+  const featureGridSubtitle = p.featureGridSubtitle || '';
+  const featureGrid = p.featureGrid?.length ? p.featureGrid : deep([
     { title: 'SSP Technology', description: 'Connect to programmatic demand and premium advertisers globally while keeping full control over pricing and availability' },
     { title: 'Inventory Management', description: 'Centralized dashboard to oversee all screens, campaigns, and pricing rules at a glance' },
     { title: 'Yield Optimization', description: 'Continuous optimization to ensure every impression is sold at maximum value' },
@@ -174,7 +183,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
     { title: 'Revenue Analytics', description: 'Real-time dashboards to monitor fill rates, revenue trends, and eCPM growth' },
     { title: 'Creative Trafficking', description: 'Automatic scheduling and delivery of creative content to screens' },
     { title: 'Billing & Invoicing', description: 'Automated reconciliation and financial reporting' },
-  ];
+  ]);
 
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const [activePlatform, setActivePlatform] = useState('marketplace')
@@ -229,7 +238,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               className="text-left"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                {content.title}{' '}
+                {content.title}{locale === 'ja' || locale === 'zh' ? '' : ' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-200">
                   {content.titleHighlight}
                 </span>
@@ -258,10 +267,10 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               transition={{ duration: 1, delay: 0.2 }}
               className="relative flex items-center justify-center"
             >
-              {props.heroImage ? (
+              {p.heroImage ? (
                 <div className="relative w-full max-w-[500px] rounded-2xl overflow-hidden shadow-2xl">
                   <Image
-                    src={props.heroImage}
+                    src={p.heroImage}
                     alt={content.title}
                     width={1200}
                     height={800}
@@ -456,22 +465,22 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-5xl font-bold text-mw-gray-900 mb-6">
-              Advanced SSP Technology<br/>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">for Media Owners</span>
+              {tr('Advanced SSP Technology')}<br/>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-mw-blue-600 to-cyan-500">{tr('for Media Owners')}</span>
             </h2>
             <p className="text-xl text-mw-gray-600 max-w-3xl mx-auto leading-relaxed">
-              A complete suite of tools to manage, sell, and optimize your OOH inventory with speed, precision, and intelligence.
+              {tr('A complete suite of tools to manage, sell, and optimize your OOH inventory with speed, precision, and intelligence.')}
             </p>
           </motion.div>
 
           {/* Top Tabs */}
           <div className="flex justify-center mb-16">
             <div className="inline-flex border border-mw-gray-200 p-1.5 rounded-xl gap-1 flex-wrap justify-center">
-              {[
+              {deep([
                 { id: 'marketplace', name: 'Marketplace' },
                 { id: 'inventory', name: 'Inventory' },
                 { id: 'yield', name: 'Yield' },
-              ].map((tab) => (
+              ]).map((tab) => (
                 <button
                   key={tab.id}
                   onClick={() => setActivePlatform(tab.id)}
@@ -504,29 +513,29 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
-                    Connect to Premium Demand
+                    {tr('Connect to Premium Demand')}
                   </h3>
                   <p className="text-lg text-mw-gray-600 leading-relaxed mb-6">
-                    Connect your OOH inventory to an integrated demand marketplace designed for media owners. Enable access to programmatic and direct demand sources, improve fill rates, and monetize inventory more efficiently across digital and static screens.
+                    {tr('Connect your OOH inventory to an integrated demand marketplace designed for media owners. Enable access to programmatic and direct demand sources, improve fill rates, and monetize inventory more efficiently across digital and static screens.')}
                   </p>
                   <ul className="space-y-3">
                     <li className="flex items-center gap-3 text-mw-gray-700">
                       <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Access demand from advertisers and agencies
+                      {tr('Access demand from advertisers and agencies')}
                     </li>
                     <li className="flex items-center gap-3 text-mw-gray-700">
                       <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Support for programmatic and direct sales channels
+                      {tr('Support for programmatic and direct sales channels')}
                     </li>
                     <li className="flex items-center gap-3 text-mw-gray-700">
                       <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Real-time bidding integration
+                      {tr('Real-time bidding integration')}
                     </li>
                   </ul>
                 </motion.div>
@@ -538,10 +547,10 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
-                    Inventory Management
+                    {tr('Inventory Management')}
                   </h3>
                   <p className="text-lg text-mw-gray-600 leading-relaxed">
-                    Manage all your OOH assets in one place. Upload creative specifications, set availability, define pricing rules, and track performance across your entire network.
+                    {tr('Manage all your OOH assets in one place. Upload creative specifications, set availability, define pricing rules, and track performance across your entire network.')}
                   </p>
                 </motion.div>
               )}
@@ -552,29 +561,29 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   transition={{ duration: 0.5, delay: 0.1 }}
                 >
                   <h3 className="text-2xl md:text-3xl font-bold text-mw-gray-900 mb-4">
-                    Yield Optimization
+                    {tr('Yield Optimization')}
                   </h3>
                   <p className="text-lg text-mw-gray-600 leading-relaxed mb-6">
-                    Maximize revenue per screen through flexible pricing controls and demand-based adjustments. Set dynamic floor prices, manage rate rules, and respond to changing demand to improve yield across your OOH inventory.
+                    {tr('Maximize revenue per screen through flexible pricing controls and demand-based adjustments. Set dynamic floor prices, manage rate rules, and respond to changing demand to improve yield across your OOH inventory.')}
                   </p>
                   <ul className="space-y-3">
                     <li className="flex items-center gap-3 text-mw-gray-700">
                       <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Dynamic pricing controls
+                      {tr('Dynamic pricing controls')}
                     </li>
                     <li className="flex items-center gap-3 text-mw-gray-700">
                       <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Demand-based rate adjustments
+                      {tr('Demand-based rate adjustments')}
                     </li>
                     <li className="flex items-center gap-3 text-mw-gray-700">
                       <svg className="w-5 h-5 text-mw-blue-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Yield performance visibility
+                      {tr('Yield performance visibility')}
                     </li>
                   </ul>
                 </motion.div>
@@ -591,18 +600,18 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                       return (
                         <Image
                           src={activeFeature.image}
-                          alt={activeFeature.title || 'Feature'}
+                          alt={activeFeature.title || tr('Feature')}
                           width={800}
                           height={500}
                           className="w-full h-auto object-cover"
                         />
                       );
                     }
-                    const fallbackImages: Record<string, { src: string; alt: string }> = {
+                    const fallbackImages: Record<string, { src: string; alt: string }> = deep({
                       marketplace: { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop', alt: 'Demand Marketplace Dashboard' },
                       inventory: { src: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=500&fit=crop', alt: 'Inventory Management Dashboard' },
                       yield: { src: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=500&fit=crop&q=80', alt: 'Yield Optimization Dashboard' },
-                    };
+                    });
                     const fallback = fallbackImages[activePlatform] || fallbackImages.marketplace;
                     return (
                       <Image
@@ -857,12 +866,12 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-red-500 uppercase tracking-wider">{journeySteps[0]?.stepLabel || 'The Old Way'}</span>
-                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || 'Challenges'}</h3>
+                      <span className="text-xs font-bold text-red-500 uppercase tracking-wider">{journeySteps[0]?.stepLabel || tr('The Old Way')}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[0]?.stepName || tr('Challenges')}</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {(journeySteps[0]?.items || ['Low fill rates', 'Limited demand access', 'Manual booking', 'No real-time insights', 'Complicated pricing slowed growth']).map((item, index) => (
+                    {(journeySteps[0]?.items || deep(['Low fill rates', 'Limited demand access', 'Manual booking', 'No real-time insights', 'Complicated pricing slowed growth'])).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: -10 }}
@@ -899,7 +908,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl p-8 shadow-2xl h-full transform lg:-translate-y-4">
                   <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                     <span className="bg-yellow-400 text-yellow-900 text-xs font-bold px-4 py-1 rounded-full uppercase tracking-wider">
-                      {journeySteps[1]?.stepLabel || 'Transformation'}
+                      {journeySteps[1]?.stepLabel || tr('Transformation')}
                     </span>
                   </div>
                   <div className="text-center mb-6 pt-4">
@@ -908,16 +917,16 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                       </svg>
                     </div>
-                    <h3 className="text-2xl font-bold text-white mb-2">{journeySteps[1]?.stepName || 'Moving Walls SSP'}</h3>
-                    <p className="text-blue-200 text-sm">{journeySteps[1]?.description || 'Your complete monetization solution'}</p>
+                    <h3 className="text-2xl font-bold text-white mb-2">{journeySteps[1]?.stepName || tr('Moving Walls SSP')}</h3>
+                    <p className="text-blue-200 text-sm">{journeySteps[1]?.description || tr('Your complete monetization solution')}</p>
                   </div>
                   <div className="space-y-3">
-                    {(journeySteps[1]?.items || [
+                    {(journeySteps[1]?.items || deep([
                       'Premium demand access',
                       'Automated yield optimization',
                       'Real-time analytics',
                       'Fully streamlined workflows',
-                    ]).map((feature, index) => (
+                    ])).map((feature, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, scale: 0.9 }}
@@ -969,12 +978,12 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                       </svg>
                     </div>
                     <div>
-                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || 'Results for Media Owners'}</span>
-                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || 'Results'}</h3>
+                      <span className="text-xs font-bold text-green-600 uppercase tracking-wider">{journeySteps[2]?.stepLabel || tr('Results for Media Owners')}</span>
+                      <h3 className="text-xl font-bold text-gray-800">{journeySteps[2]?.stepName || tr('Results')}</h3>
                     </div>
                   </div>
                   <div className="space-y-4">
-                    {(journeySteps[2]?.items || ['95% fill rate achieved', '+35% eCPM improvement', 'Global demand access', 'Real-time performance insights', '80% operations time saved']).map((item, index) => (
+                    {(journeySteps[2]?.items || deep(['95% fill rate achieved', '+35% eCPM improvement', 'Global demand access', 'Real-time performance insights', '80% operations time saved'])).map((item, index) => (
                       <motion.div
                         key={index}
                         initial={{ opacity: 0, x: 10 }}
@@ -1065,10 +1074,10 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Get Started in Four Steps
+              {tr('Get Started in Four Steps')}
             </h2>
             <p className="text-xl text-gray-600">
-              From integration to revenue in weeks, not months
+              {tr('From integration to revenue in weeks, not months')}
             </p>
           </motion.div>
           
@@ -1076,7 +1085,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
             <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-blue-200 via-indigo-200 to-purple-200 transform -translate-y-1/2"></div>
             
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-              {[
+              {deep([
                 {
                   title: 'Connect Inventory',
                   description: 'Integrate your screens with a simple onboarding process via API or bulk upload',
@@ -1097,7 +1106,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   description: 'Watch fill rates and revenue increase as automation optimizes every impression',
                   icon: <svg className="w-12 h-12" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
                 }
-              ].map((item, index) => (
+              ]).map((item, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
@@ -1128,10 +1137,10 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-mw-gray-900 mb-4">
-              Complete MW Platform Suite
+              {tr('Complete MW Platform Suite')}
             </h2>
             <p className="text-xl text-mw-gray-600">
-              All the tools you need, integrated seamlessly
+              {tr('All the tools you need, integrated seamlessly')}
             </p>
           </motion.div>
 
@@ -1154,7 +1163,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                   </svg>
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-white mb-3">MW Planner</h3>
-                <p className="text-blue-100 text-lg mb-6 max-w-md">AI-powered campaign planning and audience insights. Discover where your audiences are and plan with precision.</p>
+                <p className="text-blue-100 text-lg mb-6 max-w-md">{tr('AI-powered campaign planning and audience insights. Discover where your audiences are and plan with precision.')}</p>
                 <Link href="/mw-planner" className="inline-flex items-center gap-2 text-white font-semibold text-sm bg-white/20 hover:bg-white/30 backdrop-blur-sm px-5 py-2.5 rounded-lg transition-all">
                   {t('ui.solutions.learnMore')}
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1179,7 +1188,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Marketplace</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Access 250,000+ premium billboard locations worldwide</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Access 250,000+ premium billboard locations worldwide')}</p>
               <Link href="/mw-market" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1203,7 +1212,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Studio</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Creative design and optimization tools for every format</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Creative design and optimization tools for every format')}</p>
               <Link href="/mw-studio" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1227,7 +1236,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Activate</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Campaign activation and automation at scale</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Campaign activation and automation at scale')}</p>
               <Link href="/mw-activate" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1250,7 +1259,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Measure</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Real-time analytics and attribution tracking</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Real-time analytics and attribution tracking')}</p>
               <Link href="/mw-measure" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1273,7 +1282,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Science</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Data science and predictive analytics engine</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Data science and predictive analytics engine')}</p>
               <Link href="/mw-science" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1296,7 +1305,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-mw-gray-900 mb-2">MW Influence</h3>
-              <p className="text-mw-gray-600 text-sm mb-4">Intelligent DOOH ad serving and yield optimization</p>
+              <p className="text-mw-gray-600 text-sm mb-4">{tr('Intelligent DOOH ad serving and yield optimization')}</p>
               <Link href="/mw-influence" className="text-mw-blue-600 font-semibold text-sm hover:text-mw-blue-700 transition-colors inline-flex items-center gap-1">
                 {t('ui.solutions.learnMore')}
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1309,7 +1318,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
       </section>
 
       {/* Testimonials Section */}
-      <TestimonialSectionClient testimonials={props.testimonials} />
+      <TestimonialSectionClient testimonials={testimonials} />
 
       {/* FAQ Section */}
       <section className="py-20 bg-white">
@@ -1324,12 +1333,12 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
               {t('ui.solutions.faqTitle')}
             </h2>
             <p className="text-xl text-gray-600">
-              Everything you need to know about partnering with Moving Walls
+              {tr('Everything you need to know about partnering with Moving Walls')}
             </p>
           </motion.div>
 
           <div className="space-y-4">
-            {[
+            {deep([
               {
                 question: "How does the SSP integration work?",
                 answer: "Our SSP integrates with your existing systems via APIs or direct connections. We support all major ad servers and CMS platforms. Integration typically takes 2-4 weeks depending on your technical setup, with dedicated support throughout the process."
@@ -1350,7 +1359,7 @@ export default function MediaOwnersPageClient(props: MediaOwnersPageProps) {
                 question: "What are the costs and revenue share?",
                 answer: "We operate on a revenue share model aligned with your success. No upfront costs or minimum commitments. Our share is competitive with industry standards and decreases as your revenue scales. Contact us for specific terms."
               }
-            ].map((faq, index) => (
+            ]).map((faq, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 20 }}

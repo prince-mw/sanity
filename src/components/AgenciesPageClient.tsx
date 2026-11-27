@@ -7,6 +7,8 @@ import Image from 'next/image'
 import { useState } from 'react'
 import TestimonialSectionClient from '@/components/TestimonialSectionClient'
 import { useLocale } from '@/i18n/LocaleContext'
+import { usePageTr } from '@/i18n/usePageTr'
+import type { PageTranslations } from '@/lib/pageTranslations'
 
 // Types for CMS-managed content
 interface AgenciesPageProps {
@@ -51,6 +53,7 @@ interface AgenciesPageProps {
     image?: { asset: { _ref: string } };
     companyLogo?: { asset: { _ref: string } };
   }>;
+  translations?: PageTranslations;
 }
 
 // Default values for fallback (English literals kept here for the dead/unused fields below;
@@ -118,8 +121,12 @@ const defaultContent = {
   ],
 };
 
-export default function AgenciesPageClient(props: AgenciesPageProps) {
-  const { t } = useLocale();
+export default function AgenciesPageClient({ translations, ...rawProps }: AgenciesPageProps) {
+  const { t, locale } = useLocale();
+  const { tr, deep } = usePageTr(translations);
+  // CMS copy translated for the visitor's language; testimonials passed through as received
+  const { testimonials, ...cmsProps } = rawProps;
+  const props = { ...deep(cmsProps), testimonials };
 
   // Merge props with defaults
   const content = {
@@ -228,7 +235,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
               className="text-left"
             >
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-                {content.title}{' '}
+                {content.title}{locale === 'ja' || locale === 'zh' ? '' : ' '}
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-300 to-indigo-300">
                   {content.titleHighlight}
                 </span>
@@ -568,7 +575,7 @@ export default function AgenciesPageClient(props: AgenciesPageProps) {
                           <div className="h-3 w-32 bg-gray-200 rounded mb-1"></div>
                           <div className="h-2 w-24 bg-gray-100 rounded"></div>
                         </div>
-                        <div className="px-3 py-1 bg-green-100 text-green-600 text-xs rounded-full font-semibold">Online</div>
+                        <div className="px-3 py-1 bg-green-100 text-green-600 text-xs rounded-full font-semibold">{tr('Online')}</div>
                       </div>
                       <div className="space-y-2">
                         <div className="h-2 w-3/4 bg-gray-100 rounded"></div>

@@ -150,6 +150,7 @@ const structure = (S: any) =>
                     .title('Retail Media Page (/retail)')
                 ),
               S.documentTypeListItem('partnerPage').title('Partner Pages'),
+              S.documentTypeListItem('pageTranslation').title('Page Translations (Solutions pages)'),
             ])
         ),
       // Team & Organization
