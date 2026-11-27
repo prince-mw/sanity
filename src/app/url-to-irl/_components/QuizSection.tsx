@@ -40,10 +40,10 @@ function QuizFrame() {
       if (typeof e.data !== 'string' || !/^https:\/\/([\w-]+\.)*zoho(public)?\.com$/.test(e.origin)) return;
       const [perma, h] = e.data.split('|');
       const px = parseInt(h, 10);
-      // On wider screens Zoho measures the welcome screen before its banner image loads and
-      // reports ~440px for ~700px of content (hiding the Start button), so keep a floor there.
-      // Phones report correctly.
-      const floor = window.innerWidth >= 640 ? 720 : 0;
+      // Zoho measures the welcome screen before its banner image loads and under-reports it
+      // (~440px for ~700px of content on wide frames; ~390px for ~580px on phones), which hides
+      // the Start button. Keep a floor that fits the welcome screen; later steps are taller.
+      const floor = window.innerWidth >= 640 ? 720 : 620;
       if (perma === QUIZ_PERMA && px > 0) setHeight(Math.max(px + 15, floor));
     };
     window.addEventListener('message', onMessage);
