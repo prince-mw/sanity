@@ -54,6 +54,14 @@ const nextConfig: NextConfig = {
         ],
       },
       {
+        // Gated reports (e.g. the URL2IRL Insights Report, delivered after the quiz on
+        // /url-to-irl): reachable by link, but kept out of search results.
+        source: '/reports/:path*',
+        headers: [
+          { key: 'X-Robots-Tag', value: 'noindex, nofollow' },
+        ],
+      },
+      {
         source: '/internal-insights',
         headers: [
           { key: 'X-Robots-Tag', value: 'noindex, nofollow, noarchive' },

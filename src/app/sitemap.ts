@@ -106,6 +106,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { route: '/agencies', priority: 0.85, changeFreq: 'monthly' as const },
     { route: '/media-owners', priority: 0.85, changeFreq: 'monthly' as const },
     { route: '/retail', priority: 0.85, changeFreq: 'monthly' as const },
+    // URL2IRL Insights Report landing page: in the sitemap but deliberately not in the menu (Nov 2026)
+    { route: '/url-to-irl', priority: 0.8, changeFreq: 'monthly' as const },
     { route: '/partners', priority: 0.7, changeFreq: 'monthly' as const },
     // Healthcare/Finance industry pages temporarily hidden — templated content, not final. Re-add once published.
     // Resources
