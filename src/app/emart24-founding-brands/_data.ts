@@ -1,9 +1,9 @@
 // Everything a non-developer may need to change on this page lives in this one file.
 
-/** Founding window (confirmed by Deewakshi: Wed 9 Dec, 11:59pm MYT). The countdown,
+/** Founding window (extended 2026-11-27 from Wed 9 Dec to Tue 15 Dec, 11:59pm MYT). The countdown,
  *  the hero and the thank-you message all read from here. */
-export const CLOSE_AT = new Date('2026-12-09T23:59:00+08:00');
-export const CLOSE_LABEL = 'Wednesday 9 December';
+export const CLOSE_AT = new Date('2026-12-15T23:59:00+08:00');
+export const CLOSE_LABEL = 'Tuesday 15 December';
 
 /** Response promise shown in every thank-you message. */
 export const RESPONSE_TIME = 'within 1 working day';
